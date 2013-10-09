@@ -1,0 +1,140 @@
+[TITLE]
+;Created by Giswater v.1.0 
+;Giswater, (c) 2013 GITS-UPC & Tècnicsassociats
+
+
+[JUNCTIONS]
+;ID             	Elev        	Demand      	Pattern         
+;---------------	------------	------------	----------------
+ 
+ 
+[RESERVOIRS]
+;ID              	Head        	Pattern         
+;---------------	------------	----------------
+
+
+[TANKS]
+;ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve
+;---------------	------------	------------	------------	------------	------------	------------	----------------
+
+
+[PIPES]
+;ID              	Node1           	Node2           	Length      		Diameter    	Roughness   	MinorLoss   	Status
+;---------------	----------------	----------------	----------------	------------	------------	------------	------------
+
+
+[PUMPS]
+;ID              	Node1       		Node2           	Parameters
+;---------------	----------------	----------------	------------------------------
+
+
+[VALVES]
+;ID              	Node1           	Node2           	Diameter    	Type				Setting     	MinorLoss   
+;---------------	----------------	----------------	------------	-----------------	------------	------------
+
+
+[TAGS]
+;object				Node				Tag
+;-----------------	----------------	-----------------
+
+
+[DEMANDS]
+;Junction        	Demand      	Pattern         	Category
+;---------------	------------	----------------	------------------
+
+
+[STATUS]
+;ID              	Status/Setting
+;---------------	------------------
+
+
+[PATTERNS]
+;ID              	Multipliers
+;---------------	------------
+
+
+[CURVES]
+;ID              	X-Value     		Y-Value
+;---------------	------------------	-----------------
+
+
+[CONTROLS]
+;Text
+;-----------------------------
+
+
+[RULES]
+;Text
+;-----------------------------
+
+
+[ENERGY]
+;Parameter  		 	Value
+;------------------- 	--------------------
+
+
+[EMITTERS]
+;Junction        	Coefficient
+;---------------	------------
+
+
+[QUALITY]
+;Node            	InitQual
+;---------------	------------
+
+
+[SOURCES]
+;Node            	Type        		Quality     	Pattern
+;---------------	------------------	------------	----------------
+
+
+[REACTIONS]
+;Type     			Pipe/Tank       	Coefficient
+;-----------------	----------------	------------
+
+
+[REACTIONS]
+;Parameter  		 	Value
+;------------------- 	--------------------
+
+
+[MIXING]
+;Tank            	Model
+;---------------	------------------
+
+
+[TIMES]
+;Parameter  		 	Value
+;------------------- 	--------------------
+
+
+[REPORT]
+;Parameter  		 	Value
+;------------------- 	--------------------
+
+
+[OPTIONS]
+;Parameter  		 	Value
+;------------------- 	--------------------
+
+
+[COORDINATES]
+;Node            	X-Coord         	Y-Coord
+;---------------	------------------	-----------------
+
+
+[VERTICES]
+;Link            	X-Coord         	Y-Coord
+;---------------	------------------	-----------------
+
+
+[LABELS]
+;X-Coord           	Y-Coord          	Label												Anchor Node
+;-----------------	-----------------	--------------------------------------------------	------------------------------
+
+
+[BACKDROP]
+;Text
+;-----------------------------         
+
+[END]

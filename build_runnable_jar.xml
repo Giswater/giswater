@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project giswater with libraries in sub-folder">
+
+    <property name="from" location="O:/workspace_nav_table_forms/giswater" />    
+	<property name="dist" location="C:/Dropbox/Tecnics/giswater/jar" />    
+    <target name="create_run_jar">
+        
+        <jar destfile="${dist}/giswater.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.giswater.gui.MainClass"/>
+				<attribute name="Class-Path" value=". lib/formsrt.jar lib/gt2-main.jar lib/gt2-postgis.jar lib/gt2-shapefile.jar lib/miglayout15-swing.jar lib/postgresql-9.1-901.jdbc4.jar lib/sqlitejdbc-v056.jar"/>
+            </manifest>
+            <fileset dir="O:/workspace_nav_table_forms/giswater/bin"/>
+        </jar>
+
+		<copy todir="${dist}">
+		    <fileset dir="." includes="*.txt"/>			
+		</copy>
+		
+		<copy todir="${dist}/config">
+			<fileset dir="config/" includes="inp.properties"/>
+		</copy>		
+		
+		<copy todir="${dist}/images">
+			<fileset dir="images/" includes="*"/>
+		</copy>		
+    	
+		<copy todir="${dist}/inp">
+			<fileset dir="inp/" includes="*" />
+		</copy>		        
+
+        <copy todir="${dist}/lib">
+			<fileset dir="lib/" includes="*.jar" />
+		</copy>	
+    	
+    </target>
+    
+</project>

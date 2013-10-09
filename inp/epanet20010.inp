@@ -1,0 +1,27 @@
+[TITLE]
+;Created by INPcom v.2.0 
+;INPcom, (c) 2013 Tècnicsassociats. Developed by David Erill Carrera
+
+[OPTIONS]
+Units              	LPS 
+ 
+[JUNCTIONS]
+;;ID_junct       Elev                
+;;-------------- ---------------- 
+
+
+[PIPES]
+;;ID_pipe         Node1           Node2            Length      		Diameter    	 Roughness   	  MinorLoss   	   Status
+;;-------------- ---------------- ---------------- ---------------- ---------------- ---------------- ---------------- ---------------- 
+
+
+[COORDINATES]
+;;ID_junct       Coordinate X     Coordinate Y      
+;;-------------- ---------------- ----------------
+
+
+[VERTICES]
+;;ID_pipe        Coordinate X     Coordinate Y      
+;;-------------- ---------------- ----------------
+ 
+
