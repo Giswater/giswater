@@ -368,9 +368,7 @@ public class ModelPostgis extends Model {
         logger.info("execSWMM");
         
 		iniProperties = MainDao.getPropertiesFile();   
-
-		// TODO: Get from properties file?
-		String exeCmd = MainDao.getSoftwareExecutable("postgis", softwareVersion);
+		String exeCmd = iniProperties.get("FILE_" + softwareName, "C:\\EPA\\epanet.exe");
 		
         File exeFile = new File(exeCmd);
         // Check if exeFile exists
@@ -383,7 +381,8 @@ public class ModelPostgis extends Model {
     			Utils.showError("inp_error_notfound", exeCmd, "inp_descr");
     			return false;
     		}
-    		MainDao.updateSoftware(softwareVersion, exeCmd);
+    		iniProperties.put("FILE_" + softwareName, exeCmd);
+    		MainDao.savePropertiesFile();
 		}
 
         String sFile;
@@ -501,7 +500,7 @@ public class ModelPostgis extends Model {
             boolean ok = false;
             boolean processTarget = true;
             boolean continueTarget;
-            if (softwareName.equals("swmm")){
+            if (softwareName.equals("SWMM")){
             	ok = processRpt(rpt);
             } 
             else{
@@ -518,7 +517,7 @@ public class ModelPostgis extends Model {
         				ok = processRptEpanet(rpt);
         	        	if (ok){
         		    		if (!insertSql.equals("")){
-        		            	if (softwareName.equals("epanet") && rpt.getId() >= 40){
+        		            	if (softwareName.equals("EPANET") && rpt.getId() >= 40){
         		            		firstLine = firstLine.substring(15, 24).trim(); 
         		            		sql = "UPDATE " + MainDao.getSchema() + "." + rpt.getTable() + " SET time = '" + firstLine + "' WHERE time is null;";
         		            		insertSql+= sql;
@@ -825,7 +824,7 @@ public class ModelPostgis extends Model {
 	        PreparedStatement ps = MainDao.connectionPostgis.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
 	        ResultSetMetaData rsmd = rs.getMetaData();	
-            if (softwareName.equals("epanet")){
+            if (softwareName.equals("EPANET")){
             	if (tokens.size() < rsmd.getColumnCount() - 3){
             		Utils.getLogger().warning("Line not valid");
             		return;

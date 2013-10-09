@@ -67,7 +67,7 @@ public class MainController{
 	// DBF only
 	private File dirShp;
 	private boolean readyShp = false;
-	private boolean dbSelected;
+	private boolean dbSelected = false;
 
     
     public MainController(EpaPanel view, MainFrame mf, String software) {
@@ -467,7 +467,6 @@ public class MainController{
             Utils.showError("file_inp_not_selected", "", "inp_descr");
             return;
         }    
-        
         
         // Export to INP
         if (exportChecked) {

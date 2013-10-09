@@ -101,7 +101,7 @@ public class MenuController {
 	
 	public void showWelcome() {
 		String title = "Welcome";
-		String info = "Welcome to INPcom, the EPANET & EPASWMM comunication tool";
+		String info = "Welcome to gisWater, the EPANET & EPASWMM comunication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2);
 		about.setModal(true);
@@ -110,7 +110,7 @@ public class MenuController {
 	}
 
 	public void showAuthor() {
-		String version = "INPcom version " + prop.get("VERSION_CODE");
+		String version = "gisWater version " + prop.get("VERSION_CODE");
 		AboutDialog about = new AboutDialog("About", version);
 		about.setModal(true);
 		// about.setSize(300, 200);

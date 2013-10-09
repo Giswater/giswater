@@ -90,7 +90,9 @@ public class LicenseDialog extends JDialog {
 		class OpenUrlAction implements ActionListener {
 		    @Override public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(file);
+					if (file.exists()){
+						Desktop.getDesktop().open(file);
+					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}

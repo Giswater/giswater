@@ -403,7 +403,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnAccept.setEnabled(false);
 		btnAccept.setText(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setName("btn_accept_postgis");
-		btnAccept.setActionCommand("executePostgis");
+		btnAccept.setActionCommand("execute");
 		panel_4.add(btnAccept, "flowx,cell 3 11,alignx right");
 		
 		btnDesign = new JButton(BUNDLE.getString("Form.btnNewButton.text")); //$NON-NLS-1$
