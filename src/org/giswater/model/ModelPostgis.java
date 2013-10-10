@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -181,7 +181,6 @@ public class ModelPostgis extends Model {
             raf.close();
 
             // Ending message
-            //Utils.showMessage("inp_end", fileInp.getAbsolutePath(), "inp_descr");
             String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
             	Utils.getBundleString("view_file");
             int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleString("inp_descr"), JOptionPane.YES_NO_OPTION);

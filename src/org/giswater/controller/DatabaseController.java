@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.lang.reflect.Method;
-import java.util.ResourceBundle;
 
 import javax.swing.JOptionPane;
 
@@ -38,7 +37,6 @@ public class DatabaseController {
 
 	private DatabasePanel view;
     private PropertiesMap prop;
-	private ResourceBundle bundleText;
 	public MainFrame mainFrame;
 	
 	
@@ -48,7 +46,6 @@ public class DatabaseController {
 		this.view = dbPanel;	
         this.prop = MainDao.getPropertiesFile();
 	    view.setControl(this);        
-    	this.bundleText = Utils.getBundleText();
 
     	setDefaultValues();    	
     	
@@ -65,10 +62,10 @@ public class DatabaseController {
 		view.setPassword(Encryption.decrypt(prop.get("POSTGIS_PASSWORD")));		
 		
 		if (MainDao.isConnected){
-			view.setConnectionText(Utils.getBundleString(bundleText, "close_connection"));
+			view.setConnectionText(Utils.getBundleString("close_connection"));
 		}
 		else{
-			view.setConnectionText(Utils.getBundleString(bundleText, "open_connection"));
+			view.setConnectionText(Utils.getBundleString("open_connection"));
 		}
 	
     }
@@ -98,19 +95,19 @@ public class DatabaseController {
 	public void createSchema(){
 		
 		Integer driver = view.getDriver();
-		String schemaName = JOptionPane.showInputDialog(this.view, Utils.getBundleString(bundleText, "enter_schema_name"), "schema_name");
+		String schemaName = JOptionPane.showInputDialog(this.view, Utils.getBundleString("enter_schema_name"), "schema_name");
 		if (schemaName == null){
 			return;
 		}
 		schemaName = schemaName.trim().toLowerCase();
 		if (schemaName.equals("")){
-			Utils.showError(Utils.getBundleString(bundleText, "schema_valid_name"), "", "INPcom");
+			Utils.showError(Utils.getBundleString("schema_valid_name"), "", "gisWater");
 			return;
 		}
 		
 		// Get default SRID from properties
 		String defaultSrid = prop.get("SRID", "23030");
-		String sridValue = JOptionPane.showInputDialog(this.view, Utils.getBundleString(bundleText, "enter_srid"), defaultSrid);
+		String sridValue = JOptionPane.showInputDialog(this.view, Utils.getBundleString("enter_srid"), defaultSrid);
 		if (sridValue == null){
 			return;
 		}		
@@ -120,7 +117,7 @@ public class DatabaseController {
 			try{
 				srid = Integer.parseInt(sridValue);
 			} catch (NumberFormatException e){
-				Utils.showError(Utils.getBundleString(bundleText, "error_srid"), "", "INPcom");
+				Utils.showError(Utils.getBundleString("error_srid"), "", "gisWater");
 				return;
 			}
 			if (!sridValue.equals(defaultSrid)){
@@ -129,9 +126,9 @@ public class DatabaseController {
 			}
 			boolean isSridOk = MainDao.checkSrid(srid);
 			if (!isSridOk){
-				String msg = "SRID " + srid + " " + Utils.getBundleString(bundleText, "srid_not_found") + "\n" +
-					Utils.getBundleString(bundleText, "srid_valid");			
-				Utils.showError(msg, "", "INPcom");
+				String msg = "SRID " + srid + " " + Utils.getBundleString("srid_not_found") + "\n" +
+					Utils.getBundleString("srid_valid");			
+				Utils.showError(msg, "", "gisWater");
 				return;
 			}
 			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
@@ -146,14 +143,14 @@ public class DatabaseController {
 	public void deleteSchema(){
 		
 		String schemaName = view.getSchemaResult();
-        int res = JOptionPane.showConfirmDialog(this.view, Utils.getBundleString(bundleText, "delete_schema_name") + "\n" + schemaName, 
-        	"INPCom", JOptionPane.YES_NO_OPTION);
+        int res = JOptionPane.showConfirmDialog(this.view, Utils.getBundleString("delete_schema_name") + "\n" + schemaName, 
+        	"gisWater", JOptionPane.YES_NO_OPTION);
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaResult(MainDao.getSchemas());
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    		Utils.showMessage(Utils.getBundleString(bundleText, "schema_deleted"), "", "INPcom");
+    		Utils.showMessage(Utils.getBundleString("schema_deleted"), "", "gisWater");
         }
         
 	}	
@@ -163,8 +160,8 @@ public class DatabaseController {
 		
 		if (MainDao.isConnected){
 			MainDao.closeConnectionPostgis();
-			view.setConnectionText(Utils.getBundleString(bundleText, "open_connection"));
-			Utils.showMessage(Utils.getBundleString(bundleText, "connection_closed"), "", "INP.com");			
+			view.setConnectionText(Utils.getBundleString("open_connection"));
+			Utils.showMessage(Utils.getBundleString("connection_closed"), "", "gisWater");			
 		}
 		else{
 			openConnection();
@@ -199,8 +196,8 @@ public class DatabaseController {
 			}
 			// Save properties file
 			MainDao.savePropertiesFile();
-			view.setConnectionText(Utils.getBundleString(bundleText, "close_connection"));
-			Utils.showMessage(Utils.getBundleString(bundleText, "connection_opened"), "", "INP.com");	
+			view.setConnectionText(Utils.getBundleString("close_connection"));
+			Utils.showMessage(Utils.getBundleString("connection_opened"), "", "gisWater");	
 			view.enableButtons(true);
 			MainDao.setSchema(view.getSchemaResult());
 		} 

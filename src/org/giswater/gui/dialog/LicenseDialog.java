@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -43,18 +43,6 @@ public class LicenseDialog extends JDialog {
 	private static final long serialVersionUID = 2829254148112384387L;
 	public URI uri = null;
 	public File file = null;
-
-
-	public static void main(String[] args) {
-		try {
-			LicenseDialog dialog = new LicenseDialog("Welcome", "Welcome to gisWater, the EPANET & EPASWMM comunication tool", 
-					"Please read the documentation and enjoy using the software");
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	public LicenseDialog(String title, String info, String info2) {

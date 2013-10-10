@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -260,8 +260,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtPassword.setText("");
 		panel.add(txtPassword, "cell 3 6,growx");
 
-		chkRemember = new JCheckBox(
-				BUNDLE.getString("Database.chkRemember.text")); //$NON-NLS-1$
+		chkRemember = new JCheckBox(BUNDLE.getString("Database.chkRemember.text")); //$NON-NLS-1$
 		chkRemember.setSelected(true);
 		panel.add(chkRemember, "cell 3 7,aligny baseline");
 

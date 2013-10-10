@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@ public class ModelDbf extends Model{
 		} catch (IOException e) {
 			return mAux;
 		} catch (Exception e){
-			Utils.logError(e, "");
+			Utils.getLogger().warning(e.getMessage());
 		}
 
 		return mAux;
@@ -136,7 +136,6 @@ public class ModelDbf extends Model{
 			raf.close();
 
             // Ending message
-            //Utils.showMessage("inp_end", fileInp.getAbsolutePath(), "inp_descr");
             String msg = Utils.getBundleText().getString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
             	Utils.getBundleText().getString("view_file");
             int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleText().getString("inp_descr"), JOptionPane.YES_NO_OPTION);
@@ -179,7 +178,7 @@ public class ModelDbf extends Model{
 			lMapDades = readDBF(file);
 		}
 		catch (Exception e){
-			Utils.logError(e, "");
+			Utils.getLogger().warning(e.getMessage());
 		}
 		if (lMapDades.isEmpty()) return;		
 
@@ -252,4 +251,5 @@ public class ModelDbf extends Model{
 
 	}
 
+	
 }

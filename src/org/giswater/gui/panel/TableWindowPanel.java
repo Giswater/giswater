@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -36,19 +36,19 @@ import javax.swing.JTable;
 
 import org.giswater.dao.MainDao;
 import org.giswater.model.TableModelCatchment;
+import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
 
-
 public class TableWindowPanel extends JPanel {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final long serialVersionUID = 7046850563517014315L;
-	private JTable table;
-	private JButton btnInsert;
 
 	private TableModelCatchment tableModelCatchment;
+	private JTable table;
+	private JButton btnInsert;
 	private JButton btnDelete;
 	private JButton btnDeleteAll;
 
@@ -134,14 +134,12 @@ public class TableWindowPanel extends JPanel {
 
 	
 	private void deleteAll(){
-        int res = JOptionPane.showConfirmDialog(this, "Are you sure? This will delete all records of this table", "INPcom", JOptionPane.YES_NO_OPTION);
+		String msg = Utils.getBundleString("question_delete");
+        int res = JOptionPane.showConfirmDialog(this, msg, "gisWater", JOptionPane.YES_NO_OPTION);
         if (res == 0){
         	String sql = "DELETE FROM " + MainDao.schema + ".sector_selection";
         	MainDao.executeUpdateSql(sql);
     		setData();
-//        	for (int i = 1; i < tableModelCatchment.getRowCount(); i++) {
-//            	tableModelCatchment.deleteRow(i);
-//			}
         }
 	}
 	

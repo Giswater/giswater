@@ -1,7 +1,6 @@
 package org.giswater.util;
 
 import java.awt.BorderLayout;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -297,45 +295,6 @@ public class Utils {
     
 
     /**
-     * From geotools Adds quotes to an object for storage in postgis. The object
-     * should be a string or a number. To perform an insert strings need quotes
-     * around them, and numbers work fine with quotes, so this method can be
-     * called on unknown objects.
-     *
-     * @param value The object to add quotes to.
-     *
-     * @return a string representation of the object with quotes.
-     */
-    public String addQuotes(Object value) {
-        String retString;
-        if (value != null) {
-            retString = "'" + doubleQuote(value) + "'";
-        } else {
-            retString = "null";
-        }
-        return retString;
-    }
-
-
-    private String doubleQuote(Object obj) {
-    	
-        String aux = obj.toString().replaceAll("'", "''");
-        StringBuffer strBuf = new StringBuffer(aux);
-        ByteArrayOutputStream out = new ByteArrayOutputStream(strBuf.length());
-        PrintStream printStream = new PrintStream(out);
-        printStream.print(aux);
-        String aux2 = "ERROR";
-        //aux2 = out.toString(toEncode);
-        System.out.println(aux + " " + aux2);
-//		catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-
-        return aux2;
-    }
-
-
-    /**
      * Returns the class name of the installed LookAndFeel with a name
      * containing the name snippet or null if none found.
      * 
@@ -376,7 +335,7 @@ public class Utils {
 				Process p = Runtime.getRuntime().exec("cmd /c start " + file);				
 				p.waitFor();
 			} else{
-				Utils.showMessage("FILE_NOT_FOUND", file, "TITLE");
+				Utils.showMessage("file_not_found", file, "gisWater");
 			}
 		} catch( IOException ex ){
 		    System.out.println("IOException Error");
@@ -393,25 +352,21 @@ public class Utils {
 	
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists())
-	    	//throw new IllegalArgumentException("Delete: no such file or directory: " + sFile);
 	    	System.out.println("Delete: no such file or directory: " + sFile);
 	
 	    if (!f.canWrite())
-	    	//throw new IllegalArgumentException("Delete: write protected: " + sFile);
 	    	System.out.println("Delete: write protected: " + sFile);
 	
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
 	    	if (files.length > 0)
-	    		//throw new IllegalArgumentException("Delete: directory not empty: " + sFile);
 	    		System.out.println("Delete: directory not empty: " + sFile);
 	    }
 	
 	    // Attempt to delete it
 	    boolean success = f.delete();
 	    if (!success) 
-	    	//throw new IllegalArgumentException("Delete: deletion failed");
 			System.out.println("Delete: deletion failed");
 	
 	}
@@ -423,10 +378,9 @@ public class Utils {
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			raf.setLength(0);
 			raf.writeBytes(text);
-			// raf.writeBytes("\nexit");
 			raf.close();
 		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
+			Utils.getLogger().warning(e.getMessage());
 		}
 
 	}		

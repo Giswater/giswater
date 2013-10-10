@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -178,12 +178,6 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDesign.setActionCommand(actionCommand);
 	}
 
-//	public void close() {
-//		f.setVisible(false);
-//		f.dispose();
-//	}
-
-	
 	public void setSoftware(Vector<String> v) {
 		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
 		cboSoftware.setModel(cbm);		

@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -44,19 +44,6 @@ public class WelcomeDialog extends JDialog {
 	public File file = null;
 
 
-	public static void main(String[] args) {
-		try {
-			WelcomeDialog dialog = new WelcomeDialog("Welcome", "Welcome to gisWater, the EPANET & EPASWMM comunication tool", 
-					"Please read the documentation and enjoy using the software");
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -96,11 +83,11 @@ public class WelcomeDialog extends JDialog {
 		getContentPane().add(panelLogo, "cell 1 1,alignx right,aligny bottom");
 		panelLogo.setLayout(new BorderLayout());
 		
-		JLabel lblInpcom = new JLabel("INPcom");
-		lblInpcom.setHorizontalTextPosition(SwingConstants.LEFT);
-		lblInpcom.setHorizontalAlignment(SwingConstants.LEFT);
-		lblInpcom.setFont(new Font("Tahoma", Font.BOLD, 12));
-		getContentPane().add(lblInpcom, "cell 2 1,alignx left");
+		JLabel lblgisWater = new JLabel("gisWater");
+		lblgisWater.setHorizontalTextPosition(SwingConstants.LEFT);
+		lblgisWater.setHorizontalAlignment(SwingConstants.LEFT);
+		lblgisWater.setFont(new Font("Tahoma", Font.BOLD, 12));
+		getContentPane().add(lblgisWater, "cell 2 1,alignx left");
 		
 		JLabel lblInfo = new JLabel(info);
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 12));

@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -179,16 +179,6 @@ public class MainController{
 	}
 	
 	
-//	public void dialogDatabase(){
-//		//DatabaseController inp = new DatabaseController(dialog);
-//		DatabaseFrame frame = new DatabaseFrame();
-//		
-//		frame.setModal(true);
-//		frame.setLocationRelativeTo(null);   
-//		frame.setVisible(true);		
-//	}
-
-	
 	public void schemaChanged(){
 		MainDao.setSchema(view.getSchema());
 	}
@@ -345,7 +335,7 @@ public class MainController{
         // Get schema from view
         String schema = view.getSchema();
         if (schema.equals("")){
-            Utils.showError("Any schema selected", "", "inp_descr");
+            Utils.showError("any_schema_selected", "", "inp_descr");
             return;
         }
         MainDao.setSchema(schema);
@@ -353,7 +343,7 @@ public class MainController{
         // Get software version from view
         String softwareId = view.getSoftware();
         if (softwareId.equals("")){
-            Utils.showError("Any software version selected", "", "inp_descr");
+            Utils.showError("any_software_selected", "", "inp_descr");
             return;
         }
         String version = MainDao.getSoftwareVersion("postgis", softwareId);
@@ -437,7 +427,7 @@ public class MainController{
         // Get software version from view
 		String id = view.getSoftware();
         if (id.equals("")){
-            Utils.showError("Any software version selected", "", "inp_descr");
+            Utils.showError("any_software_selected", "", "inp_descr");
             return;
         }
         String version = MainDao.getSoftwareVersion("dbf", id);

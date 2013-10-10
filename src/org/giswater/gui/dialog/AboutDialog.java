@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -104,7 +106,7 @@ public class AboutDialog extends JDialog {
 		try {
 			uri = new URI("http://www.tecnicsassociats.com");
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			Utils.getLogger().warning(e.getMessage());
 		}		
 		JButton button = new JButton();
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -119,6 +121,7 @@ public class AboutDialog extends JDialog {
 		//String label = "<HTML><FONT size=6 color=\"#336600\">Tècnics</FONT><FONT size=6 color=\"#000000\">Associats</FONT></HTML>";
 		getContentPane().add(button, "cell 0 1 2 1,alignx center");
 		
+		//TODO: i18n
 		lblInfo = new JLabel("Developer: David Erill Carrera");
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		getContentPane().add(lblInfo, "cell 0 2 2 1,alignx center");	

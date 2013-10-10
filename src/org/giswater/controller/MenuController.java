@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ public class MenuController {
 		}
 	}
 
-	
+	// TODO: i18n
 	public void showWelcome() {
 		String title = "Welcome";
 		String info = "Welcome to gisWater, the EPANET & EPASWMM comunication tool";

@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -32,10 +32,6 @@ public class RptTarget {
 	private Integer titleLines;
 	private Integer tokens;
 	
-
-	public RptTarget(){
-		
-	}	
 	
 	public RptTarget(ResultSet rs) throws SQLException{
 		this.id = rs.getInt(1);
@@ -69,5 +65,6 @@ public class RptTarget {
 	public Integer getTokens() {
 		return tokens;
 	}	
+
 	
 }

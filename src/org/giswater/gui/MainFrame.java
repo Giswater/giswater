@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -49,6 +49,7 @@ import java.util.ResourceBundle;
 
 
 public class MainFrame extends JFrame implements ActionListener{
+	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private static final long serialVersionUID = -6630818426483107558L;

@@ -1,5 +1,5 @@
 /*
- * This file is part of INPcom
+ * This file is part of gisWater
  * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -152,7 +152,6 @@ public class MainDao {
 
     	appPath = Utils.getAppPath();
         configPath = appPath + CONFIG_FOLDER + File.separator + CONFIG_FILE;
-//        Utils.getLogger().info("Config file: " + configPath);
         File fileIni = new File(configPath);
         try {
         	iniProperties.load(new FileInputStream(fileIni));      
@@ -237,41 +236,6 @@ public class MainDao {
         
 	}
 	
-
-	public static String getSoftwareExecutable(String type, String software) {
-		
-        String sql = "SELECT file FROM " + type + "_software WHERE software_version = '" + software + "'";
-        String result = "";        
-        try {
-            Statement stat = connectionConfig.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()) {
-            	result = rs.getString(1);
-            }
-            rs.close();
-            stat.close();            
-        } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
-        }
-        return result;   
-        
-	}	
-	
-
-	public static void updateSoftware(String software, String exeFile) {
-		
-        String sql = "UPDATE postgis_software SET file = '" + exeFile + "' WHERE software_version = '" + software + "'";
-        try {
-    		connectionConfig.setAutoCommit(true);        	
-			Statement ps = connectionConfig.createStatement();
-	        ps.executeUpdate(sql);
-	        ps.close();
-        } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
-        }
-        
-	}	
-    
 	
     public static boolean setConnectionPostgis(String host, String port, String db, String user, String password) {
     	
@@ -599,7 +563,7 @@ public class MainDao {
 					content+= geometry;
 				}				
 				if (executeUpdateSql(content, true)){
-					Utils.showMessage("Schema creation completed", "", "INPcom");							
+					Utils.showMessage("Schema creation completed", "", "gisWater");							
 				}
 				
 				rat.close();	
