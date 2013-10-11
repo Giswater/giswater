@@ -16,19 +16,15 @@
 		<copy todir="${dist}">
 		    <fileset dir="." includes="*.txt"/>			
 		</copy>
-		
 		<copy todir="${dist}/config">
 			<fileset dir="config/" includes="inp.properties"/>
 		</copy>		
-		
 		<copy todir="${dist}/images">
 			<fileset dir="images/" includes="*"/>
 		</copy>		
-    	
 		<copy todir="${dist}/inp">
 			<fileset dir="inp/" includes="*" />
 		</copy>		        
-
         <copy todir="${dist}/lib">
 			<fileset dir="lib/" includes="*.jar" />
 		</copy>	
