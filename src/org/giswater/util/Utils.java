@@ -32,9 +32,11 @@ public class Utils {
 	private static final ResourceBundle BUNDLE_FORM = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
     private static Logger logger;
+    private static Logger loggerSql;
 	private static String logFolder;
     private static final String LOG_FOLDER = "log/";
     private static String softName;
+	private static boolean isSqlLogged;
     
     
 	public static Logger getLogger() {
@@ -48,12 +50,19 @@ public class Utils {
                 if (!folderFile.exists()){
                     JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
                 }
-                String logFile = logFolder + "log_" + getCurrentTimeStamp() + ".log";
+                String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
                 FileHandler fh = new FileHandler(logFile, true);
                 LogFormatter lf = new LogFormatter();
                 fh.setFormatter(lf);
                 logger = Logger.getLogger(logFile);
                 logger.addHandler(fh);
+                // SQL logger file
+                logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
+                fh = new FileHandler(logFile, true);
+                lf = new LogFormatter();
+                fh.setFormatter(lf);
+                loggerSql = Logger.getLogger(logFile);
+                loggerSql.addHandler(fh);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
             } catch (SecurityException e) {
@@ -63,7 +72,14 @@ public class Utils {
         return logger;
 
     }
-    
+	   
+	
+	public static void logSql(String msg){
+		if (isSqlLogged){
+			loggerSql.info(msg);
+		}
+	}
+	
     
     public static String getAppPath(){
     	
@@ -240,9 +256,6 @@ public class Utils {
     public static int confirmDialog(String msg, String title) {
     	int reply;
     	reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
-        if (logger != null) {
-            logger.warning(getBundleString(msg));
-        }
         return reply;    	
     }        
     
@@ -349,7 +362,11 @@ public class Utils {
 
 	public static void setSoftName(String softName) {
 		Utils.softName = softName;
-	}	
+	}
+
 	
+	public static void setSqlLog(String string) {
+		Utils.isSqlLogged = Boolean.parseBoolean(string);
+	}	
 	
 }

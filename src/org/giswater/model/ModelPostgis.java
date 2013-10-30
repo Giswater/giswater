@@ -451,15 +451,21 @@ public class ModelPostgis extends Model {
        	if (reply == JOptionPane.NO_OPTION){
        		return false;
     	}    	
-    	
+
+       	// Check if we want to overwrite previous results
+        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "false"));
+        Utils.getLogger().info("IMPORT_OVERWRITE: " + overwrite);
+        
     	// Check if Project Name exists in rpt_result_id
     	boolean exists = false;
     	if (existsProjectName()){
     		exists = true;
-        	reply = Utils.confirmDialog("project_exists", "inp_descr");    		
-        	if (reply == JOptionPane.NO_OPTION){
-        		return false;
-        	}
+            if (!overwrite){
+            	reply = Utils.confirmDialog("project_exists", "inp_descr");    		
+            	if (reply == JOptionPane.NO_OPTION){
+            		return false;
+            	}
+            }
     	}
     	
 		// Open RPT file
@@ -473,8 +479,9 @@ public class ModelPostgis extends Model {
         
         // Get info from rpt_target into memory
         TreeMap<Integer, RptTarget> targets = new TreeMap<Integer, RptTarget>();
-        String sql = "SELECT id, db_table, description, type, title_lines, tokens, dbf_table FROM rpt_target " +
-        	"WHERE type <> 0 ORDER BY id";
+        String sql = "SELECT id, db_table, description, type, title_lines, tokens, dbf_table" +
+        	" FROM rpt_target" +
+        	" WHERE type <> 0 ORDER BY id";
         try {
             Statement stat = connectionDrivers.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -506,10 +513,18 @@ public class ModelPostgis extends Model {
         		if (rpt.getId() >= 40){
         			processTarget = false;
         			continueTarget = true;
-		    		if (exists){
-		    			sql = "DELETE FROM " + MainDao.getSchema() + "." + rpt.getTable() + " WHERE result_id = '" + projectName + "'";
-		    			//logger.info(sql);
-		    			MainDao.executeUpdateSql(sql);
+        			if (overwrite){
+        				sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable();
+        				Utils.logSql(sql);
+        				MainDao.executeUpdateSql(sql);
+        			}
+        			else{
+        				if (exists){
+        					sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable() + 
+        						" WHERE result_id = '"+projectName+"'";
+        					Utils.logSql(sql);
+        					MainDao.executeUpdateSql(sql);
+        				}
 		    		}            			
         			while (continueTarget){
             			insertSql = "";            				
@@ -518,7 +533,8 @@ public class ModelPostgis extends Model {
         		    		if (!insertSql.equals("")){
         		            	if (softwareName.equals("EPANET") && rpt.getId() >= 40){
         		            		firstLine = firstLine.substring(15, 24).trim(); 
-        		            		sql = "UPDATE " + MainDao.getSchema() + "." + rpt.getTable() + " SET time = '" + firstLine + "' WHERE time is null;";
+        		            		sql = "UPDATE "+MainDao.getSchema()+"."+rpt.getTable() + 
+        		            			" SET time = '"+firstLine+"' WHERE time is null;";
         		            		insertSql+= sql;
         		            	}
         		    			//logger.info(insertSql);	            	
@@ -536,13 +552,21 @@ public class ModelPostgis extends Model {
             }
             
         	if (ok && processTarget){
-	    		if (exists){
-	    			sql = "DELETE FROM " + MainDao.getSchema() + "." + rpt.getTable() + " WHERE result_id = '" + projectName + "'";
-	    			//logger.info(sql);
-	    			MainDao.executeUpdateSql(sql);
-	    		}
+    			if (overwrite){
+    				sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable();
+    				Utils.logSql(sql);
+    				MainDao.executeUpdateSql(sql);
+    			}
+    			else{
+    				if (exists){
+    					sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable() + 
+    						" WHERE result_id = '"+projectName+"'";
+    					Utils.logSql(sql);
+    					MainDao.executeUpdateSql(sql);
+    				}
+	    		} 
 	    		if (!insertSql.equals("")){
-	    			//logger.info(insertSql);	            	
+	    			Utils.logSql(insertSql);	            	
 		    		if (!MainDao.executeUpdateSql(insertSql)){
 						return false;
 					}
@@ -552,7 +576,7 @@ public class ModelPostgis extends Model {
            		logger.info("Target not found: " + rpt.getId() + " - " + rpt.getDescription());
         	}
         	
-        }
+        } // end iterations over targets (while)
 
         // Insert into result_selection
    		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
@@ -576,8 +600,8 @@ public class ModelPostgis extends Model {
 
 	private static boolean existsProjectName() {
 		
-		String sql = "SELECT * FROM " + MainDao.getSchema() + ".rpt_result_cat " +
-			" WHERE result_id = '" + projectName + "'";
+		String sql = "SELECT * FROM "+MainDao.getSchema()+".rpt_result_cat " +
+			" WHERE result_id = '"+projectName+"'";
 		try {
 			PreparedStatement ps = MainDao.connectionPostgis.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
@@ -832,8 +856,11 @@ public class ModelPostgis extends Model {
 	        rs.close();
 	        int j;
 	        for (int i=0; i<tokens.size(); i++){
-	        	j = i + 2;
-	        	switch (rsmd.getColumnType(j)) {
+	        	j = i + 3;
+//	        	if (!rsmd.getColumnName(j).equals("result_id")){
+//					fields += rsmd.getColumnName(j) + ", ";
+//	        	}
+        		switch (rsmd.getColumnType(j)) {
 				case Types.NUMERIC:
 				case Types.DOUBLE:
 				case Types.INTEGER:
@@ -846,7 +873,7 @@ public class ModelPostgis extends Model {
 					values += "'" + tokens.get(i) + "', ";
 					break;
 				}
-				fields += rsmd.getColumnName(j) + ", ";        	
+        		fields += rsmd.getColumnName(j) + ", ";
 	        }
 		} catch (SQLException e) {
 			Utils.showError(e, sql);
@@ -854,7 +881,7 @@ public class ModelPostgis extends Model {
 	
 		fields = fields.substring(0, fields.length() - 2);
 		values = values.substring(0, values.length() - 2);
-		sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
+		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;
 		
 	}
@@ -870,13 +897,13 @@ public class ModelPostgis extends Model {
 	        rs.close();
 
 			// Iterate over pollutants
-			for (int i = 0; i < pollutants.size(); i++) {
+			for (int i=0; i<pollutants.size(); i++) {
 				String fields = "result_id, poll_id, ";
-				String values = "'" + projectName + "', '" + pollutants.get(i) + "', ";
+				String values = "'"+projectName+"', '"+pollutants.get(i)+"', ";
 				// Iterate over fields
-				for (int j = 0; j < tokensList.size(); j++) {
+				for (int j=0; j<tokensList.size(); j++) {
 					String value = tokensList.get(j).get(i);
-		        	switch (rsmd.getColumnType(j + 3)) {
+		        	switch (rsmd.getColumnType(j + 4)) {
 					case Types.NUMERIC:
 					case Types.DOUBLE:
 					case Types.INTEGER:
@@ -889,11 +916,11 @@ public class ModelPostgis extends Model {
 						values += "'" + value + "', ";
 						break;
 					}
-					fields += rsmd.getColumnName(j + 3) + ", ";        	
+					fields += rsmd.getColumnName(j + 4) + ", ";        	
 				}
 				fields = fields.substring(0, fields.length() - 2);
 				values = values.substring(0, values.length() - 2);
-				sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
+				sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
 				insertSql += sql;				
 	        }
 			
@@ -909,7 +936,7 @@ public class ModelPostgis extends Model {
 	private static void processTokens5(RptTarget rpt) {
 
 		String fields = "result_id, subc_id, poll_id, value";
-		String fixedValues = "'" + projectName + "', '" + tokens.get(0) + "', ";
+		String fixedValues = "'"+projectName+"', '"+tokens.get(0)+ "', ";
 		String sql;
 		String values;
 		Double units;
@@ -923,10 +950,10 @@ public class ModelPostgis extends Model {
 		
 		// Iterate over pollutants
 		if (tokens.size() > pollutants.size()){
-			for (int i = 0; i < pollutants.size(); i++) {
+			for (int i=0; i<pollutants.size(); i++) {
 				units = Double.valueOf(tokens.get(i + 1));
-				values = fixedValues + "'" + pollutants.get(i) + "', " + units;
-				sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
+				values = fixedValues + "'"+pollutants.get(i)+"', "+units;
+				sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
 				insertSql += sql;		        
 			}
 		}
@@ -938,7 +965,7 @@ public class ModelPostgis extends Model {
 		
 		String fields = "result_id, node_id, flow_freq, avg_flow, max_flow, total_vol";
 		String fields2 = "result_id, node_id, poll_id, value";		
-		String fixedValues = "'" + projectName + "', '" + tokens.get(0) + "', ";
+		String fixedValues = "'"+projectName+"', '"+tokens.get(0)+ "', ";
 		String values;
 		String sql;
 		Double units;
@@ -954,18 +981,18 @@ public class ModelPostgis extends Model {
 			values += tokens.get(j) + ", ";
 		}
 		values = values.substring(0, values.length() - 2);		
-		sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
+		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;				
 		
 		// Iterate over pollutants
 		for (int i = 0; i < pollutants.size(); i++) {
 			int j = i + 5;
 			units = Double.valueOf(tokens.get(j));
-			values = fixedValues + "'" + pollutants.get(i) + "', " + units;
-			sql = "DELETE FROM " + MainDao.getSchema() + ".rpt_outfallload_sum " +
-				"WHERE result_id = '" + projectName + "' AND node_id = '"  + tokens.get(0) + "' AND poll_id = '" + pollutants.get(i) + "';\n";
+			values = fixedValues + "'"+pollutants.get(i)+ "', "+units;
+			sql = "DELETE FROM "+MainDao.getSchema()+".rpt_outfallload_sum " +
+				"WHERE result_id = '"+projectName+"' AND node_id = '"+tokens.get(0)+"' AND poll_id = '"+pollutants.get(i)+ "';\n";
 			insertSql += sql;	
-			sql = "INSERT INTO " + MainDao.getSchema() + ".rpt_outfallload_sum (" + fields2 + ") VALUES (" + values + ");\n";
+			sql = "INSERT INTO "+MainDao.getSchema()+".rpt_outfallload_sum ("+fields2+") VALUES ("+values+");\n";
 			insertSql += sql;		        
 		}
 		

@@ -96,15 +96,15 @@ public class MainController{
 			readyShp = true;
 		}
 		
-    	fileInp = new File(prop.get("FILE_INP"));
+    	fileInp = new File(prop.get("FILE_INP", userHomeFolder));
 		if (fileInp.exists()) {
 			view.setFileInp(fileInp.getAbsolutePath());
 		}
-		fileRpt = new File(prop.get("FILE_RPT"));
+		fileRpt = new File(prop.get("FILE_RPT", userHomeFolder));
 		if (fileRpt.exists()) {
 			view.setFileRpt(fileRpt.getAbsolutePath());
 		}    	
-		projectName = prop.get("PROJECT_NAME");
+		projectName = prop.get("PROJECT_NAME", "");
 		view.setProjectName(projectName);
 			
     }

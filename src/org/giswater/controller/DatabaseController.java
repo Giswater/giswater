@@ -46,7 +46,6 @@ public class DatabaseController {
 		this.view = dbPanel;	
         this.prop = MainDao.getPropertiesFile();
 	    view.setControl(this);        
-
     	setDefaultValues();    	
     	
 	}
@@ -95,7 +94,7 @@ public class DatabaseController {
 	public void createSchema(){
 		
 		Integer driver = view.getDriver();
-		String schemaName = JOptionPane.showInputDialog(this.view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
 		if (schemaName == null){
 			return;
 		}
@@ -105,12 +104,19 @@ public class DatabaseController {
 			return;
 		}
 		
-		// Get default SRID from properties
-		String defaultSrid = prop.get("SRID", "23030");
-		String sridValue = JOptionPane.showInputDialog(this.view, Utils.getBundleString("enter_srid"), defaultSrid);
-		if (sridValue == null){
-			return;
-		}		
+		// Ask user to set SRID?
+		String sridValue;
+		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
+		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
+		if (sridQuestion){
+			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
+			if (sridValue == null){
+				return;
+			}
+		}
+		else{
+			sridValue = "0";
+		}
 		sridValue = sridValue.trim();
 		if (!sridValue.equals("")){
 			Integer srid;
@@ -121,18 +127,18 @@ public class DatabaseController {
 				return;
 			}
 			if (!sridValue.equals(defaultSrid)){
-				prop.put("SRID", sridValue);
+				prop.put("SRID_DEFAULT", sridValue);
 				MainDao.savePropertiesFile();
 			}
 			boolean isSridOk = MainDao.checkSrid(srid);
-			if (!isSridOk){
-				String msg = "SRID " + srid + " " + Utils.getBundleString("srid_not_found") + "\n" +
+			if (!isSridOk && srid != 0){
+				String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
 					Utils.getBundleString("srid_valid");			
 				Utils.showError(msg, "", "gisWater");
 				return;
 			}
 			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-			MainDao.createSchema(schemaName.trim(), sridValue.trim(), driver);
+			MainDao.createSchema(schemaName, sridValue, driver);
 			view.setSchemaResult(MainDao.getSchemas());		
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
@@ -159,15 +165,23 @@ public class DatabaseController {
 	public void testConnection(){
 		
 		if (MainDao.isConnected){
-			MainDao.closeConnectionPostgis();
-			view.setConnectionText(Utils.getBundleString("open_connection"));
-			Utils.showMessage(Utils.getBundleString("connection_closed"), "", "gisWater");			
+			closeConnection();
 		}
 		else{
 			openConnection();
 		}
 		
 	}	
+	
+	
+	private void closeConnection(){
+		view.enableButtons(false);
+		view.setSchemaResult(null);
+		view.setConnectionText(Utils.getBundleString("open_connection"));
+		mainFrame.hecRasFrame.getPanel().enableButtons(false);
+		MainDao.closeConnectionPostgis();
+		Utils.showMessage(Utils.getBundleString("connection_closed"), "", "gisWater");				
+	}
 	
 	
 	private void openConnection(){
@@ -194,16 +208,19 @@ public class DatabaseController {
 			} else{
 				prop.put("POSTGIS_PASSWORD", "");
 			}
+	    	String folder = MainDao.getDataDirectory();
+	    	Utils.getLogger().info("Postgis data directory: " + folder);
+	        prop.put("POSTGIS_DATA", folder);
 			// Save properties file
 			MainDao.savePropertiesFile();
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage(Utils.getBundleString("connection_opened"), "", "gisWater");	
 			view.enableButtons(true);
 			MainDao.setSchema(view.getSchemaResult());
+			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
 		else{
-			view.enableButtons(false);
-			view.setSchemaResult(null);			
+			closeConnection();
 		}
 		
 	}		

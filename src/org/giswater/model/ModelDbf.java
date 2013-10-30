@@ -121,10 +121,7 @@ public class ModelDbf extends Model{
 			raf.setLength(0);
 
 			// Get content of target table	
-			sql = "SELECT id, name, table_id, lines FROM inp_target";
-//            sql = "SELECT target.id as target_id, target.name as target_name, lines, main.id as main_id, main.dbase_table as table_name "
-//        		+ "FROM inp_target as target " 
-//        		+ "INNER JOIN inp_table as main ON target.table_id = main.id";  			
+			sql = "SELECT id, name, table_id, lines FROM inp_target";	
 			Statement stat = connectionDrivers.createStatement();
 			ResultSet rs = stat.executeQuery(sql);					
 			while (rs.next()) {

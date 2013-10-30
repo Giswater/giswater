@@ -50,7 +50,7 @@ public class ConfigController {
 	
 	
     private void setDefaultValues(){
-		view.setPostgisBinFolder(prop.get("FOLDER_POSTGIS"));
+		view.setPostgisBinFolder(prop.get("FOLDER_BIN"));
 		view.setSwmmFile(prop.get("FILE_SWMM"));
 		view.setEpanetFile(prop.get("FILE_EPANET"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
@@ -89,7 +89,7 @@ public class ConfigController {
 		isChecked = view.getAutoConnect();
 		
 		// Update properties file
-		prop.put("FOLDER_POSTGIS", postgis);
+		prop.put("FOLDER_BIN", postgis);
 		prop.put("FILE_SWMM", swmm);
 		prop.put("FILE_EPANET", epanet);
 		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
@@ -104,8 +104,8 @@ public class ConfigController {
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(Utils.getBundleString("folder_postgis"));
-		File file = new File(prop.get("FOLDER_POSTGIS", System.getProperty("user.home")));
+		chooser.setDialogTitle(Utils.getBundleString("folder_bin"));
+		File file = new File(prop.get("FOLDER_BIN", System.getProperty("user.home")));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {

@@ -67,6 +67,9 @@ public class MainDao {
     		return false;
     	}
     	
+    	// Log SQL?
+    	Utils.setSqlLog(iniProperties.get("SQL_LOG", "false"));
+    	
         // Get INP folder
         folderConfig = iniProperties.get("FOLDER_CONFIG");
         folderConfig = appPath + folderConfig + File.separator;
@@ -77,8 +80,7 @@ public class MainDao {
         }
         
         // Set Postgis connection
-        String aux = iniProperties.get("AUTOCONNECT_POSTGIS", "false");
-        Boolean connect = Boolean.parseBoolean(aux);
+        Boolean connect = Boolean.parseBoolean(iniProperties.get("AUTOCONNECT_POSTGIS"));
         if (connect){
         	silenceConnection();
         }
@@ -103,20 +105,23 @@ public class MainDao {
 		
 		// Get parameteres connection from properties file
 		host = iniProperties.get("POSTGIS_HOST", "localhost");		
-		port = iniProperties.get("POSTGIS_PORT", "5432");
-		db = iniProperties.get("POSTGIS_DATABASE");
+		port = iniProperties.get("POSTGIS_PORT", "5431");
+		db = iniProperties.get("POSTGIS_DATABASE", "giswater");
 		user = iniProperties.get("POSTGIS_USER", "postgres");
 		password = iniProperties.get("POSTGIS_PASSWORD");		
 		password = Encryption.decrypt(password);
 		password = (password == null) ? "" : password;
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("") || password.equals("")){
-			Utils.getLogger().info("Silence connection not possible");
+			Utils.getLogger().info("Autoconnection not possible");
 			return;
 		}
 		isConnected = setConnectionPostgis(host, port, db, user, password);
 		if (isConnected){
-			Utils.getLogger().info("Silence connection successful!");
+	    	String folder = MainDao.getDataDirectory();
+	    	iniProperties.put("POSTGIS_DATA", folder);
+	    	Utils.getLogger().info("Postgis data directory: " + folder);
+			Utils.getLogger().info("Autoconnection successful");
 		} 
 		
 	}	    
@@ -239,7 +244,7 @@ public class MainDao {
 	
     public static boolean setConnectionPostgis(String host, String port, String db, String user, String password) {
     	
-        String connectionString = "jdbc:postgresql://" + host + ":" + port + "/" + db + "?user=" + user + "&password=" + password;
+        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+ password;
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
         } catch (SQLException e) {
@@ -323,7 +328,7 @@ public class MainDao {
     // Check if the table exists
 	public static boolean checkTable(String schemaName, String tableName) {
         String sql = "SELECT * FROM pg_tables" +
-        	" WHERE lower(schemaname) = '" + schemaName + "' AND lower(tablename) = '" + tableName + "'";
+        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '" + tableName + "'";
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -353,7 +358,7 @@ public class MainDao {
     // Check if the view exists
     public static boolean checkView(String schemaName, String viewName) {
         String sql = "SELECT * FROM pg_views" +
-        	" WHERE lower(schemaname) = '" + schemaName + "' AND lower(viewname) = '" + viewName + "'";
+        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(viewname) = '" + viewName + "'";
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -504,10 +509,12 @@ public class MainDao {
 	
 	
 	public static void setResultSelect(String schema, String table, String result) {
-		String sql = "DELETE FROM " + schema + "." + table;
+		String sql = "DELETE FROM "+schema+"."+table;
+		Utils.logSql(sql);
 		executeUpdateSql(sql);
-		sql = "INSERT INTO " + schema + "." + table + " VALUES ('" + result + "')";
+		sql = "INSERT INTO "+schema+"."+table+" VALUES ('"+result+"')";
 		executeUpdateSql(sql);
+		Utils.logSql(sql);
 	}
 	
 	
@@ -522,18 +529,18 @@ public class MainDao {
 	
 
 	public static void deleteSchema(String schemaName) {
-		String sql = "DROP schema IF EXISTS " + schemaName + " CASCADE;";
+		String sql = "DROP schema IF EXISTS "+schemaName+" CASCADE;";
 		executeUpdateSql(sql, true);		
-		sql = "DELETE FROM public.geometry_columns WHERE f_table_schema = '" + schemaName + "'";
+		sql = "DELETE FROM public.geometry_columns WHERE f_table_schema = '"+schemaName+"'";
 		executeUpdateSql(sql, true);			
 	}
 
 
 	public static void createSchema(String schemaName, String srid, Integer driver) {
 		
-		String sql = "CREATE schema " + schemaName;
+		String sql = "CREATE schema "+schemaName;
 		executeUpdateSql(sql);	
-		sql = "SET search_path TO '" + schemaName + "'";
+		sql = "SET search_path TO '"+schemaName+"'";
 		executeUpdateSql(sql);	
 		String file = "";
 		
@@ -550,7 +557,7 @@ public class MainDao {
 			}
 			if (executeUpdateSql(content, true)){
 				rat.close();				
-				sql = "SET search_path TO '" + schemaName + "', 'public'";
+				sql = "SET search_path TO '"+schemaName+"', 'public'";
 				executeUpdateSql(sql);
 				
 				content = "";				
@@ -571,7 +578,7 @@ public class MainDao {
 					content+= geometry;
 				}				
 				if (executeUpdateSql(content, true)){
-					Utils.showMessage("Schema creation completed", "", "gisWater");							
+					Utils.showMessage("Schema creation completed", "", "inp_descr");							
 				}
 				
 				rat.close();	
@@ -589,14 +596,14 @@ public class MainDao {
 	private static String addGeometryColumnsTables(String schemaName, String srid) {
 		
 		String content = "";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'arc', 'the_geom', '" + srid + "', 'MULTILINESTRING', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'node', 'the_geom', '" + srid + "', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'subcatchment', 'the_geom', '" + srid + "', 'MULTIPOLYGON', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'catchment', 'the_geom', '" + srid + "', 'MULTIPOLYGON', 2);\n";		
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'raingage', 'the_geom', '" + srid + "', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'vertice', 'the_geom', '" + srid + "', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'connec', 'the_geom', '" + srid + "', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('" + schemaName + "', 'gully', 'the_geom', '" + srid + "', 'POINT', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'arc', 'the_geom', '"+srid+"', 'MULTILINESTRING', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'node', 'the_geom', '"+srid+"', 'POINT', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'subcatchment', 'the_geom', '"+srid+"', 'MULTIPOLYGON', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'catchment', 'the_geom', '"+srid+"', 'MULTIPOLYGON', 2);\n";		
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'raingage', 'the_geom', '"+srid+"', 'POINT', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'vertice', 'the_geom', '"+srid+"', 'POINT', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'connec', 'the_geom', '"+srid+"', 'POINT', 2);\n";
+		content+= "SELECT addgeometryColumn('"+schemaName+"', 'gully', 'the_geom', '"+srid+"', 'POINT', 2);\n";
 		return content;
 		
 	}
@@ -605,10 +612,10 @@ public class MainDao {
 	private static String addGeometryColumnsViews(String schemaName, String srid) {
 		
 		String content = "";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '" + schemaName + "', 'v_man_arc', 'the_geom', '2', '" + srid + "', 'MULTILINESTRING');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '" + schemaName + "', 'v_man_node', 'the_geom', '2', '" + srid + "', 'POINT');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '" + schemaName + "', 'v_rpt_arcflow_sum', 'the_geom', '2', '" + srid + "', 'POINT');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '" + schemaName + "', 'v_rpt_nodeflood_sum', 'the_geom', '2', '" + srid + "', 'POINT');\n";
+		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_man_arc', 'the_geom', '2', '"+srid+"', 'MULTILINESTRING');\n";
+		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_man_node', 'the_geom', '2', '"+srid+"', 'POINT');\n";
+		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_rpt_arcflow_sum', 'the_geom', '2', '"+srid+"', 'POINT');\n";
+		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_rpt_nodeflood_sum', 'the_geom', '2', '"+srid+"', 'POINT');\n";
 		return content;
 		
 	}	
@@ -616,31 +623,36 @@ public class MainDao {
 	
 	// hecRas functions
 	public static boolean createSdfFile(String fileName) {
-		String sql = "SELECT gisras.gr_export_geo('" + fileName + "');";
+		String sql = "SELECT gisras.gr_export_geo('"+fileName+"');";
+		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 	
 	
 	public static boolean clearData(){
 		String sql = "SELECT gisras.gr_clear();";
+		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 
 
 	public static boolean saveCase(String schemaName) {
-		String sql = "SELECT gisras.gr_save_case_as('" + schemaName + "');";
+		String sql = "SELECT gisras.gr_save_case_as('"+schemaName+"');";
+		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 
 
 	public static boolean loadCase(String schemaName) {
-		String sql = "SELECT gisras.gr_open_case('" + schemaName + "');";
+		String sql = "SELECT gisras.gr_open_case('"+schemaName+"');";
+		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 
 
 	public static boolean deleteCase(String schemaName) {
-		String sql = "SELECT gisras.gr_delete_case('" + schemaName + "');";
+		String sql = "SELECT gisras.gr_delete_case('"+schemaName+"');";
+		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 
@@ -670,11 +682,11 @@ public class MainDao {
 		String bin, host, port, db, user;
 		
 		fileSql = raster.replace(".asc", ".sql");
-		bin = iniProperties.getProperty("FOLDER_POSTGIS", "");
+		bin = iniProperties.getProperty("FOLDER_BIN", "");
 		host = iniProperties.getProperty("POSTGIS_HOST", "localhost");
-		port = iniProperties.getProperty("POSTGIS_PORT", "5432");
-		db = iniProperties.getProperty("POSTGIS_DATABASE", "postgres");
-		user = iniProperties.getProperty("POSTGIS_USER", "");
+		port = iniProperties.getProperty("POSTGIS_PORT", "5431");
+		db = iniProperties.getProperty("POSTGIS_DATABASE", "giswater");
+		user = iniProperties.getProperty("POSTGIS_USER", "postgres");
 		logFolder = Utils.getLogFolder();
 		
 		File file = new File(bin);

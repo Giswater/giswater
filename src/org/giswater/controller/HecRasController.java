@@ -95,15 +95,19 @@ public class HecRasController{
 	}	
 	
 	
+	public void openDatabase(){
+		mainFrame.openDatabase();
+	}
+	
+	
 	public void isConnected(){
 
 		// Check if we already are connected
 		if (MainDao.isConnected){
-			view.setSchema(MainDao.getSchemas());
 			view.enableButtons(true);
+			view.setSchema(MainDao.getSchemas());
 		} 
 		else{
-			mainFrame.openDatabase();
 			view.enableButtons(false);
 			view.setSchema(null);				
 		}
@@ -134,9 +138,6 @@ public class HecRasController{
                 fileSdf = new File(path);
             }
             view.setFileSdf(fileSdf.getAbsolutePath());            
-//            prop.put("FILE_SDF", fileSdf.getAbsolutePath());
-//            MainDao.savePropertiesFile();
-//            readyFileSdf = true;
         }
 
     }
@@ -223,7 +224,7 @@ public class HecRasController{
     	}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
     	MainDao.saveCase(schemaName);
-    	view.setSchemas(MainDao.getSchemas());
+    	view.setSchema(MainDao.getSchemas());
     	Utils.showMessage("case_saved", schemaName, "inp_descr");    	
         	
     }
@@ -262,7 +263,7 @@ public class HecRasController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteCase(schemaName);
-        	view.setSchemas(MainDao.getSchemas());
+        	view.setSchema(MainDao.getSchemas());
         	Utils.showMessage("case_deleted", schemaName, "inp_descr");
         }   
         	
@@ -300,7 +301,7 @@ public class HecRasController{
 		
 		// Copiamos fichero de la carpeta de Postgis a la carpeta especificada por el usuario
 		String auxIn, auxOut;
-		String folderIn = prop.getProperty("FOLDER_POSTGIS");
+		String folderIn = prop.getProperty("POSTGIS_DATA");
 		auxIn = folderIn + File.separator + fileName;
 		auxOut = fileSdf.getAbsolutePath();
 		boolean ok = Utils.copyFile(auxIn, auxOut);

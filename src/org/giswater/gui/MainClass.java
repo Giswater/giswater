@@ -56,7 +56,7 @@ public class MainClass {
             	}            	
             	
             	// Create MainFrame
-            	mdi = new MainFrame();
+            	mdi = new MainFrame(MainDao.isConnected);
             	// Create Menu controller
                 new MenuController(mdi);            	
                 mdi.setVisible(true);

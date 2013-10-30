@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.DatabaseController;
 import org.giswater.controller.MainController;
+import org.giswater.dao.MainDao;
 import org.giswater.util.Utils;
 
 
@@ -86,10 +87,19 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	public DatabasePanel() {
 		try {
 			initConfig();
-			enableButtons(false);
+			isConnected();
 		} catch (MissingResourceException e) {
 			Utils.showError(e.getMessage(), "", "Error");
 			System.exit(ERROR);
+		}
+	}
+	
+	private void isConnected(){
+		if (MainDao.isConnected){
+			setSchemaResult(MainDao.getSchemas());
+			enableButtons(true);
+		}else{
+			enableButtons(false);
 		}
 	}
 
@@ -182,8 +192,12 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	}	
 	
 	public void setSchemaResult(Vector<String> v) {
-		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
-		cboSchema1.setModel(cbm);		
+		cboSchema1.removeAllItems();
+		ComboBoxModel<String> cbm = null;
+		if (v != null){
+			cbm = new DefaultComboBoxModel<String>(v);
+			cboSchema1.setModel(cbm);
+		}
 	}
 
 

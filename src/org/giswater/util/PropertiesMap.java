@@ -493,6 +493,7 @@ public class PropertiesMap {
 		
 	}
 
+	
 	/**
 	 * Searches for the property with the specified key in this property list.
 	 * If the key is not found in this property list, the default property list,
@@ -505,27 +506,22 @@ public class PropertiesMap {
 	 * @see #setProperty
 	 * @see #defaults
 	 */
-//	public String getProperty(String key) {
-//		Object oval = _prop.get(key);
-//		String sval = (oval instanceof String) ? (String) oval : null;
-//		Object oDefVal = (_defaults != null) ? _defaults.get(key) : null;
-//		return ((sval == null) && (oDefVal != null)) ? oDefVal.toString() : sval;
-//	}
 	
 	public String getProperty(String key) {
 		Object oval = _prop.get(key);
 		String sval = (oval instanceof String) ? (String) oval : null;
 		if (sval != null){
 			if (sval.trim().equals("")){
-				return null;
+				return "";
 			} else{
 				return sval.trim();
 			}
 		}
 		else{
-			return null;
+			return "";
 		}
 	}
+	
 
 	/**
 	 * Searches for the property with the specified key in this property list.
@@ -544,7 +540,7 @@ public class PropertiesMap {
 	 */
 	public String getProperty(String key, String defaultValue) {
 		String val = getProperty(key);
-		return (val == null) ? defaultValue : val;
+		return (val == "") ? defaultValue : val;
 	}
 
 	/**

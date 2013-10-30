@@ -82,10 +82,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	private PropertiesMap prop;
 	
 
-	public MainFrame() {
+	public MainFrame(boolean isConnected) {
 		initConfig();
 		try {
 			initFrames();
+			hecRasFrame.getPanel().enableButtons(isConnected);
 		} catch (PropertyVetoException e) {
             Utils.getLogger().warning(e.getMessage());
 		}

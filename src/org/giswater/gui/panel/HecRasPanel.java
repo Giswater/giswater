@@ -83,6 +83,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	private JTextArea txtFileSdf;
 	private JScrollPane scrollPane_1;
 	private JButton btnFileSdf;
+	private JButton btnDatabase;
 
 	
 	public HecRasPanel() {
@@ -120,6 +121,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnSaveCase.setEnabled(isEnabled);
 		btnLoadCase.setEnabled(isEnabled);
 		btnDeleteCase.setEnabled(isEnabled);
+		btnDatabase.setVisible(!isEnabled);
 	}
 	
 	public void setNewSchemaName(String projectName) {
@@ -130,10 +132,10 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		return txtSchemaName.getText().trim();
 	}
 	
-	public void setSchemas(Vector<String> v) {
-		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
-		cboSchema.setModel(cbm);
-	}
+//	public void setSchemas(Vector<String> v) {
+//		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
+//		cboSchema.setModel(cbm);
+//	}
 	
 	public void setSchema(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
@@ -201,7 +203,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		lblDataManager = new JLabel(BUNDLE.getString("HecRasPanel.lblDataManager.text")); //$NON-NLS-1$
 		lblDataManager.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel_2.add(lblDataManager, "cell 0 1 5 1,alignx center");
+		panel_2.add(lblDataManager, "flowx,cell 0 1 5 1,alignx center");
 		
 		panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -305,6 +307,13 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnDeleteCase.setMaximumSize(new Dimension(95, 23));
 		btnDeleteCase.setMinimumSize(new Dimension(100, 23));
 		btnDeleteCase.setActionCommand("deleteCase");
+		
+		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); //$NON-NLS-1$
+		btnDatabase.setMinimumSize(new Dimension(95, 23));
+		btnDatabase.setMaximumSize(new Dimension(140, 23));
+		btnDatabase.setActionCommand("openDatabase");
+		btnDatabase.setVisible(false);
+		panel_2.add(btnDatabase, "cell 3 1 2 1");
 
 		enableButtons(false);
 		setupListeners();
@@ -325,6 +334,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnLoadCase.addActionListener(this);
 		btnDeleteCase.addActionListener(this);
 		cboSchema.addActionListener(this);
+		btnDatabase.addActionListener(this);
 
 		tabbedPane.addFocusListener(this);
 
@@ -342,8 +352,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	}
 
 	@Override
-	public void focusLost(FocusEvent arg0) {
-	}
+	public void focusLost(FocusEvent arg0) { }
 
 	
 }
