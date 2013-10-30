@@ -61,7 +61,7 @@ public class MainController{
     private String userHomeFolder;
     private ResourceBundle bundleText;
     
-	public MainFrame mainFrame;
+    private MainFrame mainFrame;
 	private String software;
 	
 	// DBF only

@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.util.ResourceBundle;
 
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
@@ -37,15 +38,16 @@ import javax.swing.JMenuItem;
 
 import org.giswater.controller.ConfigController;
 import org.giswater.controller.DatabaseController;
+import org.giswater.controller.HecRasController;
 import org.giswater.controller.MainController;
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.ConfigFrame;
 import org.giswater.gui.frame.DatabaseFrame;
 import org.giswater.gui.frame.EpaFrame;
+import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import java.util.ResourceBundle;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -72,7 +74,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
 	public EpaFrame swmmFrame;
 	public EpaFrame epanetFrame;
-	//public HecRasFrame hecrasFrame;
+	public HecRasFrame hecRasFrame;
 	
 	public DatabaseFrame dbFrame;
 	public ConfigFrame configFrame;
@@ -119,8 +121,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnForms.add(mntmEpanet);
 		
 		mntmHecras = new JMenuItem("HECRAS");
-		mntmHecras.setEnabled(false);
-		mntmHecras.setActionCommand("openHecras");
+		mntmHecras.setActionCommand(BUNDLE.getString("MainFrame.mntmHecras.actionCommand")); //$NON-NLS-1$
 		mnForms.add(mntmHecras);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
@@ -188,11 +189,13 @@ public class MainFrame extends JFrame implements ActionListener{
         // Create and Add frames to main Panel
         swmmFrame = new EpaFrame();
         epanetFrame = new EpaFrame();
+        hecRasFrame = new HecRasFrame();
         dbFrame = new DatabaseFrame(this);
         configFrame = new ConfigFrame();
         
         desktopPane.add(swmmFrame);
         desktopPane.add(epanetFrame);
+        desktopPane.add(hecRasFrame);     
         desktopPane.add(dbFrame);        
         desktopPane.add(configFrame);            
         
@@ -205,12 +208,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		getMainParams("MAIN");
         getFrameParams(swmmFrame, "SWMM");
         getFrameParams(epanetFrame, "EPANET");
+        getFrameParams(hecRasFrame, "HECRAS");
         getFrameParams(dbFrame, "DB");      
         getFrameParams(configFrame, "CONFIG");
        
         // Define one controller per panel
 		new MainController(swmmFrame.getPanel(), this, "EPASWMM");
 		new MainController(epanetFrame.getPanel(), this, "EPANET");
+		new HecRasController(hecRasFrame.getPanel(), this);
 		new DatabaseController(dbFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());		
 		
@@ -280,6 +285,7 @@ public class MainFrame extends JFrame implements ActionListener{
         try {
 			setFrameParams(swmmFrame, "SWMM");
 	        setFrameParams(epanetFrame, "EPANET");
+	        setFrameParams(hecRasFrame, "HECRAS");
 	        setFrameParams(dbFrame, "DB");      
 	        setFrameParams(configFrame, "CONFIG");	
 	        setMainParams("MAIN");
@@ -325,9 +331,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 
 	public void openHecras() {
-		//manageFrames(hecrasFrame);
+		manageFrames(hecRasFrame);
 	}	
-	
 
 	public void openDatabase() {
 		manageFrames(dbFrame);

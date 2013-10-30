@@ -44,19 +44,16 @@ public class ConfigController {
 		this.view = dbPanel;	
         this.prop = MainDao.getPropertiesFile();
 	    view.setControl(this);        
-
     	setDefaultValues();    	
     	
 	}
 	
 	
     private void setDefaultValues(){
-    	
-		// Get parameters connection 
 		view.setPostgisBinFolder(prop.get("FOLDER_POSTGIS"));
 		view.setSwmmFile(prop.get("FILE_SWMM"));
 		view.setEpanetFile(prop.get("FILE_EPANET"));
-	
+		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
     }
        
 	
@@ -83,19 +80,22 @@ public class ConfigController {
 	public void configAccept(){
 		
 		String postgis, swmm, epanet;
+		Boolean isChecked;
 		
 		// Get parameteres from view
 		postgis = view.getPostgisBinFolder();		
 		swmm = view.getSwmmFile();
 		epanet = view.getEpanetFile();
+		isChecked = view.getAutoConnect();
 		
 		// Update properties file
 		prop.put("FOLDER_POSTGIS", postgis);
 		prop.put("FILE_SWMM", swmm);
 		prop.put("FILE_EPANET", epanet);
+		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
 		MainDao.savePropertiesFile();
 		
-		view.close();
+		//view.close();
 		
 	}	
 	

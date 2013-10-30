@@ -82,11 +82,15 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		return new JDialog();
 	}
 
+	
+	public void setAutoConnect(String isChecked) {
+		Boolean connect = Boolean.parseBoolean(isChecked);
+		chkConnect.setSelected(connect);
+	}	
 
 	public boolean getAutoConnect() {
 		return chkConnect.isSelected();
 	}
-	
 	
 	public void setPostgisBinFolder(String path) {
 		txtPostgisBinFolder.setText(path);

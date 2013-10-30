@@ -77,7 +77,7 @@ public class MainDao {
         }
         
         // Set Postgis connection
-        String aux = iniProperties.get("POSTGIS_AUTOCONNECT", "false");
+        String aux = iniProperties.get("AUTOCONNECT_POSTGIS", "false");
         Boolean connect = Boolean.parseBoolean(aux);
         if (connect){
         	silenceConnection();
@@ -263,7 +263,12 @@ public class MainDao {
             Utils.showError(e.getMessage(), "", "inp_descr");
 		}
     }
+
     
+	public static boolean executeUpdateSql(String sql) {
+		return executeUpdateSql(sql, false);
+	}	
+	
     
 	public static boolean executeUpdateSql(String sql, boolean commit) {
 		try {
@@ -280,15 +285,18 @@ public class MainDao {
 	}	
 	
 	
-	public static boolean executeUpdateSql(String sql) {
-		return executeUpdateSql(sql, false);
-	}		
-    
-	
 	public static boolean executeSql(String sql) {
+		return executeSql(sql, false);
+	}	
+	
+	
+	public static boolean executeSql(String sql, boolean commit) {
 		try {
 			Statement ps = connectionPostgis.createStatement();
 	        ps.execute(sql);
+			if (commit && !connectionPostgis.getAutoCommit()){
+	        	connectionPostgis.commit();
+	        }			
 			return true;
 		} catch (SQLException e) {
 			Utils.showError(e, sql);
@@ -593,6 +601,7 @@ public class MainDao {
 		
 	}
 	
+	
 	private static String addGeometryColumnsViews(String schemaName, String srid) {
 		
 		String content = "";
@@ -603,5 +612,98 @@ public class MainDao {
 		return content;
 		
 	}	
+	
+	
+	// hecRas functions
+	public static boolean createSdfFile(String fileName) {
+		String sql = "SELECT gisras.gr_export_geo('" + fileName + "');";
+		return executeSql(sql, true);	
+	}
+	
+	
+	public static boolean clearData(){
+		String sql = "SELECT gisras.gr_clear();";
+		return executeSql(sql, true);	
+	}
+
+
+	public static boolean saveCase(String schemaName) {
+		String sql = "SELECT gisras.gr_save_case_as('" + schemaName + "');";
+		return executeSql(sql, true);	
+	}
+
+
+	public static boolean loadCase(String schemaName) {
+		String sql = "SELECT gisras.gr_open_case('" + schemaName + "');";
+		return executeSql(sql, true);	
+	}
+
+
+	public static boolean deleteCase(String schemaName) {
+		String sql = "SELECT gisras.gr_delete_case('" + schemaName + "');";
+		return executeSql(sql, true);	
+	}
+
+
+	public static String getDataDirectory() {
+		
+		String sql = "SELECT setting FROM pg_settings WHERE name = 'data_directory'";
+		String folder = "";
+		try {
+			Statement stat = connectionPostgis.createStatement();
+	        ResultSet rs = stat.executeQuery(sql);
+	        if (rs.next()) {
+	        	folder = rs.getString(1);
+	        }
+	        stat.close();
+		} catch (SQLException e) {
+            Utils.showError(e.getMessage(), "", "inp_descr");
+		}    		
+		return folder;
+		
+	}
+
+
+	public static boolean loadRaster(String raster) {
+
+		String fileSql, aux, logFolder;
+		String bin, host, port, db, user;
+		
+		fileSql = raster.replace(".asc", ".sql");
+		bin = iniProperties.getProperty("FOLDER_POSTGIS", "");
+		host = iniProperties.getProperty("POSTGIS_HOST", "localhost");
+		port = iniProperties.getProperty("POSTGIS_PORT", "5432");
+		db = iniProperties.getProperty("POSTGIS_DATABASE", "postgres");
+		user = iniProperties.getProperty("POSTGIS_USER", "");
+		logFolder = Utils.getLogFolder();
+		
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("Postgis bin folder not exists:", bin, "gisRAS");
+			return false;			
+		}
+		bin+= File.separator;
+		
+		// Set content of .bat file
+		aux =  "\"" + bin + "raster2pgsql\" -d -s 0 -I -C -M " + raster + " -F -t 100x100 gisras.mdt > " + fileSql;
+		aux+= "\n";
+		aux+= "\"" + bin + "psql\" -U " + user + " -h " + host + " -p " + port + " -d " + db +
+				" -c \"drop table if exists gisras.mdt\";";
+		aux+= "\n";		
+		aux+= "\"" + bin + "psql\" -U " + user + " -h " + host + " -p " + port + " -d " + db + 
+			" -f " + fileSql + " > " + logFolder + "raster2pgsql.log";
+		aux+= "\ndel " + fileSql;
+		aux+= "\nexit";		
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File	
+		File batFile = new File(logFolder + "raster2pgsql.bat");        
+		Utils.fillFile(batFile, aux);    		
+		Utils.openFile(batFile.getAbsolutePath());
+		
+		return true;
+			
+	}	
+	
 
 }

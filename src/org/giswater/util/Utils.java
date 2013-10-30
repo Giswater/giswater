@@ -13,7 +13,6 @@ import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -100,7 +99,7 @@ public class Utils {
 	
 	public static String getBundleString(ResourceBundle bundle, String key){
 		try{
-			return bundle.getString(key);
+			return bundle.getString(key.toLowerCase());
 		} catch (Exception e){
 			return key;	
 		}
@@ -187,75 +186,39 @@ public class Utils {
 
 
     public static void showMessage(String msg, String param, String title) {
-    	
-    	try{
-    		JOptionPane.showMessageDialog(null, BUNDLE_TEXT.getString(msg) + "\n" + param,
-        		BUNDLE_TEXT.getString(title), JOptionPane.PLAIN_MESSAGE);
-    		if (logger != null) {
-    			logger.info(BUNDLE_TEXT.getString(msg) + "\n" + param);
-    		}
-    	} catch (MissingResourceException e){
-    		JOptionPane.showMessageDialog(null, msg + "\n" + param,	title, JOptionPane.PLAIN_MESSAGE);
-    		if (logger != null) {
-    			logger.info(msg + "\n" + param);
-    		}    		
-    	}
-    	
+		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
+			getBundleString(title), JOptionPane.PLAIN_MESSAGE);
+		if (logger != null) {
+			logger.info(getBundleString(msg) + "\n" + param);
+		}
     }    
 
     
     public static void showError(String msg, String param, String title) {
-    	
-    	try{
-    		JOptionPane.showMessageDialog(null, BUNDLE_TEXT.getString(msg) + "\n" + param,
-    			BUNDLE_TEXT.getString(title), JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			logger.warning(BUNDLE_TEXT.getString(msg) + "\n" + param);
-    		}
-    	} catch (MissingResourceException e){
-    		JOptionPane.showMessageDialog(null, msg + "\n" + param,	title, JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			logger.warning(msg + "\n" + param);
-    		}    		
-    	}        
-    	
+		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
+			getBundleString(title), JOptionPane.WARNING_MESSAGE);
+		if (logger != null) {
+			logger.warning(getBundleString(msg) + "\n" + param);
+		}
     }
 
     
     public static void showError(Exception e) {
-    	
     	String errorInfo = getErrorInfo();
-    	try{
-    		JOptionPane.showMessageDialog(null, e.getMessage(), BUNDLE_TEXT.getString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			//logger.warning(e.getMessage() + "\n" + e.toString() + "\n" + errorInfo);
-    			logger.warning(e.toString() + "\n" + errorInfo);
-    		}
-    	} catch (MissingResourceException e1){
-    		JOptionPane.showMessageDialog(null, e.getMessage(), "Error information", JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			logger.warning(e.toString() + "\n" + errorInfo);
-    		}    		
-    	}   
-    	
+		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
+		if (logger != null) {
+			//logger.warning(e.getMessage() + "\n" + e.toString() + "\n" + errorInfo);
+			logger.warning(e.toString() + "\n" + errorInfo);
+		}
     }    
     
     
     public static void showError(Exception e, String param) {
-    	
     	String errorInfo = getErrorInfo();
-    	try{
-    		JOptionPane.showMessageDialog(null, e.getMessage(), BUNDLE_TEXT.getString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			logger.warning(e.toString() + "\n" + errorInfo + "\n" + param);
-    		}
-    	} catch (MissingResourceException e1){
-    		JOptionPane.showMessageDialog(null, e.getMessage(), "Error information", JOptionPane.WARNING_MESSAGE);
-    		if (logger != null) {
-    			logger.warning(e.toString() + "\n" + errorInfo + "\n" + param);
-    		}    		
-    	}   
-    	
+		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
+		if (logger != null) {
+			logger.warning(e.toString() + "\n" + errorInfo + "\n" + param);
+		}
     }     
     
     
@@ -275,22 +238,12 @@ public class Utils {
     
     
     public static int confirmDialog(String msg, String title) {
-    	
     	int reply;
-    	try{
-	    	reply = JOptionPane.showConfirmDialog(null, BUNDLE_TEXT.getString(msg),
-	    		BUNDLE_TEXT.getString(title), JOptionPane.YES_NO_OPTION);
-	        if (logger != null) {
-	            logger.warning(BUNDLE_TEXT.getString(msg));
-	        }
-    	} catch (MissingResourceException e){
-	    	reply = JOptionPane.showConfirmDialog(null, msg, title, JOptionPane.YES_NO_OPTION);
-    		if (logger != null) {
-    			logger.info(msg);
-    		}    		
-    	}
+    	reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
+        if (logger != null) {
+            logger.warning(getBundleString(msg));
+        }
         return reply;    	
-        
     }        
     
 
@@ -317,9 +270,9 @@ public class Utils {
 			//Process p = Runtime.getRuntime().exec(file);
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
-		} catch( IOException ex ){
+		} catch (IOException ex) {
 		    System.out.println("IOException Error");
-		} catch( InterruptedException ex ){
+		} catch (InterruptedException ex) {
 		    System.out.println("InterruptedException Error");
 
 		}		
@@ -337,10 +290,10 @@ public class Utils {
 			} else{
 				Utils.showMessage("file_not_found", file, "gisWater");
 			}
-		} catch( IOException ex ){
-		    System.out.println("IOException Error");
-		} catch( InterruptedException ex ){
-		    System.out.println("InterruptedException Error");
+		} catch (IOException ex) {
+			Utils.getLogger().warning(ex.getMessage());
+		} catch (InterruptedException ex) {
+			Utils.getLogger().warning(ex.getMessage());
 		}		
 		
 	}    
@@ -351,23 +304,26 @@ public class Utils {
 		File f = new File(sFile);
 	
 	    // Make sure the file or directory exists and isn't write protected
-	    if (!f.exists())
-	    	System.out.println("Delete: no such file or directory: " + sFile);
-	
-	    if (!f.canWrite())
-	    	System.out.println("Delete: write protected: " + sFile);
+	    if (!f.exists()){
+	    	Utils.getLogger().warning("Delete: no such file or directory: " + sFile);
+	    }
+	    if (!f.canWrite()){
+	    	Utils.getLogger().warning("Delete: write protected: " + sFile);	    	
+	    }
 	
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
-	    	if (files.length > 0)
-	    		System.out.println("Delete: directory not empty: " + sFile);
+	    	if (files.length > 0){
+	    		Utils.getLogger().warning("Delete: directory not empty: " + sFile);
+	    	}
 	    }
 	
 	    // Attempt to delete it
 	    boolean success = f.delete();
-	    if (!success) 
-			System.out.println("Delete: deletion failed");
+	    if (!success) {
+    		Utils.getLogger().warning("Delete: deletion failed");
+	    }
 	
 	}
 	
@@ -394,5 +350,6 @@ public class Utils {
 	public static void setSoftName(String softName) {
 		Utils.softName = softName;
 	}	
+	
 	
 }

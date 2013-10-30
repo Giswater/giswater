@@ -121,7 +121,6 @@ public class AboutDialog extends JDialog {
 		//String label = "<HTML><FONT size=6 color=\"#336600\">Tècnics</FONT><FONT size=6 color=\"#000000\">Associats</FONT></HTML>";
 		getContentPane().add(button, "cell 0 1 2 1,alignx center");
 		
-		//TODO: i18n
 		lblInfo = new JLabel("Developer: David Erill Carrera");
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		getContentPane().add(lblInfo, "cell 0 2 2 1,alignx center");	
