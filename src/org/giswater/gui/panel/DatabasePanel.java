@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	}
 
 
-	// Panel Database Options
+	// Panel Database connection
 	public void enableButtons(boolean isEnabled) {
 		btnCreateSchema.setEnabled(isEnabled);
 		btnDeleteSchema.setEnabled(isEnabled);
@@ -333,7 +333,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtFileInp3.setLineWrap(true);
 		panel_3.add(txtFileInp3, "cell 3 3,grow");
 
-		// Select Database Options by default
+		// Select Database connection by default
 		tabbedPane.setSelectedIndex(0);
 
 		setupListeners();
@@ -344,7 +344,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 
-		// Panel Database options
+		// Panel Database connection
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				databaseController.action(e.getActionCommand());

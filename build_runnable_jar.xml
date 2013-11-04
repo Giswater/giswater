@@ -28,6 +28,9 @@
         <copy todir="${dist}/lib">
 			<fileset dir="lib/" includes="*.jar" />
 		</copy>	
+        <copy todir="${dist}/log">
+			<fileset dir="log/" includes="*.log" />
+		</copy>	    	
     	
     </target>
     

@@ -1,6 +1,6 @@
 **************************
 
-gisWater LICENSE
+Giswater LICENSE
 
 **************************
 
@@ -9,9 +9,10 @@ IMPORTANT NOTE:
 This product as a whole is distributed under the GNU General Public License version 3, but it is subordinate to the License Agreements of the constituent software packages. These may be more or less restrictive than the GNU GPL. Please ensure that you agree with the terms of all the licenses before using this software- these can be found in the folders for the constituent programs.
 
 
-COPYRIGHT STATEMENT FOR gisWater:
+COPYRIGHT STATEMENT FOR Giswater:
 
-Copyright 2013 Tecnicsassociats.
+?Copyright (C) 2013 by GRUPO DE INVESTIGACION EN TRANSPORTE DE SEDIMENTOS (GITS) de la UNIVERSITAT POLITECNICA DE CATALUNYA (UPC)
+and TECNICSASSOCIATS, TALLER D'ARQUITECTURA I ENGINYERIA, SL.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

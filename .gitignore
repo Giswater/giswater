@@ -17,6 +17,7 @@ local.properties
 .loadpath
 log
 config/inp_*
+build_runnable_jar.xml
 
 # External tool builders
 .externalToolBuilders/

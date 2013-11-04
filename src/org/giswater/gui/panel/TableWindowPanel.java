@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,17 +51,22 @@ public class TableWindowPanel extends JPanel {
 	private JButton btnInsert;
 	private JButton btnDelete;
 	private JButton btnDeleteAll;
+	private String schema;
 
 	
-	public TableWindowPanel() {
+	public TableWindowPanel(String schema) {
+		this.schema = schema;
 		initConfig();
 		setData();
 	}
 
 	
 	private void setData(){
+		if (MainDao.schema == null){
+			MainDao.setSchema(schema);
+		}
 		ResultSet rs = MainDao.getTableResultset("sector_selection");		
-		tableModelCatchment = new TableModelCatchment(rs);
+		tableModelCatchment = new TableModelCatchment(rs, "sector");
 		tableModelCatchment.setTable(table);
 		table.setModel(tableModelCatchment);
 		tableModelCatchment.setCombos();
@@ -135,9 +140,9 @@ public class TableWindowPanel extends JPanel {
 	
 	private void deleteAll(){
 		String msg = Utils.getBundleString("question_delete");
-        int res = JOptionPane.showConfirmDialog(this, msg, "gisWater", JOptionPane.YES_NO_OPTION);
+        int res = JOptionPane.showConfirmDialog(this, msg, "Giswater", JOptionPane.YES_NO_OPTION);
         if (res == 0){
-        	String sql = "DELETE FROM " + MainDao.schema + ".sector_selection";
+        	String sql = "DELETE FROM "+MainDao.schema+".sector_selection";
         	MainDao.executeUpdateSql(sql);
     		setData();
         }

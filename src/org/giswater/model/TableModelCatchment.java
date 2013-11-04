@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,24 +32,24 @@ import org.giswater.dao.MainDao;
 public class TableModelCatchment extends TableModelSuper {
 
 	private static final long serialVersionUID = -3793339630551246161L;
+	private String tableLookup;
 	
-	public TableModelCatchment(ResultSet results) {
+	
+	public TableModelCatchment(ResultSet results, String tableLookup) {
 		setMetadata(results);
 		setResultSet(results);
 		this.rs = results;
+		this.tableLookup = tableLookup;
 	}
 
 	
 	public void setCombos(){
-
 		Vector<String> vector;
 		TableColumnModel tcm = table.getColumnModel();		
 		TableColumn column;
-		
 		column = tcm.getColumn(0);
-		vector = MainDao.getTable("catchment", null, false);
+		vector = MainDao.getTable(tableLookup, null, false);
 		setColumnRendering(column, vector);
-  
 	}
 	
 	

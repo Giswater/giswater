@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,35 +43,62 @@ import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
+
 public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 2829254148112384387L;
 	private JLabel lblInfo;
-	public URI uri = null;	
+	public URI urlWeb = null;
+	public URI urlGithub = null;	
+	private final String URL_WEB = "http://www.giswater.org";
+	private final String URL_GITHUB = "https://github.com/Tecnicsassociats/giswater";
 
 
 	public static void main(String[] args) {
 		try {
-			AboutDialog dialog = new AboutDialog("About", "gisWater version: 1.0");
+			AboutDialog dialog = new AboutDialog("Giswater version: v1.0");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	class OpenUrlWeb implements ActionListener {
+	    @Override public void actionPerformed(ActionEvent e) {
+	        if (Desktop.isDesktopSupported()) {
+	            try {
+	              Desktop.getDesktop().browse(urlWeb);
+	            } catch (IOException e1) { }
+	        }
+	    }
+	}	
+	
+	
+	class OpenUrlGithub implements ActionListener {
+	    @Override public void actionPerformed(ActionEvent e) {
+	        if (Desktop.isDesktopSupported()) {
+	            try {
+	              Desktop.getDesktop().browse(urlGithub);
+	            } catch (IOException e1) { }
+	        }
+	    }
+	}	
+	
 
 	/**
 	 * Create the dialog.
 	 */
-	public AboutDialog(String title, String version) {
+	public AboutDialog(String title) {
 
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());		
 		setTitle(title);
-		setSize(320, 180);
+		setSize(429, 180);
 		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[60.00px][:15px:20px][15px][15px]"));
 
-		final ImageIcon backgroundImage = new ImageIcon("images/logo_tecnics.png");
+		final ImageIcon backgroundImage = new ImageIcon("images/giswater.png");
 		
         JPanel panelLogo = new JPanel(new BorderLayout()) {
 			private static final long serialVersionUID = 3096090575648819722L;
@@ -87,47 +114,43 @@ public class AboutDialog extends JDialog {
                 Dimension size = super.getPreferredSize();
                 size.width = Math.max(backgroundImage.getIconWidth(), size.width);
                 size.height = Math.max(backgroundImage.getIconHeight(), size.height);
-      
                 return size;
             }
         };
 		getContentPane().add(panelLogo, "cell 0 0 2 1,alignx center,growy");
-
-		class OpenUrlAction implements ActionListener {
-		    @Override public void actionPerformed(ActionEvent e) {
-		        if (Desktop.isDesktopSupported()) {
-		            try {
-		              Desktop.getDesktop().browse(uri);
-		            } catch (IOException e1) { }
-		        }
-		    }
-		}		
-
+		
 		try {
-			uri = new URI("http://www.tecnicsassociats.com");
+			urlWeb = new URI(URL_WEB);
+			urlGithub = new URI(URL_GITHUB);
 		} catch (URISyntaxException e) {
 			Utils.getLogger().warning(e.getMessage());
 		}		
-		JButton button = new JButton();
-		button.setFont(new Font("Tahoma", Font.BOLD, 12));
-		button.setText("<HTML><FONT color=\"#000099\"><U>www.tecnicsassociats.com</U></FONT></HTML>");
-		button.setHorizontalAlignment(SwingConstants.LEFT);
-		button.setBorderPainted(false);
-		button.setOpaque(false);
-		button.setBackground(Color.WHITE);
-		button.setToolTipText(uri.toString());
-		button.addActionListener(new OpenUrlAction());		
+		JButton btnWeb = new JButton();
+		btnWeb.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnWeb.setText("<HTML><FONT color=\"#000099\"><U>"+URL_WEB+"</U></FONT></HTML>");
+		btnWeb.setHorizontalAlignment(SwingConstants.LEFT);
+		btnWeb.setBorderPainted(false);
+		btnWeb.setOpaque(false);
+		btnWeb.setBackground(Color.WHITE);
+		btnWeb.setToolTipText(URL_WEB);
+		btnWeb.addActionListener(new OpenUrlWeb());		
 		
-		//String label = "<HTML><FONT size=6 color=\"#336600\">Tècnics</FONT><FONT size=6 color=\"#000000\">Associats</FONT></HTML>";
-		getContentPane().add(button, "cell 0 1 2 1,alignx center");
+		getContentPane().add(btnWeb, "cell 0 1 2 1,alignx center");
 		
 		lblInfo = new JLabel("Developer: David Erill Carrera");
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		getContentPane().add(lblInfo, "cell 0 2 2 1,alignx center");	
 		
-		JLabel lblNewLabel = new JLabel(version);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		getContentPane().add(lblNewLabel, "cell 0 3 2 1,alignx center");
+		JButton btnGithub = new JButton();
+		btnGithub.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGithub.setText("<HTML>Source code: <FONT color=\"#000099\"><U>"+URL_GITHUB+"</U></FONT></HTML>");
+		btnGithub.setHorizontalAlignment(SwingConstants.LEFT);
+		btnGithub.setBorderPainted(false);
+		btnGithub.setOpaque(false);
+		btnGithub.setBackground(Color.WHITE);
+		btnGithub.setToolTipText(URL_GITHUB);
+		btnGithub.addActionListener(new OpenUrlGithub());		
+		getContentPane().add(btnGithub, "cell 0 3 2 1,alignx center");
 	
 	}
 

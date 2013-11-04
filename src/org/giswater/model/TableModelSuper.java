@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,7 @@ public class TableModelSuper extends AbstractTableModel {
 	protected JTable table;
 
 	
-	public TableModelSuper(){
-		
-	}
+	public TableModelSuper(){ }
 	
 	public TableModelSuper(ResultSet results) {
 		setMetadata(results);
@@ -68,7 +66,7 @@ public class TableModelSuper extends AbstractTableModel {
 				columnNames[i] = metadata.getColumnLabel(i + 1);
 			}	
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Utils.showError(e.getMessage(), "", "inp_descr");
 		}
 	
 	}
@@ -82,14 +80,14 @@ public class TableModelSuper extends AbstractTableModel {
 			results.absolute(0);
 			while (results.next()) {
 				rowData = new String[columns];
-				for (int i = 0; i < columns; i++){
+				for (int i=0; i<columns; i++){
 					rowData[i] = results.getString(i + 1);
 				}
 				rows_data.addElement(rowData);
 			}
 			this.fireTableChanged(null);
-		} catch (SQLException se) {
-			se.printStackTrace();
+		} catch (SQLException e) {
+			Utils.showError(e.getMessage(), "", "inp_descr");
 		}
 
 	}

@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnForms.add(mntmEpanet);
 		
 		mntmHecras = new JMenuItem("HECRAS");
-		mntmHecras.setActionCommand(BUNDLE.getString("MainFrame.mntmHecras.actionCommand")); //$NON-NLS-1$
+		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$

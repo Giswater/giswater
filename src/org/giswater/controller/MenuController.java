@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ public class MenuController {
 	// TODO: i18n
 	public void showWelcome() {
 		String title = "Welcome";
-		String info = "Welcome to gisWater, the EPANET & EPASWMM comunication tool";
+		String info = "Welcome to Giswater, the EPANET & EPASWMM comunication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2);
 		about.setModal(true);
@@ -110,10 +110,9 @@ public class MenuController {
 	}
 
 	public void showAuthor() {
-		String version = "gisWater version " + prop.get("VERSION_CODE");
-		AboutDialog about = new AboutDialog("About", version);
+		String version = "Giswater version " + prop.get("VERSION_CODE");
+		AboutDialog about = new AboutDialog(version);
 		about.setModal(true);
-		// about.setSize(300, 200);
 		about.setLocationRelativeTo(null);
 		about.setVisible(true);
 	}
@@ -132,7 +131,7 @@ public class MenuController {
 	public void showAgreements() {
 		String title = "Agreements";
 		String info = "Special thanks for his contribution to the project to:";
-		String info2 = "Carlos López Quintanilla, Gemma García Ribot & Andrés Rodríguez Valero";
+		String info2 = "Gemma García Ribot & Andrés Rodríguez Valero";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);

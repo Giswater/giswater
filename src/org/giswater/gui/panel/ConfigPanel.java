@@ -1,6 +1,6 @@
 /*
- * This file is part of gisRAS
- * Copyright (C) 2013 GITS
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(tabbedPane, "cell 1 1,grow");
 
-		// Panel Database Options
+		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
 		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[208.00][10px][25]"));
@@ -185,7 +185,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnAccept.setActionCommand("configAccept");
 		panel_1.add(btnAccept, "cell 2 2");
 
-		// Select Database Options by default
+		// Select Database connection by default
 		tabbedPane.setSelectedIndex(0);
 
 		setupListeners();

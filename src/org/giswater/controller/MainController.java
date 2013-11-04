@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013PrincesaMonoayaM-2009nics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,7 +196,7 @@ public class MainController{
 	
 
 	public void showCatchment(){
-		TableWindowPanel tableWindow = new TableWindowPanel();
+		TableWindowPanel tableWindow = new TableWindowPanel(view.getSchema());
         JDialog dialog = Utils.openDialogForm(tableWindow, 350, 280);
 		ImageIcon image = new ImageIcon("images/imago.png");        
         dialog.setIconImage(image.getImage());

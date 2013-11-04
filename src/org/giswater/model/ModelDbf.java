@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,13 +99,6 @@ public class ModelDbf extends Model{
     	String sql = "";
 
 		try {
-	    	
-            // Get default INP output file
-            if (fileInp == null) {
-                String sFile = iniProperties.get("DEFAULT_INP");
-                sFile = MainDao.folderConfig + sFile;
-                fileInp = new File(sFile);
-            }
 			
             // Get INP template File
             String templatePath = MainDao.folderConfig + softwareVersion + ".inp";
@@ -125,7 +118,7 @@ public class ModelDbf extends Model{
 			Statement stat = connectionDrivers.createStatement();
 			ResultSet rs = stat.executeQuery(sql);					
 			while (rs.next()) {
-            	logger.info("INP target: " + rs.getInt("table_id") + " - " + rs.getString("name") + " - " + rs.getInt("lines"));		
+            	logger.info("INP target: " + rs.getInt("table_id") + " - " + rs.getString("name"));		
 				processTarget(rs.getInt("id"), rs.getInt("table_id"), rs.getInt("lines"));	
 			}		    
 			rs.close();
@@ -156,7 +149,7 @@ public class ModelDbf extends Model{
 	private static void processTarget(int id, int fileIndex, int lines) throws IOException, SQLException {
 
 		// Go to the first line of the target
-		for (int i = 1; i <= lines; i++) {
+		for (int i=1; i<=lines; i++) {
 			String line = rat.readLine();
 			raf.writeBytes(line + "\r\n");
 		}
@@ -167,6 +160,7 @@ public class ModelDbf extends Model{
 		}
 		File file = dbfFiles.get(fileIndex);		
 		if (file == null || !file.exists()){
+			Utils.getLogger().info("File not found: " + file.getAbsolutePath());
 			return;
 		}
 
@@ -177,7 +171,10 @@ public class ModelDbf extends Model{
 		catch (Exception e){
 			Utils.getLogger().warning(e.getMessage());
 		}
-		if (lMapDades.isEmpty()) return;		
+		if (lMapDades.isEmpty()) {
+			Utils.getLogger().info("File with no data: " + file.getAbsolutePath());
+			return;		
+		}
 
 		// Get DBF fields to write into this target
 		mHeader = new LinkedHashMap<String, Integer>();		

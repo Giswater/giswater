@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -224,7 +224,7 @@ public class MainDao {
     
 	public static String getSoftwareVersion(String type, String id) {
 		
-        String sql = "SELECT software_version FROM " + type + "_software WHERE id = '" + id + "'";
+        String sql = "SELECT software_version FROM "+type+"_software WHERE id = '"+id+"'";
         String result = "";
         try {
             Statement stat = connectionConfig.createStatement();
@@ -328,7 +328,7 @@ public class MainDao {
     // Check if the table exists
 	public static boolean checkTable(String schemaName, String tableName) {
         String sql = "SELECT * FROM pg_tables" +
-        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '" + tableName + "'";
+        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '"+tableName+"'";
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -343,7 +343,7 @@ public class MainDao {
     // Check if the view exists
     public static boolean checkView(String viewName) {
         String sql = "SELECT * FROM pg_views" +
-        	" WHERE lower(viewname) = '" + viewName + "'";
+        	" WHERE lower(viewname) = '"+viewName+"'";
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -358,7 +358,7 @@ public class MainDao {
     // Check if the view exists
     public static boolean checkView(String schemaName, String viewName) {
         String sql = "SELECT * FROM pg_views" +
-        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(viewname) = '" + viewName + "'";
+        	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(viewname) = '"+viewName+"'";
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -372,7 +372,7 @@ public class MainDao {
     
     // Check if the selected srid exists in spatial_ref_sys
 	public static boolean checkSrid(Integer srid) {
-        String sql = "SELECT srid FROM spatial_ref_sys WHERE srid = " + srid;
+        String sql = "SELECT srid FROM spatial_ref_sys WHERE srid = "+srid;
         try {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -431,9 +431,9 @@ public class MainDao {
 	public static ResultSet getTableResultset(Connection connection, String table) {
 		String sql;
 		if (schema == null){
-			sql = "SELECT * FROM " + table;
+			sql = "SELECT * FROM "+table;
 		} else{
-			sql = "SELECT * FROM " + schema + "." + table;
+			sql = "SELECT * FROM "+schema+"."+table;
 		}
         return getResultset(connection, sql);
 	}
@@ -445,7 +445,7 @@ public class MainDao {
 	
 	public static ResultSet getRaingageResultset(String table) {
         String sql = "SELECT rg_id, form_type, intvl, scf, rgage_type, timser_id, fname, sta, units" +
-        	" FROM " + schema + "." + table;
+        	" FROM "+schema+"." + table;
         return getResultset(sql);
 	}	
 
@@ -454,8 +454,8 @@ public class MainDao {
 
         Vector<String> vector = new Vector<String>();
         String sql = "SELECT id" +
-        	" FROM " + type + "_software" +  
-        	" WHERE available = 1 AND software_name = '" + software + "'" +
+        	" FROM "+type+"_software" +  
+        	" WHERE available = 1 AND software_name = '"+software+"'" +
         	" ORDER BY id DESC";            
 		try {
 			Statement stat = connectionConfig.createStatement();
@@ -480,14 +480,13 @@ public class MainDao {
         if (addBlank){
         	vector.add("");
         }
-        
 		if (schemaParam == null){
 			schemaParam = schema;
 		}
 		if (!checkTable(schemaParam, table)) {
 			return vector;
 		}
-		String sql = "SELECT * FROM " + schemaParam + "." + table;
+		String sql = "SELECT * FROM "+schemaParam+"."+table;
 		try {
 			Statement stat = connectionPostgis.createStatement();
 	        ResultSet rs = stat.executeQuery(sql);
@@ -578,7 +577,7 @@ public class MainDao {
 					content+= geometry;
 				}				
 				if (executeUpdateSql(content, true)){
-					Utils.showMessage("Schema creation completed", "", "inp_descr");							
+					Utils.showMessage("schema_creation_completed", "", "inp_descr");							
 				}
 				
 				rat.close();	
@@ -691,7 +690,7 @@ public class MainDao {
 		
 		File file = new File(bin);
 		if (!file.exists()){
-			Utils.showError("Postgis bin folder not exists:", bin, "gisRAS");
+			Utils.showError("Postgis bin folder not exists:", bin, "inp_descr");
 			return false;			
 		}
 		bin+= File.separator;

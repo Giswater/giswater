@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -320,6 +320,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(cboSchema, "cell 3 3,alignx left");
 		
 		btnOptions = new JButton(BUNDLE.getString("Form.btnOptions.text")); //$NON-NLS-1$
+		btnOptions.setMaximumSize(new Dimension(110, 23));
 		btnOptions.setEnabled(false);
 		btnOptions.setMinimumSize(new Dimension(110, 23));
 		btnOptions.setPreferredSize(new Dimension(110, 23));
@@ -327,6 +328,8 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(btnOptions, "flowx,cell 3 4");
 
 		btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
+		btnSectorSelection.setMinimumSize(new Dimension(110, 23));
+		btnSectorSelection.setPreferredSize(new Dimension(110, 23));
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setMaximumSize(new Dimension(110, 23));
 		btnSectorSelection.setActionCommand("showCatchment");
@@ -401,13 +404,14 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(btnAccept, "flowx,cell 3 11,alignx right");
 		
 		btnDesign = new JButton(BUNDLE.getString("Form.btnNewButton.text")); //$NON-NLS-1$
+		btnDesign.setMinimumSize(new Dimension(110, 23));
 		btnDesign.setEnabled(false);
 		btnDesign.setPreferredSize(new Dimension(110, 23));
 		btnDesign.setMaximumSize(new Dimension(110, 23));
 		btnDesign.setActionCommand("showRaingage");
 		panel_4.add(btnDesign, "cell 3 4,aligny baseline");
 
-		// Select Database Options by default
+		// Select Database connection by default
 		tabbedPane.setSelectedIndex(0);
 		panel_4.setVisible(false);
 

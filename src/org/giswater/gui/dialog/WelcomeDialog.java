@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.File;
-import java.net.URI;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -40,32 +38,27 @@ import net.miginfocom.swing.MigLayout;
 public class WelcomeDialog extends JDialog {
 
 	private static final long serialVersionUID = 2829254148112384387L;
-	public URI uri = null;
-	public File file = null;
 
 
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public WelcomeDialog(String title, String info, String info2) {
 		
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 	
-		ImageIcon image = new ImageIcon("images/imago.png");
-		setIconImage(image.getImage());
+		final ImageIcon iconImage = new ImageIcon("images/imago.png");
+		final ImageIcon backgroundImage = new ImageIcon("images/giswater.png");
+		
+		setIconImage(iconImage.getImage());
 		setTitle(title);		
 		setSize(450, 160);
 		getContentPane().setLayout(new MigLayout("", "[10px][204.00px][187.00][10px]", "[8px][45.00][20px][20.00px]"));
 
-		final ImageIcon backgroundImage = new ImageIcon("images/imago.png");
-		
         JPanel panelLogo = new JPanel(new BorderLayout()) {
 			private static final long serialVersionUID = 3096090575648819722L;
 
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 50, 0, 40, 40, this);
+                g.drawImage(backgroundImage.getImage(), 0, 0, 90, 40, this);
             }
 
             @Override
@@ -83,7 +76,7 @@ public class WelcomeDialog extends JDialog {
 		getContentPane().add(panelLogo, "cell 1 1,alignx right,aligny bottom");
 		panelLogo.setLayout(new BorderLayout());
 		
-		JLabel lblgisWater = new JLabel("gisWater");
+		JLabel lblgisWater = new JLabel("Giswater");
 		lblgisWater.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblgisWater.setHorizontalAlignment(SwingConstants.LEFT);
 		lblgisWater.setFont(new Font("Tahoma", Font.BOLD, 12));
