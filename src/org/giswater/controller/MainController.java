@@ -1,6 +1,6 @@
 /*
  * This file is part of Giswater
- * Copyright (C) 2013PrincesaMonoayaM-2009nics Associats
+ * Copyright (C) 2013PrincesaMonoayaM-2009s Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -154,23 +155,37 @@ public class MainController{
 	
 	// Press DBF or Database option
 	public void selectSourceType(){
+		selectSourceType(true);
+	}
+	
+	public void selectSourceType(boolean askQuestion){
 
 		dbSelected = view.getOptDatabaseSelected();
+		// Database
 		if (dbSelected){
 			// Check if we already are connected
 			if (MainDao.isConnected){
+				view.enableButtons(true);
 				view.setSchema(MainDao.getSchemas());
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
-				view.enableAccept(true);
 			} 
 			else{
-				mainFrame.openDatabase();
-				view.enableAccept(false);
+				if (askQuestion){
+		            // Ask if user wants to connect to Database
+		            String msg = Utils.getBundleString("open_database_connection");
+		            int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleString("inp_descr"), JOptionPane.YES_NO_OPTION);
+		            if (answer == JOptionPane.YES_OPTION){
+						mainFrame.openDatabase();
+		            }
+				}
+				view.enableButtons(false);
 				view.setSchema(null);				
 			}
-		} else{
+		}
+		// DBF
+		else{
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
-			view.enableAccept(true);
+			view.enableButtons(true);
 		}
 		
 		// Update view
@@ -510,5 +525,77 @@ public class MainController{
 		view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 	}
 	
+	
+	public void createSchema(){
+		
+		//Integer driver = view.getDriver();
+		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		if (schemaName == null){
+			return;
+		}
+		schemaName = schemaName.trim().toLowerCase();
+		if (schemaName.equals("")){
+			Utils.showError("schema_valid_name", "", "inp_descr");
+			return;
+		}
+		
+		// Ask user to set SRID?
+		String sridValue;
+		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
+		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
+		if (sridQuestion){
+			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
+			if (sridValue == null){
+				return;
+			}
+		}
+		else{
+			sridValue = "0";
+		}
+		sridValue = sridValue.trim();
+		if (!sridValue.equals("")){
+			Integer srid;
+			try{
+				srid = Integer.parseInt(sridValue);
+			} catch (NumberFormatException e){
+				Utils.showError("error_srid", "", "inp_descr");
+				return;
+			}
+			if (!sridValue.equals(defaultSrid)){
+				prop.put("SRID_DEFAULT", sridValue);
+				MainDao.savePropertiesFile();
+			}
+			boolean isSridOk = MainDao.checkSrid(srid);
+			if (!isSridOk && srid != 0){
+				String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
+					Utils.getBundleString("srid_valid");			
+				Utils.showError(msg, "", "inp_descr");
+				return;
+			}
+			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
+			MainDao.createSchema(schemaName, sridValue, -1);
+			view.setSchema(MainDao.getSchemas());		
+			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		}
+		
+	}
+	
+	
+	public void deleteSchema(){
+		
+		String schemaName = view.getSchema();
+        int res = JOptionPane.showConfirmDialog(view, Utils.getBundleString("delete_schema_name") + "\n" + schemaName, 
+        	"inp_descr", JOptionPane.YES_NO_OPTION);
+        if (res == 0){
+    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
+        	MainDao.deleteSchema(schemaName);
+        	view.setSchema(MainDao.getSchemas());
+    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    		Utils.showMessage("schema_deleted", "", "inp_descr");
+        }
+        
+	}	
+	
+		
 	
 }

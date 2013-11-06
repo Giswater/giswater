@@ -16,7 +16,7 @@ public class DatabaseFrame extends JInternalFrame {
 
 	private static final long serialVersionUID = 5510726193938743935L;
 	private DatabasePanel panel;
-	public MainFrame mainFrame;
+	private MainFrame mainFrame;
 	
 	
 	public DatabaseFrame(){
@@ -38,24 +38,23 @@ public class DatabaseFrame extends JInternalFrame {
     	panel = new DatabasePanel();
 
     	setTitle(Utils.getBundleString("db_options"));
-        
+		setMaximizable(true);    	
         setClosable(true);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
-        setVisible(false);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addContainerGap()
         			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE)
-        			.addGap(28))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, 407, 407, 410)
+        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
         			.addContainerGap())
         );
         getContentPane().setLayout(layout);

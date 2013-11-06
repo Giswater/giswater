@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,7 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.lang.reflect.Method;
-
-import javax.swing.JOptionPane;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainFrame;
@@ -91,79 +88,8 @@ public class DatabaseController {
 	}	
 	
 	
-	public void createSchema(){
-		
-		Integer driver = view.getDriver();
-		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
-		if (schemaName == null){
-			return;
-		}
-		schemaName = schemaName.trim().toLowerCase();
-		if (schemaName.equals("")){
-			Utils.showError(Utils.getBundleString("schema_valid_name"), "", "gisWater");
-			return;
-		}
-		
-		// Ask user to set SRID?
-		String sridValue;
-		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
-		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
-		if (sridQuestion){
-			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
-			if (sridValue == null){
-				return;
-			}
-		}
-		else{
-			sridValue = "0";
-		}
-		sridValue = sridValue.trim();
-		if (!sridValue.equals("")){
-			Integer srid;
-			try{
-				srid = Integer.parseInt(sridValue);
-			} catch (NumberFormatException e){
-				Utils.showError(Utils.getBundleString("error_srid"), "", "gisWater");
-				return;
-			}
-			if (!sridValue.equals(defaultSrid)){
-				prop.put("SRID_DEFAULT", sridValue);
-				MainDao.savePropertiesFile();
-			}
-			boolean isSridOk = MainDao.checkSrid(srid);
-			if (!isSridOk && srid != 0){
-				String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-					Utils.getBundleString("srid_valid");			
-				Utils.showError(msg, "", "gisWater");
-				return;
-			}
-			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-			MainDao.createSchema(schemaName, sridValue, driver);
-			view.setSchemaResult(MainDao.getSchemas());		
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		}
-		
-	}
-	
-	
-	public void deleteSchema(){
-		
-		String schemaName = view.getSchemaResult();
-        int res = JOptionPane.showConfirmDialog(this.view, Utils.getBundleString("delete_schema_name") + "\n" + schemaName, 
-        	"gisWater", JOptionPane.YES_NO_OPTION);
-        if (res == 0){
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
-        	MainDao.deleteSchema(schemaName);
-        	view.setSchemaResult(MainDao.getSchemas());
-    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    		Utils.showMessage(Utils.getBundleString("schema_deleted"), "", "gisWater");
-        }
-        
-	}	
-	
-	
 	public void testConnection(){
-		
+	
 		if (MainDao.isConnected){
 			closeConnection();
 		}
@@ -175,12 +101,12 @@ public class DatabaseController {
 	
 	
 	private void closeConnection(){
-		view.enableButtons(false);
-		view.setSchemaResult(null);
+		
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		Utils.showMessage(Utils.getBundleString("connection_closed"), "", "gisWater");				
+		Utils.showMessage("connection_closed", "", "inp_descr");			
+		
 	}
 	
 	
@@ -197,7 +123,7 @@ public class DatabaseController {
 		MainDao.isConnected  = MainDao.setConnectionPostgis(host, port, db, user, password);
 		
 		if (MainDao.isConnected){
-			view.setSchemaResult(MainDao.getSchemas());
+			//view.setSchemaResult(MainDao.getSchemas());
 			prop.put("POSTGIS_HOST", host);
 			prop.put("POSTGIS_PORT", port);
 			prop.put("POSTGIS_DATABASE", db);
@@ -214,9 +140,9 @@ public class DatabaseController {
 			// Save properties file
 			MainDao.savePropertiesFile();
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage(Utils.getBundleString("connection_opened"), "", "gisWater");	
-			view.enableButtons(true);
-			MainDao.setSchema(view.getSchemaResult());
+			Utils.showMessage("connection_opened", "", "inp_descr");	
+			//view.enableButtons(true);
+			//MainDao.setSchema(view.getSchemaResult());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
 		else{

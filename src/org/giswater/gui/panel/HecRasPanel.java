@@ -199,7 +199,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		// Panel gisRAS
 		panel_2 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
-		panel_2.setLayout(new MigLayout("", "[40px][90.00px][152.00][:114.00:100px][]", "[8px][15][30][30px][50][][10][15][100][30px][]"));
+		panel_2.setLayout(new MigLayout("", "[40px][90.00px][152.00][:114.00:100px][]", "[8px][15][30][30px][50][][10][15][104.00][:5px:5px]"));
 		
 		lblDataManager = new JLabel(BUNDLE.getString("HecRasPanel.lblDataManager.text")); //$NON-NLS-1$
 		lblDataManager.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -270,7 +270,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		panel_4 = new JPanel();
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.add(panel_4, "cell 0 8 5 2,grow");
+		panel_2.add(panel_4, "cell 0 8 5 1,grow");
 		panel_4.setLayout(new MigLayout("", "[40px][:100px:100px][:100px:100px][:100px:100px][]", "[25px][4][][]"));
 		
 		btnSaveCase = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$

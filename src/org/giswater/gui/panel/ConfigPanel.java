@@ -119,7 +119,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[10px][410.00][12]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::200px][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -128,7 +128,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[208.00][10px][25]"));
+		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[132.00][10px][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -184,9 +184,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("configAccept");
 		panel_1.add(btnAccept, "cell 2 2");
-
-		// Select Database connection by default
-		tabbedPane.setSelectedIndex(0);
 
 		setupListeners();
 

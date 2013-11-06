@@ -86,6 +86,8 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JScrollPane scrollPane_4;
 	private JLabel lblChooseType;
 	private JLabel lblSchema;
+	private JButton btnCreateSchema;
+	private JButton btnDeleteSchema;
 
 	
 	public EpaPanel() {
@@ -110,7 +112,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	}
 
 	public void setOptDatabaseSelected(){
-		optDatabase.doClick();
+		controller.selectSourceType(false);
 	}
 	
 	
@@ -169,8 +171,13 @@ public class EpaPanel extends JPanel implements ActionListener {
 		
 	}	
 	
-	public void enableAccept(boolean enable){
+	public void enableButtons(boolean enable){
 		btnAccept.setEnabled(enable);
+		btnCreateSchema.setEnabled(enable);
+		btnDeleteSchema.setEnabled(enable);
+		btnOptions.setEnabled(enable);
+		btnDesign.setEnabled(enable);
+		btnSectorSelection.setEnabled(enable);
 	}
 	
 	public void setDesignButton(String text, String actionCommand){
@@ -221,7 +228,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][571.00px][93.00]", "[5px][410.00][12]"));
+		setLayout(new MigLayout("", "[8.00][571.00px]", "[5px][410.00]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -264,7 +271,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		// Panel 4
 		panel_4 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_4, null); //$NON-NLS-1$
-		panel_4.setLayout(new MigLayout("", "[20px:20px:20px][100px:100px:100px][][320.00px,grow][110]", "[][25px][40px][25px][][][40.00][24][40px][24][][]"));
+		panel_4.setLayout(new MigLayout("", "[20px:20px:20px][80px:100px][][320.00px,grow][110]", "[][25px][40px][25px][][][40.00][24][40px][24][][]"));
 		
 		lblChooseType = new JLabel(BUNDLE.getString("EpaPanel.lbl.text")); //$NON-NLS-1$
 		panel_4.add(lblChooseType, "cell 1 0");
@@ -314,10 +321,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(lblSchema, "cell 1 3");
 
 		cboSchema = new JComboBox<String>();
+		cboSchema.setMaximumSize(new Dimension(110, 20));
 		cboSchema.setPreferredSize(new Dimension(24, 20));
 		cboSchema.setActionCommand("schemaChanged");
-		cboSchema.setMinimumSize(new Dimension(150, 20));
-		panel_4.add(cboSchema, "cell 3 3,alignx left");
+		cboSchema.setMinimumSize(new Dimension(110, 20));
+		panel_4.add(cboSchema, "flowx,cell 3 3,alignx left");
 		
 		btnOptions = new JButton(BUNDLE.getString("Form.btnOptions.text")); //$NON-NLS-1$
 		btnOptions.setMaximumSize(new Dimension(110, 23));
@@ -410,6 +418,19 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDesign.setMaximumSize(new Dimension(110, 23));
 		btnDesign.setActionCommand("showRaingage");
 		panel_4.add(btnDesign, "cell 3 4,aligny baseline");
+		
+		btnCreateSchema = new JButton("Create Schema");
+		btnCreateSchema.setPreferredSize(new Dimension(110, 23));
+		btnCreateSchema.setEnabled(false);
+		btnCreateSchema.setActionCommand("createSchema");
+		panel_4.add(btnCreateSchema, "cell 3 3");
+		
+		btnDeleteSchema = new JButton("Delete Schema");
+		btnDeleteSchema.setPreferredSize(new Dimension(110, 23));
+		btnDeleteSchema.setMaximumSize(new Dimension(110, 23));
+		btnDeleteSchema.setEnabled(false);
+		btnDeleteSchema.setActionCommand("deleteSchema");
+		panel_4.add(btnDeleteSchema, "cell 3 3");
 
 		// Select Database connection by default
 		tabbedPane.setSelectedIndex(0);
@@ -423,6 +444,8 @@ public class EpaPanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 
+		optDbf.addActionListener(this);
+		optDatabase.addActionListener(this);
 		btnFolderShp.addActionListener(this);
 		
 		// Panel Postgis
@@ -430,12 +453,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnFileInp.addActionListener(this);
 		btnFileRpt.addActionListener(this);
 		btnAccept.addActionListener(this);
+		btnCreateSchema.addActionListener(this);
+		btnDeleteSchema.addActionListener(this);
 		btnOptions.addActionListener(this);
 		btnSectorSelection.addActionListener(this);
 		btnDesign.addActionListener(this);	
-		
-		optDbf.addActionListener(this);
-		optDatabase.addActionListener(this);
 
 	}
 	

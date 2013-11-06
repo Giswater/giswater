@@ -132,7 +132,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmDatabase.setActionCommand("showDatabase");
 		mnConfiguration.add(mntmDatabase);
 		
-		mntmSoftware = new JMenuItem("EPA Software");
+		mntmSoftware = new JMenuItem(BUNDLE.getString("MainFrame.mntmSoftwareConfiguration.text"));
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
 		
@@ -226,14 +226,16 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void getFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
 
         int x, y;
-        boolean visible, selected;
+        boolean visible, selected, maximized;
         x = Integer.parseInt(prop.get(prefix + "_X", "0"));
         y = Integer.parseInt(prop.get(prefix + "_Y", "0"));
         visible = Boolean.parseBoolean(prop.get(prefix + "_VISIBLE", "false"));
         selected = Boolean.parseBoolean(prop.get(prefix + "_SELECTED", "false"));
+        maximized = Boolean.parseBoolean(prop.get(prefix + "_MAXIMIZED", "false"));
         frame.setLocation(x, y);
         frame.setVisible(visible);
-        frame.setSelected(selected);   
+        frame.setSelected(selected);
+        frame.setMaximum(maximized);
 		
 	}
 	
@@ -244,6 +246,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		prop.setProperty(prefix + "_Y", frame.getY());
 		prop.setProperty(prefix + "_VISIBLE", frame.isVisible());
 		prop.setProperty(prefix + "_SELECTED", frame.isSelected());
+		prop.setProperty(prefix + "_MAXIMIZED", frame.isMaximum());
 		MainDao.savePropertiesFile(); 
 		
 	}

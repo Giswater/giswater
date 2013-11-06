@@ -14,6 +14,7 @@ public class HecRasFrame extends JInternalFrame {
 	
 	
 	public HecRasFrame(){
+		setMaximizable(true);
 		initComponents();
 	}
 	
@@ -37,14 +38,14 @@ public class HecRasFrame extends JInternalFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 558, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(0, Short.MAX_VALUE))
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 498, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(0, Short.MAX_VALUE))
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(10, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
 

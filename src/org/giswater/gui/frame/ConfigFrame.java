@@ -5,6 +5,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.ConfigPanel;
+import org.giswater.util.Utils;
 
 
 public class ConfigFrame extends JInternalFrame {
@@ -26,10 +27,11 @@ public class ConfigFrame extends JInternalFrame {
 
     	panel = new ConfigPanel();
 
-        setClosable(true);
+        setTitle(Utils.getBundleString("software_panel"));
+		setMaximizable(true);
+    	setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
-        setTitle("EPA Software");
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -41,8 +43,8 @@ public class ConfigFrame extends JInternalFrame {
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 341, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap())
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(14, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
         

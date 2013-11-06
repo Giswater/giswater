@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,14 +50,14 @@ public class MainClass {
         		} catch (Exception e) {
         			Utils.getLogger().warning(e.getMessage());
         		}  
-            	
+
+            	// Initial configuration
             	if (!MainDao.configIni()){
             		return;
             	}            	
             	
-            	// Create MainFrame
+            	// Create MainFrame and Menu controller
             	mdi = new MainFrame(MainDao.isConnected);
-            	// Create Menu controller
                 new MenuController(mdi);            	
                 mdi.setVisible(true);
                 

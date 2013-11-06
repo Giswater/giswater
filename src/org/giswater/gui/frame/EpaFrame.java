@@ -14,6 +14,7 @@ public class EpaFrame extends JInternalFrame {
 	
 	
 	public EpaFrame(){
+		setMaximizable(true);
 		initComponents();
 	}
 	

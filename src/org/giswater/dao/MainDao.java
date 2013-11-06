@@ -575,7 +575,8 @@ public class MainDao {
 				if (driver == 0){
 					geometry = addGeometryColumnsViews(schemaName, srid);
 					content+= geometry;
-				}				
+				}	
+				
 				if (executeUpdateSql(content, true)){
 					Utils.showMessage("schema_creation_completed", "", "inp_descr");							
 				}

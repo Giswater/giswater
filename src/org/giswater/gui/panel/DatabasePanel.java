@@ -27,9 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -48,7 +46,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.DatabaseController;
 import org.giswater.controller.MainController;
-import org.giswater.dao.MainDao;
 import org.giswater.util.Utils;
 
 
@@ -74,35 +71,20 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	private JTextField txtUser;
 	private JLabel lblPassword;
 	private JPasswordField txtPassword;
-	private JPanel panel_5;
-	private JLabel lblNewLabel_1;
 	private JButton btnTest;
 	private JCheckBox chkRemember;
-	private JComboBox<String> cboSchema1;
 	private JTabbedPane tabbedPane;
-	private JButton btnCreateSchema;
-	private JButton btnDeleteSchema;
 
 	
 	public DatabasePanel() {
 		try {
 			initConfig();
-			isConnected();
 		} catch (MissingResourceException e) {
 			Utils.showError(e.getMessage(), "", "Error");
 			System.exit(ERROR);
 		}
 	}
 	
-	private void isConnected(){
-		if (MainDao.isConnected){
-			setSchemaResult(MainDao.getSchemas());
-			enableButtons(true);
-		}else{
-			enableButtons(false);
-		}
-	}
-
 	public void setControl(MainController nodeController) {
 		this.controller = nodeController;
 	}
@@ -123,13 +105,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		return new JDialog();
 	}
 
-
-	// Panel Database connection
-	public void enableButtons(boolean isEnabled) {
-		btnCreateSchema.setEnabled(isEnabled);
-		btnDeleteSchema.setEnabled(isEnabled);
-	}
-	
 	public Integer getDriver() {
 		return cboDriver.getSelectedIndex();
 	}
@@ -183,24 +158,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		btnTest.setText(text);
 	}
 	
-	public String getSchemaResult() {
-		String elem = "";
-		if (cboSchema1.getSelectedIndex() != -1) {
-			elem = cboSchema1.getSelectedItem().toString();
-		}
-		return elem;
-	}	
-	
-	public void setSchemaResult(Vector<String> v) {
-		cboSchema1.removeAllItems();
-		ComboBoxModel<String> cbm = null;
-		if (v != null){
-			cbm = new DefaultComboBoxModel<String>(v);
-			cboSchema1.setModel(cbm);
-		}
-	}
-
-
 	public void close() {
 		f.setVisible(false);
 		f.dispose();
@@ -218,7 +175,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		// Panel 1
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_1.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[10][][380]", "[5][208.00][10][80][]"));
+		panel_1.setLayout(new MigLayout("", "[10][][380]", "[5][208.00][10]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -283,33 +240,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		btnTest.setActionCommand("testConnection");
 		panel.add(btnTest, "cell 5 7,alignx right");
 
-		panel_5 = new JPanel();
-		panel_5.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.add(panel_5, "cell 1 3 2 1,grow");
-		panel_5.setLayout(new MigLayout("", "[5][77][15][140][145.00]", "[2][25][25]"));
-
-		lblNewLabel_1 = new JLabel(BUNDLE.getString("Database.lblNewLabel_1.text")); //$NON-NLS-1$
-		panel_5.add(lblNewLabel_1, "cell 1 1");
-
-		cboSchema1 = new JComboBox<String>();
-		cboSchema1.setActionCommand("schemaResultChanged");
-		cboSchema1.setPreferredSize(new Dimension(140, 20));
-		cboSchema1.setMinimumSize(new Dimension(29, 20));
-		panel_5.add(cboSchema1, "cell 3 1,growx");
-		
-		btnCreateSchema = new JButton(BUNDLE.getString("Database.btnCreateSchema.text"));
-		btnCreateSchema.setEnabled(false);
-		btnCreateSchema.setPreferredSize(new Dimension(110, 23));
-		btnCreateSchema.setActionCommand("createSchema");
-		panel_5.add(btnCreateSchema, "cell 4 1,alignx right");
-		
-		btnDeleteSchema = new JButton(BUNDLE.getString("Database.btnDeleteSchema.text")); //$NON-NLS-1$
-		btnDeleteSchema.setEnabled(false);
-		btnDeleteSchema.setMaximumSize(new Dimension(110, 23));
-		btnDeleteSchema.setPreferredSize(new Dimension(110, 23));
-		btnDeleteSchema.setActionCommand("deleteSchema");
-		panel_5.add(btnDeleteSchema, "cell 4 2,alignx right");
-
 		// Panel 3
 		JPanel panel_3 = new JPanel();
 		panel_3.setVisible(false);
@@ -348,18 +278,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		btnTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				databaseController.action(e.getActionCommand());
-			}
-		});
-				
-		btnCreateSchema.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				databaseController.action(e.getActionCommand());				
-			}
-		});
-		
-		btnDeleteSchema.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				databaseController.action(e.getActionCommand());				
 			}
 		});
 
