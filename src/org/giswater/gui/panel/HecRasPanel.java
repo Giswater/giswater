@@ -1,5 +1,5 @@
 /*
- * This file is part of gisWater
+ * This file is part of Giswater
  * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -48,6 +48,8 @@ import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.HecRasController;
+import org.giswater.dao.MainDao;
+import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
@@ -115,13 +117,22 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	// Panel Data Manager
 	public void enableButtons(boolean isEnabled) {
+		
 		btnClearData.setEnabled(isEnabled);
-		btnLoadRaster.setEnabled(isEnabled);
 		btnExportSdf.setEnabled(isEnabled);
 		btnSaveCase.setEnabled(isEnabled);
 		btnLoadCase.setEnabled(isEnabled);
 		btnDeleteCase.setEnabled(isEnabled);
 		btnDatabase.setVisible(!isEnabled);
+		
+		// Check if we have to enable Load Raster button
+		btnLoadRaster.setEnabled(false);
+		PropertiesMap prop = MainDao.getPropertiesFile();
+		boolean isLoad = Boolean.parseBoolean(prop.getProperty("LOAD_RASTER", "false"));
+		if (isEnabled && isLoad){
+			btnLoadRaster.setEnabled(true);
+		}
+		
 	}
 	
 	public void setNewSchemaName(String projectName) {
@@ -132,10 +143,6 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		return txtSchemaName.getText().trim();
 	}
 	
-//	public void setSchemas(Vector<String> v) {
-//		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
-//		cboSchema.setModel(cbm);
-//	}
 	
 	public void setSchema(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
