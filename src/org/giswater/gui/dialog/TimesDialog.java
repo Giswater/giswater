@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,26 +37,25 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.controller.TimesValuesController;
-import javax.swing.SwingConstants;
+import org.giswater.controller.TimesController;
 
 
 @SuppressWarnings("rawtypes")
-public class TimesValuesDialog extends JDialog {
+public class TimesDialog extends JDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
-	private TimesValuesController controller;
-	public HashMap<String, JComboBox> componentMap;
+	private TimesController controller;
+	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	private JTextField txtQuality;
 	private JTextField txtHydraulic;
 	private JTextField txtDuration;
-	private JTextField txtStatistic;
 	private JTextField txtRule;
 	private JTextField txtPattern;
 	private JTextField txtReport;
@@ -64,13 +63,14 @@ public class TimesValuesDialog extends JDialog {
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
 	
-	public TimesValuesDialog() {
+	
+	public TimesDialog() {
 		initConfig();
 		createComponentMap();
 	}
 	
 	
-	public void setControl(TimesValuesController controller) {
+	public void setControl(TimesController controller) {
 		this.controller = controller;
 	}		
 
@@ -97,48 +97,36 @@ public class TimesValuesDialog extends JDialog {
 	
 	private void createComponentMap() {
 		
-        componentMap = new HashMap<String, JComboBox>();
+        comboMap = new HashMap<String, JComboBox>();
         textMap = new HashMap<String, JTextField>();
         Component[] components = getContentPane().getComponents();
         
-        JPanel panel = null;;
-		panel = (JPanel) components[0];            
+		JPanel panel = (JPanel) components[0];            
         Component[] comp = panel.getComponents();        
-        for (int i=0; i < comp.length; i++) {        
+        for (int i=0; i<comp.length; i++) {        
         	if (comp[i] instanceof JComboBox) {         	
-        		componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
+        		comboMap.put(comp[i].getName(), (JComboBox) comp[i]);
         	}
         	else if (comp[i] instanceof JTextField) {      
         		textMap.put(comp[i].getName(), (JTextField) comp[i]);
         	}
         }
-        
-		panel = (JPanel) components[0];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }
-      
+ 
         
 	}
 
 
 	private void initConfig(){
 
-		setTitle("Times Values Table");
-		setBounds(100, 100, 485, 300);
-		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[179.00][10px][36.00]"));
+		setTitle("Times Table");
+		setBounds(100, 100, 468, 283);
+		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[179.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[75.00][125.00,grow][10px][80px][115.00px,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
+		panelGeneral.setLayout(new MigLayout("", "[75.00][115.00:115.00][10px][80px][115.00:115.00px]", "[25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
 
 		JLabel lblFlowUnits = new JLabel("Duration:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
@@ -221,10 +209,9 @@ public class TimesValuesDialog extends JDialog {
 		JLabel lblStatistic = new JLabel("Statistic:");
 		panelGeneral.add(lblStatistic, "cell 3 4,alignx trailing");
 		
-		txtStatistic = new JTextField();
-		txtStatistic.setName("statistic");
-		txtStatistic.setColumns(10);
-		panelGeneral.add(txtStatistic, "cell 4 4,growx");
+		JComboBox comboBox = new JComboBox();
+		comboBox.setName("statistic");
+		panelGeneral.add(comboBox, "cell 4 4,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		

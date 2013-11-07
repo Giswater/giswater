@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ public class OptionsDialog extends JDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private OptionsController controller;
-	public HashMap<String, JComboBox> componentMap;
+	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	private JTextField textField;
 	private JTextField textField_2;
@@ -106,44 +106,24 @@ public class OptionsDialog extends JDialog {
 	
 	private void createComponentMap() {
 		
-        componentMap = new HashMap<String, JComboBox>();
+        comboMap = new HashMap<String, JComboBox>();
         textMap = new HashMap<String, JTextField>();
         Component[] components = getContentPane().getComponents();
     
-        JPanel panel = null;
-        Component[] comp;
-		panel = (JPanel) components[0];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }
-        
-		panel = (JPanel) components[1];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }
-        
-		panel = (JPanel) components[2];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }        
+        for (int j=0; j<components.length; j++) {
+        	if (components[j] instanceof JPanel){
+        		JPanel panel = (JPanel) components[j];            
+	            Component[] comp = panel.getComponents();        
+	            for (int i=0; i<comp.length; i++) {        
+	            	if (comp[i] instanceof JComboBox) {         	
+	            		comboMap.put(comp[i].getName(), (JComboBox) comp[i]);
+	            	}
+	            	else if (comp[i] instanceof JTextField) {      
+	            		textMap.put(comp[i].getName(), (JTextField) comp[i]);
+	            	}
+	            }
+        	}
+        }      
         
 	}
 

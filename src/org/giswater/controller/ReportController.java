@@ -1,6 +1,6 @@
 /*
- * This file is part of Giswater
- * Copyright (C) 2013 Tecnics Associats
+ * This file is part of gisWater
+ * Copyright (C) 2012  Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -35,43 +33,21 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.RaingageDialog;
+import org.giswater.gui.dialog.ReportDialog;
 import org.giswater.util.Utils;
 
 
-public class RaingageController {
+public class ReportController {
 
-	private RaingageDialog view;
+	private ReportDialog view;
     private ResultSet rs;
 	
 	
-	public RaingageController(RaingageDialog dialog, ResultSet rs) {
+	public ReportController(ReportDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setControl(this);        
 	}
-	
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e, actionCommand);
-			} else{
-				Utils.showError(e, actionCommand);
-			}
-		}
-		
-	}	
 	
 	
 	// Update ComboBox items and selected item
@@ -79,6 +55,7 @@ public class RaingageController {
 	public void setComponents(){
 
 		try {
+			rs.first();
 			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
@@ -106,14 +83,11 @@ public class RaingageController {
 
 		Vector<String> values = null;
 		String tableName = "";
-		if (comboName.equals("form_type")){
-			tableName = "inp_value_raingage";
+		if (comboName.equals("status")){
+			tableName = "inp_value_yesnofull";
 		}
-		else if (comboName.equals("timser_id")){
-			tableName = "inp_timser_id";
-		}
-		else if (comboName.equals("rgage_type")){
-			tableName = "inp_typevalue_raingage";
+		else{
+			tableName = "inp_value_yesno";
 		}
 		values = MainDao.getTable(tableName, null);
 		
@@ -121,40 +95,6 @@ public class RaingageController {
 		
 	}
 
-	
-	public void moveFirst() {
-		try {
-			rs.first();
-			setComponents();
-		} catch (SQLException e) {
-			Utils.showError(e);
-		}
-	}		
-	
-	
-	public void movePrevious(){
-		try {
-			if (!rs.isFirst()){
-				rs.previous();
-				setComponents();
-			}
-		} catch (SQLException e) {
-			Utils.showError(e);
-		}
-	}
-	
-	
-	public void moveNext(){
-		try {
-			if (!rs.isLast()){
-				rs.next();
-				setComponents();
-			}
-		} catch (SQLException e) {
-			Utils.showError(e);
-		}
-	}
-	
 
 	// Update Database table
 	@SuppressWarnings("rawtypes")
@@ -219,9 +159,7 @@ public class RaingageController {
 			return;
 		}
 		
-	}
-
-
+	}	
 	
 	
 }

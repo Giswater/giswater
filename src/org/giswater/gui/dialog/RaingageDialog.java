@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,22 +41,27 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import org.giswater.controller.RaingageController;
+import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
-public class RaingageDialog extends JDialog {
+public class RaingageDialog extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private RaingageController controller;
-	public HashMap<String, JComboBox> componentMap;
+	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	private JTextField textField_18;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
+	private JButton btnPrevious;
+	private JButton btnNext;
+	private JButton btnSave;
+	
 	
 	public RaingageDialog() {
 		initConfig();
@@ -91,44 +96,25 @@ public class RaingageDialog extends JDialog {
 	
 	private void createComponentMap() {
 		
-        componentMap = new HashMap<String, JComboBox>();
+        comboMap = new HashMap<String, JComboBox>();
         textMap = new HashMap<String, JTextField>();
         Component[] components = getContentPane().getComponents();
-        
-        JPanel panel = null;;
-		panel = (JPanel) components[0];            
-        Component[] comp = panel.getComponents();        
-        for (int i=0; i < comp.length; i++) {        
-        	if (comp[i] instanceof JComboBox) {         	
-        		componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-        	}
-        	else if (comp[i] instanceof JTextField) {      
-        		textMap.put(comp[i].getName(), (JTextField) comp[i]);
+
+        for (int j=0; j<components.length; j++) {
+        	if (components[j] instanceof JPanel){
+        		JPanel panel = (JPanel) components[j];            
+	            Component[] comp = panel.getComponents();        
+	            for (int i=0; i < comp.length; i++) {        
+	            	if (comp[i] instanceof JComboBox) {         	
+	            		comboMap.put(comp[i].getName(), (JComboBox) comp[i]);
+	            	}
+	            	else if (comp[i] instanceof JTextField) {      
+	            		textMap.put(comp[i].getName(), (JTextField) comp[i]);
+	            	}
+	            }
         	}
         }
-        
-		panel = (JPanel) components[1];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }
-        
-		panel = (JPanel) components[2];               
-        comp = panel.getComponents(); 		
-        for (int i=0; i < comp.length; i++) {
-			if (comp[i] instanceof JComboBox) {         	
-				componentMap.put(comp[i].getName(), (JComboBox) comp[i]);
-			}
-			else if (comp[i] instanceof JTextField) {      
-				textMap.put(comp[i].getName(), (JTextField) comp[i]);
-			}			
-        }             
-        
+        System.out.println("END");
 	}
 
 
@@ -177,12 +163,17 @@ public class RaingageDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-			}
-		});
+		btnPrevious = new JButton("<");
+		btnPrevious.setActionCommand("movePrevious");
+		getContentPane().add(btnPrevious, "flowx,cell 1 4");
+		
+		btnNext = new JButton(">");
+		btnNext.setActionCommand("moveNext");
+		getContentPane().add(btnNext, "cell 1 4");
+		
+		btnSave = new JButton(Utils.getBundleString("save"));
+		btnSave.setActionCommand("saveData");
+		getContentPane().add(btnSave, "cell 1 4,alignx right");
 		
 		JPanel panelTimeseries = new JPanel();
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -227,9 +218,24 @@ public class RaingageDialog extends JDialog {
 		panelFile.add(textField_4, "cell 1 1,growx");
 		textField_4.setName("units");
 		textField_4.setColumns(10);
-		getContentPane().add(btnSave, "cell 1 4,alignx right");
+		
+		setupListeners();
 		
 	}
 
+	
+	// Setup component's listener
+	private void setupListeners() {
+		btnSave.addActionListener(this);	
+		btnPrevious.addActionListener(this);
+		btnNext.addActionListener(this);
+	}
+	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		controller.action(e.getActionCommand());
+	}
+	
 
 }

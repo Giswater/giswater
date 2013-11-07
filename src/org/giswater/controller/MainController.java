@@ -37,8 +37,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainFrame;
 import org.giswater.gui.dialog.OptionsDialog;
+import org.giswater.gui.dialog.OptionsEpanetDialog;
 import org.giswater.gui.dialog.RaingageDialog;
-import org.giswater.gui.dialog.TimesValuesDialog;
+import org.giswater.gui.dialog.ReportDialog;
+import org.giswater.gui.dialog.TimesDialog;
 import org.giswater.gui.panel.EpaPanel;
 import org.giswater.gui.panel.TableWindowPanel;
 import org.giswater.model.Model;
@@ -96,7 +98,6 @@ public class MainController{
 			view.setFolderShp(dirShp.getAbsolutePath());
 			readyShp = true;
 		}
-		
     	fileInp = new File(prop.get("FILE_INP", userHomeFolder));
 		if (fileInp.exists()) {
 			view.setFileInp(fileInp.getAbsolutePath());
@@ -209,7 +210,18 @@ public class MainController{
 		dialog.setVisible(true);		
 	}
 	
+	
+	public void showOptionsEpanet(){
+		ResultSet rs = MainDao.getTableResultset("inp_options");
+		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
+		OptionsEpanetController inp = new OptionsEpanetController(dialog, rs);
+		inp.setComponents();
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		
+	}
 
+	
 	public void showCatchment(){
 		TableWindowPanel tableWindow = new TableWindowPanel(view.getSchema());
         JDialog dialog = Utils.openDialogForm(tableWindow, 350, 280);
@@ -223,7 +235,7 @@ public class MainController{
 		ResultSet rs = MainDao.getTableResultset("raingage");
 		RaingageDialog dialog = new RaingageDialog();
 		RaingageController inp = new RaingageController(dialog, rs);
-		inp.setComponents();
+		inp.moveFirst();
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null);   
 		dialog.setVisible(true);		        
@@ -232,8 +244,19 @@ public class MainController{
 	
 	public void showTimesValues(){
 		ResultSet rs = MainDao.getTableResultset("inp_times");
-		TimesValuesDialog dialog = new TimesValuesDialog();
-		TimesValuesController inp = new TimesValuesController(dialog, rs);
+		TimesDialog dialog = new TimesDialog();
+		TimesController inp = new TimesController(dialog, rs);
+		inp.setComponents();
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		        
+	}	
+	
+	
+	public void showReport(){
+		ResultSet rs = MainDao.getTableResultset("inp_report");
+		ReportDialog dialog = new ReportDialog();
+		ReportController inp = new ReportController(dialog, rs);
 		inp.setComponents();
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null);   

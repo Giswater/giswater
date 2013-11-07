@@ -200,10 +200,15 @@ public class MainFrame extends JFrame implements ActionListener{
         desktopPane.add(dbFrame);        
         desktopPane.add(configFrame);            
         
+        // Set specific configuration
 		swmmFrame.setTitle("EPASWMM");
 		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
+		swmmFrame.getPanel().setOptionsButton("Options", "showOptions");
+		swmmFrame.getPanel().setReportButton(false);
 		epanetFrame.setTitle("EPANET");
 		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
+		epanetFrame.getPanel().setOptionsButton("Options", "showOptionsEpanet");
+		epanetFrame.getPanel().setReportButton(true);
 
         // Get info from properties
 		getMainParams("MAIN");

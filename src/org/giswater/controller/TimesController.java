@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,17 +33,17 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.TimesValuesDialog;
+import org.giswater.gui.dialog.TimesDialog;
 import org.giswater.util.Utils;
 
 
-public class TimesValuesController {
+public class TimesController {
 
-	private TimesValuesDialog view;
+	private TimesDialog view;
     private ResultSet rs;
 	
 	
-	public TimesValuesController(TimesValuesDialog dialog, ResultSet rs) {
+	public TimesController(TimesDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setControl(this);        
@@ -56,7 +56,7 @@ public class TimesValuesController {
 
 		try {
 			rs.first();
-			HashMap<String, JComboBox> map = view.componentMap; 
+			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
@@ -83,14 +83,8 @@ public class TimesValuesController {
 
 		Vector<String> values = null;
 		String tableName = "";
-		if (comboName.equals("form_type")){
-			tableName = "inp_value_raingage";
-		}
-		else if (comboName.equals("timser_id")){
-			tableName = "inp_timser_id";
-		}
-		else if (comboName.equals("rgage_type")){
-			tableName = "inp_typevalue_raingage";
+		if (comboName.equals("statistic")){
+			tableName = "inp_value_times";
 		}
 		values = MainDao.getTable(tableName, null);
 		
@@ -107,7 +101,7 @@ public class TimesValuesController {
 		Object value;
 		try {
 			ResultSetMetaData metadata = rs.getMetaData();					
-			HashMap<String, JComboBox> map = view.componentMap; 			
+			HashMap<String, JComboBox> map = view.comboMap; 			
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 				key = entry.getKey();
 				JComboBox combo = entry.getValue();

@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public class OptionsController {
 
 		try {
 			rs.first();
-			HashMap<String, JComboBox> map = view.componentMap; 
+			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
@@ -122,7 +122,7 @@ public class OptionsController {
 		Object value;
 		try {
 			ResultSetMetaData metadata = rs.getMetaData();					
-			HashMap<String, JComboBox> map = view.componentMap; 			
+			HashMap<String, JComboBox> map = view.comboMap; 			
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 				key = entry.getKey();
 				JComboBox combo = entry.getValue();
