@@ -20,12 +20,9 @@
  */
 package org.giswater.gui.dialog;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -36,15 +33,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.util.Utils;
 
-public class AboutDialog extends JDialog {
+
+public class VersionDialog extends JDialog {
 
 	private static final long serialVersionUID = 2829254148112384387L;
 	private JLabel lblInfo;
@@ -54,17 +50,6 @@ public class AboutDialog extends JDialog {
 	private final String URL_GITHUB = "https://github.com/Tecnicsassociats/giswater";
 
 
-	public static void main(String[] args) {
-		try {
-			AboutDialog dialog = new AboutDialog("Giswater version: v1.0");
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	class OpenUrlWeb implements ActionListener {
 	    @Override public void actionPerformed(ActionEvent e) {
 	        if (Desktop.isDesktopSupported()) {
@@ -87,37 +72,14 @@ public class AboutDialog extends JDialog {
 	}	
 	
 
-	/**
-	 * Create the dialog.
-	 */
-	public AboutDialog(String title) {
+	// TODO: 118n
+	public VersionDialog(String title) {
 
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());		
 		setTitle(title);
-		setSize(429, 180);
-		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[60.00px][:15px:20px][15px][15px]"));
-
-		final ImageIcon backgroundImage = new ImageIcon("images/giswater.png");
-		
-        JPanel panelLogo = new JPanel(new BorderLayout()) {
-			private static final long serialVersionUID = 3096090575648819722L;
-
-			@Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 20, 10, 250, 50, this);
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                Dimension size = super.getPreferredSize();
-                size.width = Math.max(backgroundImage.getIconWidth(), size.width);
-                size.height = Math.max(backgroundImage.getIconHeight(), size.height);
-                return size;
-            }
-        };
-		getContentPane().add(panelLogo, "cell 0 0 2 1,alignx center,growy");
+		setSize(432, 124);
+		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[20px:20px:20px][20px:20px:20px][20px:20px:20px]"));
 		
 		try {
 			urlWeb = new URI(URL_WEB);
@@ -135,11 +97,11 @@ public class AboutDialog extends JDialog {
 		btnWeb.setToolTipText(URL_WEB);
 		btnWeb.addActionListener(new OpenUrlWeb());		
 		
-		getContentPane().add(btnWeb, "cell 0 1 2 1,alignx center");
+		getContentPane().add(btnWeb, "cell 0 0 2 1,alignx center");
 		
 		lblInfo = new JLabel("Developer: David Erill Carrera");
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		getContentPane().add(lblInfo, "cell 0 2 2 1,alignx center");	
+		getContentPane().add(lblInfo, "cell 0 1 2 1,alignx center,aligny center");	
 		
 		JButton btnGithub = new JButton();
 		btnGithub.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -150,7 +112,7 @@ public class AboutDialog extends JDialog {
 		btnGithub.setBackground(Color.WHITE);
 		btnGithub.setToolTipText(URL_GITHUB);
 		btnGithub.addActionListener(new OpenUrlGithub());		
-		getContentPane().add(btnGithub, "cell 0 3 2 1,alignx center");
+		getContentPane().add(btnGithub, "cell 0 2 2 1,alignx center");
 	
 	}
 

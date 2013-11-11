@@ -1,6 +1,9 @@
 package org.giswater.gui.frame;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
@@ -32,6 +35,13 @@ public class ConfigFrame extends JInternalFrame {
     	setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
+        
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));
+		try {
+			setIcon(true);
+		} catch (PropertyVetoException e) {
+			Utils.getLogger().warning(e.getMessage());
+		}        
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(

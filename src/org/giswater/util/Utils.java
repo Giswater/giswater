@@ -31,11 +31,13 @@ public class Utils {
 
 	private static final ResourceBundle BUNDLE_FORM = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
-    private static Logger logger;
+    private static final String LOG_FOLDER = "log/";
+    private static final String ICON_PATH = "images\\imago.png";
+    
+	private static Logger logger;
     private static Logger loggerSql;
 	private static String logFolder;
-    private static final String LOG_FOLDER = "log/";
-    private static String softName;
+    //private static String softName;
 	private static boolean isSqlLogged;
     
     
@@ -96,6 +98,10 @@ public class Utils {
     	return appPath;
     	
     }
+    
+    public static String getIconPath(){
+    	return getAppPath() + ICON_PATH;
+    }    
     
     public static String getLogFolder(){
     	return logFolder;
@@ -209,6 +215,15 @@ public class Utils {
 		}
     }    
 
+    
+    public static void showError(String msg, String param) {
+		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
+			getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
+		if (logger != null) {
+			logger.warning(getBundleString(msg) + "\n" + param);
+		}
+    }
+    
     
     public static void showError(String msg, String param, String title) {
 		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
@@ -353,16 +368,6 @@ public class Utils {
 		}
 
 	}		
-
-	
-    public static String getSoftName() {
-		return softName;
-	}
-
-
-	public static void setSoftName(String softName) {
-		Utils.softName = softName;
-	}
 
 	
 	public static void setSqlLog(String string) {

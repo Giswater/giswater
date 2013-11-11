@@ -24,7 +24,6 @@ import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
@@ -40,6 +39,7 @@ import org.giswater.gui.dialog.OptionsDialog;
 import org.giswater.gui.dialog.OptionsEpanetDialog;
 import org.giswater.gui.dialog.RaingageDialog;
 import org.giswater.gui.dialog.ReportDialog;
+import org.giswater.gui.dialog.ReportEpanetDialog;
 import org.giswater.gui.dialog.TimesDialog;
 import org.giswater.gui.panel.EpaPanel;
 import org.giswater.gui.panel.TableWindowPanel;
@@ -262,6 +262,18 @@ public class MainController{
 		dialog.setLocationRelativeTo(null);   
 		dialog.setVisible(true);		        
 	}	
+	
+	
+	public void showReportEpanet(){
+		ResultSet rs = MainDao.getTableResultset("inp_report");
+		ReportEpanetDialog dialog = new ReportEpanetDialog();
+		ReportEpanetController inp = new ReportEpanetController(dialog, rs);
+		inp.setComponents();
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		        
+	}	
+			
 		
 
     public void chooseFileInp() {
@@ -431,11 +443,7 @@ public class MainController{
            		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
             	Model.closeFile();
             	if (!continueExec){
-            		try {
-						MainDao.rollback();
-					} catch (SQLException e) {
-	    	            Utils.showError(e);
-					}
+					MainDao.rollback();
             	}
             }
         }
@@ -532,11 +540,7 @@ public class MainController{
            		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
             	Model.closeFile();
             	if (!continueExec){
-            		try {
-						MainDao.rollback();
-					} catch (SQLException e) {
-	    	            Utils.showError(e);
-					}
+					MainDao.rollback();
             	}
             }
         }        
@@ -561,6 +565,8 @@ public class MainController{
 			Utils.showError("schema_valid_name", "", "inp_descr");
 			return;
 		}
+		
+		String softwareName = view.getSoftwareName();
 		
 		// Ask user to set SRID?
 		String sridValue;
@@ -596,7 +602,7 @@ public class MainController{
 				return;
 			}
 			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-			MainDao.createSchema(schemaName, sridValue, -1);
+			MainDao.createSchema(softwareName, schemaName, sridValue);
 			view.setSchema(MainDao.getSchemas());		
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}

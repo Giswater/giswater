@@ -1,10 +1,14 @@
 package org.giswater.gui.frame;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.EpaPanel;
+import org.giswater.util.Utils;
 
 
 public class EpaFrame extends JInternalFrame {
@@ -13,9 +17,8 @@ public class EpaFrame extends JInternalFrame {
 	private EpaPanel panel;
 	
 	
-	public EpaFrame(){
-		setMaximizable(true);
-		initComponents();
+	public EpaFrame(String softwareName){
+		initComponents(softwareName);
 	}
 	
 
@@ -24,15 +27,23 @@ public class EpaFrame extends JInternalFrame {
 	}
 	
 	           
-    private void initComponents() {
+    private void initComponents(String softwareName) {
 
-    	panel = new EpaPanel();
+    	panel = new EpaPanel(softwareName);
 
         setTitle("");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
+		setMaximizable(true);        
         setVisible(false);
+        
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));
+		try {
+			setIcon(true);
+		} catch (PropertyVetoException e) {
+			Utils.getLogger().warning(e.getMessage());
+		}        
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(

@@ -1,10 +1,15 @@
 package org.giswater.gui.frame;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.util.Utils;
+
+import javax.swing.ImageIcon;
 
 
 public class HecRasFrame extends JInternalFrame {
@@ -14,7 +19,6 @@ public class HecRasFrame extends JInternalFrame {
 	
 	
 	public HecRasFrame(){
-		setMaximizable(true);
 		initComponents();
 	}
 	
@@ -31,9 +35,17 @@ public class HecRasFrame extends JInternalFrame {
         setTitle("HecRas");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
+		setIconifiable(true);
+		setMaximizable(true);
         setVisible(false);
 
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));
+		try {
+			setIcon(true);
+		} catch (PropertyVetoException e) {
+			Utils.getLogger().warning(e.getMessage());
+		}
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)

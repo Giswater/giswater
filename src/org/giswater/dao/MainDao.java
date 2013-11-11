@@ -127,8 +127,12 @@ public class MainDao {
 	}	    
     
     
-	public static void rollback() throws SQLException{
-		connectionPostgis.rollback();
+	public static void rollback(){
+		try {
+			connectionPostgis.rollback();
+		} catch (SQLException e) {
+            Utils.showError(e);
+		}
 	}	
 
 	
@@ -534,92 +538,75 @@ public class MainDao {
 		executeUpdateSql(sql, true);			
 	}
 
+	
+	private static String readFile(String filePath) throws IOException{
+		
+		File fileName = new File(filePath);			
+		if (!fileName.exists()){
+			Utils.showError("inp_error_notfound", filePath);
+			return "";
+		}
+		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
+		String line;
+		String content = "";
+		while ((line = rat.readLine()) != null){
+			content += line + "\n";
+		}
+		rat.close();		
+		
+		return content;
+		
+	}
 
-	public static void createSchema(String schemaName, String srid, Integer driver) {
+	
+	public static void createSchema(String softwareName, String schemaName, String srid) {
 		
 		String sql = "CREATE schema "+schemaName;
-		executeUpdateSql(sql);	
-		sql = "SET search_path TO '"+schemaName+"'";
-		executeUpdateSql(sql);	
-		String file = "";
-		
+		if (!executeUpdateSql(sql, true)){
+			rollback();
+			return;	
+		}
+		String filePath = "";
+		String content = "";
+    	
 		try {
+
+	    	String folderRoot = new File(".").getCanonicalPath() + File.separator;			
+			filePath = folderRoot + "sql/"+softwareName+".sql";
+	    	content = readFile(filePath);
 			
-	    	String folderRoot = new File(".").getCanonicalPath() + File.separator;         		
-			file = folderRoot + "inp/create_schema.sql";
-			File fileName = new File(file);			
-			RandomAccessFile rat = new RandomAccessFile(fileName, "r");
-			String line;
-			String content = "";
-			while ((line = rat.readLine()) != null){
-				content += line + "\n";
-			}
-			if (executeUpdateSql(content, true)){
-				rat.close();				
-				sql = "SET search_path TO '"+schemaName+"', 'public'";
-				executeUpdateSql(sql);
-				
-				content = "";				
-				// Add geometry_columns info for selected schema				
-				String geometry = addGeometryColumnsTables(schemaName, srid);
-				executeSql(geometry);
-				
-				file = folderRoot + "inp/create_schema_2.sql";
-				fileName = new File(file);			
-				rat = new RandomAccessFile(fileName, "r");
-				while ((line = rat.readLine()) != null){
-					content += line + "\n";
-				}
-				
-				// If Postgis 1.5 add also geometry info for wiews
-				if (driver == 0){
-					geometry = addGeometryColumnsViews(schemaName, srid);
-					content+= geometry;
-				}	
-				
+	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("SRID_VALUE", srid);
+			Utils.logSql(content);
+			
+			if (executeSql(content, true)){
+			
+				filePath = folderRoot + "sql/"+softwareName+"_value_domain.sql";
+		    	content = readFile(filePath);
+				content = content.replace("SCHEMA_NAME", schemaName);		   
+				Utils.logSql(content);
+		    	
 				if (executeUpdateSql(content, true)){
-					Utils.showMessage("schema_creation_completed", "", "inp_descr");							
+					filePath = folderRoot + "sql/"+softwareName+"_functrigger.sql";
+			    	content = readFile(filePath);
+					content = content.replace("SCHEMA_NAME", schemaName);
+					Utils.logSql(content);
+					if (executeUpdateSql(content, true)){
+						Utils.showMessage("schema_creation_completed", "", "inp_descr");								
+					}
 				}
-				
-				rat.close();	
+		    	
 			}
 			
         } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", file, "inp_descr");
+            Utils.showError("inp_error_notfound", filePath);
         } catch (IOException e) {
-            Utils.showError("inp_error_io", file, "inp_descr");
+            Utils.showError("inp_error_io", filePath);
         }
 		
 	}
 
-
-	private static String addGeometryColumnsTables(String schemaName, String srid) {
-		
-		String content = "";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'arc', 'the_geom', '"+srid+"', 'MULTILINESTRING', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'node', 'the_geom', '"+srid+"', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'subcatchment', 'the_geom', '"+srid+"', 'MULTIPOLYGON', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'catchment', 'the_geom', '"+srid+"', 'MULTIPOLYGON', 2);\n";		
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'raingage', 'the_geom', '"+srid+"', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'vertice', 'the_geom', '"+srid+"', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'connec', 'the_geom', '"+srid+"', 'POINT', 2);\n";
-		content+= "SELECT addgeometryColumn('"+schemaName+"', 'gully', 'the_geom', '"+srid+"', 'POINT', 2);\n";
-		return content;
-		
-	}
-	
-	
-	private static String addGeometryColumnsViews(String schemaName, String srid) {
-		
-		String content = "";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_man_arc', 'the_geom', '2', '"+srid+"', 'MULTILINESTRING');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_man_node', 'the_geom', '2', '"+srid+"', 'POINT');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_rpt_arcflow_sum', 'the_geom', '2', '"+srid+"', 'POINT');\n";
-		content+= "INSERT INTO public.geometry_columns VALUES (' ', '"+schemaName+"', 'v_rpt_nodeflood_sum', 'the_geom', '2', '"+srid+"', 'POINT');\n";
-		return content;
-		
-	}	
-	
 	
 	// hecRas functions
 	public static boolean createSdfFile(String fileName) {

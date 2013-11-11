@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,7 @@ public class LicenseDialog extends JDialog {
 	}
 	
 	
-	/**
-	 * @wbp.parser.constructor
-	 */
+	// TODO: i18n
 	public LicenseDialog(String title, String info, String info2, String info3) {
 		
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));

@@ -144,7 +144,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmWelcome.setActionCommand("showWelcome");
 		
 		mntmVersion = new JMenuItem(BUNDLE.getString("MainFrame.mntmVersion.text")); //$NON-NLS-1$
-		mntmVersion.setActionCommand("showAuthor");
+		mntmVersion.setActionCommand(BUNDLE.getString("MainFrame.mntmVersion.actionCommand")); //$NON-NLS-1$
 		mnAbout.add(mntmVersion);
 		
 		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); //$NON-NLS-1$
@@ -188,8 +188,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void initFrames() throws PropertyVetoException{
 
         // Create and Add frames to main Panel
-        swmmFrame = new EpaFrame();
-        epanetFrame = new EpaFrame();
+        swmmFrame = new EpaFrame("epaswmm");
+        epanetFrame = new EpaFrame("epanet");
         hecRasFrame = new HecRasFrame();
         dbFrame = new DatabaseFrame(this);
         configFrame = new ConfigFrame();
@@ -204,11 +204,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		swmmFrame.setTitle("EPASWMM");
 		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
 		swmmFrame.getPanel().setOptionsButton("Options", "showOptions");
-		swmmFrame.getPanel().setReportButton(false);
+		swmmFrame.getPanel().setReportButton("Report options", "showReport");
+		//swmmFrame.getPanel().setReportButton(false);
 		epanetFrame.setTitle("EPANET");
 		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
 		epanetFrame.getPanel().setOptionsButton("Options", "showOptionsEpanet");
-		epanetFrame.getPanel().setReportButton(true);
+		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
+		//epanetFrame.getPanel().setReportButton(true);
 
         // Get info from properties
 		getMainParams("MAIN");

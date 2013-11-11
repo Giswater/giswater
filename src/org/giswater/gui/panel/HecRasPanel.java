@@ -127,10 +127,14 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		// Check if we have to enable Load Raster button
 		btnLoadRaster.setEnabled(false);
+		txtFileAsc.setEnabled(false);
+		btnFileAsc.setEnabled(false);
 		PropertiesMap prop = MainDao.getPropertiesFile();
 		boolean isLoad = Boolean.parseBoolean(prop.getProperty("LOAD_RASTER", "false"));
 		if (isEnabled && isLoad){
 			btnLoadRaster.setEnabled(true);
+			txtFileAsc.setEnabled(true);
+			btnFileAsc.setEnabled(true);
 		}
 		
 	}

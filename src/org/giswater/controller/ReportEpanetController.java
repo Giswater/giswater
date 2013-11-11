@@ -33,17 +33,17 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.ReportDialog;
+import org.giswater.gui.dialog.ReportEpanetDialog;
 import org.giswater.util.Utils;
 
 
-public class ReportController {
+public class ReportEpanetController {
 
-	private ReportDialog view;
+	private ReportEpanetDialog view;
     private ResultSet rs;
 	
 	
-	public ReportController(ReportDialog dialog, ResultSet rs) {
+	public ReportEpanetController(ReportEpanetDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setControl(this);        
@@ -82,8 +82,15 @@ public class ReportController {
 	public Vector<String> getComboValues(String comboName) {
 
 		Vector<String> values = null;
-		String tableName = "inp_value_yesno";
+		String tableName = "";
+		if (comboName.equals("status")){
+			tableName = "inp_value_yesnofull";
+		}
+		else{
+			tableName = "inp_value_yesno";
+		}
 		values = MainDao.getTable(tableName, null);
+		
 		return values;
 		
 	}
