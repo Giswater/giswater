@@ -44,14 +44,9 @@ public class LicenseDialog extends JDialog {
 	public URI uri = null;
 	public File file = null;
 
-
-	public LicenseDialog(String title, String info, String info2) {
-		this(title, info, info2, "");
-	}
-	
 	
 	// TODO: i18n
-	public LicenseDialog(String title, String info, String info2, String info3) {
+	public LicenseDialog(String title, String info, String info1, String info2, String info3) {
 		
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		ImageIcon image = new ImageIcon("images/imago.png");
@@ -64,9 +59,7 @@ public class LicenseDialog extends JDialog {
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		getContentPane().add(lblInfo, "cell 1 1,alignx left");	
 		
-		String aux = "<html><p align=\"justify\">\"This product is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details\u201D</p></html>";
-		aux = aux.toUpperCase();
-		JLabel lblInfo12 = new JLabel(aux);
+		JLabel lblInfo12 = new JLabel(info1);
 		getContentPane().add(lblInfo12, "cell 1 2");
 		
 		JLabel lblInfo2 = new JLabel(info2.toUpperCase());

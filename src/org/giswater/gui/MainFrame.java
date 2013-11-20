@@ -48,6 +48,7 @@ import org.giswater.gui.frame.EpaFrame;
 import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import java.awt.Color;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -160,6 +161,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHelp.setActionCommand("openHelp");
 		
 		desktopPane = new JDesktopPane();
+		desktopPane.setBackground(Color.LIGHT_GRAY);
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -238,7 +240,7 @@ public class MainFrame extends JFrame implements ActionListener{
         y = Integer.parseInt(prop.get(prefix + "_Y", "0"));
         visible = Boolean.parseBoolean(prop.get(prefix + "_VISIBLE", "false"));
         selected = Boolean.parseBoolean(prop.get(prefix + "_SELECTED", "false"));
-        maximized = Boolean.parseBoolean(prop.get(prefix + "_MAXIMIZED", "false"));
+        maximized = true;
         frame.setLocation(x, y);
         frame.setVisible(visible);
         frame.setSelected(selected);
@@ -359,6 +361,8 @@ public class MainFrame extends JFrame implements ActionListener{
         frame.setVisible(true);
         try {
             frame.setSelected(true);
+            frame.setIcon(false);
+            frame.setMaximum(true);
         } catch (PropertyVetoException ex) {
             Utils.getLogger().warning(ex.getMessage());
         }

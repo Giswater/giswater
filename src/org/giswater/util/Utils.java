@@ -1,6 +1,7 @@
 package org.giswater.util;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,7 +38,6 @@ public class Utils {
 	private static Logger logger;
     private static Logger loggerSql;
 	private static String logFolder;
-    //private static String softName;
 	private static boolean isSqlLogged;
     
     
@@ -127,18 +127,6 @@ public class Utils {
 		}
 	}
 	
-	public static JFrame openForm(JPanel view, JFrame f, int width, int height){
-	    f.setLayout(new BorderLayout());
-	    f.add(view, BorderLayout.CENTER);
-	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	    
-	    f.pack();
-	    f.setSize(width, height);
-	    f.setLocationRelativeTo(null);   
-	    f.setVisible(true);		
-	    f.setResizable(false);
-	    return f;
-	}       
-	
 		
 	public static JDialog openDialogForm(JPanel view, JDialog f, int width, int height){
 		f.setModal(true);
@@ -206,6 +194,11 @@ public class Utils {
     	
     }
 
+    
+    public static void showMessage(String msg, String param) {
+    	showMessage(msg, param, getBundleString("inp_descr"));
+    }
+    
 
     public static void showMessage(String msg, String param, String title) {
 		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
@@ -217,11 +210,7 @@ public class Utils {
 
     
     public static void showError(String msg, String param) {
-		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
-			getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-		if (logger != null) {
-			logger.warning(getBundleString(msg) + "\n" + param);
-		}
+    	showError(msg, param, getBundleString("inp_descr"));
     }
     
     
@@ -294,8 +283,8 @@ public class Utils {
 
     
 	public static void execProcess(String process){
+		
 		try{    
-			//Process p = Runtime.getRuntime().exec(file);
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
 		} catch (IOException ex) {
@@ -303,26 +292,24 @@ public class Utils {
 		} catch (InterruptedException ex) {
 		    System.out.println("InterruptedException Error");
 
-		}		
+		}	
+		
 	}
 	
-    
-	public static void openFile(String file){
 		
-		try{    
-			File exec = new File(file);
-			if (exec.exists()){
-				//Process p = Runtime.getRuntime().exec(file);
-				Process p = Runtime.getRuntime().exec("cmd /c start " + file);				
-				p.waitFor();
-			} else{
-				Utils.showMessage("file_not_found", file, "gisWater");
+	public static void openFile(String filePath){
+
+		File exec = new File(filePath);
+		if (exec.exists()){
+			try {
+				Desktop.getDesktop().open(exec);
+			} catch (IOException e) {
+				Utils.getLogger().warning(e.getMessage());
 			}
-		} catch (IOException ex) {
-			Utils.getLogger().warning(ex.getMessage());
-		} catch (InterruptedException ex) {
-			Utils.getLogger().warning(ex.getMessage());
-		}		
+		}
+		else{
+			Utils.showMessage("file_not_found", filePath);
+		}
 		
 	}    
 	

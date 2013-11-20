@@ -47,7 +47,7 @@ public class MainDao {
     public static boolean isConnected = false;
 	
 	public static String folderConfig;	
-    public static File fileHelp;	
+	public static String fileHelpPath;
 	
     private static PropertiesMap iniProperties = new PropertiesMap();
 	private static String appPath;	
@@ -86,10 +86,8 @@ public class MainDao {
         }
         
         // Get PDF help file
-        if (fileHelp == null) {
-            String filePath = iniProperties.get("FILE_HELP");
-            filePath = folderConfig + File.separator + filePath;
-            fileHelp = new File(filePath);
+        if (fileHelpPath == null) {
+            fileHelpPath = folderConfig + File.separator + iniProperties.get("FILE_HELP");
         }
         
         return true;

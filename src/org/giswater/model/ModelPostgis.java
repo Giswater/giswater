@@ -403,15 +403,14 @@ public class ModelPostgis extends Model {
 
         // Create command
         exeCmd = "\"" + exeCmd + "\"";
-        exeCmd += " " + fileInp.getAbsolutePath() + " " + fileRpt.getAbsolutePath() + " " + fileOut.getAbsolutePath();
+        exeCmd += " \"" + fileInp.getAbsolutePath() + "\" \"" + fileRpt.getAbsolutePath() + "\" \"" + fileOut.getAbsolutePath() + "\"";
 
         // Ending message
         logger.info(exeCmd);            
 
         // Exec process
-    	Process p;
 		try {
-			p = Runtime.getRuntime().exec(exeCmd);
+			Process p = Runtime.getRuntime().exec(exeCmd);
 	        p.waitFor();			
 	        p.destroy();
 		} catch (IOException e) {
