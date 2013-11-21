@@ -24,7 +24,6 @@ import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -62,8 +61,6 @@ public class MainController{
     private boolean importChecked;
     
     private String userHomeFolder;
-    private ResourceBundle bundleText;
-    
     private MainFrame mainFrame;
 	private String software;
 	
@@ -80,9 +77,7 @@ public class MainController{
         this.prop = MainDao.getPropertiesFile();
         this.software = software;
 	    view.setControl(this);        
-    	
     	userHomeFolder = System.getProperty("user.home");
-    	this.bundleText = Utils.getBundleText();
     	
     	// Set default values
     	setDefaultValues();
@@ -125,9 +120,9 @@ public class MainController{
 		} catch (Exception e) {
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			if (Utils.getLogger() != null){			
-				Utils.logError(e, actionCommand);
+				Utils.logError(e);
 			} else{
-				Utils.showError(e, actionCommand);
+				Utils.showError(e);
 			}
 		}
 		
@@ -139,7 +134,7 @@ public class MainController{
 
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(bundleText.getString("folder_shp"));
+		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
 		File file = new File(prop.get("FOLDER_SHP", userHomeFolder));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(null);
@@ -166,31 +161,38 @@ public class MainController{
 		if (dbSelected){
 			// Check if we already are connected
 			if (MainDao.isConnected){
-				view.enableButtons(true);
+				mainFrame.enableCatalog(true);
+				view.enableControlsDbf(false);
+				view.enableControlsDatabase(true);
+				view.enableAccept(true);
 				view.setSchema(MainDao.getSchemas());
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 			} 
 			else{
 				if (askQuestion){
 		            // Ask if user wants to connect to Database
-		            String msg = Utils.getBundleString("open_database_connection");
-		            int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleString("inp_descr"), JOptionPane.YES_NO_OPTION);
+		            int answer = Utils.confirmDialog("open_database_connection");
 		            if (answer == JOptionPane.YES_OPTION){
 						mainFrame.openDatabase();
 		            }
 				}
-				view.enableButtons(false);
+				mainFrame.enableCatalog(false);
+				view.enableControlsDbf(false);
+				view.enableControlsDatabase(false);
+				view.enableAccept(false);
 				view.setSchema(null);				
 			}
 		}
 		// DBF
 		else{
+			mainFrame.enableCatalog(true);
+			view.enableControlsDbf(true);			
+			view.enableControlsDatabase(false);
+			view.enableAccept(true);
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
-			view.enableButtons(true);
 		}
 		
-		// Update view
-		view.selectSourceType();
+		schemaChanged();
 		
 	}
 	
@@ -198,30 +200,8 @@ public class MainController{
 	public void schemaChanged(){
 		MainDao.setSchema(view.getSchema());
 	}
-	
-	
-	public void showOptions(){
-		ResultSet rs = MainDao.getTableResultset("inp_options");
-		OptionsDialog dialog = new OptionsDialog();
-		OptionsController inp = new OptionsController(dialog, rs);
-		inp.setComponents();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		
-	}
-	
-	
-	public void showOptionsEpanet(){
-		ResultSet rs = MainDao.getTableResultset("inp_options");
-		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
-		OptionsEpanetController inp = new OptionsEpanetController(dialog, rs);
-		inp.setComponents();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		
-	}
 
-	
+		
 	public void showCatchment(){
 		TableWindowPanel tableWindow = new TableWindowPanel(view.getSchema());
         JDialog dialog = Utils.openDialogForm(tableWindow, 350, 280);
@@ -231,47 +211,82 @@ public class MainController{
 	}	
 	
 	
+	public void showOptions(){
+		ResultSet rs = MainDao.getTableResultset("inp_options");
+		if (rs == null) return;
+		OptionsDialog dialog = new OptionsDialog();
+		OptionsController controller = new OptionsController(dialog, rs);
+		if (controller.setComponents()){		
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
+	}
+	
+	
+	public void showOptionsEpanet(){
+		ResultSet rs = MainDao.getTableResultset("inp_options");
+		if (rs == null) return;		
+		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
+		OptionsEpanetController controller = new OptionsEpanetController(dialog, rs);
+		if (controller.setComponents()){
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
+	}
+
+	
 	public void showRaingage(){
 		ResultSet rs = MainDao.getTableResultset("raingage");
+		if (rs == null) return;		
 		RaingageDialog dialog = new RaingageDialog();
-		RaingageController inp = new RaingageController(dialog, rs);
-		inp.moveFirst();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		        
+		RaingageController controller = new RaingageController(dialog, rs);
+		if (controller.setComponents()){		
+			controller.moveFirst();
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
 	}	
 	
 	
 	public void showTimesValues(){
 		ResultSet rs = MainDao.getTableResultset("inp_times");
+		if (rs == null) return;		
 		TimesDialog dialog = new TimesDialog();
-		TimesController inp = new TimesController(dialog, rs);
-		inp.setComponents();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		        
+		TimesController controller = new TimesController(dialog, rs);
+		if (controller.setComponents()){		
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
 	}	
 	
 	
 	public void showReport(){
 		ResultSet rs = MainDao.getTableResultset("inp_report");
+		if (rs == null) return;		
 		ReportDialog dialog = new ReportDialog();
-		ReportController inp = new ReportController(dialog, rs);
-		inp.setComponents();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		        
+		ReportController controller = new ReportController(dialog, rs);
+		if (controller.setComponents()){		
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
 	}	
 	
 	
 	public void showReportEpanet(){
 		ResultSet rs = MainDao.getTableResultset("inp_report");
+		if (rs == null) return;		
 		ReportEpanetDialog dialog = new ReportEpanetDialog();
-		ReportEpanetController inp = new ReportEpanetController(dialog, rs);
-		inp.setComponents();
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		        
+		ReportEpanetController controller = new ReportEpanetController(dialog, rs);
+		if (controller.setComponents()){		
+			dialog.setModal(true);
+			dialog.setLocationRelativeTo(null);   
+			dialog.setVisible(true);
+		}
 	}	
 			
 		
@@ -282,7 +297,7 @@ public class MainController{
         FileFilter filter = new FileNameExtensionFilter("INP extension file", "inp");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(bundleText.getString("file_inp"));
+        chooser.setDialogTitle(Utils.getBundleString("file_inp"));
         File file = new File(prop.get("FILE_INP", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
@@ -305,7 +320,7 @@ public class MainController{
         FileFilter filter = new FileNameExtensionFilter("RPT extension file", "rpt");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(bundleText.getString("file_rpt"));
+        chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
         File file = new File(prop.get("FILE_RPT", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
@@ -378,14 +393,14 @@ public class MainController{
         importChecked = view.isImportChecked();        
         
         if (!exportChecked && !execChecked && !importChecked){
-            Utils.showError("select_option", "", "inp_descr");
+            Utils.showError("select_option");
             return;
         }
 
         // Get schema from view
         String schema = view.getSchema();
         if (schema.equals("")){
-            Utils.showError("any_schema_selected", "", "inp_descr");
+            Utils.showError("any_schema_selected");
             return;
         }
         MainDao.setSchema(schema);
@@ -393,7 +408,7 @@ public class MainController{
         // Get software version from view
         String softwareId = view.getSoftware();
         if (softwareId.equals("")){
-            Utils.showError("any_software_selected", "", "inp_descr");
+            Utils.showError("any_software_selected");
             return;
         }
         String version = MainDao.getSoftwareVersion("postgis", softwareId);
@@ -410,7 +425,7 @@ public class MainController{
         // Export to INP
         if (exportChecked) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected", "", "inp_descr");
+                Utils.showError("file_inp_not_selected");
                 return;
             }                
             continueExec = ModelPostgis.processAll(fileInp);
@@ -419,11 +434,11 @@ public class MainController{
         // Run SWMM
         if (execChecked && continueExec) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected", "", "inp_descr");
+                Utils.showError("file_inp_not_selected");
                 return;
             }            
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected", "", "inp_descr");
+                Utils.showError("file_rpt_not_selected");
                 return;
             }                  
             continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
@@ -432,12 +447,12 @@ public class MainController{
         // Import RPT to Postgis
         if (importChecked && continueExec) {
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected", "", "inp_descr");
+                Utils.showError("file_rpt_not_selected");
                 return;
             }            
             projectName = view.getProjectName();
             if (projectName.equals("")){
-                Utils.showError("project_name", "", "inp_descr");
+                Utils.showError("project_name");
             } 
             else{
            		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
@@ -454,7 +469,7 @@ public class MainController{
 	public void executeDbf() {
 
 		if (!readyShp) {
-			Utils.showError("dir_shp_not_selected", "", "inp_descr");
+			Utils.showError("dir_shp_not_selected");
 			return;
 		}
 
@@ -466,14 +481,14 @@ public class MainController{
         importChecked = view.isImportChecked();        
         
         if (!exportChecked && !execChecked && !importChecked){
-            Utils.showError("select_option", "", "inp_descr");
+            Utils.showError("select_option");
             return;
         }
         
         // Get software version from view
 		String id = view.getSoftware();
         if (id.equals("")){
-            Utils.showError("any_software_selected", "", "inp_descr");
+            Utils.showError("any_software_selected");
             return;
         }
         String version = MainDao.getSoftwareVersion("dbf", id);
@@ -489,7 +504,7 @@ public class MainController{
 		String templatePath = MainDao.folderConfig + version + ".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
-			Utils.showError("inp_error_notfound", templatePath, "inp_descr");				
+			Utils.showError("inp_error_notfound", templatePath);				
 			return;
 		}
 
@@ -500,14 +515,14 @@ public class MainController{
 
 		// Process all shapes and output to INP file
         if (!getFileInp()) {
-            Utils.showError("file_inp_not_selected", "", "inp_descr");
+            Utils.showError("file_inp_not_selected");
             return;
         }    
         
         // Export to INP
         if (exportChecked) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected", "", "inp_descr");
+                Utils.showError("file_inp_not_selected");
                 return;
             }                
             continueExec = ModelDbf.processAll(fileInp);
@@ -516,11 +531,11 @@ public class MainController{
         // Run SWMM
         if (execChecked && continueExec) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected", "", "inp_descr");
+                Utils.showError("file_inp_not_selected");
                 return;
             }            
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected", "", "inp_descr");
+                Utils.showError("file_rpt_not_selected");
                 return;
             }                  
             continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
@@ -529,12 +544,12 @@ public class MainController{
         // Import RPT to Postgis
         if (importChecked && continueExec) {
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected", "", "inp_descr");
+                Utils.showError("file_rpt_not_selected");
                 return;
             }            
             projectName = view.getProjectName();
             if (projectName.equals("")){
-                Utils.showError("project_name", "", "inp_descr");
+                Utils.showError("project_name");
             } 
             else{
            		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
@@ -562,7 +577,7 @@ public class MainController{
 		}
 		schemaName = schemaName.trim().toLowerCase();
 		if (schemaName.equals("")){
-			Utils.showError("schema_valid_name", "", "inp_descr");
+			Utils.showError("schema_valid_name");
 			return;
 		}
 		
@@ -587,7 +602,7 @@ public class MainController{
 			try{
 				srid = Integer.parseInt(sridValue);
 			} catch (NumberFormatException e){
-				Utils.showError("error_srid", "", "inp_descr");
+				Utils.showError("error_srid");
 				return;
 			}
 			if (!sridValue.equals(defaultSrid)){
@@ -598,7 +613,7 @@ public class MainController{
 			if (!isSridOk && srid != 0){
 				String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
 					Utils.getBundleString("srid_valid");			
-				Utils.showError(msg, "", "inp_descr");
+				Utils.showError(msg);
 				return;
 			}
 			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
@@ -613,18 +628,17 @@ public class MainController{
 	public void deleteSchema(){
 		
 		String schemaName = view.getSchema();
-        int res = JOptionPane.showConfirmDialog(view, Utils.getBundleString("delete_schema_name") + "\n" + schemaName, 
-        	"inp_descr", JOptionPane.YES_NO_OPTION);
+		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
+		int res = Utils.confirmDialog(msg);        
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchema(MainDao.getSchemas());
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    		Utils.showMessage("schema_deleted", "", "inp_descr");
+    		Utils.showMessage("schema_deleted", "");
         }
         
-	}	
-	
+	}		
 		
 	
 }

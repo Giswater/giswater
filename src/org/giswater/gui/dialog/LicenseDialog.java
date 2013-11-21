@@ -45,7 +45,6 @@ public class LicenseDialog extends JDialog {
 	public File file = null;
 
 	
-	// TODO: i18n
 	public LicenseDialog(String title, String info, String info1, String info2, String info3) {
 		
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));

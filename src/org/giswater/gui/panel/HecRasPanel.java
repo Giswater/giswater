@@ -93,7 +93,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 			initConfig();
 			enableButtons(false);
 		} catch (MissingResourceException e) {
-			Utils.showError(e.getMessage(), "", "Error");
+			Utils.showError(e);
 			System.exit(ERROR);
 		}
 	}

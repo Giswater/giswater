@@ -66,7 +66,7 @@ public class TableModelSuper extends AbstractTableModel {
 				columnNames[i] = metadata.getColumnLabel(i + 1);
 			}	
 		} catch (SQLException e) {
-			Utils.showError(e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		}
 	
 	}
@@ -87,7 +87,7 @@ public class TableModelSuper extends AbstractTableModel {
 			}
 			this.fireTableChanged(null);
 		} catch (SQLException e) {
-			Utils.showError(e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		}
 
 	}
@@ -120,7 +120,7 @@ public class TableModelSuper extends AbstractTableModel {
 			rs.absolute(row + 1);
 			rs.deleteRow();
 		} catch (SQLException e) {
-			Utils.showError(e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		}
 	}
 	
@@ -170,11 +170,11 @@ public class TableModelSuper extends AbstractTableModel {
 			}
 			
 		} catch (SQLException e) {
-			Utils.showError(e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		} catch (ClassCastException e) {
-			Utils.showError(e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		} catch (NumberFormatException e) {
-			Utils.showError("NumberFormatException: " + e.getMessage(), "", "inp_descr");
+			Utils.showError(e);
 		}
 		
 		setResultSet(rs);

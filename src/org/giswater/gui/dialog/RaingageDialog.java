@@ -114,7 +114,7 @@ public class RaingageDialog extends JDialog implements ActionListener{
 	            }
         	}
         }
-        System.out.println("END");
+
 	}
 
 

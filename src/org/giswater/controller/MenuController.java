@@ -21,12 +21,17 @@
 package org.giswater.controller;
 
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
 
+import org.giswater.controller.catalog.CatalogController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainFrame;
 import org.giswater.gui.dialog.LicenseDialog;
 import org.giswater.gui.dialog.VersionDialog;
 import org.giswater.gui.dialog.WelcomeDialog;
+import org.giswater.gui.dialog.catalog.AbstractDialog;
+import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -55,9 +60,9 @@ public class MenuController {
 			method.invoke(this);
 		} catch (Exception e) {
 			if (Utils.getLogger() != null) {
-				Utils.logError(e, actionCommand);
+				Utils.logError(e);
 			} else {
-				Utils.showError(e, actionCommand);
+				Utils.showError(e);
 			}
 		}
 
@@ -87,6 +92,37 @@ public class MenuController {
 		Utils.openFile(MainDao.fileHelpPath);
 	}
 
+	
+	public void showConduit(){
+		ResultSet rs = MainDao.getTableResultset("cat_arc");
+		if (rs == null) return;		
+		ConduitDialog dialog = new ConduitDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showMaterials(){
+		ResultSet rs = MainDao.getTableResultset("cat_mat");
+		if (rs == null) return;
+		MaterialsDialog dialog = new MaterialsDialog();
+		if (view.swmmFrame.isSelected()){
+			dialog.setName("n");
+		}
+		else{
+			dialog.setName("roughness");
+		}		
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	private void showCatalog(AbstractDialog dialog, ResultSet rs){
+		CatalogController controller = new CatalogController(dialog, rs);
+		controller.moveFirst();
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		        
+	}
+	
 	
 	// TODO: i18n
 	public void showWelcome() {
@@ -140,6 +176,7 @@ public class MenuController {
 		
 	}
 
+	
 	public void showAgreements() {
 		
 		String title = "Agreements";

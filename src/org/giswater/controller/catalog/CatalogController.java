@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.controller;
+package org.giswater.controller.catalog;
 
 import java.awt.Cursor;
 import java.lang.reflect.Method;
@@ -35,17 +35,18 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.RaingageDialog;
+import org.giswater.gui.dialog.catalog.AbstractDialog;
 import org.giswater.util.Utils;
 
 
-public class RaingageController {
+public class CatalogController {
 
-	private RaingageDialog view;
+	private AbstractDialog view;
     private ResultSet rs;
+	private String action;
 	
 	
-	public RaingageController(RaingageDialog dialog, ResultSet rs) {
+	public CatalogController(AbstractDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setControl(this);        
@@ -74,31 +75,41 @@ public class RaingageController {
 	}	
 	
 	
-	// Update ComboBox items and selected item
+	public void setComponents(){
+		setComponents(true);
+	}
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean setComponents(){
+	public void setComponents(boolean fillData){
 
 		try {
+			// Update ComboBox items and selected item			
 			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
-				String value = rs.getString(key);
 				view.setComboModel(combo, getComboValues(key));
+				String value = "";
+				if (fillData){
+					value = rs.getString(key);
+				}
 				view.setComboSelectedItem(combo, value);
 			}
+			// Update textField items and
 			HashMap<String, JTextField> textMap = view.textMap; 
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
-			    Object value = rs.getObject(key);
+			    Object value = "";
+				if (fillData){
+					value = rs.getObject(key);
+				}
 				view.setTextField(component, value);
 			}			
 		} catch (SQLException e) {
-			Utils.showError(e);
-			return false;
+			Utils.logError(e);
 		}
-		return true;
 		
 	}
 	
@@ -108,15 +119,12 @@ public class RaingageController {
 
 		Vector<String> values = null;
 		String tableName = "";
-		if (comboName.equals("form_type")){
-			tableName = "inp_value_raingage";
+		if (comboName.equals("shape")){
+			tableName = "inp_value_catarc";
 		}
-		else if (comboName.equals("timser_id")){
-			tableName = "inp_timser_id";
-		}
-		else if (comboName.equals("rgage_type")){
-			tableName = "inp_typevalue_raingage";
-		}
+//		else if (comboName.equals("timser_id")){
+//			tableName = "inp_timser_id";
+//		}
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -125,40 +133,72 @@ public class RaingageController {
 
 	
 	public void moveFirst() {
+		action = "other";
 		try {
-			rs.first();
+			if (rs.isBeforeFirst() ) {    
+				rs.first();
+			}
+			//rs.first();
 			setComponents();
 		} catch (SQLException e) {
-			Utils.showError(e);
+			Utils.logError(e);
 		}
 	}		
 	
 	
 	public void movePrevious(){
+		action = "other";
 		try {
 			if (!rs.isFirst()){
 				rs.previous();
 				setComponents();
 			}
 		} catch (SQLException e) {
-			Utils.showError(e);
+			Utils.logError(e);
 		}
 	}
 	
 	
 	public void moveNext(){
+		action = "other";
 		try {
 			if (!rs.isLast()){
 				rs.next();
 				setComponents();
 			}
 		} catch (SQLException e) {
-			Utils.showError(e);
+			Utils.logError(e);
 		}
 	}
 	
+	
+	public void create() {
+		action = "create";
+		try {
+			rs.moveToInsertRow();
+			setComponents(false);
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}
+	}		
+	
+	
+	public void delete(){
+		action = "other";
+		try {
+			int res = Utils.confirmDialog("delete_record?");
+	        if (res == 0){
+				rs.deleteRow();
+				rs.first();
+				setComponents();
+	        }   
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}		
+	}
 
-	// Update Database table
+	
+	// Update Table record
 	@SuppressWarnings("rawtypes")
 	public void saveData() {
 
@@ -187,16 +227,14 @@ public class RaingageController {
 				if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
 					if (value == null || ((String)value).trim().equals("")){
 						rs.updateNull(col);						
-					} 
-					else{
+					} else{
 						rs.updateString(col, (String) value);
 					}
 				}
-				else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
+				else if (columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT) {
 					if (((String)value).trim().equals("")){
 						rs.updateNull(col);
-					} 
-					else{					
+					} else{					
 						Integer aux = Integer.parseInt(value.toString());
 						rs.updateInt(col, aux);						
 					}
@@ -205,25 +243,30 @@ public class RaingageController {
 					columnType == Types.FLOAT || columnType == Types.REAL) {
 					if (((String)value).trim().equals("")){
 						rs.updateNull(col);
-					} 
-					else{					
-						Double aux = Double.parseDouble(value.toString().replace(",", "."));
+					} else{					
+						String s = value.toString();
+						Double aux = Double.parseDouble(s.replace(",", "."));
 						rs.updateDouble(col, aux);						
 					}
 				}				
 				else if (columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE) {
 					rs.updateTimestamp(col, (Timestamp) value);
 				}				
-			}		
-			rs.updateRow();
+			}
+			if (action.equals("create")){
+				rs.insertRow();
+				rs.last();
+			}
+			else{
+				rs.updateRow();
+			}
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {
 			Utils.showError(e);
-			return;
 		}
 		
 	}
-
+	
 	
 }

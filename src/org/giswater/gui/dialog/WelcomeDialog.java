@@ -55,7 +55,7 @@ public class WelcomeDialog extends JDialog {
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 170, 0, 180, 40, this);
+                g.drawImage(backgroundImage.getImage(), 145, 0, 205, 40, this);
             }
 
             @Override

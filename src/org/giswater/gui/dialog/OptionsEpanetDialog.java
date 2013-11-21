@@ -86,7 +86,7 @@ public class OptionsEpanetDialog extends JDialog {
 
 	
 	public void setTextField(JTextField textField, Object value) {
-		if (value!=null){
+		if (value != null){
 			textField.setText(value.toString());
 		}
 	}	

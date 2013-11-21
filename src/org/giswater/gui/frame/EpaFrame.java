@@ -3,8 +3,8 @@ package org.giswater.gui.frame;
 import java.beans.PropertyVetoException;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.EpaPanel;

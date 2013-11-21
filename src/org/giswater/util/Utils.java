@@ -30,11 +30,12 @@ import org.giswater.dao.MainDao;
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_FORM = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
     private static final String LOG_FOLDER = "log/";
     private static final String ICON_PATH = "images\\imago.png";
-    
+    private static final int NUM_LEVELS = 4;
+
+    private static int stackTraceLevel = 3;
 	private static Logger logger;
     private static Logger loggerSql;
 	private static String logFolder;
@@ -107,14 +108,7 @@ public class Utils {
     	return logFolder;
     }    
     
-    public static ResourceBundle getBundleForm(){
-    	return BUNDLE_FORM;
-    }
 
-	public static ResourceBundle getBundleText() {
-    	return BUNDLE_TEXT;
-	}    
-    
 	public static String getBundleString(String key){
 		return getBundleString(BUNDLE_TEXT, key);
 	}
@@ -195,73 +189,115 @@ public class Utils {
     }
 
     
-    public static void showMessage(String msg, String param) {
-    	showMessage(msg, param, getBundleString("inp_descr"));
+    public static void showMessage(String msg) {
+    	showMessage(msg, "");
     }
     
 
-    public static void showMessage(String msg, String param, String title) {
-		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
-			getBundleString(title), JOptionPane.PLAIN_MESSAGE);
+    public static void showMessage(String msg, String param) {
+    	
+    	String userMsg = getBundleString(msg);
+		if (!param.equals("")){
+			userMsg += "\n" + param;
+		}    	
+		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
 		if (logger != null) {
-			logger.info(getBundleString(msg) + "\n" + param);
+			String infoMsg = getBundleString(msg);
+			if (!param.equals("")){
+				infoMsg += "\nParameter: " + param;
+			}			
+			logger.info(infoMsg);
 		}
+		
     }    
 
     
+    public static void showError(String msg) {
+    	showError(msg, "");
+    }
+    
+    
     public static void showError(String msg, String param) {
-    	showError(msg, param, getBundleString("inp_descr"));
-    }
-    
-    
-    public static void showError(String msg, String param, String title) {
-		JOptionPane.showMessageDialog(null, getBundleString(msg) + "\n" + param,
-			getBundleString(title), JOptionPane.WARNING_MESSAGE);
-		if (logger != null) {
-			logger.warning(getBundleString(msg) + "\n" + param);
+    	
+    	String userMsg = getBundleString(msg);
+		if (!param.equals("")){
+			userMsg += "\n" + param;
 		}
+		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
+		if (logger != null) {
+			String errorMsg = getBundleString(msg);
+			if (!param.equals("")){
+				errorMsg += "\nParameter: " + param;
+			}
+			logger.warning(errorMsg);			
+		}
+		
     }
-
+    
     
     public static void showError(Exception e) {
-    	String errorInfo = getErrorInfo();
-		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-		if (logger != null) {
-			//logger.warning(e.getMessage() + "\n" + e.toString() + "\n" + errorInfo);
-			logger.warning(e.toString() + "\n" + errorInfo);
-		}
+    	stackTraceLevel = 4;
+    	showError(e, "");
+    	stackTraceLevel = 3;
     }    
     
     
     public static void showError(Exception e, String param) {
-    	String errorInfo = getErrorInfo();
+    	
+    	String errorInfo = getErrorInfo(stackTraceLevel);
 		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
 		if (logger != null) {
-			logger.warning(e.toString() + "\n" + errorInfo + "\n" + param);
+			String errorMsg = e.toString() + "\n" + errorInfo;
+			if (!param.equals("")){
+				errorMsg += "\nParameter: " + param;
+			}
+			logger.warning(errorMsg);				
 		}
+		
     }     
     
     
+    public static void logError(Exception e) {
+    	stackTraceLevel = 4;
+    	logError(e, "");
+    	stackTraceLevel = 3;    	
+    }      
+    
+    
     public static void logError(Exception e, String param) {
-    	String errorInfo = getErrorInfo();
+    	
+    	String errorInfo = getErrorInfo(stackTraceLevel);
 		if (logger != null) {
-			logger.warning(e.toString() + "\n" + errorInfo + "\n" + param);
+			String errorMsg = e.toString() + "\n" + errorInfo;
+			if (!param.equals("")){
+				errorMsg += "\nParameter: " + param;
+			}
+			logger.warning(errorMsg);
 		}
+		
     }         
     
     
-    private static String getErrorInfo(){
-    	StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-    	String aux = ste[3].toString();
-    	return aux;
-    }
+    public static int confirmDialog(String msg) {
+    	return confirmDialog(msg, getBundleString("inp_descr"));
+    }  
     
     
     public static int confirmDialog(String msg, String title) {
-    	int reply;
-    	reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
+    	int reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
         return reply;    	
     }        
+
+    
+    private static String getErrorInfo(int firstLevel){
+    	StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+    	String aux = "";
+    	int lastLevel = (ste.length < firstLevel+NUM_LEVELS) ? ste.length : firstLevel+NUM_LEVELS;
+    	for (int i=firstLevel; i<lastLevel; i++) {
+			aux += ste[i].toString() + "\n";
+		}
+    	return aux;
+    }
     
 
     /**
@@ -287,11 +323,10 @@ public class Utils {
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
-		} catch (IOException ex) {
-		    System.out.println("IOException Error");
-		} catch (InterruptedException ex) {
-		    System.out.println("InterruptedException Error");
-
+		} catch (IOException e) {
+			Utils.logError(e);
+		} catch (InterruptedException e) {
+			Utils.logError(e);
 		}	
 		
 	}
@@ -304,7 +339,7 @@ public class Utils {
 			try {
 				Desktop.getDesktop().open(exec);
 			} catch (IOException e) {
-				Utils.getLogger().warning(e.getMessage());
+				Utils.logError(e);
 			}
 		}
 		else{
@@ -320,24 +355,24 @@ public class Utils {
 	
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists()){
-	    	Utils.getLogger().warning("Delete: no such file or directory: " + sFile);
+	    	getLogger().warning("Delete: no such file or directory: " + sFile);
 	    }
 	    if (!f.canWrite()){
-	    	Utils.getLogger().warning("Delete: write protected: " + sFile);	    	
+	    	getLogger().warning("Delete: write protected: " + sFile);	    	
 	    }
 	
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
 	    	if (files.length > 0){
-	    		Utils.getLogger().warning("Delete: directory not empty: " + sFile);
+	    		getLogger().warning("Delete: directory not empty: " + sFile);
 	    	}
 	    }
 	
 	    // Attempt to delete it
 	    boolean success = f.delete();
 	    if (!success) {
-    		Utils.getLogger().warning("Delete: deletion failed");
+    		getLogger().warning("Delete: deletion failed");
 	    }
 	
 	}
@@ -351,7 +386,7 @@ public class Utils {
 			raf.writeBytes(text);
 			raf.close();
 		} catch (Exception e) {
-			Utils.getLogger().warning(e.getMessage());
+			getLogger().warning(e.getMessage());
 		}
 
 	}		
@@ -360,5 +395,6 @@ public class Utils {
 	public static void setSqlLog(String string) {
 		Utils.isSqlLogged = Boolean.parseBoolean(string);
 	}	
+	
 	
 }

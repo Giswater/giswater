@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,16 +60,15 @@ public class ModelPostgis extends Model {
 	private static String lastTimeHydraulic = "";
 	
 	private static final String OPTIONS_TABLE = "v_inp_options";
-	private static final String REPORTS_TABLE = "inp_report";
-	private static final String TIMES_TABLE = "inp_times";
+	private static final String REPORTS_TABLE = "v_inp_report";
+	private static final String REPORTS_TABLE2 = "inp_report";
+	private static final String TIMES_TABLE = "v_inp_times";
 	private static final String PATTERNS_TABLE = "inp_pattern";
 	private static final Integer DEFAULT_SPACE = 23;
 
     
     public static void execute(String execType, String export, String exec, String import_) {
 
-        // Get log file
-        logger = Utils.getLogger();
 		iniProperties = MainDao.getPropertiesFile();   
         
         // Process all Postgis tables and output to INP file
@@ -130,9 +129,7 @@ public class ModelPostgis extends Model {
     // Main procedure
     public static boolean processAll(File fileInp) {
 
-        // Get log file
-        logger = Utils.getLogger();
-        logger.info("exportINP");
+        Utils.getLogger().info("exportINP");
 
 		iniProperties = MainDao.getPropertiesFile();         
     	String sql = "";
@@ -150,7 +147,7 @@ public class ModelPostgis extends Model {
             String templatePath = MainDao.folderConfig + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()){
-            	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath(), "inp_descr");
+            	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
             	return false;
             }
                 
@@ -166,9 +163,9 @@ public class ModelPostgis extends Model {
             Statement stat = connectionDrivers.createStatement();            
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()) {
-            	logger.info("INP target: " + rs.getInt("target_id") + " - " + rs.getString("table_name") + " - " + rs.getInt("lines"));
+            	Utils.getLogger().info("INP target: " + rs.getInt("target_id") + " - " + rs.getString("table_name") + " - " + rs.getInt("lines"));
             	if (rs.getString("table_name").equals(OPTIONS_TABLE) || 
-            		rs.getString("table_name").equals(REPORTS_TABLE) ||
+            		rs.getString("table_name").equals(REPORTS_TABLE) || rs.getString("table_name").equals(REPORTS_TABLE2) ||
             		rs.getString("table_name").equals(TIMES_TABLE)){
             		processTarget2(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
             	}
@@ -183,8 +180,8 @@ public class ModelPostgis extends Model {
             // Ending message
             String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
             	Utils.getBundleString("view_file");
-            int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleString("inp_descr"), JOptionPane.YES_NO_OPTION);
-            if (answer == JOptionPane.YES_OPTION){
+    		int res = Utils.confirmDialog(msg);             
+            if (res == JOptionPane.YES_OPTION){
                	Utils.openFile(fileInp.getAbsolutePath());
             }                   
             return true;
@@ -211,14 +208,14 @@ public class ModelPostgis extends Model {
 
         // If table is null or doesn't exit then exit function
         if (!MainDao.checkTable(MainDao.getSchema(), tableName) && !MainDao.checkView(MainDao.getSchema(), tableName)) {
-        	logger.info("Table or view doesn't exist: " + tableName);
+        	Utils.getLogger().info("Table or view doesn't exist: " + tableName);
             return;
         }
 
         // Get data of the specified Postgis table
         lMapDades = getTableData(tableName);
         if (lMapDades.isEmpty()) {
-        	logger.info("Table or view empty: " + tableName);
+        	Utils.getLogger().info("Table or view empty: " + tableName);
             return;
         }
 
@@ -327,7 +324,7 @@ public class ModelPostgis extends Model {
         // Get data of the specified Postgis table
         ArrayList<LinkedHashMap<String, String>> options = getTableData(tableName);
         if (options.isEmpty()) {
-        	logger.info("Empty table: " + tableName);        	
+        	Utils.getLogger().info("Empty table: " + tableName);        	
             return;
         }
 
@@ -362,9 +359,7 @@ public class ModelPostgis extends Model {
     // Exec SWMM
     public static boolean execSWMM(File fileInp, File fileRpt) {
 
-        // Get log file
-        logger = Utils.getLogger();
-        logger.info("execSWMM");
+        Utils.getLogger().info("execSWMM");
         
 		iniProperties = MainDao.getPropertiesFile();   
 		String exeCmd = iniProperties.get("FILE_" + softwareName, "C:\\EPA\\epanet.exe");
@@ -377,7 +372,7 @@ public class ModelPostgis extends Model {
 			exeCmd = JOptionPane.showInputDialog(null, msg);
             exeFile = new File(exeCmd);
     		if (!exeFile.exists()){            
-    			Utils.showError("inp_error_notfound", exeCmd, "inp_descr");
+    			Utils.showError("inp_error_notfound", exeCmd);
     			return false;
     		}
     		iniProperties.put("FILE_" + softwareName, exeCmd);
@@ -395,7 +390,7 @@ public class ModelPostgis extends Model {
         }        
         
         if (!fileInp.exists()){
-			Utils.showError("inp_error_notfound", fileInp.getAbsolutePath(), "inp_descr");     
+			Utils.showError("inp_error_notfound", fileInp.getAbsolutePath());     
 			return false;
         }
         sFile = fileRpt.getAbsolutePath().replace(".rpt", ".out");
@@ -406,7 +401,7 @@ public class ModelPostgis extends Model {
         exeCmd += " \"" + fileInp.getAbsolutePath() + "\" \"" + fileRpt.getAbsolutePath() + "\" \"" + fileOut.getAbsolutePath() + "\"";
 
         // Ending message
-        logger.info(exeCmd);            
+        Utils.getLogger().info(exeCmd);            
 
         // Exec process
 		try {
@@ -414,18 +409,18 @@ public class ModelPostgis extends Model {
 	        p.waitFor();			
 	        p.destroy();
 		} catch (IOException e) {
-			Utils.showError("inp_error_io", exeCmd, "inp_descr");
+			Utils.showError("inp_error_io", exeCmd);
 			return false;
 		} catch (InterruptedException e) {
-			Utils.showError("inp_error_io", exeCmd, "inp_descr");
+			Utils.showError("inp_error_io", exeCmd);
 			return false;
 		}
 
         // Ending message
         String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + 
         	Utils.getBundleString("view_file");
-        int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleString("inp_descr"), JOptionPane.YES_NO_OPTION);
-        if (answer == JOptionPane.YES_OPTION){
+		int res = Utils.confirmDialog(msg);         
+        if (res == JOptionPane.YES_OPTION){
         	Utils.openFile(fileRpt.getAbsolutePath());
         }                
 
@@ -437,17 +432,15 @@ public class ModelPostgis extends Model {
     // Import RPT file into Postgis tables
     public static boolean importRpt(File fileRpt, String projectName) {
         
-        // Get log file
-        logger = Utils.getLogger();    	
-        logger.info("importRpt");
+    	Utils.getLogger().info("importRpt");
 
 		iniProperties = MainDao.getPropertiesFile();   
     	ModelPostgis.fileRpt = fileRpt;
     	ModelPostgis.projectName = projectName;
 
     	// Ask confirmation to user
-       	int reply = Utils.confirmDialog("import_sure", "inp_descr");    		
-       	if (reply == JOptionPane.NO_OPTION){
+       	int res = Utils.confirmDialog("import_sure");    		
+       	if (res == JOptionPane.NO_OPTION){
        		return false;
     	}    	
 
@@ -460,8 +453,8 @@ public class ModelPostgis extends Model {
     	if (existsProjectName()){
     		exists = true;
             if (!overwrite){
-            	reply = Utils.confirmDialog("project_exists", "inp_descr");    		
-            	if (reply == JOptionPane.NO_OPTION){
+            	res = Utils.confirmDialog("project_exists");    		
+            	if (res == JOptionPane.NO_OPTION){
             		return false;
             	}
             }
@@ -472,7 +465,7 @@ public class ModelPostgis extends Model {
 			rat = new RandomAccessFile(fileRpt, "r");
 			lineNumber = 0;
 		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath(), "inp_descr");
+			Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath());
 			return false;
 		}			
         
@@ -535,8 +528,7 @@ public class ModelPostgis extends Model {
         		            		sql = "UPDATE "+MainDao.getSchema()+"."+rpt.getTable() + 
         		            			" SET time = '"+firstLine+"' WHERE time is null;";
         		            		insertSql+= sql;
-        		            	}
-        		    			//logger.info(insertSql);	            	
+        		            	}          	
         			    		if (!MainDao.executeUpdateSql(insertSql)){
         							return false;
         						}
@@ -572,7 +564,7 @@ public class ModelPostgis extends Model {
 	    		}
         	} 
         	else{
-           		logger.info("Target not found: " + rpt.getId() + " - " + rpt.getDescription());
+        		Utils.getLogger().info("Target not found: " + rpt.getId() + " - " + rpt.getDescription());
         	}
         	
         } // end iterations over targets (while)
@@ -590,7 +582,7 @@ public class ModelPostgis extends Model {
 		}
         
         // Ending message
-        Utils.showMessage("import_end", "", "inp_descr");                
+        Utils.showMessage("import_end");                
 
 		return true;
 		
@@ -620,7 +612,7 @@ public class ModelPostgis extends Model {
 		String line;
 		String aux;
 		
-		logger.info("Target: " + rpt.getId() + " - " + rpt.getDescription());
+		Utils.getLogger().info("Target: " + rpt.getId() + " - " + rpt.getDescription());
 		
 		// Read lines until rpt.getDescription() is found		
 		while (!found){
@@ -637,7 +629,7 @@ public class ModelPostgis extends Model {
 					aux = line.substring(0, rpt.getDescription().length());
 					if (aux.equals(rpt.getDescription())){
 						found = true;
-						logger.info("Target line number: " + lineNumber);						
+						Utils.getLogger().info("Target line number: " + lineNumber);						
 					}
 				}
 			} catch (IOException e) {
@@ -659,7 +651,7 @@ public class ModelPostgis extends Model {
 					return false;
 				}				
 			} catch (IOException e) {
-				Utils.showError("inp_error_io", "", "inp_descr");
+				Utils.showError(e);
 			}
 		}		
 		
@@ -685,7 +677,7 @@ public class ModelPostgis extends Model {
 			try {
 				rat = new RandomAccessFile(fileRpt, "r");
 			} catch (FileNotFoundException e) {
-				Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath(), "inp_descr");
+				Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath());
 				return;
 			}
 		}
@@ -725,7 +717,7 @@ public class ModelPostgis extends Model {
 				}
 			}
 		} catch (IOException e) {
-			Utils.showError("inp_error_io", "", "inp_descr");
+			Utils.showError(e);
 		}		
 		
 	}
@@ -776,7 +768,7 @@ public class ModelPostgis extends Model {
 					}							
 				}
 			} catch (IOException e) {
-				Utils.showError("inp_error_io", "", "inp_descr");
+				Utils.showError(e);
 			}
 		}		
 		
@@ -1006,7 +998,7 @@ public class ModelPostgis extends Model {
 		String line;
 		String aux;
 		
-		logger.info("Target: " + rpt.getId() + " - " + rpt.getDescription());
+		Utils.getLogger().info("Target: " + rpt.getId() + " - " + rpt.getDescription());
 
 		// Read lines until rpt.getDescription() is found			
 		while (!found){
@@ -1024,7 +1016,7 @@ public class ModelPostgis extends Model {
 					if (aux.equals(rpt.getDescription().toLowerCase())){
 						found = true;
 						firstLine = line;						
-						logger.info("Target line number: " + lineNumber);						
+						Utils.getLogger().info("Target line number: " + lineNumber);						
 					}
 				}
 			} catch (IOException e) {
@@ -1042,7 +1034,7 @@ public class ModelPostgis extends Model {
 					return false;
 				}				
 			} catch (IOException e) {
-				Utils.showError("inp_error_io", "", "inp_descr");
+				Utils.showError(e);
 			}
 		}		
 		
@@ -1084,7 +1076,7 @@ public class ModelPostgis extends Model {
 					numBlankLines++;
 				}
 			} catch (IOException e) {
-				Utils.showError("inp_error_io", "", "inp_descr");
+				Utils.showError(e);
 			}
 		}		
 		

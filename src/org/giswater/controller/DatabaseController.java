@@ -79,9 +79,9 @@ public class DatabaseController {
 			method.invoke(this);	
 		} catch (Exception e) {
 			if (Utils.getLogger() != null){			
-				Utils.logError(e, actionCommand);
+				Utils.logError(e);
 			} else{
-				Utils.showError(e, actionCommand);
+				Utils.showError(e);
 			}
 		}
 		
@@ -105,7 +105,7 @@ public class DatabaseController {
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		Utils.showMessage("connection_closed", "", "inp_descr");			
+		Utils.showMessage("connection_closed");			
 		
 	}
 	
@@ -140,7 +140,7 @@ public class DatabaseController {
 			// Save properties file
 			MainDao.savePropertiesFile();
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage("connection_opened", "", "inp_descr");	
+			Utils.showMessage("connection_opened");	
 			//view.enableButtons(true);
 			//MainDao.setSchema(view.getSchemaResult());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);

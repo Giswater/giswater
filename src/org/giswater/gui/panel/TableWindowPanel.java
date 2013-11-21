@@ -66,6 +66,7 @@ public class TableWindowPanel extends JPanel {
 			MainDao.setSchema(schema);
 		}
 		ResultSet rs = MainDao.getTableResultset("sector_selection");		
+		if (rs == null) return;		
 		tableModelCatchment = new TableModelCatchment(rs, "sector");
 		tableModelCatchment.setTable(table);
 		table.setModel(tableModelCatchment);

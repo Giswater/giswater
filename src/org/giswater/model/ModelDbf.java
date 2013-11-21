@@ -91,9 +91,7 @@ public class ModelDbf extends Model{
 	// Main procedure
 	public static boolean processAll(File fileInp) {
 
-        // Get log file
-        logger = Utils.getLogger();
-        logger.info("exportINP(dbf)");
+        Utils.getLogger().info("exportINP(dbf)");
 
 		iniProperties = MainDao.getPropertiesFile();         
     	String sql = "";
@@ -104,7 +102,7 @@ public class ModelDbf extends Model{
             String templatePath = MainDao.folderConfig + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()){
-            	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath(), "inp_descr");
+            	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
             	return false;
             }			
 			
@@ -118,7 +116,7 @@ public class ModelDbf extends Model{
 			Statement stat = connectionDrivers.createStatement();
 			ResultSet rs = stat.executeQuery(sql);					
 			while (rs.next()) {
-            	logger.info("INP target: " + rs.getInt("table_id") + " - " + rs.getString("name"));		
+				Utils.getLogger().info("INP target: " + rs.getInt("table_id") + " - " + rs.getString("name"));		
 				processTarget(rs.getInt("id"), rs.getInt("table_id"), rs.getInt("lines"));	
 			}		    
 			rs.close();
@@ -126,19 +124,19 @@ public class ModelDbf extends Model{
 			raf.close();
 
             // Ending message
-            String msg = Utils.getBundleText().getString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
-            	Utils.getBundleText().getString("view_file");
-            int answer = JOptionPane.showConfirmDialog(null, msg, Utils.getBundleText().getString("inp_descr"), JOptionPane.YES_NO_OPTION);
-            if (answer == JOptionPane.YES_OPTION){
+            String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
+            	Utils.getBundleString("view_file");
+    		int res = Utils.confirmDialog(msg);             
+            if (res == JOptionPane.YES_OPTION){
             	Utils.openFile(fileInp.getAbsolutePath());
             }               
             return true;
 			
 		} catch (IOException e) {
-			Utils.showError("inp_error_io", e.getMessage(), "inp_descr");
+			Utils.showError("inp_error_io", e.getMessage());
 			return false;
 		} catch (SQLException e) {
-			Utils.showError("inp_error_execution", e.getMessage(), "inp_descr");
+			Utils.showError(e, sql);
 			return false;
 		}
 
@@ -169,7 +167,7 @@ public class ModelDbf extends Model{
 			lMapDades = readDBF(file);
 		}
 		catch (Exception e){
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e);
 		}
 		if (lMapDades.isEmpty()) {
 			Utils.getLogger().info("File with no data: " + file.getAbsolutePath());
@@ -237,9 +235,12 @@ public class ModelDbf extends Model{
 			}
 			rs.close();
 		} catch (SQLException e) {
-			Utils.showError("inp_error_execution", e.getMessage(), "inp_descr");				
+			Utils.showError(e);				
 			return false;	
-		}				
+		} catch (NullPointerException e) {
+			Utils.showError(e);				
+			return false;	
+		}			
 
 		return true;
 

@@ -98,7 +98,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 			this.softwareName = softwareName;
 			initConfig();
 		} catch (MissingResourceException e) {
-			Utils.showError(e.getMessage(), "", "Error");
+			Utils.showError(e);
 			System.exit(ERROR);
 		}
 	}
@@ -161,31 +161,28 @@ public class EpaPanel extends JPanel implements ActionListener {
 		return chkImport.isSelected();
 	}
 	
-	public void selectSourceType() {
-		
+	public void enableControlsDbf(boolean enable) {
 		boolean dbfSelected = optDbf.isSelected();
-		btnOptions.setEnabled(!dbfSelected);
-		btnSectorSelection.setEnabled(!dbfSelected);
-		btnDesign.setEnabled(!dbfSelected);
-		lblSchema.setEnabled(!dbfSelected);
-		cboSchema.setEnabled(!dbfSelected);
-		cboSchema.setEditable(!dbfSelected);
-		
 		lblFolderShp.setEnabled(dbfSelected);
 		txtInput.setEnabled(dbfSelected);
 		btnFolderShp.setEnabled(dbfSelected);
-		
 	}	
 	
-	public void enableButtons(boolean enable){
-		btnAccept.setEnabled(enable);
+	public void enableControlsDatabase(boolean enable){
 		btnCreateSchema.setEnabled(enable);
 		btnDeleteSchema.setEnabled(enable);
 		btnOptions.setEnabled(enable);
 		btnDesign.setEnabled(enable);
 		btnSectorSelection.setEnabled(enable);
 		btnReport.setEnabled(enable);
-	}
+		lblSchema.setEnabled(enable);
+		cboSchema.setEnabled(enable);
+		cboSchema.setEditable(enable);		
+	}	
+	
+	public void enableAccept(boolean enable){
+		btnAccept.setEnabled(enable);
+	}	
 	
 	public void setDesignButton(String text, String actionCommand){
 		btnDesign.setText(text);
@@ -335,22 +332,24 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(btnFolderShp, "cell 3 2");
 
 		lblSchema = new JLabel(BUNDLE.getString("Form.lblSelectSchema.text")); //$NON-NLS-1$
+		lblSchema.setEnabled(false);
 		panel_4.add(lblSchema, "cell 1 3");
 
 		cboSchema = new JComboBox<String>();
+		cboSchema.setEnabled(false);
 		cboSchema.setMaximumSize(new Dimension(110, 20));
 		cboSchema.setPreferredSize(new Dimension(24, 20));
 		cboSchema.setActionCommand("schemaChanged");
 		cboSchema.setMinimumSize(new Dimension(110, 20));
 		panel_4.add(cboSchema, "flowx,cell 2 3,alignx left");
 		
-				btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
-				btnSectorSelection.setMinimumSize(new Dimension(110, 23));
-				btnSectorSelection.setPreferredSize(new Dimension(110, 23));
-				btnSectorSelection.setEnabled(false);
-				btnSectorSelection.setMaximumSize(new Dimension(110, 23));
-				btnSectorSelection.setActionCommand("showCatchment");
-				panel_4.add(btnSectorSelection, "cell 1 5,alignx right");
+		btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
+		btnSectorSelection.setMinimumSize(new Dimension(110, 23));
+		btnSectorSelection.setPreferredSize(new Dimension(110, 23));
+		btnSectorSelection.setEnabled(false);
+		btnSectorSelection.setMaximumSize(new Dimension(110, 23));
+		btnSectorSelection.setActionCommand("showCatchment");
+		panel_4.add(btnSectorSelection, "cell 1 5,alignx right");
 		
 		btnOptions = new JButton(BUNDLE.getString("Form.btnOptions.text")); //$NON-NLS-1$
 		btnOptions.setMaximumSize(new Dimension(110, 23));
@@ -459,10 +458,6 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnReport.setActionCommand(BUNDLE.getString("EpaPanel.btnReport.actionCommand")); //$NON-NLS-1$
 		panel_4.add(btnReport, "cell 2 5,alignx right");
 
-		// Select Database connection by default
-		tabbedPane.setSelectedIndex(0);
-		panel_4.setVisible(false);
-
 		setupListeners();
 
 	}
@@ -487,6 +482,20 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDesign.addActionListener(this);
 		btnReport.addActionListener(this);	
 
+//		addComponentListener(new ComponentAdapter() {
+//			@Override
+//			public void componentShown(ComponentEvent e) {
+//				System.out.println("AA");
+//			}
+//		});		
+//		
+//		addFocusListener(new FocusAdapter() {
+//			@Override
+//			public void focusGained(FocusEvent arg0) {
+//				System.out.println(softwareName);
+//			}
+//		});		
+		
 	}
 	
 

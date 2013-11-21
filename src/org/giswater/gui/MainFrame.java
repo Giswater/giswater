@@ -59,19 +59,25 @@ public class MainFrame extends JFrame implements ActionListener{
 	private MenuController menuController;
     private JDesktopPane desktopPane;
     
+    private JMenuItem mntmSwmm;
+	private JMenuItem mntmEpanet;
+	private JMenuItem mntmHecras;
+
+	private JMenu mnCatalog;
+	private JMenuItem mntmConduit;
+	private JMenuItem mntmMaterials;
+	private JMenuItem mntmTimeseries;
+	private JMenuItem mntmCurves;
+	
+	private JMenu mnConfiguration;
+	private JMenuItem mntmSoftware;
+	private JMenuItem mntmDatabase;
+
 	private JMenuItem mntmVersion;
 	private JMenuItem mntmAgreements;
 	private JMenuItem mntmLicense;
 	private JMenuItem mntmHelp;
-	private JMenuItem mntmWelcome;
-	
-	private JMenuItem mntmSwmm;
-	private JMenuItem mntmEpanet;
-	private JMenuItem mntmHecras;
-
-	private JMenu mnConfiguration;
-	private JMenuItem mntmSoftware;
-	private JMenuItem mntmDatabase;
+	private JMenuItem mntmWelcome;	
 
 	public EpaFrame swmmFrame;
 	public EpaFrame epanetFrame;
@@ -125,6 +131,28 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHecras = new JMenuItem("HECRAS");
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
+		
+		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
+		mnCatalog.setEnabled(false);
+		menuBar.add(mnCatalog);
+		
+		mntmConduit = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
+		mntmConduit.setActionCommand(BUNDLE.getString("MainFrame.mntmConduit.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmConduit);
+		
+		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
+		mntmMaterials.setActionCommand(BUNDLE.getString("MainFrame.mntmMaterials.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmMaterials);
+		
+		mntmTimeseries = new JMenuItem(BUNDLE.getString("MainFrame.mntmTimeseries.text"));
+		mntmTimeseries.setEnabled(false);
+		mntmTimeseries.setActionCommand(BUNDLE.getString("MainFrame.mntmTimeseries.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmTimeseries);
+		
+		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text")); //$NON-NLS-1$
+		mntmCurves.setEnabled(false);
+		mntmCurves.setActionCommand(BUNDLE.getString("MainFrame.mntmCurves.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmCurves);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
@@ -207,12 +235,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
 		swmmFrame.getPanel().setOptionsButton("Options", "showOptions");
 		swmmFrame.getPanel().setReportButton("Report options", "showReport");
-		//swmmFrame.getPanel().setReportButton(false);
 		epanetFrame.setTitle("EPANET");
 		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
 		epanetFrame.getPanel().setOptionsButton("Options", "showOptionsEpanet");
 		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
-		//epanetFrame.getPanel().setReportButton(true);
 
         // Get info from properties
 		getMainParams("MAIN");
@@ -316,6 +342,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmEpanet.addActionListener(this);
 		mntmHecras.addActionListener(this);
 		
+		mntmConduit.addActionListener(this);
+		mntmMaterials.addActionListener(this);
+		mntmTimeseries.addActionListener(this);
+		mntmCurves.addActionListener(this);
+		
 		mntmDatabase.addActionListener(this);
 		mntmSoftware.addActionListener(this);		
 		
@@ -355,6 +386,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		manageFrames(configFrame);
 	}
 	
+	public void enableCatalog(boolean enable) {
+		mnCatalog.setEnabled(enable);
+		mntmConduit.setEnabled(swmmFrame.isSelected());
+		//mntmTimeseries.setEnabled(swmmFrame.isSelected());
+	}
 	
     private void manageFrames(JInternalFrame frame) {
     	
@@ -363,11 +399,11 @@ public class MainFrame extends JFrame implements ActionListener{
             frame.setSelected(true);
             frame.setIcon(false);
             frame.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            Utils.getLogger().warning(ex.getMessage());
+        } catch (PropertyVetoException e) {
+            Utils.logError(e);
         }
         
     }
-    
-    
+
+
 }

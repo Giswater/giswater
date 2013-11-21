@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

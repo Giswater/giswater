@@ -95,8 +95,6 @@ public class MainDao {
     }
        
     
-    // Quan entrem aquí, encara no sabem quin software voldrem executar.
-    // Per tant, millor no "alterar" la vista
 	public static void silenceConnection(){
 		
 		String host, port, db, user, password;
@@ -146,9 +144,9 @@ public class MainDao {
         	FileOutputStream fos = new FileOutputStream(iniFile);
             iniProperties.store(fos, true);
         } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", iniFile.getPath(), "inp_descr");
+            Utils.showError("inp_error_notfound", iniFile.getPath());
         } catch (IOException e) {
-            Utils.showError("inp_error_io", iniFile.getPath(), "inp_descr");
+            Utils.showError("inp_error_io", iniFile.getPath());
         }
 
     }
@@ -163,10 +161,10 @@ public class MainDao {
         try {
         	iniProperties.load(new FileInputStream(fileIni));      
         } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", configPath, "inp_descr");
+            Utils.showError("inp_error_notfound", configPath);
             return false;
         } catch (IOException e) {
-            Utils.showError("inp_error_io", configPath, "inp_descr");
+            Utils.showError("inp_error_io", configPath);
             return false;
         }
         return (iniProperties != null);
@@ -185,14 +183,14 @@ public class MainDao {
             	connectionConfig = DriverManager.getConnection("jdbc:sqlite:" + filePath);
                 return true;
             } else {
-                Utils.showError("inp_error_notfound", filePath, "inp_descr");
+                Utils.showError("inp_error_notfound", filePath);
                 return false;
             }
         } catch (SQLException e) {
-            Utils.showError("inp_error_connection", e.getMessage(), "inp_descr");
+            Utils.showError("inp_error_connection", e.getMessage());
             return false;
         } catch (ClassNotFoundException e) {
-            Utils.showError("inp_error_connection", "ClassNotFoundException", "inp_descr");
+            Utils.showError("inp_error_connection", "ClassNotFoundException");
             return false;
         }
 
@@ -210,14 +208,14 @@ public class MainDao {
                 connectionDrivers = DriverManager.getConnection("jdbc:sqlite:" + filePath);
                 return true;
             } else {
-                Utils.showError("inp_error_notfound", filePath, "inp_descr");
+                Utils.showError("inp_error_notfound", filePath);
                 return false;
             }
         } catch (SQLException e) {
-            Utils.showError("inp_error_connection", e.getMessage(), "inp_descr");
+            Utils.showError("inp_error_connection", e.getMessage());
             return false;
         } catch (ClassNotFoundException e) {
-            Utils.showError("inp_error_connection", "ClassNotFoundException", "inp_descr");
+            Utils.showError("inp_error_connection", "ClassNotFoundException");
             return false;
         }
 
@@ -237,7 +235,7 @@ public class MainDao {
             rs.close();
             stat.close();
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
         }
         return result;   
         
@@ -253,7 +251,7 @@ public class MainDao {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
             } catch (SQLException e1) {
-                Utils.showError(e1.getMessage(), "", "inp_descr");
+                Utils.showError(e1);
                 return false;
             }   		
         }
@@ -267,7 +265,7 @@ public class MainDao {
 			connectionPostgis.close();
 			isConnected = false;
 		} catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+            Utils.showError(e);
 		}
     }
 
@@ -321,7 +319,7 @@ public class MainDao {
             ResultSet rs = stat.executeQuery(sql);
             return (rs.next());
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e);
             return false;
         }
     }
@@ -336,7 +334,7 @@ public class MainDao {
             ResultSet rs = stat.executeQuery(sql);
             return (rs.next());
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
             return false;
         }
     }	
@@ -351,7 +349,7 @@ public class MainDao {
             ResultSet rs = stat.executeQuery(sql);
             return (rs.next());
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
             return false;
         }
     }    
@@ -366,7 +364,7 @@ public class MainDao {
             ResultSet rs = stat.executeQuery(sql);
             return (rs.next());
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
             return false;
         }
     }        
@@ -380,7 +378,7 @@ public class MainDao {
             ResultSet rs = stat.executeQuery(sql);
             return (rs.next());
         } catch (SQLException e) {
-        	Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
             return false;
         }
     }    
@@ -403,7 +401,7 @@ public class MainDao {
             rs.close();
     		return vector;	            
         } catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+            Utils.showError(e, sql);
             return vector;
         }
 		
@@ -418,7 +416,7 @@ public class MainDao {
         	Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stat.executeQuery(sql);
         } catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+        	Utils.showError(e, sql);
         }
         return rs;   
         
@@ -437,6 +435,7 @@ public class MainDao {
 		} else{
 			sql = "SELECT * FROM "+schema+"."+table;
 		}
+		//Utils.logSql(sql);
         return getResultset(connection, sql);
 	}
 	
@@ -468,7 +467,7 @@ public class MainDao {
 	        rs.close();   
             stat.close();	        
 		} catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+            Utils.showError(e, sql);
 		}            
 		return vector;
     	
@@ -497,7 +496,7 @@ public class MainDao {
 	        }
 	        stat.close();
 		} catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+            Utils.showError(e, sql);
 		}            
 		return vector;
 		
@@ -505,7 +504,7 @@ public class MainDao {
 	
 	
 	public static Vector<String> getTable(String table, String schemaParam) {
-		return getTable(table, schemaParam, true);
+		return getTable(table, schemaParam, false);
 	}
 	
 	
@@ -591,7 +590,7 @@ public class MainDao {
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
 					if (executeUpdateSql(content, true)){
-						Utils.showMessage("schema_creation_completed", "", "inp_descr");								
+						Utils.showMessage("schema_creation_completed", "");								
 					}
 				}
 		    	
@@ -600,7 +599,7 @@ public class MainDao {
         } catch (FileNotFoundException e) {
             Utils.showError("inp_error_notfound", filePath);
         } catch (IOException e) {
-            Utils.showError("inp_error_io", filePath);
+            Utils.showError(e, filePath);
         }
 		
 	}
@@ -654,7 +653,7 @@ public class MainDao {
 	        }
 	        stat.close();
 		} catch (SQLException e) {
-            Utils.showError(e.getMessage(), "", "inp_descr");
+            Utils.showError(e, sql);
 		}    		
 		return folder;
 		
@@ -676,7 +675,7 @@ public class MainDao {
 		
 		File file = new File(bin);
 		if (!file.exists()){
-			Utils.showError("Postgis bin folder not exists:", bin, "inp_descr");
+			Utils.showError("Postgis bin folder not exists:", bin);
 			return false;			
 		}
 		bin+= File.separator;

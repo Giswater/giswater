@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.giswater.dao.MainDao;
 import org.giswater.util.PropertiesMap;
@@ -36,7 +35,6 @@ import org.giswater.util.Utils;
 
 public class Model {
 
-	protected static Logger logger;	
 	protected static PropertiesMap iniProperties;
     protected static Connection connectionDrivers;
     protected static String softwareVersion = "";
@@ -70,7 +68,7 @@ public class Model {
     	try {
 			Model.rat.close();
 		} catch (IOException e) {
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e);
 		}
     }
     

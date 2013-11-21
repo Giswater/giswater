@@ -52,7 +52,7 @@ public class ReportController {
 	
 	// Update ComboBox items and selected item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void setComponents(){
+	public boolean setComponents(){
 
 		try {
 			rs.first();
@@ -73,7 +73,9 @@ public class ReportController {
 			}			
 		} catch (SQLException e) {
 			Utils.showError(e);
+			return false;
 		}
+		return true;
 		
 	}
 	
@@ -104,11 +106,13 @@ public class ReportController {
 				value = combo.getSelectedItem();
 				if (value == null || ((String)value).trim().equals("")){
 					rs.updateNull(key);						
-				} else{
+				} 
+				else{
 					rs.updateString(key, (String) value);
 				}				
 			}
-			HashMap<String, JTextField> textMap = view.textMap; 			
+			HashMap<String, JTextField> textMap = view.textMap; 	
+			
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
 				JTextField component = entry.getValue();
@@ -118,14 +122,16 @@ public class ReportController {
 				if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
 					if (value == null || ((String)value).trim().equals("")){
 						rs.updateNull(col);						
-					} else{
+					} 
+					else{
 						rs.updateString(col, (String) value);
 					}
 				}
-				else if (columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT) {
+				else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
 					if (((String)value).trim().equals("")){
 						rs.updateNull(col);
-					} else{					
+					} 
+					else{					
 						Integer aux = Integer.parseInt(value.toString());
 						rs.updateInt(col, aux);						
 					}
@@ -134,9 +140,9 @@ public class ReportController {
 					columnType == Types.FLOAT || columnType == Types.REAL) {
 					if (((String)value).trim().equals("")){
 						rs.updateNull(col);
-					} else{					
-						String s = value.toString();
-						Double aux = Double.parseDouble(s.replace(",", "."));
+					} 
+					else{					
+						Double aux = Double.parseDouble(value.toString().replace(",", "."));
 						rs.updateDouble(col, aux);						
 					}
 				}				
@@ -144,6 +150,7 @@ public class ReportController {
 					rs.updateTimestamp(col, (Timestamp) value);
 				}				
 			}		
+			
 			rs.updateRow();
 		} catch (SQLException e) {
 			Utils.showError(e);

@@ -1,6 +1,6 @@
 /*
- * This file is part of gisWater
- * Copyright (C) 2012  Tecnics Associats
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,9 +86,9 @@ public class HecRasController{
 		} catch (Exception e) {
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			if (Utils.getLogger() != null){			
-				Utils.logError(e, actionCommand);
+				Utils.logError(e);
 			} else{
-				Utils.showError(e, actionCommand);
+				Utils.showError(e);
 			}
 		}
 		
@@ -207,7 +207,7 @@ public class HecRasController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	if (MainDao.clearData()){
-        		Utils.showMessage("data_cleared", "", "inp_descr");
+        		Utils.showMessage("data_cleared");
         	}
         }    	
     	
@@ -218,14 +218,14 @@ public class HecRasController{
     	
     	String schemaName = view.getNewSchemaName();        
     	if (schemaName.equals("")){
-    		Utils.showError("enter_schema_name", "", "inp_descr");
+    		Utils.showError("enter_schema_name");
     		view.focusSchemaName();
     		return;
     	}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
     	MainDao.saveCase(schemaName);
     	view.setSchema(MainDao.getSchemas());
-    	Utils.showMessage("case_saved", schemaName, "inp_descr");    	
+    	Utils.showMessage("case_saved", schemaName);    	
         	
     }
 
@@ -234,14 +234,14 @@ public class HecRasController{
     	
     	String schemaName = view.getSchema();
         if (schemaName.equals("")){
-            Utils.showError("any_schema_selected", "", "inp_descr");
+            Utils.showError("any_schema_selected");
             return;
         } 
-        int res = JOptionPane.showConfirmDialog(view, "load_schema?", "inp_descr", JOptionPane.YES_NO_OPTION);
+		int res = Utils.confirmDialog("load_schema?");        
         if (res == 0){        
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	if (MainDao.loadCase(schemaName)){
-        		Utils.showMessage("case_loaded", schemaName, "inp_descr");
+        		Utils.showMessage("case_loaded", schemaName);
         	}
         }
         	
@@ -252,19 +252,19 @@ public class HecRasController{
     	
     	String schemaName = view.getSchema();
         if (schemaName.equals("")){
-            Utils.showError("any_schema_selected", "", "inp_descr");
+            Utils.showError("any_schema_selected");
             return;
         }          	
         else if (schemaName.toLowerCase().equals("gisras") || schemaName.toLowerCase().equals("original")){
-            Utils.showError("delete_cannot", schemaName, "inp_descr");
+            Utils.showError("delete_cannot", schemaName);
             return;
         }
-        int res = JOptionPane.showConfirmDialog(view, "delete_schema?", "inp_descr", JOptionPane.YES_NO_OPTION);
+		int res = Utils.confirmDialog("delete_schema?");      
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteCase(schemaName);
         	view.setSchema(MainDao.getSchemas());
-        	Utils.showMessage("case_deleted", schemaName, "inp_descr");
+        	Utils.showMessage("case_deleted", schemaName);
         }   
         	
     }    
@@ -274,7 +274,7 @@ public class HecRasController{
     	
 		// Comprobamos que se ha especificado fichero .asc
 		if (!getFileAsc()) {
-			Utils.showError("asc_file", "", "inp_descr");
+			Utils.showError("asc_file");
 			return;
 		}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
@@ -291,7 +291,7 @@ public class HecRasController{
    	
 		// Comprobamos que se ha especificado fichero .sdf
 		if (!getFileSdf()) {
-			Utils.showError("sdf_set", "", "inp_descr");
+			Utils.showError("sdf_set");
 			return;
 		}
 
@@ -306,10 +306,10 @@ public class HecRasController{
 		auxOut = fileSdf.getAbsolutePath();
 		boolean ok = Utils.copyFile(auxIn, auxOut);
 		if (!ok){
-			Utils.showError("sdf_error", "", "inp_descr");
+			Utils.showError("sdf_error");
 		}
 		else{
-			Utils.showMessage("sdf_ok", fileSdf.getAbsolutePath(), "inp_descr");
+			Utils.showMessage("sdf_ok", fileSdf.getAbsolutePath());
 		}
 		
 	}

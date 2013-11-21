@@ -68,7 +68,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		try {
 			initConfig();
 		} catch (MissingResourceException e) {
-			Utils.showError(e.getMessage(), "", "Error");
+			Utils.showError(e);
 			System.exit(ERROR);
 		}
 	}
