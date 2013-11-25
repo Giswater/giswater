@@ -154,19 +154,29 @@ public class MainController{
 		selectSourceType(true);
 	}
 	
+	private void checkCatalogTables(String schemaName){
+		mainFrame.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
+		mainFrame.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
+		mainFrame.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
+		//mainFrame.enableTimeseries(MainDao.checkTable(schemaName, ""));
+		//mainFrame.enableCurves(MainDao.checkTable(schemaName, "curves"));		
+	}
+	
 	public void selectSourceType(boolean askQuestion){
 
 		dbSelected = view.getOptDatabaseSelected();
 		// Database
 		if (dbSelected){
 			// Check if we already are connected
-			if (MainDao.isConnected){
+			if (MainDao.isConnected()){
 				mainFrame.enableCatalog(true);
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(true);
 				view.enableAccept(true);
 				view.setSchema(MainDao.getSchemas());
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
+				// Check Catalog tables
+				checkCatalogTables(view.getSchema());
 			} 
 			else{
 				if (askQuestion){
@@ -185,7 +195,7 @@ public class MainController{
 		}
 		// DBF
 		else{
-			mainFrame.enableCatalog(true);
+			mainFrame.enableCatalog(false);
 			view.enableControlsDbf(true);			
 			view.enableControlsDatabase(false);
 			view.enableAccept(true);
@@ -198,7 +208,10 @@ public class MainController{
 	
 	
 	public void schemaChanged(){
+		String schemaName = view.getSchema();
 		MainDao.setSchema(view.getSchema());
+		MainDao.setSoftwareName(software);
+		checkCatalogTables(schemaName);
 	}
 
 		
@@ -501,7 +514,7 @@ public class MainController{
 		}
 		
 		// Get INP template file
-		String templatePath = MainDao.folderConfig + version + ".inp";
+		String templatePath = MainDao.getFolderConfig()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			Utils.showError("inp_error_notfound", templatePath);				
