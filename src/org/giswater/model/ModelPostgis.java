@@ -96,7 +96,7 @@ public class ModelPostgis extends Model {
         String sql = "SELECT * FROM " + MainDao.getSchema() + "." +  tableName;
         PreparedStatement ps;
         try {
-            ps = MainDao.connectionPostgis.prepareStatement(sql);
+            ps = MainDao.getConnectionPostgis().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             // Get columns name
@@ -139,12 +139,12 @@ public class ModelPostgis extends Model {
             // Get default INP output file
             if (fileInp == null) {
                 String sFile = iniProperties.get("DEFAULT_INP");
-                sFile = MainDao.folderConfig + sFile;
+                sFile = MainDao.getFolderConfig() + sFile;
                 fileInp = new File(sFile);
             }
             
             // Get INP template File
-            String templatePath = MainDao.folderConfig + softwareVersion + ".inp";
+            String templatePath = MainDao.getFolderConfig() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()){
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
@@ -383,7 +383,7 @@ public class ModelPostgis extends Model {
         // Get files
         if (fileInp == null) {
             sFile = iniProperties.get("DEFAULT_INP");
-            sFile = MainDao.folderConfig + sFile;
+            sFile = MainDao.getFolderConfig() + sFile;
             fileInp = new File(sFile);
             sFile = sFile.replace(".inp", ".rpt");
             fileRpt = new File(sFile);            
@@ -482,7 +482,7 @@ public class ModelPostgis extends Model {
                 targets.put(rpt.getId(), rpt);
             }
             rs.close();
-            MainDao.connectionPostgis.setAutoCommit(false);       
+            MainDao.getConnectionPostgis().setAutoCommit(false);       
         } catch (SQLException e) {
             Utils.showError(e, sql);
             return false;
@@ -574,8 +574,8 @@ public class ModelPostgis extends Model {
         
         // Commit transaction ONLY if everything ok
         try {
-        	if (!MainDao.connectionPostgis.getAutoCommit()){
-        		MainDao.connectionPostgis.commit();
+        	if (!MainDao.getConnectionPostgis().getAutoCommit()){
+        		MainDao.getConnectionPostgis().commit();
         	}
 		} catch (SQLException e) {
             Utils.showError(e, sql);
@@ -594,7 +594,7 @@ public class ModelPostgis extends Model {
 		String sql = "SELECT * FROM "+MainDao.getSchema()+".rpt_result_cat " +
 			" WHERE result_id = '"+projectName+"'";
 		try {
-			PreparedStatement ps = MainDao.connectionPostgis.prepareStatement(sql);
+			PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
 	        return rs.next();
 		} catch (SQLException e) {
@@ -835,7 +835,7 @@ public class ModelPostgis extends Model {
 		String values = "'" + projectName + "', ";
 		String sql = "SELECT * FROM " + MainDao.getSchema() + "." + rpt.getTable();
 		try {
-	        PreparedStatement ps = MainDao.connectionPostgis.prepareStatement(sql);
+	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
 	        ResultSetMetaData rsmd = rs.getMetaData();	
             if (softwareName.equals("EPANET")){
@@ -880,9 +880,9 @@ public class ModelPostgis extends Model {
 	
 	private static void processTokens3(RptTarget rpt) {
 
-		String sql = "SELECT * FROM " + MainDao.getSchema() + "." + rpt.getTable();
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
 		try {
-	        PreparedStatement ps = MainDao.connectionPostgis.prepareStatement(sql);
+	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
 	        ResultSetMetaData rsmd = rs.getMetaData();	
 	        rs.close();

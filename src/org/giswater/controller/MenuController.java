@@ -32,6 +32,7 @@ import org.giswater.gui.dialog.WelcomeDialog;
 import org.giswater.gui.dialog.catalog.AbstractDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
+import org.giswater.gui.dialog.catalog.PatternsDialog;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -89,7 +90,7 @@ public class MenuController {
 	}
 
 	public void openHelp() {
-		Utils.openFile(MainDao.fileHelpPath);
+		Utils.openFile(MainDao.getFileHelpPath());
 	}
 
 	
@@ -111,6 +112,14 @@ public class MenuController {
 		else{
 			dialog.setName("roughness");
 		}		
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showPatterns(){
+		ResultSet rs = MainDao.getTableResultset("inp_pattern");
+		if (rs == null) return;		
+		PatternsDialog dialog = new PatternsDialog();
 		showCatalog(dialog, rs);
 	}	
 	

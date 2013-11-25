@@ -83,6 +83,9 @@ public abstract class AbstractDialog extends JDialog implements ActionListener{
 	}	
 	
 	
+	public void shapeChanged(){	}
+	
+	
 //	protected void setupListeners() {
 //		btnSave.addActionListener(this);	
 //		btnPrevious.addActionListener(this);

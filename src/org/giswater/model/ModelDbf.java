@@ -99,7 +99,7 @@ public class ModelDbf extends Model{
 		try {
 			
             // Get INP template File
-            String templatePath = MainDao.folderConfig + softwareVersion + ".inp";
+            String templatePath = MainDao.getFolderConfig() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()){
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());

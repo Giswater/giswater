@@ -40,15 +40,14 @@ import org.giswater.util.Utils;
 
 public class MainDao {
 	
-    public static Connection connectionConfig;   // SQLite
-    public static Connection connectionDrivers;	   // SQLite 
-	public static Connection connectionPostgis;   // Postgis
-    public static String schema;
-    public static boolean isConnected = false;
-	
-	public static String folderConfig;	
-	public static String fileHelpPath;
-	
+	private static Connection connectionConfig;   // SQLite
+    private static Connection connectionDrivers;  // SQLite 
+    private static Connection connectionPostgis;  // Postgis
+	private static String softwareName;   // SWMM or EPANET
+    private static String schema;
+    private static boolean isConnected = false;
+    private static String folderConfig;	
+	private static String fileHelpPath;
     private static PropertiesMap iniProperties = new PropertiesMap();
 	private static String appPath;	
 	private static String configPath;
@@ -56,6 +55,47 @@ public class MainDao {
 	private static final String CONFIG_FOLDER = "config";
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
+	
+	
+	public static Connection getConnectionDrivers() {
+		return connectionDrivers;
+	}
+
+	public static Connection getConnectionPostgis() {
+		return connectionPostgis;
+	}	
+
+	public static String getSoftwareName() {
+		return softwareName;
+	}	
+	
+	public static void setSoftwareName(String param) {
+		softwareName = param;
+	}
+	
+	public static boolean isConnected() {
+		return isConnected;
+	}	
+	
+	public static void setConnected(boolean connected) {
+		isConnected = connected;
+	}	
+	
+	public static String getSchema() {
+		return schema;
+	}
+	
+	public static void setSchema(String param) {
+		schema = param;
+	}
+
+	public static String getFileHelpPath() {
+		return fileHelpPath;
+	}
+
+	public static String getFolderConfig() {
+		return folderConfig;
+	}	
 	
 	
     // Sets initial configuration files
@@ -517,16 +557,6 @@ public class MainDao {
 		Utils.logSql(sql);
 	}
 	
-	
-	public static String getSchema() {
-		return schema;
-	}
-	
-	
-	public static void setSchema(String schema) {
-		MainDao.schema = schema;
-	}
-	
 
 	public static void deleteSchema(String schemaName) {
 		String sql = "DROP schema IF EXISTS "+schemaName+" CASCADE;";
@@ -699,7 +729,7 @@ public class MainDao {
 		
 		return true;
 			
-	}	
-	
+	}
+
 
 }

@@ -49,13 +49,14 @@ public class ConduitDialog extends AbstractDialog{
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
+	private JTextField txtTsect;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
 	protected JButton btnSave;	
 	protected JButton btnCreate;
 	protected JButton btnDelete;	
+	private JComboBox cboShape;
+	private JTextField txtCurve;
 	
 	
 	public ConduitDialog() {
@@ -87,25 +88,28 @@ public class ConduitDialog extends AbstractDialog{
 		JLabel lblTsectid = new JLabel("tsect_id:");
 		panelGeneral.add(lblTsectid, "cell 3 0,alignx trailing");
 		
-		textField_11 = new JTextField();
-		textField_11.setName("tsect_id");
-		textField_11.setColumns(10);
-		panelGeneral.add(textField_11, "cell 4 0,growx");
+		txtTsect = new JTextField();
+		txtTsect.setEnabled(false);
+		txtTsect.setName("tsect_id");
+		txtTsect.setColumns(10);
+		panelGeneral.add(txtTsect, "cell 4 0,growx");
 		
 		JLabel lblFlowUnits = new JLabel("Shape:");
 		panelGeneral.add(lblFlowUnits, "cell 0 1,alignx trailing");
 
-		JComboBox flow_units = new JComboBox();
-		panelGeneral.add(flow_units, "cell 1 1,growx");
-		flow_units.setName("shape");
+		cboShape = new JComboBox();
+		cboShape.setActionCommand("shapeChanged");
+		panelGeneral.add(cboShape, "cell 1 1,growx");
+		cboShape.setName("shape");
 		
 		JLabel lblCurveid = new JLabel("curve_id:");
 		panelGeneral.add(lblCurveid, "cell 3 1,alignx trailing");
 		
-		textField_10 = new JTextField();
-		textField_10.setName("curve_id");
-		textField_10.setColumns(10);
-		panelGeneral.add(textField_10, "cell 4 1,growx");
+		txtCurve = new JTextField();
+		txtCurve.setEnabled(false);
+		txtCurve.setName("curve_id");
+		txtCurve.setColumns(10);
+		panelGeneral.add(txtCurve, "cell 4 1,growx");
 		
 		JLabel lblGeom = new JLabel("geom1:");
 		panelGeneral.add(lblGeom, "cell 0 2,alignx trailing");
@@ -222,6 +226,22 @@ public class ConduitDialog extends AbstractDialog{
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
+		cboShape.addActionListener(this);		
+	}
+	
+	
+	public void shapeChanged(){
+		
+		txtCurve.setEnabled(false);
+		txtTsect.setEnabled(false);
+		String shape = cboShape.getSelectedItem().toString();
+		if (shape.toUpperCase().equals("CUSTOM")){
+			txtCurve.setEnabled(true);
+		}
+		else if (shape.toUpperCase().equals("IRREGULAR")){
+			txtTsect.setEnabled(true);
+		}
+		
 	}
 	
 	

@@ -62,7 +62,7 @@ public class TableWindowPanel extends JPanel {
 
 	
 	private void setData(){
-		if (MainDao.schema == null){
+		if (MainDao.getSchema() == null){
 			MainDao.setSchema(schema);
 		}
 		ResultSet rs = MainDao.getTableResultset("sector_selection");		
@@ -143,7 +143,7 @@ public class TableWindowPanel extends JPanel {
 		String msg = Utils.getBundleString("question_delete");
         int res = JOptionPane.showConfirmDialog(this, msg, "Giswater", JOptionPane.YES_NO_OPTION);
         if (res == 0){
-        	String sql = "DELETE FROM "+MainDao.schema+".sector_selection";
+        	String sql = "DELETE FROM "+MainDao.getSchema()+".sector_selection";
         	MainDao.executeUpdateSql(sql);
     		setData();
         }

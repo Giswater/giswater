@@ -97,7 +97,7 @@ public class LicenseDialog extends JDialog {
 		btngsdf.addActionListener(new OpenUrlAction());		
 		getContentPane().add(btngsdf, "flowx,cell 1 4,alignx center");
 		
-		String info4 = "Copyright 2013 T\u00E8cnicsassociats";
+		String info4 = "Copyright (c) COPYRIGHT GITS-UPC & TECNICSASSOCIATS";
 		info4 = info4.toUpperCase();
 		JLabel lblNewLabel = new JLabel(info4);
 		getContentPane().add(lblNewLabel, "cell 1 4");

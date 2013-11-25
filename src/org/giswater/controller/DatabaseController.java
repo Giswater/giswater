@@ -57,7 +57,7 @@ public class DatabaseController {
 		view.setUser(prop.get("POSTGIS_USER"));
 		view.setPassword(Encryption.decrypt(prop.get("POSTGIS_PASSWORD")));		
 		
-		if (MainDao.isConnected){
+		if (MainDao.isConnected()){
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 		}
 		else{
@@ -90,7 +90,7 @@ public class DatabaseController {
 	
 	public void testConnection(){
 	
-		if (MainDao.isConnected){
+		if (MainDao.isConnected()){
 			closeConnection();
 		}
 		else{
@@ -120,9 +120,9 @@ public class DatabaseController {
 		db = view.getDatabase();
 		user = view.getUser();
 		password = view.getPassword();		
-		MainDao.isConnected  = MainDao.setConnectionPostgis(host, port, db, user, password);
+		MainDao.setConnected(MainDao.setConnectionPostgis(host, port, db, user, password));
 		
-		if (MainDao.isConnected){
+		if (MainDao.isConnected()){
 			//view.setSchemaResult(MainDao.getSchemas());
 			prop.put("POSTGIS_HOST", host);
 			prop.put("POSTGIS_PORT", port);

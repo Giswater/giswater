@@ -122,9 +122,9 @@ public class CatalogController {
 		if (comboName.equals("shape")){
 			tableName = "inp_value_catarc";
 		}
-//		else if (comboName.equals("timser_id")){
-//			tableName = "inp_timser_id";
-//		}
+		else if (comboName.equals("patter_type")){
+			tableName = "inp_typevalue_pattern";
+		}
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -266,6 +266,11 @@ public class CatalogController {
 			Utils.showError(e);
 		}
 		
+	}
+	
+	
+	public void shapeChanged(){
+		view.shapeChanged();
 	}
 	
 	

@@ -103,7 +103,7 @@ public class HecRasController{
 	public void isConnected(){
 
 		// Check if we already are connected
-		if (MainDao.isConnected){
+		if (MainDao.isConnected()){
 			view.enableButtons(true);
 			view.setSchema(MainDao.getSchemas());
 		} 

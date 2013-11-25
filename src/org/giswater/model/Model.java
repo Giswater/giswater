@@ -48,7 +48,7 @@ public class Model {
     
     public static boolean setConnectionDrivers(String sqlitePath) {
 		if (MainDao.setConnectionDrivers(sqlitePath)){
-			connectionDrivers = MainDao.connectionDrivers;
+			connectionDrivers = MainDao.getConnectionDrivers();
 			return true;
 		} else{
 			return false;

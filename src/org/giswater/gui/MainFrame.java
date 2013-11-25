@@ -87,6 +87,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ConfigFrame configFrame;
 	
 	private PropertiesMap prop;
+	private JMenuItem mntmPatterns;
 	
 
 	public MainFrame(boolean isConnected) {
@@ -153,6 +154,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmCurves.setEnabled(false);
 		mntmCurves.setActionCommand(BUNDLE.getString("MainFrame.mntmCurves.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmCurves);
+		
+		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
+		mntmPatterns.setActionCommand(BUNDLE.getString("MainFrame.mntmPatterns.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmPatterns);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
@@ -344,6 +349,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmConduit.addActionListener(this);
 		mntmMaterials.addActionListener(this);
+		mntmPatterns.addActionListener(this);		
 		mntmTimeseries.addActionListener(this);
 		mntmCurves.addActionListener(this);
 		
@@ -392,6 +398,26 @@ public class MainFrame extends JFrame implements ActionListener{
 		//mntmTimeseries.setEnabled(swmmFrame.isSelected());
 	}
 	
+	public void enableConduit(boolean enable) {
+		mntmConduit.setEnabled(enable);
+	}
+
+	public void enableCurves(boolean enable) {
+		mntmCurves.setEnabled(enable);
+	}
+
+	public void enableMaterials(boolean enable) {
+		mntmMaterials.setEnabled(enable);
+	}
+
+	public void enablePatterns(boolean enable) {
+		mntmPatterns.setEnabled(enable);
+	}
+	
+	public void enableTimeseries(boolean enable) {
+		mntmTimeseries.setEnabled(enable);
+	}
+	
     private void manageFrames(JInternalFrame frame) {
     	
         frame.setVisible(true);
@@ -405,5 +431,5 @@ public class MainFrame extends JFrame implements ActionListener{
         
     }
 
-
+    
 }
