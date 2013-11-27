@@ -18,13 +18,15 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.gui.dialog;
+package org.giswater.gui.dialog.about;
 
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -72,7 +74,6 @@ public class VersionDialog extends JDialog {
 	}	
 	
 
-	// TODO: 118n
 	public VersionDialog(String title) {
 
 		ImageIcon image = new ImageIcon("images/imago.png");
@@ -113,6 +114,13 @@ public class VersionDialog extends JDialog {
 		btnGithub.setToolTipText(URL_GITHUB);
 		btnGithub.addActionListener(new OpenUrlGithub());		
 		getContentPane().add(btnGithub, "cell 0 2 2 1,alignx center");
+		
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				dispose();
+			}
+		});		
 	
 	}
 

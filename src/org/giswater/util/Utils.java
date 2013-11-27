@@ -33,7 +33,8 @@ public class Utils {
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
     private static final String LOG_FOLDER = "log/";
     private static final String ICON_PATH = "images\\imago.png";
-    private static final int NUM_LEVELS = 4;
+    private static final int NUM_LEVELS = 6;
+    private static final int FIRST_LEVEL = 3;
 
     private static int stackTraceLevel = 3;
 	private static Logger logger;
@@ -236,9 +237,9 @@ public class Utils {
     
     
     public static void showError(Exception e) {
-    	stackTraceLevel = 4;
+    	stackTraceLevel = FIRST_LEVEL + 1;
     	showError(e, "");
-    	stackTraceLevel = 3;
+    	stackTraceLevel = FIRST_LEVEL;
     }    
     
     
@@ -258,9 +259,9 @@ public class Utils {
     
     
     public static void logError(Exception e) {
-    	stackTraceLevel = 4;
+    	stackTraceLevel = FIRST_LEVEL + 1;
     	logError(e, "");
-    	stackTraceLevel = 3;    	
+    	stackTraceLevel = FIRST_LEVEL;    	
     }      
     
     

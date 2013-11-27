@@ -26,6 +26,7 @@ import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
+import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
 
 

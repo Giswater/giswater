@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.model;
+package org.giswater.model.table;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -28,7 +28,7 @@ import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.giswater.gui.MyComboBoxEditor;
@@ -36,7 +36,7 @@ import org.giswater.gui.MyComboBoxRenderer;
 import org.giswater.util.Utils;
 
 
-public class TableModelSuper extends AbstractTableModel {
+public class TableModelSuper extends DefaultTableModel {
 
 	private static final long serialVersionUID = -3793339630551246161L;
 	protected String[] columnNames = new String[0];
@@ -127,7 +127,6 @@ public class TableModelSuper extends AbstractTableModel {
 	
 	public void setValueAt(Object value, int row, int col) {
 
-//		System.out.println("setValueAt: " + value.toString() + " in " + row + " " + col);
 		boolean isInsert = false;
 		
 		try {
@@ -150,11 +149,12 @@ public class TableModelSuper extends AbstractTableModel {
 			if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
 				rs.updateString(col+1, (String) value);
 			}
-			else if(columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT || columnType == Types.NUMERIC)  {
+			else if(columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
 				Integer aux = Integer.parseInt(value.toString());
 				rs.updateInt(col+1, (Integer) aux);
 			}
-			else if(columnType == Types.DECIMAL || columnType == Types.DOUBLE || columnType == Types.FLOAT || columnType == Types.REAL) {
+			else if(columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
+				columnType == Types.FLOAT || columnType == Types.REAL) {
 				Double aux = Double.parseDouble(value.toString());				
 				rs.updateDouble(col+1, aux);
 		    }

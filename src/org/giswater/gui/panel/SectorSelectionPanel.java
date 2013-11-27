@@ -29,24 +29,25 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.giswater.dao.MainDao;
-import org.giswater.model.TableModelCatchment;
-import org.giswater.util.Utils;
-
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.dao.MainDao;
+import org.giswater.model.table.TableModelSectorSelection;
+import org.giswater.util.Utils;
 
-public class TableWindowPanel extends JPanel {
+
+public class SectorSelectionPanel extends JPanel {
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final long serialVersionUID = 7046850563517014315L;
-
-	private TableModelCatchment tableModelCatchment;
+	private final String TABLE_SECTOR = "sector";
+	private final String TABLE_SECTOR_SELECTION = "sector_selection";
+	
+	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
 	private JButton btnDelete;
@@ -54,7 +55,7 @@ public class TableWindowPanel extends JPanel {
 	private String schema;
 
 	
-	public TableWindowPanel(String schema) {
+	public SectorSelectionPanel(String schema) {
 		this.schema = schema;
 		initConfig();
 		setData();
@@ -62,17 +63,19 @@ public class TableWindowPanel extends JPanel {
 
 	
 	private void setData(){
+		
 		if (MainDao.getSchema() == null){
 			MainDao.setSchema(schema);
 		}
-		ResultSet rs = MainDao.getTableResultset("sector_selection");		
+		ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
 		if (rs == null) return;		
-		tableModelCatchment = new TableModelCatchment(rs, "sector");
-		tableModelCatchment.setTable(table);
-		table.setModel(tableModelCatchment);
-		tableModelCatchment.setCombos();
+		tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
+		tableModelSectorSelection.setTable(table);
+		table.setModel(tableModelSectorSelection);
+		tableModelSectorSelection.setCombos();
 		btnInsert.setVisible(true);
 		btnDelete.setVisible(true);			
+		
 	}
 	
 	
@@ -80,7 +83,7 @@ public class TableWindowPanel extends JPanel {
 		
 		setLayout(new MigLayout("", "[10px][100px:200px:400px,grow][12]", "[25.00][8px][:130px:200px][8px][]"));
 		
-		JLabel lblTable = new JLabel("Table sector_selection");
+		JLabel lblTable = new JLabel("Table " + TABLE_SECTOR_SELECTION);
 		lblTable.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTable, "cell 1 0,alignx center");
 		
@@ -97,56 +100,79 @@ public class TableWindowPanel extends JPanel {
 		
 		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text")); //$NON-NLS-1$
 		btnInsert.setMinimumSize(new Dimension(79, 23));
-		btnInsert.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				insert();
-			}
-		});
 		add(btnInsert, "flowx,cell 1 4,alignx left");
 		
 		btnDelete = new JButton(BUNDLE.getString("TableWindowPanel.btnDelete.text")); //$NON-NLS-1$
 		btnDelete.setMinimumSize(new Dimension(79, 23));
 		btnDelete.setMaximumSize(new Dimension(79, 23));
 		btnDelete.setVisible(false);
+		add(btnDelete, "cell 1 4");
+		
+		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text")); //$NON-NLS-1$
+		add(btnDeleteAll, "cell 1 4");
+
+		setupListeners();
+		
+	}
+
+
+	private void setupListeners() {
+		
+		btnInsert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				insert();
+			}
+		});
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				delete();
 			}
-		});
-		add(btnDelete, "cell 1 4");
-		
-		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text")); //$NON-NLS-1$
+		});		
 		btnDeleteAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteAll();
 			}
-		});
-		add(btnDeleteAll, "cell 1 4");
+		});		
 		
 	}
 
 
 	private void insert() {
-		tableModelCatchment.insertEmptyRow();	
-		tableModelCatchment.setCombos();
+		
+		tableModelSectorSelection.insertEmptyRow();	
+		tableModelSectorSelection.setCombos();
+		
 	}
 	
 	
 	private void delete(){
+		
     	int rowIndex = table.getSelectedRow();
-    	tableModelCatchment.deleteRow(rowIndex);
-    	setData();
+    	if (rowIndex!=-1){
+    		String value = (String) table.getModel().getValueAt(rowIndex, 0);
+    		String msg = Utils.getBundleString("delete_record?") + "\n" + value;
+            int res = Utils.confirmDialog(msg);
+            if (res == 0){    		
+            	tableModelSectorSelection.deleteRow(rowIndex);
+            	setData();
+            }
+    	}
+    	else{
+    		Utils.showMessage("no_record_selected");
+    	}
+    	
 	}
 
 	
 	private void deleteAll(){
-		String msg = Utils.getBundleString("question_delete");
-        int res = JOptionPane.showConfirmDialog(this, msg, "Giswater", JOptionPane.YES_NO_OPTION);
+		
+        int res = Utils.confirmDialog("question_delete");
         if (res == 0){
-        	String sql = "DELETE FROM "+MainDao.getSchema()+".sector_selection";
+        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
         	MainDao.executeUpdateSql(sql);
     		setData();
         }
+        
 	}
 	
 	

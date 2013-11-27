@@ -91,6 +91,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JButton btnReport;
 	
 	private String softwareName;   // swmm | epanet
+	private JButton btnDeleteData;
 
 	
 	public EpaPanel(String softwareName) {
@@ -171,6 +172,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	public void enableControlsDatabase(boolean enable){
 		btnCreateSchema.setEnabled(enable);
 		btnDeleteSchema.setEnabled(enable);
+		btnDeleteData.setEnabled(enable);
 		btnOptions.setEnabled(enable);
 		btnDesign.setEnabled(enable);
 		btnSectorSelection.setEnabled(enable);
@@ -219,11 +221,16 @@ public class EpaPanel extends JPanel implements ActionListener {
 
 	
 	// Postgis
+	public void setSelectedSchema(String schemaName) {
+		cboSchema.setSelectedItem(schemaName);
+	}
+	
+	
 	public void setSchema(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
-			cboSchema.setModel(cbm);			
+			cboSchema.setModel(cbm);		
 		} else{
 			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
 			theModel.removeAllElements();
@@ -242,7 +249,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][571.00px]", "[5px][410.00]"));
+		setLayout(new MigLayout("", "[8.00][602.00px]", "[5px][410.00]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -285,7 +292,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		// Panel 4
 		panel_4 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_4, null); //$NON-NLS-1$
-		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px,grow][110]", "[][25px][40px][25px][5px:5px:5px][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
+		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][102.00]", "[][25px][40px][25px][5px:5px:5px][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
 		
 		lblChooseType = new JLabel(BUNDLE.getString("EpaPanel.lbl.text")); //$NON-NLS-1$
 		panel_4.add(lblChooseType, "cell 1 0");
@@ -296,6 +303,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(optDbf, "flowx,cell 2 0");
 		
 		optDatabase = new JRadioButton("Database");
+		optDatabase.setSelected(true);
 		optDatabase.setActionCommand("selectSourceType");
 		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel_4.add(optDatabase, "cell 2 0");
@@ -343,13 +351,21 @@ public class EpaPanel extends JPanel implements ActionListener {
 		cboSchema.setMinimumSize(new Dimension(110, 20));
 		panel_4.add(cboSchema, "flowx,cell 2 3,alignx left");
 		
+		btnDeleteData = new JButton(BUNDLE.getString("EpaPanel.btnDeleteData.text")); //$NON-NLS-1$
+		btnDeleteData.setPreferredSize(new Dimension(110, 23));
+		btnDeleteData.setMinimumSize(new Dimension(110, 23));
+		btnDeleteData.setMaximumSize(new Dimension(110, 23));
+		btnDeleteData.setEnabled(false);
+		btnDeleteData.setActionCommand(BUNDLE.getString("EpaPanel.btnDeleteData.actionCommand")); //$NON-NLS-1$
+		panel_4.add(btnDeleteData, "cell 3 3");
+		
 		btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setMinimumSize(new Dimension(110, 23));
 		btnSectorSelection.setPreferredSize(new Dimension(110, 23));
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setMaximumSize(new Dimension(110, 23));
-		btnSectorSelection.setActionCommand("showCatchment");
-		panel_4.add(btnSectorSelection, "cell 1 5,alignx right");
+		btnSectorSelection.setActionCommand(BUNDLE.getString("EpaPanel.btnSectorSelection.actionCommand")); //$NON-NLS-1$
+		panel_4.add(btnSectorSelection, "flowx,cell 2 5,alignx right");
 		
 		btnOptions = new JButton(BUNDLE.getString("Form.btnOptions.text")); //$NON-NLS-1$
 		btnOptions.setMaximumSize(new Dimension(110, 23));
@@ -357,7 +373,15 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnOptions.setMinimumSize(new Dimension(110, 23));
 		btnOptions.setPreferredSize(new Dimension(110, 23));
 		btnOptions.setActionCommand("showOptions");
-		panel_4.add(btnOptions, "flowx,cell 2 5,alignx left");
+		panel_4.add(btnOptions, "cell 2 5,alignx left");
+		
+		btnReport = new JButton(BUNDLE.getString("EpaPanel.btnReport.text")); //$NON-NLS-1$
+		btnReport.setPreferredSize(new Dimension(110, 23));
+		btnReport.setMinimumSize(new Dimension(110, 23));
+		btnReport.setMaximumSize(new Dimension(110, 23));
+		btnReport.setEnabled(false);
+		btnReport.setActionCommand(BUNDLE.getString("EpaPanel.btnReport.actionCommand")); //$NON-NLS-1$
+		panel_4.add(btnReport, "cell 3 5,alignx right");
 		
 		chkExport = new JCheckBox();
 		chkExport.setText("Export INP");
@@ -449,14 +473,6 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDesign.setMaximumSize(new Dimension(110, 23));
 		btnDesign.setActionCommand("showRaingage");
 		panel_4.add(btnDesign, "cell 2 5,alignx right,aligny baseline");
-		
-		btnReport = new JButton(BUNDLE.getString("EpaPanel.btnReport.text")); //$NON-NLS-1$
-		btnReport.setPreferredSize(new Dimension(110, 23));
-		btnReport.setMinimumSize(new Dimension(110, 23));
-		btnReport.setMaximumSize(new Dimension(110, 23));
-		btnReport.setEnabled(false);
-		btnReport.setActionCommand(BUNDLE.getString("EpaPanel.btnReport.actionCommand")); //$NON-NLS-1$
-		panel_4.add(btnReport, "cell 2 5,alignx right");
 
 		setupListeners();
 
@@ -477,25 +493,12 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnAccept.addActionListener(this);
 		btnCreateSchema.addActionListener(this);
 		btnDeleteSchema.addActionListener(this);
+		btnDeleteData.addActionListener(this);		
 		btnOptions.addActionListener(this);
 		btnSectorSelection.addActionListener(this);
 		btnDesign.addActionListener(this);
 		btnReport.addActionListener(this);	
-
-//		addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentShown(ComponentEvent e) {
-//				System.out.println("AA");
-//			}
-//		});		
-//		
-//		addFocusListener(new FocusAdapter() {
-//			@Override
-//			public void focusGained(FocusEvent arg0) {
-//				System.out.println(softwareName);
-//			}
-//		});		
-		
+	
 	}
 	
 

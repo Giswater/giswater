@@ -33,15 +33,15 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.MainFrame;
 import org.giswater.gui.dialog.OptionsDialog;
 import org.giswater.gui.dialog.OptionsEpanetDialog;
 import org.giswater.gui.dialog.RaingageDialog;
 import org.giswater.gui.dialog.ReportDialog;
 import org.giswater.gui.dialog.ReportEpanetDialog;
 import org.giswater.gui.dialog.TimesDialog;
+import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaPanel;
-import org.giswater.gui.panel.TableWindowPanel;
+import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.model.Model;
 import org.giswater.model.ModelDbf;
 import org.giswater.model.ModelPostgis;
@@ -158,7 +158,7 @@ public class MainController{
 		mainFrame.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
 		mainFrame.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
 		mainFrame.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-		//mainFrame.enableTimeseries(MainDao.checkTable(schemaName, ""));
+		mainFrame.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
 		//mainFrame.enableCurves(MainDao.checkTable(schemaName, "curves"));		
 	}
 	
@@ -192,6 +192,7 @@ public class MainController{
 				view.enableAccept(false);
 				view.setSchema(null);				
 			}
+			schemaChanged();
 		}
 		// DBF
 		else{
@@ -202,29 +203,37 @@ public class MainController{
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
 		}
 		
-		schemaChanged();
-		
+	}
+	
+	
+	public void schemaTest(String schemaName){
+		view.setSelectedSchema(schemaName);
 	}
 	
 	
 	public void schemaChanged(){
-		String schemaName = view.getSchema();
-		MainDao.setSchema(view.getSchema());
-		MainDao.setSoftwareName(software);
-		checkCatalogTables(schemaName);
+		MainDao.setSoftwareName(software);		
+		if (MainDao.isConnected()){
+			String schemaName = view.getSchema();
+			MainDao.setSchema(view.getSchema());
+			checkCatalogTables(schemaName);
+		}
 	}
 
 		
-	public void showCatchment(){
-		TableWindowPanel tableWindow = new TableWindowPanel(view.getSchema());
-        JDialog dialog = Utils.openDialogForm(tableWindow, 350, 280);
+	public void showSectorSelection(){
+		
+		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSchema());
+        JDialog dialog = Utils.openDialogForm(panel, 350, 280);
 		ImageIcon image = new ImageIcon("images/imago.png");        
         dialog.setIconImage(image.getImage());
         dialog.setVisible(true);
+        
 	}	
 	
 	
 	public void showOptions(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;
 		OptionsDialog dialog = new OptionsDialog();
@@ -234,10 +243,12 @@ public class MainController{
 			dialog.setLocationRelativeTo(null);   
 			dialog.setVisible(true);
 		}
+		
 	}
 	
 	
 	public void showOptionsEpanet(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;		
 		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
@@ -247,24 +258,31 @@ public class MainController{
 			dialog.setLocationRelativeTo(null);   
 			dialog.setVisible(true);
 		}
+		
 	}
 
 	
 	public void showRaingage(){
+		
 		ResultSet rs = MainDao.getTableResultset("raingage");
 		if (rs == null) return;		
 		RaingageDialog dialog = new RaingageDialog();
 		RaingageController controller = new RaingageController(dialog, rs);
-		if (controller.setComponents()){		
-			controller.moveFirst();
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
+		if (MainDao.getRowCount(rs) == 0){
+			controller.create();
 		}
+		else{
+			controller.moveFirst();
+		}
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);
+		
 	}	
 	
 	
 	public void showTimesValues(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_times");
 		if (rs == null) return;		
 		TimesDialog dialog = new TimesDialog();
@@ -274,10 +292,12 @@ public class MainController{
 			dialog.setLocationRelativeTo(null);   
 			dialog.setVisible(true);
 		}
+		
 	}	
 	
 	
 	public void showReport(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportDialog dialog = new ReportDialog();
@@ -287,10 +307,12 @@ public class MainController{
 			dialog.setLocationRelativeTo(null);   
 			dialog.setVisible(true);
 		}
+		
 	}	
 	
 	
 	public void showReportEpanet(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportEpanetDialog dialog = new ReportEpanetDialog();
@@ -300,8 +322,9 @@ public class MainController{
 			dialog.setLocationRelativeTo(null);   
 			dialog.setVisible(true);
 		}
+		
 	}	
-			
+	
 		
 
     public void chooseFileInp() {
@@ -340,7 +363,6 @@ public class MainController{
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileRpt = chooser.getSelectedFile();
             String path = fileRpt.getAbsolutePath();
-            System.out.println(path.lastIndexOf("."));
             if (path.lastIndexOf(".") == -1) {
                 path += ".rpt";
                 fileRpt = new File(path);
@@ -581,35 +603,50 @@ public class MainController{
 	}
 	
 	
-	public void createSchema(){
+	private String getUserSrid(String defaultSrid){
 		
-		//Integer driver = view.getDriver();
-		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
-		if (schemaName == null){
-			return;
-		}
-		schemaName = schemaName.trim().toLowerCase();
-		if (schemaName.equals("")){
-			Utils.showError("schema_valid_name");
-			return;
-		}
-		
-		String softwareName = view.getSoftwareName();
-		
-		// Ask user to set SRID?
-		String sridValue;
-		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
+		String sridValue = "";
 		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
 		if (sridQuestion){
 			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
 			if (sridValue == null){
-				return;
+				return "";
 			}
 		}
 		else{
 			sridValue = "0";
 		}
-		sridValue = sridValue.trim();
+		return sridValue.trim();
+		
+	}
+	
+	
+	public void createSchema(){
+		createSchema("");
+	}
+	
+	
+	public void createSchema(String defaultSchemaName){
+		
+		String schemaName = defaultSchemaName;
+		if (defaultSchemaName.equals("")){
+			schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+			if (schemaName == null){
+				return;
+			}
+			schemaName = schemaName.trim().toLowerCase();
+			if (schemaName.equals("")){
+				Utils.showError("schema_valid_name");
+				return;
+			}
+		}
+		
+		String softwareName = view.getSoftwareName();
+		
+		// Ask user to set SRID?
+		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
+		String sridValue = getUserSrid(defaultSrid);
+
 		if (!sridValue.equals("")){
 			Integer srid;
 			try{
@@ -630,7 +667,13 @@ public class MainController{
 				return;
 			}
 			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-			MainDao.createSchema(softwareName, schemaName, sridValue);
+			boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);
+			if (status && defaultSchemaName.equals("")){
+				Utils.showMessage("schema_creation_completed");
+			}
+			else if (status && !defaultSchemaName.equals("")){
+				Utils.showMessage("schema_truncate_completed");
+			}
 			view.setSchema(MainDao.getSchemas());		
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
@@ -653,5 +696,18 @@ public class MainController{
         
 	}		
 		
+	
+	public void deleteData(){
+		
+		String schemaName = view.getSchema();
+		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
+		int res = Utils.confirmDialog(msg);        
+        if (res == 0){
+        	MainDao.deleteSchema(schemaName);
+    		createSchema(schemaName);
+        }
+		
+	}
+	
 	
 }

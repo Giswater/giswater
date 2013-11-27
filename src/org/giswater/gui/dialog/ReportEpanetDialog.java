@@ -25,9 +25,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -43,6 +46,8 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ReportEpanetController;
+import org.giswater.util.Utils;
+
 import javax.swing.SwingConstants;
 
 
@@ -57,6 +62,7 @@ public class ReportEpanetDialog extends JDialog {
 	private JTextField txtStatistic;
 	private JTextField txtPattern;
 	private JTextField textField_1;
+	private AbstractButton btnSave;
 	
 	
 	public ReportEpanetDialog() {
@@ -282,7 +288,7 @@ public class ReportEpanetDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controller.saveData();
@@ -290,7 +296,30 @@ public class ReportEpanetDialog extends JDialog {
 		});
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
+		setupListeners();
+		
 	}
+
+	
+	private void setupListeners() {
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});
+		
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				int res = Utils.confirmDialog("save_data?");
+				if (res == 0){
+					controller.saveData();
+				}
+			}
+		});			
+		
+	}	
 
 
 }

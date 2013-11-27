@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.model;
+package org.giswater.model.table;
 
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -29,11 +29,12 @@ import javax.swing.table.TableColumnModel;
 import org.giswater.dao.MainDao;
 
 
-public class TableModelRaingage extends TableModelSuper {
+public class TableModelTimeseries extends TableModelSuper {
 
 	private static final long serialVersionUID = -3793339630551246161L;
 	
-	public TableModelRaingage(ResultSet results) {
+	
+	public TableModelTimeseries(ResultSet results) {
 		setMetadata(results);
 		setResultSet(results);
 		this.rs = results;
@@ -45,17 +46,13 @@ public class TableModelRaingage extends TableModelSuper {
 		Vector<String> vector;
 		TableColumnModel tcm = table.getColumnModel();		
 		TableColumn column;
-		
-		column = tcm.getColumn(1);
-		vector = MainDao.getTable("inp_value_raingage", null);
-		setColumnRendering(column, vector);
 
-		column = tcm.getColumn(4);
-		vector = MainDao.getTable("inp_typevalue_raingage", null);
+		column = tcm.getColumn(1);
+		vector = MainDao.getTable("inp_timser_id", null);
 		setColumnRendering(column, vector);
 		
-		column = tcm.getColumn(5);
-		vector = MainDao.getTable("inp_timser_id", null);
+		column = tcm.getColumn(2);
+		vector = MainDao.getTable("inp_typevalue_timeseries", null);
 		setColumnRendering(column, vector);
 		
 	}
@@ -66,4 +63,10 @@ public class TableModelRaingage extends TableModelSuper {
 		setCombos();
 	}	
 	
+	
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }	
+
+    
 }

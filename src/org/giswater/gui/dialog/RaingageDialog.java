@@ -40,10 +40,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.controller.RaingageController;
-import org.giswater.util.Utils;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.giswater.controller.RaingageController;
 
 
 @SuppressWarnings("rawtypes")
@@ -61,6 +60,7 @@ public class RaingageDialog extends JDialog implements ActionListener{
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JButton btnSave;
+	private JTextField textField_5;
 	
 	
 	public RaingageDialog() {
@@ -121,43 +121,51 @@ public class RaingageDialog extends JDialog implements ActionListener{
 	private void initConfig(){
 
 		setTitle("Raingage Table");
-		setBounds(100, 100, 633, 339);
-		getContentPane().setLayout(new MigLayout("", "[90.00,grow][200px]", "[80.00][60.00px][80.00][10px][36.00]"));
+		setBounds(100, 100, 526, 339);
+		getContentPane().setLayout(new MigLayout("", "[402.00][200px]", "[100:122.00][60.00px][80.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[75.00][200.00][10px][80px][200px,grow]", "[][][][][][]"));
-
-		JLabel lblFlowUnits = new JLabel("Form type:");
-		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
-
-		JComboBox flow_units = new JComboBox();
-		panelGeneral.add(flow_units, "cell 1 0,growx");
-		flow_units.setName("form_type");
-		
-		JLabel lblNewLabel_1 = new JLabel("Intvl:");
-		panelGeneral.add(lblNewLabel_1, "cell 3 0,alignx trailing");
-		
-		textField_1 = new JTextField();
-		textField_1.setName("intvl");
-		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 4 0,growx");
-
-		JLabel lblInfiltration = new JLabel("Scf:");
-		panelGeneral.add(lblInfiltration, "cell 0 1,alignx trailing");
-		
-		textField_2 = new JTextField();
-		textField_2.setName("scf");
-		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 1 1,growx");
+		panelGeneral.setLayout(new MigLayout("", "[80px:80px][150.00,grow][10px][80px][150]", "[][][][10]"));
+												
+												JLabel lblid = new JLabel("\u206FId:");
+												panelGeneral.add(lblid, "cell 0 0,alignx trailing");
+												
+												textField_5 = new JTextField();
+												textField_5.setName("rg_id");
+												textField_5.setColumns(10);
+												panelGeneral.add(textField_5, "cell 1 0,growx");
+										
+												JLabel lblFlowUnits = new JLabel("Form type:");
+												panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
+								
+										JComboBox flow_units = new JComboBox();
+										panelGeneral.add(flow_units, "cell 4 0,growx");
+										flow_units.setName("form_type");
+				
+				JLabel lblNewLabel_1 = new JLabel("Intvl:");
+				panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
+				
+				textField_1 = new JTextField();
+				textField_1.setName("intvl");
+				textField_1.setColumns(10);
+				panelGeneral.add(textField_1, "cell 1 1,growx");
+				
+						JLabel lblInfiltration = new JLabel("Scf:");
+						panelGeneral.add(lblInfiltration, "cell 3 1,alignx trailing");
+				
+				textField_2 = new JTextField();
+				textField_2.setName("scf");
+				textField_2.setColumns(10);
+				panelGeneral.add(textField_2, "cell 4 1,growx");
 		
 		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
-		panelGeneral.add(lblIgnoreSnowmelt, "cell 3 1,alignx trailing");
+		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 2,alignx trailing");
 		
 		JComboBox comboBox_3 = new JComboBox();
-		panelGeneral.add(comboBox_3, "cell 4 1,growx");
+		panelGeneral.add(comboBox_3, "cell 1 2,growx");
 		comboBox_3.setName("rgage_type");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
@@ -169,9 +177,9 @@ public class RaingageDialog extends JDialog implements ActionListener{
 		
 		btnNext = new JButton(">");
 		btnNext.setActionCommand("moveNext");
-		getContentPane().add(btnNext, "cell 1 4");
+		getContentPane().add(btnNext, "cell 1 4,alignx right");
 		
-		btnSave = new JButton(Utils.getBundleString("save"));
+		btnSave = new JButton("Save");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 4,alignx right");
 		
@@ -179,7 +187,7 @@ public class RaingageDialog extends JDialog implements ActionListener{
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelTimeseries.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "TIMESERIES", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelTimeseries, "cell 0 1 2 1,grow");
-		panelTimeseries.setLayout(new MigLayout("", "[75px][200px][10.00][80][200]", "[]"));
+		panelTimeseries.setLayout(new MigLayout("", "[80px:80px][150][10.00][80][200]", "[]"));
 				
 		JLabel lblFlowRouting = new JLabel("Timeseries id:");
 		panelTimeseries.add(lblFlowRouting, "cell 0 0,alignx right");
@@ -192,7 +200,7 @@ public class RaingageDialog extends JDialog implements ActionListener{
 		panelFile.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "FILE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelFile, "cell 0 2 2 1,grow");
-		panelFile.setLayout(new MigLayout("", "[75px][200px][10px][80px][200px,grow]", "[][]"));
+		panelFile.setLayout(new MigLayout("", "[80px:80px][150][10px][80px][150]", "[][]"));
 		
 		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
 		panelFile.add(lblIgnoreGroundwater, "cell 0 0,alignx right");
@@ -235,6 +243,9 @@ public class RaingageDialog extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
+		if (e.getActionCommand().equals("saveData")){
+			dispose();
+		}
 	}
 	
 

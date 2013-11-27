@@ -28,7 +28,7 @@ public class ConfigFrame extends JInternalFrame {
 	           
     private void initComponents() {
 
-    	panel = new ConfigPanel();
+    	panel = new ConfigPanel(this);
 
         setTitle(Utils.getBundleString("software_panel"));
 		setMaximizable(true);

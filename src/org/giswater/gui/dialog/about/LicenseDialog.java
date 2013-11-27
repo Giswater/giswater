@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.gui.dialog;
+package org.giswater.gui.dialog.about;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -37,16 +37,21 @@ import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.util.Utils;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 
 public class LicenseDialog extends JDialog {
 
 	private static final long serialVersionUID = 2829254148112384387L;
 	public URI uri = null;
 	public File file = null;
+	private JButton btnLicense;
 
 	
 	public LicenseDialog(String title, String info, String info1, String info2, String info3) {
-		
+			
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());
@@ -65,42 +70,57 @@ public class LicenseDialog extends JDialog {
 		lblInfo2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(lblInfo2, "cell 1 3,alignx center");
 		
-		class OpenUrlAction implements ActionListener {
-		    @Override public void actionPerformed(ActionEvent e) {
-				try {
-					if (file.exists()){
-						Desktop.getDesktop().open(file);
-					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-		    }
-		}		
-
     	String folderRoot;
 		try {
-			folderRoot = new File(".").getCanonicalPath() + File.separator;
+			folderRoot = new File(".").getCanonicalPath() + File.separator + "legal" + File.separator;
 			file = new File(folderRoot + "licensing.txt");			
 		} catch (IOException e) {
-			e.printStackTrace();
+			Utils.logError(e);
 		}   			
 		
-		JButton btngsdf = new JButton();
-		btngsdf.setFont(new Font("Tahoma", Font.BOLD, 12));
-		String text = "<HTML><FONT color=\"#000099\"><U>" + info3.toUpperCase() + "</U></FONT></HTML>";
-		btngsdf.setText(text);
-		btngsdf.setHorizontalAlignment(SwingConstants.LEFT);
-		btngsdf.setBorderPainted(false);
-		btngsdf.setOpaque(false);
-		btngsdf.setBackground(Color.WHITE);
-		btngsdf.setToolTipText(file.toString());
-		btngsdf.addActionListener(new OpenUrlAction());		
-		getContentPane().add(btngsdf, "flowx,cell 1 4,alignx center");
+		btnLicense = new JButton();
+		btnLicense.setFont(new Font("Tahoma", Font.BOLD, 12));
+		String text = "<HTML><FONT color=\"#000099\"><U>"+info3.toUpperCase()+"</U></FONT></HTML>";
+		btnLicense.setText(text);
+		btnLicense.setHorizontalAlignment(SwingConstants.LEFT);
+		btnLicense.setBorderPainted(false);
+		btnLicense.setOpaque(false);
+		btnLicense.setBackground(Color.WHITE);
+		btnLicense.setToolTipText(file.toString());
+		getContentPane().add(btnLicense, "flowx,cell 1 4,alignx center");
 		
 		String info4 = "Copyright (c) COPYRIGHT GITS-UPC & TECNICSASSOCIATS";
 		info4 = info4.toUpperCase();
 		JLabel lblNewLabel = new JLabel(info4);
 		getContentPane().add(lblNewLabel, "cell 1 4");
+		
+		setupListeners();
+		
+	}
+	
+	
+	private void setupListeners(){
+		
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				dispose();
+			}
+		});		
+
+		class OpenUrlAction implements ActionListener {
+		    @Override public void actionPerformed(ActionEvent event) {
+				try {
+					if (file.exists()){
+						Desktop.getDesktop().open(file);
+					}
+				} catch (IOException e) {
+					Utils.logError(e);
+				}
+		    }
+		}		
+		
+		btnLicense.addActionListener(new OpenUrlAction());				
 		
 	}
 

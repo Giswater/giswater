@@ -30,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -43,6 +44,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import org.giswater.controller.OptionsController;
+import org.giswater.util.Utils;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -71,6 +73,7 @@ public class OptionsDialog extends JDialog {
 	private JTextField textField_16;
 	private JTextField textField_18;
 	private JTextField textField_1;
+	private AbstractButton btnSave;
 	
 	
 	public OptionsDialog() {
@@ -401,24 +404,33 @@ public class OptionsDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
+		getContentPane().add(btnSave, "cell 1 3,alignx right");
+		
+		setupListeners();
+		
+	}
+	
+	
+	private void setupListeners() {
+		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controller.saveData();
+				dispose();
 			}
 		});
-		getContentPane().add(btnSave, "cell 1 3,alignx right");
 		
 		this.addWindowListener(new WindowAdapter(){
-			public void windowClosed(WindowEvent e){
-				System.out.println("jdialog window closed event received");
-			}
 			public void windowClosing(WindowEvent e){
-				//controller.saveData();
+				int res = Utils.confirmDialog("save_data?");
+				if (res == 0){
+					controller.saveData();
+				}
 			}
-		});		
+		});			
 		
-	}
+	}	
 
 	
 }

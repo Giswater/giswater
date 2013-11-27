@@ -22,6 +22,8 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -63,14 +65,14 @@ public class MaterialsDialog extends AbstractDialog{
 	private void initConfig(){
 
 		setTitle("Table cat_mat");
-		setBounds(100, 100, 559, 316);
-		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[220.00][10px][36.00]"));
+		setBounds(100, 100, 454, 218);
+		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[126.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[60.00][170.00][10px][80px][170px]", "[][][][][][][]"));
+		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][][][]"));
 		
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
@@ -132,11 +134,21 @@ public class MaterialsDialog extends AbstractDialog{
 
 	
 	protected void setupListeners() {
-		btnSave.addActionListener(this);	
+		
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
+
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});
+		
+		super.setupListeners();	
+		
 	}
 	
 	

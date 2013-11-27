@@ -43,7 +43,7 @@ public class ConfigController {
 		
 		this.view = dbPanel;	
         this.prop = MainDao.getPropertiesFile();
-	    view.setControl(this);        
+	    view.setController(this);        
     	setDefaultValues();    	
     	
 	}
@@ -93,9 +93,9 @@ public class ConfigController {
 		prop.put("FILE_SWMM", swmm);
 		prop.put("FILE_EPANET", epanet);
 		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
-		MainDao.savePropertiesFile();
-		
-		//view.close();
+
+		// Close frame
+		view.getFrame().setVisible(false);
 		
 	}	
 	

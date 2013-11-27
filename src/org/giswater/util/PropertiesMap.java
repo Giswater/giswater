@@ -11,6 +11,7 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+
 /**
  * This class is an enhanced version of java.util.Properties. It can take in any
  * map as an input to achieve desired functionality of that map i.e.
@@ -19,21 +20,21 @@ import java.util.LinkedHashMap;
  * @author hughja01
  */
 public class PropertiesMap {
-	private static final String KEY_COMMENT_HEADER = "HEADER_6913cjh0-jhgc3-11gda-8cghj6-07002jhg00c9a66";
 
+	private static final String KEY_COMMENT_HEADER = "HEADER_6913cjh0-jhgc3-11gda-8cghj6-07002jhg00c9a66";
 	private static final String LINE_SEPARATOR = "\n\r";
 	private static final String KEY_VALUE_SEPARATOR = "=:";
 	private static final String SEPARATOR = "=:\r\n";
 	private static final String COMMENT = "#!";
 	private static final String HEX_DIGITS = "0123456789ABCDEF";
 	private static final String SPECIAL_SAVE_CHARS = "=: \t\r\n\f#!";
-	private static final char[] hexDigit = { '0', '1', '2', '3', '4', '5', '6',
-			'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	private static final char[] hexDigit = { '0', '1', '2', '3', '4', '5', '6',	'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	private BufferedReader _reader;
 	private LinkedHashMap<String, String> _prop;
 	private LinkedHashMap<Object, String> _comments = new LinkedHashMap<Object, String>();
 
+	
 	/**
 	 * Creates a new instance of PropertiesMap using the provided Map. All
 	 * properties will be stored in that map and follows its rules of usage.

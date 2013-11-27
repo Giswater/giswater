@@ -43,6 +43,7 @@ public class RaingageController {
 
 	private RaingageDialog view;
     private ResultSet rs;
+	private String action;
 	
 	
 	public RaingageController(RaingageDialog dialog, ResultSet rs) {
@@ -74,24 +75,35 @@ public class RaingageController {
 	}	
 	
 	
+	public boolean setComponents(){
+		return setComponents(true);
+	}
+			
+	
 	// Update ComboBox items and selected item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean setComponents(){
+	public boolean setComponents(boolean fillData){
 
 		try {
 			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
-				String value = rs.getString(key);
 				view.setComboModel(combo, getComboValues(key));
+				String value = "";
+				if (fillData){
+					value = rs.getString(key);
+				}
 				view.setComboSelectedItem(combo, value);
 			}
 			HashMap<String, JTextField> textMap = view.textMap; 
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
-			    Object value = rs.getObject(key);
+			    Object value = "";
+				if (fillData){
+					value = rs.getObject(key);
+				}
 				view.setTextField(component, value);
 			}			
 		} catch (SQLException e) {
@@ -125,6 +137,7 @@ public class RaingageController {
 
 	
 	public void moveFirst() {
+		action = "other";
 		try {
 			rs.first();
 			setComponents();
@@ -135,6 +148,7 @@ public class RaingageController {
 	
 	
 	public void movePrevious(){
+		action = "other";
 		try {
 			if (!rs.isFirst()){
 				rs.previous();
@@ -147,6 +161,7 @@ public class RaingageController {
 	
 	
 	public void moveNext(){
+		action = "other";
 		try {
 			if (!rs.isLast()){
 				rs.next();
@@ -156,6 +171,17 @@ public class RaingageController {
 			Utils.showError(e);
 		}
 	}
+	
+	
+	public void create() {
+		action = "create";
+		try {
+			rs.moveToInsertRow();
+			setComponents(false);
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}
+	}		
 	
 
 	// Update Database table
@@ -215,7 +241,13 @@ public class RaingageController {
 					rs.updateTimestamp(col, (Timestamp) value);
 				}				
 			}		
-			rs.updateRow();
+			if (action.equals("create")){
+				rs.insertRow();
+				rs.last();
+			}
+			else{
+				rs.updateRow();
+			}
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {

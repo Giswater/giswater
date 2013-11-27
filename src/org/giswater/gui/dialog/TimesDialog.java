@@ -25,9 +25,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -44,6 +47,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.TimesController;
+import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
@@ -62,6 +66,7 @@ public class TimesDialog extends JDialog {
 	private JTextField txtReportStart;
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
+	private AbstractButton btnSave;
 	
 	
 	public TimesDialog() {
@@ -111,8 +116,7 @@ public class TimesDialog extends JDialog {
         		textMap.put(comp[i].getName(), (JTextField) comp[i]);
         	}
         }
- 
-        
+         
 	}
 
 
@@ -216,15 +220,33 @@ public class TimesDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-			}
-		});
+		btnSave = new JButton("Save");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		
+		setupListeners();
 		
 	}
 
+	
+	private void setupListeners() {
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});
+		
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				int res = Utils.confirmDialog("save_data?");
+				if (res == 0){
+					controller.saveData();
+				}
+			}
+		});			
+		
+	}		
+	
 
 }

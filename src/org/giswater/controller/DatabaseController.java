@@ -23,7 +23,7 @@ package org.giswater.controller;
 import java.lang.reflect.Method;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.MainFrame;
+import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DatabasePanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
@@ -105,7 +105,7 @@ public class DatabaseController {
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		Utils.showMessage("connection_closed");			
+		//Utils.showMessage("connection_closed");			
 		
 	}
 	
@@ -137,11 +137,8 @@ public class DatabaseController {
 	    	String folder = MainDao.getDataDirectory();
 	    	Utils.getLogger().info("Postgis data directory: " + folder);
 	        prop.put("POSTGIS_DATA", folder);
-			// Save properties file
-			MainDao.savePropertiesFile();
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage("connection_opened");	
-			//view.enableButtons(true);
+			//Utils.showMessage("connection_opened");	
 			//MainDao.setSchema(view.getSchemaResult());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 

@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.gui;
+package org.giswater.gui.frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,10 +42,6 @@ import org.giswater.controller.HecRasController;
 import org.giswater.controller.MainController;
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
-import org.giswater.gui.frame.ConfigFrame;
-import org.giswater.gui.frame.DatabaseFrame;
-import org.giswater.gui.frame.EpaFrame;
-import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 import java.awt.Color;
@@ -68,6 +64,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmMaterials;
 	private JMenuItem mntmTimeseries;
 	private JMenuItem mntmCurves;
+	private JMenuItem mntmPatterns;	
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
@@ -87,7 +84,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ConfigFrame configFrame;
 	
 	private PropertiesMap prop;
-	private JMenuItem mntmPatterns;
 	
 
 	public MainFrame(boolean isConnected) {
@@ -133,6 +129,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
+		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text")); //$NON-NLS-1$
+		mnGisProject.setVisible(false);
+		menuBar.add(mnGisProject);
+		
+		JMenuItem mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text")); //$NON-NLS-1$
+		mnGisProject.add(mntmQgis);
+		
 		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
 		mnCatalog.setEnabled(false);
 		menuBar.add(mnCatalog);
@@ -146,7 +149,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnCatalog.add(mntmMaterials);
 		
 		mntmTimeseries = new JMenuItem(BUNDLE.getString("MainFrame.mntmTimeseries.text"));
-		mntmTimeseries.setEnabled(false);
 		mntmTimeseries.setActionCommand(BUNDLE.getString("MainFrame.mntmTimeseries.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmTimeseries);
 		
@@ -252,13 +254,17 @@ public class MainFrame extends JFrame implements ActionListener{
         getFrameParams(hecRasFrame, "HECRAS");
         getFrameParams(dbFrame, "DB");      
         getFrameParams(configFrame, "CONFIG");
-       
-        // Define one controller per panel
-		new MainController(swmmFrame.getPanel(), this, "EPASWMM");
-		new MainController(epanetFrame.getPanel(), this, "EPANET");
+
+        // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new DatabaseController(dbFrame.getPanel(), this);
-		new ConfigController(configFrame.getPanel());		
+		new ConfigController(configFrame.getPanel());
+        MainController mcSwmm = new MainController(swmmFrame.getPanel(), this, "EPASWMM");   
+        mcSwmm.selectSourceType();
+        mcSwmm.schemaTest("epaswmm");
+        MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
+        mcEpanet.selectSourceType();
+        mcEpanet.schemaTest("epanet");
 		
 	}
 	
@@ -354,7 +360,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmCurves.addActionListener(this);
 		
 		mntmDatabase.addActionListener(this);
-		mntmSoftware.addActionListener(this);		
+		mntmSoftware.addActionListener(this);
 		
 		mntmWelcome.addActionListener(this);
 		mntmHelp.addActionListener(this);
@@ -420,16 +426,15 @@ public class MainFrame extends JFrame implements ActionListener{
 	
     private void manageFrames(JInternalFrame frame) {
     	
-        frame.setVisible(true);
         try {
+            frame.setVisible(true);        	
             frame.setSelected(true);
             frame.setIcon(false);
             frame.setMaximum(true);
+            frame.show();
         } catch (PropertyVetoException e) {
             Utils.logError(e);
         }
         
     }
-
-    
 }

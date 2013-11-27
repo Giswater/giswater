@@ -25,14 +25,16 @@ import java.sql.ResultSet;
 
 import org.giswater.controller.catalog.CatalogController;
 import org.giswater.dao.MainDao;
-import org.giswater.gui.MainFrame;
-import org.giswater.gui.dialog.LicenseDialog;
-import org.giswater.gui.dialog.VersionDialog;
-import org.giswater.gui.dialog.WelcomeDialog;
+import org.giswater.gui.dialog.about.LicenseDialog;
+import org.giswater.gui.dialog.about.VersionDialog;
+import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.dialog.catalog.AbstractDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
+import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.gui.frame.MainFrame;
+import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -90,7 +92,9 @@ public class MenuController {
 	}
 
 	public void openHelp() {
-		Utils.openFile(MainDao.getFileHelpPath());
+		String file = MainDao.getConfigPath();
+		Utils.getLogger().info(file);		
+		Utils.openFile(file);
 	}
 
 	
@@ -120,8 +124,24 @@ public class MenuController {
 		ResultSet rs = MainDao.getTableResultset("inp_pattern");
 		if (rs == null) return;		
 		PatternsDialog dialog = new PatternsDialog();
+		dialog.enableType(view.swmmFrame.isSelected());
 		showCatalog(dialog, rs);
 	}	
+	
+	
+	public void showTimeseries(){
+		
+		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries");		
+		if (rsMain == null || rsRelated == null) return;		
+		TimeseriesDialog dialog = new TimeseriesDialog();
+		//DefaultTableModel model = MainDao.buildTableModel(rsRelated);
+		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
+		
+		dialog.setTable(model);
+		showCatalog(dialog, rsMain);
+		
+	}		
 	
 	
 	private void showCatalog(AbstractDialog dialog, ResultSet rs){

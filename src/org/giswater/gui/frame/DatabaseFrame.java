@@ -10,7 +10,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import org.giswater.gui.MainFrame;
 import org.giswater.gui.panel.DatabasePanel;
 import org.giswater.util.Utils;
 

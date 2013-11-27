@@ -36,6 +36,10 @@ import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractDialog;
+import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
+import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
@@ -49,7 +53,7 @@ public class CatalogController {
 	public CatalogController(AbstractDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
-	    view.setControl(this);        
+	    view.setController(this);        
 	}
 	
 	
@@ -84,8 +88,9 @@ public class CatalogController {
 	public void setComponents(boolean fillData){
 
 		try {
-			// Update ComboBox items and selected item			
+			// Update ComboBox items and selected item with values from current ResultSet row			
 			HashMap<String, JComboBox> map = view.comboMap; 
+			if (map == null) return;
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
@@ -96,7 +101,7 @@ public class CatalogController {
 				}
 				view.setComboSelectedItem(combo, value);
 			}
-			// Update textField items and
+			// Update textField items with values from current ResultSet row
 			HashMap<String, JTextField> textMap = view.textMap; 
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 			    String key = entry.getKey();
@@ -106,14 +111,38 @@ public class CatalogController {
 					value = rs.getObject(key);
 				}
 				view.setTextField(component, value);
-			}			
+			}
+
+			// Update also detail table content
+			if (view instanceof TimeseriesDialog){
+				String id = "";
+				if (!action.equals("create")){
+					id = rs.getString("id");
+				}
+				updateDetailTable(id);
+			}
+	
+			
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
 		
+
+		
 	}
 	
+	
+	public void updateDetailTable(String id) throws SQLException{
+	
+		String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries WHERE timser_id = '"+id+"'";
+		ResultSet rsRelated = MainDao.getResultset(sql);
+		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
+		TimeseriesDialog tsDialog = (TimeseriesDialog) view;
+		tsDialog.setModel(model);
 
+	}
+
+	
 	// Get ComboBox items from Database
 	public Vector<String> getComboValues(String comboName) {
 
@@ -125,6 +154,15 @@ public class CatalogController {
 		else if (comboName.equals("patter_type")){
 			tableName = "inp_typevalue_pattern";
 		}
+		else if (comboName.equals("timser_type")){
+			tableName = "inp_value_timserid";
+		}	
+		else if (comboName.equals("times_type")){
+			tableName = "inp_typevalue_timeseries";
+		}		
+		else if (comboName.equals("timser_id")){
+			tableName = "inp_timser_id";
+		}		
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -132,13 +170,87 @@ public class CatalogController {
 	}
 
 	
+	// Update Table record
+	@SuppressWarnings("rawtypes")
+	public void saveData() {
+
+		String key;
+		Object value;
+		try {
+			ResultSetMetaData metadata = rs.getMetaData();					
+			HashMap<String, JComboBox> map = view.comboMap; 			
+			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
+				key = entry.getKey();
+				JComboBox combo = entry.getValue();
+				value = combo.getSelectedItem();
+				if (value == null || ((String)value).trim().equals("")){
+					rs.updateNull(key);						
+				} else{
+					rs.updateString(key, (String) value);
+				}				
+			}
+			HashMap<String, JTextField> textMap = view.textMap; 			
+			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
+				key = entry.getKey();
+				JTextField component = entry.getValue();
+				value = component.getText();
+				int col = rs.findColumn(key);
+				int columnType = metadata.getColumnType(col);
+				if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
+					if (value == null || ((String)value).trim().equals("")){
+						rs.updateNull(col);						
+					} 
+					else{
+						rs.updateString(col, (String) value);
+					}
+				}
+				else if (columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT) {
+					if (((String)value).trim().equals("")){
+						if (!key.equals("id")){
+							rs.updateNull(col);
+						}
+					} 
+					else{					
+						Integer aux = Integer.parseInt(value.toString());
+						rs.updateInt(col, aux);						
+					}
+				}
+				else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
+					columnType == Types.FLOAT || columnType == Types.REAL) {
+					if (((String)value).trim().equals("")){
+						rs.updateNull(col);
+					} 
+					else{					
+						Double aux = Double.parseDouble(value.toString().replace(",", "."));
+						rs.updateDouble(col, aux);						
+					}
+				}				
+				else if (columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE) {
+					rs.updateTimestamp(col, (Timestamp) value);
+				}				
+			}
+			if (action.equals("create")){
+				rs.insertRow();
+				rs.last();
+			}
+			else{
+				rs.updateRow();
+			}
+		} catch (SQLException e) {
+			Utils.showError(e);
+		} catch (Exception e) {
+			Utils.showError(e);
+		}
+		
+	}
+	
+	
 	public void moveFirst() {
 		action = "other";
 		try {
 			if (rs.isBeforeFirst() ) {    
 				rs.first();
 			}
-			//rs.first();
 			setComponents();
 		} catch (SQLException e) {
 			Utils.logError(e);
@@ -198,79 +310,92 @@ public class CatalogController {
 	}
 
 	
-	// Update Table record
-	@SuppressWarnings("rawtypes")
-	public void saveData() {
-
-		String key;
-		Object value;
-		try {
-			ResultSetMetaData metadata = rs.getMetaData();					
-			HashMap<String, JComboBox> map = view.comboMap; 			
-			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
-				key = entry.getKey();
-				JComboBox combo = entry.getValue();
-				value = combo.getSelectedItem();
-				if (value == null || ((String)value).trim().equals("")){
-					rs.updateNull(key);						
-				} else{
-					rs.updateString(key, (String) value);
-				}				
+	// Only for TimeseriesDialog
+	public void detailCreate(){
+		
+		if (view instanceof TimeseriesDialog){
+        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries";
+        	ResultSet rs = MainDao.getResultset(sql);
+    		if (rs == null) return;
+			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
+        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
+        	CatalogController controller = new CatalogController(detailDialog, rs);
+        	// Open dialog form to create new record
+        	controller.create();
+        	detailDialog.timesTypeChanged();
+        	detailDialog.setTimserId(tsDialog.getTimserId());   
+        	detailDialog.setModal(true);
+        	detailDialog.setLocationRelativeTo(null);   
+        	detailDialog.setVisible(true);   	
+		}
+		
+	}	
+	
+	
+	// Only for TimeseriesDialog
+	public void detailDelete(){
+		
+		if (view instanceof TimeseriesDialog){
+			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
+			String listId = tsDialog.detailDelete();
+			if (!listId.equals("")){
+            	String sql = "DELETE FROM "+MainDao.getSchema()+".inp_timeseries WHERE id IN ("+listId+")";
+            	Utils.getLogger().info(sql);
+            	MainDao.executeSql(sql);       
+            	setComponents();
 			}
-			HashMap<String, JTextField> textMap = view.textMap; 			
-			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
-				key = entry.getKey();
-				JTextField component = entry.getValue();
-				value = component.getText();
-				int col = rs.findColumn(key);
-				int columnType = metadata.getColumnType(col);
-				if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
-					if (value == null || ((String)value).trim().equals("")){
-						rs.updateNull(col);						
-					} else{
-						rs.updateString(col, (String) value);
-					}
-				}
-				else if (columnType == Types.INTEGER || columnType == Types.BIGINT || columnType == Types.SMALLINT) {
-					if (((String)value).trim().equals("")){
-						rs.updateNull(col);
-					} else{					
-						Integer aux = Integer.parseInt(value.toString());
-						rs.updateInt(col, aux);						
-					}
-				}
-				else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
-					columnType == Types.FLOAT || columnType == Types.REAL) {
-					if (((String)value).trim().equals("")){
-						rs.updateNull(col);
-					} else{					
-						String s = value.toString();
-						Double aux = Double.parseDouble(s.replace(",", "."));
-						rs.updateDouble(col, aux);						
-					}
-				}				
-				else if (columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE) {
-					rs.updateTimestamp(col, (Timestamp) value);
-				}				
-			}
-			if (action.equals("create")){
-				rs.insertRow();
-				rs.last();
-			}
-			else{
-				rs.updateRow();
-			}
-		} catch (SQLException e) {
-			Utils.showError(e);
-		} catch (Exception e) {
-			Utils.showError(e);
 		}
 		
 	}
 	
 	
+	// Only for TimeseriesDialog	
+	public void editRecord(String action) {
+    	
+		if (view instanceof TimeseriesDialog){
+			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
+	    	int row = tsDialog.getTable().getSelectedRow();
+	        if (row != -1) {
+	        	Object aux = tsDialog.getTable().getModel().getValueAt(row, 0);
+	        	Integer id = Integer.parseInt(aux.toString());
+	        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries WHERE id = "+id;
+	        	ResultSet rs = MainDao.getResultset(sql);
+	    		if (rs == null) return;	        	
+	        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
+	        	CatalogController controller = new CatalogController(detailDialog, rs);
+	        	// Open dialog form to edit selected row
+	        	controller.moveFirst();
+	        	detailDialog.setModal(true);
+	        	detailDialog.setLocationRelativeTo(null);   
+	        	detailDialog.setVisible(true);	        	
+	        }
+		}
+		
+    }	
+    
+
+	// Only for ConduitDialog
 	public void shapeChanged(){
-		view.shapeChanged();
+		if (view instanceof ConduitDialog){
+			ConduitDialog conduitDialog = (ConduitDialog) view;
+			conduitDialog.shapeChanged();
+		}
+	}
+
+	
+	// Only for TimeseriesDetailDialog
+	public void timesTypeChanged(){
+		if (view instanceof TimeseriesDetailDialog){
+			TimeseriesDetailDialog tsDialog = (TimeseriesDetailDialog) view;
+			tsDialog.timesTypeChanged();
+		}
+	}
+	
+
+	// Only for TimeseriesDetailDialog	
+	public void closeDetailDialog(){
+		action = "other";
+		setComponents();
 	}
 	
 	

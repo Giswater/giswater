@@ -29,9 +29,12 @@ import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
 
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
@@ -46,12 +49,12 @@ public class MainDao {
 	private static String softwareName;   // SWMM or EPANET
     private static String schema;
     private static boolean isConnected = false;
-    private static String folderConfig;	
-	private static String fileHelpPath;
-    private static PropertiesMap iniProperties = new PropertiesMap();
+    private static String folderConfig;
+	private static String helpPath;
 	private static String appPath;	
 	private static String configPath;
-	
+    private static PropertiesMap iniProperties = new PropertiesMap();
+    
 	private static final String CONFIG_FOLDER = "config";
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
@@ -89,13 +92,17 @@ public class MainDao {
 		schema = param;
 	}
 
-	public static String getFileHelpPath() {
-		return fileHelpPath;
+	public static String getHelpPath() {
+		return helpPath;
 	}
 
 	public static String getFolderConfig() {
 		return folderConfig;
 	}	
+	
+	public static String getConfigPath() {
+		return configPath;
+	}		
 	
 	
     // Sets initial configuration files
@@ -126,8 +133,8 @@ public class MainDao {
         }
         
         // Get PDF help file
-        if (fileHelpPath == null) {
-            fileHelpPath = folderConfig + File.separator + iniProperties.get("FILE_HELP");
+        if (helpPath == null) {
+            helpPath = folderConfig + File.separator + iniProperties.get("FILE_HELP");
         }
         
         return true;
@@ -463,7 +470,7 @@ public class MainDao {
 	}
 
 	
-	private static ResultSet getResultset(String sql){
+	public static ResultSet getResultset(String sql){
 		return getResultset(connectionPostgis, sql);
 	}
 	
@@ -586,12 +593,13 @@ public class MainDao {
 	}
 
 	
-	public static void createSchema(String softwareName, String schemaName, String srid) {
+	public static boolean createSchema(String softwareName, String schemaName, String srid) {
 		
+		boolean status = false;
 		String sql = "CREATE schema "+schemaName;
 		if (!executeUpdateSql(sql, true)){
 			rollback();
-			return;	
+			return status;	
 		}
 		String filePath = "";
 		String content = "";
@@ -620,7 +628,8 @@ public class MainDao {
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
 					if (executeUpdateSql(content, true)){
-						Utils.showMessage("schema_creation_completed", "");								
+						//Utils.showMessage("schema_creation_completed", "");
+						status = true;
 					}
 				}
 		    	
@@ -631,9 +640,64 @@ public class MainDao {
         } catch (IOException e) {
             Utils.showError(e, filePath);
         }
+		return status;
 		
 	}
 
+	
+	public static DefaultTableModel buildTableModel(ResultSet rs) {
+
+		try {
+
+			ResultSetMetaData metaData = rs.getMetaData();
+	
+		    // names of columns
+		    Vector<String> columnNames = new Vector<String>();
+		    int columnCount = metaData.getColumnCount();
+		    for (int column = 1; column <= columnCount; column++) {
+		        columnNames.add(metaData.getColumnName(column));
+		    }
+	
+		    // data of the table
+		    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+		    while (rs.next()) {
+		        Vector<Object> vector = new Vector<Object>();
+		        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+		            vector.add(rs.getObject(columnIndex));
+		        }
+		        data.add(vector);
+		    }
+		    return new DefaultTableModel(data, columnNames);
+		    
+		} catch (SQLException e) {
+			Utils.logError(e);
+			return null;			
+		}
+
+	}
+	
+	
+	public static int getRowCount(ResultSet resultSet) {
+		
+	    if (resultSet == null) {
+	        return 0;
+	    }
+	    try {
+	        resultSet.last();
+	        return resultSet.getRow();
+	    } catch (SQLException exp) {
+	        exp.printStackTrace();
+	    } finally {
+	        try {
+	            resultSet.beforeFirst();
+	        } catch (SQLException exp) {
+	            exp.printStackTrace();
+	        }
+	    }
+	    return 0;
+	    
+	}	
+	
 	
 	// hecRas functions
 	public static boolean createSdfFile(String fileName) {
@@ -705,7 +769,7 @@ public class MainDao {
 		
 		File file = new File(bin);
 		if (!file.exists()){
-			Utils.showError("Postgis bin folder not exists:", bin);
+			Utils.showError("postgis_not_found", bin);
 			return false;			
 		}
 		bin+= File.separator;

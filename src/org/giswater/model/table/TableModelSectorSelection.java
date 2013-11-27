@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.model;
+package org.giswater.model.table;
 
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -29,26 +29,25 @@ import javax.swing.table.TableColumnModel;
 import org.giswater.dao.MainDao;
 
 
-public class TableModelCatchment extends TableModelSuper {
+public class TableModelSectorSelection extends TableModelSuper {
 
 	private static final long serialVersionUID = -3793339630551246161L;
 	private String tableLookup;
 	
 	
-	public TableModelCatchment(ResultSet results, String tableLookup) {
+	public TableModelSectorSelection(ResultSet results, String tableLookup) {
 		setMetadata(results);
 		setResultSet(results);
 		this.rs = results;
 		this.tableLookup = tableLookup;
+		columnNames[0] = "Sector";
 	}
 
 	
 	public void setCombos(){
-		Vector<String> vector;
 		TableColumnModel tcm = table.getColumnModel();		
-		TableColumn column;
-		column = tcm.getColumn(0);
-		vector = MainDao.getTable(tableLookup, null, false);
+		TableColumn column = tcm.getColumn(0);
+		Vector<String> vector = MainDao.getTable(tableLookup, null, false);
 		setColumnRendering(column, vector);
 	}
 	
@@ -58,4 +57,5 @@ public class TableModelCatchment extends TableModelSuper {
 		setCombos();
 	}
 
+	
 }

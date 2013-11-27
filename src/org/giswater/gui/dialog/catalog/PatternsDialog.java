@@ -22,9 +22,12 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,7 +35,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JComboBox;
 
 
 @SuppressWarnings("rawtypes")
@@ -65,7 +67,7 @@ public class PatternsDialog extends AbstractDialog{
 	private JLabel lblFactor_5;
 	private JLabel lblFactor_6;
 	private JLabel lblFactor_7;
-	private JComboBox comboBox;
+	private JComboBox cboType;
 	private JLabel lblFactor_8;
 	private JTextField textField_4;
 	private JTextField textField_8;
@@ -97,12 +99,17 @@ public class PatternsDialog extends AbstractDialog{
 		createComponentMap();
 	}	
 
+	
+	public void enableType(boolean enable){
+		cboType.setEnabled(enable);
+	}
 
+	
 	private void initConfig(){
 
 		setTitle("Table inp_patterns");
 		setBounds(100, 100, 506, 446);
-		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[361.00][10px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[361.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -118,12 +125,13 @@ public class PatternsDialog extends AbstractDialog{
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel("type:");
-		panelGeneral.add(lblNewLabel_1, "cell 3 0,alignx trailing");
+		JLabel lblType = new JLabel("type:");
+		panelGeneral.add(lblType, "cell 3 0,alignx trailing");
 		
-		comboBox = new JComboBox();
-		comboBox.setName("patter_type");
-		panelGeneral.add(comboBox, "cell 4 0,growx");
+		cboType = new JComboBox();
+		cboType.setActionCommand("");
+		cboType.setName("patter_type");
+		panelGeneral.add(cboType, "cell 4 0,growx");
 		
 		JLabel lblGeom = new JLabel("factor 1:");
 		panelGeneral.add(lblGeom, "cell 0 1,alignx trailing");
@@ -355,11 +363,21 @@ public class PatternsDialog extends AbstractDialog{
 
 	
 	protected void setupListeners() {
-		btnSave.addActionListener(this);	
+	
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
+
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});
+		
+		super.setupListeners();
+		
 	}
 	
 	

@@ -45,6 +45,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.OptionsEpanetController;
+import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
@@ -72,6 +73,7 @@ public class OptionsEpanetDialog extends JDialog {
 	private JComboBox hydraulics;
 	private JComboBox quality;
 	private JComboBox unbalanced;
+	private JButton btnSave;
 	
 	
 	public OptionsEpanetDialog() {
@@ -305,23 +307,9 @@ public class OptionsEpanetDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-			}
-		});
+		btnSave = new JButton("Save");
 		getContentPane().add(btnSave, "flowx,cell 1 2,alignx right");
-		
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosed(WindowEvent e){
-				System.out.println("jdialog window closed event received");
-			}
-			public void windowClosing(WindowEvent e){
-				//controller.saveData();
-			}
-		});	
-		
+
 		setupListeners();
 		
 	}
@@ -358,6 +346,22 @@ public class OptionsEpanetDialog extends JDialog {
 				controller.changeCombo("unbalanced", value);					
 			}
 		});		
+		
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});
+		
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				int res = Utils.confirmDialog("save_data?");
+				if (res == 0){
+					controller.saveData();
+				}
+			}
+		});			
 		
 	}
 

@@ -39,6 +39,7 @@ import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ConfigController;
+import org.giswater.gui.frame.ConfigFrame;
 import org.giswater.util.Utils;
 
 
@@ -62,18 +63,24 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JButton btnSwmmFolder;
 	private JButton btnEpanetFolder;
 	private JButton btnAccept;
+	private ConfigFrame configFrame;
 
 	
-	public ConfigPanel() {
+	public ConfigPanel(ConfigFrame configFrame) {
+		this.configFrame = configFrame;
 		try {
 			initConfig();
 		} catch (MissingResourceException e) {
 			Utils.showError(e);
 			System.exit(ERROR);
-		}
+		}		
+	}
+	
+	public ConfigFrame getFrame(){
+		return configFrame;
 	}
 
-	public void setControl(ConfigController controller) {
+	public void setController(ConfigController controller) {
 		this.controller = controller;
 	}
 	
@@ -198,14 +205,9 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnAccept.addActionListener(this);
 	}
 	
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
-	}
-
-	public void close() {
-		this.close();
 	}
 
 	

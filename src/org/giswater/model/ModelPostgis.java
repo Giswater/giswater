@@ -687,10 +687,8 @@ public class ModelPostgis extends Model {
 		try {		
 			if (rpt.getType() == 3){			
 				for (int i = 1; i < lineNumber - 1; i++) {
-					//System.out.println(rat.readLine().trim());
 					rat.readLine().trim();
 				}
-				System.out.println("");
 				line = rat.readLine().trim();		
 				lineNumber--;
 			} else{

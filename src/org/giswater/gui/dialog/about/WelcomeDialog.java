@@ -18,12 +18,14 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.gui.dialog;
+package org.giswater.gui.dialog.about;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -77,6 +79,13 @@ public class WelcomeDialog extends JDialog {
 		JLabel lblInfo2 = new JLabel(info2);
 		lblInfo2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(lblInfo2, "cell 0 3,alignx center");
+		
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				dispose();
+			}
+		});		
 		
 	}
 

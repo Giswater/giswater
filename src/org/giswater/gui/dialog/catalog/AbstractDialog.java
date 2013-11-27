@@ -3,35 +3,39 @@ package org.giswater.gui.dialog.catalog;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.giswater.controller.catalog.CatalogController;
+import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractDialog extends JDialog implements ActionListener{
+	public AbstractDialog() {
+	}
 
 	private static final long serialVersionUID = -7319857198967955753L;
 	protected CatalogController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
-	protected JButton btnPrevious;
-	protected JButton btnNext;
-	protected JButton btnSave;
-	protected JButton btnCreate;	
-	protected JButton btnDelete;	
 	
 	
-	public void setControl(CatalogController controller) {
+	public CatalogController getController(){
+		return controller;
+	}
+	
+	
+	public void setController(CatalogController controller) {
 		this.controller = controller;
 	}	
 	
@@ -82,23 +86,25 @@ public abstract class AbstractDialog extends JDialog implements ActionListener{
 
 	}	
 	
-	
-	public void shapeChanged(){	}
-	
-	
-//	protected void setupListeners() {
-//		btnSave.addActionListener(this);	
-//		btnPrevious.addActionListener(this);
-//		btnNext.addActionListener(this);
-//		btnCreate.addActionListener(this);
-//		btnDelete.addActionListener(this);
-//	}
+
+	protected void setupListeners() {
+		
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				int res = Utils.confirmDialog("save_data?");
+				if (res == 0){
+					controller.saveData();
+				}
+			}
+		});		
+		
+	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
-	}
-	
+	}	
+
 	
 }

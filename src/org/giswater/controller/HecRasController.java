@@ -30,7 +30,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.MainFrame;
+import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
