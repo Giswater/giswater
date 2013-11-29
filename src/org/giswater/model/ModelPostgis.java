@@ -830,14 +830,14 @@ public class ModelPostgis extends Model {
 	private static void processTokens(RptTarget rpt) {
 
 		String fields = "result_id, ";
-		String values = "'" + projectName + "', ";
-		String sql = "SELECT * FROM " + MainDao.getSchema() + "." + rpt.getTable();
+		String values = "'"+projectName+"', ";
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
 		try {
 	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
 	        ResultSetMetaData rsmd = rs.getMetaData();	
             if (softwareName.equals("EPANET")){
-            	if (tokens.size() < rsmd.getColumnCount() - 3){
+            	if (tokens.size() < rsmd.getColumnCount() - 4){
             		Utils.getLogger().warning("Line not valid");
             		return;
             	}

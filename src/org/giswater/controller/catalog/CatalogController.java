@@ -37,8 +37,10 @@ import javax.swing.JTextField;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
@@ -119,8 +121,15 @@ public class CatalogController {
 				if (!action.equals("create")){
 					id = rs.getString("id");
 				}
-				updateDetailTable(id);
+				updateDetailTable("inp_timeseries", "timser_id", id);
 			}
+			else if (view instanceof CurvesDialog){
+				String id = "";
+				if (!action.equals("create")){
+					id = rs.getString("id");
+				}
+				updateDetailTable("inp_curve", "curve_id", id);
+			}			
 	
 			
 		} catch (SQLException e) {
@@ -131,17 +140,6 @@ public class CatalogController {
 		
 	}
 	
-	
-	public void updateDetailTable(String id) throws SQLException{
-	
-		String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries WHERE timser_id = '"+id+"'";
-		ResultSet rsRelated = MainDao.getResultset(sql);
-		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
-		TimeseriesDialog tsDialog = (TimeseriesDialog) view;
-		tsDialog.setModel(model);
-
-	}
-
 	
 	// Get ComboBox items from Database
 	public Vector<String> getComboValues(String comboName) {
@@ -163,6 +161,9 @@ public class CatalogController {
 		else if (comboName.equals("timser_id")){
 			tableName = "inp_timser_id";
 		}		
+		else if (comboName.equals("curve_type")){
+			tableName = "inp_value_curve";
+		}				
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -233,7 +234,7 @@ public class CatalogController {
 				rs.insertRow();
 				rs.last();
 			}
-			else{
+			else if (!action.equals("create_detail")){
 				rs.updateRow();
 			}
 		} catch (SQLException e) {
@@ -284,14 +285,19 @@ public class CatalogController {
 	}
 	
 	
-	public void create() {
-		action = "create";
+	public void create(String action){
+		this.action = action;
 		try {
 			rs.moveToInsertRow();
 			setComponents(false);
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+	}
+	
+	
+	public void create() {
+		create("create");
 	}		
 	
 	
@@ -309,6 +315,39 @@ public class CatalogController {
 		}		
 	}
 
+	
+	// Only for ConduitDialog
+	public void shapeChanged(){
+		if (view instanceof ConduitDialog){
+			ConduitDialog conduitDialog = (ConduitDialog) view;
+			conduitDialog.shapeChanged();
+		}
+	}
+	
+	
+	public void updateDetailTable(String table, String fieldId, String valueId) throws SQLException{
+		
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+table+
+			" WHERE "+fieldId+" = '"+valueId+"'";
+		if (table.equals("inp_timeseries")){
+			ResultSet rsRelated = MainDao.getResultset(sql);			
+			TableModelTimeseries model = new TableModelTimeseries(rsRelated);
+			TimeseriesDialog dialog = (TimeseriesDialog) view;
+			dialog.setModel(model);
+		}
+		else if (table.equals("inp_curve")){
+			if (action.equals("create_detail")){
+				String sql2 = "INSERT INTO "+MainDao.getSchema()+"."+table+" ("+fieldId+") VALUES ("+valueId+")";
+				MainDao.executeSql(sql2);
+			}
+			ResultSet rsRelated = MainDao.getResultset(sql);			
+			TableModelCurves model = new TableModelCurves(rsRelated);
+			CurvesDialog dialog = (CurvesDialog) view;
+			dialog.setModel(model);
+		}
+
+	}	
+	
 	
 	// Only for TimeseriesDialog
 	public void detailCreate(){
@@ -328,11 +367,17 @@ public class CatalogController {
         	detailDialog.setLocationRelativeTo(null);   
         	detailDialog.setVisible(true);   	
 		}
+		else if (view instanceof CurvesDialog){		
+        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_curve";
+        	ResultSet rs = MainDao.getResultset(sql);
+    		if (rs == null) return;
+   			create("create_detail");
+		}
 		
 	}	
 	
 	
-	// Only for TimeseriesDialog
+	// For TimeseriesDialog and CurvesDialog
 	public void detailDelete(){
 		
 		if (view instanceof TimeseriesDialog){
@@ -340,6 +385,16 @@ public class CatalogController {
 			String listId = tsDialog.detailDelete();
 			if (!listId.equals("")){
             	String sql = "DELETE FROM "+MainDao.getSchema()+".inp_timeseries WHERE id IN ("+listId+")";
+            	Utils.getLogger().info(sql);
+            	MainDao.executeSql(sql);       
+            	setComponents();
+			}
+		}
+		else if (view instanceof CurvesDialog){		
+			CurvesDialog curvesDialog = (CurvesDialog) view;
+			String listId = curvesDialog.detailDelete();
+			if (!listId.equals("")){
+            	String sql = "DELETE FROM "+MainDao.getSchema()+".inp_curve WHERE id IN ("+listId+")";
             	Utils.getLogger().info(sql);
             	MainDao.executeSql(sql);       
             	setComponents();
@@ -373,15 +428,6 @@ public class CatalogController {
 		
     }	
     
-
-	// Only for ConduitDialog
-	public void shapeChanged(){
-		if (view instanceof ConduitDialog){
-			ConduitDialog conduitDialog = (ConduitDialog) view;
-			conduitDialog.shapeChanged();
-		}
-	}
-
 	
 	// Only for TimeseriesDetailDialog
 	public void timesTypeChanged(){

@@ -92,9 +92,11 @@ public class DatabaseController {
 	
 		if (MainDao.isConnected()){
 			closeConnection();
+			mainFrame.enableCatalog(false);
 		}
 		else{
 			openConnection();
+			mainFrame.enableCatalog(true);
 		}
 		
 	}	

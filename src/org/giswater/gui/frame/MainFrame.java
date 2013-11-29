@@ -152,8 +152,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmTimeseries.setActionCommand(BUNDLE.getString("MainFrame.mntmTimeseries.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmTimeseries);
 		
-		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text")); //$NON-NLS-1$
-		mntmCurves.setEnabled(false);
+		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text"));
 		mntmCurves.setActionCommand(BUNDLE.getString("MainFrame.mntmCurves.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmCurves);
 		
@@ -400,8 +399,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void enableCatalog(boolean enable) {
 		mnCatalog.setEnabled(enable);
-		mntmConduit.setEnabled(swmmFrame.isSelected());
-		//mntmTimeseries.setEnabled(swmmFrame.isSelected());
 	}
 	
 	public void enableConduit(boolean enable) {

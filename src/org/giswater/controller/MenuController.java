@@ -30,10 +30,12 @@ import org.giswater.gui.dialog.about.VersionDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.dialog.catalog.AbstractDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
 import org.giswater.gui.frame.MainFrame;
+import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -137,7 +139,19 @@ public class MenuController {
 		TimeseriesDialog dialog = new TimeseriesDialog();
 		//DefaultTableModel model = MainDao.buildTableModel(rsRelated);
 		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
+		dialog.setTable(model);
+		showCatalog(dialog, rsMain);
 		
+	}	
+	
+	
+	public void showCurves(){
+		
+		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_curve");		
+		if (rsMain == null || rsRelated == null) return;		
+		CurvesDialog dialog = new CurvesDialog();
+		TableModelCurves model = new TableModelCurves(rsRelated);
 		dialog.setTable(model);
 		showCatalog(dialog, rsMain);
 		

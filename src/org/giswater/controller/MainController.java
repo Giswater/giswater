@@ -159,7 +159,7 @@ public class MainController{
 		mainFrame.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
 		mainFrame.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
 		mainFrame.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
-		//mainFrame.enableCurves(MainDao.checkTable(schemaName, "curves"));		
+		mainFrame.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));		
 	}
 	
 	public void selectSourceType(boolean askQuestion){
