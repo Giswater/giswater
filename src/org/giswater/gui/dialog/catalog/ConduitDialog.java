@@ -38,7 +38,7 @@ import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
-public class ConduitDialog extends AbstractDialog{
+public class ConduitDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField textField_1;

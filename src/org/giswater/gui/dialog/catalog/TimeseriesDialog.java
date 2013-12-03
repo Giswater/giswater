@@ -45,7 +45,7 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class TimeseriesDialog extends AbstractDialog{
+public class TimeseriesDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtId;

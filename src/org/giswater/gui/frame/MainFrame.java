@@ -66,6 +66,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmCurves;
 	private JMenuItem mntmPatterns;	
 	
+	private JMenuItem mntmCatalog;
+	private JMenuItem mntmManagement;
+	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
 	private JMenuItem mntmDatabase;
@@ -84,7 +87,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ConfigFrame configFrame;
 	
 	private PropertiesMap prop;
-	
+
 
 	public MainFrame(boolean isConnected) {
 		initConfig();
@@ -140,6 +143,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnCatalog.setEnabled(false);
 		menuBar.add(mnCatalog);
 		
+		JMenuItem mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text")); //$NON-NLS-1$
+		mntmProjectId.setVisible(false);
+		mntmProjectId.setFocusCycleRoot(true);
+		mntmProjectId.setActionCommand(BUNDLE.getString("MainFrame.mntmProjectId.actionCommand")); //$NON-NLS-1$
+		mnCatalog.add(mntmProjectId);
+		
 		mntmConduit = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
 		mntmConduit.setActionCommand(BUNDLE.getString("MainFrame.mntmConduit.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmConduit);
@@ -159,6 +168,18 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
 		mntmPatterns.setActionCommand(BUNDLE.getString("MainFrame.mntmPatterns.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmPatterns);
+		
+		JMenu mnScenarios = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text")); //$NON-NLS-1$
+		mnScenarios.setVisible(false);
+		menuBar.add(mnScenarios);
+		
+		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text")); //$NON-NLS-1$
+		mntmCatalog.setActionCommand(BUNDLE.getString("MainFrame.mntmCatalog.actionCommand")); //$NON-NLS-1$
+		mnScenarios.add(mntmCatalog);
+		
+		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
+		mntmManagement.setActionCommand(BUNDLE.getString("MainFrame.mntmManagement.actionCommand")); //$NON-NLS-1$
+		mnScenarios.add(mntmManagement);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
@@ -239,11 +260,11 @@ public class MainFrame extends JFrame implements ActionListener{
         // Set specific configuration
 		swmmFrame.setTitle("EPASWMM");
 		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
-		swmmFrame.getPanel().setOptionsButton("Options", "showOptions");
+		swmmFrame.getPanel().setOptionsButton("Options", "showInpOptions");
 		swmmFrame.getPanel().setReportButton("Report options", "showReport");
 		epanetFrame.setTitle("EPANET");
 		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
-		epanetFrame.getPanel().setOptionsButton("Options", "showOptionsEpanet");
+		epanetFrame.getPanel().setOptionsButton("Options", "showInpOptionsEpanet");
 		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
 
         // Get info from properties
@@ -357,6 +378,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmPatterns.addActionListener(this);		
 		mntmTimeseries.addActionListener(this);
 		mntmCurves.addActionListener(this);
+
+		mntmCatalog.addActionListener(this);		
+		mntmManagement.addActionListener(this);
 		
 		mntmDatabase.addActionListener(this);
 		mntmSoftware.addActionListener(this);

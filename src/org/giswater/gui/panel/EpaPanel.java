@@ -372,7 +372,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnOptions.setEnabled(false);
 		btnOptions.setMinimumSize(new Dimension(110, 23));
 		btnOptions.setPreferredSize(new Dimension(110, 23));
-		btnOptions.setActionCommand("showOptions");
+		btnOptions.setActionCommand(BUNDLE.getString("EpaPanel.btnOptions.actionCommand")); //$NON-NLS-1$
 		panel_4.add(btnOptions, "cell 2 5,alignx left");
 		
 		btnReport = new JButton(BUNDLE.getString("EpaPanel.btnReport.text")); //$NON-NLS-1$

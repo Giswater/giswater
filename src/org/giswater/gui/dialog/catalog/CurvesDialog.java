@@ -45,7 +45,7 @@ import org.giswater.model.table.TableModelCurves;
 import org.giswater.util.Utils;
 
 
-public class CurvesDialog extends AbstractDialog{
+public class CurvesDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtId;

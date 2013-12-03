@@ -36,7 +36,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-public class MaterialsDialog extends AbstractDialog{
+public class MaterialsDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtId;

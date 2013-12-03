@@ -1,4 +1,4 @@
-package org.giswater.gui.dialog.catalog;
+package org.giswater.gui.dialog.options;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -10,32 +10,35 @@ import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.giswater.controller.catalog.CatalogController;
+import org.giswater.controller.options.DefaultOptionsController;
 import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractDialog extends JDialog implements ActionListener{
-	public AbstractDialog() {
-	}
+public abstract class AbstractOptionsDialog extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -7319857198967955753L;
-	protected CatalogController controller;
+	protected DefaultOptionsController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
+	protected JButton btnSave;
+
+	
+	public AbstractOptionsDialog() { }
 	
 	
-	public CatalogController getController(){
+	public DefaultOptionsController getController(){
 		return controller;
 	}
 	
 	
-	public void setController(CatalogController controller) {
+	public void setController(DefaultOptionsController controller) {
 		this.controller = controller;
 	}	
 	
@@ -97,6 +100,13 @@ public abstract class AbstractDialog extends JDialog implements ActionListener{
 				}
 			}
 		});		
+
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
+				dispose();
+			}
+		});		
 		
 	}
 	
@@ -104,6 +114,9 @@ public abstract class AbstractDialog extends JDialog implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
+		if (e.getActionCommand().equals("saveData")) {
+			dispose();
+		}
 	}	
 
 	

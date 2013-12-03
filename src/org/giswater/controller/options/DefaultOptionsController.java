@@ -18,8 +18,10 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.controller;
+package org.giswater.controller.options;
 
+import java.awt.Cursor;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -33,42 +35,76 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.OptionsEpanetDialog;
+import org.giswater.gui.dialog.options.AbstractOptionsDialog;
+import org.giswater.gui.dialog.options.OptionsEpanetDialog;
 import org.giswater.util.Utils;
 
 
-public class OptionsEpanetController {
+public class DefaultOptionsController {
 
-	private OptionsEpanetDialog view;
+	private AbstractOptionsDialog view;
     private ResultSet rs;
+	private String action;
 	
 	
-	public OptionsEpanetController(OptionsEpanetDialog dialog, ResultSet rs) {
+	public DefaultOptionsController(AbstractOptionsDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
-	    view.setControl(this);        
+	    view.setController(this);        
+	}
+	
+	
+	public void action(String actionCommand) {
+		
+		Method method;
+		try {
+			if (Utils.getLogger() != null){
+				Utils.getLogger().info(actionCommand);
+			}
+			method = this.getClass().getMethod(actionCommand);
+			method.invoke(this);	
+			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
+		} catch (Exception e) {
+			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			if (Utils.getLogger() != null){			
+				Utils.logError(e);
+			} else{
+				Utils.showError(e);
+			}
+		}
+		
+	}	
+	
+	
+	public boolean setComponents(){
+		return setComponents(true);
 	}
 	
 	
 	// Update ComboBox items and selected item
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean setComponents(){
+	@SuppressWarnings({"unchecked", "rawtypes"})	
+	public boolean setComponents(boolean fillData){
 
 		try {
-			rs.first();
 			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
 			    JComboBox combo = entry.getValue();
-				String value = rs.getString(key);
 				view.setComboModel(combo, getComboValues(key));
+				String value = "";
+				if (fillData){
+					value = rs.getString(key);
+				}
 				view.setComboSelectedItem(combo, value);
 			}
 			HashMap<String, JTextField> textMap = view.textMap; 
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
-			    Object value = rs.getObject(key);
+			    Object value = "";
+				if (fillData){
+					value = rs.getObject(key);
+				}
 				view.setTextField(component, value);
 			}			
 		} catch (SQLException e) {
@@ -85,7 +121,43 @@ public class OptionsEpanetController {
 
 		Vector<String> values = null;
 		String tableName = "";
-		if (comboName.equals("units")){
+		
+		// Raingage
+		if (comboName.equals("form_type")){
+			tableName = "inp_value_raingage";
+		}
+		else if (comboName.equals("timser_id")){
+			tableName = "inp_timser_id";
+		}
+		else if (comboName.equals("rgage_type")){
+			tableName = "inp_typevalue_raingage";
+		}		
+		
+		// Options
+		else if (comboName.equals("flow_units")){
+			tableName = "inp_value_options_fu";
+		}
+		else if (comboName.equals("infiltration")){
+			tableName = "inp_value_options_in";
+		}
+		else if (comboName.equals("force_main_equation")){
+			tableName = "inp_value_options_fme";
+		}
+		else if (comboName.equals("flow_routing")){
+			tableName = "inp_value_options_fr";
+		}
+		else if (comboName.equals("inertial_damping")){
+			tableName = "inp_value_options_id";
+		}
+		else if (comboName.equals("link_offsets")){
+			tableName = "inp_value_options_lo";
+		}
+		else if (comboName.equals("normal_flow_limited")){
+			tableName = "inp_value_options_nfl";
+		}	
+
+		// Options Epanet
+		else if (comboName.equals("units")){
 			tableName = "inp_value_opti_units";
 		}
 		else if (comboName.equals("headloss")){
@@ -99,7 +171,18 @@ public class OptionsEpanetController {
 		}
 		else if (comboName.equals("unbalanced")){
 			tableName = "inp_value_opti_unbal";
+		}		
+		
+		// Times
+		else if (comboName.equals("statistic")){
+			tableName = "inp_value_times";
 		}
+		
+		// Report
+		else if (comboName.equals("status")){
+			tableName = "inp_value_yesnofull";
+		}		
+		
 		else{
 			tableName = "inp_value_yesno";
 		}				
@@ -130,7 +213,7 @@ public class OptionsEpanetController {
 					rs.updateString(key, (String) value);
 				}				
 			}
-			HashMap<String, JTextField> textMap = view.textMap; 		
+			HashMap<String, JTextField> textMap = view.textMap; 	
 			
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
@@ -168,9 +251,17 @@ public class OptionsEpanetController {
 				else if (columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE) {
 					rs.updateTimestamp(col, (Timestamp) value);
 				}				
-			}		
+			}
 			
-			rs.updateRow();		
+			if (action.equals("create")){
+				rs.insertRow();
+				rs.last();
+			}
+			else if (!action.equals("create_detail")){
+				rs.updateRow();
+			}
+			view.dispose();
+			
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {
@@ -179,8 +270,72 @@ public class OptionsEpanetController {
 		}
 		
 	}
+	
+	
+	public void moveFirst() {
+		action = "other";
+		try {
+			rs.first();
+			setComponents();
+		} catch (SQLException e) {
+			Utils.showError(e);
+		}
+	}		
+	
+	
+	public void movePrevious(){
+		action = "other";
+		try {
+			if (!rs.isFirst()){
+				rs.previous();
+				setComponents();
+			}
+		} catch (SQLException e) {
+			Utils.showError(e);
+		}
+	}
+	
+	
+	public void moveNext(){
+		action = "other";
+		try {
+			if (!rs.isLast()){
+				rs.next();
+				setComponents();
+			}
+		} catch (SQLException e) {
+			Utils.showError(e);
+		}
+	}
+	
+	
+	public void create() {
+		action = "create";
+		try {
+			rs.moveToInsertRow();
+			setComponents(false);
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}
+	}	
+	
 
-
+	public void delete(){
+		action = "other";
+		try {
+			int res = Utils.confirmDialog("delete_record?");
+	        if (res == 0){
+				rs.deleteRow();
+				rs.first();
+				setComponents();
+	        }   
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}		
+	}
+	
+	
+	// Options Epanet
 	public void changeCombo(String comboName, String value) {
 		
 		boolean isVisible = false;
@@ -199,9 +354,12 @@ public class OptionsEpanetController {
 				isVisible = true;
 			}
 		}		
-		view.setComboVisible(comboName, isVisible);
+		if (view instanceof OptionsEpanetDialog){
+			OptionsEpanetDialog optionsEpanetDialog = (OptionsEpanetDialog) view;
+			optionsEpanetDialog.setComboVisible(comboName, isVisible);
+		}		
 		
-	}	
+	}		
 	
 	
 }

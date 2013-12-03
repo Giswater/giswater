@@ -23,17 +23,20 @@ package org.giswater.controller;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
-import org.giswater.controller.catalog.CatalogController;
+import org.giswater.controller.catalog.DefaultCatalogController;
+import org.giswater.controller.options.DefaultOptionsController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.VersionDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
-import org.giswater.gui.dialog.catalog.AbstractDialog;
+import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.gui.dialog.options.AbstractOptionsDialog;
+import org.giswater.gui.dialog.options.ResultCatDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
@@ -156,15 +159,39 @@ public class MenuController {
 		showCatalog(dialog, rsMain);
 		
 	}		
+
+	
+	public void showResultCat(){
+		ResultSet rsMain = MainDao.getTableResultset("rpt_result_cat");
+		if (rsMain == null) return;		
+		ResultCatDialog dialog = new ResultCatDialog();
+		showOptions(dialog, rsMain);		
+	}	
 	
 	
-	private void showCatalog(AbstractDialog dialog, ResultSet rs){
-		CatalogController controller = new CatalogController(dialog, rs);
+	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
+		DefaultCatalogController controller = new DefaultCatalogController(dialog, rs);
 		controller.moveFirst();
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null);   
 		dialog.setVisible(true);		        
 	}
+	
+
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
+		
+		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+        if (MainDao.getRowCount(rs) == 0){
+            controller.create();
+        }
+        else{
+            controller.moveFirst();
+        }
+	    dialog.setModal(true);
+	    dialog.setLocationRelativeTo(null);   
+	    dialog.setVisible(true);	
+	    
+	}	
 	
 	
 	// TODO: i18n

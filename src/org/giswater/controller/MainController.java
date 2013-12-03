@@ -32,13 +32,15 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.giswater.controller.options.DefaultOptionsController;
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.OptionsDialog;
-import org.giswater.gui.dialog.OptionsEpanetDialog;
-import org.giswater.gui.dialog.RaingageDialog;
-import org.giswater.gui.dialog.ReportDialog;
-import org.giswater.gui.dialog.ReportEpanetDialog;
-import org.giswater.gui.dialog.TimesDialog;
+import org.giswater.gui.dialog.options.AbstractOptionsDialog;
+import org.giswater.gui.dialog.options.OptionsDialog;
+import org.giswater.gui.dialog.options.OptionsEpanetDialog;
+import org.giswater.gui.dialog.options.RaingageDialog;
+import org.giswater.gui.dialog.options.ReportDialog;
+import org.giswater.gui.dialog.options.ReportEpanetDialog;
+import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
@@ -222,108 +224,76 @@ public class MainController{
 
 		
 	public void showSectorSelection(){
-		
 		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSchema());
         JDialog dialog = Utils.openDialogForm(panel, 350, 280);
 		ImageIcon image = new ImageIcon("images/imago.png");        
         dialog.setIconImage(image.getImage());
         dialog.setVisible(true);
-        
 	}	
 	
 	
-	public void showOptions(){
-		
+	public void showInpOptions(){
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;
 		OptionsDialog dialog = new OptionsDialog();
-		OptionsController controller = new OptionsController(dialog, rs);
-		if (controller.setComponents()){		
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
-		}
-		
+		showOptions(dialog, rs);
 	}
 	
 	
-	public void showOptionsEpanet(){
-		
+	public void showInpOptionsEpanet(){
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;		
 		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
-		OptionsEpanetController controller = new OptionsEpanetController(dialog, rs);
-		if (controller.setComponents()){
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
-		}
-		
+		showOptions(dialog, rs);
 	}
 
 	
 	public void showRaingage(){
-		
 		ResultSet rs = MainDao.getTableResultset("raingage");
 		if (rs == null) return;		
 		RaingageDialog dialog = new RaingageDialog();
-		RaingageController controller = new RaingageController(dialog, rs);
-		if (MainDao.getRowCount(rs) == 0){
-			controller.create();
-		}
-		else{
-			controller.moveFirst();
-		}
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);
-		
+		showOptions(dialog, rs);	
 	}	
 	
 	
 	public void showTimesValues(){
-		
 		ResultSet rs = MainDao.getTableResultset("inp_times");
 		if (rs == null) return;		
 		TimesDialog dialog = new TimesDialog();
-		TimesController controller = new TimesController(dialog, rs);
-		if (controller.setComponents()){		
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
-		}
-		
+		showOptions(dialog, rs);
 	}	
 	
 	
 	public void showReport(){
-		
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportDialog dialog = new ReportDialog();
-		ReportController controller = new ReportController(dialog, rs);
-		if (controller.setComponents()){		
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
-		}
-		
+		showOptions(dialog, rs);
 	}	
 	
 	
 	public void showReportEpanet(){
-		
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportEpanetDialog dialog = new ReportEpanetDialog();
-		ReportEpanetController controller = new ReportEpanetController(dialog, rs);
-		if (controller.setComponents()){		
-			dialog.setModal(true);
-			dialog.setLocationRelativeTo(null);   
-			dialog.setVisible(true);
-		}
-		
+		showOptions(dialog, rs);
 	}	
+	
+	
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
+		
+		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+        if (MainDao.getRowCount(rs) == 0){
+            controller.create();
+        }
+        else{
+            controller.moveFirst();
+        }
+        dialog.setModal(true);
+        dialog.setLocationRelativeTo(null);   
+        dialog.setVisible(true);	
+        
+	}
 	
 		
 

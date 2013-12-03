@@ -42,7 +42,7 @@ import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
-public class TimeseriesDetailDialog extends AbstractDialog{
+public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField textField_2;

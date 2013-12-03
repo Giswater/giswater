@@ -35,7 +35,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.dialog.catalog.AbstractDialog;
+import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
@@ -45,14 +45,14 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class CatalogController {
+public class DefaultCatalogController {
 
-	private AbstractDialog view;
+	private AbstractCatalogDialog view;
     private ResultSet rs;
 	private String action;
 	
 	
-	public CatalogController(AbstractDialog dialog, ResultSet rs) {
+	public DefaultCatalogController(AbstractCatalogDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setController(this);        
@@ -86,7 +86,7 @@ public class CatalogController {
 	}
 	
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void setComponents(boolean fillData){
 
 		try {
@@ -358,7 +358,7 @@ public class CatalogController {
     		if (rs == null) return;
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
         	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
-        	CatalogController controller = new CatalogController(detailDialog, rs);
+        	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
         	// Open dialog form to create new record
         	controller.create();
         	detailDialog.timesTypeChanged();
@@ -417,7 +417,7 @@ public class CatalogController {
 	        	ResultSet rs = MainDao.getResultset(sql);
 	    		if (rs == null) return;	        	
 	        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
-	        	CatalogController controller = new CatalogController(detailDialog, rs);
+	        	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
 	        	// Open dialog form to edit selected row
 	        	controller.moveFirst();
 	        	detailDialog.setModal(true);
