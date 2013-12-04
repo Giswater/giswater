@@ -60,12 +60,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmHecras;
 
 	private JMenu mnCatalog;
+	private JMenuItem mntmProjectId;	
 	private JMenuItem mntmConduit;
 	private JMenuItem mntmMaterials;
 	private JMenuItem mntmTimeseries;
 	private JMenuItem mntmCurves;
 	private JMenuItem mntmPatterns;	
 	
+	private JMenu mnScenario;	
 	private JMenuItem mntmCatalog;
 	private JMenuItem mntmManagement;
 	
@@ -132,19 +134,24 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
-		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text")); //$NON-NLS-1$
-		mnGisProject.setVisible(false);
+		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
 		
 		JMenuItem mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text")); //$NON-NLS-1$
+		mntmQgis.setEnabled(false);
+		mntmQgis.setActionCommand(BUNDLE.getString("MainFrame.mntmQgis.actionCommand")); //$NON-NLS-1$
 		mnGisProject.add(mntmQgis);
+		
+		JMenuItem mntmGvsig = new JMenuItem(BUNDLE.getString("MainFrame.mntmGvsig.text")); //$NON-NLS-1$
+		mntmGvsig.setEnabled(false);
+		mntmGvsig.setActionCommand(BUNDLE.getString("MainFrame.mntmGvsig.actionCommand")); //$NON-NLS-1$
+		mnGisProject.add(mntmGvsig);
 		
 		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
 		mnCatalog.setEnabled(false);
 		menuBar.add(mnCatalog);
 		
-		JMenuItem mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text")); //$NON-NLS-1$
-		mntmProjectId.setVisible(false);
+		mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text"));
 		mntmProjectId.setFocusCycleRoot(true);
 		mntmProjectId.setActionCommand(BUNDLE.getString("MainFrame.mntmProjectId.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmProjectId);
@@ -169,17 +176,17 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmPatterns.setActionCommand(BUNDLE.getString("MainFrame.mntmPatterns.actionCommand")); //$NON-NLS-1$
 		mnCatalog.add(mntmPatterns);
 		
-		JMenu mnScenarios = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text")); //$NON-NLS-1$
-		mnScenarios.setVisible(false);
-		menuBar.add(mnScenarios);
+		mnScenario = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
+		menuBar.add(mnScenario);
 		
 		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text")); //$NON-NLS-1$
+		mntmCatalog.setEnabled(false);
 		mntmCatalog.setActionCommand(BUNDLE.getString("MainFrame.mntmCatalog.actionCommand")); //$NON-NLS-1$
-		mnScenarios.add(mntmCatalog);
+		mnScenario.add(mntmCatalog);
 		
 		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
 		mntmManagement.setActionCommand(BUNDLE.getString("MainFrame.mntmManagement.actionCommand")); //$NON-NLS-1$
-		mnScenarios.add(mntmManagement);
+		mnScenario.add(mntmManagement);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
@@ -373,6 +380,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmEpanet.addActionListener(this);
 		mntmHecras.addActionListener(this);
 		
+		mntmProjectId.addActionListener(this);		
 		mntmConduit.addActionListener(this);
 		mntmMaterials.addActionListener(this);
 		mntmPatterns.addActionListener(this);		
@@ -423,6 +431,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void enableCatalog(boolean enable) {
 		mnCatalog.setEnabled(enable);
+		mnScenario.setEnabled(enable);
+	}
+	
+	public void enableProjectId(boolean enable) {
+		mntmProjectId.setEnabled(enable);
 	}
 	
 	public void enableConduit(boolean enable) {

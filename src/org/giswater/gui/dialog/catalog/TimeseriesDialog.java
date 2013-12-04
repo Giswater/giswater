@@ -58,10 +58,11 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	private JTable table;
 	private JPanel panelGeneral;
 	private JScrollPane panelTable;
-	@SuppressWarnings("rawtypes")
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	private JButton btnDetailDelete;
 	private JButton btnDetailCreate;
+	private JLabel lblTimesType;
+	private JComboBox<String> cboTimesType;
 	
 	
 	public TimeseriesDialog() {
@@ -92,7 +93,8 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    controller.editRecord("edit");
+                	String timesType = cboTimesType.getSelectedItem().toString();
+                    controller.editRecord("edit", timesType);
                 }
             }
         });				
@@ -105,12 +107,11 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	}
 
 	
-	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
 		setTitle("Table timeseries");
 		setBounds(100, 100, 574, 437);
-		getContentPane().setLayout(new MigLayout("", "[401.00][200px]", "[341.00][5px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[401.00][200px]", "[363.00][5px][36.00]"));
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
@@ -118,7 +119,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[20][80][50][120][185,grow]", "[][10px][][grow][][][]"));
+		panelGeneral.setLayout(new MigLayout("", "[70][161.00][30][185,grow]", "[][][][5px][][195.00,grow]"));
 		
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
@@ -128,44 +129,51 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		txtId.setColumns(10);
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
-		JLabel lblTsectid = new JLabel("Type:");
-		panelGeneral.add(lblTsectid, "cell 2 0,alignx trailing");
-		
-		comboBox = new JComboBox();
-		comboBox.setName("timser_type");
-		panelGeneral.add(comboBox, "cell 3 0,growx");
-		
 		btnCreate = new JButton("+");
-		panelGeneral.add(btnCreate, "flowx,cell 4 0");
+		panelGeneral.add(btnCreate, "flowx,cell 3 0");
 		btnCreate.setToolTipText("Insert record");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		
+		JLabel lblTsectid = new JLabel("Timser type:");
+		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
+		
+		comboBox = new JComboBox<String>();
+		comboBox.setName("timser_type");
+		panelGeneral.add(comboBox, "cell 1 1,growx");
+		
+		lblTimesType = new JLabel("Times type:");
+		panelGeneral.add(lblTimesType, "cell 0 2,alignx trailing");
+		
+		cboTimesType = new JComboBox<String>();
+		cboTimesType.setName("times_type");
+		panelGeneral.add(cboTimesType, "cell 1 2,growx");
+		
 		lblOther = new JLabel("Timeseries:");
 		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panelGeneral.add(lblOther, "cell 0 2 2 1,alignx left");
+		panelGeneral.add(lblOther, "cell 0 4 2 1,alignx left");
 		
 		panelTable = new JScrollPane();
-		panelGeneral.add(panelTable, "cell 0 3 5 4,grow");
+		panelGeneral.add(panelTable, "cell 0 5 4 1,grow");
 		
 		btnDelete = new JButton("-");
-		panelGeneral.add(btnDelete, "cell 4 0");
+		panelGeneral.add(btnDelete, "cell 3 0");
 		btnDelete.setToolTipText("Delete record");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnDelete.setActionCommand("delete");
 		
 		btnPrevious = new JButton("<");
-		panelGeneral.add(btnPrevious, "cell 4 0");
+		panelGeneral.add(btnPrevious, "cell 3 0");
 		btnPrevious.setToolTipText("Previous record");
 		btnPrevious.setActionCommand("movePrevious");
 		
 		btnNext = new JButton(">");
-		panelGeneral.add(btnNext, "cell 4 0");
+		panelGeneral.add(btnNext, "cell 3 0");
 		btnNext.setToolTipText("Next record");
 		btnNext.setActionCommand("moveNext");
 		
 		btnSave = new JButton("Save");
-		panelGeneral.add(btnSave, "cell 4 0");
+		panelGeneral.add(btnSave, "cell 3 0");
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");
 		
@@ -192,8 +200,15 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
-		btnDetailCreate.addActionListener(this);		
 		btnDetailDelete.addActionListener(this);
+		
+		btnDetailCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String id = txtId.getText().trim();
+            	String timesType = cboTimesType.getSelectedItem().toString();				
+				controller.detailCreateTimeseries(timesType, id);
+			}
+		});
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -201,8 +216,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 				dispose();
 			}
 		});
-		
-		super.setupListeners();
 		
 	}
 
@@ -239,5 +252,5 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		return txtId.getText().trim();
 	}
     
-    
+
 }

@@ -98,7 +98,7 @@ public class DefaultCatalogController {
 			    JComboBox combo = entry.getValue();
 				view.setComboModel(combo, getComboValues(key));
 				String value = "";
-				if (fillData){
+				if (fillData && MainDao.checkColumn(rs, key)){
 					value = rs.getString(key);
 				}
 				view.setComboSelectedItem(combo, value);
@@ -109,7 +109,7 @@ public class DefaultCatalogController {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
 			    Object value = "";
-				if (fillData){
+				if (fillData && MainDao.checkColumn(rs, key)){
 					value = rs.getObject(key);
 				}
 				view.setTextField(component, value);
@@ -121,14 +121,15 @@ public class DefaultCatalogController {
 				if (!action.equals("create")){
 					id = rs.getString("id");
 				}
-				updateDetailTable("inp_timeseries", "timser_id", id);
+				String fields = "id, date, hour, time, value, fname";
+				updateDetailTable("inp_timeseries", fields, "timser_id", id);
 			}
 			else if (view instanceof CurvesDialog){
 				String id = "";
 				if (!action.equals("create")){
 					id = rs.getString("id");
 				}
-				updateDetailTable("inp_curve", "curve_id", id);
+				updateDetailTable("inp_curve", "*", "curve_id", id);
 			}			
 	
 			
@@ -283,7 +284,11 @@ public class DefaultCatalogController {
 			Utils.logError(e);
 		}
 	}
+
 	
+	public void create() {
+		create("create");
+	}		
 	
 	public void create(String action){
 		this.action = action;
@@ -294,12 +299,18 @@ public class DefaultCatalogController {
 			Utils.logError(e);
 		}
 	}
+
 	
-	
-	public void create() {
-		create("create");
-	}		
-	
+	public void createCurve(ResultSet rs, String curveId){
+		this.action = "create_curve";
+		try {
+			rs.moveToInsertRow();
+			updateDetailTable("inp_curve", "*", "curve_id", curveId);
+		} catch (SQLException e) {
+			Utils.logError(e);
+		}
+	}
+
 	
 	public void delete(){
 		action = "other";
@@ -325,18 +336,19 @@ public class DefaultCatalogController {
 	}
 	
 	
-	public void updateDetailTable(String table, String fieldId, String valueId) throws SQLException{
+	public void updateDetailTable(String table, String fields, String fieldId, String valueId) throws SQLException{
 		
-		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+table+
+		String sql = "SELECT "+fields+" FROM "+MainDao.getSchema()+"."+table+
 			" WHERE "+fieldId+" = '"+valueId+"'";
 		if (table.equals("inp_timeseries")){
+			sql+= " ORDER BY time";
 			ResultSet rsRelated = MainDao.getResultset(sql);			
 			TableModelTimeseries model = new TableModelTimeseries(rsRelated);
 			TimeseriesDialog dialog = (TimeseriesDialog) view;
 			dialog.setModel(model);
 		}
 		else if (table.equals("inp_curve")){
-			if (action.equals("create_detail")){
+			if (action.equals("create_curve")){
 				String sql2 = "INSERT INTO "+MainDao.getSchema()+"."+table+" ("+fieldId+") VALUES ("+valueId+")";
 				MainDao.executeSql(sql2);
 			}
@@ -350,31 +362,38 @@ public class DefaultCatalogController {
 	
 	
 	// Only for TimeseriesDialog
-	public void detailCreate(){
+	public void detailCreateTimeseries(String timesType, String timserId){
 		
 		if (view instanceof TimeseriesDialog){
         	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries";
         	ResultSet rs = MainDao.getResultset(sql);
     		if (rs == null) return;
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
-        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
+        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog, timesType);
         	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
         	// Open dialog form to create new record
         	controller.create();
-        	detailDialog.timesTypeChanged();
-        	detailDialog.setTimserId(tsDialog.getTimserId());   
+        	detailDialog.setTimserId(timserId);
         	detailDialog.setModal(true);
         	detailDialog.setLocationRelativeTo(null);   
         	detailDialog.setVisible(true);   	
 		}
-		else if (view instanceof CurvesDialog){		
-        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_curve";
-        	ResultSet rs = MainDao.getResultset(sql);
-    		if (rs == null) return;
-   			create("create_detail");
-		}
 		
 	}	
+	
+	
+	public void detailCreateCurves(String curveId){
+		
+		if (view instanceof CurvesDialog){		
+        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_curve";
+        	sql+= " WHERE curve_id = '"+curveId+"'";
+        	ResultSet rs = MainDao.getResultset(sql);
+    		if (rs == null) return;
+   			//create("create_detail");
+   			createCurve(rs, curveId);
+		}
+		
+	}		
 	
 	
 	// For TimeseriesDialog and CurvesDialog
@@ -405,7 +424,7 @@ public class DefaultCatalogController {
 	
 	
 	// Only for TimeseriesDialog	
-	public void editRecord(String action) {
+	public void editRecord(String action, String timesType) {
     	
 		if (view instanceof TimeseriesDialog){
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
@@ -416,13 +435,13 @@ public class DefaultCatalogController {
 	        	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries WHERE id = "+id;
 	        	ResultSet rs = MainDao.getResultset(sql);
 	    		if (rs == null) return;	        	
-	        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog);
+	        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog, timesType);
 	        	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
 	        	// Open dialog form to edit selected row
 	        	controller.moveFirst();
 	        	detailDialog.setModal(true);
 	        	detailDialog.setLocationRelativeTo(null);   
-	        	detailDialog.setVisible(true);	        	
+	        	detailDialog.setVisible(true);	
 	        }
 		}
 		
@@ -433,7 +452,7 @@ public class DefaultCatalogController {
 	public void timesTypeChanged(){
 		if (view instanceof TimeseriesDetailDialog){
 			TimeseriesDetailDialog tsDialog = (TimeseriesDetailDialog) view;
-			tsDialog.timesTypeChanged();
+			tsDialog.setTimesType();
 		}
 	}
 	

@@ -58,8 +58,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	private JTable table;
 	private JPanel panelGeneral;
 	private JScrollPane panelTable;
-	@SuppressWarnings("rawtypes")
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	private JButton btnDetailDelete;
 	private JButton btnDetailCreate;
 	
@@ -85,14 +84,13 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		table.setUpdateSelectionOnSort(false);		
 		table.getColumnModel().getColumn(1).setPreferredWidth(5);
 		table.getColumnModel().getColumn(1).setResizable(false);
-		//table.getColumnModel().getColumn(1).setHeaderValue("Resizable");	
 		panelTable.setViewportView(table);	
 		
 		table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    controller.editRecord("edit");
+                    controller.editRecord("edit", "");
                 }
             }
         });				
@@ -105,7 +103,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	}
 
 	
-	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
 		setTitle("Table curves");
@@ -131,7 +128,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Type:");
 		panelGeneral.add(lblTsectid, "cell 2 0,alignx trailing");
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<String>();
 		comboBox.setName("curve_type");
 		panelGeneral.add(comboBox, "cell 3 0,growx");
 		
@@ -172,7 +169,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnDetailCreate = new JButton("New");
 		btnDetailCreate.setMinimumSize(new Dimension(80, 23));
 		btnDetailCreate.setToolTipText("Insert new row");
-		btnDetailCreate.setActionCommand("detailCreate");
+		btnDetailCreate.setActionCommand("detailCreateCurves");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");
 		
 		btnDetailDelete = new JButton("Delete");
@@ -192,8 +189,14 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
-		btnDetailCreate.addActionListener(this);		
 		btnDetailDelete.addActionListener(this);
+
+		btnDetailCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String id = txtId.getText().trim();
+				controller.detailCreateCurves(id);
+			}
+		});
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -201,8 +204,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 				dispose();
 			}
 		});
-		
-		super.setupListeners();
 		
 	}
 
@@ -234,10 +235,5 @@ public class CurvesDialog extends AbstractCatalogDialog{
         
     }
 
-
-	public String getCurveId() {
-		return txtId.getText().trim();
-	}
-    
     
 }

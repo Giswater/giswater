@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -26,6 +27,7 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	protected DefaultCatalogController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
+	protected JButton btnSave;	
 
 	
 	public AbstractCatalogDialog() { }
@@ -98,6 +100,15 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 				}
 			}
 		});		
+		
+		if (btnSave != null){
+			btnSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					controller.saveData();
+					dispose();
+				}
+			});		
+		}		
 		
 	}
 	

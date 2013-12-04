@@ -357,8 +357,29 @@ public class MainDao {
 	}		
 	
 	
+    // Check if the column exists in ResultSet	
+	public static boolean checkColumn(ResultSet rs, String columnName) {
+		
+		try {
+			ResultSetMetaData rsmd = rs.getMetaData();
+		    int columns = rsmd.getColumnCount();
+		    for (int x = 1; x <= columns; x++) {
+		        if (columnName.equals(rsmd.getColumnName(x))) {
+		            return true;
+		        }
+		    }			
+		} catch (SQLException e) {
+        	Utils.showError(e);
+            return false;
+		}
+	    return false;
+	    
+	}	
+	
+	
     // Check if the table exists
 	public static boolean checkTable(String tableName) {
+		
         String sql = "SELECT * FROM pg_tables" +
         	" WHERE lower(tablename) = '" + tableName + "'";
         try {
@@ -369,11 +390,13 @@ public class MainDao {
         	Utils.showError(e);
             return false;
         }
+        
     }
 	
 	
     // Check if the table exists
 	public static boolean checkTable(String schemaName, String tableName) {
+		
         String sql = "SELECT * FROM pg_tables" +
         	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '"+tableName+"'";
         try {
@@ -384,11 +407,13 @@ public class MainDao {
         	Utils.showError(e, sql);
             return false;
         }
+        
     }	
     
     
     // Check if the view exists
     public static boolean checkView(String viewName) {
+    	
         String sql = "SELECT * FROM pg_views" +
         	" WHERE lower(viewname) = '"+viewName+"'";
         try {
@@ -399,11 +424,13 @@ public class MainDao {
         	Utils.showError(e, sql);
             return false;
         }
+        
     }    
     
     
     // Check if the view exists
     public static boolean checkView(String schemaName, String viewName) {
+    	
         String sql = "SELECT * FROM pg_views" +
         	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(viewname) = '"+viewName+"'";
         try {
@@ -414,11 +441,13 @@ public class MainDao {
         	Utils.showError(e, sql);
             return false;
         }
+        
     }        
     
     
     // Check if the selected srid exists in spatial_ref_sys
 	public static boolean checkSrid(Integer srid) {
+		
         String sql = "SELECT srid FROM spatial_ref_sys WHERE srid = "+srid;
         try {
             Statement stat = connectionPostgis.createStatement();
@@ -428,6 +457,7 @@ public class MainDao {
         	Utils.showError(e, sql);
             return false;
         }
+        
     }    
     
     
@@ -475,19 +505,25 @@ public class MainDao {
 	}
 	
 	
-	public static ResultSet getTableResultset(Connection connection, String table) {
+	public static ResultSet getTableResultset(Connection connection, String table, String fields) {
 		String sql;
 		if (schema == null){
-			sql = "SELECT * FROM "+table;
-		} else{
-			sql = "SELECT * FROM "+schema+"."+table;
+			sql = "SELECT "+fields+" FROM "+table;
+		} 
+		else{
+			sql = "SELECT "+fields+" FROM "+schema+"."+table;
 		}
 		//Utils.logSql(sql);
         return getResultset(connection, sql);
 	}
 	
+	
+	public static ResultSet getTableResultset(String table, String fields) {
+		return getTableResultset(connectionPostgis, table, fields);
+	}
+	
 	public static ResultSet getTableResultset(String table) {
-		return getTableResultset(connectionPostgis, table);
+		return getTableResultset(connectionPostgis, table, "*");
 	}
 	
 	
@@ -521,7 +557,7 @@ public class MainDao {
     }
 
 
-	public static Vector<String> getTable(String table, String schemaParam, boolean addBlank) {
+	public static Vector<String> getTable(String table, String schemaParam, boolean addBlank, String fields) {
         
         Vector<String> vector = new Vector<String>();
         
@@ -534,7 +570,7 @@ public class MainDao {
 		if (!checkTable(schemaParam, table)) {
 			return vector;
 		}
-		String sql = "SELECT * FROM "+schemaParam+"."+table;
+		String sql = "SELECT "+fields+" FROM "+schemaParam+"."+table;
 		try {
 			Statement stat = connectionPostgis.createStatement();
 	        ResultSet rs = stat.executeQuery(sql);
@@ -551,7 +587,7 @@ public class MainDao {
 	
 	
 	public static Vector<String> getTable(String table, String schemaParam) {
-		return getTable(table, schemaParam, false);
+		return getTable(table, schemaParam, false, "*");
 	}
 	
 	

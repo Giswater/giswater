@@ -156,7 +156,9 @@ public class MainController{
 		selectSourceType(true);
 	}
 	
+	
 	private void checkCatalogTables(String schemaName){
+		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
 		mainFrame.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
 		mainFrame.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
 		mainFrame.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
@@ -164,10 +166,11 @@ public class MainController{
 		mainFrame.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));		
 	}
 	
+	
 	public void selectSourceType(boolean askQuestion){
 
 		dbSelected = view.getOptDatabaseSelected();
-		// Database
+		// Database selected
 		if (dbSelected){
 			// Check if we already are connected
 			if (MainDao.isConnected()){
@@ -196,7 +199,7 @@ public class MainController{
 			}
 			schemaChanged();
 		}
-		// DBF
+		// DBF selected
 		else{
 			mainFrame.enableCatalog(false);
 			view.enableControlsDbf(true);			

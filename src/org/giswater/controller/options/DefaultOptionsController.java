@@ -121,6 +121,7 @@ public class DefaultOptionsController {
 
 		Vector<String> values = null;
 		String tableName = "";
+		String fields = "*";
 		
 		// Raingage
 		if (comboName.equals("form_type")){
@@ -173,20 +174,26 @@ public class DefaultOptionsController {
 			tableName = "inp_value_opti_unbal";
 		}		
 		
+		// Report
+		else if (comboName.equals("status")){
+			tableName = "inp_value_yesnofull";
+		}		
+
+		// ResultSelection
+		else if (comboName.equals("result_id")){
+			tableName = "rpt_result_cat";
+			fields = "result_id";
+		}	
+		
 		// Times
 		else if (comboName.equals("statistic")){
 			tableName = "inp_value_times";
 		}
 		
-		// Report
-		else if (comboName.equals("status")){
-			tableName = "inp_value_yesnofull";
-		}		
-		
 		else{
 			tableName = "inp_value_yesno";
 		}				
-		values = MainDao.getTable(tableName, null);
+		values = MainDao.getTable(tableName, null, false, fields);
 		
 		return values;
 		
@@ -326,8 +333,10 @@ public class DefaultOptionsController {
 			int res = Utils.confirmDialog("delete_record?");
 	        if (res == 0){
 				rs.deleteRow();
-				rs.first();
-				setComponents();
+		        if (MainDao.getRowCount(rs) != 0){
+		        	rs.first();
+		        	setComponents();
+		        }
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);

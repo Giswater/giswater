@@ -22,12 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -39,8 +34,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-
-import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
@@ -56,7 +49,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	private JTextField txtReportStart;
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
-	private AbstractButton btnSave;
+	private JButton btnDelete;
 	
 	
 	public ResultCatDialog() {
@@ -67,7 +60,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	
 	private void initConfig(){
 
-		setTitle("Times Table");
+		setTitle("Table rpt_result_cat");
 		setBounds(0, 0, 468, 283);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[179.00][10px][36.00]"));
 		
@@ -165,8 +158,9 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		btnSave = new JButton("Save");
-		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		btnDelete = new JButton("Delete");
+		btnDelete.setActionCommand("deleteResultCat");
+		getContentPane().add(btnDelete, "cell 1 2,alignx right");
 		
 		setupListeners();
 		
@@ -174,23 +168,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 
 	
 	protected void setupListeners() {
-		
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-				dispose();
-			}
-		});
-		
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
-				int res = Utils.confirmDialog("save_data?");
-				if (res == 0){
-					controller.saveData();
-				}
-			}
-		});			
-		
+		btnDelete.addActionListener(this);
 	}		
 	
 

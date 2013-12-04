@@ -56,7 +56,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 
 		setTitle("Report Table");
 		setBounds(0, 0, 454, 239);
-		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[325.00][10px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[163.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));

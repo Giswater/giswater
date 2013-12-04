@@ -34,9 +34,11 @@ import org.giswater.gui.dialog.catalog.ConduitDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
+import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.ResultCatDialog;
+import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
@@ -103,6 +105,14 @@ public class MenuController {
 	}
 
 	
+	public void showProjectId(){
+		ResultSet rs = MainDao.getTableResultset("inp_project_id");
+		if (rs == null) return;		
+		ProjectDialog dialog = new ProjectDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
 	public void showConduit(){
 		ResultSet rs = MainDao.getTableResultset("cat_arc");
 		if (rs == null) return;		
@@ -140,7 +150,6 @@ public class MenuController {
 		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries");		
 		if (rsMain == null || rsRelated == null) return;		
 		TimeseriesDialog dialog = new TimeseriesDialog();
-		//DefaultTableModel model = MainDao.buildTableModel(rsRelated);
 		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
 		dialog.setTable(model);
 		showCatalog(dialog, rsMain);
@@ -161,7 +170,7 @@ public class MenuController {
 	}		
 
 	
-	public void showResultCat(){
+	public void scenarioCatalog(){
 		ResultSet rsMain = MainDao.getTableResultset("rpt_result_cat");
 		if (rsMain == null) return;		
 		ResultCatDialog dialog = new ResultCatDialog();
@@ -169,9 +178,34 @@ public class MenuController {
 	}	
 	
 	
+	public void scenarioManagement(){
+		
+		ResultSet rs = MainDao.getTableResultset("result_selection");
+		if (rs == null) return;		
+		ResultSelectionDialog dialog = new ResultSelectionDialog();
+		// Only show form if exists one record
+		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+        if (MainDao.getRowCount(rs) != 0){
+            controller.moveFirst();
+    	    dialog.setModal(true);
+    	    dialog.setLocationRelativeTo(null);   
+    	    dialog.setVisible(true);	
+        }
+        else{
+        	Utils.showMessage("result_selection_empty");
+        }
+        
+	}		
+	
+	
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
 		DefaultCatalogController controller = new DefaultCatalogController(dialog, rs);
-		controller.moveFirst();
+        if (MainDao.getRowCount(rs) == 0){
+            controller.create();
+        }
+        else{
+            controller.moveFirst();
+        }		
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null);   
 		dialog.setVisible(true);		        
@@ -194,6 +228,7 @@ public class MenuController {
 	}	
 	
 	
+	// Menu About 
 	// TODO: i18n
 	public void showWelcome() {
 		

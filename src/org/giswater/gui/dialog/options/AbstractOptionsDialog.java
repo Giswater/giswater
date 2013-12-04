@@ -101,12 +101,14 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 			}
 		});		
 
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-				dispose();
-			}
-		});		
+		if (btnSave != null){
+			btnSave.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					controller.saveData();
+					dispose();
+				}
+			});		
+		}
 		
 	}
 	

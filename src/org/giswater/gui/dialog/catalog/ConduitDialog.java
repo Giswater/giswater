@@ -52,13 +52,13 @@ public class ConduitDialog extends AbstractCatalogDialog{
 	private JTextField textField_8;
 	private JTextField textField_9;
 	private JTextField txtTsect;
+	private JComboBox cboShape;
+	private JTextField txtCurve;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
 	protected JButton btnSave;	
 	protected JButton btnCreate;
 	protected JButton btnDelete;	
-	private JComboBox cboShape;
-	private JTextField txtCurve;
 	
 	
 	public ConduitDialog() {
