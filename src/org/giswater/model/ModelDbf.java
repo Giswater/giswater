@@ -80,7 +80,7 @@ public class ModelDbf extends Model{
 		} catch (IOException e) {
 			return mAux;
 		} catch (Exception e){
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e.getMessage());
 		}
 
 		return mAux;

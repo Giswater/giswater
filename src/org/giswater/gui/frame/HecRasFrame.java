@@ -43,7 +43,7 @@ public class HecRasFrame extends JInternalFrame {
 		try {
 			setIcon(true);
 		} catch (PropertyVetoException e) {
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e.getMessage());
 		}
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

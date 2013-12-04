@@ -20,6 +20,7 @@
  */
 package org.giswater.gui.frame;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -44,7 +45,6 @@ import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import java.awt.Color;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -97,7 +97,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			initFrames();
 			hecRasFrame.getPanel().enableButtons(isConnected);
 		} catch (PropertyVetoException e) {
-            Utils.getLogger().warning(e.getMessage());
+            Utils.logError(e.getMessage());
 		}
 	}
 
@@ -368,7 +368,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	        setMainParams("MAIN");
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
-            Utils.getLogger().warning(e.getMessage());			
+            Utils.logError(e.getMessage());			
 		}
 		
 	}

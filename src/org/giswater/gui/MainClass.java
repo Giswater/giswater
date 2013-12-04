@@ -49,7 +49,7 @@ public class MainClass {
             	try {
         			UIManager.setLookAndFeel(className);
         		} catch (Exception e) {
-        			Utils.getLogger().warning(e.getMessage());
+        			Utils.logError(e.getMessage());
         		}  
 
             	// Initial configuration

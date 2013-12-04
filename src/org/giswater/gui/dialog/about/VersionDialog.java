@@ -86,7 +86,7 @@ public class VersionDialog extends JDialog {
 			urlWeb = new URI(URL_WEB);
 			urlGithub = new URI(URL_GITHUB);
 		} catch (URISyntaxException e) {
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e.getMessage());
 		}		
 		JButton btnWeb = new JButton();
 		btnWeb.setFont(new Font("Tahoma", Font.BOLD, 12));

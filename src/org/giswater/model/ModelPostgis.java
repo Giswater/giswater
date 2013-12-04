@@ -838,7 +838,7 @@ public class ModelPostgis extends Model {
 	        ResultSetMetaData rsmd = rs.getMetaData();	
             if (softwareName.equals("EPANET")){
             	if (tokens.size() < rsmd.getColumnCount() - 4){
-            		Utils.getLogger().warning("Line not valid");
+            		Utils.logError("Line not valid");
             		return;
             	}
             }
@@ -1073,8 +1073,8 @@ public class ModelPostgis extends Model {
 				else{
 					numBlankLines++;
 				}
-			} catch (IOException e) {
-				Utils.showError(e);
+			} catch (Exception e) {
+				Utils.logError(e);
 			}
 		} 
 		

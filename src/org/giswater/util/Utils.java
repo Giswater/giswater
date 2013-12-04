@@ -9,7 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
@@ -34,9 +36,7 @@ public class Utils {
     private static final String LOG_FOLDER = "log/";
     private static final String ICON_PATH = "images\\imago.png";
     private static final int NUM_LEVELS = 6;
-    private static final int FIRST_LEVEL = 3;
 
-    private static int stackTraceLevel = 3;
 	private static Logger logger;
     private static Logger loggerSql;
 	private static String logFolder;
@@ -95,7 +95,7 @@ public class Utils {
     	   	appPath = jarFile.getParentFile().getPath() + File.separator;  
     	}
     	catch (URISyntaxException e) {
-    		e.printStackTrace();
+    		JOptionPane.showMessageDialog(null, e.getMessage(), "getAppPath Error", JOptionPane.ERROR_MESSAGE);
     	}
     	return appPath;
     	
@@ -176,13 +176,13 @@ public class Utils {
             }
             in.close();
             out.close();
-        	getLogger().info("File from: " + srFile + "\nFile to:   " + dtFile);
+        	logger.info("File from: " + srFile + "\nFile to:   " + dtFile);
             ok = true;
             
         } catch (FileNotFoundException e) {
-        	getLogger().warning(e.getMessage() + " in the specified directory.");
+        	logError(e.getMessage() + " in the specified directory.");
         } catch (IOException e) {
-        	getLogger().warning(e.getMessage());
+        	logError(e.getMessage());
         }
         
     	return ok;
@@ -194,7 +194,6 @@ public class Utils {
     	showMessage(msg, "");
     }
     
-
     public static void showMessage(String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
@@ -217,7 +216,10 @@ public class Utils {
     	showError(msg, "");
     }
     
-    
+    public static void showError(Exception e) {
+    	showError(e, "");
+    }    
+        
     public static void showError(String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
@@ -225,57 +227,52 @@ public class Utils {
 			userMsg += "\n" + param;
 		}
 		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-		if (logger != null) {
-			String errorMsg = getBundleString(msg);
-			if (!param.equals("")){
-				errorMsg += "\nParameter: " + param;
-			}
-			logger.warning(errorMsg);			
-		}
+		logError(msg, param);
 		
     }
     
-    
-    public static void showError(Exception e) {
-    	stackTraceLevel = FIRST_LEVEL + 1;
-    	showError(e, "");
-    	stackTraceLevel = FIRST_LEVEL;
-    }    
-    
-    
     public static void showError(Exception e, String param) {
-    	
-    	String errorInfo = getErrorInfo(stackTraceLevel);
 		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
-		if (logger != null) {
-			String errorMsg = e.toString() + "\n" + errorInfo;
-			if (!param.equals("")){
-				errorMsg += "\nParameter: " + param;
-			}
-			logger.warning(errorMsg);				
-		}
-		
+		logError(e, param);
     }     
     
     
+    public static void logError(String msg) {
+    	logError(msg, "");
+    }     
+
     public static void logError(Exception e) {
-    	stackTraceLevel = FIRST_LEVEL + 1;
     	logError(e, "");
-    	stackTraceLevel = FIRST_LEVEL;    	
-    }      
+    }    
     
+    public static void logError(String msg, String param) {
+    	if (logger != null){
+    		String errorMsg = getBundleString(msg);
+    		if (!param.equals("")){
+    			errorMsg += "\nParameter: " + param;
+    		}    	
+    		logger.warning(errorMsg);
+    	}
+    } 
     
     public static void logError(Exception e, String param) {
-    	
-    	String errorInfo = getErrorInfo(stackTraceLevel);
-		if (logger != null) {
-			String errorMsg = e.toString() + "\n" + errorInfo;
-			if (!param.equals("")){
-				errorMsg += "\nParameter: " + param;
-			}
-			logger.warning(errorMsg);
-		}
-		
+        
+    	if (logger != null){
+	    	StringWriter sw = new StringWriter();
+	        PrintWriter pw = new PrintWriter(sw, true);
+	        e.printStackTrace(pw);
+	        pw.flush();
+	        sw.flush();
+	        String fullStack = sw.toString();
+	        String[] lines = fullStack.split(System.getProperty("line.separator"));
+	        String shortStack = "";
+	        for (int i = 0; i < NUM_LEVELS; i++) {
+	        	shortStack+= lines[i] + "\n";
+	        }
+	        shortStack+= "Parameter: " + param;
+	        logger.warning(shortStack);
+    	}
+        
     }         
     
     
@@ -289,17 +286,6 @@ public class Utils {
         return reply;    	
     }        
 
-    
-    private static String getErrorInfo(int firstLevel){
-    	StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-    	String aux = "";
-    	int lastLevel = (ste.length < firstLevel+NUM_LEVELS) ? ste.length : firstLevel+NUM_LEVELS;
-    	for (int i=firstLevel; i<lastLevel; i++) {
-			aux += ste[i].toString() + "\n";
-		}
-    	return aux;
-    }
-    
 
     /**
      * Returns the class name of the installed LookAndFeel with a name
@@ -325,9 +311,9 @@ public class Utils {
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
 		} catch (IOException e) {
-			Utils.logError(e);
+			logError(e);
 		} catch (InterruptedException e) {
-			Utils.logError(e);
+			logError(e);
 		}	
 		
 	}
@@ -340,11 +326,11 @@ public class Utils {
 			try {
 				Desktop.getDesktop().open(exec);
 			} catch (IOException e) {
-				Utils.logError(e);
+				logError(e);
 			}
 		}
 		else{
-			Utils.showMessage("file_not_found", filePath);
+			showMessage("file_not_found", filePath);
 		}
 		
 	}    
@@ -356,24 +342,24 @@ public class Utils {
 	
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists()){
-	    	getLogger().warning("Delete: no such file or directory: " + sFile);
+	    	logError("Delete: no such file or directory: " + sFile);
 	    }
 	    if (!f.canWrite()){
-	    	getLogger().warning("Delete: write protected: " + sFile);	    	
+	    	logError("Delete: write protected: " + sFile);	    	
 	    }
 	
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
 	    	if (files.length > 0){
-	    		getLogger().warning("Delete: directory not empty: " + sFile);
+	    		logError("Delete: directory not empty: " + sFile);
 	    	}
 	    }
 	
 	    // Attempt to delete it
 	    boolean success = f.delete();
 	    if (!success) {
-    		getLogger().warning("Delete: deletion failed");
+	    	logError("Delete: deletion failed");
 	    }
 	
 	}
@@ -387,7 +373,7 @@ public class Utils {
 			raf.writeBytes(text);
 			raf.close();
 		} catch (Exception e) {
-			getLogger().warning(e.getMessage());
+			logError(e.getMessage());
 		}
 
 	}		

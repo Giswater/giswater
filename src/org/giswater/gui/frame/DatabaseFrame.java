@@ -49,7 +49,7 @@ public class DatabaseFrame extends JInternalFrame {
 		try {
 			setIcon(true);
 		} catch (PropertyVetoException e) {
-			Utils.getLogger().warning(e.getMessage());
+			Utils.logError(e.getMessage());
 		}        
 
         GroupLayout layout = new GroupLayout(getContentPane());
