@@ -1059,7 +1059,7 @@ public class ModelPostgis extends Model {
 		tokens = new ArrayList<String>();			
 		boolean blankLine = false;		
 		int numBlankLines = 0;
-		while (numBlankLines <= 2){
+		while (numBlankLines < 2){
 			try {
 				lineNumber++;
 				String line = rat.readLine().trim();
@@ -1076,7 +1076,7 @@ public class ModelPostgis extends Model {
 			} catch (IOException e) {
 				Utils.showError(e);
 			}
-		}		
+		} 
 		
 	}
 	
@@ -1107,7 +1107,7 @@ public class ModelPostgis extends Model {
 	private static void processTokensHydraulic(RptTarget rpt) {
 
 		String fields = "result_id, time, text";
-		String values = "'" + projectName + "', ";
+		String values = "'"+projectName+"', ";
         String time;
         String text = "";
         time = tokens.get(0);
@@ -1119,7 +1119,7 @@ public class ModelPostgis extends Model {
         	lastTimeHydraulic = time;
         }
         text += tokens.get(1);
-		values += "'" + time + "', '" + text + "'";
+		values += "'"+time+"', '"+text+"'";
 	
 		String sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
 		insertSql += sql;
