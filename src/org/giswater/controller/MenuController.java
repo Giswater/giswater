@@ -23,8 +23,6 @@ package org.giswater.controller;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
-import org.giswater.controller.catalog.DefaultCatalogController;
-import org.giswater.controller.options.DefaultOptionsController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.VersionDialog;
@@ -184,7 +182,7 @@ public class MenuController {
 		if (rs == null) return;		
 		ResultSelectionDialog dialog = new ResultSelectionDialog();
 		// Only show form if exists one record
-		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+		OptionsController controller = new OptionsController(dialog, rs);
         if (MainDao.getRowCount(rs) != 0){
             controller.moveFirst();
     	    dialog.setModal(true);
@@ -199,7 +197,7 @@ public class MenuController {
 	
 	
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
-		DefaultCatalogController controller = new DefaultCatalogController(dialog, rs);
+		CatalogController controller = new CatalogController(dialog, rs);
         if (MainDao.getRowCount(rs) == 0){
             controller.create();
         }
@@ -214,7 +212,7 @@ public class MenuController {
 
 	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
 		
-		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+		OptionsController controller = new OptionsController(dialog, rs);
         if (MainDao.getRowCount(rs) == 0){
             controller.create();
         }

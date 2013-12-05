@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.controller.catalog;
+package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.lang.reflect.Method;
@@ -45,14 +45,14 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class DefaultCatalogController {
+public class CatalogController {
 
 	private AbstractCatalogDialog view;
     private ResultSet rs;
 	private String action;
 	
 	
-	public DefaultCatalogController(AbstractCatalogDialog dialog, ResultSet rs) {
+	public CatalogController(AbstractCatalogDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setController(this);        
@@ -370,7 +370,7 @@ public class DefaultCatalogController {
     		if (rs == null) return;
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
         	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog, timesType);
-        	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
+        	CatalogController controller = new CatalogController(detailDialog, rs);
         	// Open dialog form to create new record
         	controller.create();
         	detailDialog.setTimserId(timserId);
@@ -436,7 +436,7 @@ public class DefaultCatalogController {
 	        	ResultSet rs = MainDao.getResultset(sql);
 	    		if (rs == null) return;	        	
 	        	TimeseriesDetailDialog detailDialog = new TimeseriesDetailDialog(tsDialog, timesType);
-	        	DefaultCatalogController controller = new DefaultCatalogController(detailDialog, rs);
+	        	CatalogController controller = new CatalogController(detailDialog, rs);
 	        	// Open dialog form to edit selected row
 	        	controller.moveFirst();
 	        	detailDialog.setModal(true);

@@ -1,3 +1,23 @@
+/*
+ * This file is part of Giswater
+ * Copyright (C) 2013PrincesaMonoayaM-2009s Associats
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author:
+ *   David Erill <daviderill79@gmail.com>
+ */
 package org.giswater.gui.dialog.options;
 
 import java.awt.Component;
@@ -16,7 +36,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.giswater.controller.options.DefaultOptionsController;
+import org.giswater.controller.OptionsController;
 import org.giswater.util.Utils;
 
 
@@ -24,7 +44,7 @@ import org.giswater.util.Utils;
 public abstract class AbstractOptionsDialog extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = -7319857198967955753L;
-	protected DefaultOptionsController controller;
+	protected OptionsController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	protected JButton btnSave;
@@ -33,12 +53,12 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	public AbstractOptionsDialog() { }
 	
 	
-	public DefaultOptionsController getController(){
+	public OptionsController getController(){
 		return controller;
 	}
 	
 	
-	public void setController(DefaultOptionsController controller) {
+	public void setController(OptionsController controller) {
 		this.controller = controller;
 	}	
 	

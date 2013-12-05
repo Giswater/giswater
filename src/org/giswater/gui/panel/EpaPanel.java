@@ -249,7 +249,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][602.00px]", "[5px][410.00]"));
+		setLayout(new MigLayout("", "[8.00][614.00px]", "[5px][410.00,grow]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -302,8 +302,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		optDbf.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel_4.add(optDbf, "flowx,cell 2 0");
 		
-		optDatabase = new JRadioButton("Database");
-		optDatabase.setSelected(true);
+		optDatabase = new JRadioButton(BUNDLE.getString("EpaPanel.Database.text"));
 		optDatabase.setActionCommand("selectSourceType");
 		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel_4.add(optDatabase, "cell 2 0");
@@ -356,7 +355,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDeleteData.setMinimumSize(new Dimension(110, 23));
 		btnDeleteData.setMaximumSize(new Dimension(110, 23));
 		btnDeleteData.setEnabled(false);
-		btnDeleteData.setActionCommand(BUNDLE.getString("EpaPanel.btnDeleteData.actionCommand")); //$NON-NLS-1$
+		btnDeleteData.setActionCommand("deleteData");
 		panel_4.add(btnDeleteData, "cell 3 3");
 		
 		btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
@@ -364,7 +363,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnSectorSelection.setPreferredSize(new Dimension(110, 23));
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setMaximumSize(new Dimension(110, 23));
-		btnSectorSelection.setActionCommand(BUNDLE.getString("EpaPanel.btnSectorSelection.actionCommand")); //$NON-NLS-1$
+		btnSectorSelection.setActionCommand("showSectorSelection");
 		panel_4.add(btnSectorSelection, "flowx,cell 2 5,alignx right");
 		
 		btnOptions = new JButton(BUNDLE.getString("Form.btnOptions.text")); //$NON-NLS-1$
@@ -372,7 +371,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnOptions.setEnabled(false);
 		btnOptions.setMinimumSize(new Dimension(110, 23));
 		btnOptions.setPreferredSize(new Dimension(110, 23));
-		btnOptions.setActionCommand(BUNDLE.getString("EpaPanel.btnOptions.actionCommand")); //$NON-NLS-1$
+		btnOptions.setActionCommand("showInpOptions");
 		panel_4.add(btnOptions, "cell 2 5,alignx left");
 		
 		btnReport = new JButton(BUNDLE.getString("EpaPanel.btnReport.text")); //$NON-NLS-1$
@@ -380,11 +379,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnReport.setMinimumSize(new Dimension(110, 23));
 		btnReport.setMaximumSize(new Dimension(110, 23));
 		btnReport.setEnabled(false);
-		btnReport.setActionCommand(BUNDLE.getString("EpaPanel.btnReport.actionCommand")); //$NON-NLS-1$
+		btnReport.setActionCommand("showReport");
 		panel_4.add(btnReport, "cell 3 5,alignx right");
 		
 		chkExport = new JCheckBox();
-		chkExport.setText("Export INP");
+		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); //$NON-NLS-1$
 		panel_4.add(chkExport, "cell 0 6 2 1");
 
 		JLabel label = new JLabel();

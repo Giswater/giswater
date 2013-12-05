@@ -33,16 +33,16 @@ import javax.crypto.spec.PBEParameterSpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+
 public class Encryption {
 
 	private static final char[] PASSWORD = "enfldsgbnlsngdlksdsgm".toCharArray();
 	private static final byte[] SALT = { (byte) 0xde, (byte) 0x33, (byte) 0x10,
 			(byte) 0x12, (byte) 0xde, (byte) 0x33, (byte) 0x10, (byte) 0x12, };
 
-	public Encryption() {
+	public Encryption() { }
 
-	}
-
+	
 	public static String encrypt(String property) {
 
 		SecretKeyFactory keyFactory;
@@ -60,6 +60,7 @@ public class Encryption {
 		return null;
 
 	}
+	
 
 	public static String decrypt(String property) {
 
@@ -82,16 +83,19 @@ public class Encryption {
 
 	}
 
+	
 	private static String base64Encode(byte[] bytes)
 			throws IllegalBlockSizeException {
 		// NB: This class is internal, and you probably should use another impl
 		return new BASE64Encoder().encode(bytes);
 	}
 
+	
 	private static byte[] base64Decode(String property)
 			throws IllegalBlockSizeException, IOException {
 		// NB: This class is internal, and you probably should use another impl
 		return new BASE64Decoder().decodeBuffer(property);
 	}
 
+	
 }

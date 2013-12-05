@@ -38,14 +38,18 @@ public class MainClass {
     public static void main(String[] args) {
     	
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
+            @SuppressWarnings("unused")
+			@Override
             public void run() {
             	
-            	// English language
-            	Locale.setDefault(Locale.ENGLISH);
-
+            	// Set locale
+            	final Locale english = new Locale("en", "EN");
+            	final Locale spanish = new Locale("es", "ES");
+            	//Locale.setDefault(english);
+            	
             	// Look&Feel
-            	String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
+            	//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
+            	String className = UIManager.getSystemLookAndFeelClassName();
             	try {
         			UIManager.setLookAndFeel(className);
         		} catch (Exception e) {

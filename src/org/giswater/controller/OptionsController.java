@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <daviderill79@gmail.com>
  */
-package org.giswater.controller.options;
+package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.lang.reflect.Method;
@@ -40,14 +40,14 @@ import org.giswater.gui.dialog.options.OptionsEpanetDialog;
 import org.giswater.util.Utils;
 
 
-public class DefaultOptionsController {
+public class OptionsController {
 
 	private AbstractOptionsDialog view;
     private ResultSet rs;
 	private String action;
 	
 	
-	public DefaultOptionsController(AbstractOptionsDialog dialog, ResultSet rs) {
+	public OptionsController(AbstractOptionsDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
 	    view.setController(this);        

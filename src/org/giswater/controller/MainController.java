@@ -32,7 +32,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.giswater.controller.options.DefaultOptionsController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsDialog;
@@ -190,6 +189,8 @@ public class MainController{
 		            if (answer == JOptionPane.YES_OPTION){
 						mainFrame.openDatabase();
 		            }
+				} else{
+					mainFrame.openDatabase();
 				}
 				mainFrame.enableCatalog(false);
 				view.enableControlsDbf(false);
@@ -285,7 +286,7 @@ public class MainController{
 	
 	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
 		
-		DefaultOptionsController controller = new DefaultOptionsController(dialog, rs);
+		OptionsController controller = new OptionsController(dialog, rs);
         if (MainDao.getRowCount(rs) == 0){
             controller.create();
         }

@@ -201,7 +201,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[10px][410.00][12]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][10]", "[10px][410.00][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -210,7 +210,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		// Panel gisRAS
 		panel_2 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
-		panel_2.setLayout(new MigLayout("", "[40px][90.00px][152.00][:114.00:100px][]", "[8px][15][30][30px][50][][10][15][104.00][:5px:5px]"));
+		panel_2.setLayout(new MigLayout("", "[40:40px:40][25:25:25][220.00][110][71.00]", "[8px][15][30][30px][50][][10][15][104.00][:5px:5px]"));
 		
 		lblDataManager = new JLabel(BUNDLE.getString("HecRasPanel.lblDataManager.text")); //$NON-NLS-1$
 		lblDataManager.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -219,23 +219,23 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.add(panel_3, "flowx,cell 0 2 5 4,grow");
-		panel_3.setLayout(new MigLayout("", "[40px][:100px:100px,grow][:100px:100px][:100px:100px][]", "[25px][4px][45px][45]"));
+		panel_3.setLayout(new MigLayout("", "[:65.00px:65][110][110][110][59.00]", "[25px][4px][45px][45]"));
 		
 		btnClearData = new JButton(BUNDLE.getString("HecRasPanel.btnClearData.text")); //$NON-NLS-1$
-		btnClearData.setMaximumSize(new Dimension(95, 23));
-		btnClearData.setMinimumSize(new Dimension(95, 23));
+		btnClearData.setMaximumSize(new Dimension(110, 23));
+		btnClearData.setMinimumSize(new Dimension(110, 23));
 		btnClearData.setActionCommand("clearData");
 		panel_3.add(btnClearData, "flowx,cell 1 0,alignx center,aligny center");
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setMaximumSize(new Dimension(95, 23));
-		btnLoadRaster.setMinimumSize(new Dimension(95, 23));
+		btnLoadRaster.setMaximumSize(new Dimension(110, 23));
+		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
 		panel_3.add(btnLoadRaster, "cell 2 0,alignx center,aligny center");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
-		btnExportSdf.setMinimumSize(new Dimension(100, 23));
-		btnExportSdf.setMaximumSize(new Dimension(100, 23));
+		btnExportSdf.setMinimumSize(new Dimension(110, 23));
+		btnExportSdf.setMaximumSize(new Dimension(110, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		panel_3.add(btnExportSdf, "cell 3 0,alignx center,aligny center");
 		
@@ -259,7 +259,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		lblAscFile = new JLabel();
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text")); //$NON-NLS-1$
-		panel_3.add(lblAscFile, "cell 0 3");
+		panel_3.add(lblAscFile, "cell 0 3,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
 		panel_3.add(scrollPane_1, "cell 1 3 3 1,grow");
@@ -282,11 +282,11 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		panel_4 = new JPanel();
 		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.add(panel_4, "cell 0 8 5 1,grow");
-		panel_4.setLayout(new MigLayout("", "[40px][:100px:100px][:100px:100px][:100px:100px][]", "[25px][4][][]"));
+		panel_4.setLayout(new MigLayout("", "[65px][115][:100px:100px][:100px:100px][]", "[25px][4][][]"));
 		
 		btnSaveCase = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
-		btnSaveCase.setMaximumSize(new Dimension(95, 23));
-		btnSaveCase.setMinimumSize(new Dimension(95, 23));
+		btnSaveCase.setMaximumSize(new Dimension(105, 23));
+		btnSaveCase.setMinimumSize(new Dimension(105, 23));
 		btnSaveCase.setActionCommand("saveCase");
 		panel_4.add(btnSaveCase, "cell 1 0,alignx center,aligny center");
 		
@@ -300,8 +300,8 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		btnLoadCase = new JButton(BUNDLE.getString("HecRasPanel.btnLoadCase.text"));
 		panel_4.add(btnLoadCase, "cell 1 2,alignx center,aligny center");
-		btnLoadCase.setMaximumSize(new Dimension(95, 23));
-		btnLoadCase.setMinimumSize(new Dimension(95, 23));
+		btnLoadCase.setMaximumSize(new Dimension(105, 23));
+		btnLoadCase.setMinimumSize(new Dimension(105, 23));
 		btnLoadCase.setActionCommand("loadCase");
 		
 		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
@@ -315,8 +315,8 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		btnDeleteCase = new JButton(BUNDLE.getString("HecRasPanel.btnDeleteCase.text"));
 		panel_4.add(btnDeleteCase, "cell 1 3,alignx center,aligny center");
-		btnDeleteCase.setMaximumSize(new Dimension(95, 23));
-		btnDeleteCase.setMinimumSize(new Dimension(100, 23));
+		btnDeleteCase.setMaximumSize(new Dimension(105, 23));
+		btnDeleteCase.setMinimumSize(new Dimension(105, 23));
 		btnDeleteCase.setActionCommand("deleteCase");
 		
 		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); //$NON-NLS-1$
@@ -324,7 +324,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnDatabase.setMaximumSize(new Dimension(140, 23));
 		btnDatabase.setActionCommand("openDatabase");
 		btnDatabase.setVisible(false);
-		panel_2.add(btnDatabase, "cell 3 1 2 1");
+		panel_2.add(btnDatabase, "cell 3 1 2 1,alignx right");
 
 		enableButtons(false);
 		setupListeners();

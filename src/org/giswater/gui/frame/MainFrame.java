@@ -139,12 +139,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		JMenuItem mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text")); //$NON-NLS-1$
 		mntmQgis.setEnabled(false);
-		mntmQgis.setActionCommand(BUNDLE.getString("MainFrame.mntmQgis.actionCommand")); //$NON-NLS-1$
+		mntmQgis.setActionCommand("projectQGIS");
 		mnGisProject.add(mntmQgis);
 		
 		JMenuItem mntmGvsig = new JMenuItem(BUNDLE.getString("MainFrame.mntmGvsig.text")); //$NON-NLS-1$
 		mntmGvsig.setEnabled(false);
-		mntmGvsig.setActionCommand(BUNDLE.getString("MainFrame.mntmGvsig.actionCommand")); //$NON-NLS-1$
+		mntmGvsig.setActionCommand("projectGVSIG");
 		mnGisProject.add(mntmGvsig);
 		
 		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
@@ -153,27 +153,27 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text"));
 		mntmProjectId.setFocusCycleRoot(true);
-		mntmProjectId.setActionCommand(BUNDLE.getString("MainFrame.mntmProjectId.actionCommand")); //$NON-NLS-1$
+		mntmProjectId.setActionCommand("showProjectId");
 		mnCatalog.add(mntmProjectId);
 		
 		mntmConduit = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
-		mntmConduit.setActionCommand(BUNDLE.getString("MainFrame.mntmConduit.actionCommand")); //$NON-NLS-1$
+		mntmConduit.setActionCommand("showConduit");
 		mnCatalog.add(mntmConduit);
 		
 		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
-		mntmMaterials.setActionCommand(BUNDLE.getString("MainFrame.mntmMaterials.actionCommand")); //$NON-NLS-1$
+		mntmMaterials.setActionCommand("showMaterials");
 		mnCatalog.add(mntmMaterials);
 		
 		mntmTimeseries = new JMenuItem(BUNDLE.getString("MainFrame.mntmTimeseries.text"));
-		mntmTimeseries.setActionCommand(BUNDLE.getString("MainFrame.mntmTimeseries.actionCommand")); //$NON-NLS-1$
+		mntmTimeseries.setActionCommand("showTimeseries");
 		mnCatalog.add(mntmTimeseries);
 		
 		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text"));
-		mntmCurves.setActionCommand(BUNDLE.getString("MainFrame.mntmCurves.actionCommand")); //$NON-NLS-1$
+		mntmCurves.setActionCommand("showCurves");
 		mnCatalog.add(mntmCurves);
 		
 		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
-		mntmPatterns.setActionCommand(BUNDLE.getString("MainFrame.mntmPatterns.actionCommand")); //$NON-NLS-1$
+		mntmPatterns.setActionCommand("showPatterns");
 		mnCatalog.add(mntmPatterns);
 		
 		mnScenario = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
@@ -181,11 +181,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text")); //$NON-NLS-1$
 		mntmCatalog.setEnabled(false);
-		mntmCatalog.setActionCommand(BUNDLE.getString("MainFrame.mntmCatalog.actionCommand")); //$NON-NLS-1$
+		mntmCatalog.setActionCommand("scenarioCatalog");
 		mnScenario.add(mntmCatalog);
 		
 		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
-		mntmManagement.setActionCommand(BUNDLE.getString("MainFrame.mntmManagement.actionCommand")); //$NON-NLS-1$
+		mntmManagement.setActionCommand("scenarioManagement");
 		mnScenario.add(mntmManagement);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
@@ -207,7 +207,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmWelcome.setActionCommand("showWelcome");
 		
 		mntmVersion = new JMenuItem(BUNDLE.getString("MainFrame.mntmVersion.text")); //$NON-NLS-1$
-		mntmVersion.setActionCommand(BUNDLE.getString("MainFrame.mntmVersion.actionCommand")); //$NON-NLS-1$
+		mntmVersion.setActionCommand("showVersion");
 		mnAbout.add(mntmVersion);
 		
 		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); //$NON-NLS-1$
@@ -249,6 +249,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private void initFrames() throws PropertyVetoException{
 
         // Create and Add frames to main Panel
@@ -287,11 +288,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		new DatabaseController(dbFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         MainController mcSwmm = new MainController(swmmFrame.getPanel(), this, "EPASWMM");   
-        mcSwmm.selectSourceType();
-        mcSwmm.schemaTest("epaswmm");
         MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
-        mcEpanet.selectSourceType();
-        mcEpanet.schemaTest("epanet");
+        
+        // TODO: Test
+//        mcSwmm.selectSourceType(false);
+//        mcSwmm.schemaTest("_david");
+//        mcEpanet.selectSourceType(false);
+//        mcEpanet.schemaTest("epanet");
 		
 	}
 	

@@ -1,3 +1,23 @@
+/*
+ * This file is part of Giswater
+ * Copyright (C) 2013PrincesaMonoayaM-2009s Associats
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author:
+ *   David Erill <daviderill79@gmail.com>
+ */
 package org.giswater.gui.frame;
 
 import java.beans.PropertyVetoException;
@@ -34,7 +54,6 @@ public class EpaFrame extends JInternalFrame {
         setTitle("");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
 		setMaximizable(true);        
         setVisible(false);
         
@@ -49,14 +68,14 @@ public class EpaFrame extends JInternalFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 603, Short.MAX_VALUE)
-        			.addContainerGap())
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(15, Short.MAX_VALUE))
+        			.addContainerGap(12, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
 

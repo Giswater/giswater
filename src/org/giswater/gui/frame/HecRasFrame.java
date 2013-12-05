@@ -1,3 +1,23 @@
+/*
+ * This file is part of Giswater
+ * Copyright (C) 2013PrincesaMonoayaM-2009s Associats
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author:
+ *   David Erill <daviderill79@gmail.com>
+ */
 package org.giswater.gui.frame;
 
 import java.beans.PropertyVetoException;
@@ -19,6 +39,7 @@ public class HecRasFrame extends JInternalFrame {
 	
 	
 	public HecRasFrame(){
+		setResizable(true);
 		initComponents();
 	}
 	
@@ -35,9 +56,7 @@ public class HecRasFrame extends JInternalFrame {
         setTitle("HecRas");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		setIconifiable(true);
 		setMaximizable(true);
-        setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {
@@ -50,14 +69,14 @@ public class HecRasFrame extends JInternalFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 498, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(10, Short.MAX_VALUE))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
 
