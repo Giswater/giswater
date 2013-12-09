@@ -79,7 +79,7 @@ public class VersionDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());		
 		setTitle(title);
-		setSize(432, 124);
+		setSize(455, 125);
 		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[20px:20px:20px][20px:20px:20px][20px:20px:20px]"));
 		
 		try {

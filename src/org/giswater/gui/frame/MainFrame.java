@@ -67,7 +67,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmCurves;
 	private JMenuItem mntmPatterns;	
 	
-	private JMenu mnScenario;	
+	private JMenu mnAnalysis;	
 	private JMenuItem mntmCatalog;
 	private JMenuItem mntmManagement;
 	
@@ -176,17 +176,17 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmPatterns.setActionCommand("showPatterns");
 		mnCatalog.add(mntmPatterns);
 		
-		mnScenario = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
-		menuBar.add(mnScenario);
+		mnAnalysis = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
+		menuBar.add(mnAnalysis);
 		
 		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text")); //$NON-NLS-1$
 		mntmCatalog.setEnabled(false);
 		mntmCatalog.setActionCommand("scenarioCatalog");
-		mnScenario.add(mntmCatalog);
+		mnAnalysis.add(mntmCatalog);
 		
 		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
 		mntmManagement.setActionCommand("scenarioManagement");
-		mnScenario.add(mntmManagement);
+		mnAnalysis.add(mntmManagement);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
@@ -289,6 +289,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		new ConfigController(configFrame.getPanel());
         MainController mcSwmm = new MainController(swmmFrame.getPanel(), this, "EPASWMM");   
         MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
+        
+        boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "true"));
+        mnAnalysis.setEnabled(!overwrite);
+        
         
         // TODO: Test
 //        mcSwmm.selectSourceType(false);
@@ -434,7 +438,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void enableCatalog(boolean enable) {
 		mnCatalog.setEnabled(enable);
-		mnScenario.setEnabled(enable);
+		mnAnalysis.setEnabled(enable);
 	}
 	
 	public void enableProjectId(boolean enable) {

@@ -107,7 +107,7 @@ public class DatabaseController {
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		//Utils.showMessage("connection_closed");			
+		Utils.showMessage("connection_closed");			
 		
 	}
 	
@@ -140,7 +140,7 @@ public class DatabaseController {
 	    	Utils.getLogger().info("Postgis data directory: " + folder);
 	        prop.put("POSTGIS_DATA", folder);
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			//Utils.showMessage("connection_opened");	
+			Utils.showMessage("connection_opened");	
 			//MainDao.setSchema(view.getSchemaResult());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 

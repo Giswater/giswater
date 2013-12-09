@@ -588,7 +588,7 @@ public class MainController{
 			}
 		}
 		else{
-			sridValue = "0";
+			sridValue = defaultSrid;
 		}
 		return sridValue.trim();
 		

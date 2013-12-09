@@ -359,7 +359,7 @@ public class ModelPostgis extends Model {
     // Exec SWMM
     public static boolean execSWMM(File fileInp, File fileRpt) {
 
-        Utils.getLogger().info("execSWMM");
+        Utils.getLogger().info("execEPASOFT");
         
 		iniProperties = MainDao.getPropertiesFile();   
 		String exeCmd = iniProperties.get("FILE_" + softwareName, "C:\\EPA\\epanet.exe");

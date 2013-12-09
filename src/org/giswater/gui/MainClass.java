@@ -45,7 +45,7 @@ public class MainClass {
             	// Set locale
             	final Locale english = new Locale("en", "EN");
             	final Locale spanish = new Locale("es", "ES");
-            	//Locale.setDefault(english);
+            	Locale.setDefault(english);
             	
             	// Look&Feel
             	//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
