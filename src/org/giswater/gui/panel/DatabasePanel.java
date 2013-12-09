@@ -196,7 +196,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		panel.add(lblIp, "cell 1 2");
 
 		txtIP = new JTextField();
-		txtIP.setText(BUNDLE.getString("Database.textField.text")); //$NON-NLS-1$
 		panel.add(txtIP, "cell 3 2,growx");
 		txtIP.setColumns(10);
 
@@ -204,7 +203,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		panel.add(lblPort, "cell 1 3,alignx left");
 
 		txtPort = new JTextField();
-		txtPort.setText(BUNDLE.getString("Database.txtPort.text")); //$NON-NLS-1$
 		txtPort.setColumns(10);
 		panel.add(txtPort, "cell 3 3,growx");
 

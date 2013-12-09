@@ -41,5 +41,5 @@ Sergi Muñoz <smunoz@tecnicsassociats.com>
 Jordi Yétor <jyetor@tecnicsassociats.com>
 
 
-Complete source code for the Giswater application is available from https://github.com/Tècnicsassociats/giswater
+Complete source code for the Giswater application is available from https://github.com/giswater/giswater
 
