@@ -179,8 +179,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnAnalysis = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
 		menuBar.add(mnAnalysis);
 		
-		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text")); //$NON-NLS-1$
-		mntmCatalog.setEnabled(false);
+		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text"));
 		mntmCatalog.setActionCommand("scenarioCatalog");
 		mnAnalysis.add(mntmCatalog);
 		
@@ -465,6 +464,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmTimeseries.setEnabled(enable);
 	}
 	
+	
+	public void enableResultCat(boolean enable) {
+		mntmCatalog.setEnabled(enable);
+	}
+	
+	public void enableResultSelection(boolean enable) {
+		mntmManagement.setEnabled(enable);
+	}	
+	
+	
     private void manageFrames(JInternalFrame frame) {
     	
         try {
@@ -478,4 +487,6 @@ public class MainFrame extends JFrame implements ActionListener{
         }
         
     }
+    
+    
 }

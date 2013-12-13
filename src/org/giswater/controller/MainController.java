@@ -166,6 +166,12 @@ public class MainController{
 	}
 	
 	
+	private void checkOptionsTables(String schemaName){
+		mainFrame.enableResultCat(MainDao.checkTable(schemaName, "rpt_result_cat"));
+		mainFrame.enableResultSelection(MainDao.checkTable(schemaName, "result_selection"));
+	}
+	
+	
 	public void selectSourceType(boolean askQuestion){
 
 		dbSelected = view.getOptDatabaseSelected();
@@ -223,6 +229,7 @@ public class MainController{
 			String schemaName = view.getSchema();
 			MainDao.setSchema(view.getSchema());
 			checkCatalogTables(schemaName);
+			checkOptionsTables(schemaName);
 		}
 	}
 

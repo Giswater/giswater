@@ -36,6 +36,7 @@ import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.ResultCatDialog;
+import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.model.table.TableModelCurves;
@@ -169,10 +170,19 @@ public class MenuController {
 
 	
 	public void scenarioCatalog(){
-		ResultSet rsMain = MainDao.getTableResultset("rpt_result_cat");
-		if (rsMain == null) return;		
-		ResultCatDialog dialog = new ResultCatDialog();
-		showOptions(dialog, rsMain);		
+		
+		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
+		if (rs == null) return;		
+		String softwareName = MainDao.getSoftwareName();
+		AbstractOptionsDialog dialog = null;
+		if (softwareName.equals("EPASWMM")){
+			dialog = new ResultCatDialog();	
+		}
+		else{
+			dialog = new ResultCatEpanetDialog();
+		}
+		showOptions(dialog, rs, "result_cat_empty");
+		
 	}	
 	
 	
@@ -181,22 +191,13 @@ public class MenuController {
 		ResultSet rs = MainDao.getTableResultset("result_selection");
 		if (rs == null) return;		
 		ResultSelectionDialog dialog = new ResultSelectionDialog();
-		// Only show form if exists one record
-		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) != 0){
-            controller.moveFirst();
-    	    dialog.setModal(true);
-    	    dialog.setLocationRelativeTo(null);   
-    	    dialog.setVisible(true);	
-        }
-        else{
-        	Utils.showMessage("result_selection_empty");
-        }
+		showOptions(dialog, rs, "result_selection_empty");
         
 	}		
 	
 	
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
+		
 		CatalogController controller = new CatalogController(dialog, rs);
         if (MainDao.getRowCount(rs) == 0){
             controller.create();
@@ -206,22 +207,24 @@ public class MenuController {
         }		
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		        
+		dialog.setVisible(true);		
+		
 	}
 	
 
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg){
 		
+		// Only show form if exists one record
 		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0){
-            controller.create();
+        if (MainDao.getRowCount(rs) != 0){
+            controller.moveFirst();
+    	    dialog.setModal(true);
+    	    dialog.setLocationRelativeTo(null);   
+    	    dialog.setVisible(true);	
         }
         else{
-            controller.moveFirst();
+        	Utils.showMessage(errorMsg);
         }
-	    dialog.setModal(true);
-	    dialog.setLocationRelativeTo(null);   
-	    dialog.setVisible(true);	
 	    
 	}	
 	
