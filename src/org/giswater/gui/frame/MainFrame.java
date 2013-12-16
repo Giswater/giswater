@@ -77,11 +77,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmQgis;
 	private JMenuItem mntmGvsig;
 	
+	private JMenuItem mntmWelcome;		
 	private JMenuItem mntmVersion;
-	private JMenuItem mntmAgreements;
 	private JMenuItem mntmLicense;
-	private JMenuItem mntmHelp;
-	private JMenuItem mntmWelcome;	
+	private JMenuItem mntmAgreements;
+	private JMenuItem mntmUserManual;	
+	private JMenuItem mntmReferenceGuide;	
+	private JMenuItem mntmWeb;
 
 	public EpaFrame swmmFrame;
 	public EpaFrame epanetFrame;
@@ -218,9 +220,17 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmAgreements.setActionCommand("showAgreements");
 		mnAbout.add(mntmAgreements);
 		
-		mntmHelp = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); //$NON-NLS-1$
-		mnAbout.add(mntmHelp);
-		mntmHelp.setActionCommand("openHelp");
+		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); //$NON-NLS-1$
+		mnAbout.add(mntmUserManual);
+		mntmUserManual.setActionCommand("openUserManual");
+		
+		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text")); //$NON-NLS-1$
+		mntmReferenceGuide.setActionCommand("openReferenceGuide");
+		mnAbout.add(mntmReferenceGuide);
+		
+		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text")); //$NON-NLS-1$
+		mntmWeb.setActionCommand("openWeb");
+		mnAbout.add(mntmWeb);
 		
 		desktopPane = new JDesktopPane();
 		desktopPane.setVisible(true);
@@ -407,11 +417,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmGvsig.addActionListener(this);
 		
 		mntmWelcome.addActionListener(this);
-		mntmHelp.addActionListener(this);
-		mntmSoftware.addActionListener(this);
 		mntmVersion.addActionListener(this);
 		mntmLicense.addActionListener(this);		
 		mntmAgreements.addActionListener(this);		
+		mntmUserManual.addActionListener(this);
+		mntmReferenceGuide.addActionListener(this);		
+		mntmWeb.addActionListener(this);
 		
 	}
 	
@@ -504,6 +515,4 @@ public class MainFrame extends JFrame implements ActionListener{
         }
         
     }
-    
-    
 }

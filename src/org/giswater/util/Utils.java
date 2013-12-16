@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
@@ -44,8 +45,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.giswater.dao.MainDao;
 
@@ -310,25 +309,7 @@ public class Utils {
     public static int confirmDialog(String msg, String title) {
     	int reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
         return reply;    	
-    }        
-
-
-    /**
-     * Returns the class name of the installed LookAndFeel with a name
-     * containing the name snippet or null if none found.
-     * 
-     * @param nameSnippet a snippet contained in the Laf's name
-     * @return the class name if installed, or null
-     */
-    public static String getLookAndFeelClassName(String nameSnippet) {
-        LookAndFeelInfo[] plafs = UIManager.getInstalledLookAndFeels();
-        for (LookAndFeelInfo info : plafs) {
-            if (info.getName().contains(nameSnippet)) {
-                return info.getClassName();
-            }
-        }
-        return null;
-    }    
+    }          
 
     
 	public static void execProcess(String process){
@@ -360,6 +341,17 @@ public class Utils {
 		}
 		
 	}    
+	
+	
+	public static void openWeb(String url){
+
+		try {
+			Desktop.getDesktop().browse(new URI(url));
+		} catch (IOException | URISyntaxException e) {
+			logError(e);
+		}
+		
+	} 	
 	
 	
 	public static void deleteFile(String filePath){

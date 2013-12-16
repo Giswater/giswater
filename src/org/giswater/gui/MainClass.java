@@ -38,13 +38,11 @@ public class MainClass {
     public static void main(String[] args) {
     	
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @SuppressWarnings("unused")
 			@Override
             public void run() {
             	
             	// Set locale
             	final Locale english = new Locale("en", "EN");
-            	final Locale spanish = new Locale("es", "ES");
             	Locale.setDefault(english);
             	
             	// Look&Feel

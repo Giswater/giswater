@@ -50,7 +50,6 @@ public class ConfigController {
 	
 	
     private void setDefaultValues(){
-		view.setPostgisBinFolder(prop.get("FOLDER_BIN"));
 		view.setSwmmFile(prop.get("FILE_SWMM"));
 		view.setEpanetFile(prop.get("FILE_EPANET"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
@@ -79,17 +78,15 @@ public class ConfigController {
 	
 	public void configAccept(){
 		
-		String postgis, swmm, epanet;
+		String swmm, epanet;
 		Boolean isChecked;
 		
-		// Get parameteres from view
-		postgis = view.getPostgisBinFolder();		
+		// Get parameteres from view	
 		swmm = view.getSwmmFile();
 		epanet = view.getEpanetFile();
 		isChecked = view.getAutoConnect();
 		
 		// Update properties file
-		prop.put("FOLDER_BIN", postgis);
 		prop.put("FILE_SWMM", swmm);
 		prop.put("FILE_EPANET", epanet);
 		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
@@ -98,22 +95,6 @@ public class ConfigController {
 		view.getFrame().setVisible(false);
 		
 	}	
-	
-	
-	public void chooseFolderPostgis() {
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(Utils.getBundleString("folder_bin"));
-		File file = new File(prop.get("FOLDER_BIN", System.getProperty("user.home")));
-		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File folder = chooser.getSelectedFile();
-			view.setPostgisBinFolder(folder.getAbsolutePath());
-		}
-
-	}
 	
 	
     public void chooseFileSwmm() {

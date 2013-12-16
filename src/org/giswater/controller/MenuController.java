@@ -105,11 +105,20 @@ public class MenuController {
 		view.openProjectGVSIG();
 	}	
 	
-	public void openHelp() {
-		String file = MainDao.getConfigPath();
-		Utils.getLogger().info(file);		
-		Utils.openFile(file);
+	public void openUserManual() {
+		String url = "https://owncloud.giswater.org/public.php?service=files&t=1febe580214e81ca0ea40493bdae0014";
+		Utils.openWeb(url);
 	}
+	
+	public void openReferenceGuide() {
+		String url = "https://owncloud.giswater.org/public.php?service=files&t=74ea5f58528f7fbd01644e59885edfc4";
+		Utils.openWeb(url);
+	}
+	
+	public void openWeb() {
+		String url = "http://www.giswater.org";
+		Utils.openWeb(url);
+	}	
 
 	
 	public void showProjectId(){

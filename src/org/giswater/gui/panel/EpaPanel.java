@@ -244,7 +244,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	}
 
 
-	public String getSchema() {
+	public String getSelectedSchema() {
 		String elem = "";
 		if (cboSchema.getSelectedIndex() != -1) {
 			elem = cboSchema.getSelectedItem().toString();

@@ -20,6 +20,7 @@
  */
 package org.giswater.controller;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import org.giswater.dao.MainDao;
@@ -125,7 +126,6 @@ public class DatabaseController {
 		MainDao.setConnected(MainDao.setConnectionPostgis(host, port, db, user, password));
 		
 		if (MainDao.isConnected()){
-			//view.setSchemaResult(MainDao.getSchemas());
 			prop.put("POSTGIS_HOST", host);
 			prop.put("POSTGIS_PORT", port);
 			prop.put("POSTGIS_DATABASE", db);
@@ -136,12 +136,18 @@ public class DatabaseController {
 			} else{
 				prop.put("POSTGIS_PASSWORD", "");
 			}
-	    	String folder = MainDao.getDataDirectory();
-	    	Utils.getLogger().info("Postgis data directory: " + folder);
-	        prop.put("POSTGIS_DATA", folder);
+			
+			// Get Postgis data and bin Folder
+	    	String dataPath = MainDao.getDataDirectory();
+	    	Utils.getLogger().info("Postgis data directory: " + dataPath);
+	        prop.put("POSTGIS_DATA", dataPath);
+	        File dataFolder = new File(dataPath);
+	        String binPath = dataFolder.getParent() + File.separator + "bin";
+	    	Utils.getLogger().info("Postgis bin directory: " + dataPath);
+	        prop.put("POSTGIS_BIN", binPath);	        
+	        
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage("connection_opened");	
-			//MainDao.setSchema(view.getSchemaResult());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
 		else{

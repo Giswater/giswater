@@ -20,7 +20,6 @@
  */
 package org.giswater.gui.panel;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -42,8 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -66,26 +63,19 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	private JPanel panel_2;
 	private JTabbedPane tabbedPane;
-	private JLabel lblNombre;
-	private JPanel panel_3;
-	private JLabel lblDataManager;
-	private JButton btnClearData;
 	private JButton btnLoadRaster;
 	private JButton btnExportSdf;
 	private JLabel lblAscFile_1;
 	private JScrollPane scrollPane;
 	private JTextArea txtFileAsc;
-	private JPanel panel_4;
-	private JLabel lblSchemaManager;
-	private JButton btnSaveCase;
-	private JButton btnLoadCase;
-	private JButton btnDeleteCase;
-	private JTextField txtSchemaName;
+	private JButton btnCreateSchema;
 	private JLabel lblAscFile;
 	private JTextArea txtFileSdf;
 	private JScrollPane scrollPane_1;
 	private JButton btnFileSdf;
 	private JButton btnDatabase;
+	private JButton btnDeleteSchema;
+	private JButton btnClearData;
 
 	
 	public HecRasPanel() {
@@ -118,11 +108,8 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	// Panel Data Manager
 	public void enableButtons(boolean isEnabled) {
 		
-		btnClearData.setEnabled(isEnabled);
 		btnExportSdf.setEnabled(isEnabled);
-		btnSaveCase.setEnabled(isEnabled);
-		btnLoadCase.setEnabled(isEnabled);
-		btnDeleteCase.setEnabled(isEnabled);
+		btnCreateSchema.setEnabled(isEnabled);
 		btnDatabase.setVisible(!isEnabled);
 		
 		// Check if we have to enable Load Raster button
@@ -139,14 +126,6 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 	}
 	
-	public void setNewSchemaName(String projectName) {
-		txtSchemaName.setText(projectName.trim());
-	}
-	
-	public String getNewSchemaName() {
-		return txtSchemaName.getText().trim();
-	}
-	
 	
 	public void setSchema(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
@@ -159,7 +138,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		}
 	}
 	
-	public String getSchema() {
+	public String getSelectedSchema() {
 		String elem = "";
 		if (cboSchema.getSelectedIndex() != -1) {
 			elem = cboSchema.getSelectedItem().toString();
@@ -189,10 +168,6 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		return null;
 	}
 
-	public void focusSchemaName() {
-		txtSchemaName.requestFocus();
-	}
-	
 	public void close() {
 		f.setVisible(false);
 		f.dispose();
@@ -201,130 +176,97 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][10]", "[10px][410.00][12]"));
+		setLayout(new MigLayout("", "[5][:572.00px:531px][176.00]", "[10px][410.00][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(tabbedPane, "cell 1 1,grow");
 
-		// Panel gisRAS
 		panel_2 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
-		panel_2.setLayout(new MigLayout("", "[40:40px:40][25:25:25][220.00][110][71.00]", "[8px][15][30][30px][50][][10][15][104.00][:5px:5px]"));
+		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][45:n][70]", "[8px][10:n][50:n][50:n][::10][:5px:5px]"));
 		
-		lblDataManager = new JLabel(BUNDLE.getString("HecRasPanel.lblDataManager.text")); //$NON-NLS-1$
-		lblDataManager.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel_2.add(lblDataManager, "flowx,cell 0 1 5 1,alignx center");
+		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
+		panel_2.add(lblSelectSchema, "cell 0 0,alignx right");
 		
-		panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.add(panel_3, "flowx,cell 0 2 5 4,grow");
-		panel_3.setLayout(new MigLayout("", "[:65.00px:65][110][110][110][59.00]", "[25px][4px][45px][45]"));
+		cboSchema = new JComboBox<String>();
+		panel_2.add(cboSchema, "cell 1 0");
+		cboSchema.setPreferredSize(new Dimension(24, 20));
+		cboSchema.setActionCommand("schemaChanged");
+		cboSchema.setMinimumSize(new Dimension(110, 20));
 		
-		btnClearData = new JButton(BUNDLE.getString("HecRasPanel.btnClearData.text")); //$NON-NLS-1$
-		btnClearData.setMaximumSize(new Dimension(110, 23));
-		btnClearData.setMinimumSize(new Dimension(110, 23));
-		btnClearData.setActionCommand("clearData");
-		panel_3.add(btnClearData, "flowx,cell 1 0,alignx center,aligny center");
-		
-		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setMaximumSize(new Dimension(110, 23));
-		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
-		btnLoadRaster.setActionCommand("loadRaster");
-		panel_3.add(btnLoadRaster, "cell 2 0,alignx center,aligny center");
-		
-		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
-		btnExportSdf.setMinimumSize(new Dimension(110, 23));
-		btnExportSdf.setMaximumSize(new Dimension(110, 23));
-		btnExportSdf.setActionCommand("exportSdf");
-		panel_3.add(btnExportSdf, "cell 3 0,alignx center,aligny center");
+		btnCreateSchema = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
+		panel_2.add(btnCreateSchema, "flowx,cell 2 0");
+		btnCreateSchema.setMaximumSize(new Dimension(105, 23));
+		btnCreateSchema.setMinimumSize(new Dimension(105, 23));
+		btnCreateSchema.setActionCommand("createSchema");
 		
 		lblAscFile_1 = new JLabel();
 		lblAscFile_1.setText(BUNDLE.getString("HecRasPanel.lblAscFile_1.text")); //$NON-NLS-1$
-		panel_3.add(lblAscFile_1, "cell 0 2,alignx right");
+		panel_2.add(lblAscFile_1, "cell 0 2,alignx right");
 				
 		scrollPane = new JScrollPane();
-		panel_3.add(scrollPane, "cell 1 2 3 1,grow");
+		panel_2.add(scrollPane, "cell 1 2 2 1,grow");
 		
 		txtFileAsc = new JTextArea();
 		txtFileAsc.setLineWrap(true);
 		txtFileAsc.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		scrollPane.setViewportView(txtFileAsc);
-
+		
 		btnFileAsc = new JButton();
-		panel_3.add(btnFileAsc, "cell 4 2");
+		panel_2.add(btnFileAsc, "cell 3 2");
 		btnFileAsc.setActionCommand("chooseFileAsc");
 		btnFileAsc.setText("...");
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		lblAscFile = new JLabel();
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text")); //$NON-NLS-1$
-		panel_3.add(lblAscFile, "cell 0 3,alignx right");
+		panel_2.add(lblAscFile, "cell 0 3,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
-		panel_3.add(scrollPane_1, "cell 1 3 3 1,grow");
+		panel_2.add(scrollPane_1, "cell 1 3 2 1,grow");
 		
 		txtFileSdf = new JTextArea();
 		scrollPane_1.setViewportView(txtFileSdf);
 		txtFileSdf.setLineWrap(true);
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
+		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
+		btnLoadRaster.setMaximumSize(new Dimension(110, 23));
+		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
+		btnLoadRaster.setActionCommand("loadRaster");
+		panel_2.add(btnLoadRaster, "cell 4 2,alignx center,aligny center");
+		
 		btnFileSdf = new JButton();
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
-		panel_3.add(btnFileSdf, "cell 4 3");
+		panel_2.add(btnFileSdf, "cell 3 3");
 		
-		lblSchemaManager = new JLabel(BUNDLE.getString("HecRasPanel.lblSchemaManager.text")); //$NON-NLS-1$
-		lblSchemaManager.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel_2.add(lblSchemaManager, "cell 0 7 5 1,alignx center");
+		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
+		btnExportSdf.setMinimumSize(new Dimension(110, 23));
+		btnExportSdf.setMaximumSize(new Dimension(110, 23));
+		btnExportSdf.setActionCommand("exportSdf");
+		panel_2.add(btnExportSdf, "cell 4 3,alignx center,aligny center");
 		
-		panel_4 = new JPanel();
-		panel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.add(panel_4, "cell 0 8 5 1,grow");
-		panel_4.setLayout(new MigLayout("", "[65px][115][:100px:100px][:100px:100px][]", "[25px][4][][]"));
+		btnDeleteSchema = new JButton("Delete Schema");
+		btnDeleteSchema.setMinimumSize(new Dimension(105, 23));
+		btnDeleteSchema.setMaximumSize(new Dimension(105, 23));
+		btnDeleteSchema.setActionCommand("deleteSchema");
+		panel_2.add(btnDeleteSchema, "cell 2 0");
 		
-		btnSaveCase = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
-		btnSaveCase.setMaximumSize(new Dimension(105, 23));
-		btnSaveCase.setMinimumSize(new Dimension(105, 23));
-		btnSaveCase.setActionCommand("saveCase");
-		panel_4.add(btnSaveCase, "cell 1 0,alignx center,aligny center");
-		
-		lblNombre = new JLabel(BUNDLE.getString("HecRasPanel.lblNombre.text"));
-		panel_4.add(lblNombre, "cell 2 0,alignx right");
-		
-		txtSchemaName = new JTextField();
-		txtSchemaName.setText("schema_name");
-		txtSchemaName.setColumns(10);
-		panel_4.add(txtSchemaName, "cell 3 0 2 1,growx");
-		
-		btnLoadCase = new JButton(BUNDLE.getString("HecRasPanel.btnLoadCase.text"));
-		panel_4.add(btnLoadCase, "cell 1 2,alignx center,aligny center");
-		btnLoadCase.setMaximumSize(new Dimension(105, 23));
-		btnLoadCase.setMinimumSize(new Dimension(105, 23));
-		btnLoadCase.setActionCommand("loadCase");
-		
-		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
-		panel_4.add(lblSelectSchema, "cell 2 2 1 2,alignx right");
-		
-		cboSchema = new JComboBox<String>();
-		panel_4.add(cboSchema, "cell 3 2 2 2,growx");
-		cboSchema.setPreferredSize(new Dimension(24, 20));
-		cboSchema.setActionCommand("schemaChanged");
-		cboSchema.setMinimumSize(new Dimension(150, 20));
-		
-		btnDeleteCase = new JButton(BUNDLE.getString("HecRasPanel.btnDeleteCase.text"));
-		panel_4.add(btnDeleteCase, "cell 1 3,alignx center,aligny center");
-		btnDeleteCase.setMaximumSize(new Dimension(105, 23));
-		btnDeleteCase.setMinimumSize(new Dimension(105, 23));
-		btnDeleteCase.setActionCommand("deleteCase");
+		btnClearData = new JButton("Clear Data");
+		btnClearData.setMinimumSize(new Dimension(110, 23));
+		btnClearData.setMaximumSize(new Dimension(110, 23));
+		btnClearData.setActionCommand("clearData");
+		panel_2.add(btnClearData, "flowx,cell 2 0 2 1");
 		
 		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); //$NON-NLS-1$
 		btnDatabase.setMinimumSize(new Dimension(95, 23));
 		btnDatabase.setMaximumSize(new Dimension(140, 23));
 		btnDatabase.setActionCommand("openDatabase");
 		btnDatabase.setVisible(false);
-		panel_2.add(btnDatabase, "cell 3 1 2 1,alignx right");
+		panel_2.add(btnDatabase, "cell 3 0 2 1,alignx right");
 
 		enableButtons(false);
 		setupListeners();
@@ -335,15 +277,15 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	// Setup component's listener
 	private void setupListeners() {
 		
-		// Panel Data Manager
-		btnClearData.addActionListener(this);
 		btnLoadRaster.addActionListener(this);
 		btnExportSdf.addActionListener(this);
 		btnFileAsc.addActionListener(this);
 		btnFileSdf.addActionListener(this);
-		btnSaveCase.addActionListener(this);
-		btnLoadCase.addActionListener(this);
-		btnDeleteCase.addActionListener(this);
+		
+		btnCreateSchema.addActionListener(this);
+		btnDeleteSchema.addActionListener(this);		
+		btnClearData.addActionListener(this);
+		
 		cboSchema.addActionListener(this);
 		btnDatabase.addActionListener(this);
 

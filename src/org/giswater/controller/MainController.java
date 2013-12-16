@@ -195,7 +195,7 @@ public class MainController{
 				view.setSchema(MainDao.getSchemas());
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 				// Check Catalog tables
-				checkCatalogTables(view.getSchema());
+				checkCatalogTables(view.getSelectedSchema());
 			} 
 			else{
 				if (askQuestion){
@@ -237,8 +237,8 @@ public class MainController{
 	public void schemaChanged(){
 		MainDao.setSoftwareName(software);		
 		if (MainDao.isConnected()){
-			String schemaName = view.getSchema();
-			MainDao.setSchema(view.getSchema());
+			String schemaName = view.getSelectedSchema();
+			MainDao.setSchema(view.getSelectedSchema());
 			checkCatalogTables(schemaName);
 			checkOptionsTables(schemaName);
 		}
@@ -246,7 +246,7 @@ public class MainController{
 
 		
 	public void showSectorSelection(){
-		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSchema());
+		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSelectedSchema());
         JDialog dialog = Utils.openDialogForm(panel, 350, 280);
 		ImageIcon image = new ImageIcon("images/imago.png");        
         dialog.setIconImage(image.getImage());
@@ -425,7 +425,7 @@ public class MainController{
         }
 
         // Get schema from view
-        String schema = view.getSchema();
+        String schema = view.getSelectedSchema();
         if (schema.equals("")){
             Utils.showError("any_schema_selected");
             return;
@@ -636,7 +636,7 @@ public class MainController{
 		String softwareName = view.getSoftwareName();
 		
 		// Ask user to set SRID?
-		String defaultSrid = prop.get("SRID_DEFAULT", "23030");		
+		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
 		String sridValue = getUserSrid(defaultSrid);
 
 		if (!sridValue.equals("")){
@@ -675,7 +675,7 @@ public class MainController{
 	
 	public void deleteSchema(){
 		
-		String schemaName = view.getSchema();
+		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(msg);        
         if (res == 0){
@@ -691,7 +691,7 @@ public class MainController{
 	
 	public void deleteData(){
 		
-		String schemaName = view.getSchema();
+		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(msg);        
         if (res == 0){

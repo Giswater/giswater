@@ -52,11 +52,12 @@ public class MainDao {
 	private static String helpPath;
 	private static String appPath;	
 	private static String configPath;
-    private static PropertiesMap iniProperties = new PropertiesMap();
+    private static PropertiesMap prop = new PropertiesMap();
     
 	private static final String CONFIG_FOLDER = "config";
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
+	private static final String INIT_DB = "giswater_ddb";	
 	
 	
 	public static Connection getConnectionDrivers() {
@@ -114,10 +115,10 @@ public class MainDao {
     	}
     	
     	// Log SQL?
-    	Utils.setSqlLog(iniProperties.get("SQL_LOG", "false"));
+    	Utils.setSqlLog(prop.get("SQL_LOG", "false"));
     	
         // Get INP folder
-        folderConfig = iniProperties.get("FOLDER_CONFIG");
+        folderConfig = prop.get("FOLDER_CONFIG");
         folderConfig = appPath + folderConfig + File.separator;
 
     	// Set Config DB connection
@@ -126,14 +127,17 @@ public class MainDao {
         }
         
         // Set Postgis connection
-        Boolean connect = Boolean.parseBoolean(iniProperties.get("AUTOCONNECT_POSTGIS"));
+        Boolean connect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
         if (connect){
         	silenceConnection();
+        	if (!MainDao.checkDatabase(INIT_DB)){
+        		initDatabase();
+        	}
         }
         
         // Get PDF help file
         if (helpPath == null) {
-            helpPath = folderConfig + File.separator + iniProperties.get("FILE_HELP");
+            helpPath = folderConfig + File.separator + prop.get("FILE_HELP");
         }
         
         return true;
@@ -146,11 +150,11 @@ public class MainDao {
 		String host, port, db, user, password;
 		
 		// Get parameteres connection from properties file
-		host = iniProperties.get("POSTGIS_HOST", "localhost");		
-		port = iniProperties.get("POSTGIS_PORT", "5431");
-		db = iniProperties.get("POSTGIS_DATABASE", "giswater");
-		user = iniProperties.get("POSTGIS_USER", "postgres");
-		password = iniProperties.get("POSTGIS_PASSWORD");		
+		host = prop.get("POSTGIS_HOST", "localhost");		
+		port = prop.get("POSTGIS_PORT", "5431");
+		db = prop.get("POSTGIS_DATABASE", "postgres");
+		user = prop.get("POSTGIS_USER", "postgres");
+		password = prop.get("POSTGIS_PASSWORD");		
 		password = Encryption.decrypt(password);
 		password = (password == null) ? "" : password;
 		
@@ -160,15 +164,76 @@ public class MainDao {
 		}
 		isConnected = setConnectionPostgis(host, port, db, user, password);
 		if (isConnected){
-	    	String folder = MainDao.getDataDirectory();
-	    	iniProperties.put("POSTGIS_DATA", folder);
-	    	Utils.getLogger().info("Postgis data directory: " + folder);
+			// Get Postgis data and bin Folder
+	    	String dataPath = MainDao.getDataDirectory();
+	    	prop.put("POSTGIS_DATA", dataPath);
+	        File dataFolder = new File(dataPath);
+	        String binPath = dataFolder.getParent() + File.separator + "bin";
+	    	prop.put("POSTGIS_BIN", binPath);	
+	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
+	    	Utils.getLogger().info("Postgis bin directory: " + binPath);
 			Utils.getLogger().info("Autoconnection successful");
-		} 
+		}
+		else{
+			Utils.getLogger().info("Autoconnection error");			
+			System.exit(0);
+		}
 		
 	}	    
     
     
+	public static void initDatabase(){
+		
+		String aux = "";
+		String logFolder;
+		String bin, host, port, user;
+		
+		bin = prop.getProperty("POSTGIS_BIN", "");
+		host = prop.getProperty("POSTGIS_HOST", "localhost");
+		port = prop.getProperty("POSTGIS_PORT", "5431");
+		user = prop.getProperty("POSTGIS_USER", "postgres");
+		logFolder = Utils.getLogFolder();
+		
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("postgis_not_found", bin);
+			return;			
+		}
+		bin+= File.separator;
+		
+		String filePath =  Utils.getAppPath() + "sql/init_giswater_ddb.sql";
+    	String content;
+		try {
+			content = Utils.readFile(filePath);
+			Utils.logSql(content);
+			if (!executeUpdateSql(content, true, false)){
+				return;
+			}				
+		} catch (IOException e) {
+			Utils.logError(e);
+		}
+
+		// Set content of .bat file
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+INIT_DB+" -c \"CREATE EXTENSION postgis\";";	
+		aux+= "\n";
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+INIT_DB+" -c \"CREATE EXTENSION postgis_topology\";";			
+		aux+= "\nexit";		
+		Utils.getLogger().info(aux);	
+
+        // Fill and execute .bat File	
+		File batFile = new File(logFolder + "init.bat");        
+		Utils.fillFile(batFile, aux);    		
+		Utils.openFile(batFile.getAbsolutePath());	
+		
+		// Change default Database
+		prop.setProperty("POSTGIS_DATABASE", INIT_DB);
+		
+		closeConnectionPostgis();
+		silenceConnection();
+		
+	}
+	
+	
 	public static void rollback(){
 		try {
 			connectionPostgis.rollback();
@@ -179,7 +244,7 @@ public class MainDao {
 
 	
     public static PropertiesMap getPropertiesFile() {
-        return iniProperties;
+        return prop;
     }
 
 
@@ -188,7 +253,7 @@ public class MainDao {
         File iniFile = new File(configPath);
         try {
         	FileOutputStream fos = new FileOutputStream(iniFile);
-            iniProperties.store(fos, true);
+            prop.store(fos, true);
         } catch (FileNotFoundException e) {
             Utils.showError("inp_error_notfound", iniFile.getPath());
         } catch (IOException e) {
@@ -205,7 +270,7 @@ public class MainDao {
         configPath = appPath + CONFIG_FOLDER + File.separator + CONFIG_FILE;
         File fileIni = new File(configPath);
         try {
-        	iniProperties.load(new FileInputStream(fileIni));      
+        	prop.load(new FileInputStream(fileIni));      
         } catch (FileNotFoundException e) {
             Utils.showError("inp_error_notfound", configPath);
             return false;
@@ -213,7 +278,7 @@ public class MainDao {
             Utils.showError("inp_error_io", configPath);
             return false;
         }
-        return (iniProperties != null);
+        return (prop != null);
 
     }    
 	
@@ -322,6 +387,12 @@ public class MainDao {
 	
     
 	public static boolean executeUpdateSql(String sql, boolean commit) {
+		return executeUpdateSql(sql, commit, false);
+	}
+	
+	
+	public static boolean executeUpdateSql(String sql, boolean commit, boolean showError) {
+		
 		try {
 			Statement ps = connectionPostgis.createStatement();
 	        ps.executeUpdate(sql);
@@ -330,9 +401,12 @@ public class MainDao {
 	        }
 			return true;
 		} catch (SQLException e) {
-			Utils.showError(e, sql);
+			if (showError){
+				Utils.showError(e, sql);
+			}
 			return false;
 		}
+		
 	}	
 	
 	
@@ -444,6 +518,23 @@ public class MainDao {
     }        
     
     
+    // Check if database exists
+    public static boolean checkDatabase(String dbName) {
+    	
+        String sql = "SELECT 1 FROM pg_database WHERE datname = '"+dbName+"'";
+        try {
+            Statement stat = connectionPostgis.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            return (rs.next());
+        } catch (SQLException e) {
+        	Utils.showError(e, sql);
+            return false;
+        }
+        
+    } 
+    
+
+    
     // Check if the selected srid exists in spatial_ref_sys
 	public static boolean checkSrid(Integer srid) {
 		
@@ -505,6 +596,7 @@ public class MainDao {
 	
 	
 	public static ResultSet getTableResultset(Connection connection, String table, String fields) {
+		
 		String sql;
 		if (schema == null){
 			sql = "SELECT "+fields+" FROM "+table;
@@ -512,8 +604,8 @@ public class MainDao {
 		else{
 			sql = "SELECT "+fields+" FROM "+schema+"."+table;
 		}
-		//Utils.logSql(sql);
         return getResultset(connection, sql);
+        
 	}
 	
 	
@@ -643,7 +735,6 @@ public class MainDao {
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
 					if (executeUpdateSql(content, true)){
-						//Utils.showMessage("schema_creation_completed", "");
 						status = true;
 					}
 				}
@@ -659,6 +750,46 @@ public class MainDao {
 		
 	}
 
+	
+	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
+		
+		boolean status = false;
+		String sql = "CREATE schema "+schemaName;
+		if (!executeUpdateSql(sql, true)){
+			rollback();
+			return status;	
+		}
+		String filePath = "";
+		String content = "";
+    	
+		try {
+
+	    	String folderRoot = new File(".").getCanonicalPath() + File.separator;			
+			filePath = folderRoot + "sql/"+softwareName+".sql";
+	    	content = Utils.readFile(filePath);
+			
+	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for user
+	    	String user = prop.get("POSTGIS_USER");
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("SRID_VALUE", srid);
+			content = content.replace("__USER__", user);			
+			Utils.logSql(content);
+			
+			// TODO: ??
+			connectionPostgis.setAutoCommit(false);
+			executeSql(content, true);
+			
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+        } catch (SQLException e) {
+            Utils.showError(e);
+		}
+		return status;
+		
+	}
+	
 	
 	public static DefaultTableModel buildTableModel(ResultSet rs) {
 
@@ -715,36 +846,15 @@ public class MainDao {
 	
 	
 	// hecRas functions
-	public static boolean createSdfFile(String fileName) {
-		String sql = "SELECT gisras.gr_export_geo('"+fileName+"');";
+	public static boolean createSdfFile(String schemaName, String fileName) {
+		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"');";
 		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
 	
 	
-	public static boolean clearData(){
-		String sql = "SELECT gisras.gr_clear();";
-		Utils.logSql(sql);
-		return executeSql(sql, true);	
-	}
-
-
-	public static boolean saveCase(String schemaName) {
-		String sql = "SELECT gisras.gr_save_case_as('"+schemaName+"');";
-		Utils.logSql(sql);
-		return executeSql(sql, true);	
-	}
-
-
-	public static boolean loadCase(String schemaName) {
-		String sql = "SELECT gisras.gr_open_case('"+schemaName+"');";
-		Utils.logSql(sql);
-		return executeSql(sql, true);	
-	}
-
-
-	public static boolean deleteCase(String schemaName) {
-		String sql = "SELECT gisras.gr_delete_case('"+schemaName+"');";
+	public static boolean clearData(String schemaName){
+		String sql = "SELECT "+schemaName+".gr_clear();";
 		Utils.logSql(sql);
 		return executeSql(sql, true);	
 	}
@@ -769,17 +879,17 @@ public class MainDao {
 	}
 
 
-	public static boolean loadRaster(String raster) {
+	public static boolean loadRaster(String schemaName, String raster) {
 
 		String fileSql, aux, logFolder;
 		String bin, host, port, db, user;
 		
 		fileSql = raster.replace(".asc", ".sql");
-		bin = iniProperties.getProperty("FOLDER_BIN", "");
-		host = iniProperties.getProperty("POSTGIS_HOST", "localhost");
-		port = iniProperties.getProperty("POSTGIS_PORT", "5431");
-		db = iniProperties.getProperty("POSTGIS_DATABASE", "giswater");
-		user = iniProperties.getProperty("POSTGIS_USER", "postgres");
+		bin = prop.getProperty("POSTGIS_BIN", "");
+		host = prop.getProperty("POSTGIS_HOST", "localhost");
+		port = prop.getProperty("POSTGIS_PORT", "5431");
+		db = prop.getProperty("POSTGIS_DATABASE", "giswater");
+		user = prop.getProperty("POSTGIS_USER", "postgres");
 		logFolder = Utils.getLogFolder();
 		
 		File file = new File(bin);
@@ -790,13 +900,11 @@ public class MainDao {
 		bin+= File.separator;
 		
 		// Set content of .bat file
-		aux =  "\"" + bin + "raster2pgsql\" -d -s 0 -I -C -M " + raster + " -F -t 100x100 gisras.mdt > " + fileSql;
+		aux =  "\""+bin+"raster2pgsql\" -d -s 0 -I -C -M "+raster+" -F -t 100x100 "+schemaName+".mdt > "+fileSql;
 		aux+= "\n";
-		aux+= "\"" + bin + "psql\" -U " + user + " -h " + host + " -p " + port + " -d " + db +
-				" -c \"drop table if exists gisras.mdt\";";
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -c \"drop table if exists "+schemaName+".mdt\";";
 		aux+= "\n";		
-		aux+= "\"" + bin + "psql\" -U " + user + " -h " + host + " -p " + port + " -d " + db + 
-			" -f " + fileSql + " > " + logFolder + "raster2pgsql.log";
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+fileSql+" > "+logFolder+"raster2pgsql.log";
 		aux+= "\ndel " + fileSql;
 		aux+= "\nexit";		
 		Utils.getLogger().info(aux);

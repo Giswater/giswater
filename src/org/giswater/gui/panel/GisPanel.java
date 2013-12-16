@@ -29,7 +29,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -72,7 +74,8 @@ public class GisPanel extends JPanel implements ActionListener {
 
     private PropertiesMap prop;
 	private String gisExtension;   // qgs or gvp
-	private String gisType;   // DBF or DATABASE
+	private JComboBox<String> cboSchema;
+	private JLabel lblSchema;
     
 	
 	public GisPanel(GisFrame gisFrame) {
@@ -118,17 +121,51 @@ public class GisPanel extends JPanel implements ActionListener {
 		return cboSoftware.getSelectedItem().toString();
 	}	
 	
+	public void setSchemaList(Vector<String> v) {
+		ComboBoxModel<String> cbm = null;
+		if (v != null){
+			cbm = new DefaultComboBoxModel<String>(v);
+			cboSchema.setModel(cbm);		
+		} else{
+			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
+			theModel.removeAllElements();
+		}
+	}
+	
+	public void setSelectedSchema(String schemaName) {
+		cboSchema.setSelectedItem(schemaName);
+	}
+
+	public String getSelectedSchema() {
+		String elem = "";
+		if (cboSchema.getSelectedIndex() != -1) {
+			elem = cboSchema.getSelectedItem().toString();
+		}
+		return elem;
+	}		
+	
 	
     private void setDefaultValues(){
+    	
 		setProjectFolder(prop.get("GIS_FOLDER"));
 		setProjectName(prop.get("GIS_NAME"));
 		setProjectSoftware(prop.get("GIS_SOFTWARE"));	
+		setSchemaList(MainDao.getSchemas());
+		setSelectedSchema(prop.get("GIS_SCHEMA"));
+		String gisType = prop.get("GIS_TYPE");
+		if (gisType.equals("DATABASE")){
+			cboSchema.setEnabled(true);
+		}
+		else{
+			cboSchema.setEnabled(false);
+		}
+		
     }	
 	
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][177.00][12]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][190.00][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -137,7 +174,7 @@ public class GisPanel extends JPanel implements ActionListener {
 		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[100px:n:100px][:134.00:280][133.00][]", "[45.00][][25][]"));
+		panel_1.setLayout(new MigLayout("", "[100px:n:100px][:134.00:280,grow][133.00][]", "[45.00][25:25][25:25][25:25][::5px][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
 		panel_1.add(lblProjectFolder, "cell 0 0,alignx right");
@@ -171,9 +208,15 @@ public class GisPanel extends JPanel implements ActionListener {
 		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPASWMM", "EPANET", "HECRAS"}));
 		panel_1.add(cboSoftware, "cell 1 2,growx");
 		
+		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); //$NON-NLS-1$
+		panel_1.add(lblSchema, "cell 0 3,alignx trailing");
+		
+		cboSchema = new JComboBox<String>();
+		panel_1.add(cboSchema, "cell 1 3,growx");
+		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("gisAccept");
-		panel_1.add(btnAccept, "cell 2 3,alignx right");
+		panel_1.add(btnAccept, "cell 2 5,alignx right");
 
 		setupListeners();
 
@@ -220,16 +263,27 @@ public class GisPanel extends JPanel implements ActionListener {
 		String folder = getProjectFolder();		
 		String name = getProjectName();
 		String software = getProjectSoftware();
-		this.gisType = prop.get("GIS_TYPE");
+		String gisType = prop.get("GIS_TYPE");
+		String schema = getSelectedSchema();
 		
 		// Update properties file
 		prop.put("GIS_FOLDER", folder);
 		prop.put("GIS_NAME", name);
 		prop.put("GIS_SOFTWARE", software);
+		prop.put("GIS_SCHEMA", schema);
 
 		// Create GIS Project
 		if (gisType.equals("DATABASE")){
-			gisProjectDatabase(gisExtension, folder + File.separator, name, software);
+			// TODO: i18n
+			String msg = "You have opted to create GIS project.";
+			msg+= "\nWARNINGS:";
+			msg+= "\n1- Your database password will be stored in plain text in your project files and in your home directory on Unix-like systems, or in your user profile on Windows.";
+			msg+= "\n2- The only SRID avaliable is EPSG-23031.";
+			msg+= "\nIf you do not want this to happen, please press the Cancel button or Consider fixing it in GIS desktop project";
+			int answer = Utils.confirmDialog(msg);
+			if (answer == JOptionPane.YES_OPTION){
+				gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema);
+			}
 		}
 		else if (gisType.equals("DBF")){
 			gisProjectDbf(gisExtension, folder + File.separator, name, software);
@@ -276,7 +330,7 @@ public class GisPanel extends JPanel implements ActionListener {
 	}
 
 	
-	public boolean gisProjectDatabase(String gisExtension, String folder, String name, String software) {
+	public boolean gisProjectDatabase(String gisExtension, String folder, String name, String software, String schema) {
 		
 		boolean status = false;
 		String templatePath = "";
@@ -305,7 +359,6 @@ public class GisPanel extends JPanel implements ActionListener {
 				return false;
 			}
 
-			//destPath = gisFolder + software+"_"+MainDao.getSchema()+"."+gisExtension;
 			destPath = folder + software+"_"+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()){
@@ -316,12 +369,13 @@ public class GisPanel extends JPanel implements ActionListener {
 			}
 			
 			Utils.getLogger().info("GIS File: " + destPath);
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));	
+			
 			// Get File content
     		content = Utils.readFile(templatePath);
 			
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
-			content = content.replace("SCHEMA_NAME", MainDao.getSchema());
+			content = content.replace("SCHEMA_NAME", schema);
 			content = content.replace("SRID_VALUE", srid);
 
 	    	// Replace __DBNAME__ for db parameter. __HOST__ for host parameter, __PORT__ for port parameter

@@ -53,9 +53,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JPanel panel;
 	private JCheckBox chkConnect;
 	private JTabbedPane tabbedPane;
-	private JLabel lblPostgisBinFolder;
-	private JTextField txtPostgisBinFolder;
-	private JButton btnPostgisBinFolder;
 	private JLabel lblSwmmFolder;
 	private JLabel lblEpanetFolder;
 	private JTextField txtSwmmFolder;
@@ -97,14 +94,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 
 	public boolean getAutoConnect() {
 		return chkConnect.isSelected();
-	}
-	
-	public void setPostgisBinFolder(String path) {
-		txtPostgisBinFolder.setText(path);
-	}	
-	
-	public String getPostgisBinFolder() {
-		return txtPostgisBinFolder.getText().trim().toLowerCase();
 	}	
 	
 	public void setEpanetFile(String path) {
@@ -126,7 +115,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::200px][12]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::200px]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -135,58 +124,44 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[132.00][10px][25]"));
+		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[100.00][10px][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[4][24][24][24][24][24][]"));
-		
-		lblPostgisBinFolder = new JLabel(BUNDLE.getString("Config.lblPostgisBinFolder"));
-		panel.add(lblPostgisBinFolder, "cell 1 1");
-		
-		txtPostgisBinFolder = new JTextField();
-		txtPostgisBinFolder.setText("");
-		txtPostgisBinFolder.setColumns(10);
-		panel.add(txtPostgisBinFolder, "cell 2 1,growx");
-		
-		btnPostgisBinFolder = new JButton();
-		btnPostgisBinFolder.setText("...");
-		btnPostgisBinFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnPostgisBinFolder.setActionCommand("chooseFolderPostgis");
-		panel.add(btnPostgisBinFolder, "cell 4 1");
+		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[4][24][24][24][10.00]"));
 		
 		lblSwmmFolder = new JLabel(BUNDLE.getString("Config.lblSwmmFolder"));
-		panel.add(lblSwmmFolder, "cell 1 2");
+		panel.add(lblSwmmFolder, "cell 1 1");
 		
 		txtSwmmFolder = new JTextField();
 		txtSwmmFolder.setText((String) null);
 		txtSwmmFolder.setColumns(10);
-		panel.add(txtSwmmFolder, "cell 2 2,growx");
+		panel.add(txtSwmmFolder, "cell 2 1,growx");
 		
 		btnSwmmFolder = new JButton();
 		btnSwmmFolder.setText("...");
 		btnSwmmFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSwmmFolder.setActionCommand("chooseFileSwmm");
-		panel.add(btnSwmmFolder, "cell 4 2");
+		panel.add(btnSwmmFolder, "cell 4 1");
 		
 		lblEpanetFolder = new JLabel(BUNDLE.getString("Config.lblEpanetFolder"));
-		panel.add(lblEpanetFolder, "cell 1 3");
+		panel.add(lblEpanetFolder, "cell 1 2");
 		
 		txtEpanetFolder = new JTextField();
 		txtEpanetFolder.setText((String) null);
 		txtEpanetFolder.setColumns(10);
-		panel.add(txtEpanetFolder, "cell 2 3,growx");
+		panel.add(txtEpanetFolder, "cell 2 2,growx");
 		
 		btnEpanetFolder = new JButton();
 		btnEpanetFolder.setText("...");
 		btnEpanetFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnEpanetFolder.setActionCommand("chooseFileEpanet");
-		panel.add(btnEpanetFolder, "cell 4 3");
+		panel.add(btnEpanetFolder, "cell 4 2");
 		
 		chkConnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); //$NON-NLS-1$
 		chkConnect.setSelected(true);
-		panel.add(chkConnect, "cell 1 4 2 1,aligny baseline");
+		panel.add(chkConnect, "cell 1 3 2 1,aligny baseline");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("configAccept");
@@ -199,7 +174,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	// Setup component's listener
 	private void setupListeners() {
-		btnPostgisBinFolder.addActionListener(this);
 		btnSwmmFolder.addActionListener(this);
 		btnEpanetFolder.addActionListener(this);
 		btnAccept.addActionListener(this);
