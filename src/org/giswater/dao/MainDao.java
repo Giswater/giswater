@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -609,26 +608,6 @@ public class MainDao {
 	}
 
 	
-	private static String readFile(String filePath) throws IOException{
-		
-		File fileName = new File(filePath);			
-		if (!fileName.exists()){
-			Utils.showError("inp_error_notfound", filePath);
-			return "";
-		}
-		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
-		String line;
-		String content = "";
-		while ((line = rat.readLine()) != null){
-			content += line + "\n";
-		}
-		rat.close();		
-		
-		return content;
-		
-	}
-
-	
 	public static boolean createSchema(String softwareName, String schemaName, String srid) {
 		
 		boolean status = false;
@@ -644,7 +623,7 @@ public class MainDao {
 
 	    	String folderRoot = new File(".").getCanonicalPath() + File.separator;			
 			filePath = folderRoot + "sql/"+softwareName+".sql";
-	    	content = readFile(filePath);
+	    	content = Utils.readFile(filePath);
 			
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
 			content = content.replace("SCHEMA_NAME", schemaName);
@@ -654,13 +633,13 @@ public class MainDao {
 			if (executeSql(content, true)){
 			
 				filePath = folderRoot + "sql/"+softwareName+"_value_domain.sql";
-		    	content = readFile(filePath);
+		    	content = Utils.readFile(filePath);
 				content = content.replace("SCHEMA_NAME", schemaName);		   
 				Utils.logSql(content);
 		    	
 				if (executeUpdateSql(content, true)){
 					filePath = folderRoot + "sql/"+softwareName+"_functrigger.sql";
-			    	content = readFile(filePath);
+			    	content = Utils.readFile(filePath);
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
 					if (executeUpdateSql(content, true)){

@@ -140,7 +140,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[5][83.00][10][140,grow][13.00][50.00]", "[4][24][24][24][24][24][]"));
+		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[4][24][24][24][24][24][]"));
 		
 		lblPostgisBinFolder = new JLabel(BUNDLE.getString("Config.lblPostgisBinFolder"));
 		panel.add(lblPostgisBinFolder, "cell 1 1");
@@ -148,13 +148,13 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtPostgisBinFolder = new JTextField();
 		txtPostgisBinFolder.setText("");
 		txtPostgisBinFolder.setColumns(10);
-		panel.add(txtPostgisBinFolder, "cell 3 1,growx");
+		panel.add(txtPostgisBinFolder, "cell 2 1,growx");
 		
 		btnPostgisBinFolder = new JButton();
 		btnPostgisBinFolder.setText("...");
 		btnPostgisBinFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnPostgisBinFolder.setActionCommand("chooseFolderPostgis");
-		panel.add(btnPostgisBinFolder, "cell 5 1");
+		panel.add(btnPostgisBinFolder, "cell 4 1");
 		
 		lblSwmmFolder = new JLabel(BUNDLE.getString("Config.lblSwmmFolder"));
 		panel.add(lblSwmmFolder, "cell 1 2");
@@ -162,13 +162,13 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtSwmmFolder = new JTextField();
 		txtSwmmFolder.setText((String) null);
 		txtSwmmFolder.setColumns(10);
-		panel.add(txtSwmmFolder, "cell 3 2,growx");
+		panel.add(txtSwmmFolder, "cell 2 2,growx");
 		
 		btnSwmmFolder = new JButton();
 		btnSwmmFolder.setText("...");
 		btnSwmmFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSwmmFolder.setActionCommand("chooseFileSwmm");
-		panel.add(btnSwmmFolder, "cell 5 2");
+		panel.add(btnSwmmFolder, "cell 4 2");
 		
 		lblEpanetFolder = new JLabel(BUNDLE.getString("Config.lblEpanetFolder"));
 		panel.add(lblEpanetFolder, "cell 1 3");
@@ -176,17 +176,17 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtEpanetFolder = new JTextField();
 		txtEpanetFolder.setText((String) null);
 		txtEpanetFolder.setColumns(10);
-		panel.add(txtEpanetFolder, "cell 3 3,growx");
+		panel.add(txtEpanetFolder, "cell 2 3,growx");
 		
 		btnEpanetFolder = new JButton();
 		btnEpanetFolder.setText("...");
 		btnEpanetFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnEpanetFolder.setActionCommand("chooseFileEpanet");
-		panel.add(btnEpanetFolder, "cell 5 3");
+		panel.add(btnEpanetFolder, "cell 4 3");
 		
 		chkConnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); //$NON-NLS-1$
 		chkConnect.setSelected(true);
-		panel.add(chkConnect, "cell 1 4 3 1,aligny baseline");
+		panel.add(chkConnect, "cell 1 4 2 1,aligny baseline");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("configAccept");

@@ -74,7 +74,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
 	private JMenuItem mntmDatabase;
-
+	private JMenuItem mntmQgis;
+	private JMenuItem mntmGvsig;
+	
 	private JMenuItem mntmVersion;
 	private JMenuItem mntmAgreements;
 	private JMenuItem mntmLicense;
@@ -87,7 +89,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public DatabaseFrame dbFrame;
 	public ConfigFrame configFrame;
-	
+	public GisFrame gisFrame;
+		
 	private PropertiesMap prop;
 
 
@@ -137,14 +140,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
 		
-		JMenuItem mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text")); //$NON-NLS-1$
-		mntmQgis.setEnabled(false);
-		mntmQgis.setActionCommand("projectQGIS");
+		mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text"));
+		mntmQgis.setActionCommand("showProjectQGIS");
 		mnGisProject.add(mntmQgis);
 		
-		JMenuItem mntmGvsig = new JMenuItem(BUNDLE.getString("MainFrame.mntmGvsig.text")); //$NON-NLS-1$
-		mntmGvsig.setEnabled(false);
-		mntmGvsig.setActionCommand("projectGVSIG");
+		mntmGvsig = new JMenuItem(BUNDLE.getString("MainFrame.mntmGvsig.text"));
+		mntmGvsig.setActionCommand("showProjectGVSIG");
 		mnGisProject.add(mntmGvsig);
 		
 		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
@@ -222,6 +223,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHelp.setActionCommand("openHelp");
 		
 		desktopPane = new JDesktopPane();
+		desktopPane.setVisible(true);
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -257,12 +259,16 @@ public class MainFrame extends JFrame implements ActionListener{
         hecRasFrame = new HecRasFrame();
         dbFrame = new DatabaseFrame(this);
         configFrame = new ConfigFrame();
+        gisFrame = new GisFrame();
+        gisFrame.setTitle(BUNDLE.getString("MainFrame.gisFrame.title")); //$NON-NLS-1$
+        gisFrame.setLocation(177, 81);
         
         desktopPane.add(swmmFrame);
         desktopPane.add(epanetFrame);
         desktopPane.add(hecRasFrame);     
         desktopPane.add(dbFrame);        
-        desktopPane.add(configFrame);            
+        desktopPane.add(configFrame);
+        desktopPane.add(gisFrame);  
         
         // Set specific configuration
 		swmmFrame.setTitle("EPASWMM");
@@ -291,7 +297,6 @@ public class MainFrame extends JFrame implements ActionListener{
         
         boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "true"));
         mnAnalysis.setEnabled(!overwrite);
-        
         
         // TODO: Test
 //        mcSwmm.selectSourceType(false);
@@ -398,6 +403,8 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmDatabase.addActionListener(this);
 		mntmSoftware.addActionListener(this);
+		mntmQgis.addActionListener(this);
+		mntmGvsig.addActionListener(this);
 		
 		mntmWelcome.addActionListener(this);
 		mntmHelp.addActionListener(this);
@@ -434,6 +441,16 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void openSoftware() {
 		manageFrames(configFrame);
 	}
+	
+	public void openProjectQGIS() {
+		manageFrames(gisFrame);
+		gisFrame.setGisExtension("qgs");
+	}	
+	
+	public void openProjectGVSIG() {
+		manageFrames(gisFrame);
+		gisFrame.setGisExtension("gvp");
+	}	
 	
 	public void enableCatalog(boolean enable) {
 		mnCatalog.setEnabled(enable);

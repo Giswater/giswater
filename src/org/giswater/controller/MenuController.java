@@ -97,6 +97,14 @@ public class MenuController {
 		view.openDatabase();
 	}
 
+	public void showProjectQGIS() {
+		view.openProjectQGIS();
+	}
+	
+	public void showProjectGVSIG() {
+		view.openProjectGVSIG();
+	}	
+	
 	public void openHelp() {
 		String file = MainDao.getConfigPath();
 		Utils.getLogger().info(file);		

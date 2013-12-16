@@ -104,6 +104,15 @@ public class MainController{
 		}    	
 		projectName = prop.get("PROJECT_NAME", "");
 		view.setProjectName(projectName);
+		
+		String gisType = prop.get("GIS_TYPE", "");
+		if (gisType.equals("DATABASE")){
+			view.setDatabaseSelected(true);
+		}
+		else if (gisType.equals("DBF")){
+			view.setDbfSelected(true);
+		}
+		selectSourceType(false);
 			
     }
    
@@ -205,6 +214,7 @@ public class MainController{
 				view.setSchema(null);				
 			}
 			schemaChanged();
+			prop.put("GIS_TYPE", "DATABASE");
 		}
 		// DBF selected
 		else{
@@ -213,6 +223,7 @@ public class MainController{
 			view.enableControlsDatabase(false);
 			view.enableAccept(true);
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
+			prop.put("GIS_TYPE", "DBF");
 		}
 		
 	}

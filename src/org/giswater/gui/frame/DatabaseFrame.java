@@ -91,8 +91,8 @@ public class DatabaseFrame extends JInternalFrame {
         // TODO: Not working
         this.addInternalFrameListener(new InternalFrameAdapter() {
         	public void internalFrameClosing(InternalFrameEvent e) {
-        		mainFrame.swmmFrame.getPanel().setOptDatabaseSelected();
-        		mainFrame.epanetFrame.getPanel().setOptDatabaseSelected();
+        		mainFrame.swmmFrame.getPanel().selectSourceType();
+        		mainFrame.epanetFrame.getPanel().selectSourceType();
         	}
         });        
 

@@ -116,8 +116,17 @@ public class EpaPanel extends JPanel implements ActionListener {
 	public boolean getOptDatabaseSelected(){
 		return optDatabase.isSelected();
 	}
+	
+	public void setDatabaseSelected(boolean isSelected){
+		optDatabase.setSelected(isSelected);
+		//optDbf.setSelected(!isSelected);
+	}	
 
-	public void setOptDatabaseSelected(){
+	public void setDbfSelected(boolean isSelected){
+		optDbf.setSelected(isSelected);
+	}		
+	
+	public void selectSourceType(){
 		controller.selectSourceType(false);
 	}
 	

@@ -54,13 +54,15 @@ public class Utils {
 
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
     private static final String LOG_FOLDER = "log/";
+    private static final String GIS_FOLDER = "gis/";
     private static final String ICON_PATH = "images\\imago.png";
     private static final int NUM_LEVELS = 6;
 
 	private static Logger logger;
     private static Logger loggerSql;
 	private static String logFolder;
-	private static boolean isSqlLogged;
+	private static String gisFolder;
+	private static boolean isSqlLogged;	
     
     
 	public static Logger getLogger() {
@@ -69,6 +71,7 @@ public class Utils {
             try {
             	String folderRoot = Utils.getAppPath();         	
                 logFolder = folderRoot + LOG_FOLDER;
+                gisFolder = folderRoot + GIS_FOLDER;
                 File folderFile = new File(logFolder);
                 folderFile.mkdirs();
                 if (!folderFile.exists()){
@@ -129,6 +132,9 @@ public class Utils {
     	return logFolder;
     }    
     
+    public static String getGisFolder(){
+    	return gisFolder;
+    }       
 
 	public static String getBundleString(String key){
 		return getBundleString(BUNDLE_TEXT, key);
@@ -356,23 +362,23 @@ public class Utils {
 	}    
 	
 	
-	public static void deleteFile(String sFile){
+	public static void deleteFile(String filePath){
 		
-		File f = new File(sFile);
+		File f = new File(filePath);
 	
 	    // Make sure the file or directory exists and isn't write protected
 	    if (!f.exists()){
-	    	logError("Delete: no such file or directory: " + sFile);
+	    	logError("Delete: no such file or directory: " + filePath);
 	    }
 	    if (!f.canWrite()){
-	    	logError("Delete: write protected: " + sFile);	    	
+	    	logError("Delete: write protected: " + filePath);	    	
 	    }
 	
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
 	    	if (files.length > 0){
-	    		logError("Delete: directory not empty: " + sFile);
+	    		logError("Delete: directory not empty: " + filePath);
 	    	}
 	    }
 	
@@ -397,6 +403,26 @@ public class Utils {
 		}
 
 	}		
+	
+	
+	public static String readFile(String filePath) throws IOException{
+		
+		File fileName = new File(filePath);			
+		if (!fileName.exists()){
+			Utils.showError("inp_error_notfound", filePath);
+			return "";
+		}
+		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
+		String line;
+		String content = "";
+		while ((line = rat.readLine()) != null){
+			content += line + "\n";
+		}
+		rat.close();		
+		
+		return content;
+		
+	}	
 
 	
 	public static void setSqlLog(String string) {
