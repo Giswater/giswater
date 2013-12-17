@@ -33,8 +33,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import javax.swing.table.DefaultTableModel;
-
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -136,6 +134,7 @@ public class MainDao {
         	if (silenceConnection()){
         		// If we're connecting for the first time
         		if (!MainDao.checkDatabase(INIT_DB)){
+        			Utils.getLogger().info("initDatabase");
         			initDatabase();
         		}
         	}
@@ -201,7 +200,15 @@ public class MainDao {
 			Utils.getLogger().info("Autoconnection not possible. Check parameters in inp.properties");
 			return false;
 		}
-		isConnected = setConnectionPostgis(host, port, db, user, password);
+		
+		int count = 0;
+		do{
+			count++;
+			Utils.getLogger().info("Trying to connect: " + count);
+			isConnected = setConnectionPostgis(host, port, db, user, password);
+		} while (!isConnected && count < 5);
+		
+		//isConnected = setConnectionPostgis(host, port, db, user, password);
 		if (isConnected){
 			// Get Postgis data and bin folder
 	    	String dataPath = MainDao.getDataDirectory();
@@ -209,9 +216,9 @@ public class MainDao {
 	        File dataFolder = new File(dataPath);
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
 	    	prop.put("POSTGIS_BIN", binPath);	
-	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
-	    	Utils.getLogger().info("Postgis bin directory: " + binPath);
 			Utils.getLogger().info("Autoconnection successful");
+	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
+	    	//Utils.getLogger().info("Postgis bin directory: " + binPath);
 			return true;
 		}
 		else{
@@ -386,7 +393,7 @@ public class MainDao {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
             } catch (SQLException e1) {
-                Utils.showError(e1);
+                Utils.logError(e1);
                 return false;
             }   		
         }
@@ -427,6 +434,8 @@ public class MainDao {
 		} catch (SQLException e) {
 			if (showError){
 				Utils.showError(e, sql);
+			} else{
+				Utils.logError(e, sql);
 			}
 			return false;
 		}
@@ -782,79 +791,7 @@ public class MainDao {
 		
 	}
 
-	
-	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
 		
-		boolean status = false;
-		String sql = "CREATE schema "+schemaName;
-		if (!executeUpdateSql(sql, true)){
-			rollback();
-			return status;	
-		}
-		String filePath = "";
-		String content = "";
-    	
-		try {
-
-	    	String folderRoot = new File(".").getCanonicalPath() + File.separator;			
-			filePath = folderRoot + "sql/"+softwareName+".sql";
-	    	content = Utils.readFile(filePath);
-			
-	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for user
-	    	String user = prop.get("POSTGIS_USER");
-			content = content.replace("SCHEMA_NAME", schemaName);
-			content = content.replace("SRID_VALUE", srid);
-			content = content.replace("__USER__", user);			
-			Utils.logSql(content);
-			
-			// TODO: ??
-			connectionPostgis.setAutoCommit(false);
-			executeSql(content, true);
-			
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-        } catch (SQLException e) {
-            Utils.showError(e);
-		}
-		return status;
-		
-	}
-	
-	
-	public static DefaultTableModel buildTableModel(ResultSet rs) {
-
-		try {
-
-			ResultSetMetaData metaData = rs.getMetaData();
-	
-		    // names of columns
-		    Vector<String> columnNames = new Vector<String>();
-		    int columnCount = metaData.getColumnCount();
-		    for (int column = 1; column <= columnCount; column++) {
-		        columnNames.add(metaData.getColumnName(column));
-		    }
-	
-		    // data of the table
-		    Vector<Vector<Object>> data = new Vector<Vector<Object>>();
-		    while (rs.next()) {
-		        Vector<Object> vector = new Vector<Object>();
-		        for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-		            vector.add(rs.getObject(columnIndex));
-		        }
-		        data.add(vector);
-		    }
-		    return new DefaultTableModel(data, columnNames);
-		    
-		} catch (SQLException e) {
-			Utils.logError(e);
-			return null;			
-		}
-
-	}
-	
-	
 	public static int getRowCount(ResultSet resultSet) {
 		
 	    if (resultSet == null) {
@@ -878,6 +815,64 @@ public class MainDao {
 	
 	
 	// hecRas functions
+	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
+		
+		String filePath = "";
+		try {		
+			filePath = Utils.getAppPath() + "sql" + File.separator + softwareName + ".sql";
+			String destPath = Utils.getLogFolder() + softwareName + "_" + schemaName + ".sql";
+			String batPath = Utils.getLogFolder() + softwareName + "_" + schemaName + ".bat";
+			String content = Utils.readFile(filePath);
+	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
+	    	String user = prop.get("POSTGIS_USER");
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("__USER__", user);		
+			Utils.logSql(content);
+			Utils.fillFile(new File(destPath), content);
+			executeScript(destPath, batPath);
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+		}
+		return true;
+		
+	}
+	
+	
+	public static boolean executeScript(String scriptPath, String batPath) {
+
+		String aux;
+		String bin, host, port, db, user;
+		
+		bin = prop.getProperty("POSTGIS_BIN", "");
+		host = prop.getProperty("POSTGIS_HOST", "localhost");
+		port = prop.getProperty("POSTGIS_PORT", "5431");
+		db = prop.getProperty("POSTGIS_DATABASE", "giswater");
+		user = prop.getProperty("POSTGIS_USER", "postgres");
+		
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("postgis_not_found", bin);
+			return false;			
+		}
+		bin+= File.separator;
+		
+		// Set content of .bat file
+		aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
+		aux+= "\nexit";		
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File	
+		File batFile = new File(batPath);        
+		Utils.fillFile(batFile, aux);    		
+		Utils.openFile(batFile.getAbsolutePath());
+		
+		return true;
+			
+	}	
+	
+	
 	public static boolean createSdfFile(String schemaName, String fileName) {
 		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"');";
 		Utils.logSql(sql);
@@ -932,7 +927,7 @@ public class MainDao {
 		bin+= File.separator;
 		
 		// Set content of .bat file
-		aux =  "\""+bin+"raster2pgsql\" -d -s 0 -I -C -M "+raster+" -F -t 100x100 "+schemaName+".mdt > "+fileSql;
+		aux = "\""+bin+"raster2pgsql\" -d -s 0 -I -C -M "+raster+" -F -t 100x100 "+schemaName+".mdt > "+fileSql;
 		aux+= "\n";
 		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -c \"drop table if exists "+schemaName+".mdt\";";
 		aux+= "\n";		

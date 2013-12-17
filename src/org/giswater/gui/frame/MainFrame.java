@@ -45,6 +45,7 @@ import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import javax.swing.SwingConstants;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -216,21 +217,22 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmLicense.setActionCommand("showLicense");
 		mnAbout.add(mntmLicense);
 		
-		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
-		mntmAgreements.setActionCommand("showAgreements");
-		mnAbout.add(mntmAgreements);
-		
 		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); //$NON-NLS-1$
 		mnAbout.add(mntmUserManual);
 		mntmUserManual.setActionCommand("openUserManual");
 		
 		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text")); //$NON-NLS-1$
+		mntmReferenceGuide.setHorizontalAlignment(SwingConstants.TRAILING);
 		mntmReferenceGuide.setActionCommand("openReferenceGuide");
 		mnAbout.add(mntmReferenceGuide);
 		
 		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text")); //$NON-NLS-1$
 		mntmWeb.setActionCommand("openWeb");
 		mnAbout.add(mntmWeb);
+		
+		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
+		mntmAgreements.setActionCommand("showAgreements");
+		mnAbout.add(mntmAgreements);
 		
 		desktopPane = new JDesktopPane();
 		desktopPane.setVisible(true);

@@ -106,12 +106,12 @@ public class MenuController {
 	}	
 	
 	public void openUserManual() {
-		String url = "https://owncloud.giswater.org/public.php?service=files&t=1febe580214e81ca0ea40493bdae0014";
+		String url = "http://owncloud.giswater.org/public.php?service=files&t=1febe580214e81ca0ea40493bdae0014";
 		Utils.openWeb(url);
 	}
 	
 	public void openReferenceGuide() {
-		String url = "https://owncloud.giswater.org/public.php?service=files&t=74ea5f58528f7fbd01644e59885edfc4";
+		String url = "http://owncloud.giswater.org/public.php?service=files&t=9421bd1c56ef6934b90ca7ef7abdf95e";
 		Utils.openWeb(url);
 	}
 	

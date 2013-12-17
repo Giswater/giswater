@@ -49,7 +49,7 @@ public class VersionDialog extends JDialog {
 	public URI urlWeb = null;
 	public URI urlGithub = null;	
 	private final String URL_WEB = "http://www.giswater.org";
-	private final String URL_GITHUB = "https://github.com/giswater/giswater";
+	private final String URL_GITHUB = "http://github.com/giswater/giswater";
 
 
 	class OpenUrlWeb implements ActionListener {

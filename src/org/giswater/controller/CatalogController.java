@@ -131,14 +131,11 @@ public class CatalogController {
 				}
 				updateDetailTable("inp_curve", "*", "curve_id", id);
 			}			
-	
 			
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
-		
-
-		
+				
 	}
 	
 	
@@ -389,7 +386,6 @@ public class CatalogController {
         	sql+= " WHERE curve_id = '"+curveId+"'";
         	ResultSet rs = MainDao.getResultset(sql);
     		if (rs == null) return;
-   			//create("create_detail");
    			createCurve(rs, curveId);
 		}
 		

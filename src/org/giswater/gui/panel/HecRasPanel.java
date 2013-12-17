@@ -176,7 +176,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[5][:572.00px:531px][176.00]", "[10px][410.00][12]"));
+		setLayout(new MigLayout("", "[5][:572.00px:531px][188.00]", "[10px][410.00][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -184,7 +184,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 
 		panel_2 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
-		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][45:n][70]", "[8px][10:n][50:n][50:n][::10][:5px:5px]"));
+		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][50][45:n][70]", "[8px][10:n][40:n][40:n][::10][:5px:5px]"));
 		
 		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
 		panel_2.add(lblSelectSchema, "cell 0 0,alignx right");
@@ -197,8 +197,8 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 		btnCreateSchema = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
 		panel_2.add(btnCreateSchema, "flowx,cell 2 0");
-		btnCreateSchema.setMaximumSize(new Dimension(105, 23));
-		btnCreateSchema.setMinimumSize(new Dimension(105, 23));
+		btnCreateSchema.setMaximumSize(new Dimension(108, 23));
+		btnCreateSchema.setMinimumSize(new Dimension(110, 23));
 		btnCreateSchema.setActionCommand("createSchema");
 		
 		lblAscFile_1 = new JLabel();
@@ -214,7 +214,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		scrollPane.setViewportView(txtFileAsc);
 		
 		btnFileAsc = new JButton();
-		panel_2.add(btnFileAsc, "cell 3 2");
+		panel_2.add(btnFileAsc, "cell 4 2,aligny center");
 		btnFileAsc.setActionCommand("chooseFileAsc");
 		btnFileAsc.setText("...");
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -232,32 +232,32 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setMaximumSize(new Dimension(110, 23));
+		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
 		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
-		panel_2.add(btnLoadRaster, "cell 4 2,alignx center,aligny center");
+		panel_2.add(btnLoadRaster, "cell 5 2,alignx center,aligny center");
 		
 		btnFileSdf = new JButton();
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
-		panel_2.add(btnFileSdf, "cell 3 3");
+		panel_2.add(btnFileSdf, "cell 4 3,aligny center");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
 		btnExportSdf.setMinimumSize(new Dimension(110, 23));
-		btnExportSdf.setMaximumSize(new Dimension(110, 23));
+		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
-		panel_2.add(btnExportSdf, "cell 4 3,alignx center,aligny center");
+		panel_2.add(btnExportSdf, "cell 5 3,alignx center,aligny center");
 		
 		btnDeleteSchema = new JButton("Delete Schema");
-		btnDeleteSchema.setMinimumSize(new Dimension(105, 23));
-		btnDeleteSchema.setMaximumSize(new Dimension(105, 23));
+		btnDeleteSchema.setMinimumSize(new Dimension(110, 23));
+		btnDeleteSchema.setMaximumSize(new Dimension(108, 23));
 		btnDeleteSchema.setActionCommand("deleteSchema");
 		panel_2.add(btnDeleteSchema, "cell 2 0");
 		
 		btnClearData = new JButton("Clear Data");
 		btnClearData.setMinimumSize(new Dimension(110, 23));
-		btnClearData.setMaximumSize(new Dimension(110, 23));
+		btnClearData.setMaximumSize(new Dimension(108, 23));
 		btnClearData.setActionCommand("clearData");
 		panel_2.add(btnClearData, "flowx,cell 2 0 2 1");
 		
@@ -266,7 +266,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnDatabase.setMaximumSize(new Dimension(140, 23));
 		btnDatabase.setActionCommand("openDatabase");
 		btnDatabase.setVisible(false);
-		panel_2.add(btnDatabase, "cell 3 0 2 1,alignx right");
+		panel_2.add(btnDatabase, "cell 4 0 2 1,alignx right");
 
 		enableButtons(false);
 		setupListeners();

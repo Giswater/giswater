@@ -52,10 +52,10 @@ import org.giswater.dao.MainDao;
 public class Utils {
 
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
-    private static final String LOG_FOLDER = "log" + File.separator;
+    //private static final String LOG_FOLDER = "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images\\imago.png";
-    private static final int NUM_LEVELS = 8;
+    private static final int NUM_LEVELS = 10;
 
 	private static Logger logger;
     private static Logger loggerSql;
@@ -69,7 +69,8 @@ public class Utils {
     	if (logger == null) {
             try {
             	String folderRoot = Utils.getAppPath();         	
-                logFolder = folderRoot + LOG_FOLDER;
+                //logFolder = folderRoot + LOG_FOLDER;
+            	logFolder = System.getProperty("user.home") + File.separator + "giswater" + File.separator + "log" + File.separator;
                 gisFolder = folderRoot + GIS_FOLDER;
                 File folderFile = new File(logFolder);
                 folderFile.mkdirs();

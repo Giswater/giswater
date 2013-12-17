@@ -312,13 +312,10 @@ public class HecRasController{
 			Utils.showError("asc_file");
 			return;
 		}
-		
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
 		String schemaName = view.getSelectedSchema();
 		String fileName = fileAsc.getAbsolutePath();
-    	if (MainDao.loadRaster(schemaName, fileName)){  	
-    		Utils.showMessage("Raster loaded successfully", fileName);
-    	}
+    	MainDao.loadRaster(schemaName, fileName);  	
         	
     }
     
