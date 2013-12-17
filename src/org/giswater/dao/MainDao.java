@@ -820,16 +820,13 @@ public class MainDao {
 		String filePath = "";
 		try {		
 			filePath = Utils.getAppPath() + "sql" + File.separator + softwareName + ".sql";
-			String destPath = Utils.getLogFolder() + softwareName + "_" + schemaName + ".sql";
-			String batPath = Utils.getLogFolder() + softwareName + "_" + schemaName + ".bat";
 			String content = Utils.readFile(filePath);
 	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
 	    	String user = prop.get("POSTGIS_USER");
 			content = content.replace("SCHEMA_NAME", schemaName);
 			content = content.replace("__USER__", user);		
 			Utils.logSql(content);
-			Utils.fillFile(new File(destPath), content);
-			executeScript(destPath, batPath);
+			executeUpdateSql(content, true);
         } catch (FileNotFoundException e) {
             Utils.showError("inp_error_notfound", filePath);
         } catch (IOException e) {
