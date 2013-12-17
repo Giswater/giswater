@@ -57,7 +57,7 @@ public class MainDao {
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
 	private static final String INIT_DB = "giswater_ddb";
-	private static final String PORTABLE_FOLDER = "portable/";
+	private static final String PORTABLE_FOLDER = "portable";
 	private static final String PORTABLE_START = "start_service.bat";
 	private static final String PORTABLE_STOP = "stop_service.bat";
 	
@@ -148,27 +148,39 @@ public class MainDao {
     
 	public static void startPostgisService(){
 		
-		String path = Utils.getAppPath() + PORTABLE_FOLDER + PORTABLE_START;
+		String path = Utils.getAppPath() + PORTABLE_FOLDER + File.separator + PORTABLE_START;
 		File file = new File(path);
 		if (!file.exists()){
 			Utils.logError("Start service .bat not found: " + path);
 			return;
 		}
-		Utils.execProcess(path);
+		execService(path);
 
 	}
     
 	
 	public static void stopPostgisService(){
 
-		String path = Utils.getAppPath() + PORTABLE_FOLDER + PORTABLE_STOP;
+		String path = Utils.getAppPath() + PORTABLE_FOLDER + File.separator + PORTABLE_STOP;
 		File file = new File(path);
 		if (!file.exists()){
 			Utils.logError("Stop service .bat not found: " + path);
 			return;
 		}
-		Utils.execProcess(path);
+		execService(path);
 
+	}
+	
+	
+	private static void execService(String path){
+		
+		path = "\"" + path + "\"";
+		try {
+			Runtime.getRuntime().exec(path);
+		} catch (IOException e) {
+			Utils.logError(e);
+		}		
+		
 	}
 	
 	

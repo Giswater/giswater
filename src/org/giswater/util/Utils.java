@@ -52,10 +52,10 @@ import org.giswater.dao.MainDao;
 public class Utils {
 
 	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
-    private static final String LOG_FOLDER = "log/";
-    private static final String GIS_FOLDER = "gis/";
+    private static final String LOG_FOLDER = "log" + File.separator;
+    private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images\\imago.png";
-    private static final int NUM_LEVELS = 6;
+    private static final int NUM_LEVELS = 8;
 
 	private static Logger logger;
     private static Logger loggerSql;
@@ -317,9 +317,7 @@ public class Utils {
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
-		} catch (IOException e) {
-			logError(e);
-		} catch (InterruptedException e) {
+		} catch (IOException | InterruptedException e) {
 			logError(e);
 		}	
 		
