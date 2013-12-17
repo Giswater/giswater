@@ -49,7 +49,6 @@ public class MainDao {
     private static String schema;
     private static boolean isConnected = false;
     private static String folderConfig;
-	private static String helpPath;
 	private static String appPath;	
 	private static String configPath;
     private static PropertiesMap prop = new PropertiesMap();
@@ -92,10 +91,6 @@ public class MainDao {
 		schema = param;
 	}
 
-	public static String getHelpPath() {
-		return helpPath;
-	}
-
 	public static String getFolderConfig() {
 		return folderConfig;
 	}	
@@ -129,15 +124,11 @@ public class MainDao {
         // Set Postgis connection
         Boolean connect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
         if (connect){
-        	silenceConnection();
-        	if (!MainDao.checkDatabase(INIT_DB)){
-        		initDatabase();
+        	if (silenceConnection()){
+        		if (!MainDao.checkDatabase(INIT_DB)){
+        			initDatabase();
+        		}
         	}
-        }
-        
-        // Get PDF help file
-        if (helpPath == null) {
-            helpPath = folderConfig + File.separator + prop.get("FILE_HELP");
         }
         
         return true;
@@ -145,7 +136,7 @@ public class MainDao {
     }
        
     
-	public static void silenceConnection(){
+	public static boolean silenceConnection(){
 		
 		String host, port, db, user, password;
 		
@@ -160,7 +151,7 @@ public class MainDao {
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("") || password.equals("")){
 			Utils.getLogger().info("Autoconnection not possible");
-			return;
+			return false;
 		}
 		isConnected = setConnectionPostgis(host, port, db, user, password);
 		if (isConnected){
@@ -173,10 +164,11 @@ public class MainDao {
 	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
 	    	Utils.getLogger().info("Postgis bin directory: " + binPath);
 			Utils.getLogger().info("Autoconnection successful");
+			return true;
 		}
 		else{
 			Utils.getLogger().info("Autoconnection error");			
-			System.exit(0);
+			return false;
 		}
 		
 	}	    
@@ -570,7 +562,10 @@ public class MainDao {
         } catch (SQLException e) {
             Utils.showError(e, sql);
             return vector;
-        }
+	    } catch (NullPointerException e) {
+	        Utils.logError(e);
+	        return vector;
+	    }        
 		
 	}
 	
