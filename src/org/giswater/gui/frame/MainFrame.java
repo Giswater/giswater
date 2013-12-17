@@ -387,6 +387,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	        setFrameParams(dbFrame, "DB");      
 	        setFrameParams(configFrame, "CONFIG");	
 	        setMainParams("MAIN");
+	        // Stop Postgis portable?
+	        Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
+	        if (autostart){
+	        	MainDao.stopPostgisService();
+	        }	        
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());			

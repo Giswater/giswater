@@ -56,7 +56,10 @@ public class MainDao {
 	private static final String CONFIG_FOLDER = "config";
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
-	private static final String INIT_DB = "giswater_ddb";	
+	private static final String INIT_DB = "giswater_ddb";
+	private static final String PORTABLE_FOLDER = "portable/";
+	private static final String PORTABLE_START = "start_service.bat";
+	private static final String PORTABLE_STOP = "stop_service.bat";
 	
 	
 	public static Connection getConnectionDrivers() {
@@ -121,10 +124,17 @@ public class MainDao {
         	return false;
         }
         
+        // Start Postgis portable?
+        Boolean autoStart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
+        if (autoStart){
+        	startPostgisService();
+        }
+        
         // Set Postgis connection
-        Boolean connect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
-        if (connect){
+        Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
+        if (autoConnect){
         	if (silenceConnection()){
+        		// If we're connecting for the first time
         		if (!MainDao.checkDatabase(INIT_DB)){
         			initDatabase();
         		}
@@ -136,6 +146,32 @@ public class MainDao {
     }
        
     
+	public static void startPostgisService(){
+		
+		String path = Utils.getAppPath() + PORTABLE_FOLDER + PORTABLE_START;
+		File file = new File(path);
+		if (!file.exists()){
+			Utils.logError("Start service .bat not found: " + path);
+			return;
+		}
+		Utils.execProcess(path);
+
+	}
+    
+	
+	public static void stopPostgisService(){
+
+		String path = Utils.getAppPath() + PORTABLE_FOLDER + PORTABLE_STOP;
+		File file = new File(path);
+		if (!file.exists()){
+			Utils.logError("Stop service .bat not found: " + path);
+			return;
+		}
+		Utils.execProcess(path);
+
+	}
+	
+	
 	public static boolean silenceConnection(){
 		
 		String host, port, db, user, password;
@@ -150,12 +186,12 @@ public class MainDao {
 		password = (password == null) ? "" : password;
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("") || password.equals("")){
-			Utils.getLogger().info("Autoconnection not possible");
+			Utils.getLogger().info("Autoconnection not possible. Check parameters in inp.properties");
 			return false;
 		}
 		isConnected = setConnectionPostgis(host, port, db, user, password);
 		if (isConnected){
-			// Get Postgis data and bin Folder
+			// Get Postgis data and bin folder
 	    	String dataPath = MainDao.getDataDirectory();
 	    	prop.put("POSTGIS_DATA", dataPath);
 	        File dataFolder = new File(dataPath);
@@ -176,16 +212,7 @@ public class MainDao {
     
 	public static void initDatabase(){
 		
-		String aux = "";
-		String logFolder;
-		String bin, host, port, user;
-		
-		bin = prop.getProperty("POSTGIS_BIN", "");
-		host = prop.getProperty("POSTGIS_HOST", "localhost");
-		port = prop.getProperty("POSTGIS_PORT", "5431");
-		user = prop.getProperty("POSTGIS_USER", "postgres");
-		logFolder = Utils.getLogFolder();
-		
+		String bin = prop.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
@@ -193,6 +220,7 @@ public class MainDao {
 		}
 		bin+= File.separator;
 		
+		// Execute script that creates working Database
 		String filePath =  Utils.getAppPath() + "sql/init_giswater_ddb.sql";
     	String content;
 		try {
@@ -203,26 +231,18 @@ public class MainDao {
 			}				
 		} catch (IOException e) {
 			Utils.logError(e);
+			return;
 		}
-
-		// Set content of .bat file
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+INIT_DB+" -c \"CREATE EXTENSION postgis\";";	
-		aux+= "\n";
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+INIT_DB+" -c \"CREATE EXTENSION postgis_topology\";";			
-		aux+= "\nexit";		
-		Utils.getLogger().info(aux);	
-
-        // Fill and execute .bat File	
-		File batFile = new File(logFolder + "init.bat");        
-		Utils.fillFile(batFile, aux);    		
-		Utils.openFile(batFile.getAbsolutePath());	
 		
-		// Change default Database
+		// Close current connection in order to connect to default Database just created
 		prop.setProperty("POSTGIS_DATABASE", INIT_DB);
-		
 		closeConnectionPostgis();
 		silenceConnection();
 		
+		// Enable Postgis to Database
+		String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
+		MainDao.executeUpdateSql(sql, true, false);
+
 	}
 	
 	
@@ -550,22 +570,27 @@ public class MainDao {
         	"AND schema_name <> 'drivers' AND schema_name <> 'public' AND schema_name <> 'topology' " +
         	"ORDER BY schema_name";
         Vector<String> vector = new Vector<String>();
-        try {
-    		connectionPostgis.setAutoCommit(false);        	
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            while (rs.next()) {
-            	vector.add(rs.getString(1));
-            }
-            rs.close();
-    		return vector;	            
-        } catch (SQLException e) {
-            Utils.showError(e, sql);
-            return vector;
-	    } catch (NullPointerException e) {
-	        Utils.logError(e);
-	        return vector;
-	    }        
+        if (isConnected()){
+	        try {
+	    		connectionPostgis.setAutoCommit(false);        	
+	            Statement stat = connectionPostgis.createStatement();
+	            ResultSet rs = stat.executeQuery(sql);
+	            while (rs.next()) {
+	            	vector.add(rs.getString(1));
+	            }
+	            rs.close();
+	    		return vector;	            
+	        } catch (SQLException e) {
+	            Utils.showError(e, sql);
+	            return vector;
+		    } catch (NullPointerException e) {
+		        Utils.logError(e);
+		        return vector;
+		    }
+        }
+        else{
+        	return vector;
+        }
 		
 	}
 	

@@ -122,10 +122,13 @@ public class DatabaseController {
 		port = view.getPort();
 		db = view.getDatabase();
 		user = view.getUser();
-		password = view.getPassword();		
-		MainDao.setConnected(MainDao.setConnectionPostgis(host, port, db, user, password));
+		password = view.getPassword();	
 		
-		if (MainDao.isConnected()){
+		// Try to connect to Database
+		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
+		MainDao.setConnected(isConnected);
+		
+		if (isConnected){
 			prop.put("POSTGIS_HOST", host);
 			prop.put("POSTGIS_PORT", port);
 			prop.put("POSTGIS_DATABASE", db);

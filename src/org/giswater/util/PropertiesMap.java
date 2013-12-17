@@ -511,7 +511,6 @@ public class PropertiesMap {
 	
 	public String get(String key, String defaultValue) {
 		return getProperty(key, defaultValue);
-		
 	}
 
 	

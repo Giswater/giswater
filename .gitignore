@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 log
+portable
 config/inp_*
 build_runnable.xml
 build_runnable_jar.xml
