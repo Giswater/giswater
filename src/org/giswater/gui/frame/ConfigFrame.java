@@ -54,7 +54,6 @@ public class ConfigFrame extends JInternalFrame {
 		setMaximizable(true);
     	setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
         
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {

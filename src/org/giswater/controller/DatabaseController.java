@@ -127,6 +127,7 @@ public class DatabaseController {
 		// Try to connect to Database
 		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
 		MainDao.setConnected(isConnected);
+		mainFrame.hecRasFrame.getPanel().setSchema(null);
 		
 		if (isConnected){
 			prop.put("POSTGIS_HOST", host);
@@ -150,12 +151,12 @@ public class DatabaseController {
 	        prop.put("POSTGIS_BIN", binPath);	        
 	        
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage("connection_opened");	
+			Utils.showMessage("connection_opened");
+			
+			// Hecras panel
+			mainFrame.hecRasFrame.getPanel().setSchema(MainDao.getSchemas());
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
-		else{
-			closeConnection();
-		}
 		
 	}		
 	

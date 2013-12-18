@@ -51,7 +51,7 @@ public class MainDao {
 	private static String configPath;
     private static PropertiesMap prop = new PropertiesMap();
     
-	private static final String CONFIG_FOLDER = "config";
+	private static final String CONFIG_FOLDER = "giswater" + File.separator + "config" + File.separator;
 	private static final String CONFIG_FILE = "inp.properties";
 	private static final String CONFIG_DB = "config.sqlite";
 	private static final String INIT_DB = "giswater_ddb";
@@ -95,10 +95,6 @@ public class MainDao {
 	public static String getFolderConfig() {
 		return folderConfig;
 	}	
-	
-	public static String getConfigPath() {
-		return configPath;
-	}		
 	
 	
     // Sets initial configuration files
@@ -205,7 +201,7 @@ public class MainDao {
 		do{
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
-			isConnected = setConnectionPostgis(host, port, db, user, password);
+			isConnected = setConnectionPostgis(host, port, db, user, password, false);
 		} while (!isConnected && count < 5);
 		
 		//isConnected = setConnectionPostgis(host, port, db, user, password);
@@ -298,7 +294,7 @@ public class MainDao {
     public static boolean enabledPropertiesFile() {
 
     	appPath = Utils.getAppPath();
-        configPath = appPath + CONFIG_FOLDER + File.separator + CONFIG_FILE;
+        configPath = System.getProperty("user.home") + File.separator + CONFIG_FOLDER + CONFIG_FILE;
         File fileIni = new File(configPath);
         try {
         	prop.load(new FileInputStream(fileIni));      
@@ -384,16 +380,24 @@ public class MainDao {
 	}
 	
 	
-    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password) {
+	public static boolean setConnectionPostgis(String host, String port, String db, String user, String password) {
+		return setConnectionPostgis(host, port, db, user, password, true);
+	}
+	
+    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean showError) {
     	
-        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+ password;
+        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
         } catch (SQLException e) {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
             } catch (SQLException e1) {
-                Utils.logError(e1);
+            	if (showError){
+            		Utils.showError(e1);
+            	} else{
+            		Utils.logError(e1);
+            	}
                 return false;
             }   		
         }

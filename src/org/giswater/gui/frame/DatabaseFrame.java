@@ -63,7 +63,6 @@ public class DatabaseFrame extends JInternalFrame {
 		setMaximizable(true);    	
         setClosable(true);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
         
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {

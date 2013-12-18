@@ -66,6 +66,7 @@ public class HecRasController{
 		if (fileAsc.exists()) {
 			view.setFileAsc(fileAsc.getAbsolutePath());
 		}	
+		view.setSchema(MainDao.getSchemas());
 		
     }
    

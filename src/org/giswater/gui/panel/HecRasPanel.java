@@ -105,23 +105,28 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	}
 
 	
-	// Panel Data Manager
 	public void enableButtons(boolean isEnabled) {
 		
-		btnExportSdf.setEnabled(isEnabled);
 		btnCreateSchema.setEnabled(isEnabled);
+		btnDeleteSchema.setEnabled(isEnabled);
+		btnClearData.setEnabled(isEnabled);
+		txtFileSdf.setEnabled(isEnabled);	
+		btnFileSdf.setEnabled(isEnabled);	
+		btnExportSdf.setEnabled(isEnabled);		
 		btnDatabase.setVisible(!isEnabled);
 		
 		// Check if we have to enable Load Raster button
-		btnLoadRaster.setEnabled(false);
-		txtFileAsc.setEnabled(false);
-		btnFileAsc.setEnabled(false);
 		PropertiesMap prop = MainDao.getPropertiesFile();
 		boolean isLoad = Boolean.parseBoolean(prop.getProperty("LOAD_RASTER", "false"));
 		if (isEnabled && isLoad){
 			btnLoadRaster.setEnabled(true);
 			txtFileAsc.setEnabled(true);
 			btnFileAsc.setEnabled(true);
+		} 
+		else{
+			btnLoadRaster.setEnabled(false);
+			txtFileAsc.setEnabled(false);
+			btnFileAsc.setEnabled(false);
 		}
 		
 	}
