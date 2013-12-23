@@ -52,7 +52,7 @@ public class MainDao {
     private static PropertiesMap prop = new PropertiesMap();
     
 	private static final String CONFIG_FOLDER = "giswater" + File.separator + "config" + File.separator;
-	private static final String CONFIG_FILE = "inp.properties";
+	private static final String CONFIG_FILE = "giswater.properties";
 	private static final String CONFIG_DB = "config.sqlite";
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String PORTABLE_FOLDER = "portable";
@@ -193,7 +193,7 @@ public class MainDao {
 		password = (password == null) ? "" : password;
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("") || password.equals("")){
-			Utils.getLogger().info("Autoconnection not possible. Check parameters in inp.properties");
+			Utils.getLogger().info("Autoconnection not possible. Check parameters in giswater.properties");
 			return false;
 		}
 		
