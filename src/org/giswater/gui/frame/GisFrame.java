@@ -25,7 +25,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.GisPanel;
-import org.giswater.util.Utils;
 
 
 public class GisFrame extends JInternalFrame {
@@ -46,16 +45,20 @@ public class GisFrame extends JInternalFrame {
 		panel.setGisExtension(gisExtension);
 	}	
 
+	public void setGisTitle(String title) {
+		setTitle(title);			
+		panel.setPanelTitle(title);
+	}		
 	
     private void initComponents() {
 
-    	panel = new GisPanel(this);
+    	panel = new GisPanel();
 
-        setTitle(Utils.getBundleString("gis_panel"));
-		setMaximizable(true);
+    	panel.setFrame(this);
     	setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);  
+		setMaximizable(true);        
+        setVisible(false);
+    	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(

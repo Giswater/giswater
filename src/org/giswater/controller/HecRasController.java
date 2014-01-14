@@ -109,6 +109,7 @@ public class HecRasController{
 			view.enableButtons(false);
 			view.setSchema(null);				
 		}
+		mainFrame.enableCatalog(false);
 		
 	}	
 	

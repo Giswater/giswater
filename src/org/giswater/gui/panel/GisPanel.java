@@ -85,16 +85,30 @@ public class GisPanel extends JPanel implements ActionListener {
 		setDefaultValues();
 	}
 	
+	public GisPanel() {
+        this.prop = MainDao.getPropertiesFile();
+		initConfig();
+		setDefaultValues();
+	}
+	
 	public GisFrame getFrame(){
 		return gisFrame;
 	}
 
+	public void setFrame(GisFrame gisFrame){
+		this.gisFrame = gisFrame;
+	}
+	
 	public JDialog getDialog() {
 		return new JDialog();
 	}
 
 	public void setGisExtension(String gis) {
 		this.gisExtension = gis;
+	}	
+	
+	public void setPanelTitle(String title) {
+		tabbedPane.setTitleAt(0, title);
 	}	
 	
 	public void setProjectFolder(String path) {

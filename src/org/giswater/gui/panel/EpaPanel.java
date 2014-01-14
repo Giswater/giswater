@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -46,10 +48,11 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.MainController;
+import org.giswater.dao.MainDao;
 import org.giswater.util.Utils;
 
 
-public class EpaPanel extends JPanel implements ActionListener {
+public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
@@ -89,6 +92,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	private String softwareName;   // swmm | epanet
 	private JButton btnDeleteData;
+	private JLabel lblNewLabel;
 
 	
 	public EpaPanel(String softwareName) {
@@ -119,7 +123,6 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	public void setDatabaseSelected(boolean isSelected){
 		optDatabase.setSelected(isSelected);
-		//optDbf.setSelected(!isSelected);
 	}	
 
 	public void setDbfSelected(boolean isSelected){
@@ -330,6 +333,9 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDeleteData.setActionCommand("deleteData");
 		panel_4.add(btnDeleteData, "cell 3 3");
 		
+		lblNewLabel = new JLabel(BUNDLE.getString("EpaPanel.lblNewLabel.text")); //$NON-NLS-1$
+		panel_4.add(lblNewLabel, "cell 1 5");
+		
 		btnSectorSelection = new JButton(BUNDLE.getString("Form.btnCatchSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setMinimumSize(new Dimension(110, 23));
 		btnSectorSelection.setPreferredSize(new Dimension(110, 23));
@@ -470,6 +476,8 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDesign.addActionListener(this);
 		btnReport.addActionListener(this);	
 	
+		tabbedPane.addFocusListener(this);
+		
 	}
 	
 
@@ -478,5 +486,19 @@ public class EpaPanel extends JPanel implements ActionListener {
 		controller.action(e.getActionCommand());
 	}
 
+	
+	@Override
+	public void focusGained(FocusEvent e) {
+		if (optDbf.isSelected()){
+			controller.enableCatalog(false);
+		}
+		else{
+			controller.enableCatalog(MainDao.isConnected());
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent arg0) { }
+	
 	
 }

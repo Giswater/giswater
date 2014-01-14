@@ -51,11 +51,12 @@ public class MainDao {
 	private static String configPath;
     private static PropertiesMap prop = new PropertiesMap();
     
-	private static final String CONFIG_FOLDER = "giswater" + File.separator + "config" + File.separator;
+    private static final String PROJECT_FOLDER = "giswater" + File.separator;
+	private static final String CONFIG_FOLDER = "config" + File.separator;
 	private static final String CONFIG_FILE = "giswater.properties";
 	private static final String CONFIG_DB = "config.sqlite";
 	private static final String INIT_DB = "giswater_ddb";
-	private static final String PORTABLE_FOLDER = "portable";
+	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_START = "start_service.bat";
 	private static final String PORTABLE_STOP = "stop_service.bat";
 	
@@ -143,7 +144,7 @@ public class MainDao {
     
 	public static void startPostgisService(){
 		
-		String path = Utils.getAppPath() + PORTABLE_FOLDER + File.separator + PORTABLE_START;
+		String path  = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + PORTABLE_FOLDER + PORTABLE_START;
 		File file = new File(path);
 		if (!file.exists()){
 			Utils.logError("Start service .bat not found: " + path);
@@ -156,7 +157,7 @@ public class MainDao {
 	
 	public static void stopPostgisService(){
 
-		String path = Utils.getAppPath() + PORTABLE_FOLDER + File.separator + PORTABLE_STOP;
+		String path  = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + PORTABLE_FOLDER + PORTABLE_STOP;		
 		File file = new File(path);
 		if (!file.exists()){
 			Utils.logError("Stop service .bat not found: " + path);
@@ -214,7 +215,6 @@ public class MainDao {
 	    	prop.put("POSTGIS_BIN", binPath);	
 			Utils.getLogger().info("Autoconnection successful");
 	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
-	    	//Utils.getLogger().info("Postgis bin directory: " + binPath);
 			return true;
 		}
 		else{
@@ -294,7 +294,8 @@ public class MainDao {
     public static boolean enabledPropertiesFile() {
 
     	appPath = Utils.getAppPath();
-        configPath = System.getProperty("user.home") + File.separator + CONFIG_FOLDER + CONFIG_FILE;
+        configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + CONFIG_FILE;
+
         File fileIni = new File(configPath);
         try {
         	prop.load(new FileInputStream(fileIni));      

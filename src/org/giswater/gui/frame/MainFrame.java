@@ -60,7 +60,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmEpanet;
 	private JMenuItem mntmHecras;
 
-	private JMenu mnCatalog;
+	private JMenu mnData;
 	private JMenuItem mntmProjectId;	
 	private JMenuItem mntmConduit;
 	private JMenuItem mntmMaterials;
@@ -151,34 +151,34 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmGvsig.setActionCommand("showProjectGVSIG");
 		mnGisProject.add(mntmGvsig);
 		
-		mnCatalog = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
-		mnCatalog.setEnabled(false);
-		menuBar.add(mnCatalog);
+		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
+		mnData.setEnabled(false);
+		menuBar.add(mnData);
 		
 		mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text"));
 		mntmProjectId.setFocusCycleRoot(true);
 		mntmProjectId.setActionCommand("showProjectId");
-		mnCatalog.add(mntmProjectId);
+		mnData.add(mntmProjectId);
 		
 		mntmConduit = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
 		mntmConduit.setActionCommand("showConduit");
-		mnCatalog.add(mntmConduit);
+		mnData.add(mntmConduit);
 		
 		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
 		mntmMaterials.setActionCommand("showMaterials");
-		mnCatalog.add(mntmMaterials);
+		mnData.add(mntmMaterials);
 		
 		mntmTimeseries = new JMenuItem(BUNDLE.getString("MainFrame.mntmTimeseries.text"));
 		mntmTimeseries.setActionCommand("showTimeseries");
-		mnCatalog.add(mntmTimeseries);
+		mnData.add(mntmTimeseries);
 		
 		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text"));
 		mntmCurves.setActionCommand("showCurves");
-		mnCatalog.add(mntmCurves);
+		mnData.add(mntmCurves);
 		
 		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
 		mntmPatterns.setActionCommand("showPatterns");
-		mnCatalog.add(mntmPatterns);
+		mnData.add(mntmPatterns);
 		
 		mnAnalysis = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
 		menuBar.add(mnAnalysis);
@@ -272,8 +272,7 @@ public class MainFrame extends JFrame implements ActionListener{
         dbFrame = new DatabaseFrame(this);
         configFrame = new ConfigFrame();
         gisFrame = new GisFrame();
-        gisFrame.setTitle(BUNDLE.getString("MainFrame.gisFrame.title")); //$NON-NLS-1$
-        gisFrame.setLocation(177, 81);
+        gisFrame.setLocation(175, 80);
         
         desktopPane.add(swmmFrame);
         desktopPane.add(epanetFrame);
@@ -463,15 +462,27 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void openProjectQGIS() {
 		manageFrames(gisFrame);
 		gisFrame.setGisExtension("qgs");
+		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
+		try {
+			gisFrame.setMaximum(false);
+		} catch (PropertyVetoException e) {
+            Utils.logError(e);
+		}		
 	}	
 	
 	public void openProjectGVSIG() {
 		manageFrames(gisFrame);
 		gisFrame.setGisExtension("gvp");
+		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_gvsig"));
+		try {
+			gisFrame.setMaximum(false);
+		} catch (PropertyVetoException e) {
+            Utils.logError(e);
+		}		
 	}	
 	
 	public void enableCatalog(boolean enable) {
-		mnCatalog.setEnabled(enable);
+		mnData.setEnabled(enable);
 		mnAnalysis.setEnabled(enable);
 	}
 	

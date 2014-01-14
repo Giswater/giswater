@@ -181,6 +181,11 @@ public class MainController{
 	}
 	
 	
+	public void enableCatalog(boolean enable){
+		mainFrame.enableCatalog(enable);
+	}
+	
+	
 	public void selectSourceType(boolean askQuestion){
 
 		dbSelected = view.getOptDatabaseSelected();

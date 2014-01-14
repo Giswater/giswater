@@ -24,7 +24,7 @@
         </destinationsrs>
     </mapcanvas>
     <legend updateDrawingOrder="false" activeLayer="sector20131125210050415">
-        <legendgroup open="false" checked="Qt::Unchecked" name="GIS PROJECT">
+        <legendgroup open="false" checked="Qt::Unchecked" name="GIS FEATURES">
             <legendlayer drawingOrder="0" open="true" checked="Qt::Unchecked" name="Arc" showFeatureCount="0">
                 <filegroup open="true" hidden="false">
                     <legendlayerfile isInOverview="0" layerid="arc20130820192008947" visible="0"/>
@@ -451,7 +451,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -551,7 +551,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -754,7 +754,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -854,7 +854,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -1019,7 +1019,7 @@
                 <property key="labeling/fieldName" value=" concat ( &quot;matcat_id&quot;, tostring(  &quot;diameter&quot;) )"/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -2544,7 +2544,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -2976,7 +2976,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -3076,7 +3076,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -3179,7 +3179,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="false"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -3279,7 +3279,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -3383,7 +3383,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -3483,7 +3483,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -3589,7 +3589,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -3689,7 +3689,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -3792,7 +3792,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="false"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -3892,7 +3892,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -3999,7 +3999,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -4099,7 +4099,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -4283,7 +4283,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -4383,7 +4383,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
@@ -4652,7 +4652,7 @@
                 <property key="labeling/fieldName" value=""/>
                 <property key="labeling/fontBold" value="true"/>
                 <property key="labeling/fontCapitals" value="0"/>
-                <property key="labeling/fontFamily" value="Cantarell"/>
+                <property key="labeling/fontFamily" value="Arial"/>
                 <property key="labeling/fontItalic" value="false"/>
                 <property key="labeling/fontLetterSpacing" value="0"/>
                 <property key="labeling/fontLimitPixelSize" value="false"/>
@@ -4752,7 +4752,7 @@
             <label>0</label>
             <labelattributes>
                 <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="Cantarell"/>
+                <family fieldname="" name="Arial"/>
                 <size fieldname="" units="pt" value="12"/>
                 <bold fieldname="" on="0"/>
                 <italic fieldname="" on="0"/>
