@@ -295,6 +295,7 @@ public class MainDao {
 
     	appPath = Utils.getAppPath();
         configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + CONFIG_FILE;
+    	Utils.getLogger().info("Properties file: "+configPath);        
 
         File fileIni = new File(configPath);
         try {
@@ -750,7 +751,7 @@ public class MainDao {
 		
 		boolean status = false;
 		String sql = "CREATE schema "+schemaName;
-		if (!executeUpdateSql(sql, true)){
+		if (!executeUpdateSql(sql, true, true)){
 			rollback();
 			return status;	
 		}

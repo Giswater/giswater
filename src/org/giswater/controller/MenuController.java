@@ -20,8 +20,13 @@
  */
 package org.giswater.controller;
 
+import java.awt.Cursor;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+
+import javax.swing.JOptionPane;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.about.LicenseDialog;
@@ -97,12 +102,8 @@ public class MenuController {
 		view.openDatabase();
 	}
 
-	public void showProjectQGIS() {
-		view.openProjectQGIS();
-	}
-	
-	public void showProjectGVSIG() {
-		view.openProjectGVSIG();
+	public void showGisProject() {
+		view.openGisProject();
 	}	
 	
 	public void openUserManual() {
@@ -243,6 +244,94 @@ public class MenuController {
         	Utils.showMessage(errorMsg);
         }
 	    
+	}	
+	
+	
+	// Menu Configuration
+	public void sampleEpanet(){
+		createSchema("epanet");
+	}
+
+	public void sampleEpaswmm(){
+		createSchema("epaswmm");
+	}
+
+	public void sampleHecras(){
+		createSchema("hecras");
+	}
+	
+	
+	private void createSchema(String softwareName){
+		
+		// Ask user to set SRID?
+		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
+		String sridValue = getUserSrid(defaultSrid);
+		
+		if (sridValue.equals("")){
+			return;
+		}
+		
+		Integer srid;
+		try{
+			srid = Integer.parseInt(sridValue);
+		} catch (NumberFormatException e){
+			Utils.showError("error_srid");
+			return;
+		}
+		if (!sridValue.equals(defaultSrid)){
+			prop.put("SRID_DEFAULT", sridValue);
+			MainDao.savePropertiesFile();
+		}
+		boolean isSridOk = MainDao.checkSrid(srid);
+		if (!isSridOk && srid != 0){
+			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
+				Utils.getBundleString("srid_valid");			
+			Utils.showError(msg);
+			return;
+		}
+		String schemaName = "sample_"+softwareName;
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		boolean status;
+		if (softwareName.equals("hecras")){
+			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
+		}
+		else{
+			status = MainDao.createSchema(softwareName, schemaName, sridValue);
+		}
+		if (status){
+	    	String folderRoot;
+			try {
+				folderRoot = new File(".").getCanonicalPath() + File.separator;
+				String filePath = folderRoot + "sql/sample_"+softwareName+".sql";
+		    	String content = Utils.readFile(filePath);
+				Utils.logSql(content);
+				if (MainDao.executeSql(content, true)){				
+					Utils.showMessage("schema_creation_completed", schemaName);
+				}
+			} catch (IOException e) {
+	            Utils.showError(e);
+			}			
+		}
+		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		
+	}
+		
+	
+	private String getUserSrid(String defaultSrid){
+		
+		String sridValue = "";
+		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
+		if (sridQuestion){
+			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
+			if (sridValue == null){
+				return "";
+			}
+		}
+		else{
+			sridValue = defaultSrid;
+		}
+		return sridValue.trim();
+		
 	}	
 	
 	

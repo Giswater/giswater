@@ -77,6 +77,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmDatabase;
 	private JMenuItem mntmQgis;
 	private JMenuItem mntmGvsig;
+
+	private JMenuItem mntmGisProject;	
+	private JMenuItem mntmSampleEpanet;
+	private JMenuItem mntmSampleEpaswmm;
+	private JMenuItem mntmSampleHecras;
 	
 	private JMenuItem mntmWelcome;		
 	private JMenuItem mntmVersion;
@@ -96,7 +101,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 	private PropertiesMap prop;
 
-
+	
 	public MainFrame(boolean isConnected) {
 		initConfig();
 		try {
@@ -141,6 +146,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnForms.add(mntmHecras);
 		
 		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
+		mnGisProject.setVisible(false);
 		menuBar.add(mnGisProject);
 		
 		mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text"));
@@ -201,6 +207,23 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware = new JMenuItem(BUNDLE.getString("MainFrame.mntmSoftwareConfiguration.text"));
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
+		
+		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
+		mntmGisProject.setActionCommand("showGisProject");
+		mnConfiguration.add(mntmGisProject);
+		
+		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text")); //$NON-NLS-1$
+		mntmSampleEpanet.setActionCommand("sampleEpanet"); //$NON-NLS-1$
+		mnConfiguration.add(mntmSampleEpanet);
+		
+		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text")); //$NON-NLS-1$
+		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm"); //$NON-NLS-1$
+		mnConfiguration.add(mntmSampleEpaswmm);
+		
+		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text")); //$NON-NLS-1$
+		mntmSampleHecras.setVisible(false);
+		mntmSampleHecras.setActionCommand("sampleHecras"); //$NON-NLS-1$
+		mnConfiguration.add(mntmSampleHecras);
 		
 		JMenu mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
 		menuBar.add(mnAbout);
@@ -421,6 +444,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware.addActionListener(this);
 		mntmQgis.addActionListener(this);
 		mntmGvsig.addActionListener(this);
+
+		mntmGisProject.addActionListener(this);		
+		mntmSampleEpanet.addActionListener(this);
+		mntmSampleEpaswmm.addActionListener(this);
+		mntmSampleHecras.addActionListener(this);	
 		
 		mntmWelcome.addActionListener(this);
 		mntmVersion.addActionListener(this);
@@ -459,7 +487,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		manageFrames(configFrame);
 	}
 	
-	public void openProjectQGIS() {
+	public void openGisProject() {
 		manageFrames(gisFrame);
 		gisFrame.setGisExtension("qgs");
 		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
@@ -470,20 +498,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		}		
 	}	
 	
-	public void openProjectGVSIG() {
-		manageFrames(gisFrame);
-		gisFrame.setGisExtension("gvp");
-		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_gvsig"));
-		try {
-			gisFrame.setMaximum(false);
-		} catch (PropertyVetoException e) {
-            Utils.logError(e);
-		}		
-	}	
-	
 	public void enableCatalog(boolean enable) {
 		mnData.setEnabled(enable);
 		mnAnalysis.setEnabled(enable);
+		mntmSampleEpanet.setEnabled(enable);
+		mntmSampleEpaswmm.setEnabled(enable);
+		mntmSampleHecras.setEnabled(enable);
 	}
 	
 	public void enableProjectId(boolean enable) {

@@ -645,35 +645,36 @@ public class MainController{
 		String sridValue = getUserSrid(defaultSrid);
 
 		if (!sridValue.equals("")){
-			Integer srid;
-			try{
-				srid = Integer.parseInt(sridValue);
-			} catch (NumberFormatException e){
-				Utils.showError("error_srid");
-				return;
-			}
-			if (!sridValue.equals(defaultSrid)){
-				prop.put("SRID_DEFAULT", sridValue);
-				MainDao.savePropertiesFile();
-			}
-			boolean isSridOk = MainDao.checkSrid(srid);
-			if (!isSridOk && srid != 0){
-				String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-					Utils.getBundleString("srid_valid");			
-				Utils.showError(msg);
-				return;
-			}
-			view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-			boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);
-			if (status && defaultSchemaName.equals("")){
-				Utils.showMessage("schema_creation_completed");
-			}
-			else if (status && !defaultSchemaName.equals("")){
-				Utils.showMessage("schema_truncate_completed");
-			}
-			view.setSchema(MainDao.getSchemas());		
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			return;
 		}
+		Integer srid;
+		try{
+			srid = Integer.parseInt(sridValue);
+		} catch (NumberFormatException e){
+			Utils.showError("error_srid");
+			return;
+		}
+		if (!sridValue.equals(defaultSrid)){
+			prop.put("SRID_DEFAULT", sridValue);
+			MainDao.savePropertiesFile();
+		}
+		boolean isSridOk = MainDao.checkSrid(srid);
+		if (!isSridOk && srid != 0){
+			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
+				Utils.getBundleString("srid_valid");			
+			Utils.showError(msg);
+			return;
+		}
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
+		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);
+		if (status && defaultSchemaName.equals("")){
+			Utils.showMessage("schema_creation_completed");
+		}
+		else if (status && !defaultSchemaName.equals("")){
+			Utils.showMessage("schema_truncate_completed");
+		}
+		view.setSchema(MainDao.getSchemas());		
+		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
 	
