@@ -22,7 +22,6 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
@@ -257,7 +256,11 @@ public class MenuController {
 	}
 
 	public void sampleHecras(){
-		createSchema("hecras");
+		String msg = "HECRAS sample creation can take a long time (15-20 minutes). Do you want to proceed?";
+		int res = Utils.confirmDialog(msg);        
+        if (res == 0){
+        	createSchema("hecras");
+        }
 	}
 	
 	
@@ -291,7 +294,7 @@ public class MenuController {
 		}
 		String schemaName = "sample_"+softwareName;
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		boolean status;
+		boolean status = true;
 		if (softwareName.equals("hecras")){
 			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
 		}
@@ -301,14 +304,35 @@ public class MenuController {
 		if (status){
 	    	String folderRoot;
 			try {
-				folderRoot = new File(".").getCanonicalPath() + File.separator;
-				String filePath = folderRoot + "sql/sample_"+softwareName+".sql";
-		    	String content = Utils.readFile(filePath);
-				Utils.logSql(content);
-				if (MainDao.executeSql(content, true)){				
-					Utils.showMessage("schema_creation_completed", schemaName);
+				if (softwareName.equals("hecras")){
+					folderRoot = new File(".").getCanonicalPath() + File.separator;
+					String filePath = folderRoot + "sql/sample_"+softwareName+"_0.sql";
+					//String batPath = Utils.getLogFolder() + "sample_"+softwareName+"_1.bat";
+					//MainDao.executeScript(filePath, batPath);					
+			    	Utils.getLogger().info("Reading file: "+filePath); 
+			    	String content = Utils.readFile(filePath);
+					Utils.logSql(content);
+					if (MainDao.executeSql(content, true)){			
+						filePath = folderRoot + "sql/sample_"+softwareName+"_mdt.sql";
+						Utils.getLogger().info("Reading file: "+filePath); 						
+						content = Utils.readFile(filePath);
+						Utils.getLogger().info("File read: "+filePath); 
+						Utils.logSql(content);
+						if (MainDao.executeSql(content, true)){				
+							Utils.showMessage("schema_creation_completed", schemaName);
+						}							
+					}
 				}
-			} catch (IOException e) {
+				else{
+					folderRoot = new File(".").getCanonicalPath() + File.separator;
+					String filePath = folderRoot + "sql/sample_"+softwareName+".sql";
+			    	String content = Utils.readFile(filePath);
+					Utils.logSql(content);
+					if (MainDao.executeSql(content, true)){				
+						Utils.showMessage("schema_creation_completed", schemaName);
+					}
+				}
+			} catch (Exception e) {
 	            Utils.showError(e);
 			}			
 		}

@@ -200,7 +200,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		// Panel Database connection
 		panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[115px:n:115px][:134.00:280][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
+		panel_1.setLayout(new MigLayout("", "[115px:n:115px][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
 		panel_1.add(lblProjectFolder, "cell 0 0,alignx right");
@@ -263,20 +263,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		btnAccept.addActionListener(this);
 		cboDataStorage.addActionListener(this);		
 		tabbedPane.addFocusListener(this);	
-	}
-
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("chooseProjectFolder")){
-			chooseProjectFolder();
-		}
-		else if (e.getActionCommand().equals("selectSourceType")){
-			selectSourceType();
-		}		
-		else if (e.getActionCommand().equals("gisAccept")){
-			gisAccept();
-		}
 	}
 
 	
@@ -367,16 +353,18 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}
 
 	
-	public boolean gisProjectDbf(String gisExtension, String folder, String name, String software) {
+	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
-		boolean status = false;
-		
+		if (software.equals("HECRAS")){
+			Utils.showMessage("DBF option not available for HECRAS software");
+			return;
+		}
     	String gisFolder = Utils.getGisFolder();
 		String templatePath = gisFolder + software;
 		File templateFolder = new File(templatePath);
 		if (!templateFolder.exists()){
 			Utils.showError("inp_error_notfound", templatePath);
-			return false;
+			return;
 		}
 		
 		String destPath = folder + software+"_"+name;
@@ -396,14 +384,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
         	Utils.showError(e);
 		}
 		
-		return status;
-		
 	}
 
 	
-	public boolean gisProjectDatabase(String gisExtension, String folderPath, String name, String software, String schema) {
+	private void gisProjectDatabase(String gisExtension, String folderPath, String name, String software, String schema) {
 		
-		boolean status = false;
 		String templatePath = "";
 		String content = "";
 		String destPath = "";
@@ -427,7 +412,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
 				Utils.showError("inp_error_notfound", templatePath);
-				return false;
+				return;
 			}
 
 			File folder = new File(folderPath);
@@ -439,7 +424,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (destFile.exists()){
 	            int answer = Utils.confirmDialog("overwrite_file");
 	            if (answer == JOptionPane.NO_OPTION){
-	            	return false;
+	            	return;
 	            }
 			}
 			
@@ -474,15 +459,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
                	Utils.openFile(destPath);
             }  	        
 			
-			status = true;
-			
         } catch (FileNotFoundException e) {
     	    Utils.showError("inp_error_notfound", templatePath);
     	} catch (IOException e) {
         	Utils.showError(e, templatePath);
     	}
-		
-		return status;
 		
 	}
 
@@ -499,6 +480,20 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			this.enableControls(false);				
 			this.setSchemaList(null);				
 		}		
+	}
+
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("chooseProjectFolder")){
+			chooseProjectFolder();
+		}
+		else if (e.getActionCommand().equals("selectSourceType")){
+			selectSourceType();
+		}		
+		else if (e.getActionCommand().equals("gisAccept")){
+			gisAccept();
+		}
 	}
 	
 	@Override

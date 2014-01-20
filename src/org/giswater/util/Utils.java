@@ -225,7 +225,6 @@ public class Utils {
 		if (!param.equals("")){
 			userMsg += "\n" + param;
 		}    	
-		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
 		if (logger != null) {
 			String infoMsg = getBundleString(msg);
 			if (!param.equals("")){
@@ -233,6 +232,7 @@ public class Utils {
 			}			
 			logger.info(infoMsg);
 		}
+		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
 		
     }    
 
@@ -251,14 +251,14 @@ public class Utils {
 		if (!param.equals("")){
 			userMsg += "\n" + param;
 		}
-		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
 		logError(msg, param);
+		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
 		
     }
     
     public static void showError(Exception e, String param) {
-		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
 		logError(e, param);
+		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);		
     }     
     
     

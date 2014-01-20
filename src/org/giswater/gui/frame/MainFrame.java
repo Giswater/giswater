@@ -213,14 +213,16 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnConfiguration.add(mntmGisProject);
 		
 		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text")); //$NON-NLS-1$
+		mntmSampleEpanet.setVisible(false);
 		mntmSampleEpanet.setActionCommand("sampleEpanet"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleEpanet);
 		
-		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text")); //$NON-NLS-1$
+		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
+		mntmSampleEpaswmm.setVisible(false);
 		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleEpaswmm);
 		
-		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text")); //$NON-NLS-1$
+		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
 		mntmSampleHecras.setVisible(false);
 		mntmSampleHecras.setActionCommand("sampleHecras"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleHecras);
