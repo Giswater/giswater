@@ -82,7 +82,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[100px:n][80:n,grow][10:10px][100px:n][80:120,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
+		panelGeneral.setLayout(new MigLayout("", "[76.00px:n][100:n][10:10px][100px:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
 
 		JLabel lblFlowUnits = new JLabel("Result id:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");

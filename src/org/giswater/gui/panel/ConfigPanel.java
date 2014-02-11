@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -49,6 +48,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private ConfigController controller;	
+	private ConfigFrame configFrame;	
 	
 	private JPanel panel;
 	private JCheckBox chkConnect;
@@ -60,7 +60,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JButton btnSwmmFolder;
 	private JButton btnEpanetFolder;
 	private JButton btnAccept;
-	private ConfigFrame configFrame;
+	private JButton btnClose;
 
 	
 	public ConfigPanel(ConfigFrame configFrame) {
@@ -81,11 +81,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		this.controller = controller;
 	}
 	
-
-	public JDialog getDialog() {
-		return new JDialog();
-	}
-
 	
 	public void setAutoConnect(String isChecked) {
 		Boolean connect = Boolean.parseBoolean(isChecked);
@@ -165,7 +160,11 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("configAccept");
-		panel_1.add(btnAccept, "cell 2 2");
+		panel_1.add(btnAccept, "cell 1 2,alignx right");
+		
+		btnClose = new JButton(BUNDLE.getString("ConfigPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setActionCommand(BUNDLE.getString("ConfigPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		panel_1.add(btnClose, "cell 2 2");
 
 		setupListeners();
 
@@ -174,10 +173,18 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	// Setup component's listener
 	private void setupListeners() {
+		
 		btnSwmmFolder.addActionListener(this);
 		btnEpanetFolder.addActionListener(this);
 		btnAccept.addActionListener(this);
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getFrame().setVisible(false);
+			}
+		});		
+		
 	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

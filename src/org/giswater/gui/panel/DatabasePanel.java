@@ -33,7 +33,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -46,6 +45,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.DatabaseController;
 import org.giswater.controller.MainController;
+import org.giswater.gui.frame.DatabaseFrame;
 import org.giswater.util.Utils;
 
 
@@ -54,9 +54,10 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
-	private JFrame f;
 	private MainController controller;
 	private DatabaseController databaseController;
+	private DatabaseFrame dbFrame;
+	
 	private JTextField txtSchema;
 	private JPanel panel;
 	private JLabel lblNewLabel;
@@ -74,6 +75,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	private JButton btnTest;
 	private JCheckBox chkRemember;
 	private JTabbedPane tabbedPane;
+	private JButton btnClose;
 
 	
 	public DatabasePanel() {
@@ -93,12 +95,12 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		this.databaseController = databaseController;
 	}
 
-	public JFrame getFrame() {
-		return new JFrame();
+	public DatabaseFrame getFrame() {
+		return dbFrame;
 	}
 
-	public void setFrame(JFrame frame) {
-		this.f = frame;
+	public void setFrame(DatabaseFrame dbFrame) {
+		this.dbFrame = dbFrame;
 	}
 
 	public JDialog getDialog() {
@@ -150,17 +152,16 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtPassword.setText(path);
 	}
 
-	public boolean getRemember() {
+	public Boolean getRemember() {
 		return chkRemember.isSelected();
+	}
+	
+	public void setRemember(Boolean isSelected){
+		chkRemember.setSelected(isSelected);
 	}
 	
 	public void setConnectionText(String text){
 		btnTest.setText(text);
-	}
-	
-	public void close() {
-		f.setVisible(false);
-		f.dispose();
 	}
 
 	
@@ -175,11 +176,11 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		// Panel 1
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_1.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[10][][380]", "[5][208.00][10]"));
+		panel_1.setLayout(new MigLayout("", "[10][][300px:n:300px][60:n:60]", "[5][209.00][35.00]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.add(panel, "cell 1 1 2 1,grow");
+		panel_1.add(panel, "cell 1 1 3 1,grow");
 		panel.setLayout(new MigLayout("", "[5][77.00][15][140][11.00][125.00]", "[4][24][24][24][24][24][24][]"));
 
 		lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); //$NON-NLS-1$
@@ -232,11 +233,16 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		chkRemember = new JCheckBox(BUNDLE.getString("Database.chkRemember.text")); //$NON-NLS-1$
 		chkRemember.setSelected(true);
 		panel.add(chkRemember, "cell 3 7,aligny baseline");
-
+		
 		btnTest = new JButton(BUNDLE.getString("Database.btnTest.text")); //$NON-NLS-1$
+		panel_1.add(btnTest, "flowx,cell 2 2,alignx center");
 		btnTest.setMinimumSize(new Dimension(110, 23));
 		btnTest.setActionCommand("testConnection");
-		panel.add(btnTest, "cell 5 7,alignx right");
+		
+		btnClose = new JButton(BUNDLE.getString("DatabasePanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setMinimumSize(new Dimension(60, 23));
+		btnClose.setActionCommand(BUNDLE.getString("DatabasePanel.btnClose.actionCommand")); //$NON-NLS-1$
+		panel_1.add(btnClose, "cell 3 2,alignx left");
 
 		// Panel 3
 		JPanel panel_3 = new JPanel();
@@ -278,6 +284,12 @@ public class DatabasePanel extends JPanel implements ActionListener {
 				databaseController.action(e.getActionCommand());
 			}
 		});
+		
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getFrame().setVisible(false);
+			}
+		});		
 
 	}
 	

@@ -21,10 +21,12 @@
 package org.giswater.gui.frame;
 
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 
 import org.giswater.gui.panel.GisPanel;
+import org.giswater.util.Utils;
 
 
 public class GisFrame extends JInternalFrame {
@@ -60,6 +62,7 @@ public class GisFrame extends JInternalFrame {
         setVisible(false);
     	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)

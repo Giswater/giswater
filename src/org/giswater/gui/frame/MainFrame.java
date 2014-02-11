@@ -56,6 +56,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	private MenuController menuController;
     private JDesktopPane desktopPane;
     
+	private JMenuItem mntmNew;
+	private JMenuItem mntmOpen;
+	private JMenuItem mntmSave;
+	private JMenuItem mntmSaveAs;
+
     private JMenuItem mntmSwmm;
 	private JMenuItem mntmEpanet;
 	private JMenuItem mntmHecras;
@@ -75,8 +80,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
 	private JMenuItem mntmDatabase;
-	private JMenuItem mntmQgis;
-	private JMenuItem mntmGvsig;
 
 	private JMenuItem mntmGisProject;	
 	private JMenuItem mntmSampleEpanet;
@@ -130,6 +133,26 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
+		JMenu mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
+		menuBar.add(mnProject);
+		
+		mntmNew = new JMenuItem(BUNDLE.getString("MainFrame.mntmNew.text")); //$NON-NLS-1$
+		mntmNew.setVisible(false);
+		mntmNew.setActionCommand(BUNDLE.getString("MainFrame.mntmNew.actionCommand")); //$NON-NLS-1$
+		mnProject.add(mntmNew);
+		
+		mntmOpen = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
+		mntmOpen.setActionCommand(BUNDLE.getString("MainFrame.mntmOpen.actionCommand")); //$NON-NLS-1$
+		mnProject.add(mntmOpen);
+		
+		mntmSave = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
+		mntmSave.setActionCommand(BUNDLE.getString("MainFrame.mntmSave.actionCommand")); //$NON-NLS-1$
+		mnProject.add(mntmSave);
+		
+		mntmSaveAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
+		mntmSaveAs.setActionCommand(BUNDLE.getString("MainFrame.mntmSaveAs.actionCommand")); //$NON-NLS-1$
+		mnProject.add(mntmSaveAs);
+		
 		JMenu mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
 		
@@ -146,16 +169,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnForms.add(mntmHecras);
 		
 		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
-		mnGisProject.setVisible(false);
 		menuBar.add(mnGisProject);
 		
-		mntmQgis = new JMenuItem(BUNDLE.getString("MainFrame.mntmQgis.text"));
-		mntmQgis.setActionCommand("showProjectQGIS");
-		mnGisProject.add(mntmQgis);
-		
-		mntmGvsig = new JMenuItem(BUNDLE.getString("MainFrame.mntmGvsig.text"));
-		mntmGvsig.setActionCommand("showProjectGVSIG");
-		mnGisProject.add(mntmGvsig);
+		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
+		mnGisProject.add(mntmGisProject);
+		mntmGisProject.setActionCommand("showGisProject");
 		
 		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
 		mnData.setEnabled(false);
@@ -208,22 +226,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
 		
-		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
-		mntmGisProject.setActionCommand("showGisProject");
-		mnConfiguration.add(mntmGisProject);
-		
-		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text")); //$NON-NLS-1$
-		mntmSampleEpanet.setVisible(false);
+		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
 		mntmSampleEpanet.setActionCommand("sampleEpanet"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleEpanet);
 		
 		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
-		mntmSampleEpaswmm.setVisible(false);
 		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleEpaswmm);
 		
 		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
-		mntmSampleHecras.setVisible(false);
 		mntmSampleHecras.setActionCommand("sampleHecras"); //$NON-NLS-1$
 		mnConfiguration.add(mntmSampleHecras);
 		
@@ -294,7 +305,7 @@ public class MainFrame extends JFrame implements ActionListener{
         swmmFrame = new EpaFrame("epaswmm");
         epanetFrame = new EpaFrame("epanet");
         hecRasFrame = new HecRasFrame();
-        dbFrame = new DatabaseFrame(this);
+        dbFrame = new DatabaseFrame();
         configFrame = new ConfigFrame();
         gisFrame = new GisFrame();
         gisFrame.setLocation(175, 80);
@@ -416,7 +427,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	        // Stop Postgis portable?
 	        Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
 	        if (autostart){
-	        	MainDao.stopPostgisService();
+	        	MainDao.executePostgisService("stop");
 	        }	        
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
@@ -427,6 +438,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	private void setupListeners(){
+		
+		mntmNew.addActionListener(this);
+		mntmOpen.addActionListener(this);
+		mntmSave.addActionListener(this);
+		mntmSaveAs.addActionListener(this);
 		
 		mntmSwmm.addActionListener(this);
 		mntmEpanet.addActionListener(this);
@@ -444,8 +460,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmDatabase.addActionListener(this);
 		mntmSoftware.addActionListener(this);
-		mntmQgis.addActionListener(this);
-		mntmGvsig.addActionListener(this);
 
 		mntmGisProject.addActionListener(this);		
 		mntmSampleEpanet.addActionListener(this);
@@ -555,4 +569,6 @@ public class MainFrame extends JFrame implements ActionListener{
         }
         
     }
+    
+    
 }

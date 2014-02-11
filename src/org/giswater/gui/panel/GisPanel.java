@@ -55,6 +55,7 @@ import org.giswater.gui.frame.GisFrame;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import java.awt.event.FocusAdapter;
 
 
 public class GisPanel extends JPanel implements ActionListener, FocusListener  {
@@ -81,6 +82,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JLabel lblDataStorage;
 	private JComboBox<String> cboDataStorage;
 	private JPanel panel_1;
+	private JButton btnClose;
     
 	
 	public GisPanel(GisFrame gisFrame) {
@@ -140,11 +142,15 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		return cboSoftware.getSelectedItem().toString();
 	}	
 	
+	public void setDataStorage(String type) {
+		cboDataStorage.setSelectedItem(type);
+	}	
+	
 	public String getDataStorage() {
 		return cboDataStorage.getSelectedItem().toString();
 	}		
 	
-	public void setSchemaList(Vector<String> v) {
+	public void setSchemaModel(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
@@ -178,11 +184,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		setProjectName(prop.get("GIS_NAME"));
 		setProjectSoftware(prop.get("GIS_SOFTWARE"));	
 		if (MainDao.isConnected()){
-			setSchemaList(MainDao.getSchemas());
+			setSchemaModel(MainDao.getSchemas());
 			setSelectedSchema(prop.get("GIS_SCHEMA"));
 			cboSchema.setEnabled(true);
 		}
-		else{setSchemaList(null);
+		else{setSchemaModel(null);
 			cboSchema.setEnabled(false);				
 		}
 		
@@ -246,11 +252,22 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		panel_1.add(lblSchema, "cell 0 4,alignx trailing");
 		
 		cboSchema = new JComboBox<String>();
+		cboSchema.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				getFocus();
+			}
+		});
 		panel_1.add(cboSchema, "cell 1 4,growx");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("gisAccept");
 		panel_1.add(btnAccept, "cell 2 5,alignx right");
+		
+		btnClose = new JButton(BUNDLE.getString("GisPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.addActionListener(this);
+		btnClose.setActionCommand("closePanel");
+		panel_1.add(btnClose, "cell 3 5");
 
 		setupListeners();
 
@@ -260,9 +277,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	// Setup component's listener
 	private void setupListeners() {
 		btnProjectFolder.addActionListener(this);
-		btnAccept.addActionListener(this);
+		btnAccept.addActionListener(this);	
 		cboDataStorage.addActionListener(this);		
 		tabbedPane.addFocusListener(this);	
+		btnClose.addActionListener(this);		
 	}
 
 	
@@ -290,19 +308,19 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			// Check if we already are connected
 			if (MainDao.isConnected()){
 				this.enableControls(true);
-				this.setSchemaList(MainDao.getSchemas());
+				this.setSchemaModel(MainDao.getSchemas());
 				this.setSelectedSchema(prop.get("GIS_SCHEMA"));				
 			} 
 			else{
 				Utils.showMessage("You should connect to a Database");
 				this.enableControls(false);				
-				this.setSchemaList(null);				
+				this.setSchemaModel(null);				
 			}
 		}
 		// DBF selected
 		else{
 			this.enableControls(false);		
-			this.setSchemaList(null);					
+			this.setSchemaModel(null);					
 		}
 		prop.put("GIS_TYPE", dataStorage.toUpperCase());			
 		
@@ -327,11 +345,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				prop.put("GIS_SOFTWARE", software);
 				prop.put("GIS_SCHEMA", schema);				
 				// TODO: i18n
-				String msg = "You have opted to create GIS project.";
+				String msg = "You have chosen create GIS project.";
 				msg+= "\nWARNINGS:";
 				msg+= "\n1- Your database password will be stored in plain text in your project files and in your home directory on Unix-like systems, or in your user profile on Windows.";
 				msg+= "\n2- The only SRID avaliable is EPSG-23031.";
-				msg+= "\nIf you do not want this to happen, please press the Cancel button or Consider fixing it in GIS desktop project";
+				msg+= "\nIf you do not want this to happen, please press 'No' button or consider fixing it in GIS desktop project";
 				int answer = Utils.confirmDialog(msg);
 				if (answer == JOptionPane.YES_OPTION){
 					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema);
@@ -340,7 +358,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			else{
 				Utils.showMessage("You should connect to a Database");
 				this.enableControls(false);				
-				this.setSchemaList(null);				
+				this.setSchemaModel(null);				
 			}			
 		}
 		else if (gisType.equals("DBF")){
@@ -469,16 +487,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	
 	private void getFocus(){
-		Utils.getLogger().info("getFocus");
 		if (MainDao.isConnected()){
 			this.enableControls(true);
-			this.setSchemaList(MainDao.getSchemas());
+			this.setSchemaModel(MainDao.getSchemas());
 			this.setSelectedSchema(prop.get("GIS_SCHEMA"));				
 		} 
 		else{
-
 			this.enableControls(false);				
-			this.setSchemaList(null);				
+			this.setSchemaModel(null);				
 		}		
 	}
 
@@ -494,6 +510,9 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		else if (e.getActionCommand().equals("gisAccept")){
 			gisAccept();
 		}
+		else if (e.getActionCommand().equals("closePanel")){
+			this.getFrame().setVisible(false);	
+		}		
 	}
 	
 	@Override

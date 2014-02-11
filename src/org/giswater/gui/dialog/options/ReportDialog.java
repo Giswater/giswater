@@ -43,8 +43,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 	private JTextField txtStatistic;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	//private AbstractButton btnSave;
-	
+
 	
 	public ReportDialog() {
 		initConfig();

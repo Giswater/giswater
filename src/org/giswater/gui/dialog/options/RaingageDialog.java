@@ -47,8 +47,6 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	private JTextField textField_5;
 	private JButton btnPrevious;
 	private JButton btnNext;
-//	private JButton btnSave;
-
 
 	
 	public RaingageDialog() {
@@ -67,7 +65,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[80px:80px][150.00,grow][10px][80px][150]", "[][][][10]"));
+		panelGeneral.setLayout(new MigLayout("", "[80px:80px][150.00:150.00][10px][80px][150]", "[][][][10]"));
 
 		JLabel lblid = new JLabel("\u206FId:");
 		panelGeneral.add(lblid, "cell 0 0,alignx trailing");
@@ -76,36 +74,36 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		textField_5.setName("rg_id");
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 1 0,growx");
+								
+		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
+		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
+		
+		JComboBox comboBox_3 = new JComboBox();
+		panelGeneral.add(comboBox_3, "cell 1 1,growx");
+		comboBox_3.setName("rgage_type");
 
 		JLabel lblFlowUnits = new JLabel("Form type:");
-		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
-
+		panelGeneral.add(lblFlowUnits, "cell 3 1,alignx trailing");
+		
 		JComboBox flow_units = new JComboBox();
-		panelGeneral.add(flow_units, "cell 4 0,growx");
+		panelGeneral.add(flow_units, "cell 4 1,growx");
 		flow_units.setName("form_type");
-
+				
 		JLabel lblNewLabel_1 = new JLabel("Intvl:");
-		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
+		panelGeneral.add(lblNewLabel_1, "cell 0 2,alignx trailing");
 
 		textField_1 = new JTextField();
 		textField_1.setName("intvl");
 		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 1 1,growx");
+		panelGeneral.add(textField_1, "cell 1 2,growx");
 
 		JLabel lblInfiltration = new JLabel("Scf:");
-		panelGeneral.add(lblInfiltration, "cell 3 1,alignx trailing");
-
+		panelGeneral.add(lblInfiltration, "cell 3 2,alignx trailing");
+		
 		textField_2 = new JTextField();
 		textField_2.setName("scf");
 		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 4 1,growx");
-
-		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
-		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 2,alignx trailing");
-
-		JComboBox comboBox_3 = new JComboBox();
-		panelGeneral.add(comboBox_3, "cell 1 2,growx");
-		comboBox_3.setName("rgage_type");
+		panelGeneral.add(textField_2, "cell 4 2,growx");
 
 		ImageIcon image = new ImageIcon("images/imago.png");
 		super.setIconImage(image.getImage());
@@ -126,7 +124,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelTimeseries.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "TIMESERIES", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelTimeseries, "cell 0 1 2 1,grow");
-		panelTimeseries.setLayout(new MigLayout("",	"[80px:80px][150][10.00][80][200]", "[]"));
+		panelTimeseries.setLayout(new MigLayout("", "[80px:80px][150px:150][10.00][80][200]", "[]"));
 
 		JLabel lblFlowRouting = new JLabel("Timeseries id:");
 		panelTimeseries.add(lblFlowRouting, "cell 0 0,alignx right");
@@ -139,7 +137,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelFile.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "FILE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelFile, "cell 0 2 2 1,grow");
-		panelFile.setLayout(new MigLayout("", "[80px:80px][150][10px][80px][150]", "[][]"));
+		panelFile.setLayout(new MigLayout("", "[80px:80px][150.00:150][10px][80px][150]", "[][]"));
 
 		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
 		panelFile.add(lblIgnoreGroundwater, "cell 0 0,alignx right");
@@ -170,9 +168,9 @@ public class RaingageDialog extends AbstractOptionsDialog {
 
 	}
 
+	
 	// Setup component's listener
 	protected void setupListeners() {
-		//btnSave.addActionListener(this);
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);
 		super.setupListeners();

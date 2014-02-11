@@ -51,6 +51,7 @@ public class EpaFrame extends JInternalFrame {
 
     	panel = new EpaPanel(softwareName);
 
+    	panel.setFrame(this);
         setTitle("");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);

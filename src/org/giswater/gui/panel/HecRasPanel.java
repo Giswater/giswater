@@ -35,7 +35,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,8 +45,10 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.HecRasController;
 import org.giswater.dao.MainDao;
+import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import java.awt.event.FocusAdapter;
 
 
 public class HecRasPanel extends JPanel implements ActionListener, FocusListener {
@@ -57,7 +58,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 
 	private HecRasController controller;	
 	
-	private JFrame f;
+	private HecRasFrame hecRasFrame;
 	private JButton btnFileAsc;
 	private JComboBox<String> cboSchema;
 	
@@ -76,6 +77,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	private JButton btnDatabase;
 	private JButton btnDeleteSchema;
 	private JButton btnClearData;
+	private JButton btnClose;
 
 	
 	public HecRasPanel() {
@@ -92,12 +94,12 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		this.controller = nodeController;
 	}
 
-	public JFrame getFrame() {
-		return new JFrame();
+	public HecRasFrame getFrame() {
+		return hecRasFrame;
 	}
 
-	public void setFrame(JFrame frame) {
-		this.f = frame;
+	public void setFrame(HecRasFrame hecRasFrame) {
+		this.hecRasFrame = hecRasFrame;
 	}
 
 	public JDialog getDialog() {
@@ -131,17 +133,20 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		
 	}
 	
-	
-	public void setSchema(Vector<String> v) {
+	public void setSchemaModel(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
-			cboSchema.setModel(cbm);			
+			cboSchema.setModel(cbm);		
 		} else{
 			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
 			theModel.removeAllElements();
 		}
 	}
+	
+	public void setSelectedSchema(String schemaName) {
+		cboSchema.setSelectedItem(schemaName);
+	}	
 	
 	public String getSelectedSchema() {
 		String elem = "";
@@ -169,15 +174,6 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		txtFileAsc.setText(path);
 	}	
 
-	public String getRasterFile() {
-		return null;
-	}
-
-	public void close() {
-		f.setVisible(false);
-		f.dispose();
-	}
-
 	
 	private void initConfig() throws MissingResourceException {
 
@@ -189,29 +185,35 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 
 		panel_2 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
-		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][50][45:n][70]", "[8px][10:n][40:n][40:n][::10][:5px:5px]"));
+		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][50][45:n][70]", "[15px][8px][10:n][40:n][10px][40:n][:5px:5px][]"));
 		
 		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
-		panel_2.add(lblSelectSchema, "cell 0 0,alignx right");
+		panel_2.add(lblSelectSchema, "cell 0 1,alignx right");
 		
 		cboSchema = new JComboBox<String>();
-		panel_2.add(cboSchema, "cell 1 0");
+		cboSchema.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				controller.isConnected();
+			}
+		});
+		panel_2.add(cboSchema, "cell 1 1");
 		cboSchema.setPreferredSize(new Dimension(24, 20));
 		cboSchema.setActionCommand("schemaChanged");
 		cboSchema.setMinimumSize(new Dimension(110, 20));
 		
 		btnCreateSchema = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
-		panel_2.add(btnCreateSchema, "flowx,cell 2 0");
+		panel_2.add(btnCreateSchema, "flowx,cell 2 1");
 		btnCreateSchema.setMaximumSize(new Dimension(108, 23));
 		btnCreateSchema.setMinimumSize(new Dimension(110, 23));
 		btnCreateSchema.setActionCommand("createSchema");
 		
 		lblAscFile_1 = new JLabel();
 		lblAscFile_1.setText(BUNDLE.getString("HecRasPanel.lblAscFile_1.text")); //$NON-NLS-1$
-		panel_2.add(lblAscFile_1, "cell 0 2,alignx right");
+		panel_2.add(lblAscFile_1, "cell 0 3,alignx right");
 				
 		scrollPane = new JScrollPane();
-		panel_2.add(scrollPane, "cell 1 2 2 1,grow");
+		panel_2.add(scrollPane, "cell 1 3 2 1,grow");
 		
 		txtFileAsc = new JTextArea();
 		txtFileAsc.setLineWrap(true);
@@ -219,17 +221,17 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		scrollPane.setViewportView(txtFileAsc);
 		
 		btnFileAsc = new JButton();
-		panel_2.add(btnFileAsc, "cell 4 2,aligny center");
+		panel_2.add(btnFileAsc, "cell 4 3,aligny center");
 		btnFileAsc.setActionCommand("chooseFileAsc");
 		btnFileAsc.setText("...");
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		lblAscFile = new JLabel();
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text")); //$NON-NLS-1$
-		panel_2.add(lblAscFile, "cell 0 3,alignx right");
+		panel_2.add(lblAscFile, "cell 0 5,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
-		panel_2.add(scrollPane_1, "cell 1 3 2 1,grow");
+		panel_2.add(scrollPane_1, "cell 1 5 2 1,grow");
 		
 		txtFileSdf = new JTextArea();
 		scrollPane_1.setViewportView(txtFileSdf);
@@ -240,38 +242,44 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
 		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
-		panel_2.add(btnLoadRaster, "cell 5 2,alignx center,aligny center");
+		panel_2.add(btnLoadRaster, "cell 5 3,alignx center,aligny center");
 		
 		btnFileSdf = new JButton();
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
-		panel_2.add(btnFileSdf, "cell 4 3,aligny center");
+		panel_2.add(btnFileSdf, "cell 4 5,aligny center");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
 		btnExportSdf.setMinimumSize(new Dimension(110, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
-		panel_2.add(btnExportSdf, "cell 5 3,alignx center,aligny center");
+		panel_2.add(btnExportSdf, "cell 5 5,alignx center,aligny center");
 		
 		btnDeleteSchema = new JButton("Delete Schema");
 		btnDeleteSchema.setMinimumSize(new Dimension(110, 23));
 		btnDeleteSchema.setMaximumSize(new Dimension(108, 23));
 		btnDeleteSchema.setActionCommand("deleteSchema");
-		panel_2.add(btnDeleteSchema, "cell 2 0");
+		panel_2.add(btnDeleteSchema, "cell 2 1");
 		
 		btnClearData = new JButton("Clear Data");
 		btnClearData.setMinimumSize(new Dimension(110, 23));
 		btnClearData.setMaximumSize(new Dimension(108, 23));
 		btnClearData.setActionCommand("clearData");
-		panel_2.add(btnClearData, "flowx,cell 2 0 2 1");
+		panel_2.add(btnClearData, "flowx,cell 2 1");
 		
 		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); //$NON-NLS-1$
 		btnDatabase.setMinimumSize(new Dimension(95, 23));
 		btnDatabase.setMaximumSize(new Dimension(140, 23));
 		btnDatabase.setActionCommand("openDatabase");
 		btnDatabase.setVisible(false);
-		panel_2.add(btnDatabase, "cell 4 0 2 1,alignx right");
+		panel_2.add(btnDatabase, "cell 2 7,alignx right");
+		
+		btnClose = new JButton(BUNDLE.getString("HecRasPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setMinimumSize(new Dimension(60, 23));
+		btnClose.setMaximumSize(new Dimension(105, 23));
+		btnClose.setActionCommand(BUNDLE.getString("HecRasPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		panel_2.add(btnClose, "cell 4 7");
 
 		enableButtons(false);
 		setupListeners();
@@ -295,6 +303,8 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnDatabase.addActionListener(this);
 
 		tabbedPane.addFocusListener(this);
+		
+		btnClose.addActionListener(this);		
 
 	}
 	

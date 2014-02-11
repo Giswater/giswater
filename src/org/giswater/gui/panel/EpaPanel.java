@@ -48,8 +48,9 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.MainController;
-import org.giswater.dao.MainDao;
+import org.giswater.gui.frame.EpaFrame;
 import org.giswater.util.Utils;
+import java.awt.event.FocusAdapter;
 
 
 public class EpaPanel extends JPanel implements ActionListener, FocusListener {
@@ -58,6 +59,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private MainController controller;
+	private EpaFrame epaFrame;	
 
 	private JTextField txtProject;
 	private JTextArea txtFileRpt;
@@ -93,6 +95,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	private String softwareName;   // swmm | epanet
 	private JButton btnDeleteData;
 	private JLabel lblNewLabel;
+	private JButton btnClose;
 
 	
 	public EpaPanel(String softwareName) {
@@ -104,6 +107,14 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 			System.exit(ERROR);
 		}
 	}
+	
+	public void setFrame(EpaFrame epaFrame) {
+		this.epaFrame = epaFrame;
+	}	
+	
+	public EpaFrame getFrame(){
+		return epaFrame;
+	}	
 
 	public void setControl(MainController nodeController) {
 		this.controller = nodeController;
@@ -187,8 +198,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		btnSectorSelection.setEnabled(enable);
 		btnReport.setEnabled(enable);
 		lblSchema.setEnabled(enable);
-		cboSchema.setEnabled(enable);
-		cboSchema.setEditable(enable);		
+		cboSchema.setEnabled(enable);	
 	}	
 	
 	public void enableAccept(boolean enable){
@@ -221,21 +231,22 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 			elem = cboSoftware.getSelectedItem().toString();
 		}
 		return elem;
-	}		
+	}	
+	
 
 	// Panel DBF
 	public void setFolderShp(String path) {
 		txtInput.setText(path);
 	}
+	
+	public String getFolderShp() {
+		String folderShp = txtInput.getText().trim();
+		return folderShp;
+	}	
 
 	
 	// Postgis
-	public void setSelectedSchema(String schemaName) {
-		cboSchema.setSelectedItem(schemaName);
-	}
-	
-	
-	public void setSchema(Vector<String> v) {
+	public void setSchemaModel(Vector<String> v) {
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
@@ -246,6 +257,9 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		}
 	}
 
+	public void setSelectedSchema(String schemaName) {
+		cboSchema.setSelectedItem(schemaName);
+	}	
 
 	public String getSelectedSchema() {
 		String elem = "";
@@ -318,6 +332,12 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		panel_4.add(lblSchema, "cell 1 3");
 
 		cboSchema = new JComboBox<String>();
+		cboSchema.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				controller.isConnected();
+			}
+		});
 		cboSchema.setEnabled(false);
 		cboSchema.setMaximumSize(new Dimension(110, 20));
 		cboSchema.setPreferredSize(new Dimension(24, 20));
@@ -422,6 +442,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		panel_4.add(txtProject, "cell 2 11,growx,aligny top");
 
 		btnAccept = new JButton();
+		btnAccept.setMinimumSize(new Dimension(60, 9));
 		btnAccept.setEnabled(false);
 		btnAccept.setText(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setName("btn_accept_postgis");
@@ -450,6 +471,12 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		btnDesign.setMaximumSize(new Dimension(110, 23));
 		btnDesign.setActionCommand("showRaingage");
 		panel_4.add(btnDesign, "cell 2 5,alignx right,aligny baseline");
+		
+		btnClose = new JButton();
+		btnClose.setMinimumSize(new Dimension(60, 9));
+		btnClose.setText(BUNDLE.getString("EpaPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setActionCommand(BUNDLE.getString("EpaPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		panel_4.add(btnClose, "cell 3 12");
 
 		setupListeners();
 
@@ -478,6 +505,8 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	
 		tabbedPane.addFocusListener(this);
 		
+		btnClose.addActionListener(this);		
+		
 	}
 	
 
@@ -493,7 +522,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 			controller.enableCatalog(false);
 		}
 		else{
-			controller.enableCatalog(MainDao.isConnected());
+			controller.isConnected();
 		}
 	}
 

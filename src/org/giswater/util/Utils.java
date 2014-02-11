@@ -312,6 +312,18 @@ public class Utils {
     }          
 
     
+    public static void execService(String process){
+		
+		try {
+			Utils.getLogger().info(process);
+			Runtime.getRuntime().exec("cmd /c " + process);
+		} catch (IOException e) {
+			Utils.logError(e);
+		}		
+		
+	}
+	
+    
 	public static void execProcess(String process){
 		
 		try{    

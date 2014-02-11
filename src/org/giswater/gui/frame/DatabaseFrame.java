@@ -27,8 +27,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.WindowConstants;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import org.giswater.gui.panel.DatabasePanel;
 import org.giswater.util.Utils;
@@ -38,17 +36,12 @@ public class DatabaseFrame extends JInternalFrame {
 
 	private static final long serialVersionUID = 5510726193938743935L;
 	private DatabasePanel panel;
-	private MainFrame mainFrame;
 	
 	
 	public DatabaseFrame(){
 		initComponents();
 	}
 	
-	public DatabaseFrame(MainFrame mf){
-		this.mainFrame = mf;
-		initComponents();
-	}
 	
 	public DatabasePanel getPanel(){
 		return panel;
@@ -59,6 +52,7 @@ public class DatabaseFrame extends JInternalFrame {
 
     	panel = new DatabasePanel();
 
+    	panel.setFrame(this);
     	setTitle(Utils.getBundleString("db_options"));
 		setMaximizable(true);    	
         setClosable(true);
@@ -87,14 +81,6 @@ public class DatabaseFrame extends JInternalFrame {
         );
         getContentPane().setLayout(layout);
         
-        // TODO: Not working
-        this.addInternalFrameListener(new InternalFrameAdapter() {
-        	public void internalFrameClosing(InternalFrameEvent e) {
-        		mainFrame.swmmFrame.getPanel().selectSourceType();
-        		mainFrame.epanetFrame.getPanel().selectSourceType();
-        	}
-        });        
-
         pack();
         
     }

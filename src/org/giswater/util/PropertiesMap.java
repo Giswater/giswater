@@ -498,11 +498,8 @@ public class PropertiesMap {
 	}
 
 	public void setProperty(String key, Object value) {
-		if (_prop.containsKey(key)) {
-			String aux = value.toString();
-			_prop.put(key, aux);
-		}
-
+		String aux = value.toString();
+		_prop.put(key, aux);
 	}
 
 	public String get(String key) {

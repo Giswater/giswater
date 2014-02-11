@@ -53,6 +53,7 @@ public class HecRasFrame extends JInternalFrame {
 
     	panel = new HecRasPanel();
 
+    	panel.setFrame(this);    	
         setTitle("HecRas");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);

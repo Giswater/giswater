@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,7 +36,6 @@ import net.miginfocom.swing.MigLayout;
 public class ResultSelectionDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
-	private JButton btnDelete;
 	
 	
 	public ResultSelectionDialog() {
@@ -66,11 +64,7 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 		panelGeneral.add(comboBox, "cell 1 0,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
-		super.setIconImage(image.getImage());		
-		
-		btnDelete = new JButton("Delete");
-		btnDelete.setActionCommand("delete");
-		getContentPane().add(btnDelete, "cell 1 2,alignx right");
+		super.setIconImage(image.getImage());
 		
 		setupListeners();
 		
@@ -78,7 +72,6 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 
 	
 	protected void setupListeners() {
-		btnDelete.addActionListener(this);
 		dispose();
 	}		
 	

@@ -139,6 +139,11 @@ public class MainController{
 	}	
 	
 	
+	public void closePanel(){
+		view.getFrame().setVisible(false);
+	}
+	
+	
 	// DBF only
 	public void chooseFolderShp() {
 
@@ -197,7 +202,7 @@ public class MainController{
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(true);
 				view.enableAccept(true);
-				view.setSchema(MainDao.getSchemas());
+				view.setSchemaModel(MainDao.getSchemas());
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 				// Check Catalog tables
 				checkCatalogTables(view.getSelectedSchema());
@@ -216,7 +221,7 @@ public class MainController{
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(false);
 				view.enableAccept(false);
-				view.setSchema(null);				
+				view.setSchemaModel(null);				
 			}
 			schemaChanged();
 			prop.put("GIS_TYPE", "DATABASE");
@@ -239,16 +244,37 @@ public class MainController{
 	}
 	
 	
+	public void comboBoxEdited(){
+		schemaChanged();
+	}
+	
+	
 	public void schemaChanged(){
 		MainDao.setSoftwareName(software);		
 		if (MainDao.isConnected()){
 			String schemaName = view.getSelectedSchema();
-			MainDao.setSchema(view.getSelectedSchema());
+			MainDao.setSchema(schemaName);
 			checkCatalogTables(schemaName);
 			checkOptionsTables(schemaName);
 		}
 	}
 
+	
+	public void isConnected(){
+
+		// Check if we already are connected
+		if (MainDao.isConnected()){
+			view.setSchemaModel(MainDao.getSchemas());
+	    	view.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));			
+		} 
+		else{
+			view.setSchemaModel(null);				
+		}
+		enableCatalog(MainDao.isConnected());
+		//mainFrame.enableCatalog(false);
+		
+	}	
+	
 		
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSelectedSchema());
@@ -644,7 +670,7 @@ public class MainController{
 		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
 		String sridValue = getUserSrid(defaultSrid);
 
-		if (!sridValue.equals("")){
+		if (sridValue.equals("")){
 			return;
 		}
 		Integer srid;
@@ -654,10 +680,8 @@ public class MainController{
 			Utils.showError("error_srid");
 			return;
 		}
-		if (!sridValue.equals(defaultSrid)){
-			prop.put("SRID_DEFAULT", sridValue);
-			MainDao.savePropertiesFile();
-		}
+		prop.put("SRID_USER", sridValue);
+		MainDao.savePropertiesFile();
 		boolean isSridOk = MainDao.checkSrid(srid);
 		if (!isSridOk && srid != 0){
 			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
@@ -673,7 +697,7 @@ public class MainController{
 		else if (status && !defaultSchemaName.equals("")){
 			Utils.showMessage("schema_truncate_completed");
 		}
-		view.setSchema(MainDao.getSchemas());		
+		view.setSchemaModel(MainDao.getSchemas());		
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
@@ -687,7 +711,7 @@ public class MainController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
-        	view.setSchema(MainDao.getSchemas());
+        	view.setSchemaModel(MainDao.getSchemas());
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage("schema_deleted", "");
         }

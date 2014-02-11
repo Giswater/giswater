@@ -66,7 +66,7 @@ public class HecRasController{
 		if (fileAsc.exists()) {
 			view.setFileAsc(fileAsc.getAbsolutePath());
 		}	
-		view.setSchema(MainDao.getSchemas());
+		view.setSchemaModel(MainDao.getSchemas());
 		
     }
    
@@ -93,6 +93,11 @@ public class HecRasController{
 	}	
 	
 	
+	public void closePanel(){
+		view.getFrame().setVisible(false);
+	}
+	
+	
 	public void openDatabase(){
 		mainFrame.openDatabase();
 	}
@@ -103,13 +108,14 @@ public class HecRasController{
 		// Check if we already are connected
 		if (MainDao.isConnected()){
 			view.enableButtons(true);
-			view.setSchema(MainDao.getSchemas());
+			view.setSchemaModel(MainDao.getSchemas());
+	    	view.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));			
 		} 
 		else{
 			view.enableButtons(false);
-			view.setSchema(null);				
+			view.setSchemaModel(null);				
 		}
-		mainFrame.enableCatalog(false);
+		//mainFrame.enableCatalog(false);
 		
 	}	
 	
@@ -267,10 +273,9 @@ public class HecRasController{
 			Utils.showError("error_srid");
 			return;
 		}
-		if (!sridValue.equals(defaultSrid)){
-			prop.put("SRID_DEFAULT", sridValue);
-			MainDao.savePropertiesFile();
-		}
+		prop.put("SRID_USER", sridValue);
+		MainDao.savePropertiesFile();
+
 		boolean isSridOk = MainDao.checkSrid(srid);
 		if (!isSridOk && srid != 0){
 			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
@@ -286,7 +291,7 @@ public class HecRasController{
 		else if (status && !defaultSchemaName.equals("")){
 			Utils.showMessage("schema_truncate_completed");
 		}
-		view.setSchema(MainDao.getSchemas());		
+		view.setSchemaModel(MainDao.getSchemas());		
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
@@ -300,7 +305,7 @@ public class HecRasController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
-        	view.setSchema(MainDao.getSchemas());
+        	view.setSchemaModel(MainDao.getSchemas());
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage("schema_deleted", "");
         }
