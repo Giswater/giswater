@@ -37,8 +37,6 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.util.Utils;
-
 
 public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 
@@ -46,13 +44,11 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	private String timesType;
 	private JTextField txtId;
 	private JTextField txtTimserId;
-	
 	private JTextField txtDate;
 	private JTextField txtHour;
 	private JTextField txtTime;
 	private JTextField txtFname;
 	private JTextField txtValue;
-	protected JButton btnSave;	
 	private TimeseriesDialog parent;
 	
 	
@@ -137,31 +133,35 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		btnClose.setActionCommand("closeWindow");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
+		
 		setupListeners();
 		
 	}
 
 	
 	protected void setupListeners() {
-			
-		//super.setupListeners();
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controller.saveData();
-				dispose();
-			    parent.getController().closeDetailDialog();				
 			}
 		});
 		
 		// Event to update detail table contents with new data
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				int res = Utils.confirmDialog("save_data?");
-				if (res == 0){
-					controller.saveData();
-				    parent.getController().closeDetailDialog();
-				}
+				dispose();
+				parent.getController().closeDetailDialog();
+			}
+		});		
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				parent.getController().closeDetailDialog();			
 			}
 		});		
 		

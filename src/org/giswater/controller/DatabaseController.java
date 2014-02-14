@@ -34,40 +34,17 @@ import org.giswater.util.Utils;
 public class DatabaseController {
 
 	private DatabasePanel view;
-    private PropertiesMap prop;
+    private PropertiesMap gswProp;
 	public MainFrame mainFrame;
 	
 	
 	public DatabaseController(DatabasePanel dbPanel, MainFrame mf) {
-		
 		this.mainFrame = mf;
 		this.view = dbPanel;	
-        this.prop = MainDao.getPropertiesFile();
+        this.gswProp = MainDao.getGswProperties();
 	    view.setControl(this);        
-    	setDefaultValues();    	
-    	
 	}
-	
-	
-    private void setDefaultValues(){
-    	
-		// Get parameters connection 
-		view.setHost(prop.get("POSTGIS_HOST"));
-		view.setPort(prop.get("POSTGIS_PORT"));
-		view.setDatabase(prop.get("POSTGIS_DATABASE"));
-		view.setUser(prop.get("POSTGIS_USER"));
-		view.setPassword(Encryption.decrypt(prop.get("POSTGIS_PASSWORD")));		
-		
-		if (MainDao.isConnected()){
-			view.setConnectionText(Utils.getBundleString("close_connection"));
-		}
-		else{
-			view.setConnectionText(Utils.getBundleString("open_connection"));
-		}
-	
-    }
-   
-    
+	  
 	
 	public void action(String actionCommand) {
 		
@@ -130,31 +107,31 @@ public class DatabaseController {
 		mainFrame.hecRasFrame.getPanel().setSchemaModel(null);
 		
 		if (isConnected){
-			prop.put("POSTGIS_HOST", host);
-			prop.put("POSTGIS_PORT", port);
-			prop.put("POSTGIS_DATABASE", db);
-			prop.put("POSTGIS_USER", user);
+			gswProp.put("POSTGIS_HOST", host);
+			gswProp.put("POSTGIS_PORT", port);
+			gswProp.put("POSTGIS_DATABASE", db);
+			gswProp.put("POSTGIS_USER", user);
 			// Save encrypted password
 			if (view.getRemember()){
-				prop.put("POSTGIS_PASSWORD", Encryption.encrypt(password));
+				gswProp.put("POSTGIS_PASSWORD", Encryption.encrypt(password));
 			} else{
-				prop.put("POSTGIS_PASSWORD", "");
+				gswProp.put("POSTGIS_PASSWORD", "");
 			}
 			
 			// Get Postgis data and bin Folder
 	    	String dataPath = MainDao.getDataDirectory();
 	    	Utils.getLogger().info("Postgis data directory: " + dataPath);
-	        prop.put("POSTGIS_DATA", dataPath);
+	        gswProp.put("POSTGIS_DATA", dataPath);
 	        File dataFolder = new File(dataPath);
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
 	    	Utils.getLogger().info("Postgis bin directory: " + dataPath);
-	        prop.put("POSTGIS_BIN", binPath);	        
+	        gswProp.put("POSTGIS_BIN", binPath);	        
 	        
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage("connection_opened");
 			
 			// Hecras panel
-			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas());
+			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
 		

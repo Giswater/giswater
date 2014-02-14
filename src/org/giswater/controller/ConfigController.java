@@ -40,12 +40,10 @@ public class ConfigController {
 	
 	
 	public ConfigController(ConfigPanel dbPanel) {
-		
 		this.view = dbPanel;	
         this.prop = MainDao.getPropertiesFile();
 	    view.setController(this);        
     	setDefaultValues();    	
-    	
 	}
 	
 	

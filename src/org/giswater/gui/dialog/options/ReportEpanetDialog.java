@@ -22,8 +22,6 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,7 +44,6 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 	private JTextField txtStatistic;
 	private JTextField txtPattern;
 	private JTextField textField_1;
-	//private AbstractButton btnSave;
 	
 	
 	public ReportEpanetDialog() {
@@ -227,12 +224,10 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		super.setIconImage(image.getImage());		
 		
 		btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-			}
-		});
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		
+		btnClose = new JButton("Close");
+		getContentPane().add(btnClose, "cell 1 3,alignx right");		
 		
 		setupListeners();
 		

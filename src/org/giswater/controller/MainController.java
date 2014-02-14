@@ -54,6 +54,7 @@ public class MainController{
 
 	private EpaPanel view;
     private PropertiesMap prop;
+    private PropertiesMap gswProp;
     private File fileInp;
     private File fileRpt;
     private String projectName;
@@ -76,6 +77,7 @@ public class MainController{
     	this.mainFrame = mf;
     	this.view = view;	
         this.prop = MainDao.getPropertiesFile();
+        this.gswProp = MainDao.getGswProperties();
         this.software = software;
 	    view.setControl(this);        
     	userHomeFolder = System.getProperty("user.home");
@@ -89,23 +91,23 @@ public class MainController{
     private void setDefaultValues(){
     	
     	// DBF
-		dirShp = new File(prop.get("FOLDER_SHP", userHomeFolder));
+		dirShp = new File(gswProp.get(software+"_FOLDER_SHP", userHomeFolder));
 		if (dirShp.exists()) {
 			view.setFolderShp(dirShp.getAbsolutePath());
 			readyShp = true;
 		}
-    	fileInp = new File(prop.get("FILE_INP", userHomeFolder));
+    	fileInp = new File(gswProp.get(software+"_FILE_INP", userHomeFolder));
 		if (fileInp.exists()) {
 			view.setFileInp(fileInp.getAbsolutePath());
 		}
-		fileRpt = new File(prop.get("FILE_RPT", userHomeFolder));
+		fileRpt = new File(gswProp.get(software+"_FILE_RPT", userHomeFolder));
 		if (fileRpt.exists()) {
 			view.setFileRpt(fileRpt.getAbsolutePath());
 		}    	
-		projectName = prop.get("PROJECT_NAME", "");
+		projectName = gswProp.get(software+"_PROJECT_NAME", "");
 		view.setProjectName(projectName);
 		
-		String gisType = prop.get("GIS_TYPE", "");
+		String gisType = gswProp.get("GIS_TYPE", "");
 		if (gisType.equals("DATABASE")){
 			view.setDatabaseSelected(true);
 		}
@@ -150,13 +152,13 @@ public class MainController{
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(prop.get("FOLDER_SHP", userHomeFolder));
+		File file = new File(gswProp.get(software+"_FOLDER_SHP", userHomeFolder));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			dirShp = chooser.getSelectedFile();
 			view.setFolderShp(dirShp.getAbsolutePath());
-			prop.put("FOLDER_SHP", dirShp.getAbsolutePath());
+			gswProp.put(software+"_FOLDER_SHP", dirShp.getAbsolutePath());
 			MainDao.savePropertiesFile();
 			readyShp = true;
 		}
@@ -202,7 +204,7 @@ public class MainController{
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(true);
 				view.enableAccept(true);
-				view.setSchemaModel(MainDao.getSchemas());
+				view.setSchemaModel(MainDao.getSchemas(software));
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 				// Check Catalog tables
 				checkCatalogTables(view.getSelectedSchema());
@@ -224,7 +226,7 @@ public class MainController{
 				view.setSchemaModel(null);				
 			}
 			schemaChanged();
-			prop.put("GIS_TYPE", "DATABASE");
+			gswProp.put("GIS_TYPE", "DATABASE");
 		}
 		// DBF selected
 		else{
@@ -233,7 +235,7 @@ public class MainController{
 			view.enableControlsDatabase(false);
 			view.enableAccept(true);
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
-			prop.put("GIS_TYPE", "DBF");
+			gswProp.put("GIS_TYPE", "DBF");
 		}
 		
 	}
@@ -264,7 +266,7 @@ public class MainController{
 
 		// Check if we already are connected
 		if (MainDao.isConnected()){
-			view.setSchemaModel(MainDao.getSchemas());
+			view.setSchemaModel(MainDao.getSchemas(software));
 	    	view.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));			
 		} 
 		else{
@@ -357,7 +359,7 @@ public class MainController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_inp"));
-        File file = new File(prop.get("FILE_INP", userHomeFolder));	
+        File file = new File(gswProp.get(software+"_FILE_INP", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -380,7 +382,7 @@ public class MainController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
-        File file = new File(prop.get("FILE_RPT", userHomeFolder));	
+        File file = new File(gswProp.get(software+"_FILE_RPT", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -406,7 +408,7 @@ public class MainController{
             path += ".inp";
         }
         fileInp = new File(path);        
-        prop.put("FILE_INP", fileInp.getAbsolutePath());
+        gswProp.put(software+"_FILE_INP", fileInp.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -423,7 +425,7 @@ public class MainController{
             path += ".rpt";
         }
         fileRpt = new File(path);        
-        prop.put("FILE_RPT", fileRpt.getAbsolutePath());
+        gswProp.put(software+"_FILE_RPT", fileRpt.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -629,7 +631,7 @@ public class MainController{
 	private String getUserSrid(String defaultSrid){
 		
 		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
+		Boolean sridQuestion = Boolean.parseBoolean(gswProp.get("SRID_QUESTION"));
 		if (sridQuestion){
 			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
 			if (sridValue == null){
@@ -680,7 +682,7 @@ public class MainController{
 			Utils.showError("error_srid");
 			return;
 		}
-		prop.put("SRID_USER", sridValue);
+		MainDao.getGswProperties().put("SRID_USER", sridValue);
 		MainDao.savePropertiesFile();
 		boolean isSridOk = MainDao.checkSrid(srid);
 		if (!isSridOk && srid != 0){
@@ -711,7 +713,7 @@ public class MainController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
-        	view.setSchemaModel(MainDao.getSchemas());
+        	view.setSchemaModel(MainDao.getSchemas(software));
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage("schema_deleted", "");
         }

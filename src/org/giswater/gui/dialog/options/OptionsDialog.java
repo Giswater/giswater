@@ -56,7 +56,6 @@ public class OptionsDialog extends AbstractOptionsDialog {
 	private JTextField textField_16;
 	private JTextField textField_18;
 	private JTextField textField_1;
-	//private JButton btnSave;
 	
 	
 	public OptionsDialog() {
@@ -340,6 +339,9 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		
 		btnSave = new JButton("Save");
 		getContentPane().add(btnSave, "cell 1 3,alignx right");
+		
+		btnClose = new JButton("Close");
+		getContentPane().add(btnClose, "cell 1 3,alignx right");		
 		
 		setupListeners();
 		

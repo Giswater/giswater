@@ -51,7 +51,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	private JTextField txtId;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
-	protected JButton btnSave;	
 	private JButton btnCreate;
 	private JButton btnDelete;
 	private JLabel lblOther;
@@ -79,7 +78,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		table = new JTable(model);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		//table.setRowSelectionAllowed(true);
 		table.setAutoCreateRowSorter(true);
 		table.setUpdateSelectionOnSort(false);		
 		table.getColumnModel().getColumn(1).setPreferredWidth(5);
@@ -178,6 +176,11 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 		
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		btnClose.setActionCommand("closeWindow");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
+		
 		setupListeners();
 		
 	}
@@ -190,20 +193,13 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnDetailDelete.addActionListener(this);
-
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String id = txtId.getText().trim();
 				controller.detailCreateCurves(id);
 			}
 		});
-		
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-				dispose();
-			}
-		});
+		super.setupListeners();
 		
 	}
 

@@ -322,6 +322,11 @@ public class CatalogController {
 			Utils.logError(e);
 		}		
 	}
+	
+	
+	public void closeWindow(){
+		view.dispose();
+	}
 
 	
 	// Only for ConduitDialog

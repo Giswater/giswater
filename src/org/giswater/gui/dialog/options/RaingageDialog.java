@@ -119,6 +119,9 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		btnSave = new JButton("Save");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 4,alignx right");
+		
+		btnClose = new JButton("Close");
+		getContentPane().add(btnClose, "cell 1 4,alignx right");				
 
 		JPanel panelTimeseries = new JPanel();
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));

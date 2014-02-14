@@ -59,7 +59,6 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 	private JComboBox hydraulics;
 	private JComboBox quality;
 	private JComboBox unbalanced;
-	//private JButton btnSave;
 	
 	
 	public OptionsEpanetDialog() {
@@ -247,6 +246,9 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		btnSave = new JButton("Save");
 		getContentPane().add(btnSave, "flowx,cell 1 2,alignx right");
 
+		btnClose = new JButton("Close");
+		getContentPane().add(btnClose, "cell 1 3,alignx right");		
+		
 		setupListeners();
 		
 	}

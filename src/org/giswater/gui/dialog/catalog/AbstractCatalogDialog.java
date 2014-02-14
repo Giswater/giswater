@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.giswater.controller.CatalogController;
-import org.giswater.util.Utils;
 
 
 @SuppressWarnings("rawtypes")
@@ -48,6 +47,7 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	protected JButton btnSave;	
+	protected JButton btnClose;		
 
 	
 	public AbstractCatalogDialog() { }
@@ -114,21 +114,15 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 		
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				int res = Utils.confirmDialog("save_data?");
-				if (res == 0){
-					controller.saveData();
-				}
+				controller.closeWindow();
 			}
 		});		
-		
 		if (btnSave != null){
-			btnSave.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					controller.saveData();
-					dispose();
-				}
-			});		
-		}		
+			btnSave.addActionListener(this);		
+		}	
+		if (btnClose != null){
+			btnClose.addActionListener(this);		
+		}			
 		
 	}
 	

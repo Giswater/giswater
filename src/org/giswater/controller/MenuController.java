@@ -22,10 +22,6 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
@@ -65,7 +61,6 @@ public class MenuController {
 
 	private MainFrame view;
 	private PropertiesMap prop;
-	private String gswPath = null;	
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
@@ -104,13 +99,22 @@ public class MenuController {
 
 	
 	public void gswOpen(){
+		gswOpen(true);
+	}
+	
+	public void gswOpen(boolean chooseFile){
 		
-		String path = gswChooseFile();
+		String path = "";
+		if (chooseFile){
+			path = gswChooseFile();
+			MainDao.setGswPath(path);
+		}
+		else{
+			path = MainDao.getGswPath();
+		}
             
-        // Open .gsw file
-        if (openGswFile(path)){
-        	gswPath = path;
-        }
+        // Load .gsw file into memory
+		MainDao.loadGswPropertiesFile();
         
 		// Update properties file
 		prop.put("FILE_GSW", path);
@@ -130,105 +134,55 @@ public class MenuController {
 
 	
 	public void gswSave(){
-		
-		if (gswPath == null){
-			gswSaveAs();
-		}
-		else{
-			saveGswFile(gswPath);
-		}
-        
+		view.saveGswFile();
 	}
 
 	
 	public void gswSaveAs(){
-		gswPath = gswChooseFile();
-		saveGswFile(gswPath);
+		String gswPath = gswChooseFile();
+    	MainDao.setGswPath(gswPath);		
+    	view.saveGswFile();
 	}
 
 	
-	private void saveGswFile(String path){
-		
-		// Get EPANET and SWMM parameters
-    	EpaPanel epanetPanel = view.epanetFrame.getPanel();
-    	getEpaParams("EPANET", epanetPanel);
-    	EpaPanel swmmPanel = view.swmmFrame.getPanel();        	
-    	getEpaParams("EPASWMM", swmmPanel);      
-    	
-		// Get HECRAS parameters
-		getHecrasParams();		
-		
-		// Get Database parameters
-		getDatabaseParams();		
-    	
-    	// Get GIS parameters
-    	getGisParams();
-    	
-    	// Get SRID from giswater.properties
-    	String srid = prop.get("SRID_USER");
-    	MainDao.getGswProperties().put("SRID", srid);    	
-		
-        File file = new File(path);
-        try {
-        	FileOutputStream fos = new FileOutputStream(file);
-        	MainDao.getGswProperties().store(fos, true);
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", file.getPath());
-        } catch (IOException e) {
-            Utils.showError("inp_error_io", file.getPath());
-        }
-        
-	}	
-	
-
-    private void getDatabaseParams(){
-    	DatabasePanel dbPanel = view.dbFrame.getPanel();
-    	MainDao.getGswProperties().put("POSTGIS_HOST", dbPanel.getHost());
-    	MainDao.getGswProperties().put("POSTGIS_PORT", dbPanel.getPort());
-    	MainDao.getGswProperties().put("POSTGIS_DATABASE", dbPanel.getDatabase());
-    	MainDao.getGswProperties().put("POSTGIS_USER", dbPanel.getUser());
-    	MainDao.getGswProperties().put("POSTGIS_PASSWORD", dbPanel.getPassword());
-    	MainDao.getGswProperties().put("POSTGIS_AUTOSTART", "true");    	
-    	MainDao.getGswProperties().put("POSTGIS_DATA", "");
-    	MainDao.getGswProperties().put("POSTGIS_BIN", "");
-    	MainDao.getGswProperties().put("AUTOCONNECT_POSTGIS", dbPanel.getRemember().toString());
-	}	
-    
-    
     private void updateDatabasePanel(){
     	
     	DatabasePanel dbPanel = view.dbFrame.getPanel();
     	dbPanel.setHost(MainDao.getGswProperties().get("POSTGIS_HOST"));
     	dbPanel.setPort(MainDao.getGswProperties().get("POSTGIS_PORT"));
     	dbPanel.setDatabase(MainDao.getGswProperties().get("POSTGIS_DATABASE"));
-    	dbPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));
-    	dbPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));		
-    	
-        Boolean autoConnect = Boolean.parseBoolean(MainDao.getGswProperties().get("AUTOCONNECT_POSTGIS"));
-        dbPanel.setRemember(autoConnect);
-        if (autoConnect){
-        	if (MainDao.silenceConnection(MainDao.getGswProperties())){
-    			MainDao.checkFirstConnection();
-        	}
+    	dbPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));		
+    	Boolean remember = Boolean.parseBoolean(MainDao.getGswProperties().get("POSTGIS_REMEMBER"));
+        dbPanel.setRemember(remember);
+        if (remember){
+        	dbPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
+        } else{
+        	dbPanel.setPassword("");
         }
+    	Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
+        Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
+        if (initDb){
+        	MainDao.initializeDatabase();
+        	dbPanel.setDatabase("giswater_ddb");
+        }
+       	if (autoConnect && remember){
+       		MainDao.silenceConnection();
+       		MainDao.getGswProperties().put("INIT_DB", "false");
+        }
+        
+        // Update text open/close button
 		if (MainDao.isConnected()){
 			dbPanel.setConnectionText(Utils.getBundleString("close_connection"));
+			view.enableCatalog(true);
 		}
 		else{
 			dbPanel.setConnectionText(Utils.getBundleString("open_connection"));
+			view.enableCatalog(false);
 		}
 		
 	}	    
     
-    
-    private void getEpaParams(String software, EpaPanel epaPanel){
-    	MainDao.getGswProperties().put(software+"_FOLDER_SHP", epaPanel.getFolderShp());    	
-    	MainDao.getGswProperties().put(software+"_FILE_INP", epaPanel.getFileInp());
-    	MainDao.getGswProperties().put(software+"_FILE_RPT", epaPanel.getFileRpt());
-    	MainDao.getGswProperties().put(software+"_PROJECT_NAME", epaPanel.getProjectName());    	
-    	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());      	
-	}    
-    
+
     private void updateEpaPanel(String software, EpaPanel epaPanel){
     	epaPanel.setFolderShp(MainDao.getGswProperties().get(software+"_FOLDER_SHP"));
     	epaPanel.setFileInp(MainDao.getGswProperties().get(software+"_FILE_INP"));
@@ -237,13 +191,7 @@ public class MenuController {
     	epaPanel.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));    	
 	}   
     
-    private void getHecrasParams(){
-    	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
-    	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
-    	MainDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
-    	MainDao.getGswProperties().put("HECRAS_SCHEMA", hecRasPanel.getSelectedSchema());
-	}	    
-    
+ 
     private void updateHecrasPanel(){
     	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
     	hecRasPanel.setFileAsc(MainDao.getGswProperties().get("HECRAS_FILE_ASC"));
@@ -251,14 +199,6 @@ public class MenuController {
     	hecRasPanel.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));
 	}    
     
-    private void getGisParams(){
-    	GisPanel gisPanel = view.gisFrame.getPanel();
-    	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
-    	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
-    	MainDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
-    	MainDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
-    	MainDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
-	}	
     
     private void updateGisPanel(){
     	GisPanel gisPanel = view.gisFrame.getPanel();
@@ -295,26 +235,24 @@ public class MenuController {
 	}
 	
 	
-	private boolean openGswFile(String path) {
-
-    	Utils.getLogger().info("Opening GSW file: "+path);        
-
-        File file = new File(path);
-        try {
-        	MainDao.getGswProperties().load(new FileInputStream(file));      
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", path);
-            return false;
-        } catch (IOException e) {
-            Utils.showError("inp_error_io", path);
-            return false;
-        }
-        return (MainDao.getGswProperties() != null);
-
-    }    
+//	private boolean openGswFile(String path) {
+//
+//    	Utils.getLogger().info("Opening gsw file: "+path);        
+//
+//        File file = new File(path);
+//        try {
+//        	MainDao.getGswProperties().load(new FileInputStream(file));      
+//        } catch (FileNotFoundException e) {
+//            Utils.showError("inp_error_notfound", path);
+//            return false;
+//        } catch (IOException e) {
+//            Utils.showError("inp_error_io", path);
+//            return false;
+//        }
+//        return (MainDao.getGswProperties() != null);
+//
+//    }    
     
-	
-
     
 	// Menu Software
 	public void openSwmm() {
@@ -489,11 +427,7 @@ public class MenuController {
 	}
 
 	public void sampleHecras(){
-//		String msg = "HECRAS sample creation can take a long time (15-20 minutes). Do you want to proceed?";
-//		int res = Utils.confirmDialog(msg);        
-//        if (res == 0){
-        	createSampleSchema("hecras");
-//        }
+       	createSampleSchema("hecras");
 	}
 	
 	
@@ -502,7 +436,6 @@ public class MenuController {
 		// Ask user to set SRID?
 		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
 		String sridValue = getUserSrid(defaultSrid);
-		
 		if (sridValue.equals("")){
 			return;
 		}
@@ -514,7 +447,7 @@ public class MenuController {
 			Utils.showError("error_srid");
 			return;
 		}
-		prop.put("SRID_USER", sridValue);
+		MainDao.getGswProperties().put("SRID_USER", sridValue);
 		MainDao.savePropertiesFile();
 		boolean isSridOk = MainDao.checkSrid(srid);
 		if (!isSridOk && srid != 0){

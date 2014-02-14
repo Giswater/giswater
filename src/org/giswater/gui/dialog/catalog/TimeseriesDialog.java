@@ -51,7 +51,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	private JTextField txtId;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
-	protected JButton btnSave;	
 	private JButton btnCreate;
 	private JButton btnDelete;
 	private JLabel lblOther;
@@ -189,6 +188,11 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 		
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		btnClose.setActionCommand("closeWindow");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
+		
 		setupListeners();
 		
 	}
@@ -201,7 +205,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
 		btnDetailDelete.addActionListener(this);
-		
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String id = txtId.getText().trim();
@@ -209,13 +212,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 				controller.detailCreateTimeseries(timesType, id);
 			}
 		});
-		
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-				dispose();
-			}
-		});
+		super.setupListeners();
 		
 	}
 

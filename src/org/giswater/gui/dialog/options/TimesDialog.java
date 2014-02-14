@@ -49,7 +49,6 @@ public class TimesDialog extends AbstractOptionsDialog {
 	private JTextField txtReportStart;
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
-	//private AbstractButton btnSave;
 	
 	
 	public TimesDialog() {
@@ -160,6 +159,9 @@ public class TimesDialog extends AbstractOptionsDialog {
 		
 		btnSave = new JButton("Save");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		
+		btnClose = new JButton("Close");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();
 		

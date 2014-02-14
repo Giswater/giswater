@@ -43,6 +43,11 @@ import org.giswater.controller.HecRasController;
 import org.giswater.controller.MainController;
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
+import org.giswater.gui.panel.DatabasePanel;
+import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.GisPanel;
+import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 import javax.swing.SwingConstants;
@@ -64,6 +69,9 @@ public class MainFrame extends JFrame implements ActionListener{
     private JMenuItem mntmSwmm;
 	private JMenuItem mntmEpanet;
 	private JMenuItem mntmHecras;
+	
+	private JMenu mnGisProject;	
+	private JMenuItem mntmGisProject;	
 
 	private JMenu mnData;
 	private JMenuItem mntmProjectId;	
@@ -80,8 +88,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
 	private JMenuItem mntmDatabase;
-
-	private JMenuItem mntmGisProject;	
 	private JMenuItem mntmSampleEpanet;
 	private JMenuItem mntmSampleEpaswmm;
 	private JMenuItem mntmSampleHecras;
@@ -129,6 +135,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		prop = MainDao.getPropertiesFile();
+		//gswProp = MainDao.getGswProperties();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -168,7 +175,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
-		JMenu mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
+		mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
 		
 		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
@@ -415,6 +422,69 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	
+	public void getEpaParams(String software, EpaPanel epaPanel){
+    	MainDao.getGswProperties().put(software+"_FOLDER_SHP", epaPanel.getFolderShp());    	
+    	MainDao.getGswProperties().put(software+"_FILE_INP", epaPanel.getFileInp());
+    	MainDao.getGswProperties().put(software+"_FILE_RPT", epaPanel.getFileRpt());
+    	MainDao.getGswProperties().put(software+"_PROJECT_NAME", epaPanel.getProjectName());    	
+    	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());      	
+	}    
+    
+    public void getHecrasParams(){
+    	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
+    	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
+    	MainDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
+    	MainDao.getGswProperties().put("HECRAS_SCHEMA", hecRasPanel.getSelectedSchema());
+	}	
+    
+    public void getDatabaseParams(){
+    	DatabasePanel dbPanel = dbFrame.getPanel();
+    	MainDao.getGswProperties().put("POSTGIS_HOST", dbPanel.getHost());
+    	MainDao.getGswProperties().put("POSTGIS_PORT", dbPanel.getPort());
+    	MainDao.getGswProperties().put("POSTGIS_DATABASE", dbPanel.getDatabase());
+    	MainDao.getGswProperties().put("POSTGIS_USER", dbPanel.getUser());
+    	MainDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(dbPanel.getPassword()));
+    	MainDao.getGswProperties().put("POSTGIS_REMEMBER", dbPanel.getRemember().toString());
+    	//MainDao.getGswProperties().put("POSTGIS_AUTOSTART", "true");    	
+    	MainDao.getGswProperties().put("POSTGIS_DATA", "");
+    	MainDao.getGswProperties().put("POSTGIS_BIN", "");
+	}	   
+    
+    public void getGisParams(){
+    	GisPanel gisPanel = gisFrame.getPanel();
+    	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
+    	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
+    	MainDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
+    	MainDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
+    	MainDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
+	}	
+    
+	
+	public void saveGswFile(){
+
+		// Update FILE_GSW parameter 
+		prop.put("FILE_GSW", MainDao.getGswPath());
+    	
+		// Get EPANET and SWMM parameters
+    	EpaPanel epanetPanel = epanetFrame.getPanel();
+    	getEpaParams("EPANET", epanetPanel);
+    	EpaPanel swmmPanel = swmmFrame.getPanel();        	
+    	getEpaParams("EPASWMM", swmmPanel);      
+    	
+		// Get HECRAS parameters
+		getHecrasParams();		
+		
+		// Get Database parameters
+		getDatabaseParams();		
+    	
+    	// Get GIS parameters
+    	getGisParams();
+    	
+    	MainDao.saveGswPropertiesFile();
+        
+	}	
+	
+	
 	public void closeApp(){
 	
         try {
@@ -424,11 +494,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	        setFrameParams(dbFrame, "DB");      
 	        setFrameParams(configFrame, "CONFIG");	
 	        setMainParams("MAIN");
+	        saveGswFile();
 	        // Stop Postgis portable?
-	        Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
-	        if (autostart){
-	        	MainDao.executePostgisService("stop");
-	        }	        
+	        //Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
+	        //if (autostart){
+	        //	MainDao.executePostgisService("stop");
+	        //}	        
+	        MainDao.executePostgisService("stop");
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());			

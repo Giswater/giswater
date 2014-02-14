@@ -4,22 +4,22 @@
     <mapcanvas>
         <units>meters</units>
         <extent>
-            <xmin>419007.01047165447380394</xmin>
-            <ymin>4576509.61857016105204821</ymin>
-            <xmax>419667.27034943189937621</xmax>
-            <ymax>4576916.15732104051858187</ymax>
+            <xmin>__XMIN__</xmin>
+            <ymin>__YMIN__</ymin>
+            <xmax>__XMAX__</xmax>
+            <ymax>__YMAX__</ymax>
         </extent>
         <projections>1</projections>
         <destinationsrs>
             <spatialrefsys>
-                <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                <srsid>1977</srsid>
-                <srid>23031</srid>
-                <authid>EPSG:23031</authid>
-                <description>ED50 / UTM zone 31N</description>
-                <projectionacronym>utm</projectionacronym>
-                <ellipsoidacronym>intl</ellipsoidacronym>
-                <geographicflag>false</geographicflag>
+                <proj4>__PROJ4__</proj4>
+                <srsid>__SRSID__</srsid>
+                <srid>__SRID__</srid>
+                <authid>__AUTHID__</authid>
+                <description>__DESCRIPTION__</description>
+                <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
             </spatialrefsys>
         </destinationsrs>
     </mapcanvas>
@@ -317,14 +317,14 @@
             <layername>Arc maximum values</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -604,14 +604,14 @@
             <layername>Node maximum values</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -902,14 +902,14 @@
             <layername>Arc</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="System">postgres</provider>
@@ -1169,14 +1169,14 @@
             <layername>Material catalog</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1207,14 +1207,14 @@
             <layername>Backdrop</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1240,14 +1240,14 @@
             <layername>Controls</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1273,14 +1273,14 @@
             <layername>Curve</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1312,14 +1312,14 @@
             <layername>Curve catalog</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1349,14 +1349,14 @@
             <layername>Demand</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1388,14 +1388,14 @@
             <layername>Emitter</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1421,14 +1421,14 @@
             <layername>Single energy</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1454,14 +1454,14 @@
             <layername>Global energy</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1487,14 +1487,14 @@
             <layername>Labels</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1520,14 +1520,14 @@
             <layername>Mixing</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1558,14 +1558,14 @@
             <layername>Patterns</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1591,14 +1591,14 @@
             <layername>Quality</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1624,14 +1624,14 @@
             <layername>Single reactions</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1657,14 +1657,14 @@
             <layername>Global reactions</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1695,14 +1695,14 @@
             <layername>Rules</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1728,14 +1728,14 @@
             <layername>Source</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1767,14 +1767,14 @@
             <layername>Tags</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1800,14 +1800,14 @@
             <layername>inp_type_arc</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1833,14 +1833,14 @@
             <layername>inp_type_node</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1866,14 +1866,14 @@
             <layername>Inp_typevalue_energy</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1899,14 +1899,14 @@
             <layername>Inp_typevalue_pump</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1932,14 +1932,14 @@
             <layername>Inp_typevalue_reactions_gl</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1965,14 +1965,14 @@
             <layername>Inp_typevalue_source</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -1998,14 +1998,14 @@
             <layername>Inp_typevalue_valve</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2031,14 +2031,14 @@
             <layername>Inp_value_ampm</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2064,14 +2064,14 @@
             <layername>inp_value_curve</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2097,14 +2097,14 @@
             <layername>Inp_value_mixing</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2130,14 +2130,14 @@
             <layername>Inp_value_noneall</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2163,14 +2163,14 @@
             <layername>Inp_value_param_energy</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2196,14 +2196,14 @@
             <layername>Inp_value_reactions_el</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2229,14 +2229,14 @@
             <layername>Inp_value_reactions_gl</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2262,14 +2262,14 @@
             <layername>Inp_value_st_pipe</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2295,14 +2295,14 @@
             <layername>Inp_value_status</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2328,14 +2328,14 @@
             <layername>Inp_value_times</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2361,14 +2361,14 @@
             <layername>Inp_value_yesno</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2394,14 +2394,14 @@
             <layername>Inp_value_yesnofull</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2427,14 +2427,14 @@
             <layername>Node</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="System">postgres</provider>
@@ -2687,14 +2687,14 @@
             <layername>Rpt_hydraulic_status</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -2720,14 +2720,14 @@
             <layername>Sector</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="System">postgres</provider>
@@ -2917,14 +2917,14 @@
             <layername>Junction</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -3120,14 +3120,14 @@
             <layername>Pipe</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -3324,14 +3324,14 @@
             <layername>Pump</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -3530,14 +3530,14 @@
             <layername>Reservoir</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -3733,14 +3733,14 @@
             <layername>Tank</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -3940,14 +3940,14 @@
             <layername>Valve</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -4149,14 +4149,14 @@
             <layername>Arc minimum values</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>
@@ -4436,14 +4436,14 @@
             <layername>Energy usage</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -4469,14 +4469,14 @@
             <layername>Hydraulic status</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-                    <srsid>3452</srsid>
-                    <srid>4326</srid>
-                    <authid>EPSG:4326</authid>
-                    <description>WGS 84</description>
-                    <projectionacronym>longlat</projectionacronym>
-                    <ellipsoidacronym>WGS84</ellipsoidacronym>
-                    <geographicflag>true</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <customproperties/>
@@ -4502,14 +4502,14 @@
             <layername>Node minimum values</layername>
             <srs>
                 <spatialrefsys>
-                    <proj4>+proj=utm +zone=31 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs</proj4>
-                    <srsid>1977</srsid>
-                    <srid>23031</srid>
-                    <authid>EPSG:23031</authid>
-                    <description>ED50 / UTM zone 31N</description>
-                    <projectionacronym>utm</projectionacronym>
-                    <ellipsoidacronym>intl</ellipsoidacronym>
-                    <geographicflag>false</geographicflag>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
                 </spatialrefsys>
             </srs>
             <provider encoding="UTF-8">postgres</provider>

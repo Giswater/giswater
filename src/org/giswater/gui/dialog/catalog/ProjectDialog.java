@@ -88,7 +88,14 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		super.setIconImage(image.getImage());
 		
 		btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save record");
+		btnSave.setActionCommand("saveData");		
 		getContentPane().add(btnSave, "cell 1 2,alignx right");		
+
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		btnClose.setActionCommand("closeWindow");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();
 		

@@ -24,6 +24,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
@@ -55,7 +56,6 @@ import org.giswater.gui.frame.GisFrame;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import java.awt.event.FocusAdapter;
 
 
 public class GisPanel extends JPanel implements ActionListener, FocusListener  {
@@ -75,7 +75,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JLabel lblSoftware;
 	private JComboBox<String> cboSoftware;
 
-    private PropertiesMap prop;
+    //private PropertiesMap prop;
+    private PropertiesMap gswProp;
 	private String gisExtension;   // qgs or gvp
 	private JComboBox<String> cboSchema;
 	private JLabel lblSchema;
@@ -84,16 +85,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JPanel panel_1;
 	private JButton btnClose;
     
-	
-	public GisPanel(GisFrame gisFrame) {
-		this.gisFrame = gisFrame;
-        this.prop = MainDao.getPropertiesFile();
-		initConfig();
-		setDefaultValues();
-	}
-	
+
 	public GisPanel() {
-        this.prop = MainDao.getPropertiesFile();
+        //this.prop = MainDao.getPropertiesFile();
+        this.gswProp = MainDao.getGswProperties();        
 		initConfig();
 		setDefaultValues();
 	}
@@ -180,12 +175,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
     private void setDefaultValues(){
     	
-		setProjectFolder(prop.get("GIS_FOLDER"));
-		setProjectName(prop.get("GIS_NAME"));
-		setProjectSoftware(prop.get("GIS_SOFTWARE"));	
+		setProjectFolder(gswProp.get("GIS_FOLDER"));
+		setProjectName(gswProp.get("GIS_NAME"));
+		setProjectSoftware(gswProp.get("GIS_SOFTWARE"));	
 		if (MainDao.isConnected()){
 			setSchemaModel(MainDao.getSchemas());
-			setSelectedSchema(prop.get("GIS_SCHEMA"));
+			setSelectedSchema(gswProp.get("GIS_SCHEMA"));
 			cboSchema.setEnabled(true);
 		}
 		else{setSchemaModel(null);
@@ -289,7 +284,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(Utils.getBundleString("gis_folder"));
-		File file = new File(prop.get("GIS_FOLDER", System.getProperty("user.home")));
+		File file = new File(gswProp.get("GIS_FOLDER", System.getProperty("user.home")));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -309,7 +304,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()){
 				this.enableControls(true);
 				this.setSchemaModel(MainDao.getSchemas());
-				this.setSelectedSchema(prop.get("GIS_SCHEMA"));				
+				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
 			} 
 			else{
 				Utils.showMessage("You should connect to a Database");
@@ -322,7 +317,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			this.enableControls(false);		
 			this.setSchemaModel(null);					
 		}
-		prop.put("GIS_TYPE", dataStorage.toUpperCase());			
+		gswProp.put("GIS_TYPE", dataStorage.toUpperCase());			
 		
 	}
 	
@@ -333,26 +328,30 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String folder = getProjectFolder();		
 		String name = getProjectName();
 		String software = getProjectSoftware();
-		String gisType = prop.get("GIS_TYPE");
+		String gisType = gswProp.get("GIS_TYPE");
 		String schema = getSelectedSchema();
+		String table = "arc";
+		if (software.equals("HECRAS")){
+			table = "banks";
+		}
+		String schemaSrid = MainDao.getTableSrid(schema, table).toString();
 		
 		// Create GIS Project
 		if (gisType.equals("DATABASE")){
 			if (MainDao.isConnected()){
 				// Update properties file
-				prop.put("GIS_FOLDER", folder);
-				prop.put("GIS_NAME", name);
-				prop.put("GIS_SOFTWARE", software);
-				prop.put("GIS_SCHEMA", schema);				
+				gswProp.put("GIS_FOLDER", folder);
+				gswProp.put("GIS_NAME", name);
+				gswProp.put("GIS_SOFTWARE", software);
+				gswProp.put("GIS_SCHEMA", schema);
 				// TODO: i18n
-				String msg = "You have chosen create GIS project.";
-				msg+= "\nWARNINGS:";
-				msg+= "\n1- Your database password will be stored in plain text in your project files and in your home directory on Unix-like systems, or in your user profile on Windows.";
-				msg+= "\n2- The only SRID avaliable is EPSG-23031.";
+				String msg = "WARNING:";
+				msg+= "\nYour database password will be stored in plain text in your project files " +
+					"and in your home directory on Unix-like systems, or in your user profile on Windows.";
 				msg+= "\nIf you do not want this to happen, please press 'No' button or consider fixing it in GIS desktop project";
 				int answer = Utils.confirmDialog(msg);
 				if (answer == JOptionPane.YES_OPTION){
-					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema);
+					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema, schemaSrid);
 				}
 			} 
 			else{
@@ -364,9 +363,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		else if (gisType.equals("DBF")){
 			gisProjectDbf(gisExtension, folder + File.separator, name, software);
 		}
-		
-		// Close frame
-		//this.getFrame().setVisible(false);		
 		
 	}
 
@@ -396,7 +392,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
             String msg = Utils.getBundleString("gis_end") + "\n" + destPath +      
             	"\nYou can build your own GIS project with all shape files and DBF created." +
     			"\nTo do it, you can use any GIS software. " +
-    			"\nWe recommend you use Open Source GIS software like gvSIG or QGIS.";
+    			"\nWe recommend you Open Source GIS software like gvSIG or QGIS.";
     		Utils.showMessage(msg);            
 		} catch (IOException e) {
         	Utils.showError(e);
@@ -405,39 +401,24 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}
 
 	
-	private void gisProjectDatabase(String gisExtension, String folderPath, String name, String software, String schema) {
+	private void gisProjectDatabase(String gisExtension, String folderPath, String name, String software, 
+		String schema, String schemaSrid) {
 		
 		String templatePath = "";
-		String content = "";
-		String destPath = "";
-		
-		String host, port, db, user, password, srid;
-		
-		// Get parameteres connection from properties file
-		host = prop.get("POSTGIS_HOST", "localhost");		
-		port = prop.get("POSTGIS_PORT", "5431");
-		db = prop.get("POSTGIS_DATABASE", "giswater");
-		user = prop.get("POSTGIS_USER", "postgres");
-		password = prop.get("POSTGIS_PASSWORD");		
-		password = Encryption.decrypt(password);
-		password = (password == null) ? "" : password;		
-		srid = prop.get("SRID_DEFAULT");		
-    	
 		try {
 
 	    	String gisFolder = Utils.getGisFolder();
-			templatePath = gisFolder + software+"."+gisExtension;
+	    	templatePath = gisFolder + software+"."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
 				Utils.showError("inp_error_notfound", templatePath);
 				return;
 			}
-
 			File folder = new File(folderPath);
 			if (!folder.exists()){
 				folder.mkdir();
 			}
-			destPath = folderPath + software+"_"+name+"."+gisExtension;
+			String destPath = folderPath + software+"_"+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()){
 	            int answer = Utils.confirmDialog("overwrite_file");
@@ -446,15 +427,30 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	            }
 			}
 			
-			Utils.getLogger().info("GIS File: " + destPath);
-			setCursor(new Cursor(Cursor.WAIT_CURSOR));	
+			gisFrame.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
+			
+			// Get parameteres connection from properties file
+			String host, port, db, user, password;			
+			host = gswProp.get("POSTGIS_HOST", "localhost");		
+			port = gswProp.get("POSTGIS_PORT", "5431");
+			db = gswProp.get("POSTGIS_DATABASE", "giswater");
+			user = gswProp.get("POSTGIS_USER", "postgres");
+			password = gswProp.get("POSTGIS_PASSWORD");		
+			password = Encryption.decrypt(password);
+			password = (password == null) ? "" : password;		
 			
 			// Get File content
-    		content = Utils.readFile(templatePath);
-			
+			Utils.getLogger().info("Reading template file... " + templatePath);			
+    		String content = Utils.readFile(templatePath);
+			Utils.getLogger().info("Creating GIS file... " + destPath);	    		
+
+			// Replace spatialrefsys and extent parameters
+    		content = MainDao.replaceSpatialParameters(schemaSrid, content);
+    		content = MainDao.replaceExtentParameters(software, schema, content);
+    		
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
 			content = content.replace("SCHEMA_NAME", schema);
-			content = content.replace("SRID_VALUE", srid);
+			content = content.replace("SRID_VALUE", schemaSrid);
 
 	    	// Replace __DBNAME__ for db parameter. __HOST__ for host parameter, __PORT__ for port parameter
 	    	// Replace __USER__ for user parameter. __PASSWORD__ for password parameter			
@@ -469,7 +465,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
 
             // Ending message
-			Utils.getLogger().info("GIS File completed");			
+			Utils.getLogger().info("GIS file completed");			
             String msg = Utils.getBundleString("gis_end") + "\n" + destPath + "\n" + 
             	Utils.getBundleString("view_file");
     		int res = Utils.confirmDialog(msg);             
@@ -485,12 +481,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		
 	}
 
-	
+
 	private void getFocus(){
 		if (MainDao.isConnected()){
 			this.enableControls(true);
 			this.setSchemaModel(MainDao.getSchemas());
-			this.setSelectedSchema(prop.get("GIS_SCHEMA"));				
+			this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
 		} 
 		else{
 			this.enableControls(false);				

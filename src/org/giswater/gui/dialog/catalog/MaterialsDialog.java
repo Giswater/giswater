@@ -22,8 +22,6 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -44,7 +42,6 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 	private JTextField txtDescript;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
-	protected JButton btnSave;	
 	private JButton btnCreate;
 	private JButton btnDelete;
 	private JLabel lblOther;
@@ -128,6 +125,11 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		btnClose.setActionCommand("closeWindow");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");			
+		
 		setupListeners();
 		
 	}
@@ -139,14 +141,6 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		btnNext.addActionListener(this);
 		btnCreate.addActionListener(this);
 		btnDelete.addActionListener(this);
-
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controller.saveData();
-				dispose();
-			}
-		});
-		
 		super.setupListeners();	
 		
 	}

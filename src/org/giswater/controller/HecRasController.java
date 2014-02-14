@@ -40,6 +40,7 @@ public class HecRasController{
 
 	private HecRasPanel view;
     private PropertiesMap prop;
+    private PropertiesMap gswProp;
     private File fileSdf;
     private File fileAsc;    
     private String userHomeFolder;
@@ -51,6 +52,7 @@ public class HecRasController{
     	this.mainFrame = mf;
     	this.view = view;	
         this.prop = MainDao.getPropertiesFile();
+        this.gswProp = MainDao.getGswProperties();
     	this.userHomeFolder = System.getProperty("user.home");
 	    view.setControl(this);         	
     	setDefaultValues();
@@ -60,13 +62,13 @@ public class HecRasController{
     
     private void setDefaultValues(){
     	
-    	fileSdf = new File(prop.getProperty("FILE_SDF", userHomeFolder));
+    	fileSdf = new File(gswProp.getProperty("FILE_SDF", userHomeFolder));
     	view.setFileSdf(fileSdf.getAbsolutePath());
-    	fileAsc = new File(prop.getProperty("FILE_ASC", userHomeFolder));
+    	fileAsc = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));
 		if (fileAsc.exists()) {
 			view.setFileAsc(fileAsc.getAbsolutePath());
 		}	
-		view.setSchemaModel(MainDao.getSchemas());
+		view.setSchemaModel(MainDao.getSchemas("HECRAS"));
 		
     }
    
@@ -108,7 +110,7 @@ public class HecRasController{
 		// Check if we already are connected
 		if (MainDao.isConnected()){
 			view.enableButtons(true);
-			view.setSchemaModel(MainDao.getSchemas());
+			view.setSchemaModel(MainDao.getSchemas("HECRAS"));
 	    	view.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));			
 		} 
 		else{
@@ -132,7 +134,7 @@ public class HecRasController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_sdf"));
-        File file = new File(prop.getProperty("FILE_SDF", userHomeFolder));	
+        File file = new File(gswProp.getProperty("FILE_SDF", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -155,7 +157,7 @@ public class HecRasController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
-        File file = new File(prop.getProperty("FILE_ASC", userHomeFolder));	
+        File file = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -181,7 +183,7 @@ public class HecRasController{
             path += ".sdf";
         }
         fileSdf = new File(path);        
-        prop.put("FILE_SDF", fileSdf.getAbsolutePath());
+        gswProp.put("FILE_SDF", fileSdf.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -198,7 +200,7 @@ public class HecRasController{
             path += ".asc";
         }
         fileAsc = new File(path);        
-        prop.put("FILE_ASC", fileAsc.getAbsolutePath());
+        gswProp.put("FILE_ASC", fileAsc.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -273,7 +275,7 @@ public class HecRasController{
 			Utils.showError("error_srid");
 			return;
 		}
-		prop.put("SRID_USER", sridValue);
+		MainDao.getGswProperties().put("SRID_USER", sridValue);
 		MainDao.savePropertiesFile();
 
 		boolean isSridOk = MainDao.checkSrid(srid);
@@ -291,7 +293,7 @@ public class HecRasController{
 		else if (status && !defaultSchemaName.equals("")){
 			Utils.showMessage("schema_truncate_completed");
 		}
-		view.setSchemaModel(MainDao.getSchemas());		
+		view.setSchemaModel(MainDao.getSchemas("HECRAS"));		
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
@@ -305,7 +307,7 @@ public class HecRasController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
-        	view.setSchemaModel(MainDao.getSchemas());
+        	view.setSchemaModel(MainDao.getSchemas("HECRAS"));
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage("schema_deleted", "");
         }
@@ -344,7 +346,7 @@ public class HecRasController{
 		
 		// Copy file from Postgis Data Directory to folder specified by the user
 		String auxIn, auxOut;
-		String folderIn = prop.getProperty("POSTGIS_DATA");
+		String folderIn = gswProp.getProperty("POSTGIS_DATA");
 		auxIn = folderIn + File.separator + fileName;
 		auxOut = fileSdf.getAbsolutePath();
 		boolean ok = Utils.copyFile(auxIn, auxOut);
