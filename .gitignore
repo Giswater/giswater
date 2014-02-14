@@ -17,9 +17,10 @@ local.properties
 .loadpath
 log
 portable
-config/inp_*
+config/giswater_*
 build_runnable.xml
 build_runnable_jar.xml
+samples/*.asc
 
 # External tool builders
 .externalToolBuilders/
