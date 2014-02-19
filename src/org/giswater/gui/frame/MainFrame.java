@@ -36,6 +36,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 
 import org.giswater.controller.ConfigController;
 import org.giswater.controller.DatabaseController;
@@ -50,7 +51,6 @@ import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import javax.swing.SwingConstants;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -145,33 +145,33 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmNew = new JMenuItem(BUNDLE.getString("MainFrame.mntmNew.text")); //$NON-NLS-1$
 		mntmNew.setVisible(false);
-		mntmNew.setActionCommand(BUNDLE.getString("MainFrame.mntmNew.actionCommand")); //$NON-NLS-1$
+		mntmNew.setActionCommand("gswNew");
 		mnProject.add(mntmNew);
 		
 		mntmOpen = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
-		mntmOpen.setActionCommand(BUNDLE.getString("MainFrame.mntmOpen.actionCommand")); //$NON-NLS-1$
+		mntmOpen.setActionCommand("gswOpen");
 		mnProject.add(mntmOpen);
 		
 		mntmSave = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
-		mntmSave.setActionCommand(BUNDLE.getString("MainFrame.mntmSave.actionCommand")); //$NON-NLS-1$
+		mntmSave.setActionCommand("gswSave");
 		mnProject.add(mntmSave);
 		
 		mntmSaveAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
-		mntmSaveAs.setActionCommand(BUNDLE.getString("MainFrame.mntmSaveAs.actionCommand")); //$NON-NLS-1$
+		mntmSaveAs.setActionCommand("gswSaveAs");
 		mnProject.add(mntmSaveAs);
 		
 		JMenu mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
 		
-		mntmSwmm = new JMenuItem("EPA SWMM");
-		mntmSwmm.setActionCommand("openSwmm");
-		mnForms.add(mntmSwmm);
-		
 		mntmEpanet = new JMenuItem("EPANET");
 		mntmEpanet.setActionCommand("openEpanet");
 		mnForms.add(mntmEpanet);
 		
-		mntmHecras = new JMenuItem("HECRAS");
+		mntmSwmm = new JMenuItem("EPA SWMM");
+		mntmSwmm.setActionCommand("openSwmm");
+		mnForms.add(mntmSwmm);
+		
+		mntmHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmHecras.text")); //$NON-NLS-1$
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
@@ -181,6 +181,18 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
 		mnGisProject.add(mntmGisProject);
 		mntmGisProject.setActionCommand("showGisProject");
+		
+		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
+		mnGisProject.add(mntmSampleEpanet);
+		mntmSampleEpanet.setActionCommand("sampleEpanet");
+		
+		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
+		mnGisProject.add(mntmSampleEpaswmm);
+		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm");
+		
+		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
+		mnGisProject.add(mntmSampleHecras);
+		mntmSampleHecras.setActionCommand("sampleHecras");
 		
 		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
 		mnData.setEnabled(false);
@@ -232,18 +244,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware = new JMenuItem(BUNDLE.getString("MainFrame.mntmSoftwareConfiguration.text"));
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
-		
-		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
-		mntmSampleEpanet.setActionCommand("sampleEpanet"); //$NON-NLS-1$
-		mnConfiguration.add(mntmSampleEpanet);
-		
-		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
-		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm"); //$NON-NLS-1$
-		mnConfiguration.add(mntmSampleEpaswmm);
-		
-		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
-		mntmSampleHecras.setActionCommand("sampleHecras"); //$NON-NLS-1$
-		mnConfiguration.add(mntmSampleHecras);
 		
 		JMenu mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
 		menuBar.add(mnAbout);
@@ -322,10 +322,10 @@ public class MainFrame extends JFrame implements ActionListener{
         desktopPane.add(hecRasFrame);     
         desktopPane.add(dbFrame);        
         desktopPane.add(configFrame);
-        desktopPane.add(gisFrame);  
+        desktopPane.add(gisFrame);
         
         // Set specific configuration
-		swmmFrame.setTitle("EPASWMM");
+		swmmFrame.setTitle("EPA SWMM");
 		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
 		swmmFrame.getPanel().setOptionsButton("Options", "showInpOptions");
 		swmmFrame.getPanel().setReportButton("Report options", "showReport");
@@ -336,11 +336,6 @@ public class MainFrame extends JFrame implements ActionListener{
 
         // Get info from properties
 		getMainParams("MAIN");
-        getFrameParams(swmmFrame, "SWMM");
-        getFrameParams(epanetFrame, "EPANET");
-        getFrameParams(hecRasFrame, "HECRAS");
-        getFrameParams(dbFrame, "DB");      
-        getFrameParams(configFrame, "CONFIG");
 
         // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel(), this);
@@ -361,32 +356,63 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
+	public void updateFrames(){
+
+		try {
+	        getFrameParams(dbFrame, "DB");      
+	        getFrameParams(configFrame, "CONFIG");			
+			getFrameParams(swmmFrame, "SWMM");
+	        getFrameParams(epanetFrame, "EPANET");
+	        getFrameParams(hecRasFrame, "HECRAS");
+			// Only one frame remains visible
+			boolean selected;
+	        selected = Boolean.parseBoolean(MainDao.getGswProperties().get("EPANET_SELECTED", "false"));
+			if (selected){
+				swmmFrame.setVisible(false);
+				hecRasFrame.setVisible(false);
+				epanetFrame.setSelected(true);
+				epanetFrame.setMaximum(true);			
+			}
+			selected = Boolean.parseBoolean(MainDao.getGswProperties().get("SWMM_SELECTED", "false"));
+			if (selected){
+				hecRasFrame.setVisible(false);
+				epanetFrame.setVisible(false);
+				swmmFrame.setSelected(true);
+				swmmFrame.setMaximum(true);						
+			}
+	        selected = Boolean.parseBoolean(MainDao.getGswProperties().get("HECRAS_SELECTED", "false"));
+			if (selected){
+				swmmFrame.setVisible(false);
+				epanetFrame.setVisible(false);
+				hecRasFrame.setSelected(true);
+				hecRasFrame.setMaximum(true);						
+			}
+			} catch (PropertyVetoException e) {
+            Utils.logError(e.getMessage());
+		}		
+	}
+	
+	
 	private void getFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
 
         int x, y;
-        boolean visible, selected, maximized;
-        x = Integer.parseInt(prop.get(prefix + "_X", "0"));
-        y = Integer.parseInt(prop.get(prefix + "_Y", "0"));
-        visible = Boolean.parseBoolean(prop.get(prefix + "_VISIBLE", "false"));
-        selected = Boolean.parseBoolean(prop.get(prefix + "_SELECTED", "false"));
-        maximized = true;
+        boolean visible;
+        x = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_X", "0"));
+        y = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_Y", "0"));
+        visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
+        //selected = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_SELECTED", "false"));
         frame.setLocation(x, y);
         frame.setVisible(visible);
-        frame.setSelected(selected);
-        frame.setMaximum(maximized);
+        //frame.setSelected(selected);
 		
 	}
 	
 	
-	private void setFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
-
-		prop.setProperty(prefix + "_X", frame.getX());
-		prop.setProperty(prefix + "_Y", frame.getY());
-		prop.setProperty(prefix + "_VISIBLE", frame.isVisible());
-		prop.setProperty(prefix + "_SELECTED", frame.isSelected());
-		prop.setProperty(prefix + "_MAXIMIZED", frame.isMaximum());
-		MainDao.savePropertiesFile(); 
-		
+	private void putFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
+		MainDao.getGswProperties().put(prefix + "_X", frame.getX());
+		MainDao.getGswProperties().put(prefix + "_Y", frame.getY());
+		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
+		MainDao.getGswProperties().put(prefix + "_SELECTED", frame.isSelected());
 	}
 	
 	
@@ -409,20 +435,18 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	private void setMainParams (String prefix) throws PropertyVetoException{
-
+	private void putMainParams (String prefix) throws PropertyVetoException{
 		boolean maximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
-		prop.setProperty(prefix + "_MAXIMIZED", maximized);		
-		prop.setProperty(prefix + "_X", this.getX());
-		prop.setProperty(prefix + "_Y", this.getY());
-		prop.setProperty(prefix + "_WIDTH", this.getWidth());
-		prop.setProperty(prefix + "_HEIGHT", this.getHeight());
+		prop.put(prefix + "_MAXIMIZED", maximized);		
+		prop.put(prefix + "_X", this.getX());
+		prop.put(prefix + "_Y", this.getY());
+		prop.put(prefix + "_WIDTH", this.getWidth());
+		prop.put(prefix + "_HEIGHT", this.getHeight());
 		MainDao.savePropertiesFile(); 
-		
 	}	
 	
 	
-	public void getEpaParams(String software, EpaPanel epaPanel){
+	public void putEpaParams(String software, EpaPanel epaPanel){
     	MainDao.getGswProperties().put(software+"_FOLDER_SHP", epaPanel.getFolderShp());    	
     	MainDao.getGswProperties().put(software+"_FILE_INP", epaPanel.getFileInp());
     	MainDao.getGswProperties().put(software+"_FILE_RPT", epaPanel.getFileRpt());
@@ -430,14 +454,14 @@ public class MainFrame extends JFrame implements ActionListener{
     	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());      	
 	}    
     
-    public void getHecrasParams(){
+    public void putHecrasParams(){
     	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
     	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
     	MainDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
     	MainDao.getGswProperties().put("HECRAS_SCHEMA", hecRasPanel.getSelectedSchema());
 	}	
     
-    public void getDatabaseParams(){
+    public void putDatabaseParams(){
     	DatabasePanel dbPanel = dbFrame.getPanel();
     	MainDao.getGswProperties().put("POSTGIS_HOST", dbPanel.getHost());
     	MainDao.getGswProperties().put("POSTGIS_PORT", dbPanel.getPort());
@@ -450,7 +474,7 @@ public class MainFrame extends JFrame implements ActionListener{
     	MainDao.getGswProperties().put("POSTGIS_BIN", "");
 	}	   
     
-    public void getGisParams(){
+    public void putGisParams(){
     	GisPanel gisPanel = gisFrame.getPanel();
     	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
     	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
@@ -467,18 +491,18 @@ public class MainFrame extends JFrame implements ActionListener{
     	
 		// Get EPANET and SWMM parameters
     	EpaPanel epanetPanel = epanetFrame.getPanel();
-    	getEpaParams("EPANET", epanetPanel);
+    	putEpaParams("EPANET", epanetPanel);
     	EpaPanel swmmPanel = swmmFrame.getPanel();        	
-    	getEpaParams("EPASWMM", swmmPanel);      
+    	putEpaParams("EPASWMM", swmmPanel);      
     	
 		// Get HECRAS parameters
-		getHecrasParams();		
+		putHecrasParams();		
 		
 		// Get Database parameters
-		getDatabaseParams();		
+		putDatabaseParams();		
     	
     	// Get GIS parameters
-    	getGisParams();
+    	putGisParams();
     	
     	MainDao.saveGswPropertiesFile();
         
@@ -488,12 +512,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void closeApp(){
 	
         try {
-			setFrameParams(swmmFrame, "SWMM");
-	        setFrameParams(epanetFrame, "EPANET");
-	        setFrameParams(hecRasFrame, "HECRAS");
-	        setFrameParams(dbFrame, "DB");      
-	        setFrameParams(configFrame, "CONFIG");	
-	        setMainParams("MAIN");
+			putFrameParams(swmmFrame, "SWMM");
+	        putFrameParams(epanetFrame, "EPANET");
+	        putFrameParams(hecRasFrame, "HECRAS");
+	        putFrameParams(dbFrame, "DB");      
+	        putFrameParams(configFrame, "CONFIG");	
+	        putMainParams("MAIN");
 	        saveGswFile();
 	        // Stop Postgis portable?
 	        //Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));

@@ -493,9 +493,9 @@ public class PropertiesMap {
 		_comments.put(KEY_COMMENT_HEADER, header.toString());
 	}
 
-	public void put(String key, String value) {
+	public void put(String key, Object value) {
 		setProperty(key, value);
-	}
+	}	
 
 	public void setProperty(String key, Object value) {
 		String aux = value.toString();

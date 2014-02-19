@@ -241,7 +241,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		
 		btnClose = new JButton(BUNDLE.getString("DatabasePanel.btnClose.text")); //$NON-NLS-1$
 		btnClose.setMinimumSize(new Dimension(60, 23));
-		btnClose.setActionCommand(BUNDLE.getString("DatabasePanel.btnClose.actionCommand")); //$NON-NLS-1$
+		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 3 2,alignx left");
 
 		// Panel 3

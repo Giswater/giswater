@@ -118,7 +118,7 @@ public class PatternsDialog extends AbstractCatalogDialog{
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
 		textField_2 = new JTextField();
-		textField_2.setName("patter_id");
+		textField_2.setName("pattern_id");
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 		
@@ -127,7 +127,7 @@ public class PatternsDialog extends AbstractCatalogDialog{
 		
 		cboType = new JComboBox();
 		cboType.setActionCommand("");
-		cboType.setName("patter_type");
+		cboType.setName("pattern_type");
 		panelGeneral.add(cboType, "cell 4 0,growx");
 		
 		JLabel lblGeom = new JLabel("factor 1:");

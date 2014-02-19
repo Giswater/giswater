@@ -205,6 +205,7 @@ public class MainController{
 				view.enableControlsDatabase(true);
 				view.enableAccept(true);
 				view.setSchemaModel(MainDao.getSchemas(software));
+		    	view.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));						
 				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
 				// Check Catalog tables
 				checkCatalogTables(view.getSelectedSchema());
@@ -280,7 +281,8 @@ public class MainController{
 		
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSelectedSchema());
-        JDialog dialog = Utils.openDialogForm(panel, 350, 280);
+        JDialog dialog = Utils.openDialogForm(panel, 380, 280);
+        panel.setParent(dialog);
 		ImageIcon image = new ImageIcon("images/imago.png");        
         dialog.setIconImage(image.getImage());
         dialog.setVisible(true);
@@ -631,7 +633,7 @@ public class MainController{
 	private String getUserSrid(String defaultSrid){
 		
 		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(gswProp.get("SRID_QUESTION"));
+		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
 		if (sridQuestion){
 			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
 			if (sridValue == null){
@@ -691,6 +693,7 @@ public class MainController{
 			Utils.showError(msg);
 			return;
 		}
+		
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
 		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);
 		if (status && defaultSchemaName.equals("")){

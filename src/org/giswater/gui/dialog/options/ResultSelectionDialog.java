@@ -47,14 +47,19 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Table result_selection");
-		setBounds(0, 0, 415, 155);
-		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[66.00][5px][30.00]"));
+		setBounds(0, 0, 375, 176);
+		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[40px:n][66.00][5px][30.00]"));
+		
+		String msg = "<HTML>By selecting on result you analyze the result values on the GIS project<br> (TOC group: Simulation Analysis)</HTML>";
+		JLabel lblNewLabel = new JLabel(msg);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		getContentPane().add(lblNewLabel, "cell 0 0 2 1,alignx center,aligny center");
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[75.00][115.00:115.00][10px][80px][115.00:115.00px]", "[25px:n][10px:n]"));
+		getContentPane().add(panelGeneral, "cell 0 1 2 1,grow");
+		panelGeneral.setLayout(new MigLayout("", "[75.00][115.00:159.00][40.00px]", "[25px:n][10px:n]"));
 		
 		JLabel lblStatistic = new JLabel("Result id:");
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");

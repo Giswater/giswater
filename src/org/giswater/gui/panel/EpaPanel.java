@@ -50,7 +50,6 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.controller.MainController;
 import org.giswater.gui.frame.EpaFrame;
 import org.giswater.util.Utils;
-import java.awt.event.FocusAdapter;
 
 
 public class EpaPanel extends JPanel implements ActionListener, FocusListener {
@@ -92,7 +91,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	private JButton btnDeleteSchema;
 	private JButton btnReport;
 	
-	private String softwareName;   // swmm | epanet
+	private String softwareName;   // epaswmm | epanet
 	private JButton btnDeleteData;
 	private JLabel lblNewLabel;
 	private JButton btnClose;
@@ -332,12 +331,6 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		panel_4.add(lblSchema, "cell 1 3");
 
 		cboSchema = new JComboBox<String>();
-		cboSchema.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				controller.isConnected();
-			}
-		});
 		cboSchema.setEnabled(false);
 		cboSchema.setMaximumSize(new Dimension(110, 20));
 		cboSchema.setPreferredSize(new Dimension(24, 20));
@@ -475,7 +468,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		btnClose = new JButton();
 		btnClose.setMinimumSize(new Dimension(60, 9));
 		btnClose.setText(BUNDLE.getString("EpaPanel.btnClose.text")); //$NON-NLS-1$
-		btnClose.setActionCommand(BUNDLE.getString("EpaPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		btnClose.setActionCommand("closePanel");
 		panel_4.add(btnClose, "cell 3 12");
 
 		setupListeners();

@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -108,6 +107,7 @@ public class MenuController {
 		if (chooseFile){
 			path = gswChooseFile();
 			MainDao.setGswPath(path);
+			prop.put("FILE_GSW", path);			
 		}
 		else{
 			path = MainDao.getGswPath();
@@ -115,9 +115,6 @@ public class MenuController {
             
         // Load .gsw file into memory
 		MainDao.loadGswPropertiesFile();
-        
-		// Update properties file
-		prop.put("FILE_GSW", path);
 		
 		// Update panels
 		updateDatabasePanel();
@@ -128,7 +125,8 @@ public class MenuController {
     	updateEpaPanel("EPASWMM", swmmPanel);  		
     	updateGisPanel();
 
-        // TODO: Update status bar
+        // Update frames
+    	view.updateFrames();
 		
 	}
 
@@ -235,25 +233,6 @@ public class MenuController {
 	}
 	
 	
-//	private boolean openGswFile(String path) {
-//
-//    	Utils.getLogger().info("Opening gsw file: "+path);        
-//
-//        File file = new File(path);
-//        try {
-//        	MainDao.getGswProperties().load(new FileInputStream(file));      
-//        } catch (FileNotFoundException e) {
-//            Utils.showError("inp_error_notfound", path);
-//            return false;
-//        } catch (IOException e) {
-//            Utils.showError("inp_error_io", path);
-//            return false;
-//        }
-//        return (MainDao.getGswProperties() != null);
-//
-//    }    
-    
-    
 	// Menu Software
 	public void openSwmm() {
 		view.openSwmm();
@@ -433,29 +412,12 @@ public class MenuController {
 	
 	private void createSampleSchema(String softwareName){
 		
-		// Ask user to set SRID?
-		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
-		String sridValue = getUserSrid(defaultSrid);
+		// Get default SRID. Never ask user
+		String sridValue = prop.get("SRID_DEFAULT", "23031");		
 		if (sridValue.equals("")){
 			return;
 		}
 		
-		Integer srid;
-		try{
-			srid = Integer.parseInt(sridValue);
-		} catch (NumberFormatException e){
-			Utils.showError("error_srid");
-			return;
-		}
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-		boolean isSridOk = MainDao.checkSrid(srid);
-		if (!isSridOk && srid != 0){
-			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-				Utils.getBundleString("srid_valid");			
-			Utils.showError(msg);
-			return;
-		}
 		String schemaName = "sample_"+softwareName;
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		boolean status = true;
@@ -470,22 +432,22 @@ public class MenuController {
 		if (status){
 			try {			
 				String folderRoot = new File(".").getCanonicalPath() + File.separator;				
+				// From sample .sql file					
+				String filePath = folderRoot+"samples/sample_"+softwareName+".sql";	 
+		    	Utils.getLogger().info("Reading file: "+filePath); 				
+		    	String content = Utils.readFile(filePath);
+				Utils.logSql(content);		
+				boolean result = MainDao.executeSql(content, true);		
+				if (!result) return;
 				if (softwareName.equals("hecras")){				
 					// Trough Load Raster
 					String rasterPath = folderRoot+"samples/sample_mdt.asc";	 						
 					if (MainDao.loadRaster(schemaName, rasterPath)){
 						Utils.showMessage("schema_creation_completed", schemaName);
 					}						
-				}
+				}	
 				else{
-					// From sample .sql file					
-					String filePath = folderRoot+"samples/sample_"+softwareName+".sql";	 
-			    	Utils.getLogger().info("Reading file: "+filePath); 				
-			    	String content = Utils.readFile(filePath);
-					Utils.logSql(content);							
-					if (MainDao.executeSql(content, true)){				
-						Utils.showMessage("schema_creation_completed", schemaName);
-					}
+					Utils.showMessage("schema_creation_completed", schemaName);
 				}
 			} catch (Exception e) {
 	            Utils.showError(e);
@@ -495,24 +457,6 @@ public class MenuController {
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
-		
-	
-	private String getUserSrid(String defaultSrid){
-		
-		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
-		if (sridQuestion){
-			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
-			if (sridValue == null){
-				return "";
-			}
-		}
-		else{
-			sridValue = defaultSrid;
-		}
-		return sridValue.trim();
-		
-	}	
 	
 	
 	// Menu About 
@@ -520,7 +464,7 @@ public class MenuController {
 	public void showWelcome() {
 		
 		String title = "Welcome";
-		String info = "Welcome to Giswater, the EPANET, EPASWMM and HEC-RAS communication tool";
+		String info = "Welcome to Giswater, the EPANET, EPA SWMM and HEC-RAS communication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2);
 		about.setModal(true);
@@ -571,9 +515,12 @@ public class MenuController {
 	
 	public void showAgreements() {
 		
-		String title = "Agreements";
-		String info = "Special thanks for his contribution to the project to:";
-		String info2 = "Gemma García Ribot & Andrés Rodríguez Valero";
+		String title = "Acknowledgment";
+		String info = "Developers, project collaborators, testers and people entrusted are part of Giswater Team";
+		String info2 = "<HTML>Thanks to <i>Gemma Garcia, Andreu Rodríguez, Josep Lluís Sala, Roger Erill, Sergi Muñoz,<br>" +
+			" Joan Cervan, David Escala, Abel García, Carlos López, Jordi Yetor, Allen Bateman," +
+			" Vicente de Medina, Xavier Torret</i> and <i>David Erill</i></HTML>";
+		//btnGithub.setText("<HTML>Source code: <FONT color=\"#000099\"><U>"+URL_GITHUB+"</U></FONT></HTML>");		
 		WelcomeDialog about = new WelcomeDialog(title, info, info2);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);

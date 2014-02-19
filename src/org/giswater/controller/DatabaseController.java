@@ -120,13 +120,12 @@ public class DatabaseController {
 			
 			// Get Postgis data and bin Folder
 	    	String dataPath = MainDao.getDataDirectory();
-	    	Utils.getLogger().info("Postgis data directory: " + dataPath);
 	        gswProp.put("POSTGIS_DATA", dataPath);
 	        File dataFolder = new File(dataPath);
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	    	Utils.getLogger().info("Postgis bin directory: " + dataPath);
-	        gswProp.put("POSTGIS_BIN", binPath);	        
-	        
+	        gswProp.put("POSTGIS_BIN", binPath);
+	    	Utils.getLogger().info("Postgis data directory: " + dataPath);	        
+	    	
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage("connection_opened");
 			

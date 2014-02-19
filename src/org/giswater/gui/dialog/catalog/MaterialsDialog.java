@@ -79,21 +79,21 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		txtId.setColumns(10);
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
-		JLabel lblTsectid = new JLabel("descript:");
-		panelGeneral.add(lblTsectid, "cell 3 0,alignx trailing");
-		
-		txtDescript = new JTextField();
-		txtDescript.setName("descript");
-		txtDescript.setColumns(10);
-		panelGeneral.add(txtDescript, "cell 4 0,growx");
-		
 		lblOther = new JLabel("n:");
-		panelGeneral.add(lblOther, "cell 0 1,alignx trailing");
+		panelGeneral.add(lblOther, "cell 3 0,alignx trailing");
 		
 		txtOther = new JTextField();
 		txtOther.setName("n");
 		txtOther.setColumns(10);
-		panelGeneral.add(txtOther, "cell 1 1,growx");
+		panelGeneral.add(txtOther, "cell 4 0,growx");
+		
+		JLabel lblTsectid = new JLabel("descript:");
+		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
+		
+		txtDescript = new JTextField();
+		txtDescript.setName("descript");
+		txtDescript.setColumns(10);
+		panelGeneral.add(txtDescript, "cell 1 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		

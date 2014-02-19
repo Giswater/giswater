@@ -75,7 +75,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JLabel lblSoftware;
 	private JComboBox<String> cboSoftware;
 
-    //private PropertiesMap prop;
     private PropertiesMap gswProp;
 	private String gisExtension;   // qgs or gvp
 	private JComboBox<String> cboSchema;
@@ -87,7 +86,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
     
 
 	public GisPanel() {
-        //this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();        
 		initConfig();
 		setDefaultValues();
@@ -130,11 +128,24 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}		
 	
 	public void setProjectSoftware(String software) {
+		if (software.equals("EPASWMM")){
+			software = "EPA SWMM";
+		}
+		else if (software.equals("HECRAS")){
+			software = "HEC-RAS";
+		}		
 		cboSoftware.setSelectedItem(software);
 	}	
 	
 	public String getProjectSoftware() {
-		return cboSoftware.getSelectedItem().toString();
+		String software = cboSoftware.getSelectedItem().toString();
+		if (software.equals("EPA SWMM")){
+			software = "EPASWMM";
+		}
+		else if (software.equals("HEC-RAS")){
+			software = "HECRAS";
+		}
+		return software;
 	}	
 	
 	public void setDataStorage(String type) {
@@ -179,7 +190,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		setProjectName(gswProp.get("GIS_NAME"));
 		setProjectSoftware(gswProp.get("GIS_SOFTWARE"));	
 		if (MainDao.isConnected()){
-			setSchemaModel(MainDao.getSchemas());
+			setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
 			setSelectedSchema(gswProp.get("GIS_SCHEMA"));
 			cboSchema.setEnabled(true);
 		}
@@ -232,7 +243,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		panel_1.add(lblSoftware, "cell 0 2,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
-		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPASWMM", "EPANET", "HECRAS"}));
+		cboSoftware.setActionCommand(BUNDLE.getString("GisPanel.cboSoftware.actionCommand")); //$NON-NLS-1$
+		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
 		panel_1.add(cboSoftware, "cell 1 2,growx");
 		
 		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text")); //$NON-NLS-1$
@@ -275,7 +287,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		btnAccept.addActionListener(this);	
 		cboDataStorage.addActionListener(this);		
 		tabbedPane.addFocusListener(this);	
-		btnClose.addActionListener(this);		
+		btnClose.addActionListener(this);	
+		cboSoftware.addActionListener(this);		
 	}
 
 	
@@ -303,11 +316,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			// Check if we already are connected
 			if (MainDao.isConnected()){
 				this.enableControls(true);
-				this.setSchemaModel(MainDao.getSchemas());
+				this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
 				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
 			} 
 			else{
-				Utils.showMessage("You should connect to a Database");
+				//Utils.showMessage("You should be connected to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}
@@ -320,6 +333,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		gswProp.put("GIS_TYPE", dataStorage.toUpperCase());			
 		
 	}
+	
+	
+	public void softwareChanged(){
+		getFocus();
+	}	
 	
 	
 	public void gisAccept(){
@@ -485,7 +503,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void getFocus(){
 		if (MainDao.isConnected()){
 			this.enableControls(true);
-			this.setSchemaModel(MainDao.getSchemas());
+			this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
 			this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
 		} 
 		else{
@@ -502,7 +520,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		}
 		else if (e.getActionCommand().equals("selectSourceType")){
 			selectSourceType();
-		}		
+		}
+		else if (e.getActionCommand().equals("softwareChanged")){
+			softwareChanged();
+		}			
 		else if (e.getActionCommand().equals("gisAccept")){
 			gisAccept();
 		}

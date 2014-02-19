@@ -48,7 +48,8 @@ public class WelcomeDialog extends JDialog {
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		setIconImage(iconImage.getImage());
 		setTitle(title);		
-		setSize(523, 160);
+		//setSize(523, 160);
+		setSize(580, 190);
 		getContentPane().setLayout(new MigLayout("", "[518.00px]", "[8px][45.00][20px][20.00px]"));
 
         JPanel panelLogo = new JPanel(new BorderLayout()) {

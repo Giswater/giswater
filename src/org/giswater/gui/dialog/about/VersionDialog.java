@@ -34,7 +34,6 @@ import java.net.URISyntaxException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
@@ -45,7 +44,6 @@ import org.giswater.util.Utils;
 public class VersionDialog extends JDialog {
 
 	private static final long serialVersionUID = 2829254148112384387L;
-	private JLabel lblInfo;
 	public URI urlWeb = null;
 	public URI urlGithub = null;	
 	private final String URL_WEB = "http://www.giswater.org";
@@ -80,7 +78,7 @@ public class VersionDialog extends JDialog {
 		setIconImage(image.getImage());		
 		setTitle(title);
 		setSize(455, 125);
-		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[20px:20px:20px][20px:20px:20px][20px:20px:20px]"));
+		getContentPane().setLayout(new MigLayout("", "[116.00][173.00px,grow]", "[20px:20px:20px][10px][20px:20px:20px]"));
 		
 		try {
 			urlWeb = new URI(URL_WEB);
@@ -99,10 +97,6 @@ public class VersionDialog extends JDialog {
 		btnWeb.addActionListener(new OpenUrlWeb());		
 		
 		getContentPane().add(btnWeb, "cell 0 0 2 1,alignx center");
-		
-		lblInfo = new JLabel("Developer: David Erill Carrera");
-		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 11));
-		getContentPane().add(lblInfo, "cell 0 1 2 1,alignx center,aligny center");	
 		
 		JButton btnGithub = new JButton();
 		btnGithub.setFont(new Font("Tahoma", Font.BOLD, 12));

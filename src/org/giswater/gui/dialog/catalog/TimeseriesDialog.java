@@ -48,20 +48,21 @@ import org.giswater.util.Utils;
 public class TimeseriesDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
+	private JPanel panelGeneral;
 	private JTextField txtId;
+	private JLabel lblOther;
+	private JLabel lblTimesType;
+	private JComboBox<String> cboTimserType;
+	private JComboBox<String> cboTimesType;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
 	private JButton btnCreate;
 	private JButton btnDelete;
-	private JLabel lblOther;
+	
 	private JTable table;
-	private JPanel panelGeneral;
 	private JScrollPane panelTable;
-	private JComboBox<String> comboBox;
-	private JButton btnDetailDelete;
 	private JButton btnDetailCreate;
-	private JLabel lblTimesType;
-	private JComboBox<String> cboTimesType;
+	private JButton btnDetailDelete;	
 	
 	
 	public TimeseriesDialog() {
@@ -137,9 +138,9 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Timser type:");
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		comboBox = new JComboBox<String>();
-		comboBox.setName("timser_type");
-		panelGeneral.add(comboBox, "cell 1 1,growx");
+		cboTimserType = new JComboBox<String>();
+		cboTimserType.setName("timser_type");
+		panelGeneral.add(cboTimserType, "cell 1 1,growx");
 		
 		lblTimesType = new JLabel("Times type:");
 		panelGeneral.add(lblTimesType, "cell 0 2,alignx trailing");
@@ -171,22 +172,22 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		btnNext.setToolTipText("Next record");
 		btnNext.setActionCommand("moveNext");
 		
-		btnSave = new JButton("Save");
-		panelGeneral.add(btnSave, "cell 3 0");
-		btnSave.setToolTipText("Save record");
-		btnSave.setActionCommand("saveData");
-		
-		btnDetailCreate = new JButton("New");
-		btnDetailCreate.setMinimumSize(new Dimension(80, 23));
+		btnDetailCreate = new JButton("Add row");
+		btnDetailCreate.setMaximumSize(new Dimension(87, 23));
+		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
 		btnDetailCreate.setToolTipText("Insert new row");
 		btnDetailCreate.setActionCommand("detailCreate");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");
 		
-		btnDetailDelete = new JButton("Delete");
-		btnDetailDelete.setMinimumSize(new Dimension(80, 23));
+		btnDetailDelete = new JButton("Delete row");
 		btnDetailDelete.setToolTipText("Delete selected rows");
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
+		
+		btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save record");
+		btnSave.setActionCommand("saveData");
+		getContentPane().add(btnSave, "cell 1 2,alignx right");			
 		
 		btnClose = new JButton("Close");
 		btnClose.setToolTipText("Close window");
@@ -207,6 +208,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		btnDetailDelete.addActionListener(this);
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();
 				String id = txtId.getText().trim();
             	String timesType = cboTimesType.getSelectedItem().toString();				
 				controller.detailCreateTimeseries(timesType, id);

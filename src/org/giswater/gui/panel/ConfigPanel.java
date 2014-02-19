@@ -163,7 +163,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		panel_1.add(btnAccept, "cell 1 2,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("ConfigPanel.btnClose.text")); //$NON-NLS-1$
-		btnClose.setActionCommand(BUNDLE.getString("ConfigPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 2 2");
 
 		setupListeners();

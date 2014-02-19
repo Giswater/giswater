@@ -63,6 +63,8 @@ public class MainClass {
             	mdi = new MainFrame(MainDao.isConnected());
             	MenuController menuController = new MenuController(mdi);            	
                 mdi.setVisible(true);
+                
+                // By default open last gsw
                 menuController.gswOpen(false);
                 
             }

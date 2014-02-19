@@ -147,7 +147,7 @@ public class CatalogController {
 		if (comboName.equals("shape")){
 			tableName = "inp_value_catarc";
 		}
-		else if (comboName.equals("patter_type")){
+		else if (comboName.equals("pattern_type")){
 			tableName = "inp_typevalue_pattern";
 		}
 		else if (comboName.equals("timser_type")){

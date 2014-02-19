@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -47,16 +48,18 @@ public class SectorSelectionPanel extends JPanel {
 	private final String TABLE_SECTOR = "sector";
 	private final String TABLE_SECTOR_SELECTION = "sector_selection";
 	
+	//private String schema;	
 	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
 	private JButton btnDelete;
 	private JButton btnDeleteAll;
-	private String schema;
+	private JButton btnClose;
+	private JDialog dialog;
 
 	
 	public SectorSelectionPanel(String schema) {
-		this.schema = schema;
+		//this.schema = schema;
 		initConfig();
 		setData();
 	}
@@ -64,18 +67,21 @@ public class SectorSelectionPanel extends JPanel {
 	
 	private void setData(){
 		
-		if (MainDao.getSchema() == null){
-			MainDao.setSchema(schema);
+		if (MainDao.isConnected()){
+			ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
+			if (rs == null) return;		
+			tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
+			tableModelSectorSelection.setTable(table);
+			table.setModel(tableModelSectorSelection);
+			tableModelSectorSelection.setCombos();
+			btnInsert.setVisible(true);
+			btnDelete.setVisible(true);			
 		}
-		ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
-		if (rs == null) return;		
-		tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
-		tableModelSectorSelection.setTable(table);
-		table.setModel(tableModelSectorSelection);
-		tableModelSectorSelection.setCombos();
-		btnInsert.setVisible(true);
-		btnDelete.setVisible(true);			
 		
+	}
+	
+	public void setParent(JDialog dialog) {
+		this.dialog = dialog;
 	}
 	
 	
@@ -99,6 +105,7 @@ public class SectorSelectionPanel extends JPanel {
 		scrollPane.setViewportView(table);
 		
 		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text")); //$NON-NLS-1$
+		btnInsert.setMaximumSize(new Dimension(79, 23));
 		btnInsert.setMinimumSize(new Dimension(79, 23));
 		add(btnInsert, "flowx,cell 1 4,alignx left");
 		
@@ -108,8 +115,15 @@ public class SectorSelectionPanel extends JPanel {
 		btnDelete.setVisible(false);
 		add(btnDelete, "cell 1 4");
 		
-		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text")); //$NON-NLS-1$
+		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text"));
+		btnDeleteAll.setMinimumSize(new Dimension(75, 23));
 		add(btnDeleteAll, "cell 1 4");
+		
+		btnClose = new JButton("Close");
+		btnClose.setMinimumSize(new Dimension(79, 23));
+		btnClose.setMaximumSize(new Dimension(79, 23));
+		btnClose.setActionCommand("closePanel");
+		add(btnClose, "cell 1 4");
 
 		setupListeners();
 		
@@ -131,6 +145,11 @@ public class SectorSelectionPanel extends JPanel {
 		btnDeleteAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteAll();
+			}
+		});		
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dialog.dispose();
 			}
 		});		
 		
@@ -174,6 +193,6 @@ public class SectorSelectionPanel extends JPanel {
         }
         
 	}
-	
+
 	
 }

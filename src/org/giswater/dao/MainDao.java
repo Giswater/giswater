@@ -62,6 +62,9 @@ public class MainDao {
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
 	private static final String GSW_FILE = "default.gsw";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
+	private static final String TABLE_EPANET = "inp_demand";		
+	private static final String TABLE_EPASWMM = "inp_divider";	
+	private static final String TABLE_HECRAS = "banks";		
 	
 	
 	public static String getGswPath(){
@@ -116,9 +119,12 @@ public class MainDao {
     	
     	// Load Properties files
     	if (!loadPropertiesFile()) return false;
+    	
+    	// Load last gsw file
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	MainDao.setGswPath(gswPath);
-    	if (!loadGswPropertiesFile()) return false;
+    	loadGswPropertiesFile();
+    	//if (!loadGswPropertiesFile()) return false;
     	
     	// Log SQL?
     	Utils.setSqlLog(prop.get("SQL_LOG", "false"));
@@ -380,7 +386,7 @@ public class MainDao {
         try {
         	gswProp.load(new FileInputStream(file));      
         } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", gswPath);
+            Utils.logError("inp_error_notfound", gswPath);
             return false;
         } catch (IOException e) {
             Utils.showError("inp_error_io", gswPath);
@@ -680,13 +686,13 @@ public class MainDao {
     	
     	String tableName = "";
         if (software.equals("EPANET")){
-        	tableName = "inp_demand";
+        	tableName = TABLE_EPANET;
         }
-        else if (software.equals("EPASWMM")){
-        	tableName = "inp_divider";
+        else if (software.equals("EPASWMM") || software.equals("EPA SWMM")){
+        	tableName = TABLE_EPASWMM;
         }
-        else if (software.equals("HECRAS")){
-        	tableName = "banks";
+        else if (software.equals("HECRAS") || software.equals("HEC-RAS")){
+        	tableName = TABLE_HECRAS;
         }
         return checkTable(schemaName, tableName);
 
@@ -940,7 +946,6 @@ public class MainDao {
 	public static Integer getTableSrid(String schema, String table) {
 		
 		Integer srid = 0;
-        //String sql = "SELECT find_SRID('"+schema+"', '"+table+"', 'the_geom')";
 		String sql = "SELECT srid FROM public.geometry_columns"+
 			" WHERE f_table_schema = '"+schema+"' AND f_table_name = '"+table+"'";
         try {
@@ -1010,10 +1015,10 @@ public class MainDao {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-            	aux = aux.replace("__XMAX__", rs.getString(1));
-            	aux = aux.replace("__XMIN__", rs.getString(2));
-            	aux = aux.replace("__YMAX__", rs.getString(3));
-            	aux = aux.replace("__YMIN__", rs.getString(4));
+            	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "" : rs.getString(1));
+            	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "" : rs.getString(2));
+            	aux = aux.replace("__YMAX__", (rs.getString(3) == null) ? "" : rs.getString(3));
+            	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "" : rs.getString(4));
             }
             rs.close();
         } catch (SQLException e) {
