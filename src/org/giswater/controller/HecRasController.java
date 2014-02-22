@@ -136,7 +136,7 @@ public class HecRasController{
         chooser.setDialogTitle(Utils.getBundleString("file_sdf"));
         File file = new File(gswProp.getProperty("FILE_SDF", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileSdf = chooser.getSelectedFile();
             String path = fileSdf.getAbsolutePath();
@@ -159,7 +159,7 @@ public class HecRasController{
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
         File file = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
         	fileAsc = chooser.getSelectedFile();
             String path = fileAsc.getAbsolutePath();

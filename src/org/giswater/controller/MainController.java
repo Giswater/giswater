@@ -73,50 +73,14 @@ public class MainController{
 
     
     public MainController(EpaPanel view, MainFrame mf, String software) {
-    	
     	this.mainFrame = mf;
     	this.view = view;	
         this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();
         this.software = software;
 	    view.setControl(this);        
-    	userHomeFolder = System.getProperty("user.home");
-    	
-    	// Set default values
-    	setDefaultValues();
-    	    	
+    	userHomeFolder = System.getProperty("user.home"); 	
 	}
-
-    
-    private void setDefaultValues(){
-    	
-    	// DBF
-		dirShp = new File(gswProp.get(software+"_FOLDER_SHP", userHomeFolder));
-		if (dirShp.exists()) {
-			view.setFolderShp(dirShp.getAbsolutePath());
-			readyShp = true;
-		}
-    	fileInp = new File(gswProp.get(software+"_FILE_INP", userHomeFolder));
-		if (fileInp.exists()) {
-			view.setFileInp(fileInp.getAbsolutePath());
-		}
-		fileRpt = new File(gswProp.get(software+"_FILE_RPT", userHomeFolder));
-		if (fileRpt.exists()) {
-			view.setFileRpt(fileRpt.getAbsolutePath());
-		}    	
-		projectName = gswProp.get(software+"_PROJECT_NAME", "");
-		view.setProjectName(projectName);
-		
-		String gisType = gswProp.get("GIS_TYPE", "");
-		if (gisType.equals("DATABASE")){
-			view.setDatabaseSelected(true);
-		}
-		else if (gisType.equals("DBF")){
-			view.setDbfSelected(true);
-		}
-		selectSourceType(false);
-			
-    }
    
 
 	public void action(String actionCommand) {
@@ -154,7 +118,7 @@ public class MainController{
 		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
 		File file = new File(gswProp.get(software+"_FOLDER_SHP", userHomeFolder));
 		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(null);
+		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			dirShp = chooser.getSelectedFile();
 			view.setFolderShp(dirShp.getAbsolutePath());
@@ -244,11 +208,6 @@ public class MainController{
 	
 	public void schemaTest(String schemaName){
 		view.setSelectedSchema(schemaName);
-	}
-	
-	
-	public void comboBoxEdited(){
-		schemaChanged();
 	}
 	
 	
@@ -363,7 +322,7 @@ public class MainController{
         chooser.setDialogTitle(Utils.getBundleString("file_inp"));
         File file = new File(gswProp.get(software+"_FILE_INP", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileInp = chooser.getSelectedFile();
             String path = fileInp.getAbsolutePath();
@@ -386,7 +345,7 @@ public class MainController{
         chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
         File file = new File(gswProp.get(software+"_FILE_RPT", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileRpt = chooser.getSelectedFile();
             String path = fileRpt.getAbsolutePath();

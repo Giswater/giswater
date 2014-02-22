@@ -159,22 +159,21 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnNext.setToolTipText("Next record");
 		btnNext.setActionCommand("moveNext");
 		
-		btnSave = new JButton("Save");
-		panelGeneral.add(btnSave, "cell 4 0");
-		btnSave.setToolTipText("Save record");
-		btnSave.setActionCommand("saveData");
-		
-		btnDetailCreate = new JButton("New");
-		btnDetailCreate.setMinimumSize(new Dimension(80, 23));
+		btnDetailCreate = new JButton("Add row");
+		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
 		btnDetailCreate.setToolTipText("Insert new row");
 		btnDetailCreate.setActionCommand("detailCreateCurves");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");
 		
-		btnDetailDelete = new JButton("Delete");
-		btnDetailDelete.setMinimumSize(new Dimension(80, 23));
+		btnDetailDelete = new JButton("Delete row");
 		btnDetailDelete.setToolTipText("Delete selected rows");
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
+
+		btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save record");
+		btnSave.setActionCommand("saveData");
+		getContentPane().add(btnSave, "cell 1 2,alignx right");			
 		
 		btnClose = new JButton("Close");
 		btnClose.setToolTipText("Close window");
@@ -195,6 +194,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnDetailDelete.addActionListener(this);
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				controller.saveData();				
 				String id = txtId.getText().trim();
 				controller.detailCreateCurves(id);
 			}

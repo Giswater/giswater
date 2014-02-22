@@ -134,6 +134,10 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	public void setDatabaseSelected(boolean isSelected){
 		optDatabase.setSelected(isSelected);
 	}	
+	
+	public boolean getOptDbfSelected(){
+		return optDbf.isSelected();
+	}	
 
 	public void setDbfSelected(boolean isSelected){
 		optDbf.setSelected(isSelected);

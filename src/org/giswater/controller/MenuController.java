@@ -30,8 +30,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
-import org.giswater.gui.dialog.about.VersionDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ConduitDialog;
@@ -64,6 +64,7 @@ public class MenuController {
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
+	private final String VERSION_CODE = "1.0.140";
 
 	
 	public MenuController(MainFrame mainFrame) {
@@ -103,16 +104,19 @@ public class MenuController {
 	
 	public void gswOpen(boolean chooseFile){
 		
-		String path = "";
+		String gswPath = "";
 		if (chooseFile){
-			path = gswChooseFile();
-			MainDao.setGswPath(path);
-			prop.put("FILE_GSW", path);			
+			gswPath = gswChooseFile();
+			if (gswPath == "") return;
+			MainDao.setGswPath(gswPath);
+			prop.put("FILE_GSW", gswPath);			
 		}
 		else{
-			path = MainDao.getGswPath();
+			gswPath = MainDao.getGswPath();
 		}
             
+		if (gswPath == "") return;
+		
         // Load .gsw file into memory
 		MainDao.loadGswPropertiesFile();
 		
@@ -125,8 +129,9 @@ public class MenuController {
     	updateEpaPanel("EPASWMM", swmmPanel);  		
     	updateGisPanel();
 
-        // Update frames
+        // Update frames and title
     	view.updateFrames();
+    	view.updateTitle(gswPath);
 		
 	}
 
@@ -137,9 +142,10 @@ public class MenuController {
 
 	
 	public void gswSaveAs(){
-		String gswPath = gswChooseFile();
-    	MainDao.setGswPath(gswPath);		
+		String gswPath = gswChooseFile(true);
+    	MainDao.setGswPath(gswPath);
     	view.saveGswFile();
+    	view.updateTitle(gswPath);    	
 	}
 
 	
@@ -186,7 +192,15 @@ public class MenuController {
     	epaPanel.setFileInp(MainDao.getGswProperties().get(software+"_FILE_INP"));
     	epaPanel.setFileRpt(MainDao.getGswProperties().get(software+"_FILE_RPT"));
     	epaPanel.setProjectName(MainDao.getGswProperties().get(software+"_PROJECT_NAME"));
-    	epaPanel.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));    	
+    	epaPanel.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));   
+		String storage = MainDao.getGswProperties().get(software+"_STORAGE").toUpperCase();
+		if (storage.equals("DATABASE")){
+			epaPanel.setDatabaseSelected(true);
+		}
+		else if (storage.equals("DBF")){
+			epaPanel.setDbfSelected(true);
+		}
+		epaPanel.selectSourceType();    	
 	}   
     
  
@@ -207,18 +221,25 @@ public class MenuController {
     	gisPanel.setSelectedSchema(MainDao.getGswProperties().get("GIS_SCHEMA"));      	
 	}       
     
-	
+    
 	private String gswChooseFile(){
+		return gswChooseFile(false);
+	}
+	
+	private String gswChooseFile(boolean save){
 		
 		String path = "";
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("GSW extension file", "gsw");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_gsw"));
+        chooser.setDialogTitle(Utils.getBundleString("GSW file"));
+        if (save){
+        	chooser.setApproveButtonText("Save");        
+        }
         File fileProp = new File(prop.get("FILE_GSW", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             path = file.getAbsolutePath();
@@ -466,18 +487,7 @@ public class MenuController {
 		String title = "Welcome";
 		String info = "Welcome to Giswater, the EPANET, EPA SWMM and HEC-RAS communication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
-		WelcomeDialog about = new WelcomeDialog(title, info, info2);
-		about.setModal(true);
-		about.setLocationRelativeTo(null);
-		about.setVisible(true);
-		
-	}
-
-	
-	public void showVersion() {
-		
-		String version = "Giswater version " + prop.get("VERSION_CODE");
-		VersionDialog about = new VersionDialog(version);
+		WelcomeDialog about = new WelcomeDialog(title, info, info2, "Version: " + VERSION_CODE);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);
 		about.setVisible(true);
@@ -513,15 +523,14 @@ public class MenuController {
 	}
 
 	
-	public void showAgreements() {
+	public void showAcknowledgment() {
 		
 		String title = "Acknowledgment";
 		String info = "Developers, project collaborators, testers and people entrusted are part of Giswater Team";
 		String info2 = "<HTML>Thanks to <i>Gemma Garcia, Andreu Rodríguez, Josep Lluís Sala, Roger Erill, Sergi Muñoz,<br>" +
 			" Joan Cervan, David Escala, Abel García, Carlos López, Jordi Yetor, Allen Bateman," +
 			" Vicente de Medina, Xavier Torret</i> and <i>David Erill</i></HTML>";
-		//btnGithub.setText("<HTML>Source code: <FONT color=\"#000099\"><U>"+URL_GITHUB+"</U></FONT></HTML>");		
-		WelcomeDialog about = new WelcomeDialog(title, info, info2);
+		AcknowledgmentDialog about = new AcknowledgmentDialog(title, info, info2);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);
 		about.setVisible(true);

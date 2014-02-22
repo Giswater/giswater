@@ -104,7 +104,7 @@ public class ConfigController {
         chooser.setDialogTitle(Utils.getBundleString("file_swmm"));
         File fileProp = new File(prop.get("FILE_SWMM", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             String path = file.getAbsolutePath();
@@ -127,7 +127,7 @@ public class ConfigController {
         chooser.setDialogTitle(Utils.getBundleString("file_epanet"));
         File fileProp = new File(prop.get("FILE_EPANET", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(null);
+        int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
             String path = file.getAbsolutePath();

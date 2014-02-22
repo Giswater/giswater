@@ -93,7 +93,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmSampleHecras;
 	
 	private JMenuItem mntmWelcome;		
-	private JMenuItem mntmVersion;
 	private JMenuItem mntmLicense;
 	private JMenuItem mntmAgreements;
 	private JMenuItem mntmUserManual;	
@@ -252,10 +251,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnAbout.add(mntmWelcome);
 		mntmWelcome.setActionCommand("showWelcome");
 		
-		mntmVersion = new JMenuItem(BUNDLE.getString("MainFrame.mntmVersion.text")); //$NON-NLS-1$
-		mntmVersion.setActionCommand("showVersion");
-		mnAbout.add(mntmVersion);
-		
 		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); //$NON-NLS-1$
 		mntmLicense.setActionCommand("showLicense");
 		mnAbout.add(mntmLicense);
@@ -274,7 +269,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnAbout.add(mntmWeb);
 		
 		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
-		mntmAgreements.setActionCommand("showAgreements");
+		mntmAgreements.setActionCommand("showAcknowledgment");
 		mnAbout.add(mntmAgreements);
 		
 		desktopPane = new JDesktopPane();
@@ -356,6 +351,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
+	public void updateTitle(String path){
+		String title = BUNDLE.getString("MainFrame.this.title") + " - " + path;
+		setTitle(title);
+	}
+	
+	
 	public void updateFrames(){
 
 		try {
@@ -390,6 +391,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());
 		}		
+		
 	}
 	
 	
@@ -451,7 +453,16 @@ public class MainFrame extends JFrame implements ActionListener{
     	MainDao.getGswProperties().put(software+"_FILE_INP", epaPanel.getFileInp());
     	MainDao.getGswProperties().put(software+"_FILE_RPT", epaPanel.getFileRpt());
     	MainDao.getGswProperties().put(software+"_PROJECT_NAME", epaPanel.getProjectName());    	
-    	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());      	
+    	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());
+    	if (epaPanel.getOptDatabaseSelected()){
+    		MainDao.getGswProperties().put(software+"_STORAGE", "DATABASE");
+    	}
+    	else if (epaPanel.getOptDbfSelected()){
+    		MainDao.getGswProperties().put(software+"_STORAGE", "DBF");
+    	}
+    	else{
+    		MainDao.getGswProperties().put(software+"_STORAGE", "");
+    	}
 	}    
     
     public void putHecrasParams(){
@@ -563,7 +574,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSampleHecras.addActionListener(this);	
 		
 		mntmWelcome.addActionListener(this);
-		mntmVersion.addActionListener(this);
 		mntmLicense.addActionListener(this);		
 		mntmAgreements.addActionListener(this);		
 		mntmUserManual.addActionListener(this);

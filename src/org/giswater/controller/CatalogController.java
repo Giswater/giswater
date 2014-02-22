@@ -351,7 +351,7 @@ public class CatalogController {
 		}
 		else if (table.equals("inp_curve")){
 			if (action.equals("create_curve")){
-				String sql2 = "INSERT INTO "+MainDao.getSchema()+"."+table+" ("+fieldId+") VALUES ("+valueId+")";
+				String sql2 = "INSERT INTO "+MainDao.getSchema()+"."+table+" ("+fieldId+") VALUES ('"+valueId+"')";
 				MainDao.executeSql(sql2);
 			}
 			ResultSet rsRelated = MainDao.getResultset(sql);			
