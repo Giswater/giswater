@@ -143,6 +143,7 @@ public class MenuController {
 	
 	public void gswSaveAs(){
 		String gswPath = gswChooseFile(true);
+		if (gswPath == "") return;		
     	MainDao.setGswPath(gswPath);
     	view.saveGswFile();
     	view.updateTitle(gswPath);    	
@@ -435,9 +436,12 @@ public class MenuController {
 		
 		// Get default SRID. Never ask user
 		String sridValue = prop.get("SRID_DEFAULT", "23031");		
-		if (sridValue.equals("")){
-			return;
-		}
+		if (sridValue.equals("")) return;
+
+		// Ask confirmation
+		String msg = "Schema called 'sample_"+softwareName+"' will be created with SRID 23031.\nDo you wish to continue?";
+		int res = Utils.confirmDialog(msg, "Create DB sample");
+		if (res != 0) return; 
 		
 		String schemaName = "sample_"+softwareName;
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -504,8 +508,7 @@ public class MenuController {
 				"See the GNU General Public License for more details\u201D</p></html>";
 		String info2Begin = "<html><p align=\"justify\"><font size='2'>";
 		String info2Body = 
-				"This product has been funded wholly or in part by GRUPO DE INVESTIGACION EN TRANSPORTE DE SEDIMENTOS (GITS) de la " + 
-				"UNIVERSITAT POLITECNICA DE CATALUNYA (UPC) and TECNICSASSOCIATS, TALLER D'ARQUITECTURA I ENGINYERIA, SL. " + 
+				"THIS VERSION IS PROVIDED BY GISWATER ASSOCIATION.<br> " + 
 				"Mention of trade names or commercial products does not constitute endorsement or recommendation for use. " + 
 				"Although It has been subjected to technical review before being released and although it has made a considerable effort " +
 				"to assure that the results obtained are correct, the computer programs are experimental. " + 

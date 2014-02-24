@@ -56,8 +56,8 @@ public class LicenseDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());
 		setTitle(title);		
-		setSize(660, 301);
-		getContentPane().setLayout(new MigLayout("", "[10px][150px,grow][10px]", "[5px][25px][][30.00px][30.00]"));
+		setSize(655, 260);
+		getContentPane().setLayout(new MigLayout("", "[5px:n:5px][150px,grow][5px:n:5px]", "[5px][25px][][30.00px][30.00]"));
 		
 		JLabel lblInfo = new JLabel(info.toUpperCase());
 		lblInfo.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -88,11 +88,6 @@ public class LicenseDialog extends JDialog {
 		btnLicense.setBackground(Color.WHITE);
 		btnLicense.setToolTipText(file.toString());
 		getContentPane().add(btnLicense, "flowx,cell 1 4,alignx center");
-		
-		String info4 = "Copyright (c) COPYRIGHT GITS-UPC & TECNICSASSOCIATS";
-		info4 = info4.toUpperCase();
-		JLabel lblNewLabel = new JLabel(info4);
-		getContentPane().add(lblNewLabel, "cell 1 4");
 		
 		setupListeners();
 		

@@ -132,7 +132,7 @@ public class WelcomeDialog extends JDialog {
 		btnWeb.setBackground(Color.WHITE);
 		btnWeb.setToolTipText("http://www.giswater.org");
 		btnWeb.addActionListener(new OpenUrlWeb());		
-		getContentPane().add(btnWeb, "cell 0 4,alignx center");
+		getContentPane().add(btnWeb, "cell 0 5,alignx center");
 		
 		JButton btnGithub = new JButton();
 		btnGithub.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -143,7 +143,7 @@ public class WelcomeDialog extends JDialog {
 		btnGithub.setBackground(Color.WHITE);
 		btnGithub.setToolTipText(URL_GITHUB);
 		btnGithub.addActionListener(new OpenUrlGithub());	
-		getContentPane().add(btnGithub, "cell 0 5,alignx center");
+		getContentPane().add(btnGithub, "cell 0 4,alignx center");
 		
 		JLabel lblVersion = new JLabel(version);
 		lblVersion.setFont(new Font("Tahoma", Font.BOLD, 12));

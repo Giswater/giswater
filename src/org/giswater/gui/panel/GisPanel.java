@@ -402,7 +402,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String destPath = folder + software+"_"+name;
 		File destFolder = new File(destPath);
 		try {
-			Utils.getLogger().info("GIS Folder: " + destPath);
+			Utils.getLogger().info("Template Folder: "+templatePath);			
+			Utils.getLogger().info("GIS Folder: "+destPath);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			FileUtils.copyDirectory(templateFolder, destFolder);
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
