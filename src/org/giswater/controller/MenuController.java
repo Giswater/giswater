@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * Author:
- *   David Erill <daviderill79@gmail.com>
+ *   David Erill <derill@giswater.org>
  */
 package org.giswater.controller;
 
@@ -64,7 +64,7 @@ public class MenuController {
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
-	private final String VERSION_CODE = "1.0.142";
+	private final String VERSION_CODE = "1.0.143";
 
 	
 	public MenuController(MainFrame mainFrame) {

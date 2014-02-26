@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * 
  * Author:
- *   David Erill <daviderill79@gmail.com>
+ *   David Erill <derill@giswater.org>
  */
 package org.giswater.gui.frame;
 
