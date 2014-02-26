@@ -184,19 +184,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}	
 	
     private void setDefaultValues(){
-    	
 		setProjectFolder(gswProp.get("GIS_FOLDER"));
 		setProjectName(gswProp.get("GIS_NAME"));
-		setProjectSoftware(gswProp.get("GIS_SOFTWARE"));	
-		if (MainDao.isConnected()){
-			setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-			setSelectedSchema(gswProp.get("GIS_SCHEMA"));
-			cboSchema.setEnabled(true);
-		}
-		else{setSchemaModel(null);
-			cboSchema.setEnabled(false);				
-		}
-		
+		setProjectSoftware(gswProp.get("GIS_SOFTWARE"));
+		setDataStorage(gswProp.get("GIS_TYPE"));
+		setSelectedSchema(gswProp.get("GIS_SCHEMA"));
     }	
 	
 	
@@ -258,12 +250,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		panel_1.add(lblSchema, "cell 0 4,alignx trailing");
 		
 		cboSchema = new JComboBox<String>();
-		cboSchema.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocus();
-			}
-		});
 		panel_1.add(cboSchema, "cell 1 4,growx");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
@@ -287,7 +273,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		cboDataStorage.addActionListener(this);		
 		tabbedPane.addFocusListener(this);	
 		btnClose.addActionListener(this);	
-		cboSoftware.addActionListener(this);		
+		cboSoftware.addActionListener(this);
+		cboSchema.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				getFocus();
+			}
+		});		
 	}
 
 	
@@ -310,7 +302,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	public void selectSourceType(){
 
 		String dataStorage = this.getDataStorage();
-		// Database selected
+		// Database selected		
 		if (dataStorage.toUpperCase().equals("DATABASE")){
 			// Check if we already are connected
 			if (MainDao.isConnected()){
@@ -319,7 +311,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
 			} 
 			else{
-				//Utils.showMessage("You should be connected to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}
@@ -328,8 +319,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		else{
 			this.enableControls(false);		
 			this.setSchemaModel(null);					
-		}
-		gswProp.put("GIS_TYPE", dataStorage.toUpperCase());			
+		}		
 		
 	}
 	
@@ -347,6 +337,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String software = getProjectSoftware();
 		String gisType = gswProp.get("GIS_TYPE");
 		String schema = getSelectedSchema();
+		if (schema.equals("")){
+			Utils.showMessage("Any schema selected");
+			return;
+		}
 		String table = "arc";
 		if (software.equals("HECRAS")){
 			table = "banks";
@@ -501,15 +495,24 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 
 	private void getFocus(){
-		if (MainDao.isConnected()){
-			this.enableControls(true);
-			this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-			this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
-		} 
+		
+		String dataStorage = this.getDataStorage();
+		if (dataStorage.toUpperCase().equals("DATABASE")){		
+			if (MainDao.isConnected()){
+				this.enableControls(true);
+				this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
+				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
+			} 
+			else{
+				this.enableControls(false);				
+				this.setSchemaModel(null);
+			}
+		}
 		else{
 			this.enableControls(false);				
-			this.setSchemaModel(null);				
-		}		
+			this.setSchemaModel(null);
+		}
+		
 	}
 
 	

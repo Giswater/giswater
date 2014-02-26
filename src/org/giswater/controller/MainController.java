@@ -191,7 +191,6 @@ public class MainController{
 				view.setSchemaModel(null);				
 			}
 			schemaChanged();
-			gswProp.put("GIS_TYPE", "DATABASE");
 		}
 		// DBF selected
 		else{
@@ -200,7 +199,6 @@ public class MainController{
 			view.enableControlsDatabase(false);
 			view.enableAccept(true);
 			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
-			gswProp.put("GIS_TYPE", "DBF");
 		}
 		
 	}
