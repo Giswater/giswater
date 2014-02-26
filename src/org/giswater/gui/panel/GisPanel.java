@@ -50,7 +50,6 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.apache.commons.io.FileUtils;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.GisFrame;
 import org.giswater.util.Encryption;
@@ -405,7 +404,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			Utils.getLogger().info("Template Folder: "+templatePath);			
 			Utils.getLogger().info("GIS Folder: "+destPath);
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
-			FileUtils.copyDirectory(templateFolder, destFolder);
+			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
             // Ending message
             String msg = Utils.getBundleString("gis_end") + "\n" + destPath +      
@@ -413,7 +412,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
     			"\nTo do it, you can use any GIS software. " +
     			"\nWe recommend you Open Source GIS software like gvSIG or QGIS.";
     		Utils.showMessage(msg);            
-		} catch (IOException e) {
+		} catch (Exception e) {
         	Utils.showError(e);
 		}
 		

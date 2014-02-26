@@ -64,13 +64,14 @@ public class MenuController {
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
-	private final String VERSION_CODE = "1.0.140";
+	private final String VERSION_CODE = "1.0.142";
 
 	
 	public MenuController(MainFrame mainFrame) {
 		this.view = mainFrame;
 		this.prop = MainDao.getPropertiesFile();
 		view.setControl(this);
+		Utils.getLogger().info("Giswater version: "+VERSION_CODE);
 	}
 	
 

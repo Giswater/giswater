@@ -510,7 +510,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
             <id>linetype20131216023643702</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ sslmode=disable key='name' table="SCHEMA_NAME"."linetype" sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='name' table="SCHEMA_NAME"."linetype" sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>

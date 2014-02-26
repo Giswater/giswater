@@ -394,12 +394,14 @@ public class MainController{
     
     
     public void execute(){
-    
+       	
+    	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	if (dbSelected){
     		executePostgis();
     	} else{
     		executeDbf();
     	}
+    	view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));    	
     
     }
 
@@ -441,7 +443,7 @@ public class MainController{
 			return;
 		}        
         
-        view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        //view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         
         // Export to INP
         if (exportChecked) {

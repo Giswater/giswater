@@ -66,27 +66,6 @@ public class ModelPostgis extends Model {
 	private static final String PATTERNS_TABLE = "inp_pattern";
 	private static final Integer DEFAULT_SPACE = 23;
 
-    
-    public static void execute(String execType, String export, String exec, String import_) {
-
-		iniProperties = MainDao.getPropertiesFile();   
-        
-        // Process all Postgis tables and output to INP file
-        if (export.equals("1")) {
-            processAll(null);
-        }
-
-        if (exec.equals("1")) {
-            execSWMM(null, null);
-        }
-
-        if (import_.equals("1")) {
-            File file = new File(Model.iniProperties.get("FILE_RPT"));            	
-            importRpt(file, "test");
-        }
-
-    }
-
 
     // Read content of the table saved it in an Array
     private static ArrayList<LinkedHashMap<String, String>> getTableData(String tableName) {

@@ -124,7 +124,6 @@ public class MainDao {
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	MainDao.setGswPath(gswPath);
     	loadGswPropertiesFile();
-    	//if (!loadGswPropertiesFile()) return false;
     	
     	// Log SQL?
     	Utils.setSqlLog(prop.get("SQL_LOG", "false"));
@@ -138,11 +137,7 @@ public class MainDao {
         	return false;
         }
         
-        // Start Postgis portable?
-        //Boolean autoStart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
-        //if (autoStart){
-        //	executePostgisService("start");
-        //}
+        // Start Postgis portable
     	executePostgisService("start");
     	       
         return true;
@@ -1015,10 +1010,10 @@ public class MainDao {
             Statement stat = connectionPostgis.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()){
-            	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "" : rs.getString(1));
-            	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "" : rs.getString(2));
-            	aux = aux.replace("__YMAX__", (rs.getString(3) == null) ? "" : rs.getString(3));
-            	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "" : rs.getString(4));
+            	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "-1.555992" : rs.getString(2));
+            	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "-1.000000" : rs.getString(4));            	
+            	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "1.555992" : rs.getString(1));
+            	aux = aux.replace("__YMAX__", (rs.getString(3) == null) ? "1.000000" : rs.getString(3));
             }
             rs.close();
         } catch (SQLException e) {
