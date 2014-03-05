@@ -17,6 +17,7 @@
  * 
  * Author:
  *   David Erill <derill@giswater.org>
+ *
  */
 package org.giswater.gui.panel;
 
@@ -152,7 +153,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}	
 	
 	public String getDataStorage() {
-		return cboDataStorage.getSelectedItem().toString();
+		return cboDataStorage.getSelectedItem().toString().toUpperCase();
 	}		
 	
 	public void setSchemaModel(Vector<String> v) {
@@ -303,7 +304,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 		String dataStorage = this.getDataStorage();
 		// Database selected		
-		if (dataStorage.toUpperCase().equals("DATABASE")){
+		if (dataStorage.equals("DATABASE")){
 			// Check if we already are connected
 			if (MainDao.isConnected()){
 				this.enableControls(true);
@@ -335,21 +336,22 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String folder = getProjectFolder();		
 		String name = getProjectName();
 		String software = getProjectSoftware();
-		String gisType = gswProp.get("GIS_TYPE");
-		String schema = getSelectedSchema();
-		if (schema.equals("")){
-			Utils.showMessage("Any schema selected");
-			return;
-		}
-		String table = "arc";
-		if (software.equals("HECRAS")){
-			table = "banks";
-		}
-		String schemaSrid = MainDao.getTableSrid(schema, table).toString();
+		String gisType = getDataStorage();
 		
 		// Create GIS Project
 		if (gisType.equals("DATABASE")){
 			if (MainDao.isConnected()){
+				String schema = getSelectedSchema();
+				if (schema.equals("")){
+					// TODO: i18n
+					Utils.showMessage("Any schema selected");
+					return;
+				}
+				String table = "arc";
+				if (software.equals("HECRAS")){
+					table = "banks";
+				}
+				String schemaSrid = MainDao.getTableSrid(schema, table).toString();
 				// Update properties file
 				gswProp.put("GIS_FOLDER", folder);
 				gswProp.put("GIS_NAME", name);
@@ -381,6 +383,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
 		if (software.equals("HECRAS")){
+			// TODO: i18n
 			Utils.showMessage("DBF option not available for HECRAS software");
 			return;
 		}
@@ -400,6 +403,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
+			// TODO: i18n
             // Ending message
             String msg = Utils.getBundleString("gis_end") + "\n" + destPath +      
             	"\nYou can build your own GIS project with all shape files and DBF created." +
@@ -497,7 +501,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void getFocus(){
 		
 		String dataStorage = this.getDataStorage();
-		if (dataStorage.toUpperCase().equals("DATABASE")){		
+		if (dataStorage.equals("DATABASE")){		
 			if (MainDao.isConnected()){
 				this.enableControls(true);
 				this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
