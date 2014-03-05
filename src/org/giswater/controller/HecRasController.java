@@ -293,7 +293,8 @@ public class HecRasController{
 		else if (status && !defaultSchemaName.equals("")){
 			Utils.showMessage("schema_truncate_completed");
 		}
-		view.setSchemaModel(MainDao.getSchemas("HECRAS"));		
+		view.setSchemaModel(MainDao.getSchemas("HECRAS"));	
+		schemaChanged();
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
@@ -319,7 +320,7 @@ public class HecRasController{
     	
 		// Check ASC file is set
 		if (!getFileAsc()) {
-			Utils.showError("asc_file");
+			Utils.showError("file_asc_not_selected");
 			return;
 		}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
@@ -335,7 +336,7 @@ public class HecRasController{
    	
 		// Check SDF file is set
 		if (!getFileSdf()) {
-			Utils.showError("sdf_set");
+			Utils.showError("file_sdf_not_selected");
 			return;
 		}
 

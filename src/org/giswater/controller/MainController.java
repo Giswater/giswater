@@ -653,16 +653,15 @@ public class MainController{
 			return;
 		}
 		
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);
+		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);	
 		if (status && defaultSchemaName.equals("")){
 			Utils.showMessage("schema_creation_completed");
 		}
 		else if (status && !defaultSchemaName.equals("")){
 			Utils.showMessage("schema_truncate_completed");
 		}
-		view.setSchemaModel(MainDao.getSchemas());		
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		view.setSchemaModel(MainDao.getSchemas(software));	
+		schemaChanged();
 		
 	}
 	
@@ -672,11 +671,9 @@ public class MainController{
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(msg);        
-        if (res == 0){
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
+        if (res == 0){        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas(software));
-    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage("schema_deleted", "");
         }
         

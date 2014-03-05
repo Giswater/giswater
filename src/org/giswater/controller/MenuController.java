@@ -61,10 +61,11 @@ public class MenuController {
 	private MainFrame view;
 	private PropertiesMap prop;
 	
+	private final String VERSION_CODE = "1.0.146";
+	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
-	private final String VERSION_CODE = "1.0.145";
 
 	
 	public MenuController(MainFrame mainFrame) {
