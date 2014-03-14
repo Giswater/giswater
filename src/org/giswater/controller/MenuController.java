@@ -180,10 +180,12 @@ public class MenuController {
         // Update text open/close button
 		if (MainDao.isConnected()){
 			dbPanel.setConnectionText(Utils.getBundleString("close_connection"));
+			dbPanel.enableControls(false);			
 			view.enableCatalog(true);
 		}
 		else{
 			dbPanel.setConnectionText(Utils.getBundleString("open_connection"));
+			dbPanel.enableControls(true);			
 			view.enableCatalog(false);
 		}
 		

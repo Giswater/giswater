@@ -71,10 +71,13 @@ public class DatabaseController {
 		if (MainDao.isConnected()){
 			closeConnection();
 			mainFrame.enableCatalog(false);
+			view.enableControls(true);			
 		}
 		else{
-			openConnection();
-			mainFrame.enableCatalog(true);
+			if (openConnection()){
+				mainFrame.enableCatalog(true);
+				view.enableControls(false);
+			}
 		}
 		
 	}	
@@ -90,7 +93,7 @@ public class DatabaseController {
 	}
 	
 	
-	private void openConnection(){
+	private boolean openConnection(){
 		
 		String host, port, db, user, password;
 		
@@ -133,6 +136,8 @@ public class DatabaseController {
 			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
+		
+		return isConnected;
 		
 	}		
 	

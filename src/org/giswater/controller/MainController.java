@@ -237,7 +237,7 @@ public class MainController{
 	
 		
 	public void showSectorSelection(){
-		SectorSelectionPanel panel = new SectorSelectionPanel(view.getSelectedSchema());
+		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, 380, 280);
         panel.setParent(dialog);
 		ImageIcon image = new ImageIcon("images/imago.png");        
@@ -608,11 +608,11 @@ public class MainController{
 	
 	
 	public void createSchema(){
-		createSchema("");
+		createSchema("", "");
 	}
 	
 	
-	public void createSchema(String defaultSchemaName){
+	public void createSchema(String defaultSchemaName, String defaultSridSchema){
 		
 		String schemaName = defaultSchemaName;
 		if (defaultSchemaName.equals("")){
@@ -629,10 +629,14 @@ public class MainController{
 		
 		String softwareName = view.getSoftwareName();
 		
-		// Ask user to set SRID?
-		String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
-		String sridValue = getUserSrid(defaultSrid);
-
+		String sridValue = "";
+		if (defaultSridSchema.equals("")){
+			String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
+			sridValue = getUserSrid(defaultSrid);
+		}
+		else{
+			sridValue = defaultSridSchema;
+		}
 		if (sridValue.equals("")){
 			return;
 		}
@@ -671,7 +675,7 @@ public class MainController{
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(msg);        
-        if (res == 0){        	
+        if (res == 0){        	    	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas(software));
     		Utils.showMessage("schema_deleted", "");
@@ -686,8 +690,14 @@ public class MainController{
 		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(msg);        
         if (res == 0){
+        	// Get SRID before delete schema
+			String table = "arc";
+			if (software.equals("HECRAS")){
+				table = "banks";
+			}
+			String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();            	
         	MainDao.deleteSchema(schemaName);
-    		createSchema(schemaName);
+    		createSchema(schemaName, schemaSrid);
         }
 		
 	}

@@ -471,7 +471,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		
 		btnClose = new JButton();
 		btnClose.setMinimumSize(new Dimension(60, 9));
-		btnClose.setText(BUNDLE.getString("EpaPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setText(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.setActionCommand("closePanel");
 		panel_4.add(btnClose, "cell 3 12");
 

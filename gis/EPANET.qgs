@@ -42,56 +42,51 @@
             </legendlayer>
         </legendgroup>
         <legendgroup open="false" checked="Qt::Unchecked" name="EPANET DATA">
-            <legendlayer drawingOrder="3" open="true" checked="Qt::Unchecked" name="Backdrop" showFeatureCount="0">
-                <filegroup open="true" hidden="false">
-                    <legendlayerfile isInOverview="0" layerid="inp_backdrop20130813215614567" visible="0"/>
-                </filegroup>
-            </legendlayer>
             <legendgroup open="true" checked="Qt::Unchecked" name="Hydraulics">
                 <legendgroup open="true" checked="Qt::Unchecked" name="Node">
-                    <legendlayer drawingOrder="4" open="true" checked="Qt::Unchecked" name="Junction" showFeatureCount="0">
+                    <legendlayer drawingOrder="3" open="true" checked="Qt::Unchecked" name="Junction" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="v_inp_edit_junction20131203134220075" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="5" open="true" checked="Qt::Unchecked" name="Reservoir" showFeatureCount="0">
+                    <legendlayer drawingOrder="4" open="true" checked="Qt::Unchecked" name="Reservoir" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="v_inp_edit_reservoir20131203134417798" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="6" open="true" checked="Qt::Unchecked" name="Tank" showFeatureCount="0">
+                    <legendlayer drawingOrder="5" open="true" checked="Qt::Unchecked" name="Tank" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="v_inp_edit_tank20131203134417819" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="7" open="true" checked="Qt::Unchecked" name="Mixing" showFeatureCount="0">
+                    <legendlayer drawingOrder="6" open="true" checked="Qt::Unchecked" name="Mixing" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="inp_mixing20130813215615038" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="8" open="true" checked="Qt::Unchecked" name="Emitter" showFeatureCount="0">
+                    <legendlayer drawingOrder="7" open="true" checked="Qt::Unchecked" name="Emitter" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="inp_emitter20130813215614777" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="9" open="true" checked="Qt::Unchecked" name="Demand" showFeatureCount="0">
+                    <legendlayer drawingOrder="8" open="true" checked="Qt::Unchecked" name="Demand" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="inp_demand20130813215614853" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="10" open="true" checked="Qt::Unchecked" name="Source" showFeatureCount="0">
+                    <legendlayer drawingOrder="9" open="true" checked="Qt::Unchecked" name="Source" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="inp_source20130813215615594" visible="0"/>
                         </filegroup>
                     </legendlayer>
                 </legendgroup>
                 <legendgroup open="true" checked="Qt::Unchecked" name="Arc">
-                    <legendlayer drawingOrder="11" open="true" checked="Qt::Unchecked" name="Pipe" showFeatureCount="0">
+                    <legendlayer drawingOrder="10" open="true" checked="Qt::Unchecked" name="Pipe" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="v_inp_edit_pipe20131203134417748" visible="0"/>
                         </filegroup>
                     </legendlayer>
-                    <legendlayer drawingOrder="12" open="true" checked="Qt::Unchecked" name="Pump" showFeatureCount="0">
+                    <legendlayer drawingOrder="11" open="true" checked="Qt::Unchecked" name="Pump" showFeatureCount="0">
                         <filegroup open="true" hidden="false">
                             <legendlayerfile isInOverview="0" layerid="v_inp_edit_pump20131203134417773" visible="0"/>
                         </filegroup>
@@ -1188,39 +1183,6 @@
                 <edittype labelontop="0" editable="1" type="0" name="id"/>
                 <edittype labelontop="0" editable="1" type="0" name="roughness"/>
             </edittypes>
-            <editform>.</editform>
-            <editforminit></editforminit>
-            <annotationform>.</annotationform>
-            <editorlayout>generatedlayout</editorlayout>
-            <excludeAttributesWMS/>
-            <excludeAttributesWFS/>
-            <attributeactions/>
-        </maplayer>
-        <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
-            <id>inp_backdrop20130813215614567</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' table="SCHEMA_NAME"."inp_backdrop" sql=</datasource>
-            <title></title>
-            <abstract></abstract>
-            <keywordList>
-                <value></value>
-            </keywordList>
-            <layername>Backdrop</layername>
-            <srs>
-                <spatialrefsys>
-                    <proj4>__PROJ4__</proj4>
-                    <srsid>__SRSID__</srsid>
-                    <srid>__SRID__</srid>
-                    <authid>__AUTHID__</authid>
-                    <description>__DESCRIPTION__</description>
-                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
-                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
-                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
-                </spatialrefsys>
-            </srs>
-            <customproperties/>
-            <provider encoding="System">postgres</provider>
-            <previewExpression>COALESCE("id", '&lt;NULL>')</previewExpression>
-            <vectorjoins/>
             <editform>.</editform>
             <editforminit></editforminit>
             <annotationform>.</annotationform>
@@ -4819,52 +4781,27 @@
         <WMSContactMail type="QString"></WMSContactMail>
         <WFSLayers type="QStringList"/>
         <Digitizing>
-            <LayerSnappingList type="QStringList">
-                <value>v_inp_edit_junction20130813181550884</value>
-                <value>v_inp_edit_reservoir20130813205528636</value>
-                <value>v_inp_edit_tank20130813210237556</value>
-                <value>v_inp_edit_valve20130813210702556</value>
-                <value>v_inp_edit_pipe20130813211752652</value>
-                <value>v_inp_edit_pump20130813213953357</value>
-                <value>sector20130813220727660</value>
+		<LayerSnappingList type="QStringList">
+                <value>arc20130820192008947</value>
+                <value>node20130820192016308</value>
             </LayerSnappingList>
             <LayerSnappingEnabledList type="QStringList">
                 <value>enabled</value>
-                <value>enabled</value>
-                <value>enabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
                 <value>enabled</value>
             </LayerSnappingEnabledList>
             <AvoidIntersectionsList type="QStringList"/>
             <LayerSnappingToleranceUnitList type="QStringList">
                 <value>1</value>
                 <value>1</value>
-                <value>1</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>1</value>
             </LayerSnappingToleranceUnitList>
             <LayerSnapToList type="QStringList">
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
                 <value>to_vertex</value>
                 <value>to_vertex</value>
             </LayerSnapToList>
             <TopologicalEditing type="int">1</TopologicalEditing>
             <LayerSnappingToleranceList type="QStringList">
-                <value>20.000000</value>
-                <value>20.000000</value>
-                <value>20.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>20.000000</value>
+                <value>15.000000</value>
+                <value>15.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
         <PositionPrecision>

@@ -247,7 +247,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		getContentPane().add(btnSave, "flowx,cell 1 2,alignx right");
 
 		btnClose = new JButton("Close");
-		getContentPane().add(btnClose, "cell 1 3,alignx right");		
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();
 		

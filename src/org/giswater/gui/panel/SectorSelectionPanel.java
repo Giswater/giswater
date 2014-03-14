@@ -47,8 +47,7 @@ public class SectorSelectionPanel extends JPanel {
 	private static final long serialVersionUID = 7046850563517014315L;
 	private final String TABLE_SECTOR = "sector";
 	private final String TABLE_SECTOR_SELECTION = "sector_selection";
-	
-	//private String schema;	
+		
 	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
@@ -58,8 +57,7 @@ public class SectorSelectionPanel extends JPanel {
 	private JDialog dialog;
 
 	
-	public SectorSelectionPanel(String schema) {
-		//this.schema = schema;
+	public SectorSelectionPanel() {
 		initConfig();
 		setData();
 	}
@@ -116,7 +114,7 @@ public class SectorSelectionPanel extends JPanel {
 		add(btnDelete, "cell 1 4");
 		
 		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text"));
-		btnDeleteAll.setMinimumSize(new Dimension(75, 23));
+		btnDeleteAll.setMinimumSize(new Dimension(79, 23));
 		add(btnDeleteAll, "cell 1 4");
 		
 		btnClose = new JButton("Close");
@@ -157,10 +155,8 @@ public class SectorSelectionPanel extends JPanel {
 
 
 	private void insert() {
-		
 		tableModelSectorSelection.insertEmptyRow();	
 		tableModelSectorSelection.setCombos();
-		
 	}
 	
 	

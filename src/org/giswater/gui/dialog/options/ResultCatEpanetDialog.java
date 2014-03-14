@@ -96,6 +96,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblFlowRouteM, "cell 3 0,alignx trailing");
 		
 		txtHydraulic = new JTextField();
+		txtHydraulic.setEnabled(false);
 		txtHydraulic.setName("st_ch_freq");
 		txtHydraulic.setColumns(10);
 		panelGeneral.add(txtHydraulic, "cell 4 0,growx");
@@ -104,6 +105,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
 		
 		txtQuality = new JTextField();
+		txtQuality.setEnabled(false);
 		txtQuality.setName("n_junction");
 		txtQuality.setColumns(10);
 		panelGeneral.add(txtQuality, "cell 1 1,growx");
@@ -113,6 +115,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblStartDate, "cell 3 1,alignx trailing");
 		
 		txtRule = new JTextField();
+		txtRule.setEnabled(false);
 		txtRule.setName("max_tr_ch");
 		txtRule.setColumns(10);
 		panelGeneral.add(txtRule, "cell 4 1,growx");
@@ -122,6 +125,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblPatternTimestep, "cell 0 2,alignx trailing");
 		
 		txtPattern = new JTextField();
+		txtPattern.setEnabled(false);
 		txtPattern.setName("n_reservoir");
 		txtPattern.setColumns(10);
 		panelGeneral.add(txtPattern, "cell 1 2,growx");
@@ -131,6 +135,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblPatternStep, "cell 3 2,alignx trailing");
 		
 		txtPatternStart = new JTextField();
+		txtPatternStart.setEnabled(false);
 		txtPatternStart.setName("dam_li_thr");
 		txtPatternStart.setColumns(10);
 		panelGeneral.add(txtPatternStart, "cell 4 2,growx");
@@ -140,6 +145,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblReportTimestep, "cell 0 3,alignx trailing");
 		
 		txtReport = new JTextField();
+		txtReport.setEnabled(false);
 		txtReport.setName("n_tank");
 		txtReport.setColumns(10);
 		panelGeneral.add(txtReport, "cell 1 3,growx");
@@ -149,6 +155,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblReportStart, "cell 3 3,alignx trailing");
 		
 		txtReportStart = new JTextField();
+		txtReportStart.setEnabled(false);
 		txtReportStart.setName("max_trials");
 		txtReportStart.setColumns(10);
 		panelGeneral.add(txtReportStart, "cell 4 3,growx");
@@ -158,6 +165,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblStartClocktime, "cell 0 4,alignx trailing");
 		
 		txtStart = new JTextField();
+		txtStart.setEnabled(false);
 		txtStart.setName("n_pipe");
 		txtStart.setColumns(10);
 		panelGeneral.add(txtStart, "cell 1 4,growx");
@@ -166,6 +174,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblStatistic, "cell 3 4,alignx trailing");
 		
 		textField_4 = new JTextField();
+		textField_4.setEnabled(false);
 		textField_4.setName("q_analysis");
 		textField_4.setColumns(10);
 		panelGeneral.add(textField_4, "cell 4 4,growx");
@@ -175,6 +184,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblFlowRouting, "cell 0 5,alignx trailing");
 		
 		textField = new JTextField();
+		textField.setEnabled(false);
 		textField.setName("n_pump");
 		textField.setColumns(10);
 		panelGeneral.add(textField, "cell 1 5,growx");
@@ -183,6 +193,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblInfiltration, "cell 3 5,alignx trailing");
 		
 		textField_5 = new JTextField();
+		textField_5.setEnabled(false);
 		textField_5.setName("spec_grav");
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 4 5,growx");
@@ -192,6 +203,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblPondAll, "cell 0 6,alignx trailing");
 		
 		textField_1 = new JTextField();
+		textField_1.setEnabled(false);
 		textField_1.setName("n_valve");
 		textField_1.setColumns(10);
 		panelGeneral.add(textField_1, "cell 1 6,growx");
@@ -201,6 +213,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblRuleTimestep, "cell 3 6,alignx trailing");
 		
 		textField_6 = new JTextField();
+		textField_6.setEnabled(false);
 		textField_6.setName("r_kin_visc");
 		textField_6.setColumns(10);
 		panelGeneral.add(textField_6, "cell 4 6,growx");
@@ -210,6 +223,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblWaterQ, "cell 0 7,alignx trailing");
 		
 		textField_2 = new JTextField();
+		textField_2.setEnabled(false);
 		textField_2.setName("head_form");
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 7,growx");
@@ -219,6 +233,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblRoutTimestep, "cell 3 7,alignx trailing");
 		
 		textField_7 = new JTextField();
+		textField_7.setEnabled(false);
 		textField_7.setName("r_che_diff");
 		textField_7.setColumns(10);
 		panelGeneral.add(textField_7, "cell 4 7,growx");
@@ -227,6 +242,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblInfilM, "cell 0 8,alignx trailing");
 		
 		textField_3 = new JTextField();
+		textField_3.setEnabled(false);
 		textField_3.setName("hydra_time");
 		textField_3.setColumns(10);
 		panelGeneral.add(textField_3, "cell 1 8,growx");
@@ -236,6 +252,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblDemMulti, "cell 3 8,alignx trailing");
 		
 		textField_9 = new JTextField();
+		textField_9.setEnabled(false);
 		textField_9.setName("dem_multi");
 		textField_9.setColumns(10);
 		panelGeneral.add(textField_9, "cell 4 8,growx");
@@ -244,6 +261,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblHydraAcc, "cell 0 9,alignx trailing");
 		
 		textField_8 = new JTextField();
+		textField_8.setEnabled(false);
 		textField_8.setName("hydra_acc");
 		textField_8.setColumns(10);
 		panelGeneral.add(textField_8, "cell 1 9,growx");
@@ -253,6 +271,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblTotalDuration, "cell 3 9,alignx trailing");
 		
 		textField_10 = new JTextField();
+		textField_10.setEnabled(false);
 		textField_10.setName("total_dura");
 		textField_10.setColumns(10);
 		panelGeneral.add(textField_10, "cell 4 9,growx");

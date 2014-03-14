@@ -372,6 +372,11 @@
                         <legendlayerfile isInOverview="0" layerid="inp_value_raingage20130510201056613" visible="0"/>
                     </filegroup>
                 </legendlayer>
+				<legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_value_routeto" showFeatureCount="0">
+                    <filegroup open="true" hidden="false">
+                        <legendlayerfile isInOverview="0" layerid="inp_value_routeto20131203183008942" visible="1"/>
+                    </filegroup>
+                </legendlayer>
                 <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_value_status" showFeatureCount="0">
                     <filegroup open="true" hidden="false">
                         <legendlayerfile isInOverview="0" layerid="inp_value_status20131203183008942" visible="0"/>
@@ -3050,6 +3055,39 @@
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions/>
+			</maplayer>
+        <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
+            <id>inp_value_routeto20131203183008942</id>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='tid' table="SCHEMA_NAME"."inp_value_routeto" sql=</datasource>
+            <title></title>
+            <abstract></abstract>
+            <keywordList>
+                <value></value>
+            </keywordList>
+            <layername>inp_value_routeto</layername>
+            <srs>
+                <spatialrefsys>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
+                </spatialrefsys>
+            </srs>
+            <customproperties/>
+            <provider encoding="UTF-8">postgres</provider>
+            <previewExpression></previewExpression>
+            <vectorjoins/>
+            <editform>.</editform>
+            <editforminit></editforminit>
+            <annotationform>.</annotationform>
+            <editorlayout>generatedlayout</editorlayout>
+            <excludeAttributesWMS/>
+            <excludeAttributesWFS/>
+            <attributeactions/>
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
             <id>inp_value_timserid20130510201056629</id>
@@ -4217,7 +4255,7 @@
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="nperv"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="rg_id" layer="raingage20130601163030452" allowMulti="false" filterExpression="" type="15" value="rg_id" name="rg_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="routeto"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_routeto20131203183008942" allowMulti="false" filterExpression="" type="15" value="id" name="routeto"/>
                 <edittype labelontop="0" editable="1" type="0" name="rted"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20130820173926621" allowMulti="false" type="15" value="sector_id" name="sector_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="simp"/>
@@ -9997,166 +10035,26 @@
         <WFSLayers type="QStringList"/>
         <Digitizing>
             <LayerSnappingList type="QStringList">
-                <value>v_man_arc20130601163030581</value>
-                <value>v_inp_edit_junction20130814133610096</value>
-                <value>v_man_node20130601163030552</value>
-                <value>v_inp_edit_outfall20130814133610188</value>
-                <value>acera20130814100013471</value>
                 <value>arc20130601163030372</value>
-                <value>catchment20130601163030419</value>
-                <value>eje_line20130814100013550</value>
-                <value>escaleras20130814100013577</value>
-                <value>fachada20130814100013622</value>
-                <value>fachada_int20130814100013651</value>
-                <value>muro20130814100013681</value>
-                <value>muro_cont20130814100013709</value>
                 <value>node20130601163030434</value>
-                <value>parterre20130814100013731</value>
-                <value>portal20130814100013515</value>
-                <value>qual_urba20130814101448934</value>
-                <value>raingage20130601163030452</value>
-                <value>subcatchment20130601163030468</value>
-                <value>usos_suelo20130814100433173</value>
-                <value>v_inp_edit_conduit20130814133609454</value>
-                <value>v_inp_edit_conduit20130814154154302</value>
-                <value>v_inp_edit_divider20130814154152383</value>
-                <value>v_inp_edit_orifice20130814154152517</value>
-                <value>v_inp_edit_outlet20130814154205999</value>
-                <value>v_inp_edit_pump20130814154152572</value>
-                <value>v_inp_edit_storage20130814154152593</value>
-                <value>v_inp_edit_weir20130814154152641</value>
-                <value>v_rpt_arcflow_sum20130601163030500</value>
-                <value>v_rpt_nodeflood_sum20130601163030534</value>
             </LayerSnappingList>
             <LayerSnappingEnabledList type="QStringList">
-                <value>disabled</value>
                 <value>enabled</value>
-                <value>disabled</value>
                 <value>enabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>enabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>enabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
-                <value>disabled</value>
             </LayerSnappingEnabledList>
             <AvoidIntersectionsList type="QStringList"/>
             <LayerSnappingToleranceUnitList type="QStringList">
                 <value>1</value>
                 <value>1</value>
-                <value>1</value>
-                <value>1</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>1</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>1</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
-                <value>1</value>
-                <value>0</value>
-                <value>0</value>
-                <value>0</value>
             </LayerSnappingToleranceUnitList>
             <LayerSnapToList type="QStringList">
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_segment</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex_and_segment</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
-                <value>to_vertex</value>
                 <value>to_vertex</value>
                 <value>to_vertex</value>
             </LayerSnapToList>
             <TopologicalEditing type="int">1</TopologicalEditing>
             <LayerSnappingToleranceList type="QStringList">
-                <value>0.000000</value>
-                <value>20.000000</value>
-                <value>0.000000</value>
-                <value>20.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>20.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>20.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
-                <value>0.000000</value>
+                <value>15.000000</value>
+                <value>15.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
         <PositionPrecision>

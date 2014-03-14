@@ -164,6 +164,16 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		btnTest.setText(text);
 	}
 
+	public void enableControls(boolean enabled) {
+		cboDriver.setEnabled(enabled);
+		txtIP.setEnabled(enabled);
+		txtPort.setEnabled(enabled);
+		txtDatabase.setEnabled(enabled);
+		txtUser.setEnabled(enabled);
+		txtPassword.setEnabled(enabled);
+		chkRemember.setEnabled(enabled);
+	}
+	
 	
 	private void initConfig() throws MissingResourceException {
 
@@ -239,7 +249,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		btnTest.setMinimumSize(new Dimension(110, 23));
 		btnTest.setActionCommand("testConnection");
 		
-		btnClose = new JButton(BUNDLE.getString("DatabasePanel.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.setMinimumSize(new Dimension(60, 23));
 		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 3 2,alignx left");
@@ -298,5 +308,6 @@ public class DatabasePanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
 	}
+
 	
 }

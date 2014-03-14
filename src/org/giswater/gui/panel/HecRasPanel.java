@@ -275,7 +275,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnDatabase.setVisible(false);
 		panel_2.add(btnDatabase, "cell 2 7,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("HecRasPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.setMinimumSize(new Dimension(60, 23));
 		btnClose.setMaximumSize(new Dimension(105, 23));
 		btnClose.setActionCommand("closePanel");

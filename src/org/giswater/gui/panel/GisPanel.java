@@ -257,7 +257,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		btnAccept.setActionCommand("gisAccept");
 		panel_1.add(btnAccept, "cell 2 5,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("GisPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.addActionListener(this);
 		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 3 5");
@@ -343,8 +343,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()){
 				String schema = getSelectedSchema();
 				if (schema.equals("")){
-					// TODO: i18n
-					Utils.showMessage("Any schema selected");
+					Utils.showMessage("any_schema_selected");
 					return;
 				}
 				String table = "arc";
@@ -357,12 +356,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				gswProp.put("GIS_NAME", name);
 				gswProp.put("GIS_SOFTWARE", software);
 				gswProp.put("GIS_SCHEMA", schema);
-				// TODO: i18n
-				String msg = "WARNING:";
-				msg+= "\nYour database password will be stored in plain text in your project files " +
-					"and in your home directory on Unix-like systems, or in your user profile on Windows.";
-				msg+= "\nIf you do not want this to happen, please press 'No' button or consider fixing it in GIS desktop project";
-				int answer = Utils.confirmDialog(msg);
+				int answer = Utils.confirmDialog("gis_creation");
 				if (answer == JOptionPane.YES_OPTION){
 					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema, schemaSrid);
 				}
@@ -383,8 +377,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
 		if (software.equals("HECRAS")){
-			// TODO: i18n
-			Utils.showMessage("DBF option not available for HECRAS software");
+			Utils.showMessage("gis_dbf_option");
 			return;
 		}
     	String gisFolder = Utils.getGisFolder();
@@ -403,12 +396,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-			// TODO: i18n
             // Ending message
-            String msg = Utils.getBundleString("gis_end") + "\n" + destPath +      
-            	"\nYou can build your own GIS project with all shape files and DBF created." +
-    			"\nTo do it, you can use any GIS software. " +
-    			"\nWe recommend you Open Source GIS software like gvSIG or QGIS.";
+			String msg = Utils.getBundleString("gis_end") + "\n" + destPath + Utils.getBundleString("gis_end2");
     		Utils.showMessage(msg);            
 		} catch (Exception e) {
         	Utils.showError(e);

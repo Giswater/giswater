@@ -36,13 +36,24 @@ import net.miginfocom.swing.MigLayout;
 public class ResultSelectionDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
+	private JComboBox<String> cboResultSelection;
 	
 	
+	public String getResultSelection() {
+		return cboResultSelection.getSelectedItem().toString();
+	}
+
+
 	public ResultSelectionDialog() {
 		initConfig();
-		createComponentMap();
+		setData();
+		//createComponentMap();
 	}
 	
+	// TODO: Recover data from table
+	private void setData(){
+		
+	}	
 	
 	private void initConfig(){
 
@@ -64,9 +75,10 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 		JLabel lblStatistic = new JLabel("Result id:");
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setName("result_id");
-		panelGeneral.add(comboBox, "cell 1 0,growx");
+		cboResultSelection = new JComboBox<String>();
+		cboResultSelection.setActionCommand("changeResultSelection");
+		cboResultSelection.setName("result_id");
+		panelGeneral.add(cboResultSelection, "cell 1 0,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
@@ -77,7 +89,7 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 
 	
 	protected void setupListeners() {
-		dispose();
+		cboResultSelection.addActionListener(this);
 	}		
 	
 

@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
+import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.util.Utils;
 
 
@@ -168,7 +169,7 @@ public class OptionsController {
 			tableName = "inp_value_opti_hyd";
 		}
 		else if (comboName.equals("quality")){
-			tableName = "inp_value_opti_qual";
+			tableName = "inp_value_yesno";
 		}
 		else if (comboName.equals("unbalanced")){
 			tableName = "inp_value_opti_unbal";
@@ -369,6 +370,19 @@ public class OptionsController {
 		}		
 		
 	}		
+	
+	
+	// ResultSelectionDialog
+	public void changeResultSelection(){
+		
+		if (view instanceof ResultSelectionDialog){
+			ResultSelectionDialog dialog = (ResultSelectionDialog) view;
+			String result = dialog.getResultSelection();
+	        // Update table: result_selection
+	   		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", result);			
+		}	
+		
+	}
 	
 	
 }

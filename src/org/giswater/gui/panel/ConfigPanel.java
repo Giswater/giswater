@@ -61,6 +61,8 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JButton btnEpanetFolder;
 	private JButton btnAccept;
 	private JButton btnClose;
+	private JLabel lblNotepad;
+	private JLabel lblNotepad2;
 
 	
 	public ConfigPanel(ConfigFrame configFrame) {
@@ -110,7 +112,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::200px]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::267.00px]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -119,7 +121,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[100.00][10px][25]"));
+		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[100.00][10px][][][10px:n][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -158,13 +160,19 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		chkConnect.setSelected(true);
 		panel.add(chkConnect, "cell 1 3 2 1,aligny baseline");
 		
+		lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
+		panel_1.add(lblNotepad, "cell 0 2 3 1,aligny top");
+		
+		lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text")); //$NON-NLS-1$
+		panel_1.add(lblNotepad2, "cell 0 3");
+		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("configAccept");
-		panel_1.add(btnAccept, "cell 1 2,alignx right");
+		panel_1.add(btnAccept, "cell 1 5,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("ConfigPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.setActionCommand("closePanel");
-		panel_1.add(btnClose, "cell 2 2");
+		panel_1.add(btnClose, "cell 2 5");
 
 		setupListeners();
 
