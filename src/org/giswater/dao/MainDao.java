@@ -122,6 +122,17 @@ public class MainDao {
     	
     	// Load last gsw file
     	String gswPath = prop.get("FILE_GSW", "").trim();
+    	File gswFile = new File(gswPath);
+    	if (!gswFile.exists()){
+            Utils.logError("inp_error_notfound", gswPath);
+        	// Get default gsw path
+            gswPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + GSW_FILE;
+        	gswFile = new File(gswPath);  
+        	if (!gswFile.exists()){
+                Utils.showError("gsw_default_notfound", gswPath);    
+                return false;
+        	}
+    	}
     	MainDao.setGswPath(gswPath);
     	loadGswPropertiesFile();
     	
@@ -854,7 +865,7 @@ public class MainDao {
 		Utils.logSql(sql);
 		executeUpdateSql(sql);
 		sql = "INSERT INTO "+schema+"."+table+" VALUES ('"+result+"')";
-		executeUpdateSql(sql);
+		executeUpdateSql(sql, true);
 		Utils.logSql(sql);
 	}
 	

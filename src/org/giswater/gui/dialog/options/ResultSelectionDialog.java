@@ -38,22 +38,16 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JComboBox<String> cboResultSelection;
 	
+
+	public ResultSelectionDialog() {
+		initConfig();
+		createComponentMap();
+	}	
 	
 	public String getResultSelection() {
 		return cboResultSelection.getSelectedItem().toString();
 	}
-
-
-	public ResultSelectionDialog() {
-		initConfig();
-		setData();
-		//createComponentMap();
-	}
 	
-	// TODO: Recover data from table
-	private void setData(){
-		
-	}	
 	
 	private void initConfig(){
 
