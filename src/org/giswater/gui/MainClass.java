@@ -39,8 +39,8 @@ public class MainClass {
     	
         java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
-            public void run() {
-            	
+            public void run() {		
+				
             	// Set locale
             	final Locale english = new Locale("en", "EN");
             	Locale.setDefault(english);
@@ -52,16 +52,23 @@ public class MainClass {
         			UIManager.setLookAndFeel(className);
         		} catch (Exception e) {
         			Utils.logError(e.getMessage());
+        			return;
         		}  
 
             	// Initial configuration
+				String versionCode = MainClass.class.getPackage().getImplementationVersion();
+				String msg = "Application started";
+				if (versionCode != null){
+					msg+= "\nVersion: " + versionCode;
+				}
+				Utils.getLogger().info(msg);				
             	if (!MainDao.configIni()){
             		return;
             	}            	
-            	
+				
             	// Create MainFrame and Menu controller
-            	mdi = new MainFrame(MainDao.isConnected());
-            	MenuController menuController = new MenuController(mdi);            	
+            	mdi = new MainFrame(MainDao.isConnected());            	
+            	MenuController menuController = new MenuController(mdi, versionCode);            	
                 mdi.setVisible(true);
                 
                 // By default open last gsw

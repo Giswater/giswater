@@ -144,6 +144,7 @@ public class ModelDbf extends Model{
 
 
 	// Process target specified by id parameter
+	@SuppressWarnings("null")
 	private static void processTarget(int id, int fileIndex, int lines) throws IOException, SQLException {
 
 		// Go to the first line of the target

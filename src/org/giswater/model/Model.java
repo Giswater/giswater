@@ -50,9 +50,8 @@ public class Model {
 		if (MainDao.setConnectionDrivers(sqlitePath)){
 			connectionDrivers = MainDao.getConnectionDrivers();
 			return true;
-		} else{
-			return false;
 		}
+		return false;
     }    
     
     public static void setSoftwareVersion(String softwareVersion){

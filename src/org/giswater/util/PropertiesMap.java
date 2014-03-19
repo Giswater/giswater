@@ -530,13 +530,10 @@ public class PropertiesMap {
 		if (sval != null){
 			if (sval.trim().equals("")){
 				return "";
-			} else{
-				return sval.trim();
 			}
+			return sval.trim();
 		}
-		else{
-			return "";
-		}
+		return "";
 	}
 	
 

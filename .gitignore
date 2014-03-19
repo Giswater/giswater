@@ -2,6 +2,7 @@
 ## Eclipse
 #################
 
+build.num
 *.pydevproject
 .project
 .metadata

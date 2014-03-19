@@ -560,7 +560,7 @@
     <projectlayers layercount="109">
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>arc20130601163030372</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 table="SCHEMA_NAME"."arc" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ table="SCHEMA_NAME"."arc" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -3381,7 +3381,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>node20130601163030434</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=23031 type=POINT table="SCHEMA_NAME"."node" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."node" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -3635,7 +3635,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>raingage20130601163030452</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='rg_id' srid=23031 type=POINT table="SCHEMA_NAME"."raingage" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='rg_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."raingage" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -3856,7 +3856,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>sector20130820173926621</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='sector_id' srid=23031 type=MULTIPOLYGON table="SCHEMA_NAME"."sector" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='sector_id' srid=__SRID__ type=MULTIPOLYGON table="SCHEMA_NAME"."sector" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -4053,7 +4053,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>subcatchment20130601163030468</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='subc_id' srid=23031 type=MULTIPOLYGON table="SCHEMA_NAME"."subcatchment" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='subc_id' srid=__SRID__ type=MULTIPOLYGON table="SCHEMA_NAME"."subcatchment" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -4277,7 +4277,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_conduit20130814133609454</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -4356,7 +4356,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_conduit20130814154154302</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -4597,7 +4597,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_divider20130814154152383</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=23031 type=POINT table="SCHEMA_NAME"."v_inp_edit_divider" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_inp_edit_divider" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -4811,7 +4811,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_junction20130814133610096</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=23031 type=POINT table="SCHEMA_NAME"."v_inp_edit_junction" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_inp_edit_junction" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -5020,7 +5020,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_orifice20130814154152517</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_orifice" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_orifice" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -5261,7 +5261,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_outfall20130814133610188</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=23031 type=POINT table="SCHEMA_NAME"."v_inp_edit_outfall" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_inp_edit_outfall" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -5471,7 +5471,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_outlet20130814182022327</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_outlet" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_outlet" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -5708,7 +5708,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_pump20130814154152572</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_pump" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_pump" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -5942,7 +5942,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_storage20130814154152593</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=23031 type=POINT table="SCHEMA_NAME"."v_inp_edit_storage" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='node_id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_inp_edit_storage" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -6159,7 +6159,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_weir20130814154152641</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_weir" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_weir" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -6399,7 +6399,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_arcflow_sum20131029124948338</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_rpt_arcflow_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_rpt_arcflow_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -6699,7 +6699,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_condsurcharge_sum20131029124948391</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_rpt_condsurcharge_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_rpt_condsurcharge_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -6972,7 +6972,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_flowclass_sum20131029124948412</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_rpt_flowclass_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_rpt_flowclass_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -7379,7 +7379,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_lidperfomance_sum20131029124948440</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_lidperfomance_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_lidperfomance_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -7587,7 +7587,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_nodedepth_sum20131029124948471</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_nodedepth_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodedepth_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -7795,7 +7795,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_nodeflooding_sum20131029124948498</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_nodeflooding_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodeflooding_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8003,7 +8003,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_nodeinflow_sum20131029124948525</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_nodeinflow_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodeinflow_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8212,7 +8212,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_nodesurcharge_sum20131125215932269</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_nodesurcharge_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodesurcharge_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8291,7 +8291,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_nodesurcharge_sum20131125215946162</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_nodesurcharge_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodesurcharge_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8496,7 +8496,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_outfallflow_sum20131029124948578</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_outfallflow_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_outfallflow_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8702,7 +8702,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_outfallload_sum20131029124948604</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_outfallload_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_outfallload_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -8906,7 +8906,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_pumping_sum20131029124948627</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=LINESTRING table="SCHEMA_NAME"."v_rpt_pumping_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_rpt_pumping_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -9279,7 +9279,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_storagevol_sum20131029124948653</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=POINT table="SCHEMA_NAME"."v_rpt_storagevol_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_storagevol_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -9489,7 +9489,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_subcatchrunoff_sum20131029124948674</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_subcatchrunoff_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_subcatchrunoff_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -9772,7 +9772,7 @@
         </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Polygon" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_rpt_subcatchwasoff_sum20131029124948368</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=23031 type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_subcatchwasoff_sum" (the_geom) sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=MULTIPOLYGON table="SCHEMA_NAME"."v_rpt_subcatchwasoff_sum" (the_geom) sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>

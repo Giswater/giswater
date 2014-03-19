@@ -114,8 +114,6 @@ public class MainDao {
 	
     // Sets initial configuration files
     public static boolean configIni() {
-
-    	Utils.getLogger().info("Application started");
     	
     	// Load Properties files
     	if (!loadPropertiesFile()) return false;
@@ -134,7 +132,6 @@ public class MainDao {
         	}
     	}
     	MainDao.setGswPath(gswPath);
-    	loadGswPropertiesFile();
     	
     	// Log SQL?
     	Utils.setSqlLog(prop.get("SQL_LOG", "false"));
@@ -413,10 +410,9 @@ public class MainDao {
             if (file.exists()) {
             	connectionConfig = DriverManager.getConnection("jdbc:sqlite:" + filePath);
                 return true;
-            } else {
-                Utils.showError("inp_error_notfound", filePath);
-                return false;
             }
+			Utils.showError("inp_error_notfound", filePath);
+			return false;
         } catch (SQLException e) {
             Utils.showError("inp_error_connection", e.getMessage());
             return false;
@@ -438,10 +434,9 @@ public class MainDao {
             if (file.exists()) {
                 connectionDrivers = DriverManager.getConnection("jdbc:sqlite:" + filePath);
                 return true;
-            } else {
-                Utils.showError("inp_error_notfound", filePath);
-                return false;
             }
+			Utils.showError("inp_error_notfound", filePath);
+			return false;
         } catch (SQLException e) {
             Utils.showError("inp_error_connection", e.getMessage());
             return false;
@@ -742,9 +737,7 @@ public class MainDao {
 		        return vector;
 		    }
         }
-        else{
-        	return vector;
-        }
+		return vector;
 		
 	}
 	

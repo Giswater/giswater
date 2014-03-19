@@ -88,7 +88,9 @@ public class MainController{
 		Method method;
 		try {
 			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
+				if (!actionCommand.equals("schemaChanged")){
+					Utils.getLogger().info(actionCommand);
+				}
 			}
 			method = this.getClass().getMethod(actionCommand);
 			method.invoke(this);	

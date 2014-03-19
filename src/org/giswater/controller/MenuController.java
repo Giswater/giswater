@@ -60,19 +60,18 @@ public class MenuController {
 
 	private MainFrame view;
 	private PropertiesMap prop;
-	
-	private final String VERSION_CODE = "1.0.146";
+	private String versionCode;
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
 
 	
-	public MenuController(MainFrame mainFrame) {
+	public MenuController(MainFrame mainFrame, String versionCode) {
 		this.view = mainFrame;
 		this.prop = MainDao.getPropertiesFile();
+		this.versionCode = versionCode;
 		view.setControl(this);
-		Utils.getLogger().info("Giswater version: "+VERSION_CODE);
 	}
 	
 
@@ -495,7 +494,7 @@ public class MenuController {
 		String title = "Welcome";
 		String info = "Welcome to Giswater, the EPANET, EPA SWMM and HEC-RAS communication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
-		WelcomeDialog about = new WelcomeDialog(title, info, info2, "Version: " + VERSION_CODE);
+		WelcomeDialog about = new WelcomeDialog(title, info, info2, "Version: " + versionCode);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);
 		about.setVisible(true);
