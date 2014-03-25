@@ -60,7 +60,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Times Table");
-		setBounds(0, 0, 468, 283);
+		setBounds(0, 0, 480, 283);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[179.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();

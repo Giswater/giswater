@@ -731,6 +731,11 @@ public class MainDao {
 	    		return vector;	            
 	        } catch (SQLException e) {
 	            Utils.showError(e, sql);
+	            try {
+					connectionPostgis.rollback();
+				} catch (SQLException e1) {
+		            Utils.showError(e, sql);
+				}
 	            return vector;
 		    } catch (NullPointerException e) {
 		        Utils.logError(e);

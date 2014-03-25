@@ -75,7 +75,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
 	private JMenu mnData;
 	private JMenuItem mntmProjectId;	
-	private JMenuItem mntmConduit;
+	private JMenuItem mntmArcCatalog;
 	private JMenuItem mntmMaterials;
 	private JMenuItem mntmTimeseries;
 	private JMenuItem mntmCurves;
@@ -202,9 +202,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmProjectId.setActionCommand("showProjectId");
 		mnData.add(mntmProjectId);
 		
-		mntmConduit = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
-		mntmConduit.setActionCommand("showConduit");
-		mnData.add(mntmConduit);
+		mntmArcCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
+		mntmArcCatalog.setActionCommand(BUNDLE.getString("MainFrame.mntmArcCatalog.actionCommand")); //$NON-NLS-1$
+		mnData.add(mntmArcCatalog);
 		
 		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
 		mntmMaterials.setActionCommand("showMaterials");
@@ -556,7 +556,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmHecras.addActionListener(this);
 		
 		mntmProjectId.addActionListener(this);		
-		mntmConduit.addActionListener(this);
+		mntmArcCatalog.addActionListener(this);
 		mntmMaterials.addActionListener(this);
 		mntmPatterns.addActionListener(this);		
 		mntmTimeseries.addActionListener(this);
@@ -633,7 +633,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void enableConduit(boolean enable) {
-		mntmConduit.setEnabled(enable);
+		mntmArcCatalog.setEnabled(enable);
 	}
 
 	public void enableCurves(boolean enable) {
@@ -664,12 +664,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	
     private void manageFrames(JInternalFrame frame) {
     	
-        try {
-            frame.setVisible(true);        	
-            frame.setSelected(true);
-            frame.setIcon(false);
+        try {   	
             frame.setMaximum(true);
-            frame.show();
+            frame.setVisible(true); 
+            frame.setMaximum(true);            
         } catch (PropertyVetoException e) {
             Utils.logError(e);
         }

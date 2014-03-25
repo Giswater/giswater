@@ -70,8 +70,8 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Options Table");
-		setBounds(100, 100, 502, 378);
-		getContentPane().setLayout(new MigLayout("", "[90.00][200px]", "[287.00][10][36.00]"));
+		setBounds(100, 100, 502, 368);
+		getContentPane().setLayout(new MigLayout("", "[90.00][200px]", "[276.00][5][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));

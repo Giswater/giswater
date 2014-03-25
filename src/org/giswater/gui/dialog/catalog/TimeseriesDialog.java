@@ -54,10 +54,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	private JLabel lblTimesType;
 	private JComboBox<String> cboTimserType;
 	private JComboBox<String> cboTimesType;
-	protected JButton btnPrevious;
-	protected JButton btnNext;
-	private JButton btnCreate;
-	private JButton btnDelete;
 	
 	private JTable table;
 	private JScrollPane panelTable;
@@ -70,6 +66,11 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		createComponentMap();		
 	}	
 
+
+	public String getTimserId() {
+		return txtId.getText().trim();
+	}
+	
 	
 	public JTable getTable(){
 		return table;
@@ -201,10 +202,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	
 	protected void setupListeners() {
 			
-		btnPrevious.addActionListener(this);
-		btnNext.addActionListener(this);
-		btnCreate.addActionListener(this);
-		btnDelete.addActionListener(this);
 		btnDetailDelete.addActionListener(this);
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -245,11 +242,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
         return listId;
         
     }
-
-
-	public String getTimserId() {
-		return txtId.getText().trim();
-	}
     
 
 }

@@ -78,7 +78,7 @@ public class MainController{
         this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();
         this.software = software;
-	    view.setControl(this);        
+	    view.setController(this);        
     	userHomeFolder = System.getProperty("user.home"); 	
 	}
    
@@ -212,6 +212,7 @@ public class MainController{
 	
 	
 	public void schemaChanged(){
+		
 		MainDao.setSoftwareName(software);		
 		if (MainDao.isConnected()){
 			String schemaName = view.getSelectedSchema();
@@ -219,6 +220,7 @@ public class MainController{
 			checkCatalogTables(schemaName);
 			checkOptionsTables(schemaName);
 		}
+		
 	}
 
 	
@@ -227,13 +229,19 @@ public class MainController{
 		// Check if we already are connected
 		if (MainDao.isConnected()){
 			view.setSchemaModel(MainDao.getSchemas(software));
-	    	view.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));			
+			String gswSchema = MainDao.getGswProperties().get(software+"_SCHEMA").trim();
+			if (!gswSchema.equals("")){
+				view.setSelectedSchema(gswSchema);	
+			}
+			else{
+				schemaChanged();
+			}
+	    	//MainDao.setSchema(selectedSchema);
 		} 
 		else{
 			view.setSchemaModel(null);				
 		}
 		enableCatalog(MainDao.isConnected());
-		//mainFrame.enableCatalog(false);
 		
 	}	
 	

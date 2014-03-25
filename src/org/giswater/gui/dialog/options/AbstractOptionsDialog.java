@@ -86,6 +86,17 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	}	
 	
 	
+	public void enablePrevious(boolean enable){ }
+	
+	public void enableNext(boolean enable){	}	
+	
+	public void enableSave(boolean enable){
+		if (btnSave != null){
+			btnSave.setEnabled(enable);
+		}
+	}	
+	
+	
 	protected void createComponentMap() {
 		
         comboMap = new HashMap<String, JComboBox>();

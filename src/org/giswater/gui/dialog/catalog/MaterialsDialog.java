@@ -40,10 +40,6 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 	private JTextField txtId;
 	private JTextField txtOther;
 	private JTextField txtDescript;
-	protected JButton btnPrevious;
-	protected JButton btnNext;
-	private JButton btnCreate;
-	private JButton btnDelete;
 	private JLabel lblOther;
 	
 	
@@ -134,16 +130,5 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		
 	}
 
-	
-	protected void setupListeners() {
-		
-		btnPrevious.addActionListener(this);
-		btnNext.addActionListener(this);
-		btnCreate.addActionListener(this);
-		btnDelete.addActionListener(this);
-		super.setupListeners();	
-		
-	}
-	
 	
 }

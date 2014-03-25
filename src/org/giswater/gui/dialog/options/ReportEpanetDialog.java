@@ -55,8 +55,8 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Report Table");
-		setBounds(0, 0, 437, 403);
-		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[325.00][10px][36.00]"));
+		setBounds(0, 0, 437, 428);
+		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[:320.00:320px][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -227,7 +227,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
 		btnClose = new JButton("Close");
-		getContentPane().add(btnClose, "cell 1 3,alignx right");		
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();
 		

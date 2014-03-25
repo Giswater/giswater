@@ -46,11 +46,15 @@ public class OptionsController {
 	private AbstractOptionsDialog view;
     private ResultSet rs;
 	private String action;
+	private Integer current;
+	private Integer total;
 	
 	
 	public OptionsController(AbstractOptionsDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
+        this.current = 1;
+        this.total = MainDao.getRowCount(rs);
 	    view.setController(this);        
 	}
 	
@@ -87,6 +91,7 @@ public class OptionsController {
 	public boolean setComponents(boolean fillData){
 
 		try {
+			
 			HashMap<String, JComboBox> map = view.comboMap; 
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
@@ -107,7 +112,9 @@ public class OptionsController {
 					value = rs.getObject(key);
 				}
 				view.setTextField(component, value);
-			}			
+			}	
+			manageNavigationButtons();
+			
 		} catch (SQLException e) {
 			Utils.showError(e);
 			return false;
@@ -162,9 +169,9 @@ public class OptionsController {
 		else if (comboName.equals("units")){
 			tableName = "inp_value_opti_units";
 		}
-		else if (comboName.equals("headloss")){
-			tableName = "inp_value_opti_headloss";
-		}
+//		else if (comboName.equals("headloss")){
+//			tableName = "inp_value_opti_headloss";
+//		}
 		else if (comboName.equals("hydraulics")){
 			tableName = "inp_value_opti_hyd";
 		}
@@ -264,6 +271,10 @@ public class OptionsController {
 			if (action.equals("create")){
 				rs.insertRow();
 				rs.last();
+				total++;
+				current = total;
+				action = "saved";
+				setComponents();
 			}
 			else if (!action.equals("create_detail")){
 				rs.updateRow();
@@ -280,44 +291,74 @@ public class OptionsController {
 	}
 	
 	
+	private void manageNavigationButtons(){
+		
+		if (action.equals("create")){
+			Utils.getLogger().info("Editing new record...");
+//			view.enableDelete(false);
+			view.enablePrevious(false);
+			view.enableNext(false);		
+			view.enableSave(true);
+		}
+		else{
+			Utils.getLogger().info("Record: " + current + " of " + total);
+//			view.enableDelete(total > 0);
+			view.enablePrevious(current > 1);
+			view.enableNext(current < total);
+			view.enableSave(current > 0);
+		}
+		
+	}
+	
+	
 	public void moveFirst() {
+		
 		action = "other";
 		try {
 			rs.first();
+			current = 1;	
 			setComponents();
 		} catch (SQLException e) {
 			Utils.showError(e);
 		}
+		
 	}		
 	
 	
 	public void movePrevious(){
+		
 		action = "other";
 		try {
 			if (!rs.isFirst()){
 				rs.previous();
+				current--;		
 				setComponents();
 			}
 		} catch (SQLException e) {
 			Utils.showError(e);
 		}
+		
 	}
 	
 	
 	public void moveNext(){
+		
 		action = "other";
 		try {
 			if (!rs.isLast()){
 				rs.next();
+				current++;
 				setComponents();
 			}
 		} catch (SQLException e) {
 			Utils.showError(e);
 		}
+		
 	}
 	
 	
 	public void create() {
+		
 		action = "create";
 		try {
 			rs.moveToInsertRow();
@@ -325,23 +366,32 @@ public class OptionsController {
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}	
 	
 
 	public void delete(){
+		
 		action = "other";
 		try {
 			int res = Utils.confirmDialog("delete_record?");
 	        if (res == 0){
-				rs.deleteRow();
-		        if (MainDao.getRowCount(rs) != 0){
-		        	rs.first();
-		        	setComponents();
-		        }
+//				rs.deleteRow();
+//		        if (MainDao.getRowCount(rs) != 0){
+//		        	rs.first();
+//		        	setComponents();
+//		        }
+				rs.deleteRow();				
+				rs.first();
+				current = 1;
+				total--;
+				if (total == 0) current = 0;
+				setComponents();
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}		
+		
 	}
 	
 	

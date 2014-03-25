@@ -36,7 +36,7 @@ import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
-public class ConduitDialog extends AbstractCatalogDialog{
+public class ArcCatalogDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField textField_2;
@@ -56,7 +56,7 @@ public class ConduitDialog extends AbstractCatalogDialog{
 	protected JButton btnDelete;	
 	
 	
-	public ConduitDialog() {
+	public ArcCatalogDialog() {
 		initConfig();
 		createComponentMap();
 	}	

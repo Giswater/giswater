@@ -44,10 +44,6 @@ public class PatternsDialog extends AbstractCatalogDialog{
 	private JTextField textField_3;
 	private JTextField textField_5;
 	private JTextField textField_6;
-	protected JButton btnPrevious;
-	protected JButton btnNext;
-	protected JButton btnCreate;
-	protected JButton btnDelete;	
 	private JTextField textField_10;
 	private JLabel lblFactor;
 	private JTextField textField_7;
@@ -363,16 +359,5 @@ public class PatternsDialog extends AbstractCatalogDialog{
 		
 	}
 
-	
-	protected void setupListeners() {
-	
-		btnPrevious.addActionListener(this);
-		btnNext.addActionListener(this);
-		btnCreate.addActionListener(this);
-		btnDelete.addActionListener(this);
-		super.setupListeners();
-		
-	}
-	
 	
 }

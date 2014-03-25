@@ -115,10 +115,14 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		return epaFrame;
 	}	
 
-	public void setControl(MainController nodeController) {
-		this.controller = nodeController;
+	public void setController(MainController controller) {
+		this.controller = controller;
 	}
 
+	public MainController getController() {
+		return controller;
+	}
+	
 	public String getSoftwareName() {
 		return softwareName;
 	}
@@ -515,12 +519,13 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	
 	@Override
 	public void focusGained(FocusEvent e) {
-		if (optDbf.isSelected()){
-			controller.enableCatalog(false);
-		}
-		else{
-			controller.isConnected();
-		}
+//		Utils.getLogger().info("focusGained");
+//		if (optDbf.isSelected()){
+//			controller.enableCatalog(false);
+//		}
+//		else{
+//			controller.isConnected();
+//		}
 	}
 
 	@Override

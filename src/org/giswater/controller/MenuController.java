@@ -34,7 +34,7 @@ import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
-import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
@@ -304,10 +304,10 @@ public class MenuController {
 	}	
 	
 	
-	public void showConduit(){
+	public void showArcCatalog(){
 		ResultSet rs = MainDao.getTableResultset("cat_arc");
 		if (rs == null) return;		
-		ConduitDialog dialog = new ConduitDialog();
+		ArcCatalogDialog dialog = new ArcCatalogDialog();
 		showCatalog(dialog, rs);
 	}	
 	

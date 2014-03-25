@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
-import org.giswater.gui.dialog.catalog.ConduitDialog;
+import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
@@ -50,11 +50,15 @@ public class CatalogController {
 	private AbstractCatalogDialog view;
     private ResultSet rs;
 	private String action;
+	private Integer current;
+	private Integer total;
 	
 	
 	public CatalogController(AbstractCatalogDialog dialog, ResultSet rs) {
 		this.view = dialog;
         this.rs = rs;
+        this.current = 1;
+        this.total = MainDao.getRowCount(rs);
 	    view.setController(this);        
 	}
 	
@@ -99,7 +103,9 @@ public class CatalogController {
 				view.setComboModel(combo, getComboValues(key));
 				String value = "";
 				if (fillData && MainDao.checkColumn(rs, key)){
-					value = rs.getString(key);
+					if (rs.getRow() != 0){
+						value = rs.getString(key);
+					}
 				}
 				view.setComboSelectedItem(combo, value);
 			}
@@ -110,27 +116,34 @@ public class CatalogController {
 			    JTextField component = entry.getValue();
 			    Object value = "";
 				if (fillData && MainDao.checkColumn(rs, key)){
-					value = rs.getObject(key);
+					if (rs.getRow() != 0){					
+						value = rs.getObject(key);
+					}
 				}
 				view.setTextField(component, value);
 			}
 
 			// Update also detail table content
 			if (view instanceof TimeseriesDialog){
-				String id = "";
+				String id = "-1";
 				if (!action.equals("create")){
-					id = rs.getString("id");
+					if (rs.getRow() != 0){	
+						id = rs.getString("id");
+					}
 				}
 				String fields = "id, date, hour, time, value, fname";
 				updateDetailTable("inp_timeseries", fields, "timser_id", id);
 			}
 			else if (view instanceof CurvesDialog){
-				String id = "";
+				String id = "-1";
 				if (!action.equals("create")){
-					id = rs.getString("id");
+					if (rs.getRow() != 0){	
+						id = rs.getString("id");
+					}
+					updateDetailTable("inp_curve", "*", "curve_id", id);						
 				}
-				updateDetailTable("inp_curve", "*", "curve_id", id);
-			}			
+			}	
+			manageNavigationButtons();
 			
 		} catch (SQLException e) {
 			Utils.logError(e);
@@ -176,6 +189,7 @@ public class CatalogController {
 		String key;
 		Object value;
 		try {
+			
 			ResultSetMetaData metadata = rs.getMetaData();					
 			HashMap<String, JComboBox> map = view.comboMap; 			
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
@@ -231,10 +245,15 @@ public class CatalogController {
 			if (action.equals("create")){
 				rs.insertRow();
 				rs.last();
+				total++;
+				current = total;
+				action = "saved";
+				setComponents();
 			}
 			else if (!action.equals("create_detail")){
 				rs.updateRow();
 			}
+			
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {
@@ -244,42 +263,71 @@ public class CatalogController {
 	}
 	
 	
+	private void manageNavigationButtons(){
+		
+		if (action.equals("create")){
+			Utils.getLogger().info("Editing new record...");
+			view.enableDelete(false);
+			view.enablePrevious(false);
+			view.enableNext(false);		
+			view.enableSave(true);
+		}
+		else{
+			Utils.getLogger().info("Record: " + current + " of " + total);
+			view.enableDelete(total > 0);
+			view.enablePrevious(current > 1);
+			view.enableNext(current < total);
+			view.enableSave(current > 0);
+		}
+		
+	}
+	
+	
 	public void moveFirst() {
+		
 		action = "other";
 		try {
 			if (rs.isBeforeFirst() ) {    
 				rs.first();
 			}
+			current = 1;			
 			setComponents();
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}		
 	
 	
 	public void movePrevious(){
+		
 		action = "other";
 		try {
 			if (!rs.isFirst()){
 				rs.previous();
+				current--;				
 				setComponents();
 			}
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}
 	
 	
 	public void moveNext(){
+		
 		action = "other";
 		try {
 			if (!rs.isLast()){
 				rs.next();
+				current++;				
 				setComponents();
 			}
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}
 
 	
@@ -288,6 +336,7 @@ public class CatalogController {
 	}		
 	
 	public void create(String action){
+		
 		this.action = action;
 		try {
 			rs.moveToInsertRow();
@@ -295,10 +344,12 @@ public class CatalogController {
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}
 
 	
 	public void createCurve(ResultSet rs, String curveId){
+		
 		this.action = "create_curve";
 		try {
 			rs.moveToInsertRow();
@@ -306,21 +357,27 @@ public class CatalogController {
 		} catch (SQLException e) {
 			Utils.logError(e);
 		}
+		
 	}
 
 	
 	public void delete(){
+		
 		action = "other";
 		try {
 			int res = Utils.confirmDialog("delete_record?");
 	        if (res == 0){
 				rs.deleteRow();
 				rs.first();
+				current = 1;
+				total--;
+				if (total == 0) current = 0;
 				setComponents();
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);
-		}		
+		}	
+		
 	}
 	
 	
@@ -331,8 +388,8 @@ public class CatalogController {
 	
 	// Only for ConduitDialog
 	public void shapeChanged(){
-		if (view instanceof ConduitDialog){
-			ConduitDialog conduitDialog = (ConduitDialog) view;
+		if (view instanceof ArcCatalogDialog){
+			ArcCatalogDialog conduitDialog = (ArcCatalogDialog) view;
 			conduitDialog.shapeChanged();
 		}
 	}

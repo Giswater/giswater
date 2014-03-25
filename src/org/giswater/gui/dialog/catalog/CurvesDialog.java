@@ -49,10 +49,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtId;
-	protected JButton btnPrevious;
-	protected JButton btnNext;
-	private JButton btnCreate;
-	private JButton btnDelete;
 	private JLabel lblOther;
 	private JTable table;
 	private JPanel panelGeneral;
@@ -187,10 +183,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	
 	protected void setupListeners() {
 			
-		btnPrevious.addActionListener(this);
-		btnNext.addActionListener(this);
-		btnCreate.addActionListener(this);
-		btnDelete.addActionListener(this);
 		btnDetailDelete.addActionListener(this);
 		btnDetailCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

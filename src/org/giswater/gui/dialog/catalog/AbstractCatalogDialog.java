@@ -46,6 +46,10 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	protected CatalogController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
+	protected JButton btnCreate;
+	protected JButton btnDelete;
+	protected JButton btnPrevious;
+	protected JButton btnNext;	
 	protected JButton btnSave;	
 	protected JButton btnClose;		
 
@@ -77,13 +81,38 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	
 	
 	public void setTextField(JTextField textField, Object value) {
-		if (value!=null){
+		if (value != null){
 			textField.setText(value.toString());
 		}
 		else{
 			textField.setText("");
 		}
 	}	
+	
+	
+	public void enableDelete(boolean enable){
+		if (btnDelete != null){		
+			btnDelete.setEnabled(enable);
+		}
+	}	
+	
+	public void enablePrevious(boolean enable){
+		if (btnPrevious != null){
+			btnPrevious.setEnabled(enable);
+		}
+	}
+	
+	public void enableNext(boolean enable){
+		if (btnNext != null){
+			btnNext.setEnabled(enable);
+		}
+	}	
+	
+	public void enableSave(boolean enable){
+		if (btnSave != null){
+			btnSave.setEnabled(enable);
+		}
+	}		
 	
 	
 	protected void createComponentMap() {
@@ -117,12 +146,24 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 				controller.closeWindow();
 			}
 		});		
+		if (btnPrevious != null){
+			btnPrevious.addActionListener(this);
+		}
+		if (btnNext != null){
+			btnNext.addActionListener(this);
+		}
+		if (btnCreate != null){
+			btnCreate.addActionListener(this);
+		}
+		if (btnDelete != null){
+			btnDelete.addActionListener(this);
+		}	
 		if (btnSave != null){
 			btnSave.addActionListener(this);		
 		}	
 		if (btnClose != null){
 			btnClose.addActionListener(this);		
-		}			
+		}		
 		
 	}
 	
@@ -130,7 +171,7 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
-	}	
+	}
 
 	
 }
