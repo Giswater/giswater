@@ -169,11 +169,11 @@ public class MenuController {
         Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
         if (initDb){
         	MainDao.initializeDatabase();
-        	dbPanel.setDatabase("giswater_ddb");
+        	dbPanel.setDatabase(MainDao.getInitDb());
+       		MainDao.getGswProperties().put("INIT_DB", "false");
         }
        	if (autoConnect && remember){
        		MainDao.silenceConnection();
-       		MainDao.getGswProperties().put("INIT_DB", "false");
         }
         
         // Update text open/close button

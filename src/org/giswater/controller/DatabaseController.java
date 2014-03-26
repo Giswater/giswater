@@ -107,7 +107,6 @@ public class DatabaseController {
 		// Try to connect to Database
 		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
 		MainDao.setConnected(isConnected);
-		mainFrame.hecRasFrame.getPanel().setSchemaModel(null);
 		
 		if (isConnected){
 			gswProp.put("POSTGIS_HOST", host);
@@ -127,7 +126,18 @@ public class DatabaseController {
 	        File dataFolder = new File(dataPath);
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
 	        gswProp.put("POSTGIS_BIN", binPath);
-	    	Utils.getLogger().info("Postgis data directory: " + dataPath);	        
+	        Utils.getLogger().info("Connection successful");
+	        Utils.getLogger().info("Postgre data directory: " + dataPath);	
+	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
+        	String postgisVersion = MainDao.checkPostgisVersion();	        
+        	if (postgisVersion.equals("")){
+        		// Enable Postgis to current Database
+        		String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
+        		MainDao.executeUpdateSql(sql, true, false);			  	
+        	}
+        	else{
+        		Utils.getLogger().info("Postgis version: " + postgisVersion);
+        	}
 	    	
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage("connection_opened");
@@ -136,6 +146,9 @@ public class DatabaseController {
 			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 		} 
+		else{
+			mainFrame.hecRasFrame.getPanel().setSchemaModel(null);
+		}
 		
 		return isConnected;
 		

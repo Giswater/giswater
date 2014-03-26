@@ -57,7 +57,7 @@ public class MainDao {
 	private static final String CONFIG_FOLDER = "config" + File.separator;
 	private static final String CONFIG_FILE = "giswater.properties";
 	private static final String CONFIG_DB = "config.sqlite";
-	private static final String INIT_DB = "giswater_ddb";
+	private static final String INIT_DB = "giswater_ddb2";
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
 	private static final String GSW_FILE = "default.gsw";
@@ -66,6 +66,10 @@ public class MainDao {
 	private static final String TABLE_EPASWMM = "inp_divider";	
 	private static final String TABLE_HECRAS = "banks";		
 	
+	
+	public static String getInitDb(){
+		return INIT_DB;
+	}
 	
 	public static String getGswPath(){
 		return gswPath;
@@ -168,11 +172,11 @@ public class MainDao {
 		
 	}
     
-		
-	public static boolean silenceConnection(){
+	
+	
+	private static boolean commonSteps(){
 		
 		String host, port, db, user, password;
-		Boolean status = true;
 		
 		// Get parameteres connection from properties file
 		host = gswProp.get("POSTGIS_HOST", "localhost");		
@@ -195,6 +199,15 @@ public class MainDao {
 			isConnected = setConnectionPostgis(host, port, db, user, password, false);
 		} while (!isConnected && count < 5);
 		
+		return isConnected;
+		
+	}
+	
+		
+	public static boolean silenceConnection(){
+		
+		commonSteps();
+		
 		if (isConnected){
 			// Get Postgis data and bin folder
 	    	String dataPath = MainDao.getDataDirectory();
@@ -203,7 +216,7 @@ public class MainDao {
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
 	    	gswProp.put("POSTGIS_BIN", binPath);	
 			Utils.getLogger().info("Autoconnection successful");
-	    	Utils.getLogger().info("Postgis data directory: " + dataPath);		    	
+	    	Utils.getLogger().info("Postgre data directory: " + dataPath);		    	
 	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
         	String postgisVersion = MainDao.checkPostgisVersion();	        
         	if (postgisVersion.equals("")){
@@ -214,42 +227,18 @@ public class MainDao {
         	else{
         		Utils.getLogger().info("Postgis version: " + postgisVersion);
         	}
-		}
-		else{
-			Utils.getLogger().info("Autoconnection error");			
-			status = false;	
+    		return true;
 		}
 		
-		return status;
+		Utils.getLogger().info("Autoconnection error");			
+		return false;
 		
 	}	    
     
 	
 	public static boolean initializeDatabase(){
 		
-		String host, port, db, user, password;
-		Boolean status = true;
-		
-		// Get parameteres connection from properties file
-		host = gswProp.get("POSTGIS_HOST", "localhost");		
-		port = gswProp.get("POSTGIS_PORT", "5431");
-		db = gswProp.get("POSTGIS_DATABASE", "postgres");
-		user = gswProp.get("POSTGIS_USER", "postgres");
-		password = gswProp.get("POSTGIS_PASSWORD");		
-		password = Encryption.decrypt(password);
-		password = (password == null) ? "" : password;
-		
-		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")){
-			Utils.getLogger().info("Autoconnection not possible. Check parameters in properties file");
-			return false;
-		}
-		
-		int count = 0;
-		do{
-			count++;
-			Utils.getLogger().info("Trying to connect: " + count);
-			isConnected = setConnectionPostgis(host, port, db, user, password, false);
-		} while (!isConnected && count < 5);
+		commonSteps();
 		
 		if (isConnected){
 	    	String dataPath = MainDao.getDataDirectory();
@@ -258,7 +247,7 @@ public class MainDao {
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
 	    	gswProp.put("POSTGIS_BIN", binPath);	
 			if (!MainDao.checkDatabase(INIT_DB)){
-				Utils.getLogger().info("initDatabase");
+				Utils.getLogger().info("Creating database... " + INIT_DB);
 				initDatabase();
 			} 
 			// Close current connection in order to connect later to default Database just created
@@ -266,10 +255,10 @@ public class MainDao {
 		}
 		else{
 			Utils.getLogger().info("Autoconnection error");			
-			status = false;	
+			return false;	
 		}
 		
-		return status;
+		return true;
 		
 	}	 	
     
@@ -290,19 +279,12 @@ public class MainDao {
 		try {
 			content = Utils.readFile(filePath);
 			Utils.logSql(content);
-			if (!executeUpdateSql(content, true, false)){
-				return;
-			}				
+			executeUpdateSql(content, true, false);
+			gswProp.setProperty("POSTGIS_DATABASE", INIT_DB);
 		} catch (IOException e) {
 			Utils.logError(e);
 			return;
 		}
-		
-		// Update gsw properties file
-		gswProp.setProperty("POSTGIS_DATABASE", INIT_DB);
-
-//		// Close current connection in order to connect later to default Database just created
-//		closeConnectionPostgis();
 
 	}
 	

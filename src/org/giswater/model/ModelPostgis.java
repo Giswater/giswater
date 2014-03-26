@@ -537,9 +537,15 @@ public class ModelPostgis extends Model {
 	    		} 
 	    		if (!insertSql.equals("")){
 	    			Utils.logSql(insertSql);	            	
-		    		if (!MainDao.executeUpdateSql(insertSql)){
-						return false;
-					}
+		    		boolean status = MainDao.executeUpdateSql(insertSql);
+		    		if (!status){
+		    			// TODO: i18n
+		    			String msg = "Import aborted. Some data values are not valid in current target: ";
+		    			msg+= "\n" + rpt.getDescription();
+		    			msg+= "Open current .log file for more details";
+		    			Utils.showError(msg);
+		    			return false;
+		    		}
 	    		}
         	} 
         	else{
