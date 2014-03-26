@@ -79,6 +79,7 @@ public class DatabaseController {
 				view.enableControls(false);
 			}
 		}
+		mainFrame.updateEpaFrames();
 		
 	}	
 	

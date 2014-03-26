@@ -1135,15 +1135,10 @@
             </labelattributes>
             <edittypes>
                 <edittype labelontop="0" editable="1" type="0" name="arc_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="categ_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="diameter"/>
-                <edittype labelontop="0" editable="1" type="0" name="direction"/>
-                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_type_arc20131204000650536" allowMulti="false" filterExpression="" type="15" value="id" name="enet_type"/>
-                <edittype labelontop="0" editable="1" type="0" name="label"/>
-                <edittype labelontop="0" editable="1" type="0" name="link"/>
+                <edittype labelontop="0" editable="1" type="0" name="enet_type"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="cat_mat20130814093412133" allowMulti="false" filterExpression="" type="15" value="id" name="matcat_id"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20131125210050415" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="systm_type"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -2628,7 +2623,8 @@
                 <edittype labelontop="0" editable="1" type="0" name="elevation"/>
                 <edittype labelontop="0" editable="1" type="0" name="enet_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="sector_id"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20131125210050415" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
+            </edittypes>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -4784,24 +4780,39 @@
 		<LayerSnappingList type="QStringList">
                 <value>arc20130820192008947</value>
                 <value>node20130820192016308</value>
+				<value>v_inp_edit_junction20131203134220075</value>
+				<value>v_inp_edit_reservoir20131203134417798</value>
+				<value>v_inp_edit_tank20131203134417819</value>	
             </LayerSnappingList>
             <LayerSnappingEnabledList type="QStringList">
                 <value>enabled</value>
                 <value>enabled</value>
+				<value>enabled</value>
+				<value>enabled</value>
+				<value>enabled</value>
             </LayerSnappingEnabledList>
             <AvoidIntersectionsList type="QStringList"/>
             <LayerSnappingToleranceUnitList type="QStringList">
                 <value>1</value>
                 <value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
             </LayerSnappingToleranceUnitList>
             <LayerSnapToList type="QStringList">
                 <value>to_vertex</value>
                 <value>to_vertex</value>
+				<value>to_vertex</value>
+				<value>to_vertex</value>
+				<value>to_vertex</value>
             </LayerSnapToList>
             <TopologicalEditing type="int">1</TopologicalEditing>
             <LayerSnappingToleranceList type="QStringList">
                 <value>15.000000</value>
                 <value>15.000000</value>
+				<value>15.000000</value>
+				<value>15.000000</value>
+				<value>15.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
         <PositionPrecision>
@@ -4817,3 +4828,5 @@
         </DeprecatedLabels>
     </properties>
 </qgis>
+
+

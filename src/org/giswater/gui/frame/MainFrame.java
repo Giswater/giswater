@@ -620,6 +620,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		}		
 	}	
 	
+	public void updateEpaFrames(){
+		epanetFrame.getPanel().selectSourceType();
+		swmmFrame.getPanel().selectSourceType();
+	}
+	
 	public void enableCatalog(boolean enable) {
 		mnData.setEnabled(enable);
 		mnAnalysis.setEnabled(enable);

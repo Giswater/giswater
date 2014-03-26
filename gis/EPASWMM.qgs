@@ -1293,10 +1293,10 @@
             <edittypes>
                 <edittype labelontop="0" editable="1" type="0" name="id"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat1"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat2"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat3"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat4"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat1"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat2"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat3"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat4"/>
                 <edittype labelontop="0" editable="1" type="0" name="value"/>
             </edittypes>
             <editform>.</editform>
@@ -1334,10 +1334,10 @@
             <vectorjoins/>
             <edittypes>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat1"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat2"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat3"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="pat4"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat1"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat2"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat3"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pat4"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="poll_id" layer="inp_pollutant20130502001944744" allowMulti="false" filterExpression="" type="15" value="poll_id" name="poll_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="value"/>
             </edittypes>
@@ -1390,7 +1390,7 @@
                 <edittype labelontop="0" editable="1" type="0" name="pan_7"/>
                 <edittype labelontop="0" editable="1" type="0" name="pan_8"/>
                 <edittype labelontop="0" editable="1" type="0" name="pan_9"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="recovery"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="recovery"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_timser_id20130502001945290" allowMulti="false" filterExpression="" type="15" value="id" name="timser_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="value_1"/>
                 <edittype labelontop="0" editable="1" type="0" name="value_10"/>
@@ -1593,7 +1593,7 @@
                 <edittype labelontop="0" editable="1" type="0" name="base"/>
                 <edittype labelontop="0" editable="1" type="0" name="id"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="patter_id"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pattern_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="sfactor"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_timser_id20130502001945290" allowMulti="false" filterExpression="" type="15" value="id" name="timser_id"/>
             </edittypes>
@@ -1635,7 +1635,7 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_inflows20130820184335228" allowMulti="false" type="15" value="id" name="form_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="mfactor"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="patter_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="patter_id" name="patter_id"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="pattern_id" layer="inp_pattern20130502001944666" allowMulti="false" filterExpression="" type="15" value="pattern_id" name="pattern_id"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="poll_id" layer="inp_pollutant20130502001944744" allowMulti="false" filterExpression="" type="15" value="poll_id" name="poll_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="sfactor"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_timser_id20130502001945290" allowMulti="false" filterExpression="" type="15" value="id" name="timser_id"/>
@@ -1799,7 +1799,7 @@
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
             <id>inp_pattern20130502001944666</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='patter_id' table="SCHEMA_NAME"."inp_pattern" sql=</datasource>
+            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='pattern_id' table="SCHEMA_NAME"."inp_pattern" sql=</datasource>
             <title></title>
             <abstract></abstract>
             <keywordList>
@@ -1847,7 +1847,7 @@
                 <edittype labelontop="0" editable="1" type="0" name="factor_7"/>
                 <edittype labelontop="0" editable="1" type="0" name="factor_8"/>
                 <edittype labelontop="0" editable="1" type="0" name="factor_9"/>
-                <edittype labelontop="0" editable="1" type="0" name="patter_id"/>
+                <edittype labelontop="0" editable="1" type="0" name="pattern_id"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_pattern20130510201056255" allowMulti="false" type="15" value="id" name="patter_type"/>
             </edittypes>
             <editform>.</editform>
@@ -3620,7 +3620,7 @@
             </labelattributes>
             <edittypes>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="sector_id"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20130820173926621" allowMulti="false" type="15" value="sector_id" name="sector_id"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_type_node20131203172354178" allowMulti="false" filterExpression="" type="15" value="id" name="swmm_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="top_elev"/>
                 <edittype labelontop="0" editable="1" type="0" name="ymax"/>
@@ -5237,8 +5237,8 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_yesno20130510201056177" allowMulti="false" type="15" value="id" name="flap"/>
                 <edittype labelontop="0" editable="1" type="0" name="geom1"/>
                 <edittype labelontop="0" editable="1" type="0" name="geom2"/>
-                <edittype labelontop="0" editable="1" type="0" name="geom3"/>
-                <edittype labelontop="0" editable="1" type="0" name="geom4"/>
+                <edittype labelontop="0" editable="1" type="11" name="geom3"/>
+                <edittype labelontop="0" editable="1" type="11" name="geom4"/>
                 <edittype labelontop="0" editable="1" type="0" name="label"/>
                 <edittype labelontop="0" editable="1" type="0" name="link"/>
                 <edittype labelontop="0" editable="1" type="0" name="offset"/>
@@ -5248,8 +5248,8 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_orifice20130820181504380" allowMulti="false" type="15" value="id" name="shape"/>
                 <edittype labelontop="0" editable="1" type="0" name="systm_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="t"/>
-                <edittype labelontop="0" editable="1" type="0" name="z1"/>
-                <edittype labelontop="0" editable="1" type="0" name="z2"/>
+                <edittype labelontop="0" editable="1" type="11" name="z1"/>
+                <edittype labelontop="0" editable="1" type="11" name="z2"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -5687,16 +5687,16 @@
                 <edittype labelontop="0" editable="1" type="0" name="cd1"/>
                 <edittype labelontop="0" editable="1" type="0" name="cd2"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_curve_id20130502001943590" allowMulti="false" filterExpression="" type="15" value="id" name="curve_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="flap"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_yesno20130510201056177" allowMulti="false" filterExpression="" type="15" value="id" name="flap"/>
                 <edittype labelontop="0" editable="1" type="0" name="label"/>
                 <edittype labelontop="0" editable="1" type="0" name="link"/>
                 <edittype labelontop="0" editable="1" type="0" name="offset"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_outlet20130510201056239" allowMulti="false" type="15" value="id" name="outlet_type"/>
-                <edittype labelontop="0" editable="1" type="0" name="sector_id"/>
+				<edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20130820173926621" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>          
                 <edittype labelontop="0" editable="1" type="0" name="systm_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="t"/>
-                <edittype labelontop="0" editable="1" type="0" name="z1"/>
-                <edittype labelontop="0" editable="1" type="0" name="z2"/>
+                <edittype labelontop="0" editable="1" type="11" name="z1"/>
+                <edittype labelontop="0" editable="1" type="11" name="z2"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -5929,8 +5929,8 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_status20131203183008942" allowMulti="false" filterExpression="" type="15" value="id" name="status"/>
                 <edittype labelontop="0" editable="1" type="0" name="systm_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="t"/>
-                <edittype labelontop="0" editable="1" type="0" name="z1"/>
-                <edittype labelontop="0" editable="1" type="0" name="z2"/>
+                <edittype labelontop="0" editable="1" type="11" name="z1"/>
+                <edittype labelontop="0" editable="1" type="11" name="z2"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -6141,7 +6141,7 @@
                 <edittype labelontop="0" editable="1" type="0" name="link"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_type"/>
-                <edittype labelontop="0" editable="1" type="0" name="sector_id"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20130820173926621" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="sh"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_storage20130510201056301" allowMulti="false" type="15" value="id" name="storage_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="top_elev"/>
@@ -6386,8 +6386,8 @@
                 <edittype labelontop="0" editable="1" type="0" name="systm_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="t"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_weirs20130510201056691" allowMulti="false" type="15" value="id" name="weir_type"/>
-                <edittype labelontop="0" editable="1" type="0" name="z1"/>
-                <edittype labelontop="0" editable="1" type="0" name="z2"/>
+                <edittype labelontop="0" editable="1" type="11" name="z1"/>
+                <edittype labelontop="0" editable="1" type="11" name="z2"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -10037,24 +10037,44 @@
             <LayerSnappingList type="QStringList">
                 <value>arc20130601163030372</value>
                 <value>node20130601163030434</value>
+				<value>v_inp_edit_junction20130814133610096</value>
+				<value>v_inp_edit_outfall20130814133610188</value>
+				<value>v_inp_edit_divider20130814154152383</value>
+				<value>v_inp_edit_storage20130814154152593</value>
             </LayerSnappingList>
             <LayerSnappingEnabledList type="QStringList">
                 <value>enabled</value>
                 <value>enabled</value>
+				<value>enabled</value>
+				<value>enabled</value>
+				<value>enabled</value>
+				<value>enabled</value>
             </LayerSnappingEnabledList>
             <AvoidIntersectionsList type="QStringList"/>
             <LayerSnappingToleranceUnitList type="QStringList">
                 <value>1</value>
                 <value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
             </LayerSnappingToleranceUnitList>
             <LayerSnapToList type="QStringList">
                 <value>to_vertex</value>
                 <value>to_vertex</value>
+				<value>to_vertex</value>
+				<value>to_vertex</value>
+				<value>to_vertex</value>
+				<value>to_vertex</value>
             </LayerSnapToList>
             <TopologicalEditing type="int">1</TopologicalEditing>
             <LayerSnappingToleranceList type="QStringList">
                 <value>15.000000</value>
                 <value>15.000000</value>
+				<value>15.000000</value>
+				<value>15.000000</value>
+				<value>15.000000</value>
+				<value>15.000000</value>
             </LayerSnappingToleranceList>
         </Digitizing>
         <PositionPrecision>
@@ -10070,3 +10090,5 @@
         </DeprecatedLabels>
     </properties>
 </qgis>
+
+
