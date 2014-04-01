@@ -612,7 +612,18 @@ public class MainController{
 		else{
 			sridValue = defaultSrid;
 		}
-		return sridValue.trim();
+		return sridValue.trim().toLowerCase();
+		
+	}
+	
+	
+	private String validateName(String schemaName){
+		
+		String validate;
+		validate = schemaName.trim().toLowerCase();
+		validate = validate.replace(" ", "_");
+		validate = validate.replaceAll("[^\\p{ASCII}]", "");
+		return validate;
 		
 	}
 	
@@ -630,7 +641,7 @@ public class MainController{
 			if (schemaName == null){
 				return;
 			}
-			schemaName = schemaName.trim().toLowerCase();
+			schemaName = validateName(schemaName);
 			if (schemaName.equals("")){
 				Utils.showError("schema_valid_name");
 				return;

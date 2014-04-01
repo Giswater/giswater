@@ -179,7 +179,7 @@ public class MainDao {
 		String host, port, db, user, password;
 		
 		// Get parameteres connection from properties file
-		host = gswProp.get("POSTGIS_HOST", "localhost");		
+		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 		port = gswProp.get("POSTGIS_PORT", "5431");
 		db = gswProp.get("POSTGIS_DATABASE", "postgres");
 		user = gswProp.get("POSTGIS_USER", "postgres");
@@ -1048,7 +1048,7 @@ public class MainDao {
 		String bin, host, port, db, user;
 		
 		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "localhost");
+		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
 		port = gswProp.getProperty("POSTGIS_PORT", "5431");
 		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
 		user = gswProp.getProperty("POSTGIS_USER", "postgres");
@@ -1115,7 +1115,7 @@ public class MainDao {
 		
 		fileSql = raster.replace(".asc", ".sql");
 		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "localhost");
+		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
 		port = gswProp.getProperty("POSTGIS_PORT", "5431");
 		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
 		user = gswProp.getProperty("POSTGIS_USER", "postgres");

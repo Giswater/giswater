@@ -436,7 +436,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			
 			// Get parameteres connection from properties file
 			String host, port, db, user, password;			
-			host = gswProp.get("POSTGIS_HOST", "localhost");		
+			host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 			port = gswProp.get("POSTGIS_PORT", "5431");
 			db = gswProp.get("POSTGIS_DATABASE", "giswater");
 			user = gswProp.get("POSTGIS_USER", "postgres");

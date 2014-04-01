@@ -1392,6 +1392,11 @@
             <provider encoding="System">postgres</provider>
             <previewExpression></previewExpression>
             <vectorjoins/>
+			<edittypes>
+                <edittype labelontop="0" editable="1" type="0" name="pump_id"/>
+                <edittype labelontop="0" editable="1" type="0" name="value"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_param_energy20130820191531503" allowMulti="false" type="15" value="id" name="parameter"/>
+            </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
             <annotationform>.</annotationform>
@@ -1425,6 +1430,11 @@
             <provider encoding="System">postgres</provider>
             <previewExpression>COALESCE("energ_type", '&lt;NULL>')||', '||COALESCE("parameter", '&lt;NULL>')||', '||COALESCE("value", '&lt;NULL>')</previewExpression>
             <vectorjoins/>
+			<edittypes>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_energy20130820191532221" allowMulti="false" type="15" value="id" name="energ_type"/>
+                <edittype labelontop="0" editable="1" type="0" name="value"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_value_param_energy20130820191531503" allowMulti="false" type="15" value="id" name="parameter"/>
+            </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
             <annotationform>.</annotationform>
@@ -1595,6 +1605,11 @@
             <provider encoding="System">postgres</provider>
             <previewExpression>COALESCE("parameter", '&lt;NULL>')||', '||COALESCE("arc_id", '&lt;NULL>')||', '||COALESCE("value", '&lt;NULL>')</previewExpression>
             <vectorjoins/>
+			 <edittypes>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_reactions_el20130820191531445" allowMulti="false" type="15" value="id" name="parameter"/>
+                <edittype labelontop="0" editable="1" type="0" name=""/>
+                <edittype labelontop="0" editable="1" type="0" name="value"/>
+            </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
             <annotationform>.</annotationform>
@@ -1629,7 +1644,7 @@
             <previewExpression>COALESCE("react_type", '&lt;NULL>')||', '||COALESCE("parameter", '&lt;NULL>')||', '||COALESCE("value", '&lt;NULL>')</previewExpression>
             <vectorjoins/>
             <edittypes>
-                <edittype labelontop="0" editable="1" type="0" name="parameter"/>
+                <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_value_reactions_gl20130820191531375" allowMulti="false" type="15" value="id" name="parameter"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_reactions_gl20130820191532066" allowMulti="false" type="15" value="id" name="react_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="value"/>
             </edittypes>
@@ -2624,7 +2639,6 @@
                 <edittype labelontop="0" editable="1" type="0" name="enet_type"/>
                 <edittype labelontop="0" editable="1" type="0" name="node_id"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20131125210050415" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
-            </edittypes>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -4828,5 +4842,6 @@
         </DeprecatedLabels>
     </properties>
 </qgis>
+
 
 
