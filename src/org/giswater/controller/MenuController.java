@@ -494,7 +494,7 @@ public class MenuController {
 		String title = "Welcome";
 		String info = "Welcome to Giswater, the EPANET, EPA SWMM and HEC-RAS communication tool";
 		String info2 = "Please read the documentation and enjoy using the software";
-		WelcomeDialog about = new WelcomeDialog(title, info, info2, "Version: " + versionCode);
+		WelcomeDialog about = new WelcomeDialog(title, info, info2, versionCode);
 		about.setModal(true);
 		about.setLocationRelativeTo(null);
 		about.setVisible(true);

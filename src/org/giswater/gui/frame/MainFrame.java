@@ -59,6 +59,9 @@ public class MainFrame extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
+	private PropertiesMap prop;
+	private String versionCode;
+	
     private JDesktopPane desktopPane;
     
 	private JMenuItem mntmNew;
@@ -107,10 +110,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
 		
-	private PropertiesMap prop;
-
 	
-	public MainFrame(boolean isConnected) {
+	public MainFrame(boolean isConnected, String versionCode) {
+		
+		this.versionCode = versionCode;
 		initConfig();
 		try {
 			initFrames();
@@ -118,6 +121,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());
 		}
+		
 	}
 
 	
@@ -130,11 +134,9 @@ public class MainFrame extends JFrame implements ActionListener{
 
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());
-		setTitle(BUNDLE.getString("MainFrame.this.title")); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		prop = MainDao.getPropertiesFile();
-		//gswProp = MainDao.getGswProperties();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -341,18 +343,16 @@ public class MainFrame extends JFrame implements ActionListener{
         
         boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "true"));
         mnAnalysis.setEnabled(!overwrite);
-        
-        // TODO: Test
-//        mcSwmm.selectSourceType(false);
-//        mcSwmm.schemaTest("_david");
-//        mcEpanet.selectSourceType(false);
-//        mcEpanet.schemaTest("epanet");
 		
 	}
 	
 	
 	public void updateTitle(String path){
-		String title = BUNDLE.getString("MainFrame.this.title") + " - " + path;
+		String title = BUNDLE.getString("MainFrame.this.title");
+		if (versionCode != null){
+			title+= " v"+versionCode;
+		}
+		title+= " - " + path;
 		setTitle(title);
 	}
 	

@@ -77,7 +77,7 @@ public class WelcomeDialog extends JDialog {
 	}	
 	
 	
-	public WelcomeDialog(String title, String info, String info2, String version) {
+	public WelcomeDialog(String title, String info, String info2, String versionCode) {
 		
 		final ImageIcon iconImage = new ImageIcon("images/imago.png");
 		final ImageIcon backgroundImage = new ImageIcon("images/giswater.png");
@@ -145,7 +145,12 @@ public class WelcomeDialog extends JDialog {
 		btnGithub.addActionListener(new OpenUrlGithub());	
 		getContentPane().add(btnGithub, "cell 0 4,alignx center");
 		
-		JLabel lblVersion = new JLabel(version);
+		JLabel lblVersion = new JLabel();
+		String version = "";
+		if (versionCode != null){
+			version = "Version: "+versionCode;
+		}
+		lblVersion.setText(version);
 		lblVersion.setFont(new Font("Tahoma", Font.BOLD, 12));
 		getContentPane().add(lblVersion, "cell 0 6,alignx center");
 		
