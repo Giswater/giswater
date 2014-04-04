@@ -61,6 +61,17 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 		createComponentMap();
 	}	
 
+	public void enablePrevious(boolean enable){
+		if (btnPrevious != null){
+			btnPrevious.setEnabled(enable);
+		}
+	}
+	
+	public void enableNext(boolean enable){
+		if (btnNext != null){
+			btnNext.setEnabled(enable);
+		}
+	}		
 
 	private void initConfig(){
 

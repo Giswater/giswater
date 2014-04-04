@@ -216,7 +216,7 @@ public class HecRasController{
         if (res == 0){
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	if (MainDao.clearData(schemaName)){
-        		Utils.showMessage("data_cleared");
+        		Utils.showMessage(view, "data_cleared");
         	}
         }    	
     	
@@ -288,10 +288,10 @@ public class HecRasController{
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
 		boolean status = MainDao.createSchemaHecRas("hecras", schemaName, sridValue);
 		if (status && defaultSchemaName.equals("")){
-			Utils.showMessage("schema_creation_completed");
+			Utils.showMessage(view, "schema_creation_completed");
 		}
 		else if (status && !defaultSchemaName.equals("")){
-			Utils.showMessage("schema_truncate_completed");
+			Utils.showMessage(view, "schema_truncate_completed");
 		}
 		view.setSchemaModel(MainDao.getSchemas("HECRAS"));	
 		schemaChanged();
@@ -310,7 +310,7 @@ public class HecRasController{
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas("HECRAS"));
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    		Utils.showMessage("schema_deleted", "");
+    		Utils.showMessage(view, "schema_deleted", "");
         }
         
 	}	
@@ -355,7 +355,7 @@ public class HecRasController{
 			Utils.showError("sdf_error");
 		}
 		else{
-			Utils.showMessage("sdf_ok", fileSdf.getAbsolutePath());
+			Utils.showMessage(view, "sdf_ok", fileSdf.getAbsolutePath());
 		}
 		
 	}

@@ -47,7 +47,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 	private JTextField txtReportStart;
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
-	private JButton btnDelete;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -56,14 +55,15 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
-	private JButton btnPrevious;
-	private JButton btnNext;
 	private JTextField textField_8;
 	private JLabel lblHydraAcc;
 	private JLabel lblDemMulti;
 	private JLabel lblTotalDuration;
 	private JTextField textField_9;
 	private JTextField textField_10;
+	private JButton btnPrevious;
+	private JButton btnNext;
+	private JButton btnDelete;
 	
 	
 	public ResultCatEpanetDialog() {
@@ -71,6 +71,17 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		createComponentMap();
 	}
 	
+	public void enablePrevious(boolean enable){
+		if (btnPrevious != null){
+			btnPrevious.setEnabled(enable);
+		}
+	}
+	
+	public void enableNext(boolean enable){
+		if (btnNext != null){
+			btnNext.setEnabled(enable);
+		}
+	}		
 	
 	private void initConfig(){
 

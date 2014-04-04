@@ -343,7 +343,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()){
 				String schema = getSelectedSchema();
 				if (schema.equals("")){
-					Utils.showMessage("any_schema_selected");
+					Utils.showMessage(this, "any_schema_selected");
 					return;
 				}
 				String table = "arc";
@@ -356,13 +356,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				gswProp.put("GIS_NAME", name);
 				gswProp.put("GIS_SOFTWARE", software);
 				gswProp.put("GIS_SCHEMA", schema);
-				int answer = Utils.confirmDialog("gis_creation");
+				int answer = Utils.confirmDialog(this, "gis_creation");
 				if (answer == JOptionPane.YES_OPTION){
 					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema, schemaSrid);
 				}
 			} 
 			else{
-				Utils.showMessage("You should connect to a Database");
+				Utils.showMessage(this, "You should connect to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}			
@@ -377,14 +377,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
 		if (software.equals("HECRAS")){
-			Utils.showMessage("gis_dbf_option");
+			Utils.showMessage(this, "gis_dbf_option");
 			return;
 		}
     	String gisFolder = Utils.getGisFolder();
 		String templatePath = gisFolder + software;
 		File templateFolder = new File(templatePath);
 		if (!templateFolder.exists()){
-			Utils.showError("inp_error_notfound", templatePath);
+			Utils.showError(this, "inp_error_notfound", templatePath);
 			return;
 		}
 		
@@ -393,12 +393,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 			Utils.getLogger().info("Template Folder: "+templatePath);			
 			Utils.getLogger().info("GIS Folder: "+destPath);
+			this.requestFocusInWindow();			
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
             // Ending message
 			String msg = Utils.getBundleString("gis_end") + "\n" + destPath + Utils.getBundleString("gis_end2");
-    		Utils.showMessage(msg);            
+    		Utils.showMessage(this, msg);            
 		} catch (Exception e) {
         	Utils.showError(e);
 		}
@@ -416,7 +417,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	    	templatePath = gisFolder + software+"."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
-				Utils.showError("inp_error_notfound", templatePath);
+				Utils.showError(this, "inp_error_notfound", templatePath);
 				return;
 			}
 			File folder = new File(folderPath);
@@ -426,13 +427,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			String destPath = folderPath + software+"_"+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()){
-	            int answer = Utils.confirmDialog("overwrite_file");
+	            int answer = Utils.confirmDialog(this, "overwrite_file");
 	            if (answer == JOptionPane.NO_OPTION){
 	            	return;
 	            }
 			}
 			
-			gisFrame.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
+			this.requestFocusInWindow();			
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));	
 			
 			// Get parameteres connection from properties file
 			String host, port, db, user, password;			
@@ -479,7 +481,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
             }  	        
 			
         } catch (FileNotFoundException e) {
-    	    Utils.showError("inp_error_notfound", templatePath);
+    	    Utils.showError(this, "inp_error_notfound", templatePath);
     	} catch (IOException e) {
         	Utils.showError(e, templatePath);
     	}

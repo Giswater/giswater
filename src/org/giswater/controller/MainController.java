@@ -451,8 +451,6 @@ public class MainController{
 			return;
 		}        
         
-        //view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        
         // Export to INP
         if (exportChecked) {
             if (!getFileInp()) {
@@ -535,7 +533,7 @@ public class MainController{
 		String templatePath = MainDao.getFolderConfig()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
-			Utils.showError("inp_error_notfound", templatePath);				
+			Utils.showError(view, "inp_error_notfound", templatePath);				
 			return;
 		}
 
@@ -643,7 +641,7 @@ public class MainController{
 			}
 			schemaName = validateName(schemaName);
 			if (schemaName.equals("")){
-				Utils.showError("schema_valid_name");
+				Utils.showError(view, "schema_valid_name");
 				return;
 			}
 		}
@@ -665,28 +663,35 @@ public class MainController{
 		try{
 			srid = Integer.parseInt(sridValue);
 		} catch (NumberFormatException e){
-			Utils.showError("error_srid");
+			Utils.showError(view, "error_srid");
 			return;
-		}
+		}	
 		MainDao.getGswProperties().put("SRID_USER", sridValue);
 		MainDao.savePropertiesFile();
 		boolean isSridOk = MainDao.checkSrid(srid);
 		if (!isSridOk && srid != 0){
 			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
 				Utils.getBundleString("srid_valid");			
-			Utils.showError(msg);
+			Utils.showError(view, msg);
 			return;
 		}
 		
+		// Set wait cursor
+    	view.enableControlsText(false);
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
+		
 		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);	
 		if (status && defaultSchemaName.equals("")){
-			Utils.showMessage("schema_creation_completed");
+			Utils.showMessage(view, "schema_creation_completed");
 		}
 		else if (status && !defaultSchemaName.equals("")){
-			Utils.showMessage("schema_truncate_completed");
+			Utils.showMessage(view, "schema_truncate_completed");
 		}
 		view.setSchemaModel(MainDao.getSchemas(software));	
 		schemaChanged();
+		
+		view.enableControlsText(true);
+		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
 		
 	}
 	
@@ -695,11 +700,14 @@ public class MainController{
 		
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(msg);        
-        if (res == 0){        	    	
+		int res = Utils.confirmDialog(view, msg);        
+        if (res == 0){     
+        	view.requestFocusInWindow();
+    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas(software));
-    		Utils.showMessage("schema_deleted", "");
+    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
+    		Utils.showMessage(view, "schema_deleted", "");
         }
         
 	}		
@@ -709,7 +717,7 @@ public class MainController{
 		
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(msg);        
+		int res = Utils.confirmDialog(view, msg);        
         if (res == 0){
         	// Get SRID before delete schema
 			String table = "arc";

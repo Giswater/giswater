@@ -62,7 +62,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 
 	private JTextField txtProject;
 	private JTextArea txtFileRpt;
-	private JTextArea txtFileInp;
+	public JTextArea txtFileInp;
 	private JButton btnFileInp;
 	private JButton btnFileRpt;
 	private JButton btnAccept;
@@ -94,7 +94,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 	private String softwareName;   // epaswmm | epanet
 	private JButton btnDeleteData;
 	private JLabel lblNewLabel;
-	private JButton btnClose;
+	public JButton btnClose;
 
 	
 	public EpaPanel(String softwareName) {
@@ -207,6 +207,14 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		lblSchema.setEnabled(enable);
 		cboSchema.setEnabled(enable);	
 	}	
+	
+	public void enableControlsText(boolean enable) {
+		txtProject.setEnabled(enable);
+		txtInput.setEnabled(enable);
+		txtFileInp.setEnabled(enable);
+		txtFileRpt.setEnabled(enable);
+		this.requestFocusInWindow();		
+	}		
 	
 	public void enableAccept(boolean enable){
 		btnAccept.setEnabled(enable);

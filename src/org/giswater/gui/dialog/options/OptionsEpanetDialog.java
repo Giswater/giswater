@@ -47,7 +47,6 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 	private JTextField txtUnbalancedN;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField textField_6;
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
@@ -77,7 +76,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[85:85][130:130][10px][85:85][130:130]", "[][][][][][][][][][][]"));
+		panelGeneral.setLayout(new MigLayout("", "[85:85][130:130][10px][85:85][130:130,grow]", "[][][][][][][][][][][]"));
 
 		JLabel lblFlowUnits = new JLabel("Units:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
@@ -218,10 +217,9 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreGroundwater = new JLabel("Pattern:");
 		panelGeneral.add(lblIgnoreGroundwater, "cell 3 8,alignx trailing");
 		
-		textField_6 = new JTextField();
-		panelGeneral.add(textField_6, "cell 4 8,growx");
-		textField_6.setName("pattern");
-		textField_6.setColumns(10);
+		JComboBox pattern = new JComboBox();
+		pattern.setName("pattern");
+		panelGeneral.add(pattern, "cell 4 8,growx");
 		
 		JLabel lblCheckFreq = new JLabel("Check freq:");
 		lblCheckFreq.setName("");

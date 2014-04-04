@@ -375,7 +375,7 @@ public class CatalogController {
 				setComponents();
 	        }   
 		} catch (SQLException e) {
-			Utils.logError(e);
+			Utils.showError(e);
 		}	
 		
 	}

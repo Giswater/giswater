@@ -173,7 +173,7 @@ public class SectorSelectionPanel extends JPanel {
             }
     	}
     	else{
-    		Utils.showMessage("no_record_selected");
+    		Utils.showMessage(this, "no_record_selected");
     	}
     	
 	}

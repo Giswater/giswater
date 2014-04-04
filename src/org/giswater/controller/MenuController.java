@@ -61,6 +61,8 @@ public class MenuController {
 	private MainFrame view;
 	private PropertiesMap prop;
 	private String versionCode;
+	private Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
+	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);	
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
@@ -415,7 +417,7 @@ public class MenuController {
     	    dialog.setVisible(true);	
         }
         else{
-        	Utils.showMessage(errorMsg);
+        	Utils.showMessage(view, errorMsg);
         }
 	    
 	}	
@@ -443,11 +445,15 @@ public class MenuController {
 
 		// Ask confirmation
 		String msg = "Schema called 'sample_"+softwareName+"' will be created with SRID 23031.\nDo you wish to continue?";
-		int res = Utils.confirmDialog(msg, "Create DB sample");
+		int res = Utils.confirmDialog(view, msg, "Create DB sample");
 		if (res != 0) return; 
 		
+		// Set wait cursor
+		view.swmmFrame.getPanel().enableControlsText(false);
+		view.epanetFrame.getPanel().enableControlsText(false);
+		view.setCursorFrames(waitCursor);
+		
 		String schemaName = "sample_"+softwareName;
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		boolean status = true;
 		if (softwareName.equals("hecras")){
 			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
@@ -471,18 +477,21 @@ public class MenuController {
 					// Trough Load Raster
 					String rasterPath = folderRoot+"samples/sample_mdt.asc";	 						
 					if (MainDao.loadRaster(schemaName, rasterPath)){
-						Utils.showMessage("schema_creation_completed", schemaName);
+						Utils.showMessage(view, "schema_creation_completed", schemaName);
 					}						
 				}	
 				else{
-					Utils.showMessage("schema_creation_completed", schemaName);
+					Utils.showMessage(view, "schema_creation_completed", schemaName);
 				}
 			} catch (Exception e) {
 	            Utils.showError(e);
 			}			
 		}
 		
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		view.swmmFrame.getPanel().enableControlsText(true);	
+		view.epanetFrame.getPanel().enableControlsText(true);
+		view.setCursorFrames(defaultCursor);
+		view.updateEpaFrames();
 		
 	}
 	

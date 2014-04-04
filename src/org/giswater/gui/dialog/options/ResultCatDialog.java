@@ -47,7 +47,6 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	private JTextField txtReportStart;
 	private JTextField txtPatternStart;
 	private JTextField txtStart;
-	private JButton btnDelete;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -58,6 +57,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	private JTextField textField_7;
 	private JButton btnPrevious;
 	private JButton btnNext;
+	private JButton btnDelete;
 	
 	
 	public ResultCatDialog() {
@@ -65,6 +65,17 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		createComponentMap();
 	}
 	
+	public void enablePrevious(boolean enable){
+		if (btnPrevious != null){
+			btnPrevious.setEnabled(enable);
+		}
+	}
+	
+	public void enableNext(boolean enable){
+		if (btnNext != null){
+			btnNext.setEnabled(enable);
+		}
+	}	
 	
 	private void initConfig(){
 

@@ -21,6 +21,7 @@
 package org.giswater.util;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
@@ -247,6 +248,14 @@ public class Utils {
     }
     
     public static void showMessage(String msg, String param) {
+    	showMessage(null, msg, "");
+    }  
+    
+    public static void showMessage(Component comp, String msg) {
+    	showMessage(comp, msg, "");
+    }       
+    
+    public static void showMessage(Component comp, String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
 		if (!param.equals("")){
@@ -259,9 +268,9 @@ public class Utils {
 			}			
 			logger.info(infoMsg);
 		}
-		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(comp, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
 		
-    }    
+    }      
 
     
     public static void showError(String msg) {
@@ -273,15 +282,23 @@ public class Utils {
     }    
         
     public static void showError(String msg, String param) {
+    	showError(null, msg, param);
+    }
+    
+    public static void showError(Component comp, String msg) {
+    	showError(null, msg, "");
+    }    
+    
+    public static void showError(Component comp, String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
 		if (!param.equals("")){
 			userMsg += "\n" + param;
 		}
 		logError(msg, param);
-		JOptionPane.showMessageDialog(null, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(comp, userMsg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);
 		
-    }
+    }    
     
     public static void showError(Exception e, String param) {
 		logError(e, param);
@@ -338,6 +355,17 @@ public class Utils {
         return reply;    	
     }          
 
+    
+    public static int confirmDialog(Component comp, String msg) {
+    	return confirmDialog(comp, msg, getBundleString("inp_descr"));	
+    }    
+    
+    
+    public static int confirmDialog(Component comp, String msg, String title) {
+    	int reply = JOptionPane.showConfirmDialog(comp, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
+        return reply;    	
+    }       
+    
     
     public static void execService(String process){
 		

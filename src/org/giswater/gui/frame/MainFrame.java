@@ -21,6 +21,7 @@
 package org.giswater.gui.frame;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -678,6 +679,17 @@ public class MainFrame extends JFrame implements ActionListener{
         }
         
     }
+
+
+	public void setCursorFrames(Cursor cursor) {
+		swmmFrame.getPanel().setCursor(cursor);
+		epanetFrame.getPanel().setCursor(cursor);
+		hecRasFrame.getPanel().setCursor(cursor);
+		dbFrame.getPanel().setCursor(cursor);
+		configFrame.getPanel().setCursor(cursor);
+		gisFrame.getPanel().setCursor(cursor);
+		this.setCursor(cursor);
+	}
     
     
 }

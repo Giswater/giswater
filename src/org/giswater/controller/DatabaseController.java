@@ -89,7 +89,7 @@ public class DatabaseController {
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		Utils.showMessage("connection_closed");			
+		Utils.showMessage(view, "connection_closed");			
 		
 	}
 	
@@ -141,7 +141,7 @@ public class DatabaseController {
         	}
 	    	
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage("connection_opened");
+			Utils.showMessage(view, "connection_opened");
 			
 			// Hecras panel
 			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));

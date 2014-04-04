@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
+import org.giswater.gui.dialog.options.ResultCatDialog;
+import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.util.Utils;
 
@@ -169,9 +171,9 @@ public class OptionsController {
 		else if (comboName.equals("units")){
 			tableName = "inp_value_opti_units";
 		}
-//		else if (comboName.equals("headloss")){
-//			tableName = "inp_value_opti_headloss";
-//		}
+		else if (comboName.equals("pattern")){
+			tableName = "inp_pattern";
+		}
 		else if (comboName.equals("hydraulics")){
 			tableName = "inp_value_opti_hyd";
 		}
@@ -376,16 +378,18 @@ public class OptionsController {
 		try {
 			int res = Utils.confirmDialog("delete_record?");
 	        if (res == 0){
-//				rs.deleteRow();
-//		        if (MainDao.getRowCount(rs) != 0){
-//		        	rs.first();
-//		        	setComponents();
-//		        }
 				rs.deleteRow();				
 				rs.first();
 				current = 1;
 				total--;
-				if (total == 0) current = 0;
+				if (total == 0) {
+					current = 0;
+					if (view instanceof ResultCatDialog || view instanceof ResultCatEpanetDialog){
+						view.dispose();
+						Utils.showMessage(view, "result_cat_empty");
+						return;
+					}
+				}
 				setComponents();
 	        }   
 		} catch (SQLException e) {
