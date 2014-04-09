@@ -105,6 +105,26 @@ public class ModelPostgis extends Model {
     }
 
 
+    
+	public static boolean checkSectorSelection() {
+		
+		boolean result = false;
+		String sql = "SELECT COUNT(*) FROM "+MainDao.getSchema()+".sector_selection";
+		PreparedStatement ps;
+		try {
+			ps = MainDao.getConnectionPostgis().prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()){
+				result = (rs.getInt(1) > 0);
+			}
+		} catch (SQLException e) {
+			Utils.showError(e, sql);
+		}
+		return result;
+		
+	}    
+	
+	
     // Main procedure
     public static boolean processAll(File fileInp) {
 

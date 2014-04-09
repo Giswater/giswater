@@ -171,6 +171,9 @@ public class OptionsController {
 		else if (comboName.equals("units")){
 			tableName = "inp_value_opti_units";
 		}
+		else if (comboName.equals("headloss")){
+			tableName = "inp_value_opti_headloss";
+		}		
 		else if (comboName.equals("pattern")){
 			tableName = "inp_pattern";
 		}
@@ -178,7 +181,7 @@ public class OptionsController {
 			tableName = "inp_value_opti_hyd";
 		}
 		else if (comboName.equals("quality")){
-			tableName = "inp_value_yesno";
+			tableName = "inp_value_opti_qual";
 		}
 		else if (comboName.equals("unbalanced")){
 			tableName = "inp_value_opti_unbal";

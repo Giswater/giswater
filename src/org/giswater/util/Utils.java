@@ -149,23 +149,20 @@ public class Utils {
 	}
 	
 		
-	public static JDialog openDialogForm(JPanel view, JDialog f, int width, int height){
+	public static JDialog openDialogForm(JPanel view, Component parent, int width, int height){
+		
+		JDialog f = new JDialog();
 		f.setModal(true);
 	    f.setLayout(new BorderLayout());
 	    f.add(view, BorderLayout.CENTER);
 	    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	    
 	    f.pack();
 	    f.setSize(width, height);
-	    f.setLocationRelativeTo(null);   	
+	    f.setLocationRelativeTo(parent);   	
 	    return f;
+	    
 	}     
 
-	
-	public static JDialog openDialogForm(JPanel view, int width, int height){
-		JDialog f = new JDialog();
-		return openDialogForm(view, f, width, height);
-	} 
-	
 	
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMdd");

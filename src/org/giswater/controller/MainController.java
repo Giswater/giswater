@@ -73,6 +73,7 @@ public class MainController{
 
     
     public MainController(EpaPanel view, MainFrame mf, String software) {
+    	
     	this.mainFrame = mf;
     	this.view = view;	
         this.prop = MainDao.getPropertiesFile();
@@ -80,6 +81,7 @@ public class MainController{
         this.software = software;
 	    view.setController(this);        
     	userHomeFolder = System.getProperty("user.home"); 	
+    	
 	}
    
 
@@ -236,7 +238,6 @@ public class MainController{
 			else{
 				schemaChanged();
 			}
-	    	//MainDao.setSchema(selectedSchema);
 		} 
 		else{
 			view.setSchemaModel(null);				
@@ -248,9 +249,10 @@ public class MainController{
 		
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, 380, 280);
+        JDialog dialog = Utils.openDialogForm(panel, view, 380, 280);
         panel.setParent(dialog);
-		ImageIcon image = new ImageIcon("images/imago.png");        
+		ImageIcon image = new ImageIcon("images/imago.png"); 
+        dialog.setLocationRelativeTo(view);
         dialog.setIconImage(image.getImage());
         dialog.setVisible(true);
 	}	
@@ -424,14 +426,14 @@ public class MainController{
         importChecked = view.isImportChecked();        
         
         if (!exportChecked && !execChecked && !importChecked){
-            Utils.showError("select_option");
+            Utils.showError(view, "select_option");
             return;
         }
 
         // Get schema from view
         String schema = view.getSelectedSchema();
         if (schema.equals("")){
-            Utils.showError("any_schema_selected");
+            Utils.showError(view, "any_schema_selected");
             return;
         }
         MainDao.setSchema(schema);
@@ -439,7 +441,7 @@ public class MainController{
         // Get software version from view
         String softwareId = view.getSoftware();
         if (softwareId.equals("")){
-            Utils.showError("any_software_selected");
+            Utils.showError(view, "any_software_selected");
             return;
         }
         String version = MainDao.getSoftwareVersion("postgis", softwareId);
@@ -454,20 +456,27 @@ public class MainController{
         // Export to INP
         if (exportChecked) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected");
+                Utils.showError(view, "file_inp_not_selected");
                 return;
-            }                
+            }      
+            if (!ModelPostgis.checkSectorSelection()) {
+        		int res = Utils.confirmDialog(view, "sector_selection_empty");        
+                if (res == 0){            	
+                	showSectorSelection();
+                }
+                return;
+            }               
             continueExec = ModelPostgis.processAll(fileInp);
         }
 
         // Run SWMM
         if (execChecked && continueExec) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected");
+                Utils.showError(view, "file_inp_not_selected");
                 return;
             }            
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected");
+                Utils.showError(view, "file_rpt_not_selected");
                 return;
             }                  
             continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
@@ -498,7 +507,7 @@ public class MainController{
 	public void executeDbf() {
 
 		if (!readyShp) {
-			Utils.showError("dir_shp_not_selected");
+			Utils.showError(view, "dir_shp_not_selected");
 			return;
 		}
 
@@ -510,14 +519,14 @@ public class MainController{
         importChecked = view.isImportChecked();        
         
         if (!exportChecked && !execChecked && !importChecked){
-            Utils.showError("select_option");
+            Utils.showError(view, "select_option");
             return;
         }
         
         // Get software version from view
 		String id = view.getSoftware();
         if (id.equals("")){
-            Utils.showError("any_software_selected");
+            Utils.showError(view, "any_software_selected");
             return;
         }
         String version = MainDao.getSoftwareVersion("dbf", id);
@@ -544,14 +553,14 @@ public class MainController{
 
 		// Process all shapes and output to INP file
         if (!getFileInp()) {
-            Utils.showError("file_inp_not_selected");
+            Utils.showError(view, "file_inp_not_selected");
             return;
         }    
         
         // Export to INP
         if (exportChecked) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected");
+                Utils.showError(view, "file_inp_not_selected");
                 return;
             }                
             continueExec = ModelDbf.processAll(fileInp);
@@ -560,11 +569,11 @@ public class MainController{
         // Run SWMM
         if (execChecked && continueExec) {
             if (!getFileInp()) {
-                Utils.showError("file_inp_not_selected");
+                Utils.showError(view, "file_inp_not_selected");
                 return;
             }            
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected");
+                Utils.showError(view, "file_rpt_not_selected");
                 return;
             }                  
             continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
@@ -573,12 +582,12 @@ public class MainController{
         // Import RPT to Postgis
         if (importChecked && continueExec) {
             if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected");
+                Utils.showError(view, "file_rpt_not_selected");
                 return;
             }            
             projectName = view.getProjectName();
             if (projectName.equals("")){
-                Utils.showError("project_name");
+                Utils.showError(view, "project_name");
             } 
             else{
            		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
