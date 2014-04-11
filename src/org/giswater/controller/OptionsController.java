@@ -171,21 +171,33 @@ public class OptionsController {
 		else if (comboName.equals("units")){
 			tableName = "inp_value_opti_units";
 		}
-		else if (comboName.equals("headloss")){
-			tableName = "inp_value_opti_headloss";
-		}		
 		else if (comboName.equals("pattern")){
 			tableName = "inp_pattern";
 		}
 		else if (comboName.equals("hydraulics")){
 			tableName = "inp_value_opti_hyd";
 		}
-		else if (comboName.equals("quality")){
-			tableName = "inp_value_opti_qual";
-		}
 		else if (comboName.equals("unbalanced")){
 			tableName = "inp_value_opti_unbal";
-		}		
+		}	
+		
+		// Options Epanet or Report Epanet
+		else if (comboName.equals("headloss")){
+			if (view instanceof OptionsEpanetDialog){			
+				tableName = "inp_value_opti_headloss";
+			}
+			else{
+				tableName = "inp_value_yesno";
+			}
+		}			
+		else if (comboName.equals("quality")){
+			if (view instanceof OptionsEpanetDialog){			
+				tableName = "inp_value_opti_qual";
+			}
+			else{
+				tableName = "inp_value_yesno";
+			}
+		}
 		
 		// Report
 		else if (comboName.equals("status")){
@@ -300,14 +312,12 @@ public class OptionsController {
 		
 		if (action.equals("create")){
 			Utils.getLogger().info("Editing new record...");
-//			view.enableDelete(false);
 			view.enablePrevious(false);
 			view.enableNext(false);		
 			view.enableSave(true);
 		}
 		else{
 			Utils.getLogger().info("Record: " + current + " of " + total);
-//			view.enableDelete(total > 0);
 			view.enablePrevious(current > 1);
 			view.enableNext(current < total);
 			view.enableSave(current > 0);
