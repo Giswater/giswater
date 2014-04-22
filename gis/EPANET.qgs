@@ -3275,7 +3275,7 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="cat_mat20130814093412133" allowMulti="false" filterExpression="" type="15" value="id" name="matcat_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="minorloss"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20131125210050415" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
-                <edittype labelontop="0" editable="1" type="0" name="status"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_value_st_pipe20130820191531294" allowMulti="false" filterExpression="" type="15" value="id" name="status"/>
             </edittypes>
             <editform>.</editform>
             <editforminit></editforminit>
@@ -4098,7 +4098,7 @@
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="cat_mat20130814093412133" allowMulti="false" filterExpression="" type="15" value="id" name="matcat_id"/>
                 <edittype labelontop="0" editable="1" type="0" name="minorloss"/>
                 <edittype labelontop="0" editable="1" type="0" name="pressure"/>
-                <edittype labelontop="0" editable="1" type="0" name="sector_id"/>
+                <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="sector_id" layer="sector20131125210050415" allowMulti="false" filterExpression="" type="15" value="sector_id" name="sector_id"/>
                 <edittype labelontop="0" editable="1" allowNull="true" orderByValue="false" key="id" layer="inp_value_status20130820191531216" allowMulti="false" filterExpression="" type="15" value="id" name="status"/>
                 <edittype labelontop="0" editable="1" allowNull="false" orderByValue="false" key="id" layer="inp_typevalue_valve20130821012434840" allowMulti="false" filterExpression="" type="15" value="id" name="valv_type"/>
             </edittypes>

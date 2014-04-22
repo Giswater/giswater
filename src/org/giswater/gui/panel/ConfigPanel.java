@@ -55,14 +55,18 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JTabbedPane tabbedPane;
 	private JLabel lblSwmmFolder;
 	private JLabel lblEpanetFolder;
-	private JTextField txtSwmmFolder;
-	private JTextField txtEpanetFolder;
-	private JButton btnSwmmFolder;
-	private JButton btnEpanetFolder;
+	private JTextField txtFileSwmm;
+	private JTextField txtFileEpanet;
+	private JButton btnFileSwmm;
+	private JButton btnFileEpanet;
 	private JButton btnAccept;
 	private JButton btnClose;
 	private JLabel lblNotepad;
 	private JLabel lblNotepad2;
+	private JLabel lblWindowsGuiSoftware;
+	private JLabel lblPgadmin;
+	private JTextField txtFilePgAdmin;
+	private JButton btnFilePgAdmin;
 
 	
 	public ConfigPanel(ConfigFrame configFrame) {
@@ -94,71 +98,96 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	}	
 	
 	public void setEpanetFile(String path) {
-		txtEpanetFolder.setText(path);
+		txtFileEpanet.setText(path);
 	}		
 	
 	public String getEpanetFile() {
-		return txtEpanetFolder.getText().trim().toLowerCase();
+		return txtFileEpanet.getText().trim().toLowerCase();
 	}		
 	
 	public void setSwmmFile(String path) {
-		txtSwmmFolder.setText(path);
+		txtFileSwmm.setText(path);
 	}		
 	
 	public String getSwmmFile() {
-		return txtSwmmFolder.getText().trim().toLowerCase();
+		return txtFileSwmm.getText().trim().toLowerCase();
 	}	
 
+	public void setPgAdminFile(String path) {
+		txtFilePgAdmin.setText(path);
+	}		
+	
+	public String getPgAdminFile() {
+		return txtFilePgAdmin.getText().trim().toLowerCase();
+	}	
+	
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::267.00px]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][::306.00px]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
 		add(tabbedPane, "cell 1 1,grow");
 
-		// Panel Database connection
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[100.00][10px][][][10px:n][25]"));
+		panel_1.setLayout(new MigLayout("", "[:96.00:120px][:290:280][]", "[144.00][10px][][][10px:n][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[4][24][24][24][10.00]"));
+		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[][24px:n][24px:n][24px:n][24][10.00]"));
+		
+		lblWindowsGuiSoftware = new JLabel(BUNDLE.getString("ConfigPanel.lblWindowsGuiSoftware.text")); //$NON-NLS-1$
+		lblWindowsGuiSoftware.setVisible(false);
+		panel.add(lblWindowsGuiSoftware, "cell 1 0 2 1");
 		
 		lblSwmmFolder = new JLabel(BUNDLE.getString("Config.lblSwmmFolder"));
-		panel.add(lblSwmmFolder, "cell 1 1");
+		panel.add(lblSwmmFolder, "cell 1 1,alignx trailing");
 		
-		txtSwmmFolder = new JTextField();
-		txtSwmmFolder.setText((String) null);
-		txtSwmmFolder.setColumns(10);
-		panel.add(txtSwmmFolder, "cell 2 1,growx");
+		txtFileSwmm = new JTextField();
+		txtFileSwmm.setText((String) null);
+		txtFileSwmm.setColumns(10);
+		panel.add(txtFileSwmm, "cell 2 1,growx");
 		
-		btnSwmmFolder = new JButton();
-		btnSwmmFolder.setText("...");
-		btnSwmmFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnSwmmFolder.setActionCommand("chooseFileSwmm");
-		panel.add(btnSwmmFolder, "cell 4 1");
+		btnFileSwmm = new JButton();
+		btnFileSwmm.setText("...");
+		btnFileSwmm.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnFileSwmm.setActionCommand("chooseFileSwmm");
+		panel.add(btnFileSwmm, "cell 4 1");
 		
 		lblEpanetFolder = new JLabel(BUNDLE.getString("Config.lblEpanetFolder"));
-		panel.add(lblEpanetFolder, "cell 1 2");
+		panel.add(lblEpanetFolder, "cell 1 2,alignx trailing");
 		
-		txtEpanetFolder = new JTextField();
-		txtEpanetFolder.setText((String) null);
-		txtEpanetFolder.setColumns(10);
-		panel.add(txtEpanetFolder, "cell 2 2,growx");
+		txtFileEpanet = new JTextField();
+		txtFileEpanet.setText((String) null);
+		txtFileEpanet.setColumns(10);
+		panel.add(txtFileEpanet, "cell 2 2,growx");
 		
-		btnEpanetFolder = new JButton();
-		btnEpanetFolder.setText("...");
-		btnEpanetFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnEpanetFolder.setActionCommand("chooseFileEpanet");
-		panel.add(btnEpanetFolder, "cell 4 2");
+		btnFileEpanet = new JButton();
+		btnFileEpanet.setText("...");
+		btnFileEpanet.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnFileEpanet.setActionCommand("chooseFileEpanet");
+		panel.add(btnFileEpanet, "cell 4 2");
+		
+		lblPgadmin = new JLabel(BUNDLE.getString("ConfigPanel.lblPgadmin.text")); //$NON-NLS-1$
+		panel.add(lblPgadmin, "cell 1 3,alignx trailing");
+		
+		txtFilePgAdmin = new JTextField();
+		txtFilePgAdmin.setText((String) null);
+		txtFilePgAdmin.setColumns(10);
+		panel.add(txtFilePgAdmin, "cell 2 3,growx");
+		
+		btnFilePgAdmin = new JButton();
+		btnFilePgAdmin.setText("...");
+		btnFilePgAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnFilePgAdmin.setActionCommand(BUNDLE.getString("ConfigPanel.btnFilePgAdmin.actionCommand")); //$NON-NLS-1$
+		panel.add(btnFilePgAdmin, "cell 4 3");
 		
 		chkConnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); //$NON-NLS-1$
 		chkConnect.setSelected(true);
-		panel.add(chkConnect, "cell 1 3 2 1,aligny baseline");
+		panel.add(chkConnect, "cell 1 4 2 1,aligny baseline");
 		
 		lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
 		panel_1.add(lblNotepad, "cell 0 2 3 1,aligny top");
@@ -182,8 +211,9 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 		
-		btnSwmmFolder.addActionListener(this);
-		btnEpanetFolder.addActionListener(this);
+		btnFileSwmm.addActionListener(this);
+		btnFileEpanet.addActionListener(this);
+		btnFilePgAdmin.addActionListener(this);
 		btnAccept.addActionListener(this);
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

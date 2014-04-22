@@ -49,6 +49,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.MainController;
 import org.giswater.gui.frame.EpaFrame;
+import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 
 
@@ -62,7 +63,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 
 	private JTextField txtProject;
 	private JTextArea txtFileRpt;
-	public JTextArea txtFileInp;
+	private JTextArea txtFileInp;
 	private JButton btnFileInp;
 	private JButton btnFileRpt;
 	private JButton btnAccept;
@@ -448,6 +449,8 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 
 		txtProject = new JTextField();
 		txtProject.setName("txt_project");
+		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
+		txtProject.setDocument(maxLength);				
 		panel_4.add(txtProject, "cell 2 11,growx,aligny top");
 
 		btnAccept = new JButton();

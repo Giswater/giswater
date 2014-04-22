@@ -356,12 +356,13 @@ public class ModelPostgis extends Model {
 
     
     // Exec SWMM
-    public static boolean execSWMM(File fileInp, File fileRpt) {
+    public static boolean execEPASOFT(File fileInp, File fileRpt) {
 
         Utils.getLogger().info("execEPASOFT");
         
-		iniProperties = MainDao.getPropertiesFile();   
-		String exeCmd = iniProperties.get("FILE_" + softwareName, "C:\\EPA\\epanet.exe");
+		iniProperties = MainDao.getPropertiesFile(); 
+		String fileName = iniProperties.get("DEFAULT_FILE_" + softwareName, "");
+		String exeCmd = Utils.getAppPath() + fileName;
 		
         File exeFile = new File(exeCmd);
         // Check if exeFile exists
@@ -562,7 +563,7 @@ public class ModelPostgis extends Model {
 		    			// TODO: i18n
 		    			String msg = "Import aborted. Some data values are not valid in current target: ";
 		    			msg+= "\n" + rpt.getDescription();
-		    			msg+= "Open current .log file for more details";
+		    			msg+= "\nOpen current .log file for more details";
 		    			Utils.showError(msg);
 		    			return false;
 		    		}

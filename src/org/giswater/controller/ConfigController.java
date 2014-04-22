@@ -109,7 +109,7 @@ public class ConfigController {
             File file = chooser.getSelectedFile();
             String path = file.getAbsolutePath();
             if (path.lastIndexOf(".") == -1) {
-                path += ".inp";
+                path += ".exe";
                 file = new File(path);
             }
             view.setSwmmFile(file.getAbsolutePath());            
@@ -132,13 +132,36 @@ public class ConfigController {
             File file = chooser.getSelectedFile();
             String path = file.getAbsolutePath();
             if (path.lastIndexOf(".") == -1) {
-                path += ".inp";
+                path += ".exe";
                 file = new File(path);
             }
             view.setEpanetFile(file.getAbsolutePath());            
         }
 
     }    
+    
+    
+    public void chooseFilePgAdmin() {
+
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("EXE extension file", "exe");
+        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_pgadmin"));
+        File fileProp = new File(prop.get("FILE_PGADMIN", System.getProperty("user.home")));	
+        chooser.setCurrentDirectory(fileProp.getParentFile());
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            String path = file.getAbsolutePath();
+            if (path.lastIndexOf(".") == -1) {
+                path += ".exe";
+                file = new File(path);
+            }
+            view.setPgAdminFile(file.getAbsolutePath());            
+        }
+
+    }       
 	
     
 }

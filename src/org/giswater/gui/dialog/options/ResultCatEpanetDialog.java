@@ -32,6 +32,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
@@ -64,6 +66,8 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JButton btnDelete;
+	private JTextField txtTimestamp;
+	private JLabel lblImportDate;
 	
 	
 	public ResultCatEpanetDialog() {
@@ -86,14 +90,14 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Table rpt_result_cat");
-		setBounds(0, 0, 468, 425);
-		getContentPane().setLayout(new MigLayout("", "[90.00][360.00]", "[325.00][5px:n][30]"));
+		setBounds(0, 0, 480, 473);
+		getContentPane().setLayout(new MigLayout("", "[90.00][360.00]", "[352.00][5px:n][30]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[76.00px:n][100:n][10:10px][100px:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
+		panelGeneral.setLayout(new MigLayout("", "[100.00px:n][100:n,grow][10:10px][100px:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n]"));
 
 		JLabel lblFlowUnits = new JLabel("Result id:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
@@ -101,206 +105,229 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		txtDuration = new JTextField();
 		txtDuration.setName("result_id");
 		txtDuration.setColumns(10);
-		panelGeneral.add(txtDuration, "cell 1 0,growx");
+		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
+		txtDuration.setDocument(maxLength);				
+		panelGeneral.add(txtDuration, "cell 1 0 3 1,growx");
 		
-		JLabel lblFlowRouteM = new JLabel("St ch freq:");
-		panelGeneral.add(lblFlowRouteM, "cell 3 0,alignx trailing");
+		lblImportDate = new JLabel("Import date & time:");
+		panelGeneral.add(lblImportDate, "cell 0 1,alignx trailing");
 		
-		txtHydraulic = new JTextField();
-		txtHydraulic.setEnabled(false);
-		txtHydraulic.setName("st_ch_freq");
-		txtHydraulic.setColumns(10);
-		panelGeneral.add(txtHydraulic, "cell 4 0,growx");
+		txtTimestamp = new JTextField();
+		txtTimestamp.setEnabled(false);
+		txtTimestamp.setName("exec_date");
+		txtTimestamp.setColumns(10);
+		panelGeneral.add(txtTimestamp, "cell 1 1 3 1,growx");
 		
 		JLabel lblNewLabel_1 = new JLabel("Junction:");
-		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
+		panelGeneral.add(lblNewLabel_1, "cell 0 2,alignx trailing");
 		
 		txtQuality = new JTextField();
 		txtQuality.setEnabled(false);
 		txtQuality.setName("n_junction");
 		txtQuality.setColumns(10);
-		panelGeneral.add(txtQuality, "cell 1 1,growx");
+		panelGeneral.add(txtQuality, "cell 1 2,growx");
 		
 		JLabel lblStartDate = new JLabel("Max tr ch:");
 		lblStartDate.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblStartDate, "cell 3 1,alignx trailing");
+		panelGeneral.add(lblStartDate, "cell 3 2,alignx trailing");
 		
 		txtRule = new JTextField();
 		txtRule.setEnabled(false);
 		txtRule.setName("max_tr_ch");
 		txtRule.setColumns(10);
-		panelGeneral.add(txtRule, "cell 4 1,growx");
+		panelGeneral.add(txtRule, "cell 4 2,growx");
 		
 		JLabel lblPatternTimestep = new JLabel("Reservoir:");
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblPatternTimestep, "cell 0 2,alignx trailing");
+		panelGeneral.add(lblPatternTimestep, "cell 0 3,alignx trailing");
 		
 		txtPattern = new JTextField();
 		txtPattern.setEnabled(false);
 		txtPattern.setName("n_reservoir");
 		txtPattern.setColumns(10);
-		panelGeneral.add(txtPattern, "cell 1 2,growx");
+		panelGeneral.add(txtPattern, "cell 1 3,growx");
 		
 		JLabel lblPatternStep = new JLabel("Dam li thr:");
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblPatternStep, "cell 3 2,alignx trailing");
+		panelGeneral.add(lblPatternStep, "cell 3 3,alignx trailing");
 		
 		txtPatternStart = new JTextField();
 		txtPatternStart.setEnabled(false);
 		txtPatternStart.setName("dam_li_thr");
 		txtPatternStart.setColumns(10);
-		panelGeneral.add(txtPatternStart, "cell 4 2,growx");
+		panelGeneral.add(txtPatternStart, "cell 4 3,growx");
 		
 		JLabel lblReportTimestep = new JLabel("Tank:");
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblReportTimestep, "cell 0 3,alignx trailing");
+		panelGeneral.add(lblReportTimestep, "cell 0 4,alignx trailing");
 		
 		txtReport = new JTextField();
 		txtReport.setEnabled(false);
 		txtReport.setName("n_tank");
 		txtReport.setColumns(10);
-		panelGeneral.add(txtReport, "cell 1 3,growx");
+		panelGeneral.add(txtReport, "cell 1 4,growx");
 		
 		JLabel lblReportStart = new JLabel("Max trials:");
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblReportStart, "cell 3 3,alignx trailing");
+		panelGeneral.add(lblReportStart, "cell 3 4,alignx trailing");
 		
 		txtReportStart = new JTextField();
 		txtReportStart.setEnabled(false);
 		txtReportStart.setName("max_trials");
 		txtReportStart.setColumns(10);
-		panelGeneral.add(txtReportStart, "cell 4 3,growx");
+		panelGeneral.add(txtReportStart, "cell 4 4,growx");
 		
 		JLabel lblStartClocktime = new JLabel("Pipe:");
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblStartClocktime, "cell 0 4,alignx trailing");
+		panelGeneral.add(lblStartClocktime, "cell 0 5,alignx trailing");
 		
 		txtStart = new JTextField();
 		txtStart.setEnabled(false);
 		txtStart.setName("n_pipe");
 		txtStart.setColumns(10);
-		panelGeneral.add(txtStart, "cell 1 4,growx");
+		panelGeneral.add(txtStart, "cell 1 5,growx");
 		
 		JLabel lblStatistic = new JLabel("Q Analysis:");
-		panelGeneral.add(lblStatistic, "cell 3 4,alignx trailing");
+		panelGeneral.add(lblStatistic, "cell 3 5,alignx trailing");
 		
 		textField_4 = new JTextField();
 		textField_4.setEnabled(false);
 		textField_4.setName("q_analysis");
 		textField_4.setColumns(10);
-		panelGeneral.add(textField_4, "cell 4 4,growx");
+		panelGeneral.add(textField_4, "cell 4 5,growx");
 		
 		JLabel lblFlowRouting = new JLabel("Pump:");
 		lblFlowRouting.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblFlowRouting, "cell 0 5,alignx trailing");
+		panelGeneral.add(lblFlowRouting, "cell 0 6,alignx trailing");
 		
 		textField = new JTextField();
 		textField.setEnabled(false);
 		textField.setName("n_pump");
 		textField.setColumns(10);
-		panelGeneral.add(textField, "cell 1 5,growx");
+		panelGeneral.add(textField, "cell 1 6,growx");
 		
 		JLabel lblInfiltration = new JLabel("Spec grav:");
-		panelGeneral.add(lblInfiltration, "cell 3 5,alignx trailing");
+		panelGeneral.add(lblInfiltration, "cell 3 6,alignx trailing");
 		
 		textField_5 = new JTextField();
 		textField_5.setEnabled(false);
 		textField_5.setName("spec_grav");
 		textField_5.setColumns(10);
-		panelGeneral.add(textField_5, "cell 4 5,growx");
+		panelGeneral.add(textField_5, "cell 4 6,growx");
 		
 		JLabel lblPondAll = new JLabel("Valve:");
 		lblPondAll.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblPondAll, "cell 0 6,alignx trailing");
+		panelGeneral.add(lblPondAll, "cell 0 7,alignx trailing");
 		
 		textField_1 = new JTextField();
 		textField_1.setEnabled(false);
 		textField_1.setName("n_valve");
 		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 1 6,growx");
+		panelGeneral.add(textField_1, "cell 1 7,growx");
 		
 		JLabel lblRuleTimestep = new JLabel("Kin visc:");
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblRuleTimestep, "cell 3 6,alignx trailing");
+		panelGeneral.add(lblRuleTimestep, "cell 3 7,alignx trailing");
 		
 		textField_6 = new JTextField();
 		textField_6.setEnabled(false);
 		textField_6.setName("r_kin_visc");
 		textField_6.setColumns(10);
-		panelGeneral.add(textField_6, "cell 4 6,growx");
+		panelGeneral.add(textField_6, "cell 4 7,growx");
 		
 		JLabel lblWaterQ = new JLabel("Head form:");
 		lblWaterQ.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblWaterQ, "cell 0 7,alignx trailing");
+		panelGeneral.add(lblWaterQ, "cell 0 8,alignx trailing");
 		
 		textField_2 = new JTextField();
 		textField_2.setEnabled(false);
 		textField_2.setName("head_form");
 		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 1 7,growx");
+		panelGeneral.add(textField_2, "cell 1 8,growx");
 		
 		JLabel lblRoutTimestep = new JLabel("Che diff");
 		lblRoutTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblRoutTimestep, "cell 3 7,alignx trailing");
+		panelGeneral.add(lblRoutTimestep, "cell 3 8,alignx trailing");
 		
 		textField_7 = new JTextField();
 		textField_7.setEnabled(false);
 		textField_7.setName("r_che_diff");
 		textField_7.setColumns(10);
-		panelGeneral.add(textField_7, "cell 4 7,growx");
+		panelGeneral.add(textField_7, "cell 4 8,growx");
 		
 		JLabel lblInfilM = new JLabel("Hydra time:");
-		panelGeneral.add(lblInfilM, "cell 0 8,alignx trailing");
+		panelGeneral.add(lblInfilM, "cell 0 9,alignx trailing");
 		
 		textField_3 = new JTextField();
 		textField_3.setEnabled(false);
 		textField_3.setName("hydra_time");
 		textField_3.setColumns(10);
-		panelGeneral.add(textField_3, "cell 1 8,growx");
+		panelGeneral.add(textField_3, "cell 1 9,growx");
 		
 		lblDemMulti = new JLabel("Dem multi:");
 		lblDemMulti.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblDemMulti, "cell 3 8,alignx trailing");
+		panelGeneral.add(lblDemMulti, "cell 3 9,alignx trailing");
 		
 		textField_9 = new JTextField();
 		textField_9.setEnabled(false);
 		textField_9.setName("dem_multi");
 		textField_9.setColumns(10);
-		panelGeneral.add(textField_9, "cell 4 8,growx");
+		panelGeneral.add(textField_9, "cell 4 9,growx");
 		
 		lblHydraAcc = new JLabel("Hydra acc:");
-		panelGeneral.add(lblHydraAcc, "cell 0 9,alignx trailing");
+		panelGeneral.add(lblHydraAcc, "cell 0 10,alignx trailing");
 		
 		textField_8 = new JTextField();
 		textField_8.setEnabled(false);
 		textField_8.setName("hydra_acc");
 		textField_8.setColumns(10);
-		panelGeneral.add(textField_8, "cell 1 9,growx");
+		panelGeneral.add(textField_8, "cell 1 10,growx");
 		
 		lblTotalDuration = new JLabel("Total duration:");
 		lblTotalDuration.setHorizontalAlignment(SwingConstants.TRAILING);
-		panelGeneral.add(lblTotalDuration, "cell 3 9,alignx trailing");
+		panelGeneral.add(lblTotalDuration, "cell 3 10,alignx trailing");
 		
 		textField_10 = new JTextField();
 		textField_10.setEnabled(false);
 		textField_10.setName("total_dura");
 		textField_10.setColumns(10);
-		panelGeneral.add(textField_10, "cell 4 9,growx");
+		panelGeneral.add(textField_10, "cell 4 10,growx");
+		
+		JLabel lblFlowRouteM = new JLabel("St ch freq:");
+		panelGeneral.add(lblFlowRouteM, "cell 0 11,alignx trailing");
+		
+		txtHydraulic = new JTextField();
+		txtHydraulic.setEnabled(false);
+		txtHydraulic.setName("st_ch_freq");
+		txtHydraulic.setColumns(10);
+		panelGeneral.add(txtHydraulic, "cell 1 11,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
+		btnDelete = new JButton("-");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnDelete.setToolTipText("Delete record");
+		btnDelete.setActionCommand("delete");
+		getContentPane().add(btnDelete, "cell 1 2,alignx right");
+		
 		btnPrevious = new JButton("<");
+		btnPrevious.setToolTipText("Previous record");
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "flowx,cell 1 2,alignx right");
 		
 		btnNext = new JButton(">");
+		btnNext.setToolTipText("Next record");
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2,alignx right");
 		
-		btnDelete = new JButton("Delete");
-		btnDelete.setActionCommand("delete");
-		getContentPane().add(btnDelete, "cell 1 2,alignx right");
+		btnSave = new JButton("Save");
+		btnSave.setToolTipText("Save record");
+		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		
+		btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close window");
+		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();
 		
@@ -308,6 +335,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 
 	
 	protected void setupListeners() {
+		super.setupListeners();
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);		
 		btnDelete.addActionListener(this);

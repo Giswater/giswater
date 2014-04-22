@@ -69,7 +69,7 @@ public class Utils {
 
     	if (logger == null) {
             try {
-            	String folderRoot = Utils.getAppPath();         	
+            	String folderRoot = getAppPath();         	
             	logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
                 gisFolder = folderRoot + GIS_FOLDER;
                 File folderFile = new File(logFolder);
@@ -367,10 +367,10 @@ public class Utils {
     public static void execService(String process){
 		
 		try {
-			Utils.getLogger().info(process);
+			getLogger().info(process);
 			Runtime.getRuntime().exec("cmd /c " + process);
 		} catch (IOException e) {
-			Utils.logError(e);
+			logError(e);
 		}		
 		
 	}
@@ -463,7 +463,7 @@ public class Utils {
 		
 		File fileName = new File(filePath);			
 		if (!fileName.exists()){
-			Utils.showError("inp_error_notfound", filePath);
+			showError("inp_error_notfound", filePath);
 			return "";
 		}
 		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
@@ -480,7 +480,7 @@ public class Utils {
 
 	
 	public static void setSqlLog(String string) {
-		Utils.isSqlLogged = Boolean.parseBoolean(string);
+		isSqlLogged = Boolean.parseBoolean(string);
 	}	
 	
 	

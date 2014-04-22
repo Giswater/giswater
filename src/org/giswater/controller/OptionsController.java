@@ -229,60 +229,65 @@ public class OptionsController {
 	@SuppressWarnings("rawtypes")
 	public void saveData() {
 
-		String key;
-		Object value;
 		try {
+			
+			String key;
+			Object value;			
 			ResultSetMetaData metadata = rs.getMetaData();					
 			HashMap<String, JComboBox> map = view.comboMap; 			
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 				key = entry.getKey();
 				JComboBox combo = entry.getValue();
-				value = combo.getSelectedItem();
-				if (value == null || ((String)value).trim().equals("")){
-					rs.updateNull(key);						
-				} 
-				else{
-					rs.updateString(key, (String) value);
-				}				
+				if (combo.isEnabled()){
+					value = combo.getSelectedItem();
+					if (value == null || ((String)value).trim().equals("")){
+						rs.updateNull(key);						
+					} 
+					else{
+						rs.updateString(key, (String) value);
+					}
+				}
 			}
-			HashMap<String, JTextField> textMap = view.textMap; 	
 			
+			HashMap<String, JTextField> textMap = view.textMap; 			
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
 				JTextField component = entry.getValue();
-				value = component.getText();
-				int col = rs.findColumn(key);
-				int columnType = metadata.getColumnType(col);
-				if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
-					if (value == null || ((String)value).trim().equals("")){
-						rs.updateNull(col);						
-					} 
-					else{
-						rs.updateString(col, (String) value);
+				if (component.isEnabled()){
+					value = component.getText();
+					int col = rs.findColumn(key);
+					int columnType = metadata.getColumnType(col);
+					if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
+						if (value == null || ((String)value).trim().equals("")){
+							rs.updateNull(col);						
+						} 
+						else{
+							rs.updateString(col, (String) value);
+						}
 					}
+					else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
+						if (((String)value).trim().equals("")){
+							rs.updateNull(col);
+						} 
+						else{					
+							Integer aux = Integer.parseInt(value.toString());
+							rs.updateInt(col, aux);						
+						}
+					}
+					else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
+						columnType == Types.FLOAT || columnType == Types.REAL) {
+						if (((String)value).trim().equals("")){
+							rs.updateNull(col);
+						} 
+						else{					
+							Double aux = Double.parseDouble(value.toString().replace(",", "."));
+							rs.updateDouble(col, aux);						
+						}
+					}	
+					else if (columnType == Types.TIME || columnType == Types.DATE) {
+						rs.updateTimestamp(col, (Timestamp) value);
+					}			
 				}
-				else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
-					if (((String)value).trim().equals("")){
-						rs.updateNull(col);
-					} 
-					else{					
-						Integer aux = Integer.parseInt(value.toString());
-						rs.updateInt(col, aux);						
-					}
-				}
-				else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
-					columnType == Types.FLOAT || columnType == Types.REAL) {
-					if (((String)value).trim().equals("")){
-						rs.updateNull(col);
-					} 
-					else{					
-						Double aux = Double.parseDouble(value.toString().replace(",", "."));
-						rs.updateDouble(col, aux);						
-					}
-				}	
-				else if (columnType == Types.TIME || columnType == Types.TIMESTAMP || columnType == Types.DATE) {
-					rs.updateTimestamp(col, (Timestamp) value);
-				}				
 			}
 			
 			if (action.equals("create")){
@@ -296,7 +301,6 @@ public class OptionsController {
 			else if (!action.equals("create_detail")){
 				rs.updateRow();
 			}
-			view.dispose();
 			
 		} catch (SQLException e) {
 			Utils.showError(e);

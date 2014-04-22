@@ -479,7 +479,7 @@ public class MainController{
                 Utils.showError(view, "file_rpt_not_selected");
                 return;
             }                  
-            continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
+            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
         }
 
         // Import RPT to Postgis
@@ -500,6 +500,9 @@ public class MainController{
             	}
             }
         }
+        
+        // Force refresh schema
+        schemaChanged();
         
     }
     
@@ -576,7 +579,7 @@ public class MainController{
                 Utils.showError(view, "file_rpt_not_selected");
                 return;
             }                  
-            continueExec = ModelPostgis.execSWMM(fileInp, fileRpt);
+            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
         }
 
         // Import RPT to Postgis

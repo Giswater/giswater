@@ -55,9 +55,10 @@ public class MainDao {
     
     private static final String PROJECT_FOLDER = "giswater" + File.separator;
 	private static final String CONFIG_FOLDER = "config" + File.separator;
-	private static final String CONFIG_FILE = "giswater.properties";
+	private static final String CONFIG_FILE = "giswater";
+	private static final String MINOR_VERSION = "1.0";
 	private static final String CONFIG_DB = "config.sqlite";
-	private static final String INIT_DB = "giswater_ddb2";
+	private static final String INIT_DB = "giswater_ddb";
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
 	private static final String GSW_FILE = "default.gsw";
@@ -338,14 +339,23 @@ public class MainDao {
     }    
     
     
-    // Load Properties and gsw default files
+    // Load Properties files
     public static boolean loadPropertiesFile() {
 
     	appPath = Utils.getAppPath();
-        configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + CONFIG_FILE;
-    	Utils.getLogger().info("Properties file: "+configPath);        
+    	String configFile = CONFIG_FILE + "_" + MINOR_VERSION + ".properties";
+    	configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + configFile;
+    	Utils.getLogger().info("Versioned properties file: "+configPath);  
 
+        // If versioned properties file not exists, try to load default one instead	
         File file = new File(configPath);
+        if (!file.exists()){
+        	configFile = CONFIG_FILE + ".properties";
+        	configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + configFile;
+        	Utils.getLogger().info("Default properties file: "+configPath);   
+            file = new File(configPath);
+        }
+        
         try {
         	prop.load(new FileInputStream(file));      
         } catch (FileNotFoundException e) {
