@@ -47,13 +47,13 @@ public class MainDao {
     private static String schema;
     private static boolean isConnected = false;
     private static String folderConfig;
-	private static String appPath;	
 	private static String configPath;
+	private static String usersPath;
 	private static String gswPath;
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
     
-    private static final String PROJECT_FOLDER = "giswater" + File.separator;
+    private static final String USERS_FOLDER = "giswater" + File.separator;
 	private static final String CONFIG_FOLDER = "config" + File.separator;
 	private static final String CONFIG_FILE = "giswater";
 	private static final String MINOR_VERSION = "1.0";
@@ -116,10 +116,16 @@ public class MainDao {
 		return folderConfig;
 	}	
 	
+	public static String getUsersPath() {
+		return usersPath;
+	}	
 	
     // Sets initial configuration files
     public static boolean configIni() {
     	
+        // Set users folder path
+        usersPath = System.getProperty("user.home") + File.separator + USERS_FOLDER;
+        
     	// Load Properties files
     	if (!loadPropertiesFile()) return false;
     	
@@ -127,10 +133,10 @@ public class MainDao {
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	File gswFile = new File(gswPath);
     	if (!gswFile.exists()){
-            Utils.logError("inp_error_notfound", gswPath);
         	// Get default gsw path
-            gswPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + GSW_FILE;
+            gswPath = usersPath + CONFIG_FOLDER + GSW_FILE;
         	gswFile = new File(gswPath);  
+    		Utils.getLogger().info("Loading default .gsw file: " + gswPath);	        	
         	if (!gswFile.exists()){
                 Utils.showError("gsw_default_notfound", gswPath);    
                 return false;
@@ -143,16 +149,19 @@ public class MainDao {
     	
         // Get INP folder
         folderConfig = prop.get("FOLDER_CONFIG");
-        folderConfig = appPath + folderConfig + File.separator;
+        folderConfig = Utils.getAppPath() + folderConfig + File.separator;
 
     	// Set Config DB connection
         if (!setConnectionConfig(CONFIG_DB)){
         	return false;
         }
         
-        // Start Postgis portable
-    	executePostgisService("start");
-    	       
+        // Start Postgis portable?
+        Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
+        if (autostart){
+        	executePostgisService("start");
+        }	          
+       
         return true;
 
     }
@@ -160,7 +169,7 @@ public class MainDao {
     
 	public static void executePostgisService(String service){
 		
-		String folder  = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + PORTABLE_FOLDER;
+		String folder = usersPath + PORTABLE_FOLDER;
 		String path = folder + PORTABLE_FILE;		
 		File file = new File(path);
 		if (!file.exists()){
@@ -342,16 +351,15 @@ public class MainDao {
     // Load Properties files
     public static boolean loadPropertiesFile() {
 
-    	appPath = Utils.getAppPath();
     	String configFile = CONFIG_FILE + "_" + MINOR_VERSION + ".properties";
-    	configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + configFile;
+    	configPath = usersPath + CONFIG_FOLDER + configFile;
     	Utils.getLogger().info("Versioned properties file: "+configPath);  
 
         // If versioned properties file not exists, try to load default one instead	
         File file = new File(configPath);
         if (!file.exists()){
         	configFile = CONFIG_FILE + ".properties";
-        	configPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + configFile;
+        	configPath = usersPath + CONFIG_FOLDER + configFile;
         	Utils.getLogger().info("Default properties file: "+configPath);   
             file = new File(configPath);
         }
@@ -373,7 +381,7 @@ public class MainDao {
     public static boolean loadGswPropertiesFile() {
 
     	if (gswPath.equals("")){
-    		gswPath = System.getProperty("user.home") + File.separator + PROJECT_FOLDER + CONFIG_FOLDER + GSW_FILE;
+    		gswPath = usersPath + CONFIG_FOLDER + GSW_FILE;
     	}
     	Utils.getLogger().info("Loading gsw file: "+gswPath);        
 
@@ -763,7 +771,8 @@ public class MainDao {
 	}
 	
 	
-	public static ResultSet getTableResultset(Connection connection, String table, String fields) {
+	public static ResultSet getTableResultset(Connection connection, String table, 
+		String fields, String fieldOrderBy) {
 		
 		String sql;
 		if (schema == null){
@@ -772,17 +781,24 @@ public class MainDao {
 		else{
 			sql = "SELECT "+fields+" FROM "+schema+"."+table;
 		}
+		if (fieldOrderBy != ""){
+			sql+= " ORDER BY "+fieldOrderBy;
+		}
         return getResultset(connection, sql, true);
         
 	}
 	
 	
+	public static ResultSet getTableResultset(String table, String fields, String fieldOrderBy) {
+		return getTableResultset(connectionPostgis, table, fields, fieldOrderBy);
+	}	
+	
 	public static ResultSet getTableResultset(String table, String fields) {
-		return getTableResultset(connectionPostgis, table, fields);
+		return getTableResultset(connectionPostgis, table, fields, "");
 	}
 	
 	public static ResultSet getTableResultset(String table) {
-		return getTableResultset(connectionPostgis, table, "*");
+		return getTableResultset(connectionPostgis, table, "*", "");
 	}
 	
 	

@@ -84,7 +84,6 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setRowSelectionAllowed(true);
 		table.setAutoCreateRowSorter(true);
-		table.setUpdateSelectionOnSort(false);		
 		table.getColumnModel().getColumn(1).setPreferredWidth(5);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(1).setHeaderValue("Resizable");	

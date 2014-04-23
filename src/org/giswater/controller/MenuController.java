@@ -339,8 +339,8 @@ public class MenuController {
 	
 	public void showTimeseries(){
 		
-		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id");
-		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries");		
+		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id", "*", "id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries", "*", "id");		
 		if (rsMain == null || rsRelated == null) return;		
 		TimeseriesDialog dialog = new TimeseriesDialog();
 		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
@@ -352,8 +352,8 @@ public class MenuController {
 	
 	public void showCurves(){
 		
-		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id");
-		ResultSet rsRelated = MainDao.getTableResultset("inp_curve");		
+		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id", "*", "id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_curve", "*", "id");		
 		if (rsMain == null || rsRelated == null) return;		
 		CurvesDialog dialog = new CurvesDialog();
 		TableModelCurves model = new TableModelCurves(rsRelated);
@@ -423,7 +423,7 @@ public class MenuController {
 	}	
 	
 	
-	// Menu Configuration
+	// Menu Project
 	public void sampleEpanet(){
 		createSampleSchema("epanet");
 	}
@@ -492,6 +492,23 @@ public class MenuController {
 		view.epanetFrame.getPanel().enableControlsText(true);
 		view.setCursorFrames(defaultCursor);
 		view.updateEpaFrames();
+		
+	}
+	
+	
+	public void openDatabaseAdmin() {
+		
+		String path = prop.get("FILE_PGADMIN");
+		File file = new File(path);
+		if (!file.exists()){
+			path = MainDao.getUsersPath() + path;
+			file = new File(path);
+			if (!file.exists()){
+				Utils.showMessage(view, "File not found: \n" + file.getAbsolutePath());
+				return;
+			}
+		}
+		Utils.openFile(path);
 		
 	}
 	

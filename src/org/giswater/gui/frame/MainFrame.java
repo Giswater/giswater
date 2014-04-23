@@ -95,6 +95,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmSampleEpanet;
 	private JMenuItem mntmSampleEpaswmm;
 	private JMenuItem mntmSampleHecras;
+	private JMenuItem mntmDatabaseAdministrator;	
 	
 	private JMenuItem mntmWelcome;		
 	private JMenuItem mntmLicense;
@@ -196,6 +197,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnGisProject.add(mntmSampleHecras);
 		mntmSampleHecras.setActionCommand("sampleHecras");
 		
+		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text")); //$NON-NLS-1$
+		mnGisProject.add(mntmDatabaseAdministrator);
+		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");		
+		
 		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
 		mnData.setEnabled(false);
 		menuBar.add(mnData);
@@ -206,7 +211,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnData.add(mntmProjectId);
 		
 		mntmArcCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
-		mntmArcCatalog.setActionCommand(BUNDLE.getString("MainFrame.mntmArcCatalog.actionCommand")); //$NON-NLS-1$
+		mntmArcCatalog.setActionCommand("showArcCatalog");
 		mnData.add(mntmArcCatalog);
 		
 		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
@@ -532,11 +537,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	        putMainParams("MAIN");
 	        saveGswFile();
 	        // Stop Postgis portable?
-	        //Boolean autostart = Boolean.parseBoolean(prop.get("POSTGIS_AUTOSTART", "true"));
-	        //if (autostart){
-	        //	MainDao.executePostgisService("stop");
-	        //}	        
-	        MainDao.executePostgisService("stop");
+	        Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
+	        if (autostart){
+	        	MainDao.executePostgisService("stop");
+	        }	        
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());			
@@ -573,6 +577,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSampleEpanet.addActionListener(this);
 		mntmSampleEpaswmm.addActionListener(this);
 		mntmSampleHecras.addActionListener(this);	
+		mntmDatabaseAdministrator.addActionListener(this);		
 		
 		mntmWelcome.addActionListener(this);
 		mntmLicense.addActionListener(this);		
@@ -690,6 +695,4 @@ public class MainFrame extends JFrame implements ActionListener{
 		gisFrame.getPanel().setCursor(cursor);
 		this.setCursor(cursor);
 	}
-    
-    
 }

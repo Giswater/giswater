@@ -361,11 +361,16 @@ public class ModelPostgis extends Model {
         Utils.getLogger().info("execEPASOFT");
         
 		iniProperties = MainDao.getPropertiesFile(); 
-		String fileName = iniProperties.get("DEFAULT_FILE_" + softwareName, "");
-		String exeCmd = Utils.getAppPath() + fileName;
-		
+		String exeCmd = iniProperties.get("DEFAULT_FILE_" + softwareName, "");
         File exeFile = new File(exeCmd);
-        // Check if exeFile exists
+        
+		// If file doesn't exists, append application path (path was relative)
+		if (!exeFile.exists()){
+			exeCmd = Utils.getAppPath() + exeCmd;	
+	        exeFile = new File(exeCmd);			
+		}
+        
+        // Check anyway if exists
 		if (!exeFile.exists()){
 			String msg = Utils.getBundleString("software_not_found") + " " + exeCmd + "\n" + 
 				Utils.getBundleString("software_path");
@@ -375,25 +380,15 @@ public class ModelPostgis extends Model {
     			Utils.showError("inp_error_notfound", exeCmd);
     			return false;
     		}
-    		iniProperties.put("FILE_" + softwareName, exeCmd);
+    		iniProperties.put("DEFAULT_FILE_" + softwareName, exeCmd);
     		MainDao.savePropertiesFile();
 		}
 
-        String sFile;
-        // Get files
-        if (fileInp == null) {
-            sFile = iniProperties.get("DEFAULT_INP");
-            sFile = MainDao.getFolderConfig() + sFile;
-            fileInp = new File(sFile);
-            sFile = sFile.replace(".inp", ".rpt");
-            fileRpt = new File(sFile);            
-        }        
-        
         if (!fileInp.exists()){
 			Utils.showError("inp_error_notfound", fileInp.getAbsolutePath());     
 			return false;
         }
-        sFile = fileRpt.getAbsolutePath().replace(".rpt", ".out");
+        String sFile = fileRpt.getAbsolutePath().replace(".rpt", ".out");
         File fileOut = new File(sFile);
 
         // Create command

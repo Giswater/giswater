@@ -48,8 +48,9 @@ public class ConfigController {
 	
 	
     private void setDefaultValues(){
-		view.setSwmmFile(prop.get("FILE_SWMM"));
-		view.setEpanetFile(prop.get("FILE_EPANET"));
+		view.setSwmmFile(prop.get("FILE_SWMM_GUI"));
+		view.setEpanetFile(prop.get("FILE_EPANET_GUI"));
+		view.setPgAdminFile(prop.get("FILE_PGADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
     }
        
@@ -76,17 +77,19 @@ public class ConfigController {
 	
 	public void configAccept(){
 		
-		String swmm, epanet;
+		String swmm, epanet, pgAdmin;
 		Boolean isChecked;
 		
 		// Get parameteres from view	
 		swmm = view.getSwmmFile();
 		epanet = view.getEpanetFile();
+		pgAdmin = view.getPgAdminFile();
 		isChecked = view.getAutoConnect();
 		
 		// Update properties file
-		prop.put("FILE_SWMM", swmm);
-		prop.put("FILE_EPANET", epanet);
+		prop.put("FILE_SWMM_GUI", swmm);
+		prop.put("FILE_EPANET_GUI", epanet);
+		prop.put("FILE_PGADMIN", pgAdmin);
 		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
 
 		// Close frame
@@ -102,7 +105,7 @@ public class ConfigController {
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_swmm"));
-        File fileProp = new File(prop.get("FILE_SWMM", System.getProperty("user.home")));	
+        File fileProp = new File(prop.get("FILE_SWMM_GUI", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -125,7 +128,7 @@ public class ConfigController {
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_epanet"));
-        File fileProp = new File(prop.get("FILE_EPANET", System.getProperty("user.home")));	
+        File fileProp = new File(prop.get("FILE_EPANET_GUI", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

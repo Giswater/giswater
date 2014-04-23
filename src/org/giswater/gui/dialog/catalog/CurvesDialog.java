@@ -75,7 +75,6 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		table.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setAutoCreateRowSorter(true);
-		table.setUpdateSelectionOnSort(false);		
 		table.getColumnModel().getColumn(1).setPreferredWidth(5);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		panelTable.setViewportView(table);	

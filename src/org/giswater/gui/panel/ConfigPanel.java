@@ -137,57 +137,57 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[5][83.00][140,grow][5.00][50.00]", "[][24px:n][24px:n][24px:n][24][10.00]"));
+		panel.setLayout(new MigLayout("", "[83.00][140,grow][5.00][45.00]", "[][24px:n][24px:n][24px:n][24][10.00]"));
 		
 		lblWindowsGuiSoftware = new JLabel(BUNDLE.getString("ConfigPanel.lblWindowsGuiSoftware.text")); //$NON-NLS-1$
 		lblWindowsGuiSoftware.setVisible(false);
-		panel.add(lblWindowsGuiSoftware, "cell 1 0 2 1");
+		panel.add(lblWindowsGuiSoftware, "cell 0 0 2 1");
 		
 		lblSwmmFolder = new JLabel(BUNDLE.getString("Config.lblSwmmFolder"));
-		panel.add(lblSwmmFolder, "cell 1 1,alignx trailing");
+		panel.add(lblSwmmFolder, "cell 0 1,alignx trailing");
 		
 		txtFileSwmm = new JTextField();
 		txtFileSwmm.setText((String) null);
 		txtFileSwmm.setColumns(10);
-		panel.add(txtFileSwmm, "cell 2 1,growx");
+		panel.add(txtFileSwmm, "cell 1 1,growx");
 		
 		btnFileSwmm = new JButton();
 		btnFileSwmm.setText("...");
 		btnFileSwmm.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSwmm.setActionCommand("chooseFileSwmm");
-		panel.add(btnFileSwmm, "cell 4 1");
+		panel.add(btnFileSwmm, "cell 3 1");
 		
 		lblEpanetFolder = new JLabel(BUNDLE.getString("Config.lblEpanetFolder"));
-		panel.add(lblEpanetFolder, "cell 1 2,alignx trailing");
+		panel.add(lblEpanetFolder, "cell 0 2,alignx trailing");
 		
 		txtFileEpanet = new JTextField();
 		txtFileEpanet.setText((String) null);
 		txtFileEpanet.setColumns(10);
-		panel.add(txtFileEpanet, "cell 2 2,growx");
+		panel.add(txtFileEpanet, "cell 1 2,growx");
 		
 		btnFileEpanet = new JButton();
 		btnFileEpanet.setText("...");
 		btnFileEpanet.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileEpanet.setActionCommand("chooseFileEpanet");
-		panel.add(btnFileEpanet, "cell 4 2");
+		panel.add(btnFileEpanet, "cell 3 2");
 		
 		lblPgadmin = new JLabel(BUNDLE.getString("ConfigPanel.lblPgadmin.text")); //$NON-NLS-1$
-		panel.add(lblPgadmin, "cell 1 3,alignx trailing");
+		panel.add(lblPgadmin, "cell 0 3,alignx trailing");
 		
 		txtFilePgAdmin = new JTextField();
 		txtFilePgAdmin.setText((String) null);
 		txtFilePgAdmin.setColumns(10);
-		panel.add(txtFilePgAdmin, "cell 2 3,growx");
+		panel.add(txtFilePgAdmin, "cell 1 3,growx");
 		
 		btnFilePgAdmin = new JButton();
 		btnFilePgAdmin.setText("...");
 		btnFilePgAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnFilePgAdmin.setActionCommand(BUNDLE.getString("ConfigPanel.btnFilePgAdmin.actionCommand")); //$NON-NLS-1$
-		panel.add(btnFilePgAdmin, "cell 4 3");
+		btnFilePgAdmin.setActionCommand("chooseFilePgAdmin");
+		panel.add(btnFilePgAdmin, "cell 3 3");
 		
 		chkConnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); //$NON-NLS-1$
 		chkConnect.setSelected(true);
-		panel.add(chkConnect, "cell 1 4 2 1,aligny baseline");
+		panel.add(chkConnect, "cell 0 4 2 1,aligny baseline");
 		
 		lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
 		panel_1.add(lblNotepad, "cell 0 2 3 1,aligny top");

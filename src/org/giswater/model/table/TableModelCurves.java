@@ -33,24 +33,10 @@ public class TableModelCurves extends TableModelSuper {
 		setResultSet(results);
 		this.rs = results;
 	}
-
-	
-	public void setCombos(){
-
-//		Vector<String> vector;
-//		TableColumnModel tcm = table.getColumnModel();		
-//		TableColumn column;
-//		column = tcm.getColumn(1);
-//		vector = MainDao.getTable("inp_timser_id", null);
-//		setColumnRendering(column, vector);
-
-		
-	}
 	
 	
 	public void setValueAt(Object value, int row, int col) {
 		super.setValueAt(value, row, col);
-		setCombos();
 	}	
 	
 	

@@ -235,7 +235,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		panel_1.add(lblSoftware, "cell 0 2,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
-		cboSoftware.setActionCommand(BUNDLE.getString("GisPanel.cboSoftware.actionCommand")); //$NON-NLS-1$
+		cboSoftware.setActionCommand("softwareChanged");
 		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
 		panel_1.add(cboSoftware, "cell 1 2,growx");
 		
