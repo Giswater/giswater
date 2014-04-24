@@ -33,6 +33,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import org.apache.commons.io.FileUtils;
+
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -120,6 +122,8 @@ public class MainDao {
 		return usersPath;
 	}	
 	
+	
+	// TODO: i18n
     // Sets initial configuration files
     public static boolean configIni() {
     	
@@ -160,7 +164,27 @@ public class MainDao {
         Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
         if (autostart){
         	executePostgisService("start");
-        }	          
+        }	    
+        
+        // Check log folder size
+        String aux = prop.get("LOG_FOLDER_SIZE", "10");
+        try{
+	        Double warningSize = Double.parseDouble(aux);
+	        double size = FileUtils.sizeOfDirectory(new File(Utils.getLogFolder()));
+	        double sizeMb = Math.round((size / 1048576) * 100.0) / 100.0;
+	        if (sizeMb > warningSize){
+	            Utils.getLogger().info("Log folder size is: " + sizeMb + " Mb");         	
+	        	String msg = "Log folder size is : " + sizeMb + " Mb\nWould you like to open the folder to perform maintenance?";
+	        	int answer = Utils.confirmDialog(msg);
+		        if (answer == 0){
+		        	Utils.openFile(Utils.getLogFolder());
+		        }
+	        }
+        }
+        catch (NumberFormatException e){
+        	String msg = "Value of parameter LOG_FOLDER_SIZE is not valid. It must be a number";
+        	Utils.logError(msg);
+        }
        
         return true;
 

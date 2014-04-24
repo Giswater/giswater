@@ -48,10 +48,27 @@ public class ConfigController {
 	
 	
     private void setDefaultValues(){
-		view.setSwmmFile(prop.get("FILE_SWMM_GUI"));
-		view.setEpanetFile(prop.get("FILE_EPANET_GUI"));
-		view.setPgAdminFile(prop.get("FILE_PGADMIN"));
+    	
+		view.setDbAdminFile(prop.get("FILE_DBADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
+		view.setAutoStart(prop.get("AUTOSTART_POSTGIS"));
+		view.setOpenInp(prop.get("OPEN_INP"));
+		view.setOpenRpt(prop.get("OPEN_RPT"));
+		view.setSqlLog(prop.get("SQL_LOG"));
+		view.setImportOverwrite(prop.get("IMPORT_OVERWRITE"));
+		view.setSridQuestion(prop.get("SRID_QUESTION"));
+		view.setLoadRaster(prop.get("LOAD_RASTER"));
+        String aux = prop.get("LOG_FOLDER_SIZE", "10");
+        Integer size = 10;
+        try{
+	        size = Integer.parseInt(aux);
+        }
+        catch (NumberFormatException e){
+        	String msg = "Value of parameter LOG_FOLDER_SIZE is not valid. It must be a number";
+        	Utils.logError(msg);
+        }        
+		view.setLogFolderSize(size);
+		
     }
        
 	
@@ -77,20 +94,17 @@ public class ConfigController {
 	
 	public void configAccept(){
 		
-		String swmm, epanet, pgAdmin;
-		Boolean isChecked;
-		
-		// Get parameteres from view	
-		swmm = view.getSwmmFile();
-		epanet = view.getEpanetFile();
-		pgAdmin = view.getPgAdminFile();
-		isChecked = view.getAutoConnect();
-		
-		// Update properties file
-		prop.put("FILE_SWMM_GUI", swmm);
-		prop.put("FILE_EPANET_GUI", epanet);
-		prop.put("FILE_PGADMIN", pgAdmin);
-		prop.put("AUTOCONNECT_POSTGIS", isChecked.toString());
+		// Update properties file getting parameteres from view	 
+		prop.put("FILE_DBADMIN", view.getDgAdminFile());
+		prop.put("AUTOCONNECT_POSTGIS", view.getAutoConnect().toString());
+		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
+		prop.put("OPEN_INP", view.getOpenInp());	
+		prop.put("OPEN_RPT", view.getOpenRpt());		
+		prop.put("SQL_LOG", view.getSqlLog());		
+		prop.put("IMPORT_OVERWRITE", view.getImportOverwrite());		
+		prop.put("SRID_QUESTION", view.getSridQuestion());		
+		prop.put("LOAD_RASTER", view.getLoadRaster());		
+		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 
 		// Close frame
 		view.getFrame().setVisible(false);
@@ -98,14 +112,15 @@ public class ConfigController {
 	}	
 	
 	
-    public void chooseFileSwmm() {
+
+    public void chooseFileDbAdmin() {
 
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("EXE extension file", "exe");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_swmm"));
-        File fileProp = new File(prop.get("FILE_SWMM_GUI", System.getProperty("user.home")));	
+        chooser.setDialogTitle(Utils.getBundleString("file_dbadmin"));
+        File fileProp = new File(prop.get("FILE_DBADMIN", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -115,53 +130,7 @@ public class ConfigController {
                 path += ".exe";
                 file = new File(path);
             }
-            view.setSwmmFile(file.getAbsolutePath());            
-        }
-
-    }
-	
-	
-    public void chooseFileEpanet() {
-
-        JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("EXE extension file", "exe");
-        chooser.setFileFilter(filter);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_epanet"));
-        File fileProp = new File(prop.get("FILE_EPANET_GUI", System.getProperty("user.home")));	
-        chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(view);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            String path = file.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".exe";
-                file = new File(path);
-            }
-            view.setEpanetFile(file.getAbsolutePath());            
-        }
-
-    }    
-    
-    
-    public void chooseFilePgAdmin() {
-
-        JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("EXE extension file", "exe");
-        chooser.setFileFilter(filter);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_pgadmin"));
-        File fileProp = new File(prop.get("FILE_PGADMIN", System.getProperty("user.home")));	
-        chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(view);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            String path = file.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".exe";
-                file = new File(path);
-            }
-            view.setPgAdminFile(file.getAbsolutePath());            
+            view.setDbAdminFile(file.getAbsolutePath());            
         }
 
     }       

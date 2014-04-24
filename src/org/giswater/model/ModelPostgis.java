@@ -176,13 +176,18 @@ public class ModelPostgis extends Model {
             rat.close();
             raf.close();
 
-            // Ending message
-            String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
-            	Utils.getBundleString("view_file");
-    		int res = Utils.confirmDialog(msg);             
-            if (res == JOptionPane.YES_OPTION){
-               	Utils.openFile(fileInp.getAbsolutePath());
-            }                   
+            // Open INP file?
+            String openInp = MainDao.getPropertiesFile().get("OPEN_INP").toLowerCase();
+            if (openInp.equals("always")){
+            	Utils.openFile(fileInp.getAbsolutePath());
+            }
+            else if (openInp.equals("ask")){
+                String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
+            	int res = Utils.confirmDialog(msg);             
+            	if (res == JOptionPane.YES_OPTION){
+                   	Utils.openFile(fileInp.getAbsolutePath());
+                }   
+            }                            
             return true;
 
         } catch (IOException e) {
@@ -411,14 +416,18 @@ public class ModelPostgis extends Model {
 			return false;
 		}
 
-        // Ending message
-        String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + 
-        	Utils.getBundleString("view_file");
-		int res = Utils.confirmDialog(msg);         
-        if (res == JOptionPane.YES_OPTION){
-        	Utils.openFile(fileRpt.getAbsolutePath());
-        }                
-
+        // Open RPT file
+        String openFile = MainDao.getPropertiesFile().get("OPEN_RPT").toLowerCase();
+        if (openFile.equals("always")){
+        	Utils.openFile(fileInp.getAbsolutePath());
+        }
+        else if (openFile.equals("ask")){    
+            String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
+        	int res = Utils.confirmDialog(msg);             
+        	if (res == JOptionPane.YES_OPTION){
+               	Utils.openFile(fileInp.getAbsolutePath());
+            }   
+        }                            
         return true;
 
     }

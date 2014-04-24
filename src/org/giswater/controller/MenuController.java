@@ -498,7 +498,7 @@ public class MenuController {
 	
 	public void openDatabaseAdmin() {
 		
-		String path = prop.get("FILE_PGADMIN");
+		String path = prop.get("FILE_DBADMIN");
 		File file = new File(path);
 		if (!file.exists()){
 			path = MainDao.getUsersPath() + path;
