@@ -32,6 +32,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import net.miginfocom.swing.MigLayout;
 
 
@@ -39,23 +41,6 @@ import net.miginfocom.swing.MigLayout;
 public class OptionsDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_16;
-	private JTextField textField_18;
-	private JTextField textField_1;
 	
 	
 	public OptionsDialog() {
@@ -151,10 +136,10 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblMinSlope, "cell 0 5,alignx trailing");
 		lblMinSlope.setName("");
 		
-		textField_18 = new JTextField();
-		panelGeneral.add(textField_18, "cell 1 5,growx");
-		textField_18.setName("min_slope");
-		textField_18.setColumns(10);
+		JTextField textField_15 = new JTextField();
+		panelGeneral.add(textField_15, "cell 1 5,growx");
+		textField_15.setName("min_slope");
+		textField_15.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Skip steady state:");
 		panelGeneral.add(lblNewLabel_1, "cell 3 5,alignx trailing");
@@ -166,21 +151,23 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JPanel panelSteps = new JPanel();
 		panelSteps.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DATE & TIME STEPS", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelSteps, "cell 0 1 2 1,grow");
-		panelSteps.setLayout(new MigLayout("", "[90px][200.00][10px][100.00px][200px]", "[][][][][][][]"));
+		panelSteps.setLayout(new MigLayout("", "[90px][200.00,grow][10px][100.00px][200px]", "[grow][][grow][][grow][][]"));
 		
 		JLabel lblStartDate = new JLabel("Start date:");
 		panelSteps.add(lblStartDate, "cell 0 0,alignx trailing");
-		
-		textField = new JTextField();
-		panelSteps.add(textField, "cell 1 0,growx");
-		textField.setName("start_date");
-		textField.setColumns(10);
+
+		JDateChooser dateStart = new JDateChooser();		
+		dateStart.setName("start_date");
+        dateStart.setDateFormatString("dd/MM/yyyy");
+        dateStart.setFocusTraversalPolicyProvider(true);
+        dateStart.setMinSelectableDate(new java.util.Date(978307286000L));
+		panelSteps.add(dateStart, "cell 1 0,growx");        
 		
 		JLabel lblWetSteps = new JLabel("Runoff wet step:");
 		panelSteps.add(lblWetSteps, "cell 3 0,alignx trailing");
 		lblWetSteps.setName("");
 		
-		textField_12 = new JTextField();
+		JTextField textField_12 = new JTextField();
 		panelSteps.add(textField_12, "cell 4 0,growx");
 		textField_12.setName("wet_step");
 		textField_12.setColumns(10);
@@ -188,16 +175,16 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JLabel lblStartTime = new JLabel("Start time:");
 		panelSteps.add(lblStartTime, "cell 0 1,alignx trailing");
 		
-		textField_2 = new JTextField();
-		panelSteps.add(textField_2, "cell 1 1,growx");
-		textField_2.setName("start_time");
-		textField_2.setColumns(10);
+		JTextField textField = new JTextField();
+		panelSteps.add(textField, "cell 1 1,growx");
+		textField.setName("start_time");
+		textField.setColumns(10);
 		
 		JLabel lblDrySteps = new JLabel("Runoff dry step:");
 		panelSteps.add(lblDrySteps, "cell 3 1,alignx trailing");
 		lblDrySteps.setName("dry_step");
 		
-		textField_10 = new JTextField();
+		JTextField textField_10 = new JTextField();
 		panelSteps.add(textField_10, "cell 4 1,growx");
 		textField_10.setName("dry_step");
 		textField_10.setColumns(10);
@@ -205,41 +192,43 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JLabel label_1 = new JLabel("End date:");
 		panelSteps.add(label_1, "cell 0 2,alignx trailing");
 		
-		textField_1 = new JTextField();
-		panelSteps.add(textField_1, "cell 1 2,growx");
-		textField_1.setName("end_date");
-		textField_1.setColumns(10);
+		JDateChooser dateEnd = new JDateChooser();
+		dateEnd.setName("end_date");
+		dateEnd.setFocusTraversalPolicyProvider(true);
+		dateEnd.setDateFormatString("dd/MM/yyyy");
+		panelSteps.add(dateEnd, "cell 1 2,grow");
 		
 		JLabel lblRoutingSteps = new JLabel("Routing step:");
 		panelSteps.add(lblRoutingSteps, "cell 3 2,alignx trailing");
 		lblRoutingSteps.setName("");
 		
-		textField_13 = new JTextField();
-		panelSteps.add(textField_13, "cell 4 2,growx");
-		textField_13.setName("routing_step");
-		textField_13.setColumns(10);
+		JTextField textField_9 = new JTextField();
+		panelSteps.add(textField_9, "cell 4 2,growx");
+		textField_9.setName("routing_step");
+		textField_9.setColumns(10);
 		
 		JLabel lblEndTime = new JLabel("End time:");
 		panelSteps.add(lblEndTime, "cell 0 3,alignx trailing");
 		
-		textField_3 = new JTextField();
-		panelSteps.add(textField_3, "cell 1 3,growx");
-		textField_3.setName("end_time");
-		textField_3.setColumns(10);
+		JTextField textField_2 = new JTextField();
+		panelSteps.add(textField_2, "cell 1 3,growx");
+		textField_2.setName("end_time");
+		textField_2.setColumns(10);
 		
 		JLabel lblReportStartDate = new JLabel("Report start date:");
 		panelSteps.add(lblReportStartDate, "cell 0 4,alignx trailing");
 		
-		textField_4 = new JTextField();
-		panelSteps.add(textField_4, "cell 1 4,growx");
-		textField_4.setName("report_start_date");
-		textField_4.setColumns(10);
+		JDateChooser dateReportStart = new JDateChooser();
+		dateReportStart.setName("report_start_date");
+		dateReportStart.setFocusTraversalPolicyProvider(true);
+		dateReportStart.setDateFormatString("dd/MM/yyyy");
+		panelSteps.add(dateReportStart, "cell 1 4,grow");
 		
 		JLabel lblSweepstart = new JLabel("Sweep start:");
 		panelSteps.add(lblSweepstart, "cell 3 4,alignx trailing");
 		lblSweepstart.setName("");
 		
-		textField_6 = new JTextField();
+		JTextField textField_6 = new JTextField();
 		panelSteps.add(textField_6, "cell 4 4,growx");
 		textField_6.setName("sweep_start");
 		textField_6.setColumns(10);
@@ -247,16 +236,16 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JLabel lblReportStartTime = new JLabel("Report start time:");
 		panelSteps.add(lblReportStartTime, "cell 0 5,alignx trailing");
 		
-		textField_5 = new JTextField();
-		panelSteps.add(textField_5, "cell 1 5,growx");
-		textField_5.setName("report_start_time");
-		textField_5.setColumns(10);
+		JTextField textField_3 = new JTextField();
+		panelSteps.add(textField_3, "cell 1 5,growx");
+		textField_3.setName("report_start_time");
+		textField_3.setColumns(10);
 		
 		JLabel lblSweepEnd = new JLabel("Sweep end:");
 		panelSteps.add(lblSweepEnd, "cell 3 5,alignx trailing");
 		lblSweepEnd.setName("");
 		
-		textField_7 = new JTextField();
+		JTextField textField_7 = new JTextField();
 		panelSteps.add(textField_7, "cell 4 5,growx");
 		textField_7.setName("sweep_end");
 		textField_7.setColumns(10);
@@ -265,19 +254,19 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelSteps.add(lblDryDays, "cell 0 6,alignx trailing");
 		lblDryDays.setName("");
 		
-		textField_8 = new JTextField();
-		panelSteps.add(textField_8, "cell 1 6,growx");
-		textField_8.setName("report_step");
-		textField_8.setColumns(10);
+		JTextField textField_5 = new JTextField();
+		panelSteps.add(textField_5, "cell 1 6,growx");
+		textField_5.setName("report_step");
+		textField_5.setColumns(10);
 		
 		JLabel label = new JLabel("Dry days:");
 		panelSteps.add(label, "cell 3 6,alignx trailing");
 		label.setName("");
 		
-		textField_9 = new JTextField();
-		panelSteps.add(textField_9, "cell 4 6,growx");
-		textField_9.setName("dry_days");
-		textField_9.setColumns(10);
+		JTextField textField_8 = new JTextField();
+		panelSteps.add(textField_8, "cell 4 6,growx");
+		textField_8.setName("dry_days");
+		textField_8.setColumns(10);
 		
 		JPanel panelDynamic = new JPanel();
 		panelDynamic.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DYNAMIC WAVE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -295,10 +284,10 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelDynamic.add(lblVariableSteps, "cell 3 0,alignx trailing");
 		lblVariableSteps.setName("");
 		
-		textField_14 = new JTextField();
-		panelDynamic.add(textField_14, "cell 4 0,growx");
-		textField_14.setName("variable_step");
-		textField_14.setColumns(10);
+		JTextField textField_13 = new JTextField();
+		panelDynamic.add(textField_13, "cell 4 0,growx");
+		textField_13.setName("variable_step");
+		textField_13.setColumns(10);
 		
 		JLabel lblNormalflowlimited = new JLabel("Normal flow limited");
 		panelDynamic.add(lblNormalflowlimited, "cell 0 1,alignx trailing");
@@ -320,7 +309,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelDynamic.add(lblLengtheningSteps, "cell 0 2,alignx trailing");
 		lblLengtheningSteps.setName("");
 		
-		textField_11 = new JTextField();
+		JTextField textField_11 = new JTextField();
 		panelDynamic.add(textField_11, "cell 1 2,growx");
 		textField_11.setName("lengthening_step");
 		textField_11.setColumns(10);
@@ -329,10 +318,10 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelDynamic.add(lblMinSurfarea, "cell 3 2,alignx trailing");
 		lblMinSurfarea.setName("");
 		
-		textField_16 = new JTextField();
-		panelDynamic.add(textField_16, "cell 4 2,growx");
-		textField_16.setName("min_surfarea");
-		textField_16.setColumns(10);
+		JTextField textField_14 = new JTextField();
+		panelDynamic.add(textField_14, "cell 4 2,growx");
+		textField_14.setName("min_surfarea");
+		textField_14.setColumns(10);
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());

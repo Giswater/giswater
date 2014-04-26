@@ -22,11 +22,14 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -41,6 +44,8 @@ import org.giswater.gui.dialog.options.ResultCatDialog;
 import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.util.Utils;
+
+import com.toedter.calendar.JDateChooser;
 
 
 public class OptionsController {
@@ -115,6 +120,25 @@ public class OptionsController {
 				}
 				view.setTextField(component, value);
 			}	
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");			
+			HashMap<String, JDateChooser> dateMap = view.dateMap; 
+			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
+			    String key = entry.getKey();
+			    JDateChooser component = entry.getValue();
+			    String aux = null;
+			    Date value = null;
+				if (fillData){
+					aux = rs.getString(key);
+					if (aux != null){
+						try {
+							value = sdf.parse(aux);
+						} catch (ParseException e) {
+							Utils.logError("ParseExceptionError");
+						}		
+					}
+				}
+				view.setDate(component, value);
+			}			
 			manageNavigationButtons();
 			
 		} catch (SQLException e) {
@@ -232,8 +256,22 @@ public class OptionsController {
 		try {
 			
 			String key;
-			Object value;			
-			ResultSetMetaData metadata = rs.getMetaData();					
+			Object value, auxDate;			
+			ResultSetMetaData metadata = rs.getMetaData();		
+			HashMap<String, JDateChooser> dateMap = view.dateMap; 			
+			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");				
+				key = entry.getKey();
+				JDateChooser date = entry.getValue();
+				auxDate = date.getDate();
+				if (auxDate == null){
+					rs.updateNull(key);						
+				} 
+				else{
+					value = sdf.format(auxDate); 					
+					rs.updateString(key, (String) value);
+				}
+			}			
 			HashMap<String, JComboBox> map = view.comboMap; 			
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 				key = entry.getKey();

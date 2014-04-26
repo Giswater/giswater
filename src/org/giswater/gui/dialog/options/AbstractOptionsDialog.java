@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -38,6 +39,8 @@ import javax.swing.JTextField;
 
 import org.giswater.controller.OptionsController;
 
+import com.toedter.calendar.JDateChooser;
+
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractOptionsDialog extends JDialog implements ActionListener{
@@ -46,6 +49,7 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	protected OptionsController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
+	public HashMap<String, JDateChooser> dateMap;
 	protected JButton btnSave;
 	protected JButton btnClose;
 
@@ -85,6 +89,14 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 		}
 	}	
 	
+	public void setDate(JDateChooser dateField, Date value) {
+		if (value!=null){
+			dateField.setDate(value);
+		}
+		else{
+			dateField.setDate(null);
+		}
+	}	
 	
 	public void enablePrevious(boolean enable){ }
 	
@@ -101,6 +113,7 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 		
         comboMap = new HashMap<String, JComboBox>();
         textMap = new HashMap<String, JTextField>();
+        dateMap = new HashMap<String, JDateChooser>();
         Component[] components = getContentPane().getComponents();
 
         for (int j=0; j<components.length; j++) {
@@ -114,6 +127,9 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	            	else if (comp[i] instanceof JTextField) {      
 	            		textMap.put(comp[i].getName(), (JTextField) comp[i]);
 	            	}
+	            	else if (comp[i] instanceof JDateChooser) {      
+	            		dateMap.put(comp[i].getName(), (JDateChooser) comp[i]);
+	            	}	            	
 	            }
         	}
         }

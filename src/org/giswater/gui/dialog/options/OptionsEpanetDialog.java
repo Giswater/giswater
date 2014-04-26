@@ -41,20 +41,9 @@ import net.miginfocom.swing.MigLayout;
 public class OptionsEpanetDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField_18;
-	private JTextField textField_1;
-	private JTextField textField_2;
 	private JTextField txtUnbalancedN;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
 	private JTextField txtHydraulicsFname;
 	private JTextField txtNode;
-	private JTextField textField_14;
 	private JComboBox hydraulics;
 	private JComboBox quality;
 	private JComboBox unbalanced;
@@ -88,7 +77,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreRainfall = new JLabel("Max check:");
 		panelGeneral.add(lblIgnoreRainfall, "cell 3 0,alignx trailing");
 		
-		textField_14 = new JTextField();
+		JTextField textField_14 = new JTextField();
 		textField_14.setName("maxcheck");
 		textField_14.setColumns(10);
 		panelGeneral.add(textField_14, "cell 4 0,growx");
@@ -103,7 +92,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreSnowmelt = new JLabel("Damp limit:");
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 3 1,alignx trailing");
 		
-		textField_5 = new JTextField();
+		JTextField textField_5 = new JTextField();
 		textField_5.setName("damplimit");
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 4 1,growx");
@@ -159,15 +148,15 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblMinSlope, "cell 0 5,alignx trailing");
 		lblMinSlope.setName("");
 		
-		textField_18 = new JTextField();
-		panelGeneral.add(textField_18, "cell 1 5,growx");
-		textField_18.setName("viscosity");
-		textField_18.setColumns(10);
+		JTextField textField = new JTextField();
+		panelGeneral.add(textField, "cell 1 5,growx");
+		textField.setName("viscosity");
+		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Specific Gravity:");
 		panelGeneral.add(lblNewLabel_1, "cell 3 5,alignx trailing");
 		
-		textField_9 = new JTextField();
+		JTextField textField_9 = new JTextField();
 		textField_9.setName("specific_gravity");
 		textField_9.setColumns(10);
 		panelGeneral.add(textField_9, "cell 4 5,growx");
@@ -176,7 +165,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		lblTrials.setName("");
 		panelGeneral.add(lblTrials, "cell 0 6,alignx trailing");
 		
-		textField_1 = new JTextField();
+		JTextField textField_1 = new JTextField();
 		textField_1.setName("trials");
 		textField_1.setColumns(10);
 		panelGeneral.add(textField_1, "cell 1 6,growx");
@@ -184,16 +173,16 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblDiffusivity = new JLabel("Diffusivity:");
 		panelGeneral.add(lblDiffusivity, "cell 3 6,alignx trailing");
 		
-		textField_10 = new JTextField();
-		textField_10.setName("diffusivity");
-		textField_10.setColumns(10);
-		panelGeneral.add(textField_10, "cell 4 6,growx");
+		JTextField textField_8 = new JTextField();
+		textField_8.setName("diffusivity");
+		textField_8.setColumns(10);
+		panelGeneral.add(textField_8, "cell 4 6,growx");
 		
 		JLabel lblAccuracy = new JLabel("Accuracy:");
 		lblAccuracy.setName("");
 		panelGeneral.add(lblAccuracy, "cell 0 7,alignx trailing");
 		
-		textField_2 = new JTextField();
+		JTextField textField_2 = new JTextField();
 		textField_2.setName("accuracy");
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 7,growx");
@@ -201,18 +190,18 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblTolerance = new JLabel("Tolerance:");
 		panelGeneral.add(lblTolerance, "cell 3 7,alignx trailing");
 		
-		textField_11 = new JTextField();
-		textField_11.setName("tolerance");
-		textField_11.setColumns(10);
-		panelGeneral.add(textField_11, "cell 4 7,growx");
+		JTextField textField_7 = new JTextField();
+		textField_7.setName("tolerance");
+		textField_7.setColumns(10);
+		panelGeneral.add(textField_7, "cell 4 7,growx");
 		
 		JLabel lblIgnoreQuality = new JLabel("Emitter exponent:");
 		panelGeneral.add(lblIgnoreQuality, "cell 0 8,alignx trailing");
 		
-		textField_8 = new JTextField();
-		panelGeneral.add(textField_8, "cell 1 8,growx");
-		textField_8.setName("emitter_exponent");
-		textField_8.setColumns(10);
+		JTextField textField_3 = new JTextField();
+		panelGeneral.add(textField_3, "cell 1 8,growx");
+		textField_3.setName("emitter_exponent");
+		textField_3.setColumns(10);
 		
 		JLabel lblIgnoreGroundwater = new JLabel("Pattern:");
 		panelGeneral.add(lblIgnoreGroundwater, "cell 3 8,alignx trailing");
@@ -225,7 +214,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		lblCheckFreq.setName("");
 		panelGeneral.add(lblCheckFreq, "cell 0 9,alignx trailing");
 		
-		textField_4 = new JTextField();
+		JTextField textField_4 = new JTextField();
 		textField_4.setName("checkfreq");
 		textField_4.setColumns(10);
 		panelGeneral.add(textField_4, "cell 1 9,growx");
@@ -233,10 +222,10 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreRouting = new JLabel("Demand multiplier:");
 		panelGeneral.add(lblIgnoreRouting, "cell 3 9,alignx trailing");
 		
-		textField_7 = new JTextField();
-		textField_7.setName("demand_multiplier");
-		textField_7.setColumns(10);
-		panelGeneral.add(textField_7, "cell 4 9,growx");
+		JTextField textField_6 = new JTextField();
+		textField_6.setName("demand_multiplier");
+		textField_6.setColumns(10);
+		panelGeneral.add(textField_6, "cell 4 9,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());

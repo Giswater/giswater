@@ -24,8 +24,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -53,7 +51,7 @@ import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 
 
-public class EpaPanel extends JPanel implements ActionListener, FocusListener {
+public class EpaPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
@@ -513,10 +511,7 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		btnOptions.addActionListener(this);
 		btnSectorSelection.addActionListener(this);
 		btnDesign.addActionListener(this);
-		btnReport.addActionListener(this);	
-	
-		tabbedPane.addFocusListener(this);
-		
+		btnReport.addActionListener(this);		
 		btnClose.addActionListener(this);		
 		
 	}
@@ -527,20 +522,5 @@ public class EpaPanel extends JPanel implements ActionListener, FocusListener {
 		controller.action(e.getActionCommand());
 	}
 
-	
-	@Override
-	public void focusGained(FocusEvent e) {
-//		Utils.getLogger().info("focusGained");
-//		if (optDbf.isSelected()){
-//			controller.enableCatalog(false);
-//		}
-//		else{
-//			controller.isConnected();
-//		}
-	}
-
-	@Override
-	public void focusLost(FocusEvent arg0) { }
-	
 	
 }
