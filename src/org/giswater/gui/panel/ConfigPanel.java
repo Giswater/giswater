@@ -69,8 +69,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JRadioButton optRptNever;	
 	private JRadioButton optSQLEnabled;
 	private JRadioButton optSQLDisabled;
-	private JRadioButton optMultiEnabled;
-	private JRadioButton optMultiDisabled;
 	private JRadioButton optSridEnabled;
 	private JRadioButton optSridDisabled;	
 	private JRadioButton optLoadRasterEnabled;
@@ -194,23 +192,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		return value;
 	}	
 	
-	public void setImportOverwrite(String status){
-		if (status.equals("true")){
-			optMultiEnabled.setSelected(true);
-		}
-		else if (status.equals("false")){
-			optMultiDisabled.setSelected(true);
-		}
-	}
-	
-	public String getImportOverwrite() {
-		String value = "false";
-		if (optMultiEnabled.isSelected()){
-			value = "true";
-		}
-		return value;
-	}		
-	
 	public void setSridQuestion(String status){
 		if (status.equals("true")){
 			optSridEnabled.setSelected(true);
@@ -272,12 +253,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[:70.00:120px][:250:250][]", "[314.00][10px][][][10px:n][25]"));
+		panel_1.setLayout(new MigLayout("", "[:70.00:120px][:250:250][]", "[280.00][10px][][][10px:n][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[83.00][:150:300px,grow][5.00][45.00]", "[10px:n][][24px:n][24][][][][][5px][][10.00][][10px]"));
+		panel.setLayout(new MigLayout("", "[83.00][:150:300px,grow][5.00][45.00]", "[10px:n][][24px:n][24][][][][5px][][10.00][][10px]"));
 		
 		JLabel lblOpenInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenInpFiles.text")); //$NON-NLS-1$
 		panel.add(lblOpenInpFiles, "cell 0 1,alignx trailing");
@@ -288,19 +269,15 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    JLabel lblCreateSqlLog = new JLabel(BUNDLE.getString("ConfigPanel.lblCreateSqlLog.text")); //$NON-NLS-1$
 	    panel.add(lblCreateSqlLog, "cell 0 3,alignx trailing");
 
-	    JLabel lblMultiresultStorage = new JLabel(BUNDLE.getString("ConfigPanel.lblMultiresultStorage.text")); //$NON-NLS-1$
-	    panel.add(lblMultiresultStorage, "cell 0 4,alignx trailing");
-
 	    JLabel lblSrid = new JLabel(BUNDLE.getString("ConfigPanel.lblSrid.text")); //$NON-NLS-1$
-	    panel.add(lblSrid, "cell 0 5,alignx trailing");
+	    panel.add(lblSrid, "cell 0 4,alignx trailing");
 
 	    JLabel lblLoadRaster = new JLabel(BUNDLE.getString("ConfigPanel.lblLoadRaster.text")); //$NON-NLS-1$
-	    panel.add(lblLoadRaster, "cell 0 6,alignx trailing");
+	    panel.add(lblLoadRaster, "cell 0 5,alignx trailing");
 	    
 	    ButtonGroup group = new ButtonGroup();
 	    ButtonGroup group2 = new ButtonGroup();
 	    ButtonGroup group3 = new ButtonGroup();
-	    ButtonGroup group4 = new ButtonGroup();
 	    ButtonGroup group5 = new ButtonGroup();
 	    ButtonGroup group6 = new ButtonGroup();
 	    
@@ -342,73 +319,63 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); //$NON-NLS-1$
 	    optSQLDisabled.setName("false");
 	    panel.add(optSQLDisabled, "cell 1 3");
-	    group3.add(optSQLDisabled);		    
-	      
-	    optMultiEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); //$NON-NLS-1$
-	    optMultiEnabled.setName("true");
-	    panel.add(optMultiEnabled, "flowx,cell 1 4");
-	    group4.add(optMultiEnabled);
-	    
-	    optMultiDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); //$NON-NLS-1$
-	    optMultiDisabled.setName("false");
-	    panel.add(optMultiDisabled, "cell 1 4");
-	    group4.add(optMultiDisabled);	
+	    group3.add(optSQLDisabled);
 	    
 	    optSridEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); //$NON-NLS-1$
 	    optSridEnabled.setName("true");
-	    panel.add(optSridEnabled, "flowx,cell 1 5");
+	    panel.add(optSridEnabled, "flowx,cell 1 4");
 	    group5.add(optSridEnabled);
 	    
 	    optSridDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); //$NON-NLS-1$
 	    optSridDisabled.setName("false");
-	    panel.add(optSridDisabled, "cell 1 5");
+	    panel.add(optSridDisabled, "cell 1 4");
 	    group5.add(optSridDisabled);
 	    
 	    optLoadRasterEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); //$NON-NLS-1$
 	    optLoadRasterEnabled.setName("true");
-	    panel.add(optLoadRasterEnabled, "flowx,cell 1 6");
+	    panel.add(optLoadRasterEnabled, "flowx,cell 1 5");
 	    group6.add(optLoadRasterEnabled);
 	    
 	    optLoadRasterDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); //$NON-NLS-1$
 	    optLoadRasterDisabled.setName("false");
-	    panel.add(optLoadRasterDisabled, "cell 1 6");
+	    panel.add(optLoadRasterDisabled, "cell 1 5");
 	    group6.add(optLoadRasterDisabled);		    
 	    
 	    lblLogFolderSize = new JLabel(BUNDLE.getString("ConfigPanel.lblLogFolderSize.text")); //$NON-NLS-1$
-	    panel.add(lblLogFolderSize, "cell 0 7,alignx trailing");
+	    panel.add(lblLogFolderSize, "cell 0 6,alignx trailing");
 	    
 	    txtLogFolderSize = new JTextField();
 	    txtLogFolderSize.setText("");
-	    panel.add(txtLogFolderSize, "flowx,cell 1 7,alignx left");
+	    panel.add(txtLogFolderSize, "flowx,cell 1 6,alignx left");
 	    txtLogFolderSize.setColumns(8);
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(4);		
 		txtLogFolderSize.setDocument(maxLength);	
 	    
 	    chkAutostart = new JCheckBox(BUNDLE.getString("ConfigPanel.chkAutostart.text")); //$NON-NLS-1$
 	    chkAutostart.setSelected(true);
-	    panel.add(chkAutostart, "cell 1 9");
+	    panel.add(chkAutostart, "cell 1 8");
 	    
 	    chkAutoconnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); //$NON-NLS-1$
 	    chkAutoconnect.setSelected(true);
-	    panel.add(chkAutoconnect, "cell 1 10,aligny baseline");
+	    panel.add(chkAutoconnect, "cell 1 9,aligny baseline");
 	    
 	    JLabel lblDbAdmin = new JLabel(BUNDLE.getString("ConfigPanel.lblDbAdmin.text")); //$NON-NLS-1$
-	    panel.add(lblDbAdmin, "cell 0 11,alignx trailing");
+	    panel.add(lblDbAdmin, "cell 0 10,alignx trailing");
 	    
 	    txtFileDbAdmin = new JTextField();
 	    txtFileDbAdmin.setText((String) null);
 	    txtFileDbAdmin.setColumns(10);
-	    panel.add(txtFileDbAdmin, "cell 1 11,growx");
+	    panel.add(txtFileDbAdmin, "cell 1 10,growx");
 	    
 	    
 	    btnFileDbAdmin = new JButton();
 	    btnFileDbAdmin.setText("...");
 	    btnFileDbAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
 	    btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
-	    panel.add(btnFileDbAdmin, "cell 3 11");
+	    panel.add(btnFileDbAdmin, "cell 3 10");
 	    
 	    lblMb = new JLabel(BUNDLE.getString("ConfigPanel.lblMb.text")); //$NON-NLS-1$
-	    panel.add(lblMb, "cell 1 7");
+	    panel.add(lblMb, "cell 1 6");
 		
 		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
 		panel_1.add(lblNotepad, "cell 0 2 3 1,aligny top");

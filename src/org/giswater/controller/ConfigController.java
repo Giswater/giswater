@@ -55,7 +55,6 @@ public class ConfigController {
 		view.setOpenInp(prop.get("OPEN_INP"));
 		view.setOpenRpt(prop.get("OPEN_RPT"));
 		view.setSqlLog(prop.get("SQL_LOG"));
-		view.setImportOverwrite(prop.get("IMPORT_OVERWRITE"));
 		view.setSridQuestion(prop.get("SRID_QUESTION"));
 		view.setLoadRaster(prop.get("LOAD_RASTER"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
@@ -100,8 +99,7 @@ public class ConfigController {
 		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
-		prop.put("SQL_LOG", view.getSqlLog());		
-		prop.put("IMPORT_OVERWRITE", view.getImportOverwrite());		
+		prop.put("SQL_LOG", view.getSqlLog());				
 		prop.put("SRID_QUESTION", view.getSridQuestion());		
 		prop.put("LOAD_RASTER", view.getLoadRaster());		
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		

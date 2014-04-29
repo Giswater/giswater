@@ -419,13 +419,13 @@ public class ModelPostgis extends Model {
         // Open RPT file
         String openFile = MainDao.getPropertiesFile().get("OPEN_RPT").toLowerCase();
         if (openFile.equals("always")){
-        	Utils.openFile(fileInp.getAbsolutePath());
+        	Utils.openFile(fileRpt.getAbsolutePath());
         }
         else if (openFile.equals("ask")){    
             String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
         	int res = Utils.confirmDialog(msg);             
         	if (res == JOptionPane.YES_OPTION){
-               	Utils.openFile(fileInp.getAbsolutePath());
+               	Utils.openFile(fileRpt.getAbsolutePath());
             }   
         }                            
         return true;
@@ -449,7 +449,7 @@ public class ModelPostgis extends Model {
     	}    	
 
        	// Check if we want to overwrite previous results
-        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "false"));
+        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "true"));
         Utils.getLogger().info("IMPORT_OVERWRITE: " + overwrite);
         
     	// Check if Project Name exists in rpt_result_id
