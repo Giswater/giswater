@@ -449,7 +449,7 @@ public class ModelPostgis extends Model {
     	}    	
 
        	// Check if we want to overwrite previous results
-        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "true"));
+        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "false"));
         Utils.getLogger().info("IMPORT_OVERWRITE: " + overwrite);
         
     	// Check if Project Name exists in rpt_result_id

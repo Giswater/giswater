@@ -347,7 +347,7 @@ public class MainFrame extends JFrame implements ActionListener{
         MainController mcSwmm = new MainController(swmmFrame.getPanel(), this, "EPASWMM");   
         MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
         
-        boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "true"));
+        boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "false"));
         mnAnalysis.setEnabled(!overwrite);
 		
 	}
