@@ -114,15 +114,16 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		panelGeneral.add(txtFname, "cell 1 2,growx");
 		
 		txtId = new JTextField();
+		txtId.setVisible(false);
 		txtId.setEnabled(false);
 		txtId.setName("id");
 		txtId.setColumns(10);
 		panelGeneral.add(txtId, "cell 3 2,growx");
 		
 		txtTimserId = new JTextField();
+		txtTimserId.setVisible(false);
 		panelGeneral.add(txtTimserId, "cell 4 2");
 		txtTimserId.setName("timser_id");
-		txtTimserId.setEnabled(false);
 		txtTimserId.setColumns(10);
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        

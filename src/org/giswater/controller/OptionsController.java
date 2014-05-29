@@ -21,8 +21,8 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
+import java.io.File;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -30,11 +30,13 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
@@ -492,6 +494,29 @@ public class OptionsController {
 		}	
 		
 	}
+	
+	
+    public void chooseFileFname() {
+
+        JFileChooser chooser = new JFileChooser();
+//        FileFilter filter = new FileNameExtensionFilter("RPT extension file", "rpt");
+//        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
+        File file = new File(System.getProperty("user.home"));	
+        chooser.setCurrentDirectory(file.getParentFile());
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileFname = chooser.getSelectedFile();
+            String path = fileFname.getAbsolutePath();
+            if (path.lastIndexOf(".") == -1) {
+                path += ".rpt";
+                fileFname = new File(path);
+            }
+            view.setFileFname(fileFname.getAbsolutePath());
+        }
+
+    }	
 	
 	
 }

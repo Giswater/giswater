@@ -84,14 +84,14 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	private void initConfig(){
 
 		setTitle("Table rpt_result_cat");
-		setBounds(0, 0, 480, 420);
-		getContentPane().setLayout(new MigLayout("", "[90.00][360.00]", "[322.00][5px:n][30]"));
+		setBounds(0, 0, 500, 420);
+		getContentPane().setLayout(new MigLayout("", "[90.00][380.00,grow]", "[322.00][5px:n][30]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[100.00:n][100:n,grow][10px:10px][100:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px][25px][25px][25px:n]"));
+		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
+		panelGeneral.setLayout(new MigLayout("", "[100.00:n][100:n][10px:10px][90:n][100:120,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px][25px][25px][25px:n]"));
 
 		JLabel lblFlowUnits = new JLabel("Result id:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");

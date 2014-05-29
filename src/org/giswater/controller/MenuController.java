@@ -440,11 +440,11 @@ public class MenuController {
 	private void createSampleSchema(String softwareName){
 		
 		// Get default SRID. Never ask user
-		String sridValue = prop.get("SRID_DEFAULT", "23031");		
+		String sridValue = prop.get("SRID_DEFAULT", "25831");		
 		if (sridValue.equals("")) return;
 
 		// Ask confirmation
-		String msg = "Schema called 'sample_"+softwareName+"' will be created with SRID 23031.\nDo you wish to continue?";
+		String msg = "Schema called 'sample_"+softwareName+"' will be created with SRID 25831.\nDo you wish to continue?";
 		int res = Utils.confirmDialog(view, msg, "Create DB sample");
 		if (res != 0) return; 
 		

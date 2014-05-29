@@ -139,9 +139,9 @@ public class CatalogController {
 				if (!action.equals("create")){
 					if (rs.getRow() != 0){	
 						id = rs.getString("id");
-					}
-					updateDetailTable("inp_curve", "*", "curve_id", id);						
+					}					
 				}
+				updateDetailTable("inp_curve", "*", "curve_id", id);					
 			}	
 			manageNavigationButtons();
 			
@@ -448,6 +448,7 @@ public class CatalogController {
 	}	
 	
 	
+	// Only for CurvesDialog
 	public void detailCreateCurves(String curveId){
 		
 		if (view instanceof CurvesDialog){		

@@ -42,11 +42,12 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	private JTextField textField_18;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField txtFname;
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JButton btnPrevious;
 	private JButton btnNext;
+	private JButton btnFileFname;
 
 	
 	public RaingageDialog() {
@@ -64,7 +65,11 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		if (btnNext != null){
 			btnNext.setEnabled(enable);
 		}
-	}		
+	}	
+	
+	public void setFileFname(String path) {
+		txtFname.setText(path);
+	}	
 
 	
 	private void initConfig() {
@@ -152,32 +157,36 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelFile.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "FILE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelFile, "cell 0 2 2 1,grow");
-		panelFile.setLayout(new MigLayout("", "[80px:80px][150.00:150][10px][80px][150]", "[][]"));
+		panelFile.setLayout(new MigLayout("", "[80px:80px][150.00:150][80px][10px][150]", "[][]"));
+				
+		JLabel lblIgnoreRouting = new JLabel("Units:");
+		panelFile.add(lblIgnoreRouting, "cell 0 0,alignx right");
 
-		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
-		panelFile.add(lblIgnoreGroundwater, "cell 0 0,alignx right");
-
-		textField_3 = new JTextField();
-		panelFile.add(textField_3, "cell 1 0,growx");
-		textField_3.setName("fname");
-		textField_3.setColumns(10);
+		textField_4 = new JTextField();
+		panelFile.add(textField_4, "cell 1 0,growx");
+		textField_4.setName("units");
+		textField_4.setColumns(10);
 
 		JLabel lblMinSlope = new JLabel("Sta:");
-		panelFile.add(lblMinSlope, "cell 3 0,alignx right");
+		panelFile.add(lblMinSlope, "cell 2 0 2 1,alignx right");
 		lblMinSlope.setName("");
 
 		textField_18 = new JTextField();
 		panelFile.add(textField_18, "cell 4 0,growx");
 		textField_18.setName("sta");
 		textField_18.setColumns(10);
+								
+		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
+		panelFile.add(lblIgnoreGroundwater, "cell 0 1,alignx right");
 
-		JLabel lblIgnoreRouting = new JLabel("Units:");
-		panelFile.add(lblIgnoreRouting, "cell 0 1,alignx right");
+		txtFname = new JTextField();
+		panelFile.add(txtFname, "cell 1 1 2 1,growx");
+		txtFname.setName("fname");
+		txtFname.setColumns(10);
 
-		textField_4 = new JTextField();
-		panelFile.add(textField_4, "cell 1 1,growx");
-		textField_4.setName("units");
-		textField_4.setColumns(10);
+		btnFileFname = new JButton("...");
+		btnFileFname.setActionCommand("chooseFileFname");
+		panelFile.add(btnFileFname, "cell 4 1,alignx left");
 
 		setupListeners();
 
@@ -188,6 +197,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	protected void setupListeners() {
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);
+		btnFileFname.addActionListener(this);
 		super.setupListeners();
 	}
 

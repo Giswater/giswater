@@ -295,7 +295,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		// Panel 4
 		panel_4 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_4, null); //$NON-NLS-1$
-		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][102.00]", "[][25px][40px][25px][5px:5px:5px][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
+		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][115.00]", "[][25px][40px][25px][5px:5px:5px][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
 		
 		lblChooseType = new JLabel(BUNDLE.getString("EpaPanel.lbl.text")); //$NON-NLS-1$
 		panel_4.add(lblChooseType, "cell 1 0");
@@ -356,10 +356,10 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDeleteData = new JButton(BUNDLE.getString("EpaPanel.btnDeleteData.text")); //$NON-NLS-1$
 		btnDeleteData.setPreferredSize(new Dimension(110, 23));
 		btnDeleteData.setMinimumSize(new Dimension(110, 23));
-		btnDeleteData.setMaximumSize(new Dimension(110, 23));
+		btnDeleteData.setMaximumSize(new Dimension(112, 23));
 		btnDeleteData.setEnabled(false);
 		btnDeleteData.setActionCommand("deleteData");
-		panel_4.add(btnDeleteData, "cell 3 3");
+		panel_4.add(btnDeleteData, "cell 3 3,growx");
 		
 		lblNewLabel = new JLabel(BUNDLE.getString("EpaPanel.lblNewLabel.text")); //$NON-NLS-1$
 		panel_4.add(lblNewLabel, "cell 1 5");
@@ -383,10 +383,10 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnReport = new JButton(BUNDLE.getString("EpaPanel.btnReport.text")); //$NON-NLS-1$
 		btnReport.setPreferredSize(new Dimension(110, 23));
 		btnReport.setMinimumSize(new Dimension(110, 23));
-		btnReport.setMaximumSize(new Dimension(110, 23));
+		btnReport.setMaximumSize(new Dimension(112, 23));
 		btnReport.setEnabled(false);
 		btnReport.setActionCommand("showReport");
-		panel_4.add(btnReport, "cell 3 5,alignx right");
+		panel_4.add(btnReport, "cell 3 5,growx");
 		
 		chkExport = new JCheckBox();
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); //$NON-NLS-1$

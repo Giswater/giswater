@@ -108,6 +108,8 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 		}
 	}	
 	
+	public void setFileFname(String absolutePath) {	}
+	
 	
 	protected void createComponentMap() {
 		
@@ -168,7 +170,10 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 		if (e.getActionCommand().equals("saveData")) {
 			dispose();
 		}
-	}	
+	}
+
+
+
 
 	
 }

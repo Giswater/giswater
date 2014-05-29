@@ -135,11 +135,23 @@ public class ModelPostgis extends Model {
    	
         try {
         	
-            // Get default INP output file
+            // If not set, get default INP output file
             if (fileInp == null) {
                 String sFile = iniProperties.get("DEFAULT_INP");
                 sFile = MainDao.getFolderConfig() + sFile;
                 fileInp = new File(sFile);
+            }
+            
+            // Overwrite INP file if already exists?
+            if (fileInp.exists()){
+                String owInp = MainDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
+	            if (owInp.equals("false")){
+	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
+	            	int res = Utils.confirmDialog(msg);             
+	            	if (res == JOptionPane.NO_OPTION){
+	                   	return false;
+	                }   
+	            }  
             }
             
             // Get INP template File
@@ -393,6 +405,19 @@ public class ModelPostgis extends Model {
 			Utils.showError("inp_error_notfound", fileInp.getAbsolutePath());     
 			return false;
         }
+        
+        // Overwrite RPT file if already exists?
+        if (fileRpt.exists()){
+            String owRpt = MainDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
+            if (owRpt.equals("false")){
+                String msg = "Selected file already exists:\n"+fileRpt.getAbsolutePath()+"\nDo you want to overwrite it?";
+            	int res = Utils.confirmDialog(msg);             
+            	if (res == JOptionPane.NO_OPTION){
+                   	return false;
+                }   
+            }  
+        }
+        
         String sFile = fileRpt.getAbsolutePath().replace(".rpt", ".out");
         File fileOut = new File(sFile);
 

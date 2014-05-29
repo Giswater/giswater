@@ -662,7 +662,7 @@ public class MainController{
 		
 		String sridValue = "";
 		if (defaultSridSchema.equals("")){
-			String defaultSrid = prop.get("SRID_DEFAULT", "23031");		
+			String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
 			sridValue = getUserSrid(defaultSrid);
 		}
 		else{
