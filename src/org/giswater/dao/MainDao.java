@@ -1125,6 +1125,94 @@ public class MainDao {
 	}	
 	
 	
+	public static boolean executeDump(String schema, String sqlPath) {
+
+		String aux;
+		String bin, host, port, db, user;
+		bin = gswProp.getProperty("POSTGIS_BIN", "");
+		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
+		port = gswProp.getProperty("POSTGIS_PORT", "5431");
+		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
+		user = gswProp.getProperty("POSTGIS_USER", "postgres");
+		
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("postgis_not_found", bin);
+			return false;			
+		}
+		bin+= File.separator;
+		
+		// Set content of .bat file
+		aux= "\""+bin+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
+		aux+= "\nexit";		
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File
+		String batPath = sqlPath.replace(".sql", ".bat");
+		File batFile = new File(batPath);        
+		if (!Utils.fillFile(batFile, aux)){
+			return false;    		
+		}
+		if (!Utils.openFile(batFile.getAbsolutePath())){
+			return false;
+		}
+		
+		Utils.showMessage("Project saved successfully in:\n"+sqlPath);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+		batFile.delete();
+		
+		return true;
+			
+	}	
+	
+	
+	public static boolean executeRestore(String sqlPath) {
+
+		String aux, logFolder;
+		String bin, host, port, db, user;
+		bin = gswProp.getProperty("POSTGIS_BIN", "");
+		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
+		port = gswProp.getProperty("POSTGIS_PORT", "5431");
+		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
+		user = gswProp.getProperty("POSTGIS_USER", "postgres");
+		logFolder = Utils.getLogFolder();
+		
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("postgis_not_found", bin);
+			return false;			
+		}
+		bin+= File.separator;
+		
+		// Set content of .bat file
+		//aux= "\""+bin+"pg_restore.exe\" -U "+user+" -h "+host+" -p "+port+" -w -d "+db+" -v \""+sqlPath+"\"";
+		aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+logFolder+"restore.log\"";
+		aux+= "\nexit";			
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File
+		String batPath = sqlPath.replace(".sql", ".bat");
+		File batFile = new File(batPath);        
+		if (!Utils.fillFile(batFile, aux)){
+			return false;    		
+		}
+		if (!Utils.openFile(batFile.getAbsolutePath())){
+			return false;
+		}
+		
+//		Utils.showMessage("Project restored successfully");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+		batFile.delete();
+		
+		return true;
+			
+	}	
+	
+	
 	public static boolean createSdfFile(String schemaName, String fileName) {
 		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"');";
 		Utils.logSql(sql);

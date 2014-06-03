@@ -28,6 +28,7 @@ import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsFTP;
 
 
 public class MainClass {
@@ -58,16 +59,24 @@ public class MainClass {
             	// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
-				if (versionCode != null){
-					msg+= "\nVersion: " + versionCode;
+				if (versionCode == null){
+					versionCode = "1.0.165";
 				}
+				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				
             	if (!MainDao.configIni()){
             		return;
-            	}            	
+            	}     
+            	
+            	// Check if new version is available
+            	Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
+            	Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
+				Integer buildVersion = Integer.parseInt(versionCode.substring(4));
+            	boolean newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
+            	String ftpVersion = UtilsFTP.getFtpVersion();
 				
             	// Create MainFrame and Menu controller
-            	mdi = new MainFrame(MainDao.isConnected(), versionCode);            	
+            	mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
             	MenuController menuController = new MenuController(mdi, versionCode);            	
                 mdi.setVisible(true);
                 

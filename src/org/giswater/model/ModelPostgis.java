@@ -58,6 +58,7 @@ public class ModelPostgis extends Model {
 	
 	private static String firstLine;
 	private static String lastTimeHydraulic = "";
+	private static boolean continueProcess = true;
 	
 	private static final String OPTIONS_TABLE = "v_inp_options";
 	private static final String REPORTS_TABLE = "v_inp_report";
@@ -571,6 +572,11 @@ public class ModelPostgis extends Model {
         		}
             }
             
+            // EPASWMM
+            if (!continueProcess){
+            	return false;
+            }
+            
         	if (ok && processTarget){
     			if (overwrite){
     				sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable();
@@ -649,6 +655,10 @@ public class ModelPostgis extends Model {
 		
 		Utils.getLogger().info("Target: " + rpt.getId() + " - " + rpt.getDescription());
 		
+		if (rpt.getId() == 130){
+			Utils.getLogger().info("Target line number: " + lineNumber);	
+		}
+		
 		// Read lines until rpt.getDescription() is found		
 		while (!found){
 			try {
@@ -692,7 +702,7 @@ public class ModelPostgis extends Model {
 		
 		// Read following lines until blank line is found
 		tokensList = new ArrayList<ArrayList<String>>();		
-		parseLines(rpt);
+		continueProcess = parseLines(rpt);
 		if (rpt.getType() == 2){
 			processTokens(rpt);
 		}
@@ -757,8 +767,9 @@ public class ModelPostgis extends Model {
 	
 	
 	// Parse all lines
-	private static void parseLines(RptTarget rpt) {
+	private static boolean parseLines(RptTarget rpt) {
 		
+		boolean result = true;
 		tokens = new ArrayList<String>();			
 		boolean blankLine = false;		
 		while (!blankLine){
@@ -770,7 +781,10 @@ public class ModelPostgis extends Model {
 					Scanner scanner = new Scanner(line);
 					if (rpt.getType() == 1){
 						parseLine1(scanner, false);
-						processTokens(rpt);							
+						result = processTokens(rpt);
+						if (!result){
+							return false;
+						}
 					}		
 					else if (rpt.getType() == 2){					
 						parseLine2(scanner, rpt, true);
@@ -804,6 +818,8 @@ public class ModelPostgis extends Model {
 				Utils.showError(e);
 			}
 		}		
+		
+		return result;
 		
 	}
 	
@@ -862,7 +878,7 @@ public class ModelPostgis extends Model {
 	}
 	
 	
-	private static void processTokens(RptTarget rpt) {
+	private static boolean processTokens(RptTarget rpt) {
 
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
@@ -874,7 +890,7 @@ public class ModelPostgis extends Model {
             if (softwareName.equals("EPANET")){
             	if (tokens.size() < rsmd.getColumnCount() - 4){
             		Utils.logError("Line not valid");
-            		return;
+            		return true;
             	}
             }
 	        rs.close();
@@ -888,6 +904,15 @@ public class ModelPostgis extends Model {
 				case Types.NUMERIC:
 				case Types.DOUBLE:
 				case Types.INTEGER:
+					boolean ok = Utils.isNumeric(tokens.get(i));
+					if (!ok){
+						// TODO: i18n
+						String msg = "An error ocurred in line number: "+lineNumber;
+						msg+= "\nField "+rsmd.getColumnName(j)+ " does not contain a valid numeric value: "+tokens.get(i);
+						msg+= "\nImport process will be aborted";
+						Utils.showError(msg);
+						return false;
+					}
 					values += tokens.get(i) + ", ";
 					break;					
 				case Types.VARCHAR:
@@ -907,6 +932,8 @@ public class ModelPostgis extends Model {
 		values = values.substring(0, values.length() - 2);
 		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;
+		
+		return true;
 		
 	}
 	

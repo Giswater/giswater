@@ -62,7 +62,7 @@ public class MainController{
     private boolean execChecked;
     private boolean importChecked;
     
-    private String userHomeFolder;
+    private String usersFolder;
     private MainFrame mainFrame;
 	private String software;
 	
@@ -80,7 +80,7 @@ public class MainController{
         this.gswProp = MainDao.getGswProperties();
         this.software = software;
 	    view.setController(this);        
-    	userHomeFolder = System.getProperty("user.home"); 	
+    	usersFolder = MainDao.getUsersPath(); 	
     	
 	}
    
@@ -120,7 +120,7 @@ public class MainController{
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(gswProp.get(software+"_FOLDER_SHP", userHomeFolder));
+		File file = new File(gswProp.get(software+"_FOLDER_SHP", usersFolder));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -319,6 +319,10 @@ public class MainController{
         dialog.setLocationRelativeTo(null);   
         dialog.setVisible(true);	
         
+		if (dialog instanceof RaingageDialog){
+			controller.changeRaingageType();
+		}
+        
 	}
 	
 		
@@ -330,7 +334,7 @@ public class MainController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_inp"));
-        File file = new File(gswProp.get(software+"_FILE_INP", userHomeFolder));	
+        File file = new File(gswProp.get(software+"_FILE_INP", usersFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -353,7 +357,7 @@ public class MainController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
-        File file = new File(gswProp.get(software+"_FILE_RPT", userHomeFolder));	
+        File file = new File(gswProp.get(software+"_FILE_RPT", usersFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

@@ -52,6 +52,7 @@ import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import javax.swing.JSeparator;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -62,13 +63,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	private MenuController menuController;
 	private PropertiesMap prop;
 	private String versionCode;
+//	private boolean newVersion;	
 	
     private JDesktopPane desktopPane;
-    
-	private JMenuItem mntmNew;
-	private JMenuItem mntmOpen;
-	private JMenuItem mntmSave;
-	private JMenuItem mntmSaveAs;
+	private JMenuItem mntmOpenPreferences;
+	private JMenuItem mntmSavePreferences;
+	private JMenuItem mntmSaveAsPreferences;
 
     private JMenuItem mntmSwmm;
 	private JMenuItem mntmEpanet;
@@ -103,6 +103,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmUserManual;	
 	private JMenuItem mntmReferenceGuide;	
 	private JMenuItem mntmWeb;
+	
+	private JMenu mnNewVersionAvailable;
+	private JMenuItem mntmDownload;
 
 	public EpaFrame swmmFrame;
 	public EpaFrame epanetFrame;
@@ -111,12 +114,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	public DatabaseFrame dbFrame;
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
+	private JMenuItem mntmOpenProject;
+	private JMenuItem mntmSaveProject;
+	private JSeparator separator;
+	private JMenuItem mntmSaveProjectAs;
+
 		
 	
-	public MainFrame(boolean isConnected, String versionCode) {
+	public MainFrame(boolean isConnected, String versionCode, boolean newVersion, String ftpVersion) {
 		
 		this.versionCode = versionCode;
+		//this.newVersion = newVersion;
 		initConfig();
+		setNewVersionVisible(newVersion, ftpVersion);
 		try {
 			initFrames();
 			hecRasFrame.getPanel().enableButtons(isConnected);
@@ -127,6 +137,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	
+	private void setNewVersionVisible(boolean newVersion, String ftpVersion) {
+		mnNewVersionAvailable.setVisible(newVersion);
+		String msg = "Download version v"+ftpVersion;
+		mntmDownload.setText(msg);
+	}
+
+
 	public void setControl(MenuController menuController) {
 		this.menuController = menuController;
 	}	
@@ -146,22 +163,32 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenu mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
 		menuBar.add(mnProject);
 		
-		mntmNew = new JMenuItem(BUNDLE.getString("MainFrame.mntmNew.text")); //$NON-NLS-1$
-		mntmNew.setVisible(false);
-		mntmNew.setActionCommand("gswNew");
-		mnProject.add(mntmNew);
+		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
+		mntmOpenProject.setActionCommand("openProject");
+		mnProject.add(mntmOpenProject);
 		
-		mntmOpen = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
-		mntmOpen.setActionCommand("gswOpen");
-		mnProject.add(mntmOpen);
+		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
+		mntmSaveProject.setActionCommand("saveProject");
+		mnProject.add(mntmSaveProject);
 		
-		mntmSave = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
-		mntmSave.setActionCommand("gswSave");
-		mnProject.add(mntmSave);
+		mntmSaveProjectAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProjectAs.text")); //$NON-NLS-1$
+		mntmSaveProjectAs.setVisible(false);
+		mnProject.add(mntmSaveProjectAs);
 		
-		mntmSaveAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
-		mntmSaveAs.setActionCommand("gswSaveAs");
-		mnProject.add(mntmSaveAs);
+		separator = new JSeparator();
+		mnProject.add(separator);
+		
+		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
+		mntmOpenPreferences.setActionCommand("gswOpen");
+		mnProject.add(mntmOpenPreferences);
+		
+		mntmSavePreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
+		mntmSavePreferences.setActionCommand("gswSave");
+		mnProject.add(mntmSavePreferences);
+		
+		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
+		mntmSaveAsPreferences.setActionCommand("gswSaveAs");
+		mnProject.add(mntmSaveAsPreferences);
 		
 		JMenu mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
@@ -279,6 +306,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
 		mntmAgreements.setActionCommand("showAcknowledgment");
 		mnAbout.add(mntmAgreements);
+		
+		mnNewVersionAvailable = new JMenu(BUNDLE.getString("MainFrame.mnNewVersionAvailable.text")); //$NON-NLS-1$
+		menuBar.add(mnNewVersionAvailable);
+		
+		mntmDownload = new JMenuItem();
+		mntmDownload.setActionCommand("downloadNewVersion");
+		mnNewVersionAvailable.add(mntmDownload);
 		
 		desktopPane = new JDesktopPane();
 		desktopPane.setVisible(true);
@@ -551,10 +585,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	private void setupListeners(){
 		
-		mntmNew.addActionListener(this);
-		mntmOpen.addActionListener(this);
-		mntmSave.addActionListener(this);
-		mntmSaveAs.addActionListener(this);
+		mntmOpenProject.addActionListener(this);
+		mntmSaveProject.addActionListener(this);
+		mntmOpenPreferences.addActionListener(this);
+		mntmSavePreferences.addActionListener(this);
+		mntmSaveAsPreferences.addActionListener(this);
 		
 		mntmSwmm.addActionListener(this);
 		mntmEpanet.addActionListener(this);
@@ -585,6 +620,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmUserManual.addActionListener(this);
 		mntmReferenceGuide.addActionListener(this);		
 		mntmWeb.addActionListener(this);
+		
+		mntmDownload.addActionListener(this);
+		
 		
 	}
 	
@@ -632,11 +670,15 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void enableCatalog(boolean enable) {
+		
+		mntmOpenProject.setEnabled(enable);
+		mntmSaveProject.setEnabled(enable);
 		mnData.setEnabled(enable);
 		mnAnalysis.setEnabled(enable);
 		mntmSampleEpanet.setEnabled(enable);
 		mntmSampleEpaswmm.setEnabled(enable);
 		mntmSampleHecras.setEnabled(enable);
+		
 	}
 	
 	public void enableProjectId(boolean enable) {

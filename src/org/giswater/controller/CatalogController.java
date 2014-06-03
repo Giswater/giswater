@@ -21,6 +21,7 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
@@ -528,6 +530,22 @@ public class CatalogController {
 		action = "other";
 		setComponents();
 	}
+	
+	
+    public void chooseFileFname() {
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_fname"));
+        File file = new File(System.getProperty("user.home"));	
+        chooser.setCurrentDirectory(file.getParentFile());
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileFname = chooser.getSelectedFile();
+            view.setFileFname(fileFname.getAbsolutePath());
+        }
+
+    }	
 	
 	
 }

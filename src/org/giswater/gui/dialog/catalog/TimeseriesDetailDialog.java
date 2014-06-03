@@ -50,6 +50,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	private JTextField txtFname;
 	private JTextField txtValue;
 	private TimeseriesDialog parent;
+	private JButton btnFileFname;
 	
 	
 	public TimeseriesDetailDialog(TimeseriesDialog parentDialog, String timesType) {
@@ -111,20 +112,11 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		txtFname = new JTextField();
 		txtFname.setName("fname");
 		txtFname.setColumns(10);
-		panelGeneral.add(txtFname, "cell 1 2,growx");
+		panelGeneral.add(txtFname, "cell 1 2 3 1,growx");
 		
-		txtId = new JTextField();
-		txtId.setVisible(false);
-		txtId.setEnabled(false);
-		txtId.setName("id");
-		txtId.setColumns(10);
-		panelGeneral.add(txtId, "cell 3 2,growx");
-		
-		txtTimserId = new JTextField();
-		txtTimserId.setVisible(false);
-		panelGeneral.add(txtTimserId, "cell 4 2");
-		txtTimserId.setName("timser_id");
-		txtTimserId.setColumns(10);
+		btnFileFname = new JButton("...");
+		btnFileFname.setActionCommand("chooseFileFname");
+		panelGeneral.add(btnFileFname, "cell 4 2");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
@@ -138,6 +130,19 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
+		
+		txtTimserId = new JTextField();
+		getContentPane().add(txtTimserId, "flowx,cell 0 2");
+		txtTimserId.setVisible(false);
+		txtTimserId.setName("timser_id");
+		txtTimserId.setColumns(10);
+		
+		txtId = new JTextField();
+		getContentPane().add(txtId, "cell 0 2");
+		txtId.setVisible(false);
+		txtId.setEnabled(false);
+		txtId.setName("id");
+		txtId.setColumns(10);
 		
 		setupListeners();
 		
@@ -165,6 +170,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 				parent.getController().closeDetailDialog();			
 			}
 		});		
+		btnFileFname.addActionListener(this);
 		
 	}
 	
@@ -194,6 +200,10 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 
 	public void setTimserId(String timserId) {
 		txtTimserId.setText(timserId);
+	}
+	
+	public void setFileFname(String path) {
+		txtFname.setText(path);
 	}
 	
 	

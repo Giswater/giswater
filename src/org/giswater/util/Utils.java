@@ -376,19 +376,21 @@ public class Utils {
 	}
 	
     
-	public static void execProcess(String process){
+	public static boolean execProcess(String process){
 		
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
 		} catch (IOException | InterruptedException e) {
 			logError(e);
+			return false;
 		}	
+		return true;
 		
 	}
 	
 	
-	public static void openFile(String filePath){
+	public static boolean openFile(String filePath){
 
 		File exec = new File(filePath);
 		if (exec.exists()){
@@ -396,11 +398,14 @@ public class Utils {
 				Desktop.getDesktop().open(exec);
 			} catch (IOException e) {
 				logError(e);
+				return false;
 			}
 		}
 		else{
 			showMessage("file_not_found", filePath);
+			return false;
 		}
+		return true;
 		
 	}    
 	
@@ -445,15 +450,17 @@ public class Utils {
 	}
 	
 	
-	public static void fillFile(File file, String text) {
+	public static boolean fillFile(File file, String text) {
 
 		try {
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			raf.setLength(0);
 			raf.writeBytes(text);
 			raf.close();
+			return true;
 		} catch (Exception e) {
 			logError(e.getMessage());
+			return false;
 		}
 
 	}		
@@ -482,6 +489,26 @@ public class Utils {
 	public static void setSqlLog(String string) {
 		isSqlLogged = Boolean.parseBoolean(string);
 	}	
+	
+	
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    return true;
+	}
+
+
+	public static boolean isNumeric(String number) {
+		try {
+			Double.parseDouble(number);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
 	
 	
 }

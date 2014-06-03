@@ -256,7 +256,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnExportSdf.setActionCommand("exportSdf");
 		panel_2.add(btnExportSdf, "cell 5 5,alignx center,aligny center");
 		
-		btnDeleteSchema = new JButton("Delete Schema");
+		btnDeleteSchema = new JButton(BUNDLE.getString("HecRasPanel.btnDeleteSchema.text")); //$NON-NLS-1$
 		btnDeleteSchema.setMinimumSize(new Dimension(110, 23));
 		btnDeleteSchema.setMaximumSize(new Dimension(108, 23));
 		btnDeleteSchema.setActionCommand("deleteSchema");

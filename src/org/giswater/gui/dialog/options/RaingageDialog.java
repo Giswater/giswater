@@ -39,15 +39,19 @@ import net.miginfocom.swing.MigLayout;
 public class RaingageDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField_18;
+	private JTextField txtSta;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField txtFname;
-	private JTextField textField_4;
+	private JTextField txtUnits;
 	private JTextField textField_5;
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JButton btnFileFname;
+	private JComboBox cboRaingageType;
+	private JPanel panelFile;
+	private JPanel panelTimeseries;
+	private JComboBox cboTimeseries;
 
 	
 	public RaingageDialog() {
@@ -70,6 +74,23 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	public void setFileFname(String path) {
 		txtFname.setText(path);
 	}	
+	
+	public String getRaingageType() {
+		if (cboRaingageType.getSelectedIndex() > -1){
+			return cboRaingageType.getSelectedItem().toString();
+		}
+		return "";
+	}
+	
+	public void enablePanelFile(boolean enabled) {
+		panelTimeseries.setEnabled(!enabled);
+		cboTimeseries.setEnabled(!enabled);
+		panelFile.setEnabled(enabled);
+		txtUnits.setEnabled(enabled);
+		txtSta.setEnabled(enabled);
+		txtFname.setEnabled(enabled);
+		btnFileFname.setEnabled(enabled);
+	}
 
 	
 	private void initConfig() {
@@ -95,9 +116,10 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
 		
-		JComboBox comboBox_3 = new JComboBox();
-		panelGeneral.add(comboBox_3, "cell 1 1,growx");
-		comboBox_3.setName("rgage_type");
+		cboRaingageType = new JComboBox();
+		cboRaingageType.setActionCommand("changeRaingageType");
+		panelGeneral.add(cboRaingageType, "cell 1 1,growx");
+		cboRaingageType.setName("rgage_type");
 
 		JLabel lblFlowUnits = new JLabel("Form type:");
 		panelGeneral.add(lblFlowUnits, "cell 3 1,alignx trailing");
@@ -140,7 +162,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		btnClose = new JButton("Close");
 		getContentPane().add(btnClose, "cell 1 4,alignx right");				
 
-		JPanel panelTimeseries = new JPanel();
+		panelTimeseries = new JPanel();
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelTimeseries.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "TIMESERIES", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelTimeseries, "cell 0 1 2 1,grow");
@@ -149,11 +171,11 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		JLabel lblFlowRouting = new JLabel("Timeseries id:");
 		panelTimeseries.add(lblFlowRouting, "cell 0 0,alignx right");
 
-		JComboBox flow_routing = new JComboBox();
-		panelTimeseries.add(flow_routing, "cell 1 0,growx");
-		flow_routing.setName("timser_id");
+		cboTimeseries = new JComboBox();
+		panelTimeseries.add(cboTimeseries, "cell 1 0,growx");
+		cboTimeseries.setName("timser_id");
 
-		JPanel panelFile = new JPanel();
+		panelFile = new JPanel();
 		panelFile.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "FILE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelFile, "cell 0 2 2 1,grow");
@@ -162,19 +184,19 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		JLabel lblIgnoreRouting = new JLabel("Units:");
 		panelFile.add(lblIgnoreRouting, "cell 0 0,alignx right");
 
-		textField_4 = new JTextField();
-		panelFile.add(textField_4, "cell 1 0,growx");
-		textField_4.setName("units");
-		textField_4.setColumns(10);
+		txtUnits = new JTextField();
+		panelFile.add(txtUnits, "cell 1 0,growx");
+		txtUnits.setName("units");
+		txtUnits.setColumns(10);
 
 		JLabel lblMinSlope = new JLabel("Sta:");
 		panelFile.add(lblMinSlope, "cell 2 0 2 1,alignx right");
 		lblMinSlope.setName("");
 
-		textField_18 = new JTextField();
-		panelFile.add(textField_18, "cell 4 0,growx");
-		textField_18.setName("sta");
-		textField_18.setColumns(10);
+		txtSta = new JTextField();
+		panelFile.add(txtSta, "cell 4 0,growx");
+		txtSta.setName("sta");
+		txtSta.setColumns(10);
 								
 		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
 		panelFile.add(lblIgnoreGroundwater, "cell 0 1,alignx right");
@@ -198,6 +220,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		btnPrevious.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnFileFname.addActionListener(this);
+		cboRaingageType.addActionListener(this);
 		super.setupListeners();
 	}
 

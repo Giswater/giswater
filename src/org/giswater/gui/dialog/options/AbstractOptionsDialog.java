@@ -107,9 +107,7 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 			btnSave.setEnabled(enable);
 		}
 	}	
-	
-	public void setFileFname(String absolutePath) {	}
-	
+
 	
 	protected void createComponentMap() {
 		

@@ -54,6 +54,7 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsFTP;
 
 
 public class MenuController {
@@ -67,6 +68,7 @@ public class MenuController {
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
+	private String usersFolder;
 
 	
 	public MenuController(MainFrame mainFrame, String versionCode) {
@@ -74,6 +76,7 @@ public class MenuController {
 		this.prop = MainDao.getPropertiesFile();
 		this.versionCode = versionCode;
 		view.setControl(this);
+		usersFolder = MainDao.getUsersPath(); 	
 	}
 	
 
@@ -97,9 +100,66 @@ public class MenuController {
 	}
 	
 	
-	// Menu Project
-	public void gswNew(){ }
+	// Menu File
+	public void openProject(){ 
+		
+		// Select .sql to restore
+		String filePath = chooseFileBackup();
+		if (filePath.equals("")){
+			String msg = "Any file specified. You need to select one";
+			Utils.showMessage(msg);
+			return;
+		}
+		
+		// Restore contents of .sql file into current Database
+		MainDao.executeRestore(filePath);
+		
+	}
+	
+	
+	public void saveProject(){ 
+		
+		String schema = MainDao.getSchema();
+		if (schema == null){
+			String msg = "Any schema selected. You need to select one to backup";
+			Utils.showMessage(msg);
+			return;
+		}
+		String filePath = chooseFileBackup();
+		if (filePath.equals("")){
+			String msg = "Any file specified. You need to select one";
+			Utils.showMessage(msg);
+			return;
+		}
+		MainDao.executeDump(schema, filePath);
+		
+	}
 
+	
+    private String chooseFileBackup() {
+
+    	String path = "";
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("SQL extension file", "sql");
+        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_sql"));
+        File file = new File(MainDao.getGswProperties().get("FILE_SQL", usersFolder));	
+        //chooser.setCurrentDirectory(file.getParentFile());
+        chooser.setCurrentDirectory(file);
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileSql = chooser.getSelectedFile();
+            path = fileSql.getAbsolutePath();
+            if (path.lastIndexOf(".") == -1) {
+                path += ".sql";
+                fileSql = new File(path);
+            }        
+        }
+        return path;
+
+    }
+    
 	
 	public void gswOpen(){
 		gswOpen(true);
@@ -569,5 +629,49 @@ public class MenuController {
 		
 	}
 	
+	
+	public void downloadNewVersion(){
+		
+		Utils.getLogger().info("Download last version");
+		
+		String ftpVersion = UtilsFTP.getFtpVersion();
+		String remoteName = "giswater_stand-alone_update_"+ftpVersion+".exe";
+		// Choose file to download
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		String localePath = chooseFileSetup(remoteName);
+		if (!localePath.equals("")){
+			UtilsFTP.downloadLastVersion(remoteName, localePath);
+			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			Utils.showMessage("Downloaded completed successfully. Close Giswater before executing downloaded file");
+		}
+		
+	}
+	
+	
+	
+    private String chooseFileSetup(String fileName) {
+
+    	String path = "";
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("EXE extension file", "exe");
+        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_exe"));
+        File file = new File(usersFolder+fileName);	
+        chooser.setCurrentDirectory(file);
+        chooser.setSelectedFile(file);
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileSql = chooser.getSelectedFile();
+            path = fileSql.getAbsolutePath();
+            if (path.lastIndexOf(".") == -1) {
+                path += ".exe";
+                fileSql = new File(path);
+            }        
+        }
+        return path;
+
+    }
+    
 
 }

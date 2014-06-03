@@ -49,6 +49,8 @@ import org.giswater.controller.MainController;
 import org.giswater.gui.frame.EpaFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
+import javax.swing.JSeparator;
+import java.awt.Color;
 
 
 public class EpaPanel extends JPanel implements ActionListener {
@@ -94,6 +96,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JButton btnDeleteData;
 	private JLabel lblNewLabel;
 	public JButton btnClose;
+	private JSeparator separator;
 
 	
 	public EpaPanel(String softwareName) {
@@ -295,7 +298,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		// Panel 4
 		panel_4 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_4, null); //$NON-NLS-1$
-		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][115.00]", "[][25px][40px][25px][5px:5px:5px][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
+		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][115.00]", "[][25px][40px][25px][20px:n][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
 		
 		lblChooseType = new JLabel(BUNDLE.getString("EpaPanel.lbl.text")); //$NON-NLS-1$
 		panel_4.add(lblChooseType, "cell 1 0");
@@ -360,6 +363,10 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDeleteData.setEnabled(false);
 		btnDeleteData.setActionCommand("deleteData");
 		panel_4.add(btnDeleteData, "cell 3 3,growx");
+		
+		separator = new JSeparator();
+		separator.setForeground(Color.BLACK);
+		panel_4.add(separator, "cell 0 4 4 1,growx");
 		
 		lblNewLabel = new JLabel(BUNDLE.getString("EpaPanel.lblNewLabel.text")); //$NON-NLS-1$
 		panel_4.add(lblNewLabel, "cell 1 5");

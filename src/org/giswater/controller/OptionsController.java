@@ -42,6 +42,7 @@ import javax.swing.JTextField;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
+import org.giswater.gui.dialog.options.RaingageDialog;
 import org.giswater.gui.dialog.options.ResultCatDialog;
 import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.ResultSelectionDialog;
@@ -496,27 +497,43 @@ public class OptionsController {
 	}
 	
 	
+	// Raingage
     public void chooseFileFname() {
 
         JFileChooser chooser = new JFileChooser();
 //        FileFilter filter = new FileNameExtensionFilter("RPT extension file", "rpt");
 //        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
+        chooser.setDialogTitle(Utils.getBundleString("file_fname"));
         File file = new File(System.getProperty("user.home"));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileFname = chooser.getSelectedFile();
-            String path = fileFname.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".rpt";
-                fileFname = new File(path);
-            }
-            view.setFileFname(fileFname.getAbsolutePath());
+    		if (view instanceof RaingageDialog){
+    			RaingageDialog child = (RaingageDialog) view;
+    			child.setFileFname(fileFname.getAbsolutePath());
+    		}
         }
 
     }	
 	
+    
+    // Raingage
+    public void changeRaingageType(){
+    	
+		if (view instanceof RaingageDialog){
+			RaingageDialog child = (RaingageDialog) view;
+			String value = child.getRaingageType();
+			if (value.equals("FILE")){
+				child.enablePanelFile(true);
+			} 
+			else{
+				child.enablePanelFile(false);
+			}
+		}
+    	
+    }
+    
 	
 }

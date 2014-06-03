@@ -138,6 +138,9 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 
 	}	
 	
+	
+	public void setFileFname(String absolutePath) {	}
+	
 
 	protected void setupListeners() {
 		
@@ -173,5 +176,5 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 		controller.action(e.getActionCommand());
 	}
 
-	
+
 }
