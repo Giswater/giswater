@@ -127,8 +127,6 @@ public class MenuController {
 		}
 		String filePath = chooseFileBackup();
 		if (filePath.equals("")){
-			String msg = "Any file specified. You need to select one";
-			Utils.showMessage(msg);
 			return;
 		}
 		MainDao.executeDump(schema, filePath);
@@ -632,7 +630,7 @@ public class MenuController {
 	
 	public void downloadNewVersion(){
 		
-		Utils.getLogger().info("Download last version");
+		Utils.getLogger().info("Downloading last version...");
 		
 		String ftpVersion = UtilsFTP.getFtpVersion();
 		String remoteName = "giswater_stand-alone_update_"+ftpVersion+".exe";
@@ -640,13 +638,13 @@ public class MenuController {
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String localePath = chooseFileSetup(remoteName);
 		if (!localePath.equals("")){
-			UtilsFTP.downloadLastVersion(remoteName, localePath);
+			if (UtilsFTP.downloadLastVersion(remoteName, localePath)){
+				Utils.showMessage("Downloaded completed successfully. Close Giswater before executing downloaded file");
+			}
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			Utils.showMessage("Downloaded completed successfully. Close Giswater before executing downloaded file");
 		}
 		
 	}
-	
 	
 	
     private String chooseFileSetup(String fileName) {
@@ -671,6 +669,22 @@ public class MenuController {
         }
         return path;
 
+    }
+        
+    
+    public void checkUpdates(){
+    	
+    	// Check if new version is available
+    	Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
+    	Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
+		Integer buildVersion = Integer.parseInt(versionCode.substring(4));
+    	boolean newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
+    	String ftpVersion = UtilsFTP.getFtpVersion();
+		view.setNewVersionVisible(newVersion, ftpVersion);
+		if (!newVersion){
+			Utils.showMessage(view, "No new version found");
+		}
+		
     }
     
 

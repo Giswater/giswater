@@ -29,6 +29,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.util.ResourceBundle;
 
+import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -37,6 +38,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.giswater.controller.ConfigController;
@@ -52,7 +54,6 @@ import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import javax.swing.JSeparator;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -63,13 +64,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	private MenuController menuController;
 	private PropertiesMap prop;
 	private String versionCode;
-//	private boolean newVersion;	
 	
     private JDesktopPane desktopPane;
+    
+    private JMenu mnProject;
+	private JMenuItem mntmOpenProject;
+	private JMenuItem mntmSaveProject;
+	private JSeparator separator;
+	private JMenuItem mntmSaveProjectAs;
 	private JMenuItem mntmOpenPreferences;
 	private JMenuItem mntmSavePreferences;
 	private JMenuItem mntmSaveAsPreferences;
 
+	private JMenu mnForms;
     private JMenuItem mntmSwmm;
 	private JMenuItem mntmEpanet;
 	private JMenuItem mntmHecras;
@@ -97,12 +104,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmSampleHecras;
 	private JMenuItem mntmDatabaseAdministrator;	
 	
+	private JMenu mnAbout;
 	private JMenuItem mntmWelcome;		
 	private JMenuItem mntmLicense;
 	private JMenuItem mntmAgreements;
 	private JMenuItem mntmUserManual;	
 	private JMenuItem mntmReferenceGuide;	
 	private JMenuItem mntmWeb;
+	private JMenuItem mntmCheckUpdates;
 	
 	private JMenu mnNewVersionAvailable;
 	private JMenuItem mntmDownload;
@@ -114,17 +123,16 @@ public class MainFrame extends JFrame implements ActionListener{
 	public DatabaseFrame dbFrame;
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
-	private JMenuItem mntmOpenProject;
-	private JMenuItem mntmSaveProject;
-	private JSeparator separator;
-	private JMenuItem mntmSaveProjectAs;
 
-		
+	
+	public MainFrame(boolean isConnected, String versionCode) {
+		this(isConnected, versionCode, false, "");
+	}
+	
 	
 	public MainFrame(boolean isConnected, String versionCode, boolean newVersion, String ftpVersion) {
 		
 		this.versionCode = versionCode;
-		//this.newVersion = newVersion;
 		initConfig();
 		setNewVersionVisible(newVersion, ftpVersion);
 		try {
@@ -137,7 +145,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	
-	private void setNewVersionVisible(boolean newVersion, String ftpVersion) {
+	public void setNewVersionVisible(boolean newVersion, String ftpVersion) {
 		mnNewVersionAvailable.setVisible(newVersion);
 		String msg = "Download version v"+ftpVersion;
 		mntmDownload.setText(msg);
@@ -160,7 +168,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
+		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
 		menuBar.add(mnProject);
 		
 		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
@@ -190,7 +198,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSaveAsPreferences.setActionCommand("gswSaveAs");
 		mnProject.add(mntmSaveAsPreferences);
 		
-		JMenu mnForms = new JMenu("Software");
+		mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
 		
 		mntmEpanet = new JMenuItem("EPANET");
@@ -279,7 +287,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
 		
-		JMenu mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
+		mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
 		menuBar.add(mnAbout);
 		
 		mntmWelcome = new JMenuItem(BUNDLE.getString("MainFrame.mntmWelcome.text")); //$NON-NLS-1$
@@ -307,7 +315,17 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmAgreements.setActionCommand("showAcknowledgment");
 		mnAbout.add(mntmAgreements);
 		
-		mnNewVersionAvailable = new JMenu(BUNDLE.getString("MainFrame.mnNewVersionAvailable.text")); //$NON-NLS-1$
+		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text")); //$NON-NLS-1$
+		mntmCheckUpdates.setActionCommand(BUNDLE.getString("MainFrame.mntmCheckUpdates.actionCommand_1")); //$NON-NLS-1$
+		mnAbout.add(mntmCheckUpdates);
+		
+		String path = Utils.getAppPath() + "images/download_16.png";
+		final ImageIcon iconImage = new ImageIcon(path);
+		mnNewVersionAvailable = new JMenu(BUNDLE.getString("MainFrame.mnNewVersionAvailable.text"));
+		mnNewVersionAvailable.setActionCommand("downloadNewVersion"); //$NON-NLS-1$
+		mnNewVersionAvailable.setVisible(false);
+		mnNewVersionAvailable.setIcon(iconImage);
+		menuBar.add(Box.createHorizontalGlue());
 		menuBar.add(mnNewVersionAvailable);
 		
 		mntmDownload = new JMenuItem();
@@ -620,9 +638,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmUserManual.addActionListener(this);
 		mntmReferenceGuide.addActionListener(this);		
 		mntmWeb.addActionListener(this);
+		mntmCheckUpdates.addActionListener(this);
 		
 		mntmDownload.addActionListener(this);
-		
 		
 	}
 	

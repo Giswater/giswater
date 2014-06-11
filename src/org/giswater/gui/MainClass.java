@@ -33,30 +33,30 @@ import org.giswater.util.UtilsFTP;
 
 public class MainClass {
 
-    public static MainFrame mdi;
+	public static MainFrame mdi;
 
-    
-    public static void main(String[] args) {
-    	
-        java.awt.EventQueue.invokeLater(new Runnable() {
+
+	public static void main(String[] args) {
+
+		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
-            public void run() {		
-				
-            	// Set locale
-            	final Locale english = new Locale("en", "EN");
-            	Locale.setDefault(english);
-            	
-            	// Look&Feel
-            	//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
-            	String className = UIManager.getSystemLookAndFeelClassName();
-            	try {
-        			UIManager.setLookAndFeel(className);
-        		} catch (Exception e) {
-        			Utils.logError(e.getMessage());
-        			return;
-        		}  
+			public void run() {		
 
-            	// Initial configuration
+				// Set locale
+				final Locale english = new Locale("en", "EN");
+				Locale.setDefault(english);
+
+				// Look&Feel
+				//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
+				String className = UIManager.getSystemLookAndFeelClassName();
+				try {
+					UIManager.setLookAndFeel(className);
+				} catch (Exception e) {
+					Utils.logError(e.getMessage());
+					return;
+				}  
+
+				// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
 				if (versionCode == null){
@@ -64,29 +64,35 @@ public class MainClass {
 				}
 				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				
-            	if (!MainDao.configIni()){
-            		return;
-            	}     
-            	
-            	// Check if new version is available
-            	Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
-            	Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
-				Integer buildVersion = Integer.parseInt(versionCode.substring(4));
-            	boolean newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
-            	String ftpVersion = UtilsFTP.getFtpVersion();
-				
-            	// Create MainFrame and Menu controller
-            	mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
-            	MenuController menuController = new MenuController(mdi, versionCode);            	
-                mdi.setVisible(true);
-                
-                // By default open last gsw
-                menuController.gswOpen(false);
-                
-            }
-        });
+				if (!MainDao.configIni()){
+					return;
+				}     
 
-    }
-    
-    
+				boolean newVersion = false;
+				String ftpVersion = "";
+				String aux = MainDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
+				Boolean autoCheck = Boolean.parseBoolean(aux);
+				if (autoCheck){
+					// Check if new version is available
+					Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
+					Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
+					Integer buildVersion = Integer.parseInt(versionCode.substring(4));
+					newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
+					ftpVersion = UtilsFTP.getFtpVersion();
+				}
+
+				// Create MainFrame and Menu controller
+				mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
+				MenuController menuController = new MenuController(mdi, versionCode);            	
+				mdi.setVisible(true);
+
+				// By default open last gsw
+				menuController.gswOpen(false);
+
+			}
+		});
+
+	}
+
+
 }

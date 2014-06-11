@@ -42,6 +42,7 @@ import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -148,16 +149,25 @@ public class Utils {
 		}
 	}
 	
+	
+	public static JDialog openDialogForm(JPanel view, Component parent, String title){
+		return openDialogForm(view, parent, title, -1, -1);
+	}
 		
-	public static JDialog openDialogForm(JPanel view, Component parent, int width, int height){
+	public static JDialog openDialogForm(JPanel view, Component parent, String title, int width, int height){
 		
 		JDialog f = new JDialog();
+		f.setTitle(title);
 		f.setModal(true);
 	    f.setLayout(new BorderLayout());
 	    f.add(view, BorderLayout.CENTER);
 	    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	    
 	    f.pack();
-	    f.setSize(width, height);
+	    if (width > -1){
+	    	f.setSize(width, height);
+	    }
+		ImageIcon image = new ImageIcon("images/imago.png"); 
+        f.setIconImage(image.getImage());	    
 	    f.setLocationRelativeTo(parent);   	
 	    return f;
 	    

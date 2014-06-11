@@ -25,12 +25,13 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
@@ -42,10 +43,12 @@ import org.giswater.gui.dialog.options.ReportEpanetDialog;
 import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.model.Model;
 import org.giswater.model.ModelDbf;
 import org.giswater.model.ModelPostgis;
+import org.giswater.model.TableModelSrid;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -65,6 +68,11 @@ public class MainController{
     private String usersFolder;
     private MainFrame mainFrame;
 	private String software;
+	
+	private TableModelSrid model;
+	private TableColumnModel tcm;
+	private ProjectPanel projectPanel;
+	private JDialog projectDialog;
 	
 	// DBF only
 	private File dirShp;
@@ -249,11 +257,9 @@ public class MainController{
 		
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, view, 380, 280);
+        JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection", 380, 280);
+        //JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection");
         panel.setParent(dialog);
-		ImageIcon image = new ImageIcon("images/imago.png"); 
-        dialog.setLocationRelativeTo(view);
-        dialog.setIconImage(image.getImage());
         dialog.setVisible(true);
 	}	
 	
@@ -643,10 +649,21 @@ public class MainController{
 	
 	
 	public void createSchema(){
-		createSchema("", "");
+		createSchemaAssistant();
 	}
 	
 	
+	private void createSchemaAssistant() {
+		
+		ProjectPanel panel = new ProjectPanel();
+		panel.setController(this);
+        initModel(panel);
+        projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
+        projectDialog.setVisible(true);
+		
+	}
+
+
 	public void createSchema(String defaultSchemaName, String defaultSridSchema){
 		
 		String schemaName = defaultSchemaName;
@@ -745,6 +762,103 @@ public class MainController{
     		createSchema(schemaName, schemaSrid);
         }
 		
+	}
+	
+	
+	public void initModel(ProjectPanel panel){
+		
+		this.projectPanel = panel;
+        model = new TableModelSrid();
+        JTable table = projectPanel.getTable();
+        model.setTable(table);   
+        tcm = table.getColumnModel();     
+        
+		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
+		sql+= " FROM public.spatial_ref_sys";
+		sql+= " ORDER BY substr(srtext, 1, 6), srid";
+		Utils.getLogger().info(sql);
+		ResultSet rs = MainDao.getResultset(sql);
+		model.setRs(rs);
+		projectPanel.setTableModel(model);    
+		// Rendering just first time
+		if (tcm.getColumnCount() > 0){
+			tcm.getColumn(0).setMaxWidth(50);   
+			tcm.getColumn(1).setMaxWidth(40);   
+		}
+        
+	}
+	
+	
+	public void updateTableModel() {
+
+		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
+		sql+= " FROM public.spatial_ref_sys";
+		String filter = projectPanel.getFilter();
+		if (!filter.equals("")){
+			sql+= " WHERE cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%'";
+		} 
+
+		sql+= " ORDER BY substr(srtext, 1, 6), srid";
+		ResultSet rs = MainDao.getResultset(sql);
+		model.setRs(rs);
+		projectPanel.setTableModel(model);    			
+		Utils.getLogger().info(sql);
+		
+	}
+	
+	
+	public void acceptProject(){
+		
+		// SRID
+		String sridValue = projectPanel.getSrid();
+		if (sridValue.equals("-1")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("srid_select"));
+			return;
+		}
+		
+		// Project Name
+		String name = projectPanel.getName();
+		if (name.equals("")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_name"));
+			return;
+		}
+		name = validateName(name);
+		if (name.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		
+		// Project Title
+		String title = projectPanel.getTitle();
+		if (title.equals("")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_title"));
+			return;
+		}
+		
+		// TODO: Save properties?
+		MainDao.getGswProperties().put("SRID_USER", sridValue);
+		MainDao.savePropertiesFile();
+		
+    	view.enableControlsText(false);
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
+		
+		String softwareName = view.getSoftwareName();
+		boolean status = MainDao.createSchema(softwareName, name, sridValue);	
+		if (status){
+			Utils.showMessage(view, "schema_creation_completed");
+		}
+		view.setSchemaModel(MainDao.getSchemas(software));	
+		schemaChanged();
+		
+		view.enableControlsText(true);
+		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
+		closeProject();
+		
+	}
+	
+	
+	public void closeProject(){
+		projectDialog.dispose();
 	}
 	
 	

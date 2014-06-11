@@ -177,7 +177,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[5][:572.00px:531px][188.00]", "[10px][410.00][12]"));
+		setLayout(new MigLayout("", "[5][:572.00px:531px][188.00]", "[10px][][12]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
