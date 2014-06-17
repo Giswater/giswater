@@ -262,7 +262,7 @@ public class HecRasController{
 		}
 		
 		// Ask user to set SRID?
-		String defaultSrid = prop.get("SRID_DEFAULT", "");		
+		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
 		String sridValue = getUserSrid(defaultSrid);
 
 		if (sridValue.equals("")){
@@ -325,8 +325,9 @@ public class HecRasController{
 		}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
 		String schemaName = view.getSelectedSchema();
-		String fileName = fileAsc.getAbsolutePath();
-    	MainDao.loadRaster(schemaName, fileName);  	
+		String filePath = fileAsc.getAbsolutePath();
+		String fileName = fileAsc.getName();
+    	MainDao.loadRaster(schemaName, filePath, fileName);  	
         	
     }
     

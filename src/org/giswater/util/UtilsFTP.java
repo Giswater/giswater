@@ -3,10 +3,12 @@ package org.giswater.util;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -19,75 +21,63 @@ public class UtilsFTP {
     private final int port;
     private final String username;
     private final String password;
-    private static String ftpVersion;   // FTP last version 
-	private static Integer majorVersion;
-	private static Integer minorVersion;
-	private static String newVersion;
-	private static String ftpPwd;
+	private InputStream inputStream;
+    private String ftpVersion;   // FTP last version 
+	private Integer majorVersion;
+	private Integer minorVersion;
+	private String newVersion;
     
-    private static final String FTP_HOST = "ftp://download.giswater.org";
-    private static final String FTP_USER = "giswaterdownro";
-    private static final String FTP_PWD = "9kuKZCEaquwM6X7jAmuaMg==";
-    private static final String FTP_ROOT_FOLDER = "htdocs";
+    private final String FTP_HOST = "ftp://download.giswater.org";
+    private final String FTP_USER = "giswaterdownro";
+    private final String FTP_PWD = "9kuKZCEaquwM6X7jAmuaMg==";
+    private final String FTP_ROOT_FOLDER = "htdocs";
     
 
-    /**
-     * Instanciate FTP server.
-     * 
-     * @param host
-     *            FTP server address.
-     * @param username
-     *            FTP username.
-     * @param password
-     *            FTP password.
-     */
-    public UtilsFTP (final String address, final String username, final String password) {
-    	
+	public UtilsFTP () {
+		
         URL url = null;
         try {
-            url = new URL(address);
+            url = new URL(FTP_HOST);
         } catch (MalformedURLException e) {
             Utils.logError(e);
         }
         this.host = url != null ? url.getHost() : null;
-        this.port = 0;
-        this.username = username;
-        this.password = password;
-        
-    }
-
+		this.port = 0;
+        this.username = FTP_USER;
+        this.password = Encryption.decrypt(FTP_PWD);
+		
+	}
+	
     
     public boolean connect() {
     	
     	boolean ok = false;
-        if (this.client == null) {
-            this.client = new FTPClient();
-            try {
-                // Connecting client
-                if (this.port > 0) {
-                    this.client.connect(this.host, this.port);
-                } else {
-                    this.client.connect(this.host);
-                }
-
-                // Check connection
-                int reply = this.client.getReplyCode();
-                if (!FTPReply.isPositiveCompletion(reply)) {
-                    disconnect();
-                } else {
-                    setFtpOptions();
-                    ok = true;
-                }
-            } catch (SocketException e) {
-            	Utils.logError(e);
-                disconnect();
-            } catch (IOException e) {
-            	Utils.logError(e);
-                disconnect();
+        if (client == null) {
+            client = new FTPClient();
+        }
+        
+        try {
+            // Connecting client
+            if (port > 0) {
+                client.connect(host, port);
+            } else {
+                client.connect(host);
             }
-        } 
-        else {
-        	Utils.logError("client is null");
+
+            // Check connection
+            int reply = client.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply)) {
+                disconnect();
+            } else {
+                setFtpOptions();
+                ok = true;
+            }
+        } catch (SocketException e) {
+        	Utils.logError(e);
+            disconnect();
+        } catch (IOException e) {
+        	Utils.logError(e);
+            disconnect();
         }
         
         return ok;
@@ -97,19 +87,17 @@ public class UtilsFTP {
     
     public void disconnect () {
     	
-        if (this.client != null) {
-            if (this.client.isConnected()) {
+        if (client != null) {
+            if (client.isConnected()) {
                 try {
-                    this.client.disconnect();
+                    client.disconnect();
                 } catch (IOException e) {
                 	Utils.logError(e);
                 }
             } else {
             	Utils.logError("client disconnected");
             }
-        } else {
-        	Utils.logError("client is null");
-        }
+        } 
         
     }
 
@@ -118,7 +106,7 @@ public class UtilsFTP {
     	
         if (isConnected()) {
             try {
-                boolean ok = this.client.login(this.username, this.password);
+                boolean ok = client.login(username, password);
                 return ok;
             } catch (Exception e) {
             	Utils.logError(e);
@@ -182,8 +170,8 @@ public class UtilsFTP {
     
     
     public boolean isConnected () {
-        if (this.client != null) {
-            return this.client.isConnected();
+        if (client != null) {
+            return client.isConnected();
         }
 		return false;
     }
@@ -191,87 +179,113 @@ public class UtilsFTP {
 
     private void setFtpOptions () {
         if (isConnected()) {
-            this.client.enterLocalPassiveMode();
+            client.enterLocalPassiveMode();
         }
     }
 
     
-	public static String getFtpVersion() {
+    public long getFileSize(String filePath) {
+    	
+    	long size = -1;
+        try {
+        	changeDirectory();
+        	FTPFile[] ftpFile = client.listFiles(filePath);
+	        if (ftpFile.length > 0){
+	        	size = ftpFile[0].getSize();
+	        }
+	        else{
+	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+filePath);
+	        }
+        } catch (IOException ex) {
+        	Utils.logError("Could not determine size of the file: " + ex.getMessage());
+        }
+        return size;
+        
+    }
+    
+     
+	public String getFtpVersion() {
 		return ftpVersion;
 	}
 	
 	
-	public static boolean prepareConnection(UtilsFTP ftp){
+	public boolean prepareConnection(){
 		
-        if (!ftp.connect()){
-        	Utils.logError("FTP host not valid. Check FTP parameters defined in config.properties file");
-        	return false;
-        }
-        if (!ftp.login()){
-        	Utils.logError("FTP user or password not valid. Check FTP parameters defined in config.properties file");
-        	return false;
-        }
+		if (!isConnected()){
+	        if (!connect()){
+	        	Utils.logError("FTP host not valid. Check FTP parameters defined in config.properties file");
+	        	return false;
+	        }
+	        if (!login()){
+	        	Utils.logError("FTP user or password not valid. Check FTP parameters defined in config.properties file");
+	        	return false;
+	        }
+		}
 		return true;
 		
 	}
 	
-
-	public static boolean checkVersion(Integer majorVersion, Integer minorVersion, Integer buildVersion) {
+	
+	public void changeDirectory() {
 		
-		UtilsFTP.majorVersion = majorVersion;
-		UtilsFTP.minorVersion = minorVersion;
-		ftpPwd = Encryption.decrypt(FTP_PWD);
-        UtilsFTP ftp = new UtilsFTP(FTP_HOST, FTP_USER, ftpPwd);
-        if (!ftp.connect()){
-        	Utils.logError("FTP host not valid. Check FTP parameters defined in config.properties file");
-        	return false;
-        }
-        if (!ftp.login()){
-        	Utils.logError("FTP user or password not valid. Check FTP parameters defined in config.properties file");
-        	return false;
-        }
+    	try {
+			client.changeWorkingDirectory(FTP_ROOT_FOLDER);
+			client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
+			client.changeWorkingDirectory(newVersion);
+		} catch (IOException e) {
+			Utils.logError(e);
+		}
+    	
+	}
+	
+
+	public boolean checkVersion(Integer majorVersion, Integer minorVersion, Integer buildVersion) {
+		
+		this.majorVersion = majorVersion;
+		this.minorVersion = minorVersion;
+		if (!prepareConnection()){
+			return false;
+		}
+		
         boolean updateVersion = false;
 		try {
-	        ftp.client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-	        ftp.client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
+	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
+	        client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
 	        
 	        // Get last version available
-	        FTPFile[] listFolders = ftp.listDirectories();
+	        FTPFile[] listFolders = listDirectories();
 	        FTPFile folder = listFolders[listFolders.length-1];
-	        UtilsFTP.newVersion = folder.getName();
+	        newVersion = folder.getName();
 	        ftpVersion = majorVersion+"."+minorVersion+"."+newVersion;
 	        Utils.getLogger().info("FTP last version is: "+ftpVersion);
 	        Integer version = Integer.parseInt(folder.getName());
 	        if (version > buildVersion){
 	        	updateVersion = true;
 	        }
-		} catch (IOException e) {
+		} catch (NumberFormatException | IOException e) {
 			Utils.logError(e);
 		}
 
-        ftp.logout();
-        ftp.disconnect();
+        logout();
+        disconnect();
         
         return updateVersion;
 		
 	}
 
 
-	public static boolean downloadLastVersion(String remoteName, String localPath) {
+	public boolean downloadLastVersion(String remoteName, String localPath) {
 		
-		UtilsFTP ftp = new UtilsFTP(FTP_HOST, FTP_USER, ftpPwd);
-		if (!prepareConnection(ftp)){
+		if (!prepareConnection()){
 			return false;
 		}
 
 		try {
-	        ftp.client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-	        ftp.client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
-	        ftp.client.changeWorkingDirectory(newVersion);
-	        FTPFile[] ftpFile = ftp.client.listFiles(remoteName);
+			changeDirectory();
+	        FTPFile[] ftpFile = client.listFiles(remoteName);
 	        if (ftpFile.length > 0){
 	            FileOutputStream fos = new FileOutputStream(localPath);		
-				ftp.client.retrieveFile(remoteName, fos);
+				client.retrieveFile(remoteName, fos);
 	        }
 	        else{
 	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+remoteName);
@@ -281,12 +295,48 @@ public class UtilsFTP {
 			Utils.logError(e);
 		}
 
-        ftp.logout();
-        ftp.disconnect();
+        logout();
+        disconnect();
         
         return true;
 		
 	}
+	
+	
+    public boolean downloadFile(String downloadPath) {
+    	
+    	boolean status = false;
+        try {
+     		if (!prepareConnection()){
+    			return false;
+    		}
+            boolean success = client.setFileType(FTP.BINARY_FILE_TYPE);
+            if (!success) {
+            	Utils.showError("Could not set binary file type.");
+            }
+            inputStream = client.retrieveFileStream(downloadPath);
+            if (inputStream == null) {
+            	Utils.showError("Could not open input stream. The file may not exist on the server.");
+            }
+        } catch (IOException ex) {
+        	Utils.showError("Error downloading file: " + ex.getMessage());
+        }
+        
+        status = true;
+        return status;
+        
+    }
     
     
+    public void finish() throws IOException {
+        inputStream.close();
+        client.completePendingCommand();
+    }
+    
+    
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+    
+        
 }

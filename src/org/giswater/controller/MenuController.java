@@ -25,6 +25,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -46,6 +47,7 @@ import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DatabasePanel;
+import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
@@ -69,12 +71,14 @@ public class MenuController {
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
 	private String usersFolder;
+	private UtilsFTP ftp;
 
 	
-	public MenuController(MainFrame mainFrame, String versionCode) {
+	public MenuController(MainFrame mainFrame, String versionCode, UtilsFTP ftp) {
 		this.view = mainFrame;
 		this.prop = MainDao.getPropertiesFile();
 		this.versionCode = versionCode;
+		this.ftp = ftp;
 		view.setControl(this);
 		usersFolder = MainDao.getUsersPath(); 	
 	}
@@ -106,8 +110,6 @@ public class MenuController {
 		// Select .sql to restore
 		String filePath = chooseFileBackup();
 		if (filePath.equals("")){
-			String msg = "Any file specified. You need to select one";
-			Utils.showMessage(msg);
 			return;
 		}
 		
@@ -225,13 +227,17 @@ public class MenuController {
         } else{
         	dbPanel.setPassword("");
         }
-    	Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
+        
+        // Initialize Database?
         Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
         if (initDb){
         	MainDao.initializeDatabase();
         	dbPanel.setDatabase(MainDao.getInitDb());
        		MainDao.getGswProperties().put("INIT_DB", "false");
         }
+        
+        // Autoconnect?
+        Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
        	if (autoConnect && remember){
        		MainDao.silenceConnection();
         }
@@ -498,11 +504,12 @@ public class MenuController {
 	private void createSampleSchema(String softwareName){
 		
 		// Get default SRID. Never ask user
-		String sridValue = prop.get("SRID_DEFAULT", "25831");		
-		if (sridValue.equals("")) return;
+//		String sridValue = prop.get("SRID_DEFAULT", "25831");		
+//		if (sridValue.equals("")) return;
+		String sridValue = "23031";		
 
 		// Ask confirmation
-		String msg = "Schema called 'sample_"+softwareName+"' will be created with SRID 25831.\nDo you wish to continue?";
+		String msg = "Project called 'sample_"+softwareName+"' will be created with SRID 23031.\nDo you wish to continue?";
 		int res = Utils.confirmDialog(view, msg, "Create DB sample");
 		if (res != 0) return; 
 		
@@ -533,8 +540,9 @@ public class MenuController {
 				if (!result) return;
 				if (softwareName.equals("hecras")){				
 					// Trough Load Raster
-					String rasterPath = folderRoot+"samples/sample_mdt.asc";	 						
-					if (MainDao.loadRaster(schemaName, rasterPath)){
+					String rasterName = "sample_mdt.asc";	 						
+					String rasterPath = folderRoot+"samples/"+rasterName;	 						
+					if (MainDao.loadRaster(schemaName, rasterPath, rasterName)){
 						Utils.showMessage(view, "schema_creation_completed", schemaName);
 					}						
 				}	
@@ -632,15 +640,18 @@ public class MenuController {
 		
 		Utils.getLogger().info("Downloading last version...");
 		
-		String ftpVersion = UtilsFTP.getFtpVersion();
+		if (ftp == null) return;
+		
+		String ftpVersion = ftp.getFtpVersion();
 		String remoteName = "giswater_stand-alone_update_"+ftpVersion+".exe";
 		// Choose file to download
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String localePath = chooseFileSetup(remoteName);
 		if (!localePath.equals("")){
-			if (UtilsFTP.downloadLastVersion(remoteName, localePath)){
-				Utils.showMessage("Downloaded completed successfully. Close Giswater before executing downloaded file");
-			}
+			DownloadPanel panel = new DownloadPanel(remoteName, localePath, ftp);
+	        JDialog downloadDialog = Utils.openDialogForm(panel, view, "Download Process", 290, 135);
+	        downloadDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); 
+	        downloadDialog.setVisible(true);
 			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 		
@@ -678,8 +689,11 @@ public class MenuController {
     	Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
     	Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
 		Integer buildVersion = Integer.parseInt(versionCode.substring(4));
-    	boolean newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
-    	String ftpVersion = UtilsFTP.getFtpVersion();
+		if (ftp == null){
+			ftp = new UtilsFTP();
+		}
+    	boolean newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
+    	String ftpVersion = ftp.getFtpVersion();
 		view.setNewVersionVisible(newVersion, ftpVersion);
 		if (!newVersion){
 			Utils.showMessage(view, "No new version found");

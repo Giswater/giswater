@@ -21,6 +21,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.MainController;
 import org.giswater.model.TableModelSrid;
+import javax.swing.JCheckBox;
 
 
 public class ProjectPanel extends JPanel implements ActionListener{
@@ -33,16 +34,23 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	private JScrollPane panelTable;
 	private JButton btnAccept;
 	private JButton btnClose;
+	private JCheckBox chkGeogcs;
+	private JCheckBox chkProjcs;
+	private JLabel lblAuthor;
+	private JLabel lblDate;
+	private JTextField txtAuthor;
+	private JTextField txtDate;
 	
 	
-	public ProjectPanel() {
+	public ProjectPanel(String defaultSrid) {
 		initConfig();
+		txtFilter.setText(defaultSrid);
 	}
 		
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[][270.00][grow]", "[][][10px:n][][220px:220.00,grow][]"));
+		setLayout(new MigLayout("", "[][270.00,grow][grow]", "[][][][][10px:n][][220px:247.00,grow][]"));
 		
 		JLabel lblProjectName = new JLabel("Project name:");
 		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
@@ -58,19 +66,33 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtTitle.setColumns(10);
 		add(txtTitle, "cell 1 1,growx");
 		
+		lblAuthor = new JLabel("Author:");
+		add(lblAuthor, "cell 0 2,alignx trailing");
+		
+		txtAuthor = new JTextField();
+		txtAuthor.setColumns(10);
+		add(txtAuthor, "cell 1 2,growx");
+		
+		lblDate = new JLabel("Date:");
+		add(lblDate, "cell 0 3,alignx trailing");
+		
+		txtDate = new JTextField();
+		txtDate.setColumns(10);
+		add(txtDate, "cell 1 3,growx");
+		
 		JSeparator separator = new JSeparator();
 		separator.setPreferredSize(new Dimension(50, 2));
 		separator.setForeground(Color.BLACK);
-		add(separator, "cell 0 2 2 1,growx");
+		add(separator, "cell 0 4 2 1,growx");
 		
 		JLabel lblSelectSrid = new JLabel("Select SRID:");
 		lblSelectSrid.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblSelectSrid, "cell 0 3 2 1,alignx left");
+		add(lblSelectSrid, "cell 0 5 2 1,alignx left");
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		add(panel, "cell 0 4 3 1,grow");
-		panel.setLayout(new MigLayout("", "[60px:n][270.00][50px,grow]", "[][24px][159.00,grow]"));
+		add(panel, "cell 0 6 3 1,grow");
+		panel.setLayout(new MigLayout("", "[60px:n][270.00][50px,grow]", "[][][24px][159.00,grow]"));
 		
 		JLabel lblNewLabel = new JLabel("Filter:");
 		panel.add(lblNewLabel, "cell 0 0");
@@ -79,8 +101,16 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		panel.add(txtFilter, "cell 1 0,growx");
 		txtFilter.setColumns(10);
 		
+		JLabel lblType = new JLabel("Type:");
+		panel.add(lblType, "cell 0 1");
+		
+		chkGeogcs = new JCheckBox("GEOGCS");
+		chkGeogcs.setActionCommand("checkedType");
+		chkGeogcs.setSelected(true);
+		panel.add(chkGeogcs, "flowx,cell 1 1");
+		
 		JLabel lblCoordinateReferenceSystems = new JLabel("Coordinate reference systems:");
-		panel.add(lblCoordinateReferenceSystems, "cell 0 1 2 1");
+		panel.add(lblCoordinateReferenceSystems, "cell 0 2 2 1");
 		
 		tblSrid = new JTable();
 		tblSrid.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -91,15 +121,20 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		
 		panelTable = new JScrollPane();
 		panelTable.setViewportView(tblSrid);
-		panel.add(panelTable, "cell 0 2 3 1,grow");
+		panel.add(panelTable, "cell 0 3 3 1,grow");
+		
+		chkProjcs = new JCheckBox("PROJCS");
+		chkProjcs.setActionCommand("checkedType");
+		chkProjcs.setSelected(true);
+		panel.add(chkProjcs, "cell 1 1");
 		
 		btnAccept = new JButton("Accept");
 		btnAccept.setActionCommand("acceptProject");
-		add(btnAccept, "flowx,cell 1 5,alignx trailing");
+		add(btnAccept, "flowx,cell 1 7,alignx trailing");
 		
 		btnClose = new JButton("Close");
 		btnClose.setActionCommand("closeProject");
-		add(btnClose, "cell 2 5");
+		add(btnClose, "cell 2 7");
 		
 		setupListeners();
 		
@@ -114,6 +149,8 @@ public class ProjectPanel extends JPanel implements ActionListener{
 				controller.updateTableModel();
 			}
 		});
+		chkGeogcs.addActionListener(this);
+		chkProjcs.addActionListener(this);
 		btnAccept.addActionListener(this);
 		btnClose.addActionListener(this);
 		
@@ -154,6 +191,22 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		return txtTitle.getText().trim();
 	}	
 	
+	public String getAuthor() {
+		return txtAuthor.getText().trim();
+	}	
+	
+	public String getDate() {
+		return txtDate.getText().trim();
+	}	
+	
+	public Boolean isGeoSelected(){
+		return chkGeogcs.isSelected();
+	}
+	
+	public Boolean isProjSelected(){
+		return chkProjcs.isSelected();
+	}
+	
 	public String getSrid() {
 		int row = tblSrid.getSelectedRow();
 		if (row > -1){
@@ -161,7 +214,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 			return srid;
 		}
 		return "-1";
-	}	
+	}
+
+
 
 	
 }

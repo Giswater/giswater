@@ -134,14 +134,22 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	}
 	
 	public void setSchemaModel(Vector<String> v) {
+		
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
 			cboSchema.setModel(cbm);		
-		} else{
+		} 
+		else{
 			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
 			theModel.removeAllElements();
 		}
+		boolean enabled = (v != null && v.size() > 0);
+		btnClearData.setEnabled(enabled);
+		btnDeleteSchema.setEnabled(enabled);
+		btnLoadRaster.setEnabled(enabled);
+		btnExportSdf.setEnabled(enabled);
+		
 	}
 	
 	public void setSelectedSchema(String schemaName) {

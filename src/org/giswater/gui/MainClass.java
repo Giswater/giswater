@@ -64,12 +64,13 @@ public class MainClass {
 				}
 				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				
-				if (!MainDao.configIni()){
+				if (!MainDao.configIni(versionCode)){
 					return;
 				}     
 
 				boolean newVersion = false;
 				String ftpVersion = "";
+				UtilsFTP ftp = null;
 				String aux = MainDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
 				Boolean autoCheck = Boolean.parseBoolean(aux);
 				if (autoCheck){
@@ -77,13 +78,14 @@ public class MainClass {
 					Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
 					Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
 					Integer buildVersion = Integer.parseInt(versionCode.substring(4));
-					newVersion = UtilsFTP.checkVersion(majorVersion, minorVersion, buildVersion);
-					ftpVersion = UtilsFTP.getFtpVersion();
+					ftp = new UtilsFTP();
+					newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
+					ftpVersion = ftp.getFtpVersion();
 				}
 
 				// Create MainFrame and Menu controller
 				mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
-				MenuController menuController = new MenuController(mdi, versionCode);            	
+				MenuController menuController = new MenuController(mdi, versionCode, ftp);            	
 				mdi.setVisible(true);
 
 				// By default open last gsw

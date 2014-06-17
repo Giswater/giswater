@@ -54,6 +54,10 @@ public class MainDao {
 	private static String gswPath;
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
+	private static boolean stopPostgis = true;
+	private static String giswaterVersion;
+	private static String postgreVersion;
+	private static String postgisVersion;
     
     private static final String USERS_FOLDER = "giswater" + File.separator;
 	private static final String CONFIG_FOLDER = "config" + File.separator;
@@ -122,10 +126,25 @@ public class MainDao {
 		return usersPath;
 	}	
 	
+	public static String getGiswaterVersion() {
+		return giswaterVersion;
+	}
+	
+	public static String getPostgreVersion() {
+		return postgreVersion;
+	}	
+	
+	public static String getPostgisVersion() {
+		return postgisVersion;
+	}	
+	
 	
 	// TODO: i18n
     // Sets initial configuration files
-    public static boolean configIni() {
+    public static boolean configIni(String versionCode) {
+    	
+    	// Giswater version
+    	giswaterVersion = versionCode;
     	
         // Set users folder path
         usersPath = System.getProperty("user.home") + File.separator + USERS_FOLDER;
@@ -163,7 +182,10 @@ public class MainDao {
         // Start Postgis portable?
         Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
         if (autostart){
-        	executePostgisService("start");
+        	stopPostgis = Utils.portAvailable(5431);
+        	if (stopPostgis){
+        		executePostgisService("start");
+        	}
         }	    
         
         // Check log folder size
@@ -251,8 +273,9 @@ public class MainDao {
 	    	gswProp.put("POSTGIS_BIN", binPath);	
 			Utils.getLogger().info("Autoconnection successful");
 	    	Utils.getLogger().info("Postgre data directory: " + dataPath);		    	
-	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
-        	String postgisVersion = MainDao.checkPostgisVersion();	        
+	    	postgreVersion = MainDao.checkPostgreVersion();	        
+        	postgisVersion = MainDao.checkPostgisVersion();	        
+        	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
         	if (postgisVersion.equals("")){
 				// Enable Postgis to current Database
 				String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
@@ -1246,12 +1269,11 @@ public class MainDao {
 	}
 
 
-	public static boolean loadRaster(String schemaName, String raster) {
+	public static boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
 
 		String fileSql, aux, logFolder;
 		String bin, host, port, db, user, srid;
 		
-		fileSql = raster.replace(".asc", ".sql");
 		bin = gswProp.getProperty("POSTGIS_BIN", "");
 		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
 		port = gswProp.getProperty("POSTGIS_PORT", "5431");
@@ -1259,6 +1281,7 @@ public class MainDao {
 		user = gswProp.getProperty("POSTGIS_USER", "postgres");
 		srid = gswProp.get("SRID_USER");			
 		logFolder = Utils.getLogFolder();
+		fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		
 		File file = new File(bin);
 		if (!file.exists()){
@@ -1277,13 +1300,14 @@ public class MainDao {
 		}
 		
 		// Set content of .bat file
-		aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+raster+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
+		aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
 		aux+= "\n";
 		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
 		aux+= "\n";		
 		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
 		aux+= "\ndel " + fileSql;
-		aux+= "\nexit";		
+		//aux+= "\nexit";		
+		aux+= "\npause";		
 		Utils.getLogger().info(aux);
 
         // Fill and execute .bat File	
@@ -1293,6 +1317,11 @@ public class MainDao {
 		
 		return true;
 			
+	}
+
+	
+	public static boolean stopPostgis() {
+		return stopPostgis;
 	}
 
 

@@ -590,7 +590,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	        saveGswFile();
 	        // Stop Postgis portable?
 	        Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
-	        if (autostart){
+	        if (autostart && MainDao.stopPostgis()){
 	        	MainDao.executePostgisService("stop");
 	        }	        
 	    	Utils.getLogger().info("Application closed");	        

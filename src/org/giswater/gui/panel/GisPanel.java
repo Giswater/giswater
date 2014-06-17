@@ -338,6 +338,16 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String software = getProjectSoftware();
 		String gisType = getDataStorage();
 		
+		if (folder.equals("")){
+			Utils.showMessage("You have to select a Folder");
+			return;
+		}
+		
+		if (name.equals("")){
+			Utils.showMessage("You have to select a Name");
+			return;
+		}
+		
 		// Create GIS Project
 		if (gisType.equals("DATABASE")){
 			if (MainDao.isConnected()){

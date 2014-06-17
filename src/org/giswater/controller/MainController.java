@@ -655,9 +655,11 @@ public class MainController{
 	
 	private void createSchemaAssistant() {
 		
-		ProjectPanel panel = new ProjectPanel();
+		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
+		ProjectPanel panel = new ProjectPanel(defaultSrid);
 		panel.setController(this);
         initModel(panel);
+        updateTableModel();
         projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
         projectDialog.setVisible(true);
 		
@@ -790,19 +792,56 @@ public class MainController{
 	
 	
 	public void updateTableModel() {
-
+		updateTableModel("");
+	}
+	
+	
+	public void updateTableModel(String filterType) {
+		
 		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
 		sql+= " FROM public.spatial_ref_sys";
 		String filter = projectPanel.getFilter();
 		if (!filter.equals("")){
-			sql+= " WHERE cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%'";
+			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
 		} 
-
+		if (!filterType.equals("")){
+			if (filter.equals("")){
+				sql+= " WHERE ";
+			}
+			else{
+				sql+= " AND ";
+			}
+			sql+= "("+filterType+")";
+		} 
+		
 		sql+= " ORDER BY substr(srtext, 1, 6), srid";
 		ResultSet rs = MainDao.getResultset(sql);
 		model.setRs(rs);
 		projectPanel.setTableModel(model);    			
 		Utils.getLogger().info(sql);
+		
+	}
+	
+	
+	public void checkedType() {
+
+		String filterType = "";
+		Boolean isGeo = projectPanel.isGeoSelected();
+		Boolean isProj = projectPanel.isProjSelected();
+		if (!isGeo && !isProj){
+			Utils.showMessage("You have to select at least one Type: GEOGCS or PROJCS");
+			return;
+		}
+		if (isGeo){
+			filterType = "substr(srtext, 1, 6) = 'GEOGCS'";
+		}
+		if (isProj){
+			if (!filterType.equals("")){
+				filterType+= " OR ";
+			}
+			filterType+= "substr(srtext, 1, 6) = 'PROJCS'";
+		}
+		updateTableModel(filterType);
 		
 	}
 	
@@ -817,25 +856,27 @@ public class MainController{
 		}
 		
 		// Project Name
-		String name = projectPanel.getName();
-		if (name.equals("")){
+		String schemaName = projectPanel.getName();
+		if (schemaName.equals("")){
 			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_name"));
 			return;
 		}
-		name = validateName(name);
-		if (name.equals("")){
+		schemaName = validateName(schemaName);
+		if (schemaName.equals("")){
 			Utils.showError(view, "schema_valid_name");
 			return;
 		}
 		
-		// Project Title
+		// Project Title, Author and Date
 		String title = projectPanel.getTitle();
 		if (title.equals("")){
 			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_title"));
 			return;
 		}
+		String author = projectPanel.getAuthor();
+		String date = projectPanel.getDate();
 		
-		// TODO: Save properties?
+		// Save properties
 		MainDao.getGswProperties().put("SRID_USER", sridValue);
 		MainDao.savePropertiesFile();
 		
@@ -843,13 +884,22 @@ public class MainController{
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
 		
 		String softwareName = view.getSoftwareName();
-		boolean status = MainDao.createSchema(softwareName, name, sridValue);	
+		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);	
 		if (status){
+			MainDao.setSchema(schemaName);
+			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
+			Utils.getLogger().info(sql);
+			MainDao.executeSql(sql, true);
+			sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
+				" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
+			Utils.getLogger().info(sql);
+			MainDao.executeSql(sql, true);
 			Utils.showMessage(view, "schema_creation_completed");
 		}
+		
+		// Update view
 		view.setSchemaModel(MainDao.getSchemas(software));	
 		schemaChanged();
-		
 		view.enableControlsText(true);
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
 		closeProject();

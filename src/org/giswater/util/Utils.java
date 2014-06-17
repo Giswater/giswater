@@ -33,6 +33,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -518,6 +520,37 @@ public class Utils {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	
+	public static boolean portAvailable(int port) {
+		
+		ServerSocket ss = null;
+	    DatagramSocket ds = null;
+	    try {
+	        ss = new ServerSocket(port);
+	        ss.setReuseAddress(true);
+	        ds = new DatagramSocket(port);
+	        ds.setReuseAddress(true);
+	        return true;
+	    } catch (Exception e) {
+	    	Utils.logError("Service already started");
+	    } finally {
+	        if (ds != null) {
+	            ds.close();
+	        }
+	        if (ss != null) {
+	            try {
+	                ss.close();
+	            } catch (IOException e) {
+	    	    	Utils.logError(e);
+	            }
+	        }
+	    }
+
+	    return false;
+    
 	}
 	
 	
