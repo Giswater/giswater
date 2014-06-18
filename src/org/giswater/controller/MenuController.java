@@ -229,11 +229,13 @@ public class MenuController {
         }
         
         // Initialize Database?
-        Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
+        // Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
+        Boolean initDb = true;    
         if (initDb){
-        	MainDao.initializeDatabase();
-        	dbPanel.setDatabase(MainDao.getInitDb());
-       		MainDao.getGswProperties().put("INIT_DB", "false");
+        	if (MainDao.initializeDatabase()){
+        		dbPanel.setDatabase(MainDao.getInitDb());
+        	}
+       		//MainDao.getGswProperties().put("INIT_DB", "false");
         }
         
         // Autoconnect?
@@ -696,7 +698,7 @@ public class MenuController {
     	String ftpVersion = ftp.getFtpVersion();
 		view.setNewVersionVisible(newVersion, ftpVersion);
 		if (!newVersion){
-			Utils.showMessage(view, "No new version found");
+			Utils.showMessage(view, "This version is up to date.\nAny new version has been found in the repository.");
 		}
 		
     }

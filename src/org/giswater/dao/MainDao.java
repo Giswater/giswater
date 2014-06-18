@@ -182,10 +182,11 @@ public class MainDao {
         // Start Postgis portable?
         Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
         if (autostart){
-        	stopPostgis = Utils.portAvailable(5431);
-        	if (stopPostgis){
-        		executePostgisService("start");
-        	}
+//        	stopPostgis = Utils.portAvailable(5431);
+//        	if (stopPostgis){
+//        		executePostgisService("start");
+//        	}
+        	executePostgisService("start");
         }	    
         
         // Check log folder size
@@ -248,6 +249,7 @@ public class MainDao {
 			return false;
 		}
 		
+		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
 		int count = 0;
 		do{
 			count++;
@@ -306,16 +308,17 @@ public class MainDao {
 			if (!MainDao.checkDatabase(INIT_DB)){
 				Utils.getLogger().info("Creating database... " + INIT_DB);
 				initDatabase();
+				// Close current connection in order to connect later to default Database just created
+				closeConnectionPostgis();	
+				return true;
 			} 
-			// Close current connection in order to connect later to default Database just created
-			closeConnectionPostgis();			
 		}
 		else{
-			Utils.getLogger().info("Autoconnection error");			
+			Utils.getLogger().info("initializeDatabase: Autoconnection error");			
 			return false;	
 		}
 		
-		return true;
+		return false;
 		
 	}	 	
     
@@ -529,9 +532,9 @@ public class MainDao {
                 connectionPostgis = DriverManager.getConnection(connectionString);
             } catch (SQLException e1) {
             	if (showError){
-            		Utils.showError(e1);
+            		Utils.showError(e1.getMessage());
             	} else{
-            		Utils.logError(e1);
+            		Utils.logError(e1.getMessage());
             	}
                 return false;
             }   		

@@ -264,14 +264,25 @@ public class EpaPanel extends JPanel implements ActionListener {
 	
 	// Postgis
 	public void setSchemaModel(Vector<String> v) {
+		
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
 			cbm = new DefaultComboBoxModel<String>(v);
 			cboSchema.setModel(cbm);		
-		} else{
+		} 
+		else{
 			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
 			theModel.removeAllElements();
 		}
+		boolean enabled = (v != null && v.size() > 0);
+		btnDeleteSchema.setEnabled(enabled);
+		btnDeleteData.setEnabled(enabled);
+		btnSectorSelection.setEnabled(enabled);
+		btnOptions.setEnabled(enabled);
+		btnDesign.setEnabled(enabled);
+		btnReport.setEnabled(enabled);
+		btnAccept.setEnabled(enabled);
+		
 	}
 
 	public void setSelectedSchema(String schemaName) {

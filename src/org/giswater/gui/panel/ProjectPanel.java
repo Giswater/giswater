@@ -7,8 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,30 +25,31 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.MainController;
 import org.giswater.model.TableModelSrid;
-import javax.swing.JCheckBox;
+import org.giswater.util.MaxLengthTextDocument;
 
 
 public class ProjectPanel extends JPanel implements ActionListener{
 	
+	private MainController controller;
 	private JTextField txtName;
 	private JTextField txtTitle;
 	private JTextField txtFilter;
-	private JTable tblSrid;
-	private MainController controller;
-	private JScrollPane panelTable;
-	private JButton btnAccept;
-	private JButton btnClose;
-	private JCheckBox chkGeogcs;
-	private JCheckBox chkProjcs;
-	private JLabel lblAuthor;
-	private JLabel lblDate;
 	private JTextField txtAuthor;
 	private JTextField txtDate;
+	private JCheckBox chkGeogcs;
+	private JCheckBox chkProjcs;
+	private JScrollPane panelTable;
+	private JTable tblSrid;
+	private JButton btnAccept;
+	private JButton btnClose;
 	
 	
 	public ProjectPanel(String defaultSrid) {
 		initConfig();
 		txtFilter.setText(defaultSrid);
+		DateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
+		Date date = new Date();
+		txtDate.setText(dateFormat.format(date));
 	}
 		
 	
@@ -56,28 +61,36 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
 		
 		txtName = new JTextField();
-		add(txtName, "cell 1 0,growx,aligny bottom");
 		txtName.setColumns(10);
+		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(50);		
+		txtName.setDocument(maxLength);		
+		add(txtName, "cell 1 0,growx,aligny bottom");
 		
 		JLabel lblProjectTitle = new JLabel("Project title:");
 		add(lblProjectTitle, "cell 0 1,alignx trailing");
 		
 		txtTitle = new JTextField();
 		txtTitle.setColumns(10);
+		maxLength = new MaxLengthTextDocument(250);		
+		txtTitle.setDocument(maxLength);	
 		add(txtTitle, "cell 1 1,growx");
 		
-		lblAuthor = new JLabel("Author:");
+		JLabel lblAuthor = new JLabel("Author:");
 		add(lblAuthor, "cell 0 2,alignx trailing");
 		
 		txtAuthor = new JTextField();
 		txtAuthor.setColumns(10);
+		maxLength = new MaxLengthTextDocument(50);		
+		txtAuthor.setDocument(maxLength);
 		add(txtAuthor, "cell 1 2,growx");
 		
-		lblDate = new JLabel("Date:");
+		JLabel lblDate = new JLabel("Date:");
 		add(lblDate, "cell 0 3,alignx trailing");
 		
 		txtDate = new JTextField();
 		txtDate.setColumns(10);
+		maxLength = new MaxLengthTextDocument(12);		
+		txtDate.setDocument(maxLength);
 		add(txtDate, "cell 1 3,growx");
 		
 		JSeparator separator = new JSeparator();
@@ -176,6 +189,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	public void setTableModel(TableModelSrid model) {
 		tblSrid.setModel(model);		
 		model.fireTableDataChanged();
+		if (tblSrid.getRowCount() > 0){
+			tblSrid.setRowSelectionInterval(0, 0);
+		}
 	}
 
 
