@@ -54,7 +54,6 @@ public class MainDao {
 	private static String gswPath;
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
-	private static boolean stopPostgis = true;
 	private static String giswaterVersion;
 	private static String postgreVersion;
 	private static String postgisVersion;
@@ -1309,8 +1308,7 @@ public class MainDao {
 		aux+= "\n";		
 		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
 		aux+= "\ndel " + fileSql;
-		//aux+= "\nexit";		
-		aux+= "\npause";		
+		aux+= "\nexit";				
 		Utils.getLogger().info(aux);
 
         // Fill and execute .bat File	
@@ -1320,11 +1318,6 @@ public class MainDao {
 		
 		return true;
 			
-	}
-
-	
-	public static boolean stopPostgis() {
-		return stopPostgis;
 	}
 
 

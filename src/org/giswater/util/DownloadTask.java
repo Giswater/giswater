@@ -84,7 +84,7 @@ public class DownloadTask extends SwingWorker<Void, Void> {
 		 
 		 if (!isCancelled()) {
 			 gui.close();
-			 Utils.showMessage("Downloaded completed");
+			 Utils.showMessage("File downloaded successfully in:\n"+localePath+"\nPlease, close Giswater before executing this file.");
 		 } 
 		 else{
 			 gui.close();

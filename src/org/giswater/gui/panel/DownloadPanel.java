@@ -101,7 +101,6 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 
 	public void close() {
 		Window w = SwingUtilities.getWindowAncestor(this);
-		//w.setVisible(false);
 		w.dispose();
 	}
 	

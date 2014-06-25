@@ -1,0 +1,16 @@
+TERMS OF USE OF EPANET
+EPANET is a program for analyzing the hydraulic and water quality behavior of pressurized pipe networks. It was developed by the U.S. Environmental Protection Agency's National Risk Management Research Laboratory. As such, it is public domain software that may be freely copied and distributed. A complete Users Manual as well as full source code and other updates can be downloaded from ww.epa.gov/ORD/NRMRL/wswrd/epanet.html.
+
+DISCLAIMER OF EPANET
+The author of this program and the U.S. Environmental Protection Agency are not responsible and assume no liability whatsoever for any results or any use made of the results obtained from this program, nor for any damages or litigation that result from the use of this program for any purpose.
+
+======================================================
+
+TERMS OF USE OF EPA SWMM
+
+EPA SWMM 5 is public domain software that may be freely copied and distributed.
+
+DISCLAIMER OF EPA SWMM
+
+The software product is provided on an "as-is" basis. US EPA and Camp Dresser& McKee Inc. make no representations or warranties of any kind and expressly disclaim all other warranties express or implied, including, without limitation, warranties of merchantability or fitness for a particular purpose.
+Although care has been used in preparing the software product, US EPA and Camp Dresser & McKee Inc. Disclaim all liability for its accuracy or completeness, and the user shall be solely responsible for the selection, use, efficiency and suitability of the software product. Any person who uses this product does so at his sole risk and without liability to US EPA or Camp Dresser & McKee Inc. US EPA and Camp Dresser & McKee Inc. shall have no liability to users for the infringement of proprietary rights by the software product or any portion thereof.

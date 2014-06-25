@@ -64,14 +64,15 @@ public class MenuController {
 	private MainFrame view;
 	private PropertiesMap prop;
 	private String versionCode;
+	private String usersFolder;
+	private UtilsFTP ftp;
 	private Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);	
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
 	private final String URL_WEB = "http://www.giswater.org";
-	private String usersFolder;
-	private UtilsFTP ftp;
+	private final String UPDATE_FILE = "giswater_stand-alone_update_";
 
 	
 	public MenuController(MainFrame mainFrame, String versionCode, UtilsFTP ftp) {
@@ -645,7 +646,7 @@ public class MenuController {
 		if (ftp == null) return;
 		
 		String ftpVersion = ftp.getFtpVersion();
-		String remoteName = "giswater_stand-alone_update_"+ftpVersion+".exe";
+		String remoteName = UPDATE_FILE+ftpVersion+".exe";
 		// Choose file to download
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String localePath = chooseFileSetup(remoteName);

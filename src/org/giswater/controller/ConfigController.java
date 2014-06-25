@@ -59,6 +59,7 @@ public class ConfigController {
 		view.setSqlLog(prop.get("SQL_LOG"));
 		view.setSridQuestion(prop.get("SRID_QUESTION"));
 		view.setLoadRaster(prop.get("LOAD_RASTER"));
+		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
         Integer size = 10;
         try{
@@ -104,6 +105,7 @@ public class ConfigController {
 		prop.put("SQL_LOG", view.getSqlLog());				
 		prop.put("SRID_QUESTION", view.getSridQuestion());		
 		prop.put("LOAD_RASTER", view.getLoadRaster());		
+		prop.put("AUTO_CHECK_UPDATES", view.getCheckUpdates());		
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
 		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());		

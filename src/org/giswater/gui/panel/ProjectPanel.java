@@ -62,7 +62,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		
 		txtName = new JTextField();
 		txtName.setColumns(10);
-		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(50);		
+		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(25);		
 		txtName.setDocument(maxLength);		
 		add(txtName, "cell 1 0,growx,aligny bottom");
 		

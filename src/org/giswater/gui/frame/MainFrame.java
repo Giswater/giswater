@@ -587,12 +587,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	        putFrameParams(dbFrame, "DB");      
 	        putFrameParams(configFrame, "CONFIG");	
 	        putMainParams("MAIN");
-	        saveGswFile();
-	        // Stop Postgis portable?
-	        Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
-	        if (autostart && MainDao.stopPostgis()){
-	        	MainDao.executePostgisService("stop");
-	        }	        
+	        saveGswFile();  
 	    	Utils.getLogger().info("Application closed");	        
 		} catch (PropertyVetoException e) {
             Utils.logError(e.getMessage());			
