@@ -31,6 +31,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.ListIterator;
@@ -655,10 +657,6 @@ public class ModelPostgis extends Model {
 		
 		Utils.getLogger().info("Target: " + rpt.getId() + " - " + rpt.getDescription());
 		
-		if (rpt.getId() == 130){
-			Utils.getLogger().info("Target line number: " + lineNumber);	
-		}
-		
 		// Read lines until rpt.getDescription() is found		
 		while (!found){
 			try {
@@ -703,8 +701,11 @@ public class ModelPostgis extends Model {
 		// Read following lines until blank line is found
 		tokensList = new ArrayList<ArrayList<String>>();		
 		continueProcess = parseLines(rpt);
-		if (rpt.getType() == 2){
+		if (rpt.getType() == 2 && rpt.getId() != 10){
 			processTokens(rpt);
+		}
+		if (rpt.getType() == 2 && rpt.getId() == 10){
+			processTokensAnalysis(rpt);
 		}
 		else if (rpt.getType() == 3){
 			processTokens3(rpt);
@@ -897,9 +898,6 @@ public class ModelPostgis extends Model {
 	        int j;
 	        for (int i=0; i<tokens.size(); i++){
 	        	j = i + 3;
-//	        	if (!rsmd.getColumnName(j).equals("result_id")){
-//					fields += rsmd.getColumnName(j) + ", ";
-//	        	}
         		switch (rsmd.getColumnType(j)) {
 				case Types.NUMERIC:
 				case Types.DOUBLE:
@@ -1046,6 +1044,69 @@ public class ModelPostgis extends Model {
 			sql = "INSERT INTO "+MainDao.getSchema()+".rpt_outfallload_sum ("+fields2+") VALUES ("+values+");\n";
 			insertSql += sql;		        
 		}
+		
+	}
+	
+	
+	private static boolean processTokensAnalysis(RptTarget rpt) {
+
+		final int NORMAL_NUM_FIELDS = 16;
+		final String[] fieldArray = new String[] {"infil_m", "wet_tstep", "dry_tstep"};
+		final Set<String> fieldList = new HashSet<String>(Arrays.asList(fieldArray));
+		
+		String fields = "result_id, ";
+		String values = "'"+projectName+"', ";
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
+		try {
+	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        ResultSetMetaData rsmd = rs.getMetaData();	
+	        rs.close();
+	        int k = 0;
+	        int size = tokens.size();   
+	        for (int j=3; j<rsmd.getColumnCount(); j++){
+	        	int i = j - 3 - k;
+        		// Check if we have to process this field
+	        	String fieldName = rsmd.getColumnName(j);
+	        	Utils.getLogger().info(fieldName+": "+tokens.get(i));
+        		if (size < NORMAL_NUM_FIELDS && fieldList.contains(fieldName)){
+        			k++;
+        			continue;
+        		}
+       			fields+= rsmd.getColumnName(j) + ", ";
+        		switch (rsmd.getColumnType(j)) {
+				case Types.NUMERIC:
+				case Types.DOUBLE:
+				case Types.INTEGER:
+					boolean ok = Utils.isNumeric(tokens.get(i));
+					if (!ok){
+						// TODO: i18n
+						String msg = "An error ocurred in line number: "+lineNumber;
+						msg+= "\nField "+rsmd.getColumnName(j)+ " does not contain a valid numeric value: "+tokens.get(i);
+						msg+= "\nImport process will be aborted";
+						Utils.showError(msg);
+						return false;
+					}
+					values+= tokens.get(i) + ", ";
+					break;					
+				case Types.VARCHAR:
+					values+= "'" + tokens.get(i) + "', ";
+					break;					
+				default:
+					values+= "'" + tokens.get(i) + "', ";
+					break;
+				}
+	        }
+		} catch (SQLException e) {
+			Utils.showError(e, sql);
+		}
+	
+		fields = fields.substring(0, fields.length() - 2);
+		values = values.substring(0, values.length() - 2);
+		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
+		insertSql += sql;
+		
+		return true;
 		
 	}
 
