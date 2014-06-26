@@ -680,9 +680,6 @@ public class MainController{
 				return;
 			}
 		}
-		
-		String softwareName = view.getSoftwareName();
-		
 		String sridValue = "";
 		if (defaultSridSchema.equals("")){
 			String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
@@ -715,7 +712,7 @@ public class MainController{
     	view.enableControlsText(false);
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
 		
-		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);	
+		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
 		if (status && defaultSchemaName.equals("")){
 			Utils.showMessage(view, "schema_creation_completed");
 		}
@@ -741,6 +738,10 @@ public class MainController{
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas(software));
+        	schemaName = view.getSelectedSchema();
+        	MainDao.setSchema(schemaName);
+			checkCatalogTables(schemaName);
+			checkOptionsTables(schemaName);
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
     		Utils.showMessage(view, "schema_deleted", "");
         }
@@ -767,7 +768,7 @@ public class MainController{
 	}
 	
 	
-	public void initModel(ProjectPanel panel){
+	private void initModel(ProjectPanel panel){
 		
 		this.projectPanel = panel;
         model = new TableModelSrid();
@@ -883,8 +884,7 @@ public class MainController{
     	view.enableControlsText(false);
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
 		
-		String softwareName = view.getSoftwareName();
-		boolean status = MainDao.createSchema(softwareName, schemaName, sridValue);	
+		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
 		if (status){
 			MainDao.setSchema(schemaName);
 			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";

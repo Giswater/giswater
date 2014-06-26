@@ -116,7 +116,19 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		
 		btnFileFname = new JButton("...");
 		btnFileFname.setActionCommand("chooseFileFname");
-		panelGeneral.add(btnFileFname, "cell 4 2");
+		panelGeneral.add(btnFileFname, "flowx,cell 4 2");
+		
+		txtTimserId = new JTextField();
+		txtTimserId.setVisible(false);
+		panelGeneral.add(txtTimserId, "cell 4 2");
+		txtTimserId.setName("timser_id");
+		txtTimserId.setColumns(10);
+		
+		txtId = new JTextField();
+		txtId.setVisible(false);
+		panelGeneral.add(txtId, "cell 4 2");
+		txtId.setName("id");
+		txtId.setColumns(10);
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
@@ -130,19 +142,6 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
-		
-		txtTimserId = new JTextField();
-		getContentPane().add(txtTimserId, "flowx,cell 0 2");
-		txtTimserId.setVisible(false);
-		txtTimserId.setName("timser_id");
-		txtTimserId.setColumns(10);
-		
-		txtId = new JTextField();
-		getContentPane().add(txtId, "cell 0 2");
-		txtId.setVisible(false);
-		txtId.setEnabled(false);
-		txtId.setName("id");
-		txtId.setColumns(10);
 		
 		setupListeners();
 		

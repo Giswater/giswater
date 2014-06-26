@@ -330,5 +330,15 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 	@Override
 	public void focusLost(FocusEvent arg0) { }
 
+	public void enableControlsText(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getSoftwareName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

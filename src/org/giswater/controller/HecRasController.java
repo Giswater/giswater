@@ -23,28 +23,40 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.gui.panel.ProjectPanel;
+import org.giswater.model.TableModelSrid;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
 public class HecRasController{
 
+	private MainFrame mainFrame;
 	private HecRasPanel view;
     private PropertiesMap prop;
     private PropertiesMap gswProp;
     private File fileSdf;
     private File fileAsc;    
     private String userHomeFolder;
-	public MainFrame mainFrame;
+	private String software;
+	
+	private TableModelSrid model;
+	private TableColumnModel tcm;
+	private ProjectPanel projectPanel;
+	private JDialog projectDialog;
 
     
     public HecRasController(HecRasPanel view, MainFrame mf) {
@@ -54,6 +66,7 @@ public class HecRasController{
         this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();
     	this.userHomeFolder = System.getProperty("user.home");
+    	this.software = "HECRAS";
 	    view.setControl(this);         	
     	setDefaultValues();
     	    	
@@ -123,7 +136,23 @@ public class HecRasController{
 	
 	
 	public void schemaChanged(){
-		MainDao.setSchema(view.getSelectedSchema());
+		
+		if (MainDao.isConnected()){
+			String schemaName = view.getSelectedSchema();
+			MainDao.setSchema(schemaName);
+			checkCatalogTables(schemaName);
+		}
+		
+	}
+	
+	
+	private void checkCatalogTables(String schemaName){
+		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
+		mainFrame.enableConduit(false);
+		mainFrame.enableMaterials(false);
+		mainFrame.enablePatterns(false);
+		mainFrame.enableTimeseries(false);
+		mainFrame.enableCurves(false);		
 	}
 	
 	
@@ -241,9 +270,33 @@ public class HecRasController{
 	}
 	
 	
+	private String validateName(String schemaName){
+		
+		String validate;
+		validate = schemaName.trim().toLowerCase();
+		validate = validate.replace(" ", "_");
+		validate = validate.replaceAll("[^\\p{ASCII}]", "");
+		return validate;
+		
+	}
+	
+	
 	public void createSchema(){
-		createSchema("");
+		createSchemaAssistant();
 	}	
+	
+	
+	private void createSchemaAssistant() {
+		
+		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
+		ProjectPanel panel = new ProjectPanel(defaultSrid);
+		panel.setHecRasController(this);
+        initModel(panel);
+        updateTableModel();
+        projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
+        projectDialog.setVisible(true);
+		
+	}
 	
     
 	public void createSchema(String defaultSchemaName){
@@ -309,12 +362,136 @@ public class HecRasController{
     		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
         	MainDao.deleteSchema(schemaName);
         	view.setSchemaModel(MainDao.getSchemas("HECRAS"));
+        	schemaName = view.getSelectedSchema();
+        	MainDao.setSchema(schemaName);
+			checkCatalogTables(schemaName);
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage(view, "schema_deleted", "");
         }
         
 	}	
     
+	
+	private void initModel(ProjectPanel panel){
+		
+		this.projectPanel = panel;
+        model = new TableModelSrid();
+        JTable table = projectPanel.getTable();
+        model.setTable(table);   
+        tcm = table.getColumnModel();     
+        
+		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
+		sql+= " FROM public.spatial_ref_sys";
+		sql+= " ORDER BY substr(srtext, 1, 6), srid";
+		Utils.getLogger().info(sql);
+		ResultSet rs = MainDao.getResultset(sql);
+		model.setRs(rs);
+		projectPanel.setTableModel(model);    
+		// Rendering just first time
+		if (tcm.getColumnCount() > 0){
+			tcm.getColumn(0).setMaxWidth(50);   
+			tcm.getColumn(1).setMaxWidth(40);   
+		}
+        
+	}
+	
+	
+	public void updateTableModel() {
+		updateTableModel("");
+	}
+	
+	
+	public void updateTableModel(String filterType) {
+		
+		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
+		sql+= " FROM public.spatial_ref_sys";
+		String filter = projectPanel.getFilter();
+		if (!filter.equals("")){
+			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
+		} 
+		if (!filterType.equals("")){
+			if (filter.equals("")){
+				sql+= " WHERE ";
+			}
+			else{
+				sql+= " AND ";
+			}
+			sql+= "("+filterType+")";
+		} 
+		
+		sql+= " ORDER BY substr(srtext, 1, 6), srid";
+		ResultSet rs = MainDao.getResultset(sql);
+		model.setRs(rs);
+		projectPanel.setTableModel(model);    			
+		Utils.getLogger().info(sql);
+		
+	}
+	
+	
+	public void acceptProject(){
+		
+		// SRID
+		String sridValue = projectPanel.getSrid();
+		if (sridValue.equals("-1")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("srid_select"));
+			return;
+		}
+		
+		// Project Name
+		String schemaName = projectPanel.getName();
+		if (schemaName.equals("")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_name"));
+			return;
+		}
+		schemaName = validateName(schemaName);
+		if (schemaName.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		
+		// Project Title, Author and Date
+		String title = projectPanel.getTitle();
+		if (title.equals("")){
+			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_title"));
+			return;
+		}
+		String author = projectPanel.getAuthor();
+		String date = projectPanel.getDate();
+		
+		// Save properties
+		MainDao.getGswProperties().put("SRID_USER", sridValue);
+		MainDao.savePropertiesFile();
+		
+    	view.enableControlsText(false);
+		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
+		
+		boolean status = MainDao.createSchemaHecRas(software, schemaName, sridValue);	
+		if (status){
+			MainDao.setSchema(schemaName);
+			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
+			Utils.getLogger().info(sql);
+			MainDao.executeSql(sql, true);
+			sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
+				" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
+			Utils.getLogger().info(sql);
+			MainDao.executeSql(sql, true);
+			Utils.showMessage(view, "schema_creation_completed");
+		}
+		
+		// Update view
+		view.setSchemaModel(MainDao.getSchemas(software));	
+		schemaChanged();
+		view.enableControlsText(true);
+		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
+		closeProject();
+		
+	}
+	
+	
+	public void closeProject(){
+		projectDialog.dispose();
+	}	
+	
     
     public void loadRaster(){
     	

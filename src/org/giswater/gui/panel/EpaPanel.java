@@ -92,16 +92,14 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JButton btnDeleteSchema;
 	private JButton btnReport;
 	
-	private String softwareName;   // epaswmm | epanet
 	private JButton btnDeleteData;
 	private JLabel lblNewLabel;
-	public JButton btnClose;
+	private JButton btnClose;
 	private JSeparator separator;
 
 	
-	public EpaPanel(String softwareName) {
+	public EpaPanel() {
 		try {
-			this.softwareName = softwareName;
 			initConfig();
 		} catch (MissingResourceException e) {
 			Utils.showError(e);
@@ -123,10 +121,6 @@ public class EpaPanel extends JPanel implements ActionListener {
 
 	public MainController getController() {
 		return controller;
-	}
-	
-	public String getSoftwareName() {
-		return softwareName;
 	}
 	
 	public JDialog getDialog() {

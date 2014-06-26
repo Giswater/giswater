@@ -41,8 +41,8 @@ public class EpaFrame extends JInternalFrame implements InternalFrameListener{
 	private MainController controller;
 	
 	
-	public EpaFrame(String softwareName){
-		initComponents(softwareName);
+	public EpaFrame(){
+		initComponents();
 	}
 	
 
@@ -51,9 +51,9 @@ public class EpaFrame extends JInternalFrame implements InternalFrameListener{
 	}
 	
 	           
-    private void initComponents(String softwareName) {
+    private void initComponents() {
 
-    	panel = new EpaPanel(softwareName);
+    	panel = new EpaPanel();
 
     	panel.setFrame(this);
         setTitle("");

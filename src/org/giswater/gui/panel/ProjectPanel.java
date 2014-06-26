@@ -23,6 +23,7 @@ import javax.swing.border.LineBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.controller.HecRasController;
 import org.giswater.controller.MainController;
 import org.giswater.model.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
@@ -31,6 +32,7 @@ import org.giswater.util.MaxLengthTextDocument;
 public class ProjectPanel extends JPanel implements ActionListener{
 	
 	private MainController controller;
+	private HecRasController hecRasController;
 	private JTextField txtName;
 	private JTextField txtTitle;
 	private JTextField txtFilter;
@@ -159,7 +161,12 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtFilter.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				controller.updateTableModel();
+				if (controller != null){
+					controller.updateTableModel();
+				}
+				else{
+					hecRasController.updateTableModel();
+				}
 			}
 		});
 		chkGeogcs.addActionListener(this);
@@ -172,7 +179,12 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		controller.action(e.getActionCommand());
+		if (controller != null){
+			controller.action(e.getActionCommand());
+		}
+		else{
+			hecRasController.action(e.getActionCommand());
+		}
 	}
 	
 
@@ -180,6 +192,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		this.controller = controller;
 	}
 
+	public void setHecRasController(HecRasController hecRasController) {
+		this.hecRasController = hecRasController;
+	}
 
 	public JTable getTable() {
 		return tblSrid;
@@ -231,6 +246,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		}
 		return "-1";
 	}
+
+
+
 
 
 

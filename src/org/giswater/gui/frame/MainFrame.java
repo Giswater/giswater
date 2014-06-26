@@ -125,6 +125,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	public GisFrame gisFrame;
 
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public MainFrame(boolean isConnected, String versionCode) {
 		this(isConnected, versionCode, false, "");
 	}
@@ -364,8 +367,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void initFrames() throws PropertyVetoException{
 
         // Create and Add frames to main Panel
-        swmmFrame = new EpaFrame("epaswmm");
-        epanetFrame = new EpaFrame("epanet");
+        swmmFrame = new EpaFrame();
+        epanetFrame = new EpaFrame();
         hecRasFrame = new HecRasFrame();
         dbFrame = new DatabaseFrame();
         configFrame = new ConfigFrame();

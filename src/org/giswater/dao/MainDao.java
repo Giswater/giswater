@@ -735,6 +735,7 @@ public class MainDao {
     private static boolean checkSoftwareSchema(String software, String schemaName){
     	
     	String tableName = "";
+    	software = software.toUpperCase().trim();
         if (software.equals("EPANET")){
         	tableName = TABLE_EPANET;
         }
