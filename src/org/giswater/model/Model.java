@@ -65,7 +65,9 @@ public class Model {
     
     public static void closeFile(){
     	try {
-			Model.rat.close();
+    		if (rat != null){
+    			rat.close();
+    		}
 		} catch (IOException e) {
 			Utils.logError(e);
 		}

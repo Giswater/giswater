@@ -278,16 +278,21 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 	}
 
 
-	public void setComboVisible(String comboName, boolean isVisible) {
+	public void setComboEnabled(String comboName, boolean isEnabled) {
 		
 		if (comboName.equals("hydraulics")){
-			txtHydraulicsFname.setEnabled(isVisible);
+			txtHydraulicsFname.setEnabled(isEnabled);
+			if (!isEnabled){
+				txtHydraulicsFname.setText("");
+			}
 		} 
 		else if (comboName.equals("unbalanced")){
-			txtUnbalancedN.setEnabled(isVisible);
+			txtUnbalancedN.setEnabled(isEnabled);
 		}
 		else if (comboName.equals("quality")){
-			txtNode.setEnabled(isVisible);
+			txtNode.setEnabled(isEnabled);
+			String text = (isEnabled ? "" : " ");
+			txtNode.setText(text);
 		}
 		
 	}

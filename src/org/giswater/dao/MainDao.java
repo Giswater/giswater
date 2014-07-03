@@ -352,7 +352,7 @@ public class MainDao {
 		try {
 			connectionPostgis.rollback();
 		} catch (SQLException e) {
-            Utils.showError(e);
+            Utils.logError(e);
 		}
 	}	
 

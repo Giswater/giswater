@@ -478,7 +478,7 @@ public class OptionsController {
 		}		
 		if (view instanceof OptionsEpanetDialog){
 			OptionsEpanetDialog optionsEpanetDialog = (OptionsEpanetDialog) view;
-			optionsEpanetDialog.setComboVisible(comboName, isVisible);
+			optionsEpanetDialog.setComboEnabled(comboName, isVisible);
 		}		
 		
 	}		
