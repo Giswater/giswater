@@ -146,6 +146,9 @@ public class DatabaseController {
 			// Hecras panel
 			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
+			
+			// TODO: Update pg_pass.conf
+			// updatePgPass();
 		} 
 		else{
 			mainFrame.hecRasFrame.getPanel().setSchemaModel(null);
@@ -153,7 +156,7 @@ public class DatabaseController {
 		
 		return isConnected;
 		
-	}		
+	}	
 	
 	
 }

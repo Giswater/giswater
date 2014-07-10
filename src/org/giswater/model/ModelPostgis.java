@@ -61,6 +61,7 @@ public class ModelPostgis extends Model {
 	private static String firstLine;
 	private static String lastTimeHydraulic = "";
 	private static boolean continueProcess = true;
+	private static boolean abortRptProcess = false;
 	
 	private static final String OPTIONS_TABLE = "v_inp_options";
 	private static final String REPORTS_TABLE = "v_inp_report";
@@ -466,6 +467,7 @@ public class ModelPostgis extends Model {
         
     	Utils.getLogger().info("importRpt");
 
+    	abortRptProcess = false;
 		iniProperties = MainDao.getPropertiesFile();   
     	ModelPostgis.fileRpt = fileRpt;
     	ModelPostgis.projectName = projectName;
@@ -532,6 +534,9 @@ public class ModelPostgis extends Model {
             boolean continueTarget;
             if (softwareName.equals("SWMM")){
             	ok = processRpt(rpt);
+				if (abortRptProcess){
+					return false;
+				}
             } 
             else{
         		if (rpt.getId() >= 40){
@@ -553,6 +558,9 @@ public class ModelPostgis extends Model {
         			while (continueTarget){
             			insertSql = "";            				
         				ok = processRptEpanet(rpt);
+        				if (abortRptProcess){
+        					return false;
+        				}
         	        	if (ok){
         		    		if (!insertSql.equals("")){
         		            	if (softwareName.equals("EPANET") && rpt.getId() >= 40){
@@ -571,6 +579,9 @@ public class ModelPostgis extends Model {
         		}
         		else{
     				ok = processRptEpanet(rpt);
+    				if (abortRptProcess){
+    					return false;
+    				}    				
         		}
             }
             
@@ -704,7 +715,7 @@ public class ModelPostgis extends Model {
 		if (rpt.getType() == 2 && rpt.getId() != 10){
 			processTokens(rpt);
 		}
-		if (rpt.getType() == 2 && rpt.getId() == 10){
+		else if (rpt.getType() == 2 && rpt.getId() == 10){
 			processTokensAnalysis(rpt);
 		}
 		else if (rpt.getType() == 3){
@@ -818,6 +829,9 @@ public class ModelPostgis extends Model {
 			} catch (IOException e) {
 				Utils.showError(e);
 			}
+			if (abortRptProcess){
+				return false;
+			}
 		}		
 		
 		return result;
@@ -909,6 +923,7 @@ public class ModelPostgis extends Model {
 						msg+= "\nField "+rsmd.getColumnName(j)+ " does not contain a valid numeric value: "+tokens.get(i);
 						msg+= "\nImport process will be aborted";
 						Utils.showError(msg);
+						abortRptProcess = true;
 						return false;
 					}
 					values += tokens.get(i) + ", ";
@@ -1166,8 +1181,11 @@ public class ModelPostgis extends Model {
 		}
 		else{
 			parseLines(rpt);
-			if (rpt.getType() == 2){
+			if (rpt.getType() == 2 && rpt.getId() != 10){
 				processTokens(rpt);
+			}
+			else if (rpt.getType() == 2 && rpt.getId() == 10){
+				processTokensInputData(rpt);
 			}
 		}
 		
@@ -1248,6 +1266,82 @@ public class ModelPostgis extends Model {
 		insertSql += sql;
 		
 	}
+	
+	
+	private static boolean processTokensInputData(RptTarget rpt) {
+
+		// Number of fields without water quality parameters
+		final int NORMAL_NUM_FIELDS = 19;
+		Boolean ignoreWaterFields = false;
+		String fields = "result_id, ";
+		String values = "'"+projectName+"', ";
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
+		try {
+	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        ResultSetMetaData rsmd = rs.getMetaData();	
+	        if (tokens.size() > NORMAL_NUM_FIELDS){
+	        	String msg = "Warning: Water quality result data will be not imported. Do you want continue?";
+	        	int res = Utils.confirmDialog(msg);   
+	        	if (res != 0){
+	        		abortRptProcess = true;
+	        		return false;
+	        	}
+	        	ignoreWaterFields = true;
+	        }
+	        System.out.println(rsmd.getColumnCount());    // 22
+        	if (tokens.size() < rsmd.getColumnCount() - 4){
+        		Utils.logError("Line not valid");
+        		return true;
+        	}
+	        rs.close();
+	        int k = 0;
+	        for (int j=3; j<rsmd.getColumnCount() + k; j++){
+	        	int i = j - 3;
+        		// Check if we have to process this field
+	        	String fieldName = rsmd.getColumnName(j - k);
+	        	Utils.getLogger().info(fieldName+": "+tokens.get(i));
+        		if (ignoreWaterFields && (i == 14 || i == 15)){
+        			k++;
+        			continue;
+        		}	        	
+	        	fields += rsmd.getColumnName(j - k) + ", ";
+        		switch (rsmd.getColumnType(j - k)) {
+				case Types.NUMERIC:
+				case Types.DOUBLE:
+				case Types.INTEGER:
+					boolean ok = Utils.isNumeric(tokens.get(i));
+					if (!ok){
+						// TODO: i18n
+						String msg = "An error ocurred in line number: "+lineNumber;
+						msg+= "\nField "+rsmd.getColumnName(j - k)+ " does not contain a valid numeric value: "+tokens.get(i);
+						msg+= "\nImport process will be aborted";
+						Utils.showError(msg);
+						abortRptProcess = true;
+						return false;
+					}
+					values += tokens.get(i) + ", ";
+					break;					
+				case Types.VARCHAR:
+					values += "'" + tokens.get(i) + "', ";
+					break;					
+				default:
+					values += "'" + tokens.get(i) + "', ";
+					break;
+				}
+	        }
+		} catch (SQLException e) {
+			Utils.showError(e, sql);
+		}
+	
+		fields = fields.substring(0, fields.length() - 2);
+		values = values.substring(0, values.length() - 2);
+		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
+		insertSql += sql;
+		
+		return true;
+		
+	}	
 	
 
 }
