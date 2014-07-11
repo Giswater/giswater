@@ -22,6 +22,7 @@ package org.giswater.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class RptTarget {
 
@@ -31,6 +32,8 @@ public class RptTarget {
 	private Integer type;
 	private Integer titleLines;
 	private Integer tokens;
+	private ArrayList<String> columnNames;
+	private ArrayList<Integer> columnTypes;
 	
 	
 	public RptTarget(ResultSet rs) throws SQLException{
@@ -40,6 +43,8 @@ public class RptTarget {
 		this.type = rs.getInt(4);
 		this.titleLines = rs.getInt(5);
 		this.tokens = rs.getInt(6);
+		this.columnNames = new ArrayList<String>();
+		this.columnTypes = new ArrayList<Integer>();
 	}
 	
 	public Integer getId() {
@@ -66,5 +71,32 @@ public class RptTarget {
 		return tokens;
 	}	
 
+	public void addColumnName(String columnName){
+		columnNames.add(columnName);
+	}
+	
+	public void addColumnType(Integer columnType){
+		columnTypes.add(columnType);
+	}
+	
+	public String getColumnName(int index){
+		index--;
+		if (index < columnNames.size()){
+			return columnNames.get(index);
+		}
+		return "";
+	}
+	
+	public Integer getColumnType(int index){
+		index--;
+		if (index < columnTypes.size()){
+			return columnTypes.get(index);
+		}
+		return -1;
+	}
+
+	public int getColumnCount() {
+		return columnNames.size();
+	}
 	
 }
