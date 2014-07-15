@@ -146,13 +146,14 @@ public class HecRasController{
 	}
 	
 	
+	// TODO:
 	private void checkCatalogTables(String schemaName){
-		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
-		mainFrame.enableConduit(false);
-		mainFrame.enableMaterials(false);
-		mainFrame.enablePatterns(false);
-		mainFrame.enableTimeseries(false);
-		mainFrame.enableCurves(false);		
+//		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
+//		mainFrame.enableConduit(false);
+//		mainFrame.enableMaterials(false);
+//		mainFrame.enablePatterns(false);
+//		mainFrame.enableTimeseries(false);
+//		mainFrame.enableCurves(false);		
 	}
 	
 	

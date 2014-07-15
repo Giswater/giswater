@@ -34,28 +34,40 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
+import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
+import org.giswater.gui.dialog.catalog.CurvesDialog;
+import org.giswater.gui.dialog.catalog.MaterialsDialog;
+import org.giswater.gui.dialog.catalog.PatternsDialog;
+import org.giswater.gui.dialog.catalog.ProjectDialog;
+import org.giswater.gui.dialog.catalog.TimeseriesDialog;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
 import org.giswater.gui.dialog.options.RaingageDialog;
 import org.giswater.gui.dialog.options.ReportDialog;
 import org.giswater.gui.dialog.options.ReportEpanetDialog;
+import org.giswater.gui.dialog.options.ResultCatDialog;
+import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
+import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
-import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.model.Model;
 import org.giswater.model.ModelDbf;
 import org.giswater.model.ModelPostgis;
 import org.giswater.model.TableModelSrid;
+import org.giswater.model.table.TableModelCurves;
+import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class MainController{
+public class EpaSoftController{
 
-	private EpaPanel view;
+	private EpaSoftPanel view;
     private PropertiesMap prop;
     private PropertiesMap gswProp;
     private File fileInp;
@@ -80,7 +92,7 @@ public class MainController{
 	private boolean dbSelected = false;
 
     
-    public MainController(EpaPanel view, MainFrame mf, String software) {
+    public EpaSoftController(EpaSoftPanel view, MainFrame mf, String software) {
     	
     	this.mainFrame = mf;
     	this.view = view;	
@@ -121,47 +133,20 @@ public class MainController{
 		view.getFrame().setVisible(false);
 	}
 	
-	
-	// DBF only
-	public void chooseFolderShp() {
 
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(gswProp.get(software+"_FOLDER_SHP", usersFolder));
-		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(view);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			dirShp = chooser.getSelectedFile();
-			view.setFolderShp(dirShp.getAbsolutePath());
-			gswProp.put(software+"_FOLDER_SHP", dirShp.getAbsolutePath());
-			MainDao.savePropertiesFile();
-			readyShp = true;
-		}
-
-	}
-	
-	
-	// Press DBF or Database option
-	public void selectSourceType(){
-		selectSourceType(true);
-	}
-	
-	
-	// TODO:
 	private void checkCatalogTables(String schemaName){
-//		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
-//		mainFrame.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
-//		mainFrame.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
-//		mainFrame.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-//		mainFrame.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
-//		mainFrame.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));		
+		view.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
+		view.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
+		view.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
+		view.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
+		view.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
+		view.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));		
 	}
 	
 	
 	private void checkOptionsTables(String schemaName){
-//		mainFrame.enableResultCat(MainDao.checkTable(schemaName, "rpt_result_cat"));
-//		mainFrame.enableResultSelection(MainDao.checkTable(schemaName, "result_selection"));
+		view.enableResultCat(MainDao.checkTable(schemaName, "rpt_result_cat"));
+		view.enableResultSelection(MainDao.checkTable(schemaName, "result_selection"));
 	}
 	
 	
@@ -170,90 +155,9 @@ public class MainController{
 	}
 	
 	
-	public void selectSourceType(boolean askQuestion){
 
-		dbSelected = view.getOptDatabaseSelected();
-		// Database selected
-		if (dbSelected){
-			// Check if we already are connected
-			if (MainDao.isConnected()){
-				mainFrame.enableCatalog(true);
-				view.enableControlsDbf(false);
-				view.enableControlsDatabase(true);
-				view.enableAccept(true);
-				view.setSchemaModel(MainDao.getSchemas(software));
-		    	view.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));						
-				view.setSoftware(MainDao.getAvailableVersions("postgis", software));
-				// Check Catalog tables
-				checkCatalogTables(view.getSelectedSchema());
-			} 
-			else{
-				if (askQuestion){
-		            // Ask if user wants to connect to Database
-		            int answer = Utils.confirmDialog("open_database_connection");
-		            if (answer == JOptionPane.YES_OPTION){
-						mainFrame.openDatabase();
-		            }
-				} else{
-					mainFrame.openDatabase();
-				}
-				mainFrame.enableCatalog(false);
-				view.enableControlsDbf(false);
-				view.enableControlsDatabase(false);
-				view.enableAccept(false);
-				view.setSchemaModel(null);				
-			}
-			schemaChanged();
-		}
-		// DBF selected
-		else{
-			mainFrame.enableCatalog(false);
-			view.enableControlsDbf(true);			
-			view.enableControlsDatabase(false);
-			view.enableAccept(true);
-			view.setSoftware(MainDao.getAvailableVersions("dbf", software));
-		}
-		
-	}
-	
-	
-	public void schemaTest(String schemaName){
-		view.setSelectedSchema(schemaName);
-	}
-	
-	
-	public void schemaChanged(){
-		
-		MainDao.setSoftwareName(software);		
-		if (MainDao.isConnected()){
-			String schemaName = view.getSelectedSchema();
-			MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
-			checkOptionsTables(schemaName);
-		}
-		
-	}
 
-	
-	public void isConnected(){
 
-		// Check if we already are connected
-		if (MainDao.isConnected()){
-			view.setSchemaModel(MainDao.getSchemas(software));
-			String gswSchema = MainDao.getGswProperties().get(software+"_SCHEMA").trim();
-			if (!gswSchema.equals("")){
-				view.setSelectedSchema(gswSchema);	
-			}
-			else{
-				schemaChanged();
-			}
-		} 
-		else{
-			view.setSchemaModel(null);				
-		}
-		enableCatalog(MainDao.isConnected());
-		
-	}	
 	
 		
 	public void showSectorSelection(){
@@ -441,7 +345,7 @@ public class MainController{
             return;
         }
 
-        // Get schema from view
+        // TODO: Get schema from preferences file
         String schema = view.getSelectedSchema();
         if (schema.equals("")){
             Utils.showError(view, "any_schema_selected");
@@ -449,7 +353,7 @@ public class MainController{
         }
         MainDao.setSchema(schema);
         
-        // Get software version from view
+        // TODO: Get software version from view
         String softwareId = view.getSoftware();
         if (softwareId.equals("")){
             Utils.showError(view, "any_software_selected");
@@ -513,7 +417,7 @@ public class MainController{
         }
         
         // Force refresh schema
-        schemaChanged();
+        //schemaChanged();
         
     }
     
@@ -537,7 +441,7 @@ public class MainController{
             return;
         }
         
-        // Get software version from view
+        // TODO: Get software version from view
 		String id = view.getSoftware();
         if (id.equals("")){
             Utils.showError(view, "any_software_selected");
@@ -615,9 +519,7 @@ public class MainController{
 	}    
     
 	
-	public void setSoftware() {
-		view.setSoftware(MainDao.getAvailableVersions("postgis", software));
-	}
+
 	
 	
 	private String getUserSrid(String defaultSrid){
@@ -638,191 +540,9 @@ public class MainController{
 	}
 	
 	
-	private String validateName(String schemaName){
-		
-		String validate;
-		validate = schemaName.trim().toLowerCase();
-		validate = validate.replace(" ", "_");
-		validate = validate.replaceAll("[^\\p{ASCII}]", "");
-		return validate;
-		
-	}
-	
-	
-	public void createSchema(){
-		createSchemaAssistant();
-	}
-	
-	
-	private void createSchemaAssistant() {
-		
-		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
-		ProjectPanel panel = new ProjectPanel(defaultSrid);
-		panel.setController(this);
-        initModel(panel);
-        updateTableModel();
-        projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
-        projectDialog.setVisible(true);
-		
-	}
 
+	
 
-	public void createSchema(String defaultSchemaName, String defaultSridSchema){
-		
-		String schemaName = defaultSchemaName;
-		if (defaultSchemaName.equals("")){
-			schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
-			if (schemaName == null){
-				return;
-			}
-			schemaName = validateName(schemaName);
-			if (schemaName.equals("")){
-				Utils.showError(view, "schema_valid_name");
-				return;
-			}
-		}
-		String sridValue = "";
-		if (defaultSridSchema.equals("")){
-			String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
-			sridValue = getUserSrid(defaultSrid);
-		}
-		else{
-			sridValue = defaultSridSchema;
-		}
-		if (sridValue.equals("")){
-			return;
-		}
-		Integer srid;
-		try{
-			srid = Integer.parseInt(sridValue);
-		} catch (NumberFormatException e){
-			Utils.showError(view, "error_srid");
-			return;
-		}	
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-		boolean isSridOk = MainDao.checkSrid(srid);
-		if (!isSridOk && srid != 0){
-			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-				Utils.getBundleString("srid_valid");			
-			Utils.showError(view, msg);
-			return;
-		}
-		
-		// Set wait cursor
-    	view.enableControlsText(false);
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
-		
-		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
-		if (status && defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_creation_completed");
-		}
-		else if (status && !defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_truncate_completed");
-		}
-		view.setSchemaModel(MainDao.getSchemas(software));	
-		schemaChanged();
-		
-		view.enableControlsText(true);
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		
-	}
-	
-	
-	public void deleteSchema(){
-		
-		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){     
-        	view.requestFocusInWindow();
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
-        	MainDao.deleteSchema(schemaName);
-        	view.setSchemaModel(MainDao.getSchemas(software));
-        	schemaName = view.getSelectedSchema();
-        	MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
-			checkOptionsTables(schemaName);
-    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-    		Utils.showMessage(view, "schema_deleted", "");
-        }
-        
-	}		
-		
-	
-	public void deleteData(){
-		
-		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){
-        	// Get SRID before delete schema
-			String table = "arc";
-			if (software.equals("HECRAS")){
-				table = "banks";
-			}
-			String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();            	
-        	MainDao.deleteSchema(schemaName);
-    		createSchema(schemaName, schemaSrid);
-        }
-		
-	}
-	
-	
-	private void initModel(ProjectPanel panel){
-		
-		this.projectPanel = panel;
-        model = new TableModelSrid();
-        JTable table = projectPanel.getTable();
-        model.setTable(table);   
-        tcm = table.getColumnModel();     
-        
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
-		sql+= " FROM public.spatial_ref_sys";
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		Utils.getLogger().info(sql);
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    
-		// Rendering just first time
-		if (tcm.getColumnCount() > 0){
-			tcm.getColumn(0).setMaxWidth(50);   
-			tcm.getColumn(1).setMaxWidth(40);   
-		}
-        
-	}
-	
-	
-	public void updateTableModel() {
-		updateTableModel("");
-	}
-	
-	
-	public void updateTableModel(String filterType) {
-		
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
-		sql+= " FROM public.spatial_ref_sys";
-		String filter = projectPanel.getFilter();
-		if (!filter.equals("")){
-			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
-		} 
-		if (!filterType.equals("")){
-			if (filter.equals("")){
-				sql+= " WHERE ";
-			}
-			else{
-				sql+= " AND ";
-			}
-			sql+= "("+filterType+")";
-		} 
-		
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    			
-		Utils.getLogger().info(sql);
-		
-	}
 	
 	
 	public void checkedType() {
@@ -911,6 +631,137 @@ public class MainController{
 	public void closeProject(){
 		projectDialog.dispose();
 	}
+	
+	
+	
+	// Data Manager
+	public void showProjectId(){
+		ResultSet rs = MainDao.getTableResultset("inp_project_id");
+		if (rs == null) return;		
+		ProjectDialog dialog = new ProjectDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showArcCatalog(){
+		ResultSet rs = MainDao.getTableResultset("cat_arc");
+		if (rs == null) return;		
+		ArcCatalogDialog dialog = new ArcCatalogDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showMaterials(){
+		
+		ResultSet rs = MainDao.getTableResultset("cat_mat");
+		if (rs == null) return;
+		MaterialsDialog dialog = new MaterialsDialog();
+		if (mainFrame.swmmFrame.isSelected()){
+			dialog.setName("n");
+		}
+		else{
+			dialog.setName("roughness");
+		}		
+		showCatalog(dialog, rs);
+		
+	}	
+	
+	
+	public void showPatterns(){
+		ResultSet rs = MainDao.getTableResultset("inp_pattern");
+		if (rs == null) return;		
+		PatternsDialog dialog = new PatternsDialog();
+		dialog.enableType(mainFrame.swmmFrame.isSelected());
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showTimeseries(){
+		
+		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id", "*", "id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries", "*", "id");		
+		if (rsMain == null || rsRelated == null) return;		
+		TimeseriesDialog dialog = new TimeseriesDialog();
+		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
+		dialog.setTable(model);
+		showCatalog(dialog, rsMain);
+		
+	}	
+	
+	
+	public void showCurves(){
+		
+		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id", "*", "id");
+		ResultSet rsRelated = MainDao.getTableResultset("inp_curve", "*", "id");		
+		if (rsMain == null || rsRelated == null) return;		
+		CurvesDialog dialog = new CurvesDialog();
+		TableModelCurves model = new TableModelCurves(rsRelated);
+		dialog.setTable(model);
+		showCatalog(dialog, rsMain);
+		
+	}		
+
+	
+	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
+		
+		CatalogController controller = new CatalogController(dialog, rs);
+        if (MainDao.getRowCount(rs) == 0){
+            controller.create();
+        }
+        else{
+            controller.moveFirst();
+        }		
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		
+		
+	}	
+	
+	
+	
+	// Analysis
+	public void scenarioCatalog(){
+		
+		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
+		if (rs == null) return;		
+		String softwareName = MainDao.getSoftwareName();
+		AbstractOptionsDialog dialog = null;
+		if (softwareName.equals("EPASWMM")){
+			dialog = new ResultCatDialog();	
+		}
+		else{
+			dialog = new ResultCatEpanetDialog();
+		}
+		showOptions(dialog, rs, "result_cat_empty");
+		
+	}	
+	
+	
+	public void scenarioManagement(){
+		
+		ResultSet rs = MainDao.getTableResultset("result_selection");
+		if (rs == null) return;		
+		ResultSelectionDialog dialog = new ResultSelectionDialog();
+		showOptions(dialog, rs, "result_selection_empty");
+        
+	}	
+	
+	
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg){
+		
+		// Only show form if exists one record
+		OptionsController controller = new OptionsController(dialog, rs);
+        if (MainDao.getRowCount(rs) != 0){
+            controller.moveFirst();
+    	    dialog.setModal(true);
+    	    dialog.setLocationRelativeTo(null);   
+    	    dialog.setVisible(true);	
+        }
+        else{
+        	Utils.showMessage(view, errorMsg);
+        }
+	    
+	}	
 	
 	
 }

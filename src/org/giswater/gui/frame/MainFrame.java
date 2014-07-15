@@ -71,7 +71,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmOpenProject;
 	private JMenuItem mntmSaveProject;
 	private JSeparator separator;
-	private JMenuItem mntmSaveProjectAs;
 	private JMenuItem mntmOpenPreferences;
 	private JMenuItem mntmSavePreferences;
 	private JMenuItem mntmSaveAsPreferences;
@@ -83,22 +82,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	private JMenu mnGisProject;	
 	private JMenuItem mntmGisProject;	
-
-	private JMenu mnData;
-	private JMenuItem mntmProjectId;	
-	private JMenuItem mntmArcCatalog;
-	private JMenuItem mntmMaterials;
-	private JMenuItem mntmTimeseries;
-	private JMenuItem mntmCurves;
-	private JMenuItem mntmPatterns;	
-	
-	private JMenu mnAnalysis;	
-	private JMenuItem mntmCatalog;
-	private JMenuItem mntmManagement;
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
-	private JMenuItem mntmDatabase;
 	private JMenuItem mntmSampleEpanet;
 	private JMenuItem mntmSampleEpaswmm;
 	private JMenuItem mntmSampleHecras;
@@ -174,20 +160,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
 		menuBar.add(mnProject);
 		
-		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
-		mntmOpenProject.setActionCommand("openProject");
-		mnProject.add(mntmOpenProject);
-		
-		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
-		mntmSaveProject.setActionCommand("saveProject");
-		mnProject.add(mntmSaveProject);
-		
-		mntmSaveProjectAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProjectAs.text")); //$NON-NLS-1$
-		mntmSaveProjectAs.setVisible(false);
-		mnProject.add(mntmSaveProjectAs);
-		
 		separator = new JSeparator();
 		mnProject.add(separator);
+		
+		JMenuItem mntmNewPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewProjectPreferences.text")); //$NON-NLS-1$
+		mnProject.add(mntmNewPreferences);
 		
 		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
 		mntmOpenPreferences.setActionCommand("gswOpen");
@@ -200,6 +177,27 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
 		mntmSaveAsPreferences.setActionCommand("gswSaveAs");
 		mnProject.add(mntmSaveAsPreferences);
+		
+		JMenuItem mntmEditPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmEditProjectPreferences.text")); //$NON-NLS-1$
+		mnProject.add(mntmEditPreferences);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnProject.add(separator_1);
+		
+		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
+		mntmOpenProject.setActionCommand("openProject");
+		mnProject.add(mntmOpenProject);
+		
+		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
+		mntmSaveProject.setActionCommand("saveProject");
+		mnProject.add(mntmSaveProject);
+		
+		JSeparator separator_2 = new JSeparator();
+		mnProject.add(separator_2);
+		
+		JMenuItem mntmNewGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewGisProject.text")); //$NON-NLS-1$
+		mntmNewGisProject.setActionCommand(BUNDLE.getString("MainFrame.mntmNewGisProject.actionCommand")); //$NON-NLS-1$
+		mnProject.add(mntmNewGisProject);
 		
 		mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
@@ -235,56 +233,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnGisProject.add(mntmSampleHecras);
 		mntmSampleHecras.setActionCommand("sampleHecras");
 		
-		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text")); //$NON-NLS-1$
-		mnGisProject.add(mntmDatabaseAdministrator);
-		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");		
-		
-		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
-		mnData.setEnabled(false);
+		JMenu mnData = new JMenu(BUNDLE.getString("MainFrame.mnData.text")); //$NON-NLS-1$
 		menuBar.add(mnData);
 		
-		mntmProjectId = new JMenuItem(BUNDLE.getString("MainFrame.mntmProjectId.text"));
-		mntmProjectId.setFocusCycleRoot(true);
-		mntmProjectId.setActionCommand("showProjectId");
-		mnData.add(mntmProjectId);
-		
-		mntmArcCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
-		mntmArcCatalog.setActionCommand("showArcCatalog");
-		mnData.add(mntmArcCatalog);
-		
-		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
-		mntmMaterials.setActionCommand("showMaterials");
-		mnData.add(mntmMaterials);
-		
-		mntmTimeseries = new JMenuItem(BUNDLE.getString("MainFrame.mntmTimeseries.text"));
-		mntmTimeseries.setActionCommand("showTimeseries");
-		mnData.add(mntmTimeseries);
-		
-		mntmCurves = new JMenuItem(BUNDLE.getString("MainFrame.mntmCurves.text"));
-		mntmCurves.setActionCommand("showCurves");
-		mnData.add(mntmCurves);
-		
-		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
-		mntmPatterns.setActionCommand("showPatterns");
-		mnData.add(mntmPatterns);
-		
-		mnAnalysis = new JMenu(BUNDLE.getString("MainFrame.mnScenarios.text"));
-		menuBar.add(mnAnalysis);
-		
-		mntmCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmCatalog.text"));
-		mntmCatalog.setActionCommand("scenarioCatalog");
-		mnAnalysis.add(mntmCatalog);
-		
-		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
-		mntmManagement.setActionCommand("scenarioManagement");
-		mnAnalysis.add(mntmManagement);
+		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text"));
+		mnData.add(mntmDatabaseAdministrator);
+		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
 		menuBar.add(mnConfiguration);
-		
-		mntmDatabase = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabase.text")); //$NON-NLS-1$
-		mntmDatabase.setActionCommand("showDatabase");
-		mnConfiguration.add(mntmDatabase);
 		
 		mntmSoftware = new JMenuItem(BUNDLE.getString("MainFrame.mntmSoftwareConfiguration.text"));
 		mntmSoftware.setActionCommand("showSoftware");
@@ -403,7 +360,6 @@ public class MainFrame extends JFrame implements ActionListener{
         MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
         
         boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "false"));
-        mnAnalysis.setEnabled(!overwrite);
 		
 	}
 	
@@ -610,18 +566,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSwmm.addActionListener(this);
 		mntmEpanet.addActionListener(this);
 		mntmHecras.addActionListener(this);
-		
-		mntmProjectId.addActionListener(this);		
-		mntmArcCatalog.addActionListener(this);
-		mntmMaterials.addActionListener(this);
-		mntmPatterns.addActionListener(this);		
-		mntmTimeseries.addActionListener(this);
-		mntmCurves.addActionListener(this);
-
-		mntmCatalog.addActionListener(this);		
-		mntmManagement.addActionListener(this);
-		
-		mntmDatabase.addActionListener(this);
 		mntmSoftware.addActionListener(this);
 
 		mntmGisProject.addActionListener(this);		
@@ -689,46 +633,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmOpenProject.setEnabled(enable);
 		mntmSaveProject.setEnabled(enable);
-		mnData.setEnabled(enable);
-		mnAnalysis.setEnabled(enable);
 		mntmSampleEpanet.setEnabled(enable);
 		mntmSampleEpaswmm.setEnabled(enable);
 		mntmSampleHecras.setEnabled(enable);
 		
 	}
-	
-	public void enableProjectId(boolean enable) {
-		mntmProjectId.setEnabled(enable);
-	}
-	
-	public void enableConduit(boolean enable) {
-		mntmArcCatalog.setEnabled(enable);
-	}
-
-	public void enableCurves(boolean enable) {
-		mntmCurves.setEnabled(enable);
-	}
-
-	public void enableMaterials(boolean enable) {
-		mntmMaterials.setEnabled(enable);
-	}
-
-	public void enablePatterns(boolean enable) {
-		mntmPatterns.setEnabled(enable);
-	}
-	
-	public void enableTimeseries(boolean enable) {
-		mntmTimeseries.setEnabled(enable);
-	}
-	
-	
-	public void enableResultCat(boolean enable) {
-		mntmCatalog.setEnabled(enable);
-	}
-	
-	public void enableResultSelection(boolean enable) {
-		mntmManagement.setEnabled(enable);
-	}	
 	
 	
     private void manageFrames(JInternalFrame frame) {

@@ -23,7 +23,6 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.sql.ResultSet;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -34,25 +33,12 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
-import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
-import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
-import org.giswater.gui.dialog.catalog.CurvesDialog;
-import org.giswater.gui.dialog.catalog.MaterialsDialog;
-import org.giswater.gui.dialog.catalog.PatternsDialog;
-import org.giswater.gui.dialog.catalog.ProjectDialog;
-import org.giswater.gui.dialog.catalog.TimeseriesDialog;
-import org.giswater.gui.dialog.options.AbstractOptionsDialog;
-import org.giswater.gui.dialog.options.ResultCatDialog;
-import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
-import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DatabasePanel;
 import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
-import org.giswater.model.table.TableModelCurves;
-import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -365,129 +351,10 @@ public class MenuController {
 	}	
 
 	
-	public void showProjectId(){
-		ResultSet rs = MainDao.getTableResultset("inp_project_id");
-		if (rs == null) return;		
-		ProjectDialog dialog = new ProjectDialog();
-		showCatalog(dialog, rs);
-	}	
-	
-	
-	public void showArcCatalog(){
-		ResultSet rs = MainDao.getTableResultset("cat_arc");
-		if (rs == null) return;		
-		ArcCatalogDialog dialog = new ArcCatalogDialog();
-		showCatalog(dialog, rs);
-	}	
-	
-	
-	public void showMaterials(){
-		ResultSet rs = MainDao.getTableResultset("cat_mat");
-		if (rs == null) return;
-		MaterialsDialog dialog = new MaterialsDialog();
-		if (view.swmmFrame.isSelected()){
-			dialog.setName("n");
-		}
-		else{
-			dialog.setName("roughness");
-		}		
-		showCatalog(dialog, rs);
-	}	
-	
-	
-	public void showPatterns(){
-		ResultSet rs = MainDao.getTableResultset("inp_pattern");
-		if (rs == null) return;		
-		PatternsDialog dialog = new PatternsDialog();
-		dialog.enableType(view.swmmFrame.isSelected());
-		showCatalog(dialog, rs);
-	}	
-	
-	
-	public void showTimeseries(){
-		
-		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id", "*", "id");
-		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries", "*", "id");		
-		if (rsMain == null || rsRelated == null) return;		
-		TimeseriesDialog dialog = new TimeseriesDialog();
-		TableModelTimeseries model = new TableModelTimeseries(rsRelated);
-		dialog.setTable(model);
-		showCatalog(dialog, rsMain);
-		
-	}	
-	
-	
-	public void showCurves(){
-		
-		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id", "*", "id");
-		ResultSet rsRelated = MainDao.getTableResultset("inp_curve", "*", "id");		
-		if (rsMain == null || rsRelated == null) return;		
-		CurvesDialog dialog = new CurvesDialog();
-		TableModelCurves model = new TableModelCurves(rsRelated);
-		dialog.setTable(model);
-		showCatalog(dialog, rsMain);
-		
-	}		
 
 	
-	public void scenarioCatalog(){
-		
-		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
-		if (rs == null) return;		
-		String softwareName = MainDao.getSoftwareName();
-		AbstractOptionsDialog dialog = null;
-		if (softwareName.equals("EPASWMM")){
-			dialog = new ResultCatDialog();	
-		}
-		else{
-			dialog = new ResultCatEpanetDialog();
-		}
-		showOptions(dialog, rs, "result_cat_empty");
-		
-	}	
-	
-	
-	public void scenarioManagement(){
-		
-		ResultSet rs = MainDao.getTableResultset("result_selection");
-		if (rs == null) return;		
-		ResultSelectionDialog dialog = new ResultSelectionDialog();
-		showOptions(dialog, rs, "result_selection_empty");
-        
-	}		
-	
-	
-	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
-		
-		CatalogController controller = new CatalogController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0){
-            controller.create();
-        }
-        else{
-            controller.moveFirst();
-        }		
-		dialog.setModal(true);
-		dialog.setLocationRelativeTo(null);   
-		dialog.setVisible(true);		
-		
-	}
-	
 
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg){
-		
-		// Only show form if exists one record
-		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) != 0){
-            controller.moveFirst();
-    	    dialog.setModal(true);
-    	    dialog.setLocationRelativeTo(null);   
-    	    dialog.setVisible(true);	
-        }
-        else{
-        	Utils.showMessage(view, errorMsg);
-        }
-	    
-	}	
+
 	
 	
 	// Menu Project
