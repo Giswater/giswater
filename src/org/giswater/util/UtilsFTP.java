@@ -23,14 +23,14 @@ public class UtilsFTP {
     private final String password;
 	private InputStream inputStream;
     private String ftpVersion;   // FTP last version 
-	private Integer majorVersion;
-	private Integer minorVersion;
-	private String newVersion;
     
     private final String FTP_HOST = "ftp://download.giswater.org";
     private final String FTP_USER = "giswaterdownro";
     private final String FTP_PWD = "9kuKZCEaquwM6X7jAmuaMg==";
     private final String FTP_ROOT_FOLDER = "htdocs";
+	private String newMinorVersion;
+	private String newBuildVersion;
+	private String newMinorVersionFolder;
     
 
 	public UtilsFTP () {
@@ -230,8 +230,8 @@ public class UtilsFTP {
 		
     	try {
 			client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-			client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
-			client.changeWorkingDirectory(newVersion);
+			client.changeWorkingDirectory(newMinorVersionFolder);
+			client.changeWorkingDirectory(newBuildVersion);
 		} catch (IOException e) {
 			Utils.logError(e);
 		}
@@ -241,27 +241,24 @@ public class UtilsFTP {
 
 	public boolean checkVersion(Integer majorVersion, Integer minorVersion, Integer buildVersion) {
 		
-		this.majorVersion = majorVersion;
-		this.minorVersion = minorVersion;
 		if (!prepareConnection()){
 			return false;
 		}
 		
+		boolean updateMinorVersion = false;
         boolean updateVersion = false;
 		try {
+			// Get last minor version available in root folder
 	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-	        client.changeWorkingDirectory("versions_"+majorVersion+"."+minorVersion);
-	        
-	        // Get last version available
-	        FTPFile[] listFolders = listDirectories();
-	        FTPFile folder = listFolders[listFolders.length-1];
-	        newVersion = folder.getName();
-	        ftpVersion = majorVersion+"."+minorVersion+"."+newVersion;
-	        Utils.getLogger().info("FTP last version is: "+ftpVersion);
-	        Integer version = Integer.parseInt(folder.getName());
-	        if (version > buildVersion){
-	        	updateVersion = true;
+	        String currentMinorVersion = "versions_"+majorVersion+"."+minorVersion;
+	        updateMinorVersion = checkMinorVersion(currentMinorVersion);
+	        if (!updateMinorVersion){
+	        	newMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
+	        	newMinorVersion = minorVersion.toString();
 	        }
+	        // Get last build version available of the last minor version folders
+        	client.changeWorkingDirectory(newMinorVersionFolder);
+        	updateVersion = checkBuildVersion(majorVersion, buildVersion);
 		} catch (NumberFormatException | IOException e) {
 			Utils.logError(e);
 		}
@@ -269,6 +266,39 @@ public class UtilsFTP {
         logout();
         disconnect();
         
+        return updateMinorVersion || updateVersion;
+		
+	}
+
+	
+	private boolean checkMinorVersion(String currentMinorVersion) {
+		
+        boolean updateMinorVersion = false;
+        FTPFile[] listFolders = listDirectories();
+        FTPFile folder = listFolders[listFolders.length-1];
+        newMinorVersionFolder = folder.getName().trim().toLowerCase();
+        newMinorVersion = newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1);
+        Utils.getLogger().info("FTP last minor version folder name: "+newMinorVersionFolder);
+        if (!currentMinorVersion.equals("newMinorVersion")){
+        	updateMinorVersion = true;
+        }
+        return updateMinorVersion;
+		
+	}
+	
+
+	private boolean checkBuildVersion(Integer majorVersion, Integer buildVersion) {
+		
+        boolean updateVersion = false;
+        FTPFile[] listFolders = listDirectories();
+        FTPFile folder = listFolders[listFolders.length-1];
+        newBuildVersion = folder.getName();
+        ftpVersion = majorVersion+"."+newMinorVersion+"."+newBuildVersion;
+        Utils.getLogger().info("FTP last version code: "+ftpVersion);
+        Integer version = Integer.parseInt(folder.getName());
+        if (version > buildVersion){
+        	updateVersion = true;
+        }
         return updateVersion;
 		
 	}
