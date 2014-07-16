@@ -81,7 +81,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmHecras;
 	
 	private JMenu mnGisProject;	
-	private JMenuItem mntmGisProject;	
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
@@ -192,13 +191,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSaveProject.setActionCommand("saveProject");
 		mnProject.add(mntmSaveProject);
 		
-		JSeparator separator_2 = new JSeparator();
-		mnProject.add(separator_2);
-		
-		JMenuItem mntmNewGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewGisProject.text")); //$NON-NLS-1$
-		mntmNewGisProject.setActionCommand(BUNDLE.getString("MainFrame.mntmNewGisProject.actionCommand")); //$NON-NLS-1$
-		mnProject.add(mntmNewGisProject);
-		
 		mnForms = new JMenu("Software");
 		menuBar.add(mnForms);
 		
@@ -216,10 +208,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
-		
-		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
-		mnGisProject.add(mntmGisProject);
-		mntmGisProject.setActionCommand("showGisProject");
 		
 		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
 		mnGisProject.add(mntmSampleEpanet);
@@ -567,8 +555,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmEpanet.addActionListener(this);
 		mntmHecras.addActionListener(this);
 		mntmSoftware.addActionListener(this);
-
-		mntmGisProject.addActionListener(this);		
 		mntmSampleEpanet.addActionListener(this);
 		mntmSampleEpaswmm.addActionListener(this);
 		mntmSampleHecras.addActionListener(this);	

@@ -204,7 +204,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		// Panel Database connection
 		panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[115px:n:115px][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
+		panel_1.setLayout(new MigLayout("", "[100px:n][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
 		panel_1.add(lblProjectFolder, "cell 0 0,alignx right");
