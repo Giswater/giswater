@@ -224,7 +224,7 @@ public class ModelPostgis extends Model {
 
         // Go to the first line of the target
         for (int i = 1; i <= lines; i++) {
-            String line = readLine();
+            String line = rat.readLine().trim();
             raf.writeBytes(line + "\r\n");
         }
 
@@ -334,7 +334,7 @@ public class ModelPostgis extends Model {
 
         // Go to the first line of the target
         for (int i = 1; i <= lines; i++) {
-            String line = readLine();
+            String line = rat.readLine().trim();
             raf.writeBytes(line + "\r\n");
         }
 
