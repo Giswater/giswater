@@ -824,6 +824,7 @@ public class MainController{
 	}
 	
 	
+	// TODO: i18n
 	public void checkedType() {
 
 		String filterType = "";
