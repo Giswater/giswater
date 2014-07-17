@@ -9,6 +9,7 @@ import javax.swing.SwingWorker;
 import org.giswater.gui.panel.DownloadPanel;
 
 
+// TODO: i18n
 public class DownloadTask extends SwingWorker<Void, Void> {
 
 	private static final int BUFFER_SIZE = 4096;
@@ -31,7 +32,7 @@ public class DownloadTask extends SwingWorker<Void, Void> {
 	 * Executed in background thread
 	 */
 	 @Override
-	 protected Void doInBackground() throws Exception {
+	 protected Void doInBackground() {
 		  
 		 try {
 			 
@@ -65,7 +66,6 @@ public class DownloadTask extends SwingWorker<Void, Void> {
 			 ftp.finish();
 			 
 		 } catch (Exception ex) {
-			 Utils.showMessage("Error downloading file: "+ex.getMessage());
 			 setProgress(0);
 			 cancel(true);
 		 } finally {

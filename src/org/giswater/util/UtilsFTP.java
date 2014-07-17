@@ -28,7 +28,7 @@ public class UtilsFTP {
     private final String FTP_USER = "giswaterdownro";
     private final String FTP_PWD = "9kuKZCEaquwM6X7jAmuaMg==";
     private final String FTP_ROOT_FOLDER = "htdocs";
-	private String newMinorVersion;
+	private Integer newMinorVersion;
 	private String newBuildVersion;
 	private String newMinorVersionFolder;
     
@@ -245,8 +245,8 @@ public class UtilsFTP {
 			return false;
 		}
 		
-		boolean updateMinorVersion = false;
-        boolean updateVersion = false;
+		Boolean updateMinorVersion = false;
+        Boolean updateBuildVersion = false;
 		try {
 			// Get last minor version available in root folder
 	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
@@ -254,11 +254,11 @@ public class UtilsFTP {
 	        updateMinorVersion = checkMinorVersion(currentMinorVersion);
 	        if (!updateMinorVersion){
 	        	newMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
-	        	newMinorVersion = minorVersion.toString();
+	        	newMinorVersion = minorVersion;
 	        }
 	        // Get last build version available of the last minor version folders
         	client.changeWorkingDirectory(newMinorVersionFolder);
-        	updateVersion = checkBuildVersion(majorVersion, buildVersion);
+        	updateBuildVersion = checkBuildVersion(majorVersion, minorVersion, buildVersion);
 		} catch (NumberFormatException | IOException e) {
 			Utils.logError(e);
 		}
@@ -266,7 +266,9 @@ public class UtilsFTP {
         logout();
         disconnect();
         
-        return updateMinorVersion || updateVersion;
+        Utils.getLogger().info("New minor version available: "+updateMinorVersion);
+        Utils.getLogger().info("New build version available: "+updateBuildVersion);
+        return updateBuildVersion;
 		
 	}
 
@@ -277,9 +279,9 @@ public class UtilsFTP {
         FTPFile[] listFolders = listDirectories();
         FTPFile folder = listFolders[listFolders.length-1];
         newMinorVersionFolder = folder.getName().trim().toLowerCase();
-        newMinorVersion = newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1);
+        newMinorVersion = Integer.parseInt(newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1));
         Utils.getLogger().info("FTP last minor version folder name: "+newMinorVersionFolder);
-        if (!currentMinorVersion.equals("newMinorVersion")){
+        if (!currentMinorVersion.equals(newMinorVersionFolder)){
         	updateMinorVersion = true;
         }
         return updateMinorVersion;
@@ -287,19 +289,23 @@ public class UtilsFTP {
 	}
 	
 
-	private boolean checkBuildVersion(Integer majorVersion, Integer buildVersion) {
+	private boolean checkBuildVersion(Integer majorVersion, Integer minorVersion, Integer buildVersion) {
 		
-        boolean updateVersion = false;
         FTPFile[] listFolders = listDirectories();
+        if (listFolders.length == 0) return false;
+        
         FTPFile folder = listFolders[listFolders.length-1];
         newBuildVersion = folder.getName();
         ftpVersion = majorVersion+"."+newMinorVersion+"."+newBuildVersion;
         Utils.getLogger().info("FTP last version code: "+ftpVersion);
         Integer version = Integer.parseInt(folder.getName());
-        if (version > buildVersion){
-        	updateVersion = true;
+        if (newMinorVersion > minorVersion) {
+        	return true;
         }
-        return updateVersion;
+        if (version > buildVersion){
+        	return true;
+        }
+        return false;
 		
 	}
 
@@ -345,9 +351,6 @@ public class UtilsFTP {
             	Utils.showError("Could not set binary file type.");
             }
             inputStream = client.retrieveFileStream(downloadPath);
-            if (inputStream == null) {
-            	Utils.showError("Could not open input stream. The file may not exist on the server.");
-            }
         } catch (IOException ex) {
         	Utils.showError("Error downloading file: " + ex.getMessage());
         }
