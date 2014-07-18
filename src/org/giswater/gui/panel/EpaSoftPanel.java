@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,7 +39,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.EpaSoftController;
-import org.giswater.gui.frame.EpaFrame;
+import org.giswater.gui.frame.EpaSoftFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 
@@ -51,7 +50,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private EpaSoftController controller;
-	private EpaFrame epaFrame;	
+	private EpaSoftFrame epaSoftFrame;	
 
 	private JTextField txtProject;
 	private JTextArea txtFileRpt;
@@ -66,7 +65,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JCheckBox chkExport;
 	private JPanel panelDataManager;
 	
-	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
 	private JButton btnArcCatalog;
 	private JButton btnMaterialCatalog;
 	private JButton btnTimeseries;
@@ -83,6 +81,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JButton btnResultSelector;
 	private JButton button;
 	private JButton btnSimulationCatalog;
+	
+	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
+	private static final Integer BUTTON_WIDTH = 125;
 
 	
 	public EpaSoftPanel() {
@@ -94,120 +95,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		}
 	}
 	
-	public void setFrame(EpaFrame epaFrame) {
-		this.epaFrame = epaFrame;
-	}	
-	
-	public EpaFrame getFrame(){
-		return epaFrame;
-	}	
-
-	public void setController(EpaSoftController controller) {
-		this.controller = controller;
-	}
-
-	public EpaSoftController getController() {
-		return controller;
-	}
-	
-	public JDialog getDialog() {
-		return new JDialog();
-	}	
-	
-
-	
-	public String getFileRpt() {
-		String fileRpt = txtFileRpt.getText().trim();
-		return fileRpt;
-	}
-	
-	public void setFileRpt(String path) {
-		txtFileRpt.setText(path);
-	}
-	
-	public String getFileInp() {
-		String fileInp = txtFileInp.getText().trim();
-		return fileInp;
-	}
-
-	public void setFileInp(String path) {
-		txtFileInp.setText(path);
-	}
-
-	public void setProjectName(String projectName) {
-		txtProject.setText(projectName);
-	}
-
-	public String getProjectName() {
-		return txtProject.getText().trim();
-	}
-	
-	public boolean isExportChecked() {
-		return chkExport.isSelected();
-	}
-
-	public boolean isExecChecked() {
-		return chkExec.isSelected();
-	}
-
-	public boolean isImportChecked() {
-		return chkImport.isSelected();
-	}	
-	
-	public void enableAccept(boolean enable){
-		btnAccept.setEnabled(enable);
-	}	
-	
-	public void setDesignButton(String text, String actionCommand){
-		btnDesign.setText(text);
-		btnDesign.setActionCommand(actionCommand);
-	}
-	
-	public void setOptionsButton(String text, String actionCommand){
-		btnOptions.setText(text);
-		btnOptions.setActionCommand(actionCommand);
-	}	
-	
-	public void setReportButton(String text, String actionCommand) {
-		btnReport.setText(text);
-		btnReport.setActionCommand(actionCommand);
-	}	
-	
-	
-    public void enableProjectId(boolean enable) {
-        btnProjectId.setEnabled(enable);
-    }
-    
-    public void enableConduit(boolean enable) {
-    	btnArcCatalog.setEnabled(enable);
-    }
-
-    public void enableCurves(boolean enable) {
-    	btnCurves.setEnabled(enable);
-    }
-
-    public void enableMaterials(boolean enable) {
-    	btnMaterialCatalog.setEnabled(enable);
-    }
-
-    public void enablePatterns(boolean enable) {
-    	btnPatterns.setEnabled(enable);
-    }
-    
-    public void enableTimeseries(boolean enable) {
-    	btnTimeseries.setEnabled(enable);
-    }
-    
-    public void enableResultCat(boolean enable) {
-    	btnResultCatalog.setEnabled(enable);
-    }
-    
-    public void enableResultSelection(boolean enable) {
-    	btnResultSelector.setEnabled(enable);
-    }    
-    
-
-
 
 	private void initConfig() throws MissingResourceException {
 
@@ -216,92 +103,63 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelDataManager = new JPanel();
 		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelDataManager, "cell 1 1,grow");
-		panelDataManager.setLayout(new MigLayout("", "[][][][][]", "[][]"));
+		//panelDataManager.setLayout(new MigLayout("", "[125px:n][125px:n][125px:n][125px:n][]", "[][]"));
+		panelDataManager.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n][]", "[][]"));
 		
-		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text")); //$NON-NLS-1$
-		btnMaterialCatalog.setPreferredSize(new Dimension(120, 23));
-		btnMaterialCatalog.setMinimumSize(new Dimension(110, 23));
-		btnMaterialCatalog.setMaximumSize(new Dimension(999, 23));
+		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text"));
 		btnMaterialCatalog.setEnabled(false);
 		btnMaterialCatalog.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.actionCommand")); //$NON-NLS-1$
-		panelDataManager.add(btnMaterialCatalog, "cell 0 0");
+		panelDataManager.add(btnMaterialCatalog, "cell 0 0,growx");
 		
 		btnCurves = new JButton(BUNDLE.getString("EpaSoftPanel.btnCurves.text")); //$NON-NLS-1$
-		btnCurves.setPreferredSize(new Dimension(120, 23));
-		btnCurves.setMinimumSize(new Dimension(110, 23));
-		btnCurves.setMaximumSize(new Dimension(999, 23));
 		btnCurves.setEnabled(false);
 		btnCurves.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnCurves.actionCommand")); //$NON-NLS-1$
-		panelDataManager.add(btnCurves, "cell 1 0");
+		panelDataManager.add(btnCurves, "cell 1 0,growx");
 		
 		btnPatterns = new JButton(BUNDLE.getString("EpaSoftPanel.btnPatterns.text")); //$NON-NLS-1$
-		btnPatterns.setPreferredSize(new Dimension(120, 23));
-		btnPatterns.setMinimumSize(new Dimension(110, 23));
-		btnPatterns.setMaximumSize(new Dimension(999, 23));
 		btnPatterns.setEnabled(false);
 		btnPatterns.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnPatterns.actionCommand")); //$NON-NLS-1$
-		panelDataManager.add(btnPatterns, "cell 2 0");
+		panelDataManager.add(btnPatterns, "cell 2 0,growx");
 		
 		btnTimeseries = new JButton(BUNDLE.getString("EpaSoftPanel.btnTimeseries.text")); //$NON-NLS-1$
-		btnTimeseries.setPreferredSize(new Dimension(120, 23));
-		btnTimeseries.setMinimumSize(new Dimension(110, 23));
-		btnTimeseries.setMaximumSize(new Dimension(999, 23));
 		btnTimeseries.setEnabled(false);
 		btnTimeseries.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnTimeseries.actionCommand")); //$NON-NLS-1$
-		panelDataManager.add(btnTimeseries, "cell 3 0");
+		panelDataManager.add(btnTimeseries, "cell 3 0,growx");
 		
 		btnArcCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnArcCatalog.text")); //$NON-NLS-1$
-		btnArcCatalog.setPreferredSize(new Dimension(120, 23));
-		btnArcCatalog.setMinimumSize(new Dimension(110, 23));
-		btnArcCatalog.setMaximumSize(new Dimension(999, 23));
 		btnArcCatalog.setEnabled(false);
 		btnArcCatalog.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnArcCatalog.actionCommand")); //$NON-NLS-1$
-		panelDataManager.add(btnArcCatalog, "cell 0 1");
+		panelDataManager.add(btnArcCatalog, "cell 0 1,growx");
 		
 		btnSimulationCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnSimulationCatalog.text")); //$NON-NLS-1$
-		btnSimulationCatalog.setPreferredSize(new Dimension(120, 23));
-		btnSimulationCatalog.setMinimumSize(new Dimension(110, 23));
-		btnSimulationCatalog.setMaximumSize(new Dimension(999, 23));
 		btnSimulationCatalog.setEnabled(false);
 		btnSimulationCatalog.setActionCommand("showArcCatalog");
-		panelDataManager.add(btnSimulationCatalog, "cell 1 1");
+		panelDataManager.add(btnSimulationCatalog, "cell 1 1,growx");
 		
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, "Preprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelPreprocess, "cell 1 2,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[][][][]", "[]"));
+		panelPreprocess.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]", "[]"));
 		
 		btnSectorSelection = new JButton("Sector selection");
-		btnSectorSelection.setPreferredSize(new Dimension(120, 23));
-		btnSectorSelection.setMinimumSize(new Dimension(110, 23));
-		btnSectorSelection.setMaximumSize(new Dimension(999, 23));
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection");
-		panelPreprocess.add(btnSectorSelection, "cell 0 0");
+		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
 		
 		btnOptions = new JButton("Options");
-		btnOptions.setPreferredSize(new Dimension(120, 23));
-		btnOptions.setMinimumSize(new Dimension(110, 23));
-		btnOptions.setMaximumSize(new Dimension(999, 23));
 		btnOptions.setEnabled(false);
 		btnOptions.setActionCommand("showInpOptions");
-		panelPreprocess.add(btnOptions, "cell 1 0");
+		panelPreprocess.add(btnOptions, "cell 1 0,growx");
 		
 		btnDesign = new JButton("Design values");
-		btnDesign.setPreferredSize(new Dimension(120, 23));
-		btnDesign.setMinimumSize(new Dimension(110, 23));
-		btnDesign.setMaximumSize(new Dimension(999, 23));
 		btnDesign.setEnabled(false);
 		btnDesign.setActionCommand("showRaingage");
-		panelPreprocess.add(btnDesign, "cell 2 0");
+		panelPreprocess.add(btnDesign, "cell 2 0,growx");
 		
 		btnReport = new JButton("Report options");
-		btnReport.setPreferredSize(new Dimension(120, 23));
-		btnReport.setMinimumSize(new Dimension(110, 23));
-		btnReport.setMaximumSize(new Dimension(999, 23));
 		btnReport.setEnabled(false);
 		btnReport.setActionCommand("showReport");
-		panelPreprocess.add(btnReport, "cell 3 0");
+		panelPreprocess.add(btnReport, "cell 3 0,growx");
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
@@ -382,20 +240,16 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelAnalysis = new JPanel();
 		panelAnalysis.setBorder(new TitledBorder(null, "Post process options", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelAnalysis, "cell 1 4,grow");
-		panelAnalysis.setLayout(new MigLayout("", "[][]", "[]"));
+		panelAnalysis.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]", "[]"));
 		
 		btnResultCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultCatalog.text")); //$NON-NLS-1$
-		btnResultCatalog.setPreferredSize(new Dimension(110, 23));
-		btnResultCatalog.setMinimumSize(new Dimension(110, 23));
-		btnResultCatalog.setMaximumSize(new Dimension(110, 23));
+		btnResultCatalog.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnResultCatalog.setEnabled(false);
 		btnResultCatalog.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnResultCatalog.actionCommand")); //$NON-NLS-1$
 		panelAnalysis.add(btnResultCatalog, "cell 0 0");
 		
 		btnResultSelector = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultSelector.text")); //$NON-NLS-1$
-		btnResultSelector.setPreferredSize(new Dimension(110, 23));
-		btnResultSelector.setMinimumSize(new Dimension(110, 23));
-		btnResultSelector.setMaximumSize(new Dimension(110, 23));
+		btnResultSelector.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnResultSelector.setEnabled(false);
 		btnResultSelector.setActionCommand(BUNDLE.getString("EpaSoftPanel.button_1.actionCommand")); //$NON-NLS-1$
 		panelAnalysis.add(btnResultSelector, "cell 1 0");
@@ -423,6 +277,122 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
+	}
+
+	
+	public void setFrame(EpaSoftFrame epaSoftFrame) {
+		this.epaSoftFrame = epaSoftFrame;
+	}	
+	
+	public EpaSoftFrame getFrame(){
+		return epaSoftFrame;
+	}	
+
+	public void setController(EpaSoftController controller) {
+		this.controller = controller;
+	}
+
+	public EpaSoftController getController() {
+		return controller;
+	}
+	
+	public String getFileRpt() {
+		String fileRpt = txtFileRpt.getText().trim();
+		return fileRpt;
+	}
+	
+	public void setFileRpt(String path) {
+		txtFileRpt.setText(path);
+	}
+	
+	public String getFileInp() {
+		String fileInp = txtFileInp.getText().trim();
+		return fileInp;
+	}
+
+	public void setFileInp(String path) {
+		txtFileInp.setText(path);
+	}
+
+	public void setProjectName(String projectName) {
+		txtProject.setText(projectName);
+	}
+
+	public String getProjectName() {
+		return txtProject.getText().trim();
+	}
+	
+	public boolean isExportChecked() {
+		return chkExport.isSelected();
+	}
+
+	public boolean isExecChecked() {
+		return chkExec.isSelected();
+	}
+
+	public boolean isImportChecked() {
+		return chkImport.isSelected();
+	}	
+	
+	public void enableAccept(boolean enable){
+		btnAccept.setEnabled(enable);
+	}	
+	
+	public void setDesignButton(String text, String actionCommand){
+		btnDesign.setText(text);
+		btnDesign.setActionCommand(actionCommand);
+	}
+	
+	public void setOptionsButton(String text, String actionCommand){
+		btnOptions.setText(text);
+		btnOptions.setActionCommand(actionCommand);
+	}	
+	
+	public void setReportButton(String text, String actionCommand) {
+		btnReport.setText(text);
+		btnReport.setActionCommand(actionCommand);
+	}	
+    
+    public void enableConduit(boolean enable) {
+    	btnArcCatalog.setEnabled(enable);
+    }
+
+    public void enableCurves(boolean enable) {
+    	btnCurves.setEnabled(enable);
+    }
+
+    public void enableMaterials(boolean enable) {
+    	btnMaterialCatalog.setEnabled(enable);
+    }
+
+    public void enablePatterns(boolean enable) {
+    	btnPatterns.setEnabled(enable);
+    }
+    
+    public void enableTimeseries(boolean enable) {
+    	btnTimeseries.setEnabled(enable);
+    }
+    
+    public void enableResultCat(boolean enable) {
+    	btnResultCatalog.setEnabled(enable);
+    }
+    
+    public void enableResultSelection(boolean enable) {
+    	btnResultSelector.setEnabled(enable);
+    }    
+    
+    public void enableDatabaseOptions(boolean enable) {
+    	enableConduit(enable);
+    	enableCurves(enable);
+    	enableMaterials(enable);
+    	enablePatterns(enable);
+    	enableTimeseries(enable);
+    	enableResultCat(enable);
+    	enableResultSelection(enable);
+    }  
+    
+	public void setTitle(String title) {
+		getFrame().setTitle(title);		
 	}
 
 	

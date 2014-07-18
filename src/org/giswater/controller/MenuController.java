@@ -34,11 +34,11 @@ import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.frame.MainFrame;
-import org.giswater.gui.panel.DatabasePanel;
 import org.giswater.gui.panel.DownloadPanel;
-import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -171,12 +171,9 @@ public class MenuController {
 		MainDao.loadGswPropertiesFile();
 		
 		// Update panels
-		updateDatabasePanel();
+		updateProjectPreferencesPanel();
 		updateHecrasPanel();
-    	EpaPanel epanetPanel = view.epanetFrame.getPanel();
-    	updateEpaPanel("EPANET", epanetPanel);
-    	EpaPanel swmmPanel = view.swmmFrame.getPanel();        	
-    	updateEpaPanel("EPASWMM", swmmPanel);  		
+    	updateEpaSoftPanel();  		
     	updateGisPanel();
 
         // Update frames and title
@@ -200,29 +197,35 @@ public class MenuController {
 	}
 
 	
-    private void updateDatabasePanel(){
+    private void updateProjectPreferencesPanel(){
     	
-    	DatabasePanel dbPanel = view.dbFrame.getPanel();
-    	dbPanel.setHost(MainDao.getGswProperties().get("POSTGIS_HOST"));
-    	dbPanel.setPort(MainDao.getGswProperties().get("POSTGIS_PORT"));
-    	dbPanel.setDatabase(MainDao.getGswProperties().get("POSTGIS_DATABASE"));
-    	dbPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));		
+    	ProjectPreferencesPanel ppPanel = view.ppFrame.getPanel();
+    	ppPanel.setFolderShp(MainDao.getGswProperties().get("FOLDER_SHP"));
+    	ppPanel.setSelectedSchema(MainDao.getGswProperties().get("SCHEMA"));   
+		String storage = MainDao.getGswProperties().get("STORAGE").toUpperCase();
+		if (storage.equals("DATABASE")){
+			ppPanel.setDatabaseSelected(true);
+		}
+		else if (storage.equals("DBF")){
+			ppPanel.setDbfSelected(true);
+		}
+		ppPanel.selectSourceType(); 
+		
+    	ppPanel.setHost(MainDao.getGswProperties().get("POSTGIS_HOST"));
+    	ppPanel.setPort(MainDao.getGswProperties().get("POSTGIS_PORT"));
+    	ppPanel.setDatabase(MainDao.getGswProperties().get("POSTGIS_DATABASE"));
+    	ppPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));		
     	Boolean remember = Boolean.parseBoolean(MainDao.getGswProperties().get("POSTGIS_REMEMBER"));
-        dbPanel.setRemember(remember);
+        ppPanel.setRemember(remember);
         if (remember){
-        	dbPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
+        	ppPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
         } else{
-        	dbPanel.setPassword("");
+        	ppPanel.setPassword("");
         }
         
-        // Initialize Database?
-        // Boolean initDb = Boolean.parseBoolean(MainDao.getGswProperties().get("INIT_DB", "false"));	    
-        Boolean initDb = true;    
-        if (initDb){
-        	if (MainDao.initializeDatabase()){
-        		dbPanel.setDatabase(MainDao.getInitDb());
-        	}
-       		//MainDao.getGswProperties().put("INIT_DB", "false");
+        // Initialize Database?   
+        if (MainDao.initializeDatabase()){
+        	ppPanel.setDatabase(MainDao.getInitDb());
         }
         
         // Autoconnect?
@@ -233,51 +236,48 @@ public class MenuController {
         
         // Update text open/close button
 		if (MainDao.isConnected()){
-			dbPanel.setConnectionText(Utils.getBundleString("close_connection"));
-			dbPanel.enableControls(false);			
+			ppPanel.setConnectionText(Utils.getBundleString("close_connection"));
+			ppPanel.enableControls(false);			
 			view.enableCatalog(true);
 		}
 		else{
-			dbPanel.setConnectionText(Utils.getBundleString("open_connection"));
-			dbPanel.enableControls(true);			
+			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));
+			ppPanel.enableControls(true);			
 			view.enableCatalog(false);
 		}
 		
 	}	    
     
 
-    private void updateEpaPanel(String software, EpaPanel epaPanel){
-    	epaPanel.setFolderShp(MainDao.getGswProperties().get(software+"_FOLDER_SHP"));
-    	epaPanel.setFileInp(MainDao.getGswProperties().get(software+"_FILE_INP"));
-    	epaPanel.setFileRpt(MainDao.getGswProperties().get(software+"_FILE_RPT"));
-    	epaPanel.setProjectName(MainDao.getGswProperties().get(software+"_PROJECT_NAME"));
-    	epaPanel.setSelectedSchema(MainDao.getGswProperties().get(software+"_SCHEMA"));   
-		String storage = MainDao.getGswProperties().get(software+"_STORAGE").toUpperCase();
-		if (storage.equals("DATABASE")){
-			epaPanel.setDatabaseSelected(true);
-		}
-		else if (storage.equals("DBF")){
-			epaPanel.setDbfSelected(true);
-		}
-		epaPanel.selectSourceType();    	
+    private void updateEpaSoftPanel(){
+    	
+    	EpaSoftPanel epaSoftPanel = view.epaSoftFrame.getPanel();
+    	epaSoftPanel.setFileInp(MainDao.getGswProperties().get("FILE_INP"));
+    	epaSoftPanel.setFileRpt(MainDao.getGswProperties().get("FILE_RPT"));
+    	epaSoftPanel.setProjectName(MainDao.getGswProperties().get("PROJECT_NAME"));
+		
 	}   
     
  
     private void updateHecrasPanel(){
+    	
     	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
     	hecRasPanel.setFileAsc(MainDao.getGswProperties().get("HECRAS_FILE_ASC"));
     	hecRasPanel.setFileSdf(MainDao.getGswProperties().get("HECRAS_FILE_SDF"));
     	hecRasPanel.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));
+    	
 	}    
     
     
     private void updateGisPanel(){
+    	
     	GisPanel gisPanel = view.gisFrame.getPanel();
     	gisPanel.setProjectFolder(MainDao.getGswProperties().get("GIS_FOLDER"));
     	gisPanel.setProjectName(MainDao.getGswProperties().get("GIS_NAME"));
     	gisPanel.setProjectSoftware(MainDao.getGswProperties().get("GIS_SOFTWARE"));
     	gisPanel.setDataStorage(MainDao.getGswProperties().get("GIS_TYPE"));  
-    	gisPanel.setSelectedSchema(MainDao.getGswProperties().get("GIS_SCHEMA"));      	
+    	gisPanel.setSelectedSchema(MainDao.getGswProperties().get("GIS_SCHEMA"));  
+    	
 	}       
     
     
@@ -313,51 +313,8 @@ public class MenuController {
 	}
 	
 	
-	// Menu Software
-	public void openSwmm() {
-		view.openSwmm();
-	}
-
-	public void openEpanet() {
-		view.openEpanet();
-	}
-
-	public void openHecras() {
-		view.openHecras();
-	}
-
-	public void showSoftware() {
-		view.openSoftware();
-	}
-
-	public void showDatabase() {
-		view.openDatabase();
-	}
-
-	public void showGisProject() {
-		view.openGisProject();
-	}	
 	
-	public void openUserManual() {
-		Utils.openWeb(URL_MANUAL);
-	}
-	
-	public void openReferenceGuide() {
-		Utils.openWeb(URL_REFERENCE);
-	}
-	
-	public void openWeb() {
-		Utils.openWeb(URL_WEB);
-	}	
-
-	
-
-	
-
-
-	
-	
-	// Menu Project
+	// Menu Project example
 	public void sampleEpanet(){
 		createSampleSchema("epanet");
 	}
@@ -384,8 +341,7 @@ public class MenuController {
 		if (res != 0) return; 
 		
 		// Set wait cursor
-		view.swmmFrame.getPanel().enableControlsText(false);
-		view.epanetFrame.getPanel().enableControlsText(false);
+		view.ppFrame.getPanel().enableControlsText(false);
 		view.setCursorFrames(waitCursor);
 		
 		String schemaName = "sample_"+softwareName;
@@ -424,14 +380,15 @@ public class MenuController {
 			}			
 		}
 		
-		view.swmmFrame.getPanel().enableControlsText(true);	
-		view.epanetFrame.getPanel().enableControlsText(true);
+		view.ppFrame.getPanel().enableControlsText(true);
 		view.setCursorFrames(defaultCursor);
 		view.updateEpaFrames();
 		
 	}
+
 	
 	
+	// Menu Data 
 	public void openDatabaseAdmin() {
 		
 		String path = prop.get("FILE_DBADMIN");
@@ -447,6 +404,14 @@ public class MenuController {
 		Utils.openFile(path);
 		
 	}
+	
+	
+	
+	// Menu Configuration 
+	public void showSoftware() {
+		view.openSoftware();
+	}
+	
 	
 	
 	// Menu About 
@@ -506,6 +471,39 @@ public class MenuController {
 	}
 	
 	
+	public void openUserManual() {
+		Utils.openWeb(URL_MANUAL);
+	}
+	
+	public void openReferenceGuide() {
+		Utils.openWeb(URL_REFERENCE);
+	}
+	
+	public void openWeb() {
+		Utils.openWeb(URL_WEB);
+	}	
+	
+	public void checkUpdates(){
+		
+		// Check if new version is available
+		Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
+		Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
+		Integer buildVersion = Integer.parseInt(versionCode.substring(4));
+		if (ftp == null){
+			ftp = new UtilsFTP();
+		}
+		boolean newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
+		String ftpVersion = ftp.getFtpVersion();
+		view.setNewVersionVisible(newVersion, ftpVersion);
+		if (!newVersion){
+			Utils.showMessage(view, "This version is up to date.\nAny new version has been found in the repository.");
+		}
+		
+	}
+	
+	
+	
+	// Download new version
 	public void downloadNewVersion(){
 		
 		Utils.getLogger().info("Downloading last version...");
@@ -553,23 +551,6 @@ public class MenuController {
     }
         
     
-    public void checkUpdates(){
-    	
-    	// Check if new version is available
-    	Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
-    	Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
-		Integer buildVersion = Integer.parseInt(versionCode.substring(4));
-		if (ftp == null){
-			ftp = new UtilsFTP();
-		}
-    	boolean newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
-    	String ftpVersion = ftp.getFtpVersion();
-		view.setNewVersionVisible(newVersion, ftpVersion);
-		if (!newVersion){
-			Utils.showMessage(view, "This version is up to date.\nAny new version has been found in the repository.");
-		}
-		
-    }
     
 
 }

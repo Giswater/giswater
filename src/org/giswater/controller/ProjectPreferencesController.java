@@ -23,17 +23,16 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.sql.ResultSet;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.MainFrame;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.model.TableModelSrid;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -43,22 +42,24 @@ public class ProjectPreferencesController {
 
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
+	private EpaSoftPanel epaSoftPanel;
     private PropertiesMap prop;
     private PropertiesMap gswProp;
     private String usersFolder;
 	private String software;
 	private boolean dbSelected;
-	private boolean readyShp;
-	private File dirShp;
-	
-	
-	public ProjectPreferencesController(ProjectPreferencesPanel dbPanel, MainFrame mf) {
+
+
+	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
+		
+		this.view = ppPanel;	
 		this.mainFrame = mf;
-		this.view = dbPanel;	
+		this.epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
         this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();
     	this.usersFolder = MainDao.getUsersPath(); 
-	    view.setControl(this);        
+	    view.setControl(this);    
+	    
 	}
 	  
 	
@@ -82,7 +83,35 @@ public class ProjectPreferencesController {
 	}	
 	
 	
-	// DBF only
+	
+	private boolean checkPreferences() {
+		// TODO:
+		return true;
+	}
+	
+	public void applyPreferences(){
+		
+		// Check if everything is set
+		if (checkPreferences()){
+			MainDao.savePropertiesFile();
+		}
+		
+		
+	}
+	
+	
+	public void acceptPreferences(){
+		applyPreferences();
+		closePreferences();		
+	}
+	
+	
+	public void closePreferences(){
+		view.getFrame().setVisible(false);	
+	}
+
+
+	// DBF configuration
 	public void chooseFolderShp() {
 
 		JFileChooser chooser = new JFileChooser();
@@ -92,13 +121,27 @@ public class ProjectPreferencesController {
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			dirShp = chooser.getSelectedFile();
+			File dirShp = chooser.getSelectedFile();
 			view.setFolderShp(dirShp.getAbsolutePath());
 			gswProp.put(software+"_FOLDER_SHP", dirShp.getAbsolutePath());
-			MainDao.savePropertiesFile();
-			readyShp = true;
 		}
 
+	}
+	
+	
+	// Database configuration
+	private void checkCatalogTables(String schemaName){
+		epaSoftPanel.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
+		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
+		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
+		epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
+		epaSoftPanel.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));	
+	}
+	
+	
+	private void checkOptionsTables(String schemaName){
+		epaSoftPanel.enableResultCat(MainDao.checkTable(schemaName, "rpt_result_cat"));
+		epaSoftPanel.enableResultSelection(MainDao.checkTable(schemaName, "result_selection"));
 	}
 	
 	
@@ -212,15 +255,6 @@ public class ProjectPreferencesController {
 				checkCatalogTables(view.getSelectedSchema());
 			} 
 			else{
-				if (askQuestion){
-		            // Ask if user wants to connect to Database
-		            int answer = Utils.confirmDialog("open_database_connection");
-		            if (answer == JOptionPane.YES_OPTION){
-						mainFrame.openDatabase();
-		            }
-				} else{
-					mainFrame.openDatabase();
-				}
 				mainFrame.enableCatalog(false);
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(false);
@@ -261,7 +295,7 @@ public class ProjectPreferencesController {
 		else{
 			view.setSchemaModel(null);				
 		}
-		enableCatalog(MainDao.isConnected());
+		mainFrame.enableCatalog(MainDao.isConnected());
 		
 	}	
 	
@@ -289,7 +323,6 @@ public class ProjectPreferencesController {
 	}
 	
 	
-	
 	// Project Management
 	private String validateName(String schemaName){
 		
@@ -301,6 +334,25 @@ public class ProjectPreferencesController {
 		
 	}
 	
+	
+	private String getUserSrid(String defaultSrid){
+		
+		String sridValue = "";
+		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
+		if (sridQuestion){
+			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
+			if (sridValue == null){
+				return "";
+			}
+		}
+		else{
+			sridValue = defaultSrid;
+		}
+		return sridValue.trim().toLowerCase();
+		
+	}
+	
+	
 	public void createSchema(){
 		createSchemaAssistant();
 	}
@@ -309,12 +361,16 @@ public class ProjectPreferencesController {
 	private void createSchemaAssistant() {
 		
 		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
-		ProjectPanel panel = new ProjectPanel(defaultSrid);
-		panel.setController(this);
-        initModel(panel);
-        updateTableModel();
-        projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
+		ProjectPanel projectPanel = new ProjectPanel(defaultSrid);
+		NewProjectController npController = new NewProjectController(projectPanel);
+		projectPanel.setController(npController);
+		//projectPanel.setParentController(this);
+		npController.setParentPanel(view);
+		npController.initModel();
+		npController.updateTableModel();
+        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, "Create Project", 420, 480);
         projectDialog.setVisible(true);
+        projectPanel.setParent(projectDialog);
 		
 	}
 
@@ -362,7 +418,6 @@ public class ProjectPreferencesController {
 		}
 		
 		// Set wait cursor
-    	view.enableControlsText(false);
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
 		
 		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
@@ -375,7 +430,6 @@ public class ProjectPreferencesController {
 		view.setSchemaModel(MainDao.getSchemas(software));	
 		schemaChanged();
 		
-		view.enableControlsText(true);
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
 		
 	}
@@ -420,60 +474,5 @@ public class ProjectPreferencesController {
 		
 	}
 	
-	
-	private void initModel(ProjectPanel panel){
 		
-		this.projectPanel = panel;
-        model = new TableModelSrid();
-        JTable table = projectPanel.getTable();
-        model.setTable(table);   
-        tcm = table.getColumnModel();     
-        
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
-		sql+= " FROM public.spatial_ref_sys";
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		Utils.getLogger().info(sql);
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    
-		// Rendering just first time
-		if (tcm.getColumnCount() > 0){
-			tcm.getColumn(0).setMaxWidth(50);   
-			tcm.getColumn(1).setMaxWidth(40);   
-		}
-        
-	}
-	
-	
-	public void updateTableModel() {
-		updateTableModel("");
-	}
-	
-	
-	public void updateTableModel(String filterType) {
-		
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
-		sql+= " FROM public.spatial_ref_sys";
-		String filter = projectPanel.getFilter();
-		if (!filter.equals("")){
-			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
-		} 
-		if (!filterType.equals("")){
-			if (filter.equals("")){
-				sql+= " WHERE ";
-			}
-			else{
-				sql+= " AND ";
-			}
-			sql+= "("+filterType+")";
-		} 
-		
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    			
-		Utils.getLogger().info(sql);
-		
-	}
-	
 }

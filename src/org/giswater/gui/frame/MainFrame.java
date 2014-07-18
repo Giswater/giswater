@@ -42,15 +42,15 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.giswater.controller.ConfigController;
-import org.giswater.controller.DatabaseController;
+import org.giswater.controller.EpaSoftController;
 import org.giswater.controller.HecRasController;
-import org.giswater.controller.MainController;
 import org.giswater.controller.MenuController;
+import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
-import org.giswater.gui.panel.DatabasePanel;
-import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -74,11 +74,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmOpenPreferences;
 	private JMenuItem mntmSavePreferences;
 	private JMenuItem mntmSaveAsPreferences;
-
-	private JMenu mnForms;
-    private JMenuItem mntmSwmm;
-	private JMenuItem mntmEpanet;
-	private JMenuItem mntmHecras;
 	
 	private JMenu mnGisProject;	
 	
@@ -101,11 +96,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenu mnNewVersionAvailable;
 	private JMenuItem mntmDownload;
 
-	public EpaFrame swmmFrame;
-	public EpaFrame epanetFrame;
+	public EpaSoftFrame epaSoftFrame;
 	public HecRasFrame hecRasFrame;
-	
-	public DatabaseFrame dbFrame;
+	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
 
@@ -190,21 +183,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
 		mntmSaveProject.setActionCommand("saveProject");
 		mnProject.add(mntmSaveProject);
-		
-		mnForms = new JMenu("Software");
-		menuBar.add(mnForms);
-		
-		mntmEpanet = new JMenuItem("EPANET");
-		mntmEpanet.setActionCommand("openEpanet");
-		mnForms.add(mntmEpanet);
-		
-		mntmSwmm = new JMenuItem("EPA SWMM");
-		mntmSwmm.setActionCommand("openSwmm");
-		mnForms.add(mntmSwmm);
-		
-		mntmHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmHecras.text")); //$NON-NLS-1$
-		mntmHecras.setActionCommand("openHecras");
-		mnForms.add(mntmHecras);
 		
 		mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
@@ -312,40 +290,37 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void initFrames() throws PropertyVetoException{
 
         // Create and Add frames to main Panel
-        swmmFrame = new EpaFrame();
-        epanetFrame = new EpaFrame();
+        epaSoftFrame = new EpaSoftFrame();
         hecRasFrame = new HecRasFrame();
-        dbFrame = new DatabaseFrame();
+        ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
         gisFrame = new GisFrame();
         gisFrame.setLocation(175, 80);
         
-        desktopPane.add(swmmFrame);
-        desktopPane.add(epanetFrame);
+        desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
-        desktopPane.add(dbFrame);        
+        desktopPane.add(ppFrame);            
         desktopPane.add(configFrame);
         desktopPane.add(gisFrame);
         
-        // Set specific configuration
-		swmmFrame.setTitle("EPA SWMM");
-		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
-		swmmFrame.getPanel().setOptionsButton("Options", "showInpOptions");
-		swmmFrame.getPanel().setReportButton("Report options", "showReport");
-		epanetFrame.setTitle("EPANET");
-		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
-		epanetFrame.getPanel().setOptionsButton("Options", "showInpOptionsEpanet");
-		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
+        // TODO: Set specific configuration
+//		swmmFrame.setTitle("EPA SWMM");
+//		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
+//		swmmFrame.getPanel().setOptionsButton("Options", "showInpOptions");
+//		swmmFrame.getPanel().setReportButton("Report options", "showReport");
+//		epanetFrame.setTitle("EPANET");
+//		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
+//		epanetFrame.getPanel().setOptionsButton("Options", "showInpOptionsEpanet");
+//		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
 
         // Get info from properties
 		getMainParams("MAIN");
 
         // Define one controller per panel           
-		new HecRasController(hecRasFrame.getPanel(), this);
-		new DatabaseController(dbFrame.getPanel(), this);
+		new HecRasController(hecRasFrame.getPanel());
+		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
-        MainController mcSwmm = new MainController(swmmFrame.getPanel(), this, "EPASWMM");   
-        MainController mcEpanet = new MainController(epanetFrame.getPanel(), this, "EPANET");
+        EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this, "");
         
         boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "false"));
 		
@@ -362,40 +337,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
+	// TODO:
 	public void updateFrames(){
-
+		
 		try {
-	        getFrameParams(dbFrame, "DB");      
-	        getFrameParams(configFrame, "CONFIG");			
-			getFrameParams(swmmFrame, "SWMM");
-	        getFrameParams(epanetFrame, "EPANET");
-	        getFrameParams(hecRasFrame, "HECRAS");
-			// Only one frame remains visible
-			boolean selected;
-	        selected = Boolean.parseBoolean(MainDao.getGswProperties().get("EPANET_SELECTED", "false"));
-			if (selected){
-				swmmFrame.setVisible(false);
-				hecRasFrame.setVisible(false);
-				epanetFrame.setSelected(true);
-				epanetFrame.setMaximum(true);			
-			}
-			selected = Boolean.parseBoolean(MainDao.getGswProperties().get("SWMM_SELECTED", "false"));
-			if (selected){
-				hecRasFrame.setVisible(false);
-				epanetFrame.setVisible(false);
-				swmmFrame.setSelected(true);
-				swmmFrame.setMaximum(true);						
-			}
-	        selected = Boolean.parseBoolean(MainDao.getGswProperties().get("HECRAS_SELECTED", "false"));
-			if (selected){
-				swmmFrame.setVisible(false);
-				epanetFrame.setVisible(false);
-				hecRasFrame.setSelected(true);
-				hecRasFrame.setMaximum(true);						
-			}
-			} catch (PropertyVetoException e) {
-            Utils.logError(e.getMessage());
-		}		
+			getFrameParams(ppFrame, "PP");
+			getFrameParams(configFrame, "CONFIG");			
+			getFrameParams(epaSoftFrame, "EPASOFT");
+			getFrameParams(hecRasFrame, "HECRAS");
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}           
+	        
+		// Only one frame remains visible	
 		
 	}
 	
@@ -407,10 +361,8 @@ public class MainFrame extends JFrame implements ActionListener{
         x = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_X", "0"));
         y = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_Y", "0"));
         visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
-        //selected = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_SELECTED", "false"));
         frame.setLocation(x, y);
         frame.setVisible(visible);
-        //frame.setSelected(selected);
 		
 	}
 	
@@ -453,21 +405,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	
-	public void putEpaParams(String software, EpaPanel epaPanel){
-    	MainDao.getGswProperties().put(software+"_FOLDER_SHP", epaPanel.getFolderShp());    	
-    	MainDao.getGswProperties().put(software+"_FILE_INP", epaPanel.getFileInp());
-    	MainDao.getGswProperties().put(software+"_FILE_RPT", epaPanel.getFileRpt());
-    	MainDao.getGswProperties().put(software+"_PROJECT_NAME", epaPanel.getProjectName());    	
-    	MainDao.getGswProperties().put(software+"_SCHEMA", epaPanel.getSelectedSchema());
-    	if (epaPanel.getOptDatabaseSelected()){
-    		MainDao.getGswProperties().put(software+"_STORAGE", "DATABASE");
-    	}
-    	else if (epaPanel.getOptDbfSelected()){
-    		MainDao.getGswProperties().put(software+"_STORAGE", "DBF");
-    	}
-    	else{
-    		MainDao.getGswProperties().put(software+"_STORAGE", "");
-    	}
+	public void putEpaSoftParams(){
+		
+		EpaSoftPanel epaSoftPanel = epaSoftFrame.getPanel();
+    	MainDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
+    	MainDao.getGswProperties().put("FILE_RPT", epaSoftPanel.getFileRpt());
+    	MainDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
+    	
 	}    
     
     public void putHecrasParams(){
@@ -478,38 +422,55 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
     
     public void putDatabaseParams(){
-    	DatabasePanel dbPanel = dbFrame.getPanel();
-    	MainDao.getGswProperties().put("POSTGIS_HOST", dbPanel.getHost());
-    	MainDao.getGswProperties().put("POSTGIS_PORT", dbPanel.getPort());
-    	MainDao.getGswProperties().put("POSTGIS_DATABASE", dbPanel.getDatabase());
-    	MainDao.getGswProperties().put("POSTGIS_USER", dbPanel.getUser());
-    	MainDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(dbPanel.getPassword()));
-    	MainDao.getGswProperties().put("POSTGIS_REMEMBER", dbPanel.getRemember().toString());
-    	//MainDao.getGswProperties().put("POSTGIS_AUTOSTART", "true");    	
+    	
+    	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
+    	MainDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
+    	MainDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
+    	if (ppPanel.getOptDatabaseSelected()){
+    		MainDao.getGswProperties().put("STORAGE", "DATABASE");
+    	}
+    	else if (ppPanel.getOptDbfSelected()){
+    		MainDao.getGswProperties().put("STORAGE", "DBF");
+    	}
+    	else{
+    		MainDao.getGswProperties().put("STORAGE", "");
+    	}
+    	
+    	//PropertiesMap gswProp = MainDao.getGswProperties();
+    	MainDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
+    	MainDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
+    	MainDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());
+    	MainDao.getGswProperties().put("POSTGIS_USER", ppPanel.getUser());
+    	MainDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(ppPanel.getPassword()));
+    	MainDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.getRemember().toString());
     	MainDao.getGswProperties().put("POSTGIS_DATA", "");
     	MainDao.getGswProperties().put("POSTGIS_BIN", "");
+    	
 	}	   
     
     public void putGisParams(){
+    	
     	GisPanel gisPanel = gisFrame.getPanel();
     	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
     	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
     	MainDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
     	MainDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
     	MainDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
+    	
 	}	
     
 	
+    // TODO: 
 	public void saveGswFile(){
 
 		// Update FILE_GSW parameter 
 		prop.put("FILE_GSW", MainDao.getGswPath());
     	
 		// Get EPANET and SWMM parameters
-    	EpaPanel epanetPanel = epanetFrame.getPanel();
-    	putEpaParams("EPANET", epanetPanel);
-    	EpaPanel swmmPanel = swmmFrame.getPanel();        	
-    	putEpaParams("EPASWMM", swmmPanel);      
+//    	EpaPanel epanetPanel = epanetFrame.getPanel();
+//    	putEpaParams("EPANET", epanetPanel);
+//    	EpaPanel swmmPanel = swmmFrame.getPanel();        	
+//    	putEpaParams("EPASWMM", swmmPanel);      
     	
 		// Get HECRAS parameters
 		putHecrasParams();		
@@ -528,10 +489,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void closeApp(){
 	
         try {
-			putFrameParams(swmmFrame, "SWMM");
-	        putFrameParams(epanetFrame, "EPANET");
+	        putFrameParams(epaSoftFrame, "");
 	        putFrameParams(hecRasFrame, "HECRAS");
-	        putFrameParams(dbFrame, "DB");      
+	        putFrameParams(ppFrame, "PP");        
 	        putFrameParams(configFrame, "CONFIG");	
 	        putMainParams("MAIN");
 	        saveGswFile();  
@@ -550,10 +510,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmOpenPreferences.addActionListener(this);
 		mntmSavePreferences.addActionListener(this);
 		mntmSaveAsPreferences.addActionListener(this);
-		
-		mntmSwmm.addActionListener(this);
-		mntmEpanet.addActionListener(this);
-		mntmHecras.addActionListener(this);
 		mntmSoftware.addActionListener(this);
 		mntmSampleEpanet.addActionListener(this);
 		mntmSampleEpaswmm.addActionListener(this);
@@ -579,21 +535,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 
-	public void openSwmm() {
-		manageFrames(swmmFrame);
-	}	
-	
-	public void openEpanet() {
-		manageFrames(epanetFrame);
-	}	
-
 	public void openHecras() {
 		manageFrames(hecRasFrame);
 	}	
-
-	public void openDatabase() {
-		manageFrames(dbFrame);
-	}		
+	
+	public void openProjectPreferences() {
+		manageFrames(ppFrame);
+	}	
 
 	public void openSoftware() {
 		manageFrames(configFrame);
@@ -611,8 +559,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	public void updateEpaFrames(){
-		epanetFrame.getPanel().selectSourceType();
-		swmmFrame.getPanel().selectSourceType();
+		//epaSoftFrame.getPanel().selectSourceType();
 	}
 	
 	public void enableCatalog(boolean enable) {
@@ -640,12 +587,14 @@ public class MainFrame extends JFrame implements ActionListener{
 
 
 	public void setCursorFrames(Cursor cursor) {
-		swmmFrame.getPanel().setCursor(cursor);
-		epanetFrame.getPanel().setCursor(cursor);
+		
+		epaSoftFrame.getPanel().setCursor(cursor);
 		hecRasFrame.getPanel().setCursor(cursor);
-		dbFrame.getPanel().setCursor(cursor);
 		configFrame.getPanel().setCursor(cursor);
 		gisFrame.getPanel().setCursor(cursor);
 		this.setCursor(cursor);
+		
 	}
+	
+	
 }

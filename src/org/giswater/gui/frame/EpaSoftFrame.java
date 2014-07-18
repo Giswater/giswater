@@ -29,31 +29,31 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-import org.giswater.controller.MainController;
-import org.giswater.gui.panel.EpaPanel;
+import org.giswater.controller.EpaSoftController;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.util.Utils;
 
 
-public class EpaFrame extends JInternalFrame implements InternalFrameListener{
+public class EpaSoftFrame extends JInternalFrame implements InternalFrameListener{
 
 	private static final long serialVersionUID = 5510726193938743935L;
-	private EpaPanel panel;
-	private MainController controller;
+	private EpaSoftPanel panel;
+	private EpaSoftController controller;
 	
 	
-	public EpaFrame(){
+	public EpaSoftFrame(){
 		initComponents();
 	}
 	
 
-	public EpaPanel getPanel(){
+	public EpaSoftPanel getPanel(){
 		return panel;
 	}
 	
 	           
     private void initComponents() {
 
-    	panel = new EpaPanel();
+    	panel = new EpaSoftPanel();
 
     	panel.setFrame(this);
         setTitle("");
@@ -95,7 +95,8 @@ public class EpaFrame extends JInternalFrame implements InternalFrameListener{
 		if (controller == null){
 			controller = panel.getController();
 		}
-		controller.schemaChanged();
+		//controller.schemaChanged();
+		controller.updateView();
 	}
 
 

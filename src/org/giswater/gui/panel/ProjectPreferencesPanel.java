@@ -46,6 +46,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ProjectPreferencesController;
+import org.giswater.gui.frame.ProjectPreferencesFrame;
 
 
 public class ProjectPreferencesPanel extends JPanel implements ActionListener {
@@ -93,12 +94,15 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
-	private static final Integer BUTTON_WIDTH = 80;
+	private static final Integer BUTTON_WIDTH = 75;
+	private JButton btnAccept;
+	private ProjectPreferencesFrame frame;
+	private JButton btnApply;
 	
 	
 	public ProjectPreferencesPanel() {
 		
-		setLayout(new MigLayout("", "[75px:n,grow][][154.00px:n,grow][]", "[10px][][][35.00][61.00][][59.00][]"));
+		setLayout(new MigLayout("", "[90px:n][][154.00px:n,grow][]", "[10px][][][35.00][61.00][][59.00][]"));
 		
 		JLabel lblWaterSoftware = new JLabel("Water software:");
 		add(lblWaterSoftware, "cell 0 1,alignx right");
@@ -138,7 +142,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelDbf.setName("panelDatabase");
 		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelDbf, "cell 0 4 4 1,grow");
-		panelDbf.setLayout(new MigLayout("", "[70px:n][100px:n,grow][10px:n][]", "[]"));
+		panelDbf.setLayout(new MigLayout("", "[75px:n][100px:n,grow][10px:n][]", "[]"));
 		
 		lblFolderShp = new JLabel("Data folder:");
 		panelDbf.add(lblFolderShp, "cell 0 0,alignx right");
@@ -162,13 +166,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelDB.setName("panelDatabase");
 		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelDB, "cell 0 5 4 1,grow");
-		panelDB.setLayout(new MigLayout("", "[]", "[][][]"));
+		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
 		JPanel panelDatabase = new JPanel();
 		panelDB.add(panelDatabase, "cell 0 0");
 		panelDatabase.setName("panelDatabase");
 		panelDatabase.setBorder(new TitledBorder(null, "Connection Parameters", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
-		panelDatabase.setLayout(new MigLayout("", "[70px:n][100px:n:100px][20px][]", "[][][][][][][]"));
+		panelDatabase.setLayout(new MigLayout("", "[65px:n][100px:n:100px][20px][::120px]", "[][][][][][][]"));
 		
 		lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); //$NON-NLS-1$
 		panelDatabase.add(lblNewLabel, "cell 0 0,alignx right");
@@ -230,7 +234,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelDB.add(panelManagement, "cell 0 1");
 		panelManagement.setName("panelDatabase");
 		panelManagement.setBorder(new TitledBorder(null, "Project Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
-		panelManagement.setLayout(new MigLayout("", "[70px:n][100px,grow][30px][][][][]", "[23px][][]"));
+		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][30px][][][][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); //$NON-NLS-1$
 		panelManagement.add(lblProject, "cell 0 0,alignx right");
@@ -305,19 +309,34 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCreateGisProject.setMinimumSize(new Dimension(80, 23));
 		btnCreateGisProject.setActionCommand("closePanel");
 		
+		btnApply = new JButton();
+		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); //$NON-NLS-1$
+		btnApply.setMinimumSize(new Dimension(75, 23));
+		btnApply.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnApply.actionCommand")); //$NON-NLS-1$
+		add(btnApply, "flowx,cell 2 7,alignx right");
+		
+		btnAccept = new JButton();
+		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); //$NON-NLS-1$
+		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
+		btnAccept.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.actionCommand")); //$NON-NLS-1$
+		add(btnAccept, "cell 2 7,alignx right");
+		
 		JButton btnClose = new JButton();
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
-		btnClose.setActionCommand("closePanel");
+		btnClose.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnClose.actionCommand")); //$NON-NLS-1$
 		add(btnClose, "cell 3 7");
 		
-		setupListeners();
-
+		// Group the radio buttons
+		ButtonGroup groupSoftware = new ButtonGroup();
+		groupSoftware.add(optEpanet);
+		groupSoftware.add(optSwmm);	
+		groupSoftware.add(optHecras);	
+		ButtonGroup groupStorage = new ButtonGroup();
+		groupStorage.add(optDbf);
+		groupStorage.add(optDatabase);
 		
-		//Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
-	    group.add(optDbf);
-	    group.add(optDatabase);	
+		setupListeners();
 	    
 	}
 
@@ -346,6 +365,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		//controller.action(e.getActionCommand());
 	}
 
+	
+	public ProjectPreferencesFrame getFrame(){
+		return frame;
+	}
+
+	public void setFrame(ProjectPreferencesFrame frame){
+		this.frame = frame;
+	}
 
 	public void setControl(ProjectPreferencesController controller) {
 		this.controller = controller;
@@ -383,20 +410,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCreate.setEnabled(enable);
 		btnDelete.setEnabled(enable);
 		btnRename.setEnabled(enable);
+		btnCopy.setEnabled(enable);
 //		btnOptions.setEnabled(enable);
 //		btnDesign.setEnabled(enable);
 //		btnSectorSelection.setEnabled(enable);
 //		btnReport.setEnabled(enable);
 //		lblSchema.setEnabled(enable);
 //		cboSchema.setEnabled(enable);	
-	}	
-	
-	public void enableControlsText(boolean enable) {
-		txtInput.setEnabled(enable);
-//		txtProject.setEnabled(enable);
-//		txtFileInp.setEnabled(enable);
-//		txtFileRpt.setEnabled(enable);
-		this.requestFocusInWindow();		
 	}	
 	
 	
@@ -439,12 +459,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 			theModel.removeAllElements();
 		}
 		boolean enabled = (v != null && v.size() > 0);
-//		btnDelete.setEnabled(enabled);
-//		btnRename.setEnabled(enabled);
-//		btnSectorSelection.setEnabled(enabled);
-//		btnOptions.setEnabled(enabled);
-//		btnDesign.setEnabled(enabled);
-//		btnReport.setEnabled(enabled);
+		btnDelete.setEnabled(enabled);
+		btnRename.setEnabled(enabled);
+		btnCopy.setEnabled(enabled);
 		
 	}
 
@@ -532,6 +549,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtPassword.setEnabled(enabled);
 		chkRemember.setEnabled(enabled);
 	}
+	
+	public void enableControlsText(boolean enabled) {
+		txtInput.setEnabled(enabled);
+		this.requestFocusInWindow();		
+	}
+	
 	
 		
 }

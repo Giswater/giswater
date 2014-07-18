@@ -13,6 +13,7 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,14 +25,15 @@ import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.HecRasController;
-import org.giswater.controller.MainController;
+import org.giswater.controller.NewProjectController;
 import org.giswater.model.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
 
 
 public class ProjectPanel extends JPanel implements ActionListener{
 	
-	private MainController controller;
+	private JDialog parent;
+	private NewProjectController controller;
 	private HecRasController hecRasController;
 	private JTextField txtName;
 	private JTextField txtTitle;
@@ -47,11 +49,13 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	
 	public ProjectPanel(String defaultSrid) {
+		
 		initConfig();
 		txtFilter.setText(defaultSrid);
 		DateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
 		Date date = new Date();
 		txtDate.setText(dateFormat.format(date));
+		
 	}
 		
 	
@@ -188,7 +192,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	}
 	
 
-	public void setController(MainController controller) {
+	public void setController(NewProjectController controller) {
 		this.controller = controller;
 	}
 
@@ -248,9 +252,14 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	}
 
 
+	public JDialog getParent() {
+		return parent;
+	}
 
 
-
+	public void setParent(JDialog projectDialog) {
+		parent = projectDialog;
+	}
 
 	
 }

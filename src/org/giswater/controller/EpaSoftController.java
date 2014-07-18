@@ -27,11 +27,8 @@ import java.sql.ResultSet;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
@@ -53,12 +50,11 @@ import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
-import org.giswater.gui.panel.ProjectPanel;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.model.Model;
 import org.giswater.model.ModelDbf;
 import org.giswater.model.ModelPostgis;
-import org.giswater.model.TableModelSrid;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.PropertiesMap;
@@ -68,7 +64,8 @@ import org.giswater.util.Utils;
 public class EpaSoftController{
 
 	private EpaSoftPanel view;
-    private PropertiesMap prop;
+	private MainFrame mainFrame;
+	private ProjectPreferencesPanel ppPanel;
     private PropertiesMap gswProp;
     private File fileInp;
     private File fileRpt;
@@ -78,15 +75,9 @@ public class EpaSoftController{
     private boolean importChecked;
     
     private String usersFolder;
-    private MainFrame mainFrame;
 	private String software;
 	
-	private TableModelSrid model;
-	private TableColumnModel tcm;
-	private ProjectPanel projectPanel;
-	private JDialog projectDialog;
-	
-	// DBF only
+	// DBF
 	private File dirShp;
 	private boolean readyShp = false;
 	private boolean dbSelected = false;
@@ -94,9 +85,9 @@ public class EpaSoftController{
     
     public EpaSoftController(EpaSoftPanel view, MainFrame mf, String software) {
     	
-    	this.mainFrame = mf;
     	this.view = view;	
-        this.prop = MainDao.getPropertiesFile();
+    	this.mainFrame = mf;
+    	this.ppPanel = mainFrame.ppFrame.getPanel();
         this.gswProp = MainDao.getGswProperties();
         this.software = software;
 	    view.setController(this);        
@@ -133,33 +124,7 @@ public class EpaSoftController{
 		view.getFrame().setVisible(false);
 	}
 	
-
-	private void checkCatalogTables(String schemaName){
-		view.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
-		view.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
-		view.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
-		view.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-		view.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
-		view.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));		
-	}
 	
-	
-	private void checkOptionsTables(String schemaName){
-		view.enableResultCat(MainDao.checkTable(schemaName, "rpt_result_cat"));
-		view.enableResultSelection(MainDao.checkTable(schemaName, "result_selection"));
-	}
-	
-	
-	public void enableCatalog(boolean enable){
-		mainFrame.enableCatalog(enable);
-	}
-	
-	
-
-
-
-	
-		
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection", 380, 280);
@@ -318,6 +283,7 @@ public class EpaSoftController{
     }
     
     
+    // TODO:
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -345,16 +311,16 @@ public class EpaSoftController{
             return;
         }
 
-        // TODO: Get schema from preferences file
-        String schema = view.getSelectedSchema();
+        // Get schema from Project Preferences view
+        String schema = ppPanel.getSelectedSchema();
         if (schema.equals("")){
             Utils.showError(view, "any_schema_selected");
             return;
         }
         MainDao.setSchema(schema);
         
-        // TODO: Get software version from view
-        String softwareId = view.getSoftware();
+        // Get software version from Project Preferences view
+        String softwareId = ppPanel.getSoftware();
         if (softwareId.equals("")){
             Utils.showError(view, "any_software_selected");
             return;
@@ -441,8 +407,8 @@ public class EpaSoftController{
             return;
         }
         
-        // TODO: Get software version from view
-		String id = view.getSoftware();
+        // Get software version from Project Preferences view
+		String id = ppPanel.getSoftware();
         if (id.equals("")){
             Utils.showError(view, "any_software_selected");
             return;
@@ -518,121 +484,7 @@ public class EpaSoftController{
 
 	}    
     
-	
 
-	
-	
-	private String getUserSrid(String defaultSrid){
-		
-		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
-		if (sridQuestion){
-			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
-			if (sridValue == null){
-				return "";
-			}
-		}
-		else{
-			sridValue = defaultSrid;
-		}
-		return sridValue.trim().toLowerCase();
-		
-	}
-	
-	
-
-	
-
-	
-	
-	public void checkedType() {
-
-		String filterType = "";
-		Boolean isGeo = projectPanel.isGeoSelected();
-		Boolean isProj = projectPanel.isProjSelected();
-		if (!isGeo && !isProj){
-			Utils.showMessage("You have to select at least one Type: GEOGCS or PROJCS");
-			return;
-		}
-		if (isGeo){
-			filterType = "substr(srtext, 1, 6) = 'GEOGCS'";
-		}
-		if (isProj){
-			if (!filterType.equals("")){
-				filterType+= " OR ";
-			}
-			filterType+= "substr(srtext, 1, 6) = 'PROJCS'";
-		}
-		updateTableModel(filterType);
-		
-	}
-	
-	
-	public void acceptProject(){
-		
-		// SRID
-		String sridValue = projectPanel.getSrid();
-		if (sridValue.equals("-1")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("srid_select"));
-			return;
-		}
-		
-		// Project Name
-		String schemaName = projectPanel.getName();
-		if (schemaName.equals("")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_name"));
-			return;
-		}
-		schemaName = validateName(schemaName);
-		if (schemaName.equals("")){
-			Utils.showError(view, "schema_valid_name");
-			return;
-		}
-		
-		// Project Title, Author and Date
-		String title = projectPanel.getTitle();
-		if (title.equals("")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_title"));
-			return;
-		}
-		String author = projectPanel.getAuthor();
-		String date = projectPanel.getDate();
-		
-		// Save properties
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-		
-    	view.enableControlsText(false);
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
-		
-		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
-		if (status){
-			MainDao.setSchema(schemaName);
-			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-				" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			Utils.showMessage(view, "schema_creation_completed");
-		}
-		
-		// Update view
-		view.setSchemaModel(MainDao.getSchemas(software));	
-		schemaChanged();
-		view.enableControlsText(true);
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-		closeProject();
-		
-	}
-	
-	
-	public void closeProject(){
-		projectDialog.dispose();
-	}
-	
-	
 	
 	// Data Manager
 	public void showProjectId(){
@@ -651,27 +503,29 @@ public class EpaSoftController{
 	}	
 	
 	
+	// TODO:
 	public void showMaterials(){
 		
 		ResultSet rs = MainDao.getTableResultset("cat_mat");
 		if (rs == null) return;
 		MaterialsDialog dialog = new MaterialsDialog();
-		if (mainFrame.swmmFrame.isSelected()){
-			dialog.setName("n");
-		}
-		else{
-			dialog.setName("roughness");
-		}		
+//		if (mainFrame.swmmFrame.isSelected()){
+//			dialog.setName("n");
+//		}
+//		else{
+//			dialog.setName("roughness");
+//		}		
 		showCatalog(dialog, rs);
 		
 	}	
 	
 	
+	// TODO:
 	public void showPatterns(){
 		ResultSet rs = MainDao.getTableResultset("inp_pattern");
 		if (rs == null) return;		
 		PatternsDialog dialog = new PatternsDialog();
-		dialog.enableType(mainFrame.swmmFrame.isSelected());
+		//dialog.enableType(mainFrame.swmmFrame.isSelected());
 		showCatalog(dialog, rs);
 	}	
 	
@@ -761,6 +615,32 @@ public class EpaSoftController{
         	Utils.showMessage(view, errorMsg);
         }
 	    
+	}
+
+
+	// TODO: Update view content when frame is activated or...
+	public void updateView() {
+		
+		// Get parameters from current gsw file
+		String title = "";
+		String software = gswProp.get("WATER_SOFTWARE");
+		if (software.equals("SWMM")){
+			title = "EPASWMM - ";
+		} 
+		else if (software.equals("EPANET")){
+			title = "EPANET - ";
+		}
+		String version = gswProp.get("WATER_VERSION");
+		title+= version;
+		view.setTitle(title);
+		String storage = gswProp.get("WATER_STORAGE");
+		if (storage.equals("DBF")){
+			view.enableDatabaseOptions(false);
+		}
+		else{
+			view.enableDatabaseOptions(true);
+		}
+				
 	}	
 	
 	

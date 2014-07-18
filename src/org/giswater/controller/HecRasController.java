@@ -34,7 +34,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.model.TableModelSrid;
@@ -44,7 +43,6 @@ import org.giswater.util.Utils;
 
 public class HecRasController{
 
-	private MainFrame mainFrame;
 	private HecRasPanel view;
     private PropertiesMap prop;
     private PropertiesMap gswProp;
@@ -59,9 +57,8 @@ public class HecRasController{
 	private JDialog projectDialog;
 
     
-    public HecRasController(HecRasPanel view, MainFrame mf) {
+    public HecRasController(HecRasPanel view) {
     	
-    	this.mainFrame = mf;
     	this.view = view;	
         this.prop = MainDao.getPropertiesFile();
         this.gswProp = MainDao.getGswProperties();
@@ -75,9 +72,9 @@ public class HecRasController{
     
     private void setDefaultValues(){
     	
-    	fileSdf = new File(gswProp.getProperty("FILE_SDF", userHomeFolder));
+    	fileSdf = new File(gswProp.getProperty("HECRAS_FILE_SDF", userHomeFolder));
     	view.setFileSdf(fileSdf.getAbsolutePath());
-    	fileAsc = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));
+    	fileAsc = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));
 		if (fileAsc.exists()) {
 			view.setFileAsc(fileAsc.getAbsolutePath());
 		}	
@@ -113,11 +110,6 @@ public class HecRasController{
 	}
 	
 	
-	public void openDatabase(){
-		mainFrame.openDatabase();
-	}
-	
-	
 	public void isConnected(){
 
 		// Check if we already are connected
@@ -140,20 +132,8 @@ public class HecRasController{
 		if (MainDao.isConnected()){
 			String schemaName = view.getSelectedSchema();
 			MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
 		}
 		
-	}
-	
-	
-	// TODO:
-	private void checkCatalogTables(String schemaName){
-//		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
-//		mainFrame.enableConduit(false);
-//		mainFrame.enableMaterials(false);
-//		mainFrame.enablePatterns(false);
-//		mainFrame.enableTimeseries(false);
-//		mainFrame.enableCurves(false);		
 	}
 	
 	
@@ -187,7 +167,7 @@ public class HecRasController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
-        File file = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));	
+        File file = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -230,7 +210,7 @@ public class HecRasController{
             path += ".asc";
         }
         fileAsc = new File(path);        
-        gswProp.put("FILE_ASC", fileAsc.getAbsolutePath());
+        gswProp.put("HECRAS_FILE_ASC", fileAsc.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -365,7 +345,6 @@ public class HecRasController{
         	view.setSchemaModel(MainDao.getSchemas("HECRAS"));
         	schemaName = view.getSelectedSchema();
         	MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     		Utils.showMessage(view, "schema_deleted", "");
         }

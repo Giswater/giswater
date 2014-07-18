@@ -364,6 +364,11 @@ public class MainDao {
     
     public static PropertiesMap getGswProperties() {
         return gswProp;
+    }   
+    
+    
+    public static void setGswProperties(PropertiesMap prop) {
+    	gswProp = prop;
     }    
 
 
