@@ -96,6 +96,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JLabel lblNewLabel;
 	private JButton btnClose;
 	private JSeparator separator;
+	private JCheckBox chkSubcatchments;
 
 	
 	public EpaPanel() {
@@ -173,15 +174,19 @@ public class EpaPanel extends JPanel implements ActionListener {
 		return txtProject.getText().trim();
 	}
 	
-	public boolean isExportChecked() {
+	public boolean isSubcatchmentsSelected() {
+		return chkSubcatchments.isSelected();
+	}
+	
+	public boolean isExportSelected() {
 		return chkExport.isSelected();
 	}
 
-	public boolean isExecChecked() {
+	public boolean isExecSelected() {
 		return chkExec.isSelected();
 	}
 
-	public boolean isImportChecked() {
+	public boolean isImportSelected() {
 		return chkImport.isSelected();
 	}
 	
@@ -403,6 +408,10 @@ public class EpaPanel extends JPanel implements ActionListener {
 		chkExport = new JCheckBox();
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); //$NON-NLS-1$
 		panel_4.add(chkExport, "cell 0 6 2 1");
+		
+		chkSubcatchments = new JCheckBox();
+		chkSubcatchments.setText(BUNDLE.getString("EpaPanel.chckbxExportSubcatchments.text")); //$NON-NLS-1$
+		panel_4.add(chkSubcatchments, "cell 2 6");
 
 		JLabel label = new JLabel();
 		label.setText(BUNDLE.getString("Form.label.text")); //$NON-NLS-1$

@@ -133,6 +133,10 @@ public class ModelPostgis extends Model {
 	
     // Main procedure
     public static boolean processAll(File fileInp) {
+    	return processAll(fileInp, false);
+    }
+    
+    public static boolean processAll(File fileInp, boolean isSubcatchmentSelected) {
 
         Utils.getLogger().info("exportINP");
 
@@ -191,6 +195,12 @@ public class ModelPostgis extends Model {
             	}
             }
             rs.close();
+            
+            // TODO: Subcatchment function
+            if (isSubcatchmentSelected){
+            	Utils.getLogger().info("Process subcatchments");
+            }
+            
             rat.close();
             raf.close();
 

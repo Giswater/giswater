@@ -61,9 +61,9 @@ public class MainController{
     private File fileInp;
     private File fileRpt;
     private String projectName;
-    private boolean exportChecked;
-    private boolean execChecked;
-    private boolean importChecked;
+    private boolean exportSelected;
+    private boolean execSelected;
+    private boolean importSelected;
     
     private String usersFolder;
     private MainFrame mainFrame;
@@ -431,11 +431,11 @@ public class MainController{
         boolean continueExec = true;
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -464,7 +464,7 @@ public class MainController{
 		}        
         
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -475,12 +475,13 @@ public class MainController{
                 	showSectorSelection();
                 }
                 return;
-            }               
-            continueExec = ModelPostgis.processAll(fileInp);
+            }        
+            boolean selected = view.isSubcatchmentsSelected();
+            continueExec = ModelPostgis.processAll(fileInp, selected);
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -493,7 +494,7 @@ public class MainController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError("file_rpt_not_selected");
                 return;
@@ -527,11 +528,11 @@ public class MainController{
         boolean continueExec = true;
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -571,7 +572,7 @@ public class MainController{
         }    
         
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -580,7 +581,7 @@ public class MainController{
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -593,7 +594,7 @@ public class MainController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError(view, "file_rpt_not_selected");
                 return;
