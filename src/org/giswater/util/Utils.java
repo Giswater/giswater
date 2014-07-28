@@ -393,7 +393,10 @@ public class Utils {
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
+			logError(e);
+			return false;			
+		} catch (InterruptedException e) {
 			logError(e);
 			return false;
 		}	
@@ -426,7 +429,9 @@ public class Utils {
 
 		try {
 			Desktop.getDesktop().browse(new URI(url));
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
+			logError(e);
+		} catch (URISyntaxException e) {
 			logError(e);
 		}
 		

@@ -196,9 +196,21 @@ public class ModelPostgis extends Model {
             }
             rs.close();
             
-            // TODO: Subcatchment function
+            // Subcatchment function
             if (isSubcatchmentSelected){
             	Utils.getLogger().info("Process subcatchments");
+            	
+            	stat = MainDao.getConnectionPostgis().createStatement();
+            	
+                // Get content of target table
+            	sql = "SELECT " + MainDao.getSchema() + ".gw_dump_subcatchments();";            
+                rs = stat.executeQuery(sql);
+                
+                while (rs.next()) {                	
+                	raf.writeBytes(rs.getString("gw_dump_subcatchments"));
+                	raf.writeBytes("\r\n");
+                }            	
+         
             }
             
             rat.close();
