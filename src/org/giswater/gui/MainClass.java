@@ -60,7 +60,7 @@ public class MainClass {
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
 				if (versionCode == null){
-					versionCode = "1.1.101";
+					versionCode = "1.1.105";
 				}
 				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				

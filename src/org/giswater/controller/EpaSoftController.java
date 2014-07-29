@@ -22,7 +22,6 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
 import javax.swing.JDialog;
@@ -34,6 +33,7 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
+import org.giswater.gui.dialog.catalog.HydrologyCatalogDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
 import org.giswater.gui.dialog.catalog.ProjectDialog;
@@ -61,74 +61,37 @@ import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class EpaSoftController{
+public class EpaSoftController extends AbstractController{
 
 	private EpaSoftPanel view;
-	private MainFrame mainFrame;
 	private ProjectPreferencesPanel ppPanel;
+	private MainFrame mainFrame;
     private PropertiesMap gswProp;
     private File fileInp;
     private File fileRpt;
     private String projectName;
     private boolean exportChecked;
     private boolean execChecked;
-    private boolean importChecked;
-    
-    private String usersFolder;
-	private String software;
+    private boolean importChecked; 
 	
-	// DBF
 	private File dirShp;
 	private boolean readyShp = false;
-	private boolean dbSelected = false;
 
     
-    public EpaSoftController(EpaSoftPanel view, MainFrame mf, String software) {
+    public EpaSoftController(EpaSoftPanel view, MainFrame mf) {
     	
     	this.view = view;	
     	this.mainFrame = mf;
     	this.ppPanel = mainFrame.ppFrame.getPanel();
         this.gswProp = MainDao.getGswProperties();
-        this.software = software;
 	    view.setController(this);        
-    	usersFolder = MainDao.getUsersPath(); 	
     	
-	}
-   
-
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				if (!actionCommand.equals("schemaChanged")){
-					Utils.getLogger().info(actionCommand);
-				}
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
-	
-	
-	public void closePanel(){
-		view.getFrame().setVisible(false);
 	}
 	
 	
 	public void showSectorSelection(){
 		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection", 380, 280);
-        //JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection");
         panel.setParent(dialog);
         dialog.setVisible(true);
 	}	
@@ -200,7 +163,6 @@ public class EpaSoftController{
 		}
         
 	}
-	
 		
 
     public void chooseFileInp() {
@@ -210,7 +172,7 @@ public class EpaSoftController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_inp"));
-        File file = new File(gswProp.get(software+"_FILE_INP", usersFolder));	
+        File file = new File(gswProp.get("FILE_INP", usersFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -233,7 +195,7 @@ public class EpaSoftController{
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_rpt"));
-        File file = new File(gswProp.get(software+"_FILE_RPT", usersFolder));	
+        File file = new File(gswProp.get("FILE_RPT", usersFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -259,7 +221,7 @@ public class EpaSoftController{
             path += ".inp";
         }
         fileInp = new File(path);        
-        gswProp.put(software+"_FILE_INP", fileInp.getAbsolutePath());
+        gswProp.put("FILE_INP", fileInp.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -276,7 +238,7 @@ public class EpaSoftController{
             path += ".rpt";
         }
         fileRpt = new File(path);        
-        gswProp.put(software+"_FILE_RPT", fileRpt.getAbsolutePath());
+        gswProp.put("FILE_RPT", fileRpt.getAbsolutePath());
         MainDao.savePropertiesFile();
         return true;    
         
@@ -287,6 +249,7 @@ public class EpaSoftController{
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    	Boolean dbSelected = ppPanel.getOptDatabaseSelected();
     	if (dbSelected){
     		executePostgis();
     	} else{
@@ -320,7 +283,7 @@ public class EpaSoftController{
         MainDao.setSchema(schema);
         
         // Get software version from Project Preferences view
-        String softwareId = ppPanel.getSoftware();
+        String softwareId = ppPanel.getVersionSoftware();
         if (softwareId.equals("")){
             Utils.showError(view, "any_software_selected");
             return;
@@ -408,7 +371,7 @@ public class EpaSoftController{
         }
         
         // Get software version from Project Preferences view
-		String id = ppPanel.getSoftware();
+		String id = ppPanel.getVersionSoftware();
         if (id.equals("")){
             Utils.showError(view, "any_software_selected");
             return;
@@ -423,7 +386,7 @@ public class EpaSoftController{
 		}
 		
 		// Get INP template file
-		String templatePath = MainDao.getFolderConfig()+version+".inp";
+		String templatePath = MainDao.getInpFolder()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			Utils.showError(view, "inp_error_notfound", templatePath);				
@@ -503,30 +466,42 @@ public class EpaSoftController{
 	}	
 	
 	
-	// TODO:
-	public void showMaterials(){
+	public void showHydrologyCatalog(){
+		ResultSet rs = MainDao.getTableResultset("cat_hydrology");
+		if (rs == null) return;		
+		HydrologyCatalogDialog dialog = new HydrologyCatalogDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	public void showMaterialCatalog(){
 		
 		ResultSet rs = MainDao.getTableResultset("cat_mat");
 		if (rs == null) return;
 		MaterialsDialog dialog = new MaterialsDialog();
-//		if (mainFrame.swmmFrame.isSelected()){
-//			dialog.setName("n");
-//		}
-//		else{
-//			dialog.setName("roughness");
-//		}		
+		if (ppPanel.getWaterSoftware().equals("EPASWMM")){
+			dialog.setName("n");
+		}
+		else{
+			dialog.setName("roughness");
+		}		
 		showCatalog(dialog, rs);
 		
 	}	
 	
 	
-	// TODO:
 	public void showPatterns(){
+		
 		ResultSet rs = MainDao.getTableResultset("inp_pattern");
 		if (rs == null) return;		
 		PatternsDialog dialog = new PatternsDialog();
-		//dialog.enableType(mainFrame.swmmFrame.isSelected());
+		if (ppPanel.getWaterSoftware().equals("EPASWMM")){
+			dialog.enableType(true);
+		} else{
+			dialog.enableType(false);
+		}
 		showCatalog(dialog, rs);
+		
 	}	
 	
 	
@@ -622,26 +597,22 @@ public class EpaSoftController{
 	public void updateView() {
 		
 		// Get parameters from current gsw file
-		String title = "";
-		String software = gswProp.get("WATER_SOFTWARE");
-		if (software.equals("SWMM")){
-			title = "EPASWMM - ";
-		} 
-		else if (software.equals("EPANET")){
-			title = "EPANET - ";
-		}
-		String version = gswProp.get("WATER_VERSION");
-		title+= version;
-		view.setTitle(title);
-		String storage = gswProp.get("WATER_STORAGE");
+		String software = gswProp.get("SOFTWARE");
+		view.setTitle(software);
+		String storage = gswProp.get("STORAGE");
 		if (storage.equals("DBF")){
-			view.enableDatabaseOptions(false);
+			view.enableDatabaseButtons(false);
 		}
 		else{
-			view.enableDatabaseOptions(true);
+			view.enableDatabaseButtons(true);
 		}
 				
 	}	
+	
+	
+	public void closePanel(){
+		view.getFrame().setVisible(false);
+	}
 	
 	
 }

@@ -21,7 +21,6 @@
 package org.giswater.controller;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -33,7 +32,7 @@ import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class ConfigController {
+public class ConfigController extends AbstractController{
 
 	private ConfigPanel view;
     private PropertiesMap prop;
@@ -56,6 +55,7 @@ public class ConfigController {
 		view.setOpenRpt(prop.get("OPEN_RPT"));
 		view.setOverwriteInp(prop.get("OVERWRITE_INP"));
 		view.setOverwriteRpt(prop.get("OVERWRITE_RPT"));
+		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
 		view.setSqlLog(prop.get("SQL_LOG"));
 		view.setSridQuestion(prop.get("SRID_QUESTION"));
 		view.setLoadRaster(prop.get("LOAD_RASTER"));
@@ -72,26 +72,6 @@ public class ConfigController {
 		view.setLogFolderSize(size);
 		
     }
-       
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-		} catch (Exception e) {
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
 	
 	
 	public void configAccept(){
@@ -109,6 +89,7 @@ public class ConfigController {
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
 		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());		
+		prop.put("AUTO_IMPORT_RPT", view.getAutoImportRpt());		
 
 		// Close frame
 		view.getFrame().setVisible(false);

@@ -45,7 +45,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -61,10 +60,9 @@ import org.giswater.util.Utils;
 public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private GisFrame gisFrame;	
-	private JTabbedPane tabbedPane;
 	private JLabel lblProjectFolder;
 	private JButton btnProjectFolder;
 	private JLabel lblProjectName;
@@ -81,7 +79,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JLabel lblSchema;
 	private JLabel lblDataStorage;
 	private JComboBox<String> cboDataStorage;
-	private JPanel panel_1;
 	private JButton btnClose;
     
 
@@ -105,10 +102,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	public void setGisExtension(String gis) {
 		this.gisExtension = gis;
-	}	
-	
-	public void setPanelTitle(String title) {
-		tabbedPane.setTitleAt(0, title);
 	}	
 	
 	public void setProjectFolder(String path) {
@@ -195,22 +188,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][226.00][12]"));
-
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(tabbedPane, "cell 1 1,grow");
-
-		// Panel Database connection
-		panel_1 = new JPanel();
-		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null); //$NON-NLS-1$
-		panel_1.setLayout(new MigLayout("", "[100px:n][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00][]", "[10px:n][40px][][][][][10px:n][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
-		panel_1.add(lblProjectFolder, "cell 0 0,alignx right");
+		add(lblProjectFolder, "cell 0 1,alignx right");
 		
 		scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, "cell 1 0 2 1,grow");
+		add(scrollPane, "cell 1 1 2 1,grow");
 		
 		txtProjectFolder = new JTextArea();
 		txtProjectFolder.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -218,49 +202,49 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectFolder.setText("");
 		
 		btnProjectFolder = new JButton();
-		panel_1.add(btnProjectFolder, "cell 3 0");
+		add(btnProjectFolder, "cell 3 1");
 		btnProjectFolder.setText("...");
 		btnProjectFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnProjectFolder.setActionCommand("chooseProjectFolder"); //$NON-NLS-1$
+		btnProjectFolder.setActionCommand("chooseProjectFolder"); 
 		
 		lblProjectName = new JLabel(BUNDLE.getString("Gis.lblProjectName"));
-		panel_1.add(lblProjectName, "cell 0 1,alignx right");
+		add(lblProjectName, "cell 0 2,alignx right");
 		
 		txtProjectName = new JTextField();
-		panel_1.add(txtProjectName, "cell 1 1,growx");
+		add(txtProjectName, "cell 1 2,growx");
 		txtProjectName.setText((String) null);
 		txtProjectName.setColumns(10);
 		
-		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); //$NON-NLS-1$
-		panel_1.add(lblSoftware, "cell 0 2,alignx trailing");
+		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); 
+		add(lblSoftware, "cell 0 3,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
 		cboSoftware.setActionCommand("softwareChanged");
 		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
-		panel_1.add(cboSoftware, "cell 1 2,growx");
+		add(cboSoftware, "cell 1 3,growx");
 		
-		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text")); //$NON-NLS-1$
-		panel_1.add(lblDataStorage, "cell 0 3,alignx trailing");
+		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text")); 
+		add(lblDataStorage, "cell 0 4,alignx trailing");
 		
 		cboDataStorage = new JComboBox<String>();
 		cboDataStorage.setActionCommand("selectSourceType");
 		cboDataStorage.setModel(new DefaultComboBoxModel<String>(new String[] {"Database", "DBF"}));
-		panel_1.add(cboDataStorage, "cell 1 3,growx");
+		add(cboDataStorage, "cell 1 4,growx");
 		
-		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); //$NON-NLS-1$
-		panel_1.add(lblSchema, "cell 0 4,alignx trailing");
+		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); 
+		add(lblSchema, "cell 0 5,alignx trailing");
 		
 		cboSchema = new JComboBox<String>();
-		panel_1.add(cboSchema, "cell 1 4,growx");
+		add(cboSchema, "cell 1 5,growx");
 		
-		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
+		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
 		btnAccept.setActionCommand("gisAccept");
-		panel_1.add(btnAccept, "cell 2 5,alignx right");
+		add(btnAccept, "cell 2 7,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
 		btnClose.addActionListener(this);
 		btnClose.setActionCommand("closePanel");
-		panel_1.add(btnClose, "cell 3 5");
+		add(btnClose, "cell 3 7");
 
 		setupListeners();
 
@@ -269,10 +253,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	// Setup component's listener
 	private void setupListeners() {
+		
 		btnProjectFolder.addActionListener(this);
 		btnAccept.addActionListener(this);	
 		cboDataStorage.addActionListener(this);		
-		tabbedPane.addFocusListener(this);	
+		addFocusListener(this);	
 		btnClose.addActionListener(this);	
 		cboSoftware.addActionListener(this);
 		cboSchema.addFocusListener(new FocusAdapter() {
@@ -281,6 +266,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				getFocus();
 			}
 		});		
+		
 	}
 
 	

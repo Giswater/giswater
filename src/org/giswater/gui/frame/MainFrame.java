@@ -58,7 +58,7 @@ import org.giswater.util.Utils;
 
 public class MainFrame extends JFrame implements ActionListener{
 	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
@@ -71,17 +71,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmOpenProject;
 	private JMenuItem mntmSaveProject;
 	private JSeparator separator;
+	private JMenuItem mntmNewPreferences;
 	private JMenuItem mntmOpenPreferences;
 	private JMenuItem mntmSavePreferences;
 	private JMenuItem mntmSaveAsPreferences;
+	private JMenuItem mntmEditPreferences;
 	
-	private JMenu mnGisProject;	
+	private JMenu mnProjectExample;	
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
-	private JMenuItem mntmSampleEpanet;
-	private JMenuItem mntmSampleEpaswmm;
-	private JMenuItem mntmSampleHecras;
+	private JMenuItem mntmExampleEpanet;
+	private JMenuItem mntmExampleEpaswmm;
+	private JMenuItem mntmExampleHecras;
 	private JMenuItem mntmDatabaseAdministrator;	
 	
 	private JMenu mnAbout;
@@ -101,6 +103,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
+
+
 
 	
 	/**
@@ -149,106 +153,108 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
+		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); 
 		menuBar.add(mnProject);
 		
 		separator = new JSeparator();
 		mnProject.add(separator);
 		
-		JMenuItem mntmNewPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewProjectPreferences.text")); //$NON-NLS-1$
+		mntmNewPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewProjectPreferences.text")); 
+		mntmNewPreferences.setActionCommand("gswNew"); 
 		mnProject.add(mntmNewPreferences);
 		
-		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
+		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); 
 		mntmOpenPreferences.setActionCommand("gswOpen");
 		mnProject.add(mntmOpenPreferences);
 		
-		mntmSavePreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
+		mntmSavePreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); 
 		mntmSavePreferences.setActionCommand("gswSave");
 		mnProject.add(mntmSavePreferences);
 		
-		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
+		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); 
 		mntmSaveAsPreferences.setActionCommand("gswSaveAs");
 		mnProject.add(mntmSaveAsPreferences);
 		
-		JMenuItem mntmEditPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmEditProjectPreferences.text")); //$NON-NLS-1$
+	    mntmEditPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmEditProjectPreferences.text")); 
+		mntmEditPreferences.setActionCommand("gswEdit"); 
 		mnProject.add(mntmEditPreferences);
 		
 		JSeparator separator_1 = new JSeparator();
 		mnProject.add(separator_1);
 		
-		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
+		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); 
 		mntmOpenProject.setActionCommand("openProject");
 		mnProject.add(mntmOpenProject);
 		
-		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
+		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); 
 		mntmSaveProject.setActionCommand("saveProject");
 		mnProject.add(mntmSaveProject);
 		
-		mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
-		menuBar.add(mnGisProject);
+		mnProjectExample = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
+		menuBar.add(mnProjectExample);
 		
-		mntmSampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
-		mnGisProject.add(mntmSampleEpanet);
-		mntmSampleEpanet.setActionCommand("sampleEpanet");
+		mntmExampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"));
+		mnProjectExample.add(mntmExampleEpanet);
+		mntmExampleEpanet.setActionCommand("exampleEpanet"); 
 		
-		mntmSampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
-		mnGisProject.add(mntmSampleEpaswmm);
-		mntmSampleEpaswmm.setActionCommand("sampleEpaswmm");
+		mntmExampleEpaswmm = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateEpaswmmSample.text"));
+		mnProjectExample.add(mntmExampleEpaswmm);
+		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm"); 
 		
-		mntmSampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
-		mnGisProject.add(mntmSampleHecras);
-		mntmSampleHecras.setActionCommand("sampleHecras");
+		mntmExampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
+		mnProjectExample.add(mntmExampleHecras);
+		mntmExampleHecras.setActionCommand("exampleHecras"); 
 		
-		JMenu mnData = new JMenu(BUNDLE.getString("MainFrame.mnData.text")); //$NON-NLS-1$
+		JMenu mnData = new JMenu(BUNDLE.getString("MainFrame.mnData.text")); 
 		menuBar.add(mnData);
 		
 		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text"));
 		mnData.add(mntmDatabaseAdministrator);
 		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");
 		
-		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
+		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); 
 		menuBar.add(mnConfiguration);
 		
 		mntmSoftware = new JMenuItem(BUNDLE.getString("MainFrame.mntmSoftwareConfiguration.text"));
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
 		
-		mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
+		mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); 
 		menuBar.add(mnAbout);
 		
-		mntmWelcome = new JMenuItem(BUNDLE.getString("MainFrame.mntmWelcome.text")); //$NON-NLS-1$
+		mntmWelcome = new JMenuItem(BUNDLE.getString("MainFrame.mntmWelcome.text")); 
 		mnAbout.add(mntmWelcome);
 		mntmWelcome.setActionCommand("showWelcome");
 		
-		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); //$NON-NLS-1$
+		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); 
 		mntmLicense.setActionCommand("showLicense");
 		mnAbout.add(mntmLicense);
 		
-		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); //$NON-NLS-1$
+		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); 
 		mnAbout.add(mntmUserManual);
 		mntmUserManual.setActionCommand("openUserManual");
 		
-		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text")); //$NON-NLS-1$
+		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text")); 
 		mntmReferenceGuide.setHorizontalAlignment(SwingConstants.TRAILING);
 		mntmReferenceGuide.setActionCommand("openReferenceGuide");
 		mnAbout.add(mntmReferenceGuide);
 		
-		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text")); //$NON-NLS-1$
+		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text")); 
 		mntmWeb.setActionCommand("openWeb");
 		mnAbout.add(mntmWeb);
 		
-		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
+		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); 
 		mntmAgreements.setActionCommand("showAcknowledgment");
 		mnAbout.add(mntmAgreements);
 		
-		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text")); //$NON-NLS-1$
-		mntmCheckUpdates.setActionCommand(BUNDLE.getString("MainFrame.mntmCheckUpdates.actionCommand_1")); //$NON-NLS-1$
+		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text")); 
+		mntmCheckUpdates.setActionCommand("checkUpdates");
 		mnAbout.add(mntmCheckUpdates);
 		
 		String path = Utils.getAppPath() + "images/download_16.png";
 		final ImageIcon iconImage = new ImageIcon(path);
 		mnNewVersionAvailable = new JMenu(BUNDLE.getString("MainFrame.mnNewVersionAvailable.text"));
-		mnNewVersionAvailable.setActionCommand("downloadNewVersion"); //$NON-NLS-1$
+		mnNewVersionAvailable.setActionCommand("downloadNewVersion"); 
 		mnNewVersionAvailable.setVisible(false);
 		mnNewVersionAvailable.setIcon(iconImage);
 		menuBar.add(Box.createHorizontalGlue());
@@ -295,7 +301,6 @@ public class MainFrame extends JFrame implements ActionListener{
         ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
         gisFrame = new GisFrame();
-        gisFrame.setLocation(175, 80);
         
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
@@ -303,15 +308,12 @@ public class MainFrame extends JFrame implements ActionListener{
         desktopPane.add(configFrame);
         desktopPane.add(gisFrame);
         
-        // TODO: Set specific configuration
-//		swmmFrame.setTitle("EPA SWMM");
-//		swmmFrame.getPanel().setDesignButton("Raingage", "showRaingage");
-//		swmmFrame.getPanel().setOptionsButton("Options", "showInpOptions");
-//		swmmFrame.getPanel().setReportButton("Report options", "showReport");
-//		epanetFrame.setTitle("EPANET");
-//		epanetFrame.getPanel().setDesignButton("Times values", "showTimesValues");
-//		epanetFrame.getPanel().setOptionsButton("Options", "showInpOptionsEpanet");
-//		epanetFrame.getPanel().setReportButton("Report options", "showReportEpanet");
+        // Set specific configuration
+        gisFrame.setLocation(175, 80);
+        gisFrame.setGisExtension("qgs");
+        gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
+        ppFrame.setTitle("Project Preferences");
+        epaSoftFrame.setTitle("Main form");
 
         // Get info from properties
 		getMainParams("MAIN");
@@ -320,9 +322,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		new HecRasController(hecRasFrame.getPanel());
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
-        EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this, "");
-        
-        boolean overwrite = Boolean.parseBoolean(prop.get("IMPORT_OVERWRITE", "false"));
+        EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this);
 		
 	}
 	
@@ -337,7 +337,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	// TODO:
 	public void updateFrames(){
 		
 		try {
@@ -348,8 +347,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		} catch (PropertyVetoException e) {
 			Utils.logError(e);
 		}           
-	        
-		// Only one frame remains visible	
 		
 	}
 	
@@ -368,10 +365,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	private void putFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
+		
 		MainDao.getGswProperties().put(prefix + "_X", frame.getX());
 		MainDao.getGswProperties().put(prefix + "_Y", frame.getY());
 		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
 		MainDao.getGswProperties().put(prefix + "_SELECTED", frame.isSelected());
+		
 	}
 	
 	
@@ -395,6 +394,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	private void putMainParams (String prefix) throws PropertyVetoException{
+		
 		boolean maximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
 		prop.put(prefix + "_MAXIMIZED", maximized);		
 		prop.put(prefix + "_X", this.getX());
@@ -402,6 +402,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		prop.put(prefix + "_WIDTH", this.getWidth());
 		prop.put(prefix + "_HEIGHT", this.getHeight());
 		MainDao.savePropertiesFile(); 
+		
 	}	
 	
 	
@@ -413,19 +414,24 @@ public class MainFrame extends JFrame implements ActionListener{
     	MainDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
     	
 	}    
+	
     
     public void putHecrasParams(){
+    	
     	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
     	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
     	MainDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
     	MainDao.getGswProperties().put("HECRAS_SCHEMA", hecRasPanel.getSelectedSchema());
+    	
 	}	
     
-    public void putDatabaseParams(){
+    
+    public void putProjectPreferencecsParams(){
     	
     	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
-    	MainDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
-    	MainDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
+    	
+    	MainDao.getGswProperties().put("SOFTWARE", ppPanel.getWaterSoftware());    	
+    	MainDao.getGswProperties().put("VERSION", ppPanel.getVersionSoftware());    	
     	if (ppPanel.getOptDatabaseSelected()){
     		MainDao.getGswProperties().put("STORAGE", "DATABASE");
     	}
@@ -434,7 +440,9 @@ public class MainFrame extends JFrame implements ActionListener{
     	}
     	else{
     		MainDao.getGswProperties().put("STORAGE", "");
-    	}
+    	}	
+    	MainDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
+    	MainDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
     	
     	//PropertiesMap gswProp = MainDao.getGswProperties();
     	MainDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
@@ -448,6 +456,7 @@ public class MainFrame extends JFrame implements ActionListener{
     	
 	}	   
     
+    
     public void putGisParams(){
     	
     	GisPanel gisPanel = gisFrame.getPanel();
@@ -460,23 +469,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
     
 	
-    // TODO: 
 	public void saveGswFile(){
 
 		// Update FILE_GSW parameter 
 		prop.put("FILE_GSW", MainDao.getGswPath());
-    	
-		// Get EPANET and SWMM parameters
-//    	EpaPanel epanetPanel = epanetFrame.getPanel();
-//    	putEpaParams("EPANET", epanetPanel);
-//    	EpaPanel swmmPanel = swmmFrame.getPanel();        	
-//    	putEpaParams("EPASWMM", swmmPanel);      
+		
+		// Get EPASOFT (EPANET or SWMM) parameters
+		putEpaSoftParams();
     	
 		// Get HECRAS parameters
 		putHecrasParams();		
 		
-		// Get Database parameters
-		putDatabaseParams();		
+		// Get Project preferences parameters
+		putProjectPreferencecsParams();		
     	
     	// Get GIS parameters
     	putGisParams();
@@ -489,7 +494,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void closeApp(){
 	
         try {
-	        putFrameParams(epaSoftFrame, "");
+	        putFrameParams(epaSoftFrame, "EPASOFT");
 	        putFrameParams(hecRasFrame, "HECRAS");
 	        putFrameParams(ppFrame, "PP");        
 	        putFrameParams(configFrame, "CONFIG");	
@@ -505,15 +510,19 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	private void setupListeners(){
 		
+		mntmNewPreferences.addActionListener(this);
 		mntmOpenProject.addActionListener(this);
 		mntmSaveProject.addActionListener(this);
 		mntmOpenPreferences.addActionListener(this);
 		mntmSavePreferences.addActionListener(this);
 		mntmSaveAsPreferences.addActionListener(this);
+		mntmEditPreferences.addActionListener(this);
+		
 		mntmSoftware.addActionListener(this);
-		mntmSampleEpanet.addActionListener(this);
-		mntmSampleEpaswmm.addActionListener(this);
-		mntmSampleHecras.addActionListener(this);	
+		
+		mntmExampleEpanet.addActionListener(this);
+		mntmExampleEpaswmm.addActionListener(this);
+		mntmExampleHecras.addActionListener(this);	
 		mntmDatabaseAdministrator.addActionListener(this);		
 		
 		mntmWelcome.addActionListener(this);
@@ -548,6 +557,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void openGisProject() {
+		
 		manageFrames(gisFrame);
 		gisFrame.setGisExtension("qgs");
 		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
@@ -556,19 +566,21 @@ public class MainFrame extends JFrame implements ActionListener{
 		} catch (PropertyVetoException e) {
             Utils.logError(e);
 		}		
+		
 	}	
 	
+	
 	public void updateEpaFrames(){
-		//epaSoftFrame.getPanel().selectSourceType();
+		ppFrame.getPanel().selectSourceType();
 	}
 	
-	public void enableCatalog(boolean enable) {
+	public void enableMenuDatabase(boolean enable) {
 		
 		mntmOpenProject.setEnabled(enable);
 		mntmSaveProject.setEnabled(enable);
-		mntmSampleEpanet.setEnabled(enable);
-		mntmSampleEpaswmm.setEnabled(enable);
-		mntmSampleHecras.setEnabled(enable);
+		mntmExampleEpanet.setEnabled(enable);
+		mntmExampleEpaswmm.setEnabled(enable);
+		mntmExampleHecras.setEnabled(enable);
 		
 	}
 	

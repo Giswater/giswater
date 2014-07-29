@@ -47,26 +47,32 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.gui.frame.ProjectPreferencesFrame;
+import org.giswater.util.Utils;
 
 
 public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
-	private ProjectPreferencesController controller;
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
-	private JTextField textField;
-	private JLabel lblNewLabel;
+	private ProjectPreferencesController controller;
+	private ProjectPreferencesFrame frame;
+	
+	private JRadioButton optEpaSwmm;
+	private JRadioButton optEpanet;
+	private JRadioButton optHecras;
+	
+	private JPanel panelDbf;
+	private JTextArea txtInput;
+	private JButton btnFolderShp;
+	
+	private JPanel panelDB;
+	private JPanel panelDatabase;
 	private JComboBox<String> cboDriver;
-	private JLabel lblPort;
-	private JLabel lblIp;
 	private JTextField txtIP;
 	private JTextField txtPort;
-	private JLabel lblDatabase;
 	private JTextField txtDatabase;
-	private JLabel lblUser;
 	private JTextField txtUser;
-	private JLabel lblPassword;
 	private JPasswordField txtPassword;
 	private JCheckBox chkRemember;
 	private JRadioButton optDatabase;
@@ -75,55 +81,61 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JButton btnDelete;
 	private JButton btnRename;
 	private JButton btnCreate;
-	private JButton btnFolderShp;
-	private JTextArea txtInput;
-	private JLabel lblFolderShp;
-	private JComboBox<String> cboSoftware;
+	private JComboBox<String> cboVersionSoftware;
 	private JComboBox<String> cboSchema;
 	private JButton btnTest;
+	
+	private JPanel panelManagement;
 	private JLabel lblTitle;
 	private JLabel lblAuthor;
 	private JLabel lblDate;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JPanel panelDbf;
+	private JTextField txtAuthor;
+	private JTextField txtDate;
+	private JTextField txtDescription;
 	private JScrollPane scrollPane_1;
-	private JButton btnCreateGisProject;
+	
 	private JPanel panelGis;
-	private JPanel panelDB;
+	private JButton btnCreateGisProject;
+	
+	private JButton btnAccept;
+	private JButton btnApply;
+	private JButton btnClose;
 	
 	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
-	private static final Integer BUTTON_WIDTH = 75;
-	private JButton btnAccept;
-	private ProjectPreferencesFrame frame;
-	private JButton btnApply;
-	
+	private static final Integer BUTTON_WIDTH = 72;
+	private JLabel lblInfo;
+
 	
 	public ProjectPreferencesPanel() {
+		initConfig();
+	}
+	
+	
+	private void initConfig(){
 		
-		setLayout(new MigLayout("", "[90px:n][][154.00px:n,grow][]", "[10px][][][35.00][61.00][][59.00][]"));
+		setLayout(new MigLayout("", "[90px:n][][154.00px:n,grow][]", "[5px][][][35.00][61.00][][59.00][]"));
 		
 		JLabel lblWaterSoftware = new JLabel("Water software:");
 		add(lblWaterSoftware, "cell 0 1,alignx right");
 		
-		JRadioButton optSwmm = new JRadioButton("EPASWMM");
-		optSwmm.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.optSwmm.actionCommand")); //$NON-NLS-1$
-		add(optSwmm, "flowx,cell 1 1");
+		optEpaSwmm = new JRadioButton("EPASWMM");
+		optEpaSwmm.setActionCommand("changeSoftware"); 
+		add(optEpaSwmm, "flowx,cell 1 1");
 		
-		JRadioButton optEpanet = new JRadioButton("EPANET");
-		optEpanet.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.optEpanet.actionCommand")); //$NON-NLS-1$
+		optEpanet = new JRadioButton("EPANET");
+		optEpanet.setActionCommand("changeSoftware"); 
 		add(optEpanet, "cell 1 1");
 		
-		JRadioButton optHecras = new JRadioButton("HEC-RAS");
-		optHecras.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.optHecras.actionCommand")); //$NON-NLS-1$
+		optHecras = new JRadioButton("HEC-RAS");
+		optHecras.setActionCommand("changeSoftware"); 
 		add(optHecras, "cell 1 1");
 		
 		JLabel lblVersion = new JLabel("Version:");
 		add(lblVersion, "cell 0 2,alignx trailing");
 		
-		cboSoftware = new JComboBox<String>();
-		add(cboSoftware, "cell 1 2,growx");
+		cboVersionSoftware = new JComboBox<String>();
+		add(cboVersionSoftware, "cell 1 2,growx");
 		
 		JLabel label = new JLabel("Data storage:");
 		add(label, "cell 0 3,alignx right");
@@ -139,12 +151,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		add(optDatabase, "cell 1 3");
 		
 		panelDbf = new JPanel();
-		panelDbf.setName("panelDatabase");
 		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelDbf, "cell 0 4 4 1,grow");
 		panelDbf.setLayout(new MigLayout("", "[75px:n][100px:n,grow][10px:n][]", "[]"));
 		
-		lblFolderShp = new JLabel("Data folder:");
+		JLabel lblFolderShp = new JLabel("Data folder:");
 		panelDbf.add(lblFolderShp, "cell 0 0,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
@@ -163,18 +174,16 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnFolderShp.setActionCommand("chooseFolderShp");
 		
 		panelDB = new JPanel();
-		panelDB.setName("panelDatabase");
 		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelDB, "cell 0 5 4 1,grow");
 		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
-		JPanel panelDatabase = new JPanel();
+		panelDatabase = new JPanel();
 		panelDB.add(panelDatabase, "cell 0 0");
-		panelDatabase.setName("panelDatabase");
 		panelDatabase.setBorder(new TitledBorder(null, "Connection Parameters", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
 		panelDatabase.setLayout(new MigLayout("", "[65px:n][100px:n:100px][20px][::120px]", "[][][][][][][]"));
 		
-		lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); //$NON-NLS-1$
+		JLabel lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); 
 		panelDatabase.add(lblNewLabel, "cell 0 0,alignx right");
 
 		cboDriver = new JComboBox<String>();
@@ -183,21 +192,21 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		cboDriver.setModel(new DefaultComboBoxModel<String>(new String[] {"PG-9.2 + PostGIS-2.0"}));
 		panelDatabase.add(cboDriver, "cell 1 0 3 1,growx");
 
-		lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text")); //$NON-NLS-1$
+		JLabel lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text")); 
 		panelDatabase.add(lblIp, "cell 0 1,alignx right");
 
 		txtIP = new JTextField();
 		panelDatabase.add(txtIP, "cell 1 1 3 1,growx");
 		txtIP.setColumns(10);
 
-		lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text")); //$NON-NLS-1$
+		JLabel lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text")); 
 		panelDatabase.add(lblPort, "cell 0 2,alignx right");
 
 		txtPort = new JTextField();
 		txtPort.setColumns(10);
 		panelDatabase.add(txtPort, "cell 1 2 3 1,growx");
 
-		lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text")); //$NON-NLS-1$
+		JLabel lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text")); 
 		panelDatabase.add(lblDatabase, "cell 0 3,alignx right");
 
 		txtDatabase = new JTextField();
@@ -205,7 +214,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtDatabase.setColumns(10);
 		panelDatabase.add(txtDatabase, "cell 1 3 3 1,growx");
 
-		lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text")); //$NON-NLS-1$
+		JLabel lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text")); 
 		panelDatabase.add(lblUser, "cell 0 4,alignx right");
 
 		txtUser = new JTextField();
@@ -213,7 +222,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtUser.setColumns(10);
 		panelDatabase.add(txtUser, "cell 1 4 3 1,growx");
 
-		lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text")); //$NON-NLS-1$
+		JLabel lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text")); 
 		panelDatabase.add(lblPassword, "cell 0 5,alignx right");
 
 		txtPassword = new JPasswordField();
@@ -224,19 +233,18 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		chkRemember.setSelected(true);
 		panelDatabase.add(chkRemember, "cell 1 6");
 		
-		btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); //$NON-NLS-1$
+		btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); 
 		btnTest.setMaximumSize(new Dimension(120, 23));
 		btnTest.setMinimumSize(new Dimension(120, 23));
 		btnTest.setActionCommand("testConnection");
 		panelDatabase.add(btnTest, "flowx,cell 3 6");
 		
-		JPanel panelManagement = new JPanel();
+		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
-		panelManagement.setName("panelDatabase");
 		panelManagement.setBorder(new TitledBorder(null, "Project Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
-		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][30px][][][][]", "[23px][][]"));
+		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59.00px][][][][]", "[23px][][]"));
 		
-		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); //$NON-NLS-1$
+		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
 		panelManagement.add(lblProject, "cell 0 0,alignx right");
 		
 		cboSchema = new JComboBox<String>();
@@ -247,14 +255,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		cboSchema.setEnabled(false);
 		cboSchema.setActionCommand("schemaChanged");
 		
-		btnCreate = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCreate.text")); //$NON-NLS-1$
+		btnCreate = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCreate.text")); 
 		panelManagement.add(btnCreate, "cell 3 0,alignx right,aligny top");
 		btnCreate.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCreate.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCreate.setEnabled(false);
 		btnCreate.setActionCommand("createSchema");
 		
-		btnDelete = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnDelete.text")); //$NON-NLS-1$
+		btnDelete = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnDelete.text")); 
 		btnDelete.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnDelete.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnDelete.setMaximumSize(new Dimension(BUTTON_WIDTH, 23));
@@ -262,75 +270,79 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnDelete.setActionCommand("deleteSchema");
 		panelManagement.add(btnDelete, "cell 4 0,alignx right");
 		
-		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text")); //$NON-NLS-1$
+		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text")); 
+		btnRename.setVisible(false);
 		btnRename.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setEnabled(false);
-		btnRename.setActionCommand("createSchema");
+		btnRename.setActionCommand("deleteData"); 
 		panelManagement.add(btnRename, "cell 5 0,alignx right");
 		
-		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text")); //$NON-NLS-1$
+		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text")); 
+		btnCopy.setVisible(false);
 		btnCopy.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setEnabled(false);
-		btnCopy.setActionCommand("createSchema");
+		btnCopy.setActionCommand("copySchema"); 
 		panelManagement.add(btnCopy, "cell 6 0,alignx right");
 		
-		lblTitle = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblTitle.text")); //$NON-NLS-1$
+		lblTitle = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblTitle.text")); 
 		panelManagement.add(lblTitle, "cell 0 1,alignx right");
 		
-		textField = new JTextField();
-		panelManagement.add(textField, "cell 1 1 3 1,growx");
-		textField.setColumns(10);
+		txtAuthor = new JTextField();
+		panelManagement.add(txtAuthor, "cell 1 1 3 1,growx");
+		txtAuthor.setColumns(10);
 		
-		lblAuthor = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblAuthor.text")); //$NON-NLS-1$
+		lblAuthor = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblAuthor.text")); 
 		panelManagement.add(lblAuthor, "cell 4 1,alignx right");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		panelManagement.add(textField_1, "cell 5 1 2 1,growx");
+		txtDate = new JTextField();
+		txtDate.setColumns(10);
+		panelManagement.add(txtDate, "cell 5 1 2 1,growx");
 		
-		lblDate = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblDate.text")); //$NON-NLS-1$
+		lblDate = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblDate.text")); 
 		panelManagement.add(lblDate, "cell 0 2,alignx trailing");
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		panelManagement.add(textField_2, "cell 1 2 6 1,growx");
+		txtDescription = new JTextField();
+		txtDescription.setColumns(10);
+		panelManagement.add(txtDescription, "cell 1 2 6 1,growx");
 		
 		panelGis = new JPanel();
-		panelGis.setName("panelDatabase");
 		panelGis.setBorder(new TitledBorder(null, "GIS Project", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelGis, "cell 0 6 4 1,grow");
 		panelGis.setLayout(new MigLayout("", "[]", "[]"));
 		
 		btnCreateGisProject = new JButton();
 		panelGis.add(btnCreateGisProject, "cell 0 0");
-		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text")); //$NON-NLS-1$
+		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text")); 
 		btnCreateGisProject.setMinimumSize(new Dimension(80, 23));
-		btnCreateGisProject.setActionCommand("closePanel");
+		btnCreateGisProject.setActionCommand("createGisProject"); 
+		
+		lblInfo = new JLabel(""); 
+		add(lblInfo, "cell 0 7 2 1");
 		
 		btnApply = new JButton();
-		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); //$NON-NLS-1$
+		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); 
 		btnApply.setMinimumSize(new Dimension(75, 23));
-		btnApply.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnApply.actionCommand")); //$NON-NLS-1$
+		btnApply.setActionCommand("applyPreferences");
 		add(btnApply, "flowx,cell 2 7,alignx right");
 		
 		btnAccept = new JButton();
-		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); //$NON-NLS-1$
+		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
 		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
-		btnAccept.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.actionCommand")); //$NON-NLS-1$
+		btnAccept.setActionCommand("acceptPreferences");
 		add(btnAccept, "cell 2 7,alignx right");
 		
-		JButton btnClose = new JButton();
+		btnClose = new JButton();
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
-		btnClose.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnClose.actionCommand")); //$NON-NLS-1$
+		btnClose.setActionCommand("closePreferences");
 		add(btnClose, "cell 3 7");
 		
 		// Group the radio buttons
 		ButtonGroup groupSoftware = new ButtonGroup();
 		groupSoftware.add(optEpanet);
-		groupSoftware.add(optSwmm);	
+		groupSoftware.add(optEpaSwmm);	
 		groupSoftware.add(optHecras);	
 		ButtonGroup groupStorage = new ButtonGroup();
 		groupStorage.add(optDbf);
@@ -344,25 +356,37 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 
+		// Water software
+		optEpaSwmm.addActionListener(this);
+		optEpanet.addActionListener(this);
+		optHecras.addActionListener(this);
+		
+		// Data Storage
+		optDbf.addActionListener(this);
+		optDatabase.addActionListener(this);
+		
 		// Panel Database connection
-//		btnTest.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				databaseController.action(e.getActionCommand());
-//			}
-//		});
-//		
-//		btnClose.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				getFrame().setVisible(false);
-//			}
-//		});		
+		btnTest.addActionListener(this);
+		btnApply.addActionListener(this);
+		btnAccept.addActionListener(this);
+		btnClose.addActionListener(this);
+		
+		// Panel Project management
+		cboSchema.addActionListener(this);
+		btnCreate.addActionListener(this);
+		btnDelete.addActionListener(this);
+		btnRename.addActionListener(this);
+		btnCopy.addActionListener(this);
+		
+		// Panel Gis Project
+		btnCreateGisProject.addActionListener(this);
 
 	}
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//controller.action(e.getActionCommand());
+		controller.action(e.getActionCommand());
 	}
 
 	
@@ -374,10 +398,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		this.frame = frame;
 	}
 
-	public void setControl(ProjectPreferencesController controller) {
+	public void setController(ProjectPreferencesController controller) {
 		this.controller = controller;
 	}
 
+	public ProjectPreferencesController getController(){
+		return controller;
+	}
 	
 	public boolean getOptDatabaseSelected(){
 		return optDatabase.isSelected();
@@ -396,44 +423,72 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	}	
 	
 	public void selectSourceType(){
-		controller.selectSourceType(false);
+		controller.selectSourceType();
 	}
 	
-	public void enableControlsDbf(boolean enable) {
-		boolean dbfSelected = optDbf.isSelected();
-		lblFolderShp.setEnabled(dbfSelected);
-		txtInput.setEnabled(dbfSelected);
-		btnFolderShp.setEnabled(dbfSelected);
+	public void enableDbfStorage(boolean enable) {
+		Utils.setPanelEnabled(panelDbf, enable);
+		scrollPane_1.setEnabled(enable);
+		txtInput.setEnabled(enable);
 	}	
 	
-	public void enableControlsDatabase(boolean enable){
-		btnCreate.setEnabled(enable);
-		btnDelete.setEnabled(enable);
-		btnRename.setEnabled(enable);
-		btnCopy.setEnabled(enable);
-//		btnOptions.setEnabled(enable);
-//		btnDesign.setEnabled(enable);
-//		btnSectorSelection.setEnabled(enable);
-//		btnReport.setEnabled(enable);
-//		lblSchema.setEnabled(enable);
-//		cboSchema.setEnabled(enable);	
+	public void enableConnectionParameters(boolean enable){
+		Utils.setPanelEnabled(panelDatabase, enable);
+	}	
+	
+	public void enableProjectManagement(boolean enable){
+		Utils.setPanelEnabled(panelManagement, enable);
 	}	
 	
 	
-	public void setSoftware(Vector<String> v) {
+	// Water software
+	public void setWaterSoftware(String waterSoftware) {
+		
+		optEpanet.setSelected(false);
+		optEpaSwmm.setSelected(false);
+		optHecras.setSelected(false);
+		if (waterSoftware.equals("EPANET")){
+			optEpanet.setSelected(true);
+		}
+		else if (waterSoftware.equals("EPASWMM")){
+			optEpaSwmm.setSelected(true);
+		}	
+		else if (waterSoftware.equals("HECRAS")){
+			optHecras.setSelected(true);
+		}
+		controller.setWaterSoftware(waterSoftware);
+		
+	}	
+	
+	public String getWaterSoftware() {
+		
+		String waterSoftware = "";
+		if (optEpanet.isSelected()){
+			waterSoftware = "EPANET";
+		} 
+		else if (optEpaSwmm.isSelected()){
+			waterSoftware = "EPASWMM";
+		}
+		else if (optHecras.isSelected()){
+			waterSoftware = "HECRAS";
+		}			
+		return waterSoftware;
+		
+	}	
+	
+	public void setVersionSoftware(Vector<String> v) {
 		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
-		cboSoftware.setModel(cbm);		
+		cboVersionSoftware.setModel(cbm);		
 	}
 	
-	public String getSoftware() {
+	public String getVersionSoftware() {
 		String elem = "";
-		if (cboSoftware.getSelectedIndex() != -1) {
-			elem = cboSoftware.getSelectedItem().toString();
+		if (cboVersionSoftware.getSelectedIndex() != -1) {
+			elem = cboVersionSoftware.getSelectedItem().toString();
 		}
 		return elem;
 	}	
-	
-	
+		
 
 	// Panel DBF
 	public void setFolderShp(String path) {
@@ -447,7 +502,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 
 	
 	// Postgis
-	public void setSchemaModel(Vector<String> v) {
+	public void enableSchemaOptions(boolean enabled){
+		btnDelete.setEnabled(enabled);
+		btnRename.setEnabled(enabled);
+		btnCopy.setEnabled(enabled);	
+	}
+	
+	
+	public boolean setSchemaModel(Vector<String> v) {
 		
 		ComboBoxModel<String> cbm = null;
 		if (v != null){
@@ -459,9 +521,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 			theModel.removeAllElements();
 		}
 		boolean enabled = (v != null && v.size() > 0);
-		btnDelete.setEnabled(enabled);
-		btnRename.setEnabled(enabled);
-		btnCopy.setEnabled(enabled);
+		return enabled;
 		
 	}
 
@@ -540,21 +600,15 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnTest.setText(text);
 	}
 	
-	public void enableControls(boolean enabled) {
-		cboDriver.setEnabled(enabled);
-		txtIP.setEnabled(enabled);
-		txtPort.setEnabled(enabled);
-		txtDatabase.setEnabled(enabled);
-		txtUser.setEnabled(enabled);
-		txtPassword.setEnabled(enabled);
-		chkRemember.setEnabled(enabled);
-	}
-	
 	public void enableControlsText(boolean enabled) {
 		txtInput.setEnabled(enabled);
 		this.requestFocusInWindow();		
 	}
-	
+
+	public void setInfo(String text) {
+		lblInfo.setText(text);
+		
+	}
 	
 		
 }

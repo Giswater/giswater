@@ -49,7 +49,6 @@ public class GisFrame extends JInternalFrame {
 
 	public void setGisTitle(String title) {
 		setTitle(title);			
-		panel.setPanelTitle(title);
 	}		
 	
     private void initComponents() {

@@ -22,7 +22,6 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 
 import javax.swing.JDialog;
@@ -41,7 +40,7 @@ import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class HecRasController{
+public class HecRasController extends AbstractController{
 
 	private HecRasPanel view;
     private PropertiesMap prop;
@@ -81,28 +80,6 @@ public class HecRasController{
 		view.setSchemaModel(MainDao.getSchemas("HECRAS"));
 		
     }
-   
-
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
 	
 	
 	public void closePanel(){

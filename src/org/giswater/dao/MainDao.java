@@ -31,10 +31,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
-
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -46,28 +47,34 @@ public class MainDao {
     private static Connection connectionDrivers;  // SQLite 
     private static Connection connectionPostgis;  // Postgis
 	private static String softwareName;   // EPASWMM or EPANET
-    private static String schema;
+    private static String schema;   // Current selected schema
     private static boolean isConnected = false;
-    private static String folderConfig;
-	private static String configPath;
-	private static String usersPath;
-	private static String gswPath;
+    private static String inpFolder;   // appPath + "inp"
+    private static String updatesFolder;   // appPath + "updates"
+    private static String rootFolder;   // UsersFolder + ROOT_FOLDER
+	private static String configPath;   // rootPath + CONFIG_FOLDER + Properties file
+	private static String gswPath;   // Current gsw Project preferences File
+	private static String gswDefaultPath;   // Default gsw Project preferences File
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
 	private static String giswaterVersion;
 	private static String postgreVersion;
 	private static String postgisVersion;
+	private static Boolean updateSchemaVersion = true;   // If true, schemas will be updated to the last version available
+	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
+	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
     
-    private static final String USERS_FOLDER = "giswater" + File.separator;
+	private static final String MINOR_VERSION = "1.1";
+    private static final String ROOT_FOLDER = "giswater" + File.separator;
 	private static final String CONFIG_FOLDER = "config" + File.separator;
-	private static final String CONFIG_FILE = "giswater";
-	private static final String MINOR_VERSION = "1.0";
 	private static final String CONFIG_DB = "config.sqlite";
+	private static final String CONFIG_FILE = "giswater";
+	private static final String GSW_FILE = "default_"+MINOR_VERSION+".gsw";
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
-	private static final String GSW_FILE = "default.gsw";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
+	
 	private static final String TABLE_EPANET = "inp_demand";		
 	private static final String TABLE_EPASWMM = "inp_divider";	
 	private static final String TABLE_HECRAS = "banks";		
@@ -75,6 +82,26 @@ public class MainDao {
 	
 	public static String getInitDb(){
 		return INIT_DB;
+	}
+	
+	public static String getGswDefaultPath(){
+		return gswDefaultPath;
+	}
+	
+	public static String getGswTempPath() {
+		
+		String tempPath = "";
+		boolean exists = false;
+		int i = 1;
+		do {
+			tempPath = rootFolder + CONFIG_FOLDER + "temp_"+i+".gsw";
+			File file = new File(tempPath);
+			exists = file.exists();
+			i++;
+		} while (exists);
+			
+		return tempPath;
+		
 	}
 	
 	public static String getGswPath(){
@@ -113,16 +140,16 @@ public class MainDao {
 		return schema;
 	}
 	
-	public static void setSchema(String param) {
+	public static void setSchema(String param) {	
 		schema = param;
 	}
 
-	public static String getFolderConfig() {
-		return folderConfig;
+	public static String getInpFolder() {
+		return inpFolder;
 	}	
 	
-	public static String getUsersPath() {
-		return usersPath;
+	public static String getRootFolder() {
+		return rootFolder;
 	}	
 	
 	public static String getGiswaterVersion() {
@@ -146,17 +173,20 @@ public class MainDao {
     	giswaterVersion = versionCode;
     	
         // Set users folder path
-        usersPath = System.getProperty("user.home") + File.separator + USERS_FOLDER;
+        rootFolder = System.getProperty("user.home") + File.separator + ROOT_FOLDER;
         
     	// Load Properties files
     	if (!loadPropertiesFile()) return false;
+    	
+    	// Load default gsw file
+    	gswDefaultPath = rootFolder + CONFIG_FOLDER + GSW_FILE;
     	
     	// Load last gsw file
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	File gswFile = new File(gswPath);
     	if (!gswFile.exists()){
         	// Get default gsw path
-            gswPath = usersPath + CONFIG_FOLDER + GSW_FILE;
+            gswPath = gswDefaultPath;
         	gswFile = new File(gswPath);  
     		Utils.getLogger().info("Loading default .gsw file: " + gswPath);	        	
         	if (!gswFile.exists()){
@@ -164,14 +194,15 @@ public class MainDao {
                 return false;
         	}
     	}
-    	MainDao.setGswPath(gswPath);
+    	setGswPath(gswPath);
     	
     	// Log SQL?
     	Utils.setSqlLog(prop.get("SQL_LOG", "false"));
     	
-        // Get INP folder
-        folderConfig = prop.get("FOLDER_CONFIG");
-        folderConfig = Utils.getAppPath() + folderConfig + File.separator;
+        // Get inp and updates folder
+        inpFolder = Utils.getAppPath() + "inp" + File.separator;
+        updatesFolder = Utils.getAppPath() + "updates" + File.separator;
+        getLastUpdates();
 
     	// Set Config DB connection
         if (!setConnectionConfig(CONFIG_DB)){
@@ -181,10 +212,6 @@ public class MainDao {
         // Start Postgis portable?
         Boolean autostart = Boolean.parseBoolean(prop.get("AUTOSTART_POSTGIS", "true"));
         if (autostart){
-//        	stopPostgis = Utils.portAvailable(5431);
-//        	if (stopPostgis){
-//        		executePostgisService("start");
-//        	}
         	executePostgisService("start");
         }	    
         
@@ -215,7 +242,7 @@ public class MainDao {
     
 	public static void executePostgisService(String service){
 		
-		String folder = usersPath + PORTABLE_FOLDER;
+		String folder = rootFolder + PORTABLE_FOLDER;
 		String path = folder + PORTABLE_FILE;		
 		File file = new File(path);
 		if (!file.exists()){
@@ -231,6 +258,8 @@ public class MainDao {
 	
 	
 	private static boolean commonSteps(){
+		
+		if (isConnected) return true;
 		
 		String host, port, db, user, password;
 		
@@ -263,7 +292,9 @@ public class MainDao {
 		
 	public static boolean silenceConnection(){
 		
-		commonSteps();
+		if (!isConnected){
+			commonSteps();
+		}
 		
 		if (isConnected){
 			// Get Postgis data and bin folder
@@ -276,7 +307,7 @@ public class MainDao {
 	    	Utils.getLogger().info("Postgre data directory: " + dataPath);		    	
 	    	postgreVersion = MainDao.checkPostgreVersion();	        
         	postgisVersion = MainDao.checkPostgisVersion();	        
-        	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
+        	Utils.getLogger().info("Postgre version: " + postgreVersion);
         	if (postgisVersion.equals("")){
 				// Enable Postgis to current Database
 				String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
@@ -287,8 +318,8 @@ public class MainDao {
         	}
     		return true;
 		}
-		
-		Utils.getLogger().info("Autoconnection error");			
+
+		Utils.getLogger().info("Autoconnection error");		
 		return false;
 		
 	}	    
@@ -296,28 +327,24 @@ public class MainDao {
 	
 	public static boolean initializeDatabase(){
 		
-		commonSteps();
-		
-		if (isConnected){
-	    	String dataPath = MainDao.getDataDirectory();
-	    	gswProp.put("POSTGIS_DATA", dataPath);
-	        File dataFolder = new File(dataPath);
-	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	    	gswProp.put("POSTGIS_BIN", binPath);	
-			if (!MainDao.checkDatabase(INIT_DB)){
-				Utils.getLogger().info("Creating database... " + INIT_DB);
-				initDatabase();
-				// Close current connection in order to connect later to default Database just created
-				closeConnectionPostgis();	
-				return true;
-			} 
+		if (!isConnected){
+			commonSteps();
+			if (isConnected){
+				if (!MainDao.checkDatabase(INIT_DB)){
+					Utils.getLogger().info("Creating database... " + INIT_DB);
+					initDatabase();
+					// Close current connection in order to connect later to default Database just created
+					closeConnectionPostgis();	
+					return true;
+				} 
+			}
+			else{
+				Utils.getLogger().info("initializeDatabase: Autoconnection error");			
+				return false;	
+			}
+			return false;
 		}
-		else{
-			Utils.getLogger().info("initializeDatabase: Autoconnection error");			
-			return false;	
-		}
-		
-		return false;
+		return true;
 		
 	}	 	
     
@@ -406,14 +433,14 @@ public class MainDao {
     public static boolean loadPropertiesFile() {
 
     	String configFile = CONFIG_FILE + "_" + MINOR_VERSION + ".properties";
-    	configPath = usersPath + CONFIG_FOLDER + configFile;
+    	configPath = rootFolder + CONFIG_FOLDER + configFile;
     	Utils.getLogger().info("Versioned properties file: "+configPath);  
 
         // If versioned properties file not exists, try to load default one instead	
         File file = new File(configPath);
         if (!file.exists()){
         	configFile = CONFIG_FILE + ".properties";
-        	configPath = usersPath + CONFIG_FOLDER + configFile;
+        	configPath = rootFolder + CONFIG_FOLDER + configFile;
         	Utils.getLogger().info("Default properties file: "+configPath);   
             file = new File(configPath);
         }
@@ -435,7 +462,7 @@ public class MainDao {
     public static boolean loadGswPropertiesFile() {
 
     	if (gswPath.equals("")){
-    		gswPath = usersPath + CONFIG_FOLDER + GSW_FILE;
+    		gswPath = rootFolder + CONFIG_FOLDER + GSW_FILE;
     	}
     	Utils.getLogger().info("Loading gsw file: "+gswPath);        
 
@@ -459,7 +486,7 @@ public class MainDao {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            String filePath = folderConfig + fileName;
+            String filePath = inpFolder + fileName;
             File file = new File(filePath);
             if (file.exists()) {
             	connectionConfig = DriverManager.getConnection("jdbc:sqlite:" + filePath);
@@ -483,7 +510,7 @@ public class MainDao {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            String filePath = folderConfig + fileName;
+            String filePath = inpFolder + fileName;
             File file = new File(filePath);
             if (file.exists()) {
                 connectionDrivers = DriverManager.getConnection("jdbc:sqlite:" + filePath);
@@ -528,12 +555,15 @@ public class MainDao {
 	
     public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean showError) {
     	
+    	schemaMap = new HashMap<String, Integer>();
         String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
+            connectionPostgis.setAutoCommit(false);
         } catch (SQLException e) {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
+                connectionPostgis.setAutoCommit(false);
             } catch (SQLException e1) {
             	if (showError){
             		Utils.showError(e1.getMessage());
@@ -562,17 +592,15 @@ public class MainDao {
 		return executeUpdateSql(sql, false);
 	}	
 	
-    
 	public static boolean executeUpdateSql(String sql, boolean commit) {
 		return executeUpdateSql(sql, commit, false);
 	}
 	
-	
 	public static boolean executeUpdateSql(String sql, boolean commit, boolean showError) {
 		
 		try {
-			Statement ps = connectionPostgis.createStatement();
-	        ps.executeUpdate(sql);
+			Statement stmt = connectionPostgis.createStatement();
+	        stmt.executeUpdate(sql);
 	        if (commit && !connectionPostgis.getAutoCommit()){
 	        	connectionPostgis.commit();
 	        }
@@ -593,11 +621,11 @@ public class MainDao {
 		return executeSql(sql, false);
 	}	
 	
-	
 	public static boolean executeSql(String sql, boolean commit) {
+		
 		try {
-			Statement ps = connectionPostgis.createStatement();
-	        ps.execute(sql);
+			Statement stmt = connectionPostgis.createStatement();
+	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()){
 	        	connectionPostgis.commit();
 	        }			
@@ -606,6 +634,7 @@ public class MainDao {
 			Utils.showError(e, sql);
 			return false;
 		}
+		
 	}		
 	
 	
@@ -635,8 +664,7 @@ public class MainDao {
 		if (!checkTable(schemaName, tableName)) return false;
         String sql = "SELECT count(*) FROM "+schemaName+"."+tableName;
         try {
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
+    		ResultSet rs = getResultset(sql);
             if (rs.next()){
             	return (rs.getInt(1) != 0);
             }
@@ -650,34 +678,34 @@ public class MainDao {
 	
 	
 	private static boolean checkQuery(String sql){
+		
 		boolean check = false;
         try {
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
+    		ResultSet rs = getResultset(sql);
             check = rs.next();
             rs.close();
-            stat.close();
         } catch (SQLException e) {
         	Utils.showError(e);
         }		
         return check;
+        
 	}
 	
 	
-	private static String stringQuery(String sql){
+	public static String stringQuery(String sql){
+		
     	String value = "";
         try {
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);        	
+    		ResultSet rs = getResultset(sql);      	
 			if (rs.next()){
 				value = rs.getString(1);
 			}
 	        rs.close();	
-	        stat.close();
 		} catch (SQLException e) {
         	Utils.logError(e.getMessage());
 		}
         return value;
+        
 	}	
 	
 	
@@ -767,9 +795,7 @@ public class MainDao {
         Vector<String> vector = new Vector<String>();
         if (isConnected()){
 	        try {
-	    		connectionPostgis.setAutoCommit(false);        	
-	            Statement stat = connectionPostgis.createStatement();
-	            ResultSet rs = stat.executeQuery(sql);
+	    		ResultSet rs = getResultset(sql);
 	            while (rs.next()) {
 	            	String schemaName = rs.getString(1);
 	            	if (!software.equals("")){
@@ -786,11 +812,6 @@ public class MainDao {
 	    		return vector;	            
 	        } catch (SQLException e) {
 	            Utils.showError(e, sql);
-	            try {
-					connectionPostgis.rollback();
-				} catch (SQLException e1) {
-		            Utils.showError(e, sql);
-				}
 	            return vector;
 		    } catch (NullPointerException e) {
 		        Utils.logError(e);
@@ -806,9 +827,12 @@ public class MainDao {
 		
         ResultSet rs = null;        
         try {
-        	connection.setAutoCommit(true);
+        	//connection.setAutoCommit(true);
+        	// Rollback to prevent...  ERROR: current transaction is aborted, commands ignored until end of transaction block
+        	rollback();
         	Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stat.executeQuery(sql);
+            //connection.setAutoCommit(false);
         } catch (SQLException e) {
 			if (showError){
 				Utils.showError(e, sql);
@@ -824,7 +848,6 @@ public class MainDao {
 	public static ResultSet getResultset(String sql){
 		return getResultset(connectionPostgis, sql, true);
 	}
-	
 	
 	public static ResultSet getTableResultset(Connection connection, String table, 
 		String fields, String fieldOrderBy) {
@@ -872,13 +895,13 @@ public class MainDao {
         	" WHERE available = 1 AND software_name = '"+software+"'" +
         	" ORDER BY id DESC";            
 		try {
-			Statement stat = connectionConfig.createStatement();
-	        ResultSet rs = stat.executeQuery(sql);
+            Statement stmt = connectionConfig.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
 	        while (rs.next()) {
 	        	vector.add(rs.getString("id"));
 	        }
-	        rs.close();   
-            stat.close();	        
+	        rs.close();  
+	        stmt.close();
 		} catch (SQLException e) {
             Utils.showError(e, sql);
 		}            
@@ -902,12 +925,10 @@ public class MainDao {
 		}
 		String sql = "SELECT "+fields+" FROM "+schemaParam+"."+table;
 		try {
-			Statement stat = connectionPostgis.createStatement();
-	        ResultSet rs = stat.executeQuery(sql);
+    		ResultSet rs = getResultset(sql);
 	        while (rs.next()) {
 	        	vector.add(rs.getString(1));
 	        }
-	        stat.close();
 		} catch (SQLException e) {
             Utils.showError(e, sql);
 		}            
@@ -939,11 +960,18 @@ public class MainDao {
 	}
 
 	
+	public static void rollbackSchema(String schemaName) {
+		rollback();
+		deleteSchema(schemaName);
+	}
+	
+	
+	// TODO:
 	public static boolean createSchema(String softwareName, String schemaName, String srid) {
 		
 		boolean status = false;
 		String sql = "CREATE schema "+schemaName;
-		if (!executeUpdateSql(sql, true, true)){
+		if (!executeUpdateSql(sql, false, true)){
 			rollback();
 			return status;	
 		}
@@ -960,21 +988,19 @@ public class MainDao {
 			content = content.replace("SCHEMA_NAME", schemaName);
 			content = content.replace("SRID_VALUE", srid);
 			Utils.logSql(content);
-			
-			if (executeSql(content, true)){
-			
+
+			if (executeSql(content, false)){
 				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
 		    	content = Utils.readFile(filePath);
 				content = content.replace("SCHEMA_NAME", schemaName);		   
 				Utils.logSql(content);
-				if (executeUpdateSql(content, true)){
+				if (executeSql(content, false)){
 					filePath = folderRoot+"sql"+File.separator+softwareName+"_functrigger.sql";
 			    	content = Utils.readFile(filePath);
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
-					status = executeUpdateSql(content, true);
+					status = executeSql(content, false);
 				}
-		    	
 			}
 			
         } catch (FileNotFoundException e) {
@@ -1009,120 +1035,6 @@ public class MainDao {
 	}	
 	
 	
-	// Gis functions
-	public static Integer getTableSrid(String schema, String table) {
-		
-		Integer srid = 0;
-		String sql = "SELECT srid FROM public.geometry_columns"+
-			" WHERE f_table_schema = '"+schema+"' AND f_table_name = '"+table+"'";
-        try {
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()){
-            	srid = rs.getInt(1);
-            }
-            rs.close();
-        } catch (SQLException e) {
-        	Utils.showError(e, sql);
-        }
-        return srid;
-            
-	}
-	
-	
-	public static String replaceSpatialParameters(String schemaSrid, String content) {
-		
-		String aux = content;
-        String sql = "SELECT parameters, srs_id, srid, auth_name || ':' || auth_id as auth_id, description," +
-        	" projection_acronym, ellipsoid_acronym, is_geo" + 
-        	" FROM srs WHERE srid = '"+schemaSrid+"'"; 
-        try {
-            Statement stat = connectionConfig.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()){
-            	aux = aux.replace("__PROJ4__", rs.getString(1));
-            	aux = aux.replace("__SRSID__", rs.getString(2));
-            	aux = aux.replace("__SRID__", rs.getString(3));
-            	aux = aux.replace("__AUTHID__", rs.getString(4));
-            	aux = aux.replace("__DESCRIPTION__", rs.getString(5));
-            	aux = aux.replace("__PROJECTIONACRONYM__", rs.getString(6));
-            	aux = aux.replace("__ELLIPSOIDACRONYM__", rs.getString(7));
-            	String geo = "false";
-            	if (rs.getInt(8) != 0){
-            		geo = "true";
-            	}
-            	aux = aux.replace("__GEOGRAPHICFLAG__", geo);
-            }
-            rs.close();
-        } catch (SQLException e) {
-        	Utils.showError(e, sql);
-        }		
-		return aux;
-		
-	}	
-	
-	
-	public static String replaceExtentParameters(String software, String schemaName, String content) {
-		
-		String aux = content;
-		String tableName;
-		String geomName;
-		if (software.equals("HECRAS")){
-			tableName = "xscutlines";
-			geomName = "geom";
-		}
-		else{
-			tableName = "node";
-			geomName = "the_geom";
-		}
-		String sql = "SELECT ST_XMax(gometries) AS xmax, ST_XMin(gometries) AS xmin," +
-			" ST_YMax(gometries) AS ymax, ST_YMin(gometries) AS ymin" +
-			" FROM (SELECT ST_Collect("+geomName+") AS gometries FROM "+schemaName+"."+tableName+") AS foo";
-        try {
-            Statement stat = connectionPostgis.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            if (rs.next()){
-            	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "-1.555992" : rs.getString(2));
-            	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "-1.000000" : rs.getString(4));            	
-            	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "1.555992" : rs.getString(1));
-            	aux = aux.replace("__YMAX__", (rs.getString(3) == null) ? "1.000000" : rs.getString(3));
-            }
-            rs.close();
-        } catch (SQLException e) {
-        	Utils.showError(e, sql);
-        } catch (NullPointerException e) {
-        	Utils.logError(e, sql);
-        }			
-		return aux;
-		
-	}		
-		
-	
-	// hecRas functions
-	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
-		
-		boolean status = false;
-		String filePath = "";
-		try {		
-			filePath = Utils.getAppPath()+"sql"+File.separator+softwareName+".sql";
-			String content = Utils.readFile(filePath);
-			if (content.equals("")) return false;
-	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
-			content = content.replace("SCHEMA_NAME", schemaName);
-			content = content.replace("SRID_VALUE", srid);			
-			content = content.replace("__USER__", gswProp.get("POSTGIS_USER"));		
-			Utils.logSql(content);
-			status = executeUpdateSql(content, true, true);
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-		}
-		return status;
-		
-	}
-	
-	
 	public static boolean executeScript(String scriptPath, String batPath) {
 
 		String aux;
@@ -1154,6 +1066,130 @@ public class MainDao {
 		return true;
 			
 	}	
+	
+	
+	public static String getDataDirectory() {
+		
+		String sql = "SELECT setting FROM pg_settings WHERE name = 'data_directory'";
+		String folder = "";
+		try {
+    		ResultSet rs = getResultset(sql);
+	        if (rs.next()) {
+	        	folder = rs.getString(1);
+	        }
+		} catch (SQLException e) {
+            Utils.showError(e, sql);
+		}    		
+		return folder;
+		
+	}
+	
+	
+	private static Integer getSchemaVersion(){
+		
+		Integer schemaVersion;
+		if (schemaMap.containsKey(schema)){
+			schemaVersion = schemaMap.get(schema);
+		} 
+		else{
+			String sql = "SELECT giswater FROM "+schema+".version ORDER BY date DESC";
+			String aux = stringQuery(sql);
+			schemaVersion = Utils.parseInt(aux.replace(".", ""));
+			schemaMap.put(schema, schemaVersion);
+		}
+		return schemaVersion;
+		
+	}
+	
+	
+	// Called when we apply or accept changes in Project Preferences form
+	public static void checkSchemaVersion() {
+		
+		if (schema.equals("")) return;
+		
+		Integer schemaVersion = getSchemaVersion();
+		Integer updateVersion = updateMap.get(softwareName);
+		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
+		if (updateVersion > schemaVersion && updateSchemaVersion){
+			String msg = "Would you like to update '"+schema+"' to the current software version?\n" +
+				"It's strongly advisable to make a backup before updating it.";
+			int answer = Utils.confirmDialog(msg, "Update Schema");
+			if (answer == 0){
+				if (updateSchema(schemaVersion)){
+					String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
+						" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareName+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
+					Utils.getLogger().info(sql);
+					executeSql(sql, true);
+					Utils.showMessage("Project successfully updated.");
+				}
+				else{
+					Utils.showError("Project could not be updated to the current version.\nOpen .log file for more details");
+				}
+			}
+		}
+		
+	}
+	
+	
+	private static void getLastUpdates(){
+		
+		// Get last update script version from every software
+    	updateMap = new HashMap<String, Integer>();
+		getLastUpdateSoftware("epanet");
+		getLastUpdateSoftware("epaswmm");
+		getLastUpdateSoftware("hecras");
+		
+	}
+	
+	
+	private static void getLastUpdateSoftware(String name) {
+		
+		String folder = updatesFolder + name + File.separator;
+		File[] files = new File(folder).listFiles();
+		if (files.length > 0){
+			Arrays.sort(files);
+			Integer fileVersion = Utils.parseInt(files[files.length-1].getName().replace(".sql", ""));
+			updateMap.put(name.toUpperCase(), fileVersion);	
+		}
+		
+	}
+
+	
+	public static boolean updateSchema() {
+		return updateSchema(0);
+	}
+	
+	public static boolean updateSchema(Integer schemaVersion) {
+		
+		boolean status = false;
+			
+		// Iterate over all files inside updates/<softwareName> folder
+		String folder = updatesFolder + softwareName + File.separator;
+		File[] files = new File(folder).listFiles();
+		Arrays.sort(files);
+		for (File file : files) {
+			Integer fileVersion = Utils.parseInt(file.getName().replace(".sql", ""));
+			if (fileVersion > schemaVersion){
+		    	String content;
+				try {
+					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+					content = Utils.readFile(file.getAbsolutePath());
+					content = content.replace("SCHEMA_NAME", schema);
+					Utils.logSql(content);
+					status = executeSql(content, false);
+					// Abort process if one script fails
+					if (!status){
+						return false;
+					}
+				} catch (IOException e) {
+					Utils.logError(e);
+				}
+			}
+		}
+		
+		return status;
+		
+	}
 	
 	
 	public static boolean executeDump(String schema, String sqlPath) {
@@ -1244,6 +1280,118 @@ public class MainDao {
 	}	
 	
 	
+	// Gis functions
+	public static Integer getTableSrid(String schema, String table) {
+		
+		Integer srid = 0;
+		String sql = "SELECT srid FROM public.geometry_columns"+
+			" WHERE f_table_schema = '"+schema+"' AND f_table_name = '"+table+"'";
+        try {
+    		ResultSet rs = getResultset(sql);
+            if (rs.next()){
+            	srid = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+        	Utils.showError(e, sql);
+        }
+        return srid;
+            
+	}
+	
+	
+	public static String replaceSpatialParameters(String schemaSrid, String content) {
+		
+		String aux = content;
+        String sql = "SELECT parameters, srs_id, srid, auth_name || ':' || auth_id as auth_id, description," +
+        	" projection_acronym, ellipsoid_acronym, is_geo" + 
+        	" FROM srs WHERE srid = '"+schemaSrid+"'"; 
+        try {
+            Statement stmt = connectionConfig.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()){
+            	aux = aux.replace("__PROJ4__", rs.getString(1));
+            	aux = aux.replace("__SRSID__", rs.getString(2));
+            	aux = aux.replace("__SRID__", rs.getString(3));
+            	aux = aux.replace("__AUTHID__", rs.getString(4));
+            	aux = aux.replace("__DESCRIPTION__", rs.getString(5));
+            	aux = aux.replace("__PROJECTIONACRONYM__", rs.getString(6));
+            	aux = aux.replace("__ELLIPSOIDACRONYM__", rs.getString(7));
+            	String geo = "false";
+            	if (rs.getInt(8) != 0){
+            		geo = "true";
+            	}
+            	aux = aux.replace("__GEOGRAPHICFLAG__", geo);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+        	Utils.showError(e, sql);
+        }		
+		return aux;
+		
+	}	
+	
+	
+	public static String replaceExtentParameters(String software, String schemaName, String content) {
+		
+		String aux = content;
+		String tableName;
+		String geomName;
+		if (software.equals("HECRAS")){
+			tableName = "xscutlines";
+			geomName = "geom";
+		}
+		else{
+			tableName = "node";
+			geomName = "the_geom";
+		}
+		String sql = "SELECT ST_XMax(gometries) AS xmax, ST_XMin(gometries) AS xmin," +
+			" ST_YMax(gometries) AS ymax, ST_YMin(gometries) AS ymin" +
+			" FROM (SELECT ST_Collect("+geomName+") AS gometries FROM "+schemaName+"."+tableName+") AS foo";
+        try {
+    		ResultSet rs = getResultset(sql);
+            if (rs.next()){
+            	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "-1.555992" : rs.getString(2));
+            	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "-1.000000" : rs.getString(4));            	
+            	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "1.555992" : rs.getString(1));
+            	aux = aux.replace("__YMAX__", (rs.getString(3) == null) ? "1.000000" : rs.getString(3));
+            }
+            rs.close();
+        } catch (SQLException e) {
+        	Utils.showError(e, sql);
+        } catch (NullPointerException e) {
+        	Utils.logError(e, sql);
+        }			
+		return aux;
+		
+	}		
+		
+	
+	// hecRas functions
+	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
+		
+		boolean status = false;
+		String filePath = "";
+		try {		
+			filePath = Utils.getAppPath()+"sql"+File.separator+softwareName+".sql";
+			String content = Utils.readFile(filePath);
+			if (content.equals("")) return false;
+	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("SRID_VALUE", srid);			
+			content = content.replace("__USER__", gswProp.get("POSTGIS_USER"));		
+			Utils.logSql(content);
+			status = executeUpdateSql(content, true, true);
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+		}
+		return status;
+		
+	}
+	
+	
 	public static boolean createSdfFile(String schemaName, String fileName) {
 		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"');";
 		Utils.logSql(sql);
@@ -1255,25 +1403,6 @@ public class MainDao {
 		String sql = "SELECT "+schemaName+".gr_clear();";
 		Utils.logSql(sql);
 		return executeSql(sql, true);	
-	}
-
-
-	public static String getDataDirectory() {
-		
-		String sql = "SELECT setting FROM pg_settings WHERE name = 'data_directory'";
-		String folder = "";
-		try {
-			Statement stat = connectionPostgis.createStatement();
-	        ResultSet rs = stat.executeQuery(sql);
-	        if (rs.next()) {
-	        	folder = rs.getString(1);
-	        }
-	        stat.close();
-		} catch (SQLException e) {
-            Utils.showError(e, sql);
-		}    		
-		return folder;
-		
 	}
 
 

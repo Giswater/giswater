@@ -21,10 +21,13 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
-import java.lang.reflect.Method;
+import java.io.File;
 import java.sql.ResultSet;
 
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
@@ -34,7 +37,7 @@ import org.giswater.model.TableModelSrid;
 import org.giswater.util.Utils;
 
 
-public class NewProjectController {
+public class NewProjectController extends AbstractController{
 
 	private ProjectPanel view;
 	private String software;
@@ -48,30 +51,6 @@ public class NewProjectController {
     	this.software = MainDao.getSoftwareName();
 	}
    
-
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				if (!actionCommand.equals("schemaChanged")){
-					Utils.getLogger().info(actionCommand);
-				}
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
-	
 	
 	public void initModel(){
 		
@@ -83,7 +62,6 @@ public class NewProjectController {
 		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
 		sql+= " FROM public.spatial_ref_sys";
 		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		Utils.getLogger().info(sql);
 		ResultSet rs = MainDao.getResultset(sql);
 		model.setRs(rs);
 		view.setTableModel(model);    
@@ -146,7 +124,6 @@ public class NewProjectController {
 		ResultSet rs = MainDao.getResultset(sql);
 		model.setRs(rs);
 		view.setTableModel(model);    			
-		Utils.getLogger().info(sql);
 		
 	}
 	
@@ -201,19 +178,29 @@ public class NewProjectController {
 		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
 		if (status){
 			MainDao.setSchema(schemaName);
-			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-				" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			Utils.showMessage(view, "schema_creation_completed");
+			if (MainDao.updateSchema()){
+				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
+				Utils.getLogger().info(sql);
+				MainDao.executeSql(sql, false);
+				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
+					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
+				Utils.getLogger().info(sql);
+				// Last SQL script. So commit all process
+				MainDao.executeSql(sql, true);
+				Utils.showMessage(view, "schema_creation_completed");
+			}
+			else{
+				MainDao.rollbackSchema(schemaName);
+				Utils.logError("Error updateSchema. Schema could not be created");
+			}
+		}
+		else{
+			MainDao.rollbackSchema(schemaName);
+			Utils.logError("Error createSchema. Schema could not be created");
 		}
 		
-		// Update view
+		// Refresh view
 		parentPanel.setSchemaModel(MainDao.getSchemas(software));	
-		//schemaChanged();
 		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
 		closeProject();
 		
@@ -221,13 +208,42 @@ public class NewProjectController {
 	
 	
 	public void closeProject(){
-		view.getParent().dispose();
+		view.getDialog().dispose();
 	}
 
 
 	public void setParentPanel(ProjectPreferencesPanel ppPanel) {
 		parentPanel = ppPanel;
 	}
+	
+	
+	// TODO:
+	public void loadData(){
+		
+	}
+	
+	
+    public void chooseFileLoadInp() {
+
+        JFileChooser chooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("INP extension file", "inp");
+        chooser.setFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("file_load_inp"));
+        File file = new File(MainDao.getGswProperties().get("FILE_INP_LOAD", MainDao.getRootFolder()));	
+        chooser.setCurrentDirectory(file.getParentFile());
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileLoadInp = chooser.getSelectedFile();
+            String path = fileLoadInp.getAbsolutePath();
+            if (path.lastIndexOf(".") == -1) {
+                path += ".inp";
+                fileLoadInp = new File(path);
+            }
+            view.setFileLoadInp(fileLoadInp.getAbsolutePath());            
+        }
+
+    }
 	
 	
 }

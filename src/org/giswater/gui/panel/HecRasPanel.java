@@ -54,7 +54,7 @@ import java.awt.event.FocusAdapter;
 public class HecRasPanel extends JPanel implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private HecRasController controller;	
 	
@@ -192,7 +192,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		add(tabbedPane, "cell 1 1,grow");
 
 		panel_2 = new JPanel();
-		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); //$NON-NLS-1$
+		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_2, null); 
 		panel_2.setLayout(new MigLayout("", "[70:n][110:n][150.00][50][45:n][70]", "[15px][8px][10:n][40:n][10px][40:n][:5px:5px][]"));
 		
 		JLabel lblSelectSchema = new JLabel(BUNDLE.getString("HecRasPanel.lblSelectSchema.text"));
@@ -210,14 +210,14 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		cboSchema.setActionCommand("schemaChanged");
 		cboSchema.setMinimumSize(new Dimension(110, 20));
 		
-		btnCreateSchema = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); //$NON-NLS-1$
+		btnCreateSchema = new JButton(BUNDLE.getString("HecRasPanel.btnSaveCase.text")); 
 		panel_2.add(btnCreateSchema, "flowx,cell 2 1");
 		btnCreateSchema.setMaximumSize(new Dimension(108, 23));
 		btnCreateSchema.setMinimumSize(new Dimension(110, 23));
 		btnCreateSchema.setActionCommand("createSchema");
 		
 		lblAscFile_1 = new JLabel();
-		lblAscFile_1.setText(BUNDLE.getString("HecRasPanel.lblAscFile_1.text")); //$NON-NLS-1$
+		lblAscFile_1.setText(BUNDLE.getString("HecRasPanel.lblAscFile_1.text")); 
 		panel_2.add(lblAscFile_1, "cell 0 3,alignx right");
 				
 		scrollPane = new JScrollPane();
@@ -235,7 +235,7 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		lblAscFile = new JLabel();
-		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text")); //$NON-NLS-1$
+		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text")); 
 		panel_2.add(lblAscFile, "cell 0 5,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
@@ -258,13 +258,13 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		panel_2.add(btnFileSdf, "cell 4 5,aligny center");
 		
-		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); //$NON-NLS-1$
+		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
 		btnExportSdf.setMinimumSize(new Dimension(110, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		panel_2.add(btnExportSdf, "cell 5 5,alignx center,aligny center");
 		
-		btnDeleteSchema = new JButton(BUNDLE.getString("HecRasPanel.btnDeleteSchema.text")); //$NON-NLS-1$
+		btnDeleteSchema = new JButton(BUNDLE.getString("HecRasPanel.btnDeleteSchema.text")); 
 		btnDeleteSchema.setMinimumSize(new Dimension(110, 23));
 		btnDeleteSchema.setMaximumSize(new Dimension(108, 23));
 		btnDeleteSchema.setActionCommand("deleteSchema");
@@ -276,14 +276,14 @@ public class HecRasPanel extends JPanel implements ActionListener, FocusListener
 		btnClearData.setActionCommand("clearData");
 		panel_2.add(btnClearData, "flowx,cell 2 1");
 		
-		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); //$NON-NLS-1$
+		btnDatabase = new JButton(BUNDLE.getString("HecRasPanel.btnDatabase.text")); 
 		btnDatabase.setMinimumSize(new Dimension(95, 23));
 		btnDatabase.setMaximumSize(new Dimension(140, 23));
 		btnDatabase.setActionCommand("openDatabase");
 		btnDatabase.setVisible(false);
 		panel_2.add(btnDatabase, "cell 2 7,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
 		btnClose.setMinimumSize(new Dimension(60, 23));
 		btnClose.setMaximumSize(new Dimension(105, 23));
 		btnClose.setActionCommand("closePanel");

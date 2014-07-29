@@ -144,7 +144,7 @@ public class ModelPostgis extends Model {
             // If not set, get default INP output file
             if (fileInp == null) {
                 String sFile = iniProperties.get("DEFAULT_INP");
-                sFile = MainDao.getFolderConfig() + sFile;
+                sFile = MainDao.getInpFolder() + sFile;
                 fileInp = new File(sFile);
             }
             
@@ -161,7 +161,7 @@ public class ModelPostgis extends Model {
             }
             
             // Get INP template File
-            String templatePath = MainDao.getFolderConfig() + softwareVersion + ".inp";
+            String templatePath = MainDao.getInpFolder() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()){
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
@@ -475,10 +475,13 @@ public class ModelPostgis extends Model {
     	ModelPostgis.projectName = projectName;
 
     	// Ask confirmation to user
-       	int res = Utils.confirmDialog("import_sure");    		
-       	if (res == JOptionPane.NO_OPTION){
-       		return false;
-    	}    	
+        String importRpt = MainDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "true").toLowerCase();
+        if (importRpt.equals("false")){
+           	int res = Utils.confirmDialog("import_sure");    		
+           	if (res == JOptionPane.NO_OPTION){
+           		return false;
+        	}    	
+        }  
 
        	// Check if we want to overwrite previous results
         Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "false"));
@@ -489,7 +492,7 @@ public class ModelPostgis extends Model {
     	if (existsProjectName()){
     		exists = true;
             if (!overwrite){
-            	res = Utils.confirmDialog("project_exists");    		
+            	int res = Utils.confirmDialog("project_exists");    		
             	if (res == JOptionPane.NO_OPTION){
             		return false;
             	}
@@ -628,17 +631,8 @@ public class ModelPostgis extends Model {
         	
         } // end iterations over targets (while)
 
-        // Insert into result_selection
+        // Insert into result_selection commiting transaction
    		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
-        
-        // Commit transaction ONLY if everything ok
-        try {
-        	if (!MainDao.getConnectionPostgis().getAutoCommit()){
-        		MainDao.getConnectionPostgis().commit();
-        	}
-		} catch (SQLException e) {
-            Utils.showError(e, sql);
-		}
         
         // Ending message
         Utils.showMessage("import_end");                
