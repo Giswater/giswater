@@ -97,6 +97,8 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JButton btnClose;
 	private JSeparator separator;
 	private JCheckBox chkSubcatchments;
+	private JRadioButton opt1D;
+	private JRadioButton opt2D;
 
 	
 	public EpaPanel() {
@@ -371,7 +373,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnDeleteData.setMinimumSize(new Dimension(110, 23));
 		btnDeleteData.setMaximumSize(new Dimension(112, 23));
 		btnDeleteData.setEnabled(false);
-		btnDeleteData.setActionCommand("deleteData");
+		btnDeleteData.setActionCommand("renameSchema");
 		panel_4.add(btnDeleteData, "cell 3 3,growx");
 		
 		separator = new JSeparator();
@@ -410,6 +412,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(chkExport, "cell 0 6 2 1");
 		
 		chkSubcatchments = new JCheckBox();
+		chkSubcatchments.setVisible(false);
 		chkSubcatchments.setText(BUNDLE.getString("EpaPanel.chckbxExportSubcatchments.text")); //$NON-NLS-1$
 		panel_4.add(chkSubcatchments, "cell 2 6");
 
@@ -435,7 +438,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text")); //$NON-NLS-1$
 		chkExec.setName("chk_exec");
 		chkExec.setActionCommand("Exportaci\u00F3n a INP");
-		panel_4.add(chkExec, "cell 0 8 3 1,alignx left");
+		panel_4.add(chkExec, "flowx,cell 0 8 3 1,alignx left");
 
 		JLabel label_1 = new JLabel();
 		label_1.setText(BUNDLE.getString("Form.label_1.text")); //$NON-NLS-1$
@@ -508,6 +511,18 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnClose.setText(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
 		btnClose.setActionCommand("closePanel");
 		panel_4.add(btnClose, "cell 3 12");
+		
+		opt1D = new JRadioButton(BUNDLE.getString("EpaPanel.rdbtnSwmm.text")); //$NON-NLS-1$
+		opt1D.setVisible(false);
+		opt1D.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		opt1D.setActionCommand(BUNDLE.getString("EpaPanel.opt1D.actionCommand")); //$NON-NLS-1$
+		panel_4.add(opt1D, "cell 2 8");
+		
+		opt2D = new JRadioButton(BUNDLE.getString("EpaPanel.rdbtnSwmmdd.text")); //$NON-NLS-1$
+		opt2D.setVisible(false);
+		opt2D.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		opt2D.setActionCommand(BUNDLE.getString("EpaPanel.opt2D.actionCommand")); //$NON-NLS-1$
+		panel_4.add(opt2D, "cell 2 8");
 
 		setupListeners();
 

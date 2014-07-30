@@ -454,7 +454,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtLogFolderSize.setDocument(maxLength);	
 	    
 	    btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text")); //$NON-NLS-1$
-	    btnOpenLogFolder.setActionCommand(BUNDLE.getString("ConfigPanel.button.actionCommand")); //$NON-NLS-1$
+	    btnOpenLogFolder.setActionCommand("openLogFolder");
 	    panel.add(btnOpenLogFolder, "cell 2 9 2 1,alignx right");
 	    
 	    chkAutostart = new JCheckBox(BUNDLE.getString("ConfigPanel.chkAutostart.text")); //$NON-NLS-1$

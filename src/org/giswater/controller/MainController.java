@@ -748,23 +748,27 @@ public class MainController{
         }
         
 	}		
-		
 	
-	public void deleteData(){
+	
+	public void renameSchema(){
 		
 		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){
-        	// Get SRID before delete schema
-			String table = "arc";
-			if (software.equals("HECRAS")){
-				table = "banks";
-			}
-			String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();            	
-        	MainDao.deleteSchema(schemaName);
-    		createSchema(schemaName, schemaSrid);
-        }
+		if (schemaName.equals("")) return;
+		
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		if (newSchemaName == null){
+			return;
+		}
+		newSchemaName = validateName(newSchemaName);
+		if (newSchemaName.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
+		if (MainDao.executeUpdateSql(sql, true)){
+			selectSourceType(false);
+			Utils.showMessage("Project renamed successfuly");
+		}
 		
 	}
 	

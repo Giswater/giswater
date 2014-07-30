@@ -319,7 +319,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnAbout.add(mntmAgreements);
 		
 		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text")); //$NON-NLS-1$
-		mntmCheckUpdates.setActionCommand(BUNDLE.getString("MainFrame.mntmCheckUpdates.actionCommand_1")); //$NON-NLS-1$
+		mntmCheckUpdates.setActionCommand("checkUpdates");
 		mnAbout.add(mntmCheckUpdates);
 		
 		String path = Utils.getAppPath() + "images/download_16.png";
