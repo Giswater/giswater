@@ -755,7 +755,7 @@ public class MainController{
 		String schemaName = view.getSelectedSchema();
 		if (schemaName.equals("")) return;
 		
-		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
 		if (newSchemaName == null){
 			return;
 		}
