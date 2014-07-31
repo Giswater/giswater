@@ -58,7 +58,7 @@ import org.giswater.util.Utils;
 
 public class MainFrame extends JFrame implements ActionListener{
 	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
@@ -171,33 +171,33 @@ public class MainFrame extends JFrame implements ActionListener{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text")); //$NON-NLS-1$
+		mnProject = new JMenu(BUNDLE.getString("MainFrame.mnProject.text"));
 		menuBar.add(mnProject);
 		
-		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text")); //$NON-NLS-1$
+		mntmOpenProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpenProject.text"));
 		mntmOpenProject.setActionCommand("openProject");
 		mnProject.add(mntmOpenProject);
 		
-		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text")); //$NON-NLS-1$
+		mntmSaveProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProject.text"));
 		mntmSaveProject.setActionCommand("saveProject");
 		mnProject.add(mntmSaveProject);
 		
-		mntmSaveProjectAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProjectAs.text")); //$NON-NLS-1$
+		mntmSaveProjectAs = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveProjectAs.text"));
 		mntmSaveProjectAs.setVisible(false);
 		mnProject.add(mntmSaveProjectAs);
 		
 		separator = new JSeparator();
 		mnProject.add(separator);
 		
-		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text")); //$NON-NLS-1$
+		mntmOpenPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmOpen.text"));
 		mntmOpenPreferences.setActionCommand("gswOpen");
 		mnProject.add(mntmOpenPreferences);
 		
-		mntmSavePreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text")); //$NON-NLS-1$
+		mntmSavePreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSave.text"));
 		mntmSavePreferences.setActionCommand("gswSave");
 		mnProject.add(mntmSavePreferences);
 		
-		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text")); //$NON-NLS-1$
+		mntmSaveAsPreferences = new JMenuItem(BUNDLE.getString("MainFrame.mntmSaveAs.text"));
 		mntmSaveAsPreferences.setActionCommand("gswSaveAs");
 		mnProject.add(mntmSaveAsPreferences);
 		
@@ -212,14 +212,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSwmm.setActionCommand("openSwmm");
 		mnForms.add(mntmSwmm);
 		
-		mntmHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmHecras.text")); //$NON-NLS-1$
+		mntmHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmHecras.text"));
 		mntmHecras.setActionCommand("openHecras");
 		mnForms.add(mntmHecras);
 		
 		mnGisProject = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		menuBar.add(mnGisProject);
 		
-		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text")); //$NON-NLS-1$
+		mntmGisProject = new JMenuItem(BUNDLE.getString("MainFrame.mntmGisProject.text"));
 		mnGisProject.add(mntmGisProject);
 		mntmGisProject.setActionCommand("showGisProject");
 		
@@ -235,11 +235,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnGisProject.add(mntmSampleHecras);
 		mntmSampleHecras.setActionCommand("sampleHecras");
 		
-		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text")); //$NON-NLS-1$
+		mntmDatabaseAdministrator = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabaseAdministrator.text"));
 		mnGisProject.add(mntmDatabaseAdministrator);
 		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");		
 		
-		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text")); //$NON-NLS-1$
+		mnData = new JMenu(BUNDLE.getString("MainFrame.mnManager.text"));
 		mnData.setEnabled(false);
 		menuBar.add(mnData);
 		
@@ -248,11 +248,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmProjectId.setActionCommand("showProjectId");
 		mnData.add(mntmProjectId);
 		
-		mntmArcCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text")); //$NON-NLS-1$
+		mntmArcCatalog = new JMenuItem(BUNDLE.getString("MainFrame.mntmConduit.text"));
 		mntmArcCatalog.setActionCommand("showArcCatalog");
 		mnData.add(mntmArcCatalog);
 		
-		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text")); //$NON-NLS-1$
+		mntmMaterials = new JMenuItem(BUNDLE.getString("MainFrame.mntmMaterials.text"));
 		mntmMaterials.setActionCommand("showMaterials");
 		mnData.add(mntmMaterials);
 		
@@ -264,7 +264,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmCurves.setActionCommand("showCurves");
 		mnData.add(mntmCurves);
 		
-		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text")); //$NON-NLS-1$
+		mntmPatterns = new JMenuItem(BUNDLE.getString("MainFrame.mntmPatterns.text"));
 		mntmPatterns.setActionCommand("showPatterns");
 		mnData.add(mntmPatterns);
 		
@@ -275,14 +275,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmCatalog.setActionCommand("scenarioCatalog");
 		mnAnalysis.add(mntmCatalog);
 		
-		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text")); //$NON-NLS-1$
+		mntmManagement = new JMenuItem(BUNDLE.getString("MainFrame.mntmManagement.text"));
 		mntmManagement.setActionCommand("scenarioManagement");
 		mnAnalysis.add(mntmManagement);
 		
-		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text")); //$NON-NLS-1$
+		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text"));
 		menuBar.add(mnConfiguration);
 		
-		mntmDatabase = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabase.text")); //$NON-NLS-1$
+		mntmDatabase = new JMenuItem(BUNDLE.getString("MainFrame.mntmDatabase.text"));
 		mntmDatabase.setActionCommand("showDatabase");
 		mnConfiguration.add(mntmDatabase);
 		
@@ -290,42 +290,42 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSoftware.setActionCommand("showSoftware");
 		mnConfiguration.add(mntmSoftware);
 		
-		mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text")); //$NON-NLS-1$
+		mnAbout = new JMenu(BUNDLE.getString("MainFrame.mnAbout.text"));
 		menuBar.add(mnAbout);
 		
-		mntmWelcome = new JMenuItem(BUNDLE.getString("MainFrame.mntmWelcome.text")); //$NON-NLS-1$
+		mntmWelcome = new JMenuItem(BUNDLE.getString("MainFrame.mntmWelcome.text"));
 		mnAbout.add(mntmWelcome);
 		mntmWelcome.setActionCommand("showWelcome");
 		
-		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text")); //$NON-NLS-1$
+		mntmLicense = new JMenuItem(BUNDLE.getString("MainFrame.mntmLicense.text"));
 		mntmLicense.setActionCommand("showLicense");
 		mnAbout.add(mntmLicense);
 		
-		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text")); //$NON-NLS-1$
+		mntmUserManual = new JMenuItem(BUNDLE.getString("MainFrame.mntmHelp.text"));
 		mnAbout.add(mntmUserManual);
 		mntmUserManual.setActionCommand("openUserManual");
 		
-		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text")); //$NON-NLS-1$
+		mntmReferenceGuide = new JMenuItem(BUNDLE.getString("MainFrame.mntmReferenceGuide.text"));
 		mntmReferenceGuide.setHorizontalAlignment(SwingConstants.TRAILING);
 		mntmReferenceGuide.setActionCommand("openReferenceGuide");
 		mnAbout.add(mntmReferenceGuide);
 		
-		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text")); //$NON-NLS-1$
+		mntmWeb = new JMenuItem(BUNDLE.getString("MainFrame.mntmWebPage.text"));
 		mntmWeb.setActionCommand("openWeb");
 		mnAbout.add(mntmWeb);
 		
-		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text")); //$NON-NLS-1$
+		mntmAgreements = new JMenuItem(BUNDLE.getString("MainFrame.mntmAgreements.text"));
 		mntmAgreements.setActionCommand("showAcknowledgment");
 		mnAbout.add(mntmAgreements);
 		
-		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text")); //$NON-NLS-1$
+		mntmCheckUpdates = new JMenuItem(BUNDLE.getString("MainFrame.mntmCheckUpdates.text"));
 		mntmCheckUpdates.setActionCommand("checkUpdates");
 		mnAbout.add(mntmCheckUpdates);
 		
 		String path = Utils.getAppPath() + "images/download_16.png";
 		final ImageIcon iconImage = new ImageIcon(path);
 		mnNewVersionAvailable = new JMenu(BUNDLE.getString("MainFrame.mnNewVersionAvailable.text"));
-		mnNewVersionAvailable.setActionCommand("downloadNewVersion"); //$NON-NLS-1$
+		mnNewVersionAvailable.setActionCommand("downloadNewVersion");
 		mnNewVersionAvailable.setVisible(false);
 		mnNewVersionAvailable.setIcon(iconImage);
 		menuBar.add(Box.createHorizontalGlue());

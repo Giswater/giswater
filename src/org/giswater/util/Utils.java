@@ -55,7 +55,7 @@ import org.giswater.dao.MainDao;
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text");
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";

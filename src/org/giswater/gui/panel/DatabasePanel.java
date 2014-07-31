@@ -52,7 +52,7 @@ import org.giswater.util.Utils;
 public class DatabasePanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	private MainController controller;
 	private DatabaseController databaseController;
@@ -185,7 +185,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 
 		// Panel 1
 		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab(BUNDLE.getString("Form.panel_1.title"), null, panel_1, null); //$NON-NLS-1$
+		tabbedPane.addTab(BUNDLE.getString("Form.panel_1.title"), null, panel_1, null);
 		panel_1.setLayout(new MigLayout("", "[10][][300px:n:300px][60:n:60]", "[5][209.00][35.00]"));
 
 		panel = new JPanel();
@@ -193,7 +193,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		panel_1.add(panel, "cell 1 1 3 1,grow");
 		panel.setLayout(new MigLayout("", "[5][77.00][15][140][11.00][125.00]", "[4][24][24][24][24][24][24][]"));
 
-		lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); //$NON-NLS-1$
+		lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2"));
 		panel.add(lblNewLabel, "cell 1 1");
 
 		cboDriver = new JComboBox<String>();
@@ -203,21 +203,21 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		cboDriver.setModel(new DefaultComboBoxModel<String>(new String[] {"PG-9.2 + PostGIS-2.0"}));
 		panel.add(cboDriver, "cell 3 1,growx");
 
-		lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text")); //$NON-NLS-1$
+		lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text"));
 		panel.add(lblIp, "cell 1 2");
 
 		txtIP = new JTextField();
 		panel.add(txtIP, "cell 3 2,growx");
 		txtIP.setColumns(10);
 
-		lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text")); //$NON-NLS-1$
+		lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text"));
 		panel.add(lblPort, "cell 1 3,alignx left");
 
 		txtPort = new JTextField();
 		txtPort.setColumns(10);
 		panel.add(txtPort, "cell 3 3,growx");
 
-		lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text")); //$NON-NLS-1$
+		lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text"));
 		panel.add(lblDatabase, "cell 1 4");
 
 		txtDatabase = new JTextField();
@@ -225,7 +225,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtDatabase.setColumns(10);
 		panel.add(txtDatabase, "cell 3 4,growx");
 
-		lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text")); //$NON-NLS-1$
+		lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text"));
 		panel.add(lblUser, "cell 1 5");
 
 		txtUser = new JTextField();
@@ -233,23 +233,23 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtUser.setColumns(10);
 		panel.add(txtUser, "cell 3 5,growx");
 
-		lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text")); //$NON-NLS-1$
+		lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text"));
 		panel.add(lblPassword, "cell 1 6");
 
 		txtPassword = new JPasswordField();
 		txtPassword.setText("");
 		panel.add(txtPassword, "cell 3 6,growx");
 
-		chkRemember = new JCheckBox(BUNDLE.getString("Database.chkRemember.text")); //$NON-NLS-1$
+		chkRemember = new JCheckBox(BUNDLE.getString("Database.chkRemember.text"));
 		chkRemember.setSelected(true);
 		panel.add(chkRemember, "cell 3 7,aligny baseline");
 		
-		btnTest = new JButton(BUNDLE.getString("Database.btnTest.text")); //$NON-NLS-1$
+		btnTest = new JButton(BUNDLE.getString("Database.btnTest.text"));
 		panel_1.add(btnTest, "flowx,cell 2 2,alignx center");
 		btnTest.setMinimumSize(new Dimension(110, 23));
 		btnTest.setActionCommand("testConnection");
 		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(60, 23));
 		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 3 2,alignx left");
@@ -257,10 +257,10 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		// Panel 3
 		JPanel panel_3 = new JPanel();
 		panel_3.setVisible(false);
-		//tabbedPane.addTab(BUNDLE.getString("Form.panel_4.title"), null, panel_3, null); //$NON-NLS-1$
+		//tabbedPane.addTab(BUNDLE.getString("Form.panel_4.title"), null, panel_3, null);
 		panel_3.setLayout(new MigLayout("",	"[10.00][][10.00][300.00][10.00][]", "[10][][10][45][15][]"));
 
-		JLabel lblSchemaName = new JLabel(BUNDLE.getString("Form.lblSchemaName.text")); //$NON-NLS-1$
+		JLabel lblSchemaName = new JLabel(BUNDLE.getString("Form.lblSchemaName.text"));
 		panel_3.add(lblSchemaName, "cell 1 1");
 
 		txtSchema = new JTextField();
@@ -270,7 +270,7 @@ public class DatabasePanel extends JPanel implements ActionListener {
 		txtSchema.setColumns(10);
 
 		JLabel label_3 = new JLabel();
-		label_3.setText(BUNDLE.getString("Form.label.text")); //$NON-NLS-1$
+		label_3.setText(BUNDLE.getString("Form.label.text"));
 		panel_3.add(label_3, "cell 1 3");
 
 		JTextArea txtFileInp3 = new JTextArea();
