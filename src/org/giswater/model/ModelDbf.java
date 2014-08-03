@@ -116,7 +116,7 @@ public class ModelDbf extends Model{
 			Statement stat = connectionDrivers.createStatement();
 			ResultSet rs = stat.executeQuery(sql);					
 			while (rs.next()) {
-				Utils.getLogger().info("INP target: " + rs.getInt("table_id") + " - " + rs.getString("name"));		
+				Utils.getLogger().info("INP target: " + rs.getInt("id") + " - " + rs.getString("name"));		
 				processTarget(rs.getInt("id"), rs.getInt("table_id"), rs.getInt("lines"));	
 			}		    
 			rs.close();
@@ -144,7 +144,6 @@ public class ModelDbf extends Model{
 
 
 	// Process target specified by id parameter
-	@SuppressWarnings("null")
 	private static void processTarget(int id, int fileIndex, int lines) throws IOException, SQLException {
 
 		// Go to the first line of the target
@@ -158,7 +157,11 @@ public class ModelDbf extends Model{
 			return;
 		}
 		File file = dbfFiles.get(fileIndex);		
-		if (file == null || !file.exists()){
+		if (file == null){
+			Utils.getLogger().info("Check .sqlite file. table_id value "+fileIndex+" not found in inp_table");
+			return;
+		}
+		if (!file.exists()){
 			Utils.getLogger().info("File not found: " + file.getAbsolutePath());
 			return;
 		}

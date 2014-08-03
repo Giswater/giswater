@@ -73,11 +73,6 @@ public class MainController{
 	private TableColumnModel tcm;
 	private ProjectPanel projectPanel;
 	private JDialog projectDialog;
-	
-	// DBF only
-	private File dirShp;
-	private boolean readyShp = false;
-	private boolean dbSelected = false;
 
     
     public MainController(EpaPanel view, MainFrame mf, String software) {
@@ -132,11 +127,8 @@ public class MainController{
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			dirShp = chooser.getSelectedFile();
-			view.setFolderShp(dirShp.getAbsolutePath());
-			gswProp.put(software+"_FOLDER_SHP", dirShp.getAbsolutePath());
-			MainDao.savePropertiesFile();
-			readyShp = true;
+			File folderShp = chooser.getSelectedFile();
+			view.setFolderShp(folderShp.getAbsolutePath());
 		}
 
 	}
@@ -171,9 +163,8 @@ public class MainController{
 	
 	public void selectSourceType(boolean askQuestion){
 
-		dbSelected = view.getOptDatabaseSelected();
 		// Database selected
-		if (dbSelected){
+		if (view.getOptDatabaseSelected()){
 			// Check if we already are connected
 			if (MainDao.isConnected()){
 				mainFrame.enableCatalog(true);
@@ -416,7 +407,7 @@ public class MainController{
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	if (dbSelected){
+    	if (view.getOptDatabaseSelected()){
     		executePostgis();
     	} else{
     		executeDbf();
@@ -520,12 +511,14 @@ public class MainController{
     
 	public void executeDbf() {
 
-		if (!readyShp) {
-			Utils.showError(view, "dir_shp_not_selected");
+		String pathFolderShp = view.getFolderShp();
+		File folderShp = new File(pathFolderShp);
+		if (!folderShp.exists()){
+			Utils.showError("Selected data folder not exists. Please set a valid one");
 			return;
 		}
-
-        boolean continueExec = true;
+		gswProp.put(software+"_FOLDER_SHP", pathFolderShp);
+		MainDao.savePropertiesFile();
         
         // Which checks are selected?
         exportSelected = view.isExportSelected();
@@ -552,16 +545,16 @@ public class MainController{
 			return;
 		}
 		
+		// Check if all necessary files exist
+		if (!ModelDbf.checkFiles(pathFolderShp)) {
+			return;
+		}
+		
 		// Get INP template file
 		String templatePath = MainDao.getFolderConfig()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			Utils.showError(view, "inp_error_notfound", templatePath);				
-			return;
-		}
-
-		// Check if all necessary files exist
-		if (!ModelDbf.checkFiles(dirShp.getAbsolutePath())) {
 			return;
 		}
 
@@ -571,6 +564,7 @@ public class MainController{
             return;
         }    
         
+        boolean continueExec = true;
         // Export to INP
         if (exportSelected) {
             if (!getFileInp()) {

@@ -20,6 +20,7 @@
  */
 package org.giswater.gui.panel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -39,9 +40,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -49,8 +52,6 @@ import org.giswater.controller.MainController;
 import org.giswater.gui.frame.EpaFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
-import javax.swing.JSeparator;
-import java.awt.Color;
 
 
 public class EpaPanel extends JPanel implements ActionListener {
@@ -310,7 +311,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		// Panel 4
 		panel_4 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Form.panel_3.title"), null, panel_4, null);
-		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][115.00]", "[][25px][40px][25px][20px:n][][30px:n,bottom][40.00][24][40px][24][][30px:n,bottom]"));
+		panel_4.setLayout(new MigLayout("", "[15px:15px][110px:110px][320.00px][115.00]", "[][25px][35px:n][25px][20px:n][][30px:n,bottom][35px:n][24][35px:n][24][][30px:n,bottom]"));
 		
 		lblChooseType = new JLabel(BUNDLE.getString("EpaPanel.lbl.text"));
 		panel_4.add(lblChooseType, "cell 1 0");
@@ -343,6 +344,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		panel_4.add(lblFolderShp, "cell 1 2");
 		
 		scrollPane_4 = new JScrollPane();
+		scrollPane_4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_4.add(scrollPane_4, "cell 2 2,grow");
 		
 		txtInput = new JTextArea();
