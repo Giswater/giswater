@@ -190,11 +190,13 @@ public class MainController{
 				mainFrame.enableCatalog(false);
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(false);
+				view.enableRunAndImport(true);
 				view.enableAccept(false);
 				view.setSchemaModel(null);				
 			}
 			schemaChanged();
 		}
+		
 		// DBF selected
 		else{
 			mainFrame.enableCatalog(false);

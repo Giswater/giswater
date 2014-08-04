@@ -48,6 +48,7 @@ import org.giswater.util.Utils;
 public class ModelDbf extends Model{
 
 	private static Map<Integer, File> dbfFiles;
+	private static final String POLYGONS_TARGET = "POLYGONS";
 
 	
 	// Read content of the DBF file and saved it in an Array
@@ -117,7 +118,11 @@ public class ModelDbf extends Model{
 			ResultSet rs = stat.executeQuery(sql);					
 			while (rs.next()) {
 				Utils.getLogger().info("INP target: " + rs.getInt("id") + " - " + rs.getString("name"));		
-				processTarget(rs.getInt("id"), rs.getInt("table_id"), rs.getInt("lines"));	
+				if (!rs.getString("name").toUpperCase().trim().equals(POLYGONS_TARGET)){
+					processTarget(rs.getInt("id"), rs.getInt("table_id"), rs.getInt("lines"));	
+				} else{
+					Utils.getLogger().info("Target POLYGONS ignored");		
+				}
 			}		    
 			rs.close();
 			rat.close();

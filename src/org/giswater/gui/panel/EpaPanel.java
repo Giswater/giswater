@@ -62,7 +62,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private MainController controller;
 	private EpaFrame epaFrame;	
 
-	private JTextField txtProject;
+	private JTextField txtResultName;
 	private JTextArea txtFileRpt;
 	private JTextArea txtFileInp;
 	private JButton btnFileInp;
@@ -78,15 +78,16 @@ public class EpaPanel extends JPanel implements ActionListener {
 	private JTabbedPane tabbedPane;
 	private JComboBox<String> cboSoftware;
 	private JLabel lblEpaSoftware;
-	private JScrollPane scrollPane_2;
-	private JScrollPane scrollPane_3;
+
 	private JRadioButton optDbf;
 	private JRadioButton optDatabase;
 	private JCheckBox chkExport;
 	private JTextArea txtInput;
 	private JLabel lblFolderShp;
 	private JButton btnFolderShp;
-	private JScrollPane scrollPane_4;
+
+	private JLabel lblFileRpt;
+	private JLabel lblResultName;
 	private JLabel lblChooseType;
 	private JLabel lblSchema;
 	private JButton btnCreateSchema;
@@ -170,11 +171,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 	}
 
 	public void setProjectName(String projectName) {
-		txtProject.setText(projectName);
+		txtResultName.setText(projectName);
 	}
 
 	public String getProjectName() {
-		return txtProject.getText().trim();
+		return txtResultName.getText().trim();
 	}
 	
 	public boolean isSubcatchmentsSelected() {
@@ -191,6 +192,17 @@ public class EpaPanel extends JPanel implements ActionListener {
 
 	public boolean isImportSelected() {
 		return chkImport.isSelected();
+	}
+	
+	public void enableRunAndImport(boolean enable) {
+		chkSubcatchments.setEnabled(enable);
+		chkExec.setEnabled(enable);
+		lblFileRpt.setEnabled(enable);
+		txtFileRpt.setEnabled(enable);
+		btnFileRpt.setEnabled(enable);
+		chkImport.setEnabled(enable);
+		lblResultName.setEnabled(enable);
+		txtResultName.setEnabled(enable);		
 	}
 	
 	public void enableControlsDbf(boolean enable) {
@@ -210,10 +222,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 		btnReport.setEnabled(enable);
 		lblSchema.setEnabled(enable);
 		cboSchema.setEnabled(enable);	
+		enableRunAndImport(enable);
 	}	
 	
 	public void enableControlsText(boolean enable) {
-		txtProject.setEnabled(enable);
+		txtResultName.setEnabled(enable);
 		txtInput.setEnabled(enable);
 		txtFileInp.setEnabled(enable);
 		txtFileRpt.setEnabled(enable);
@@ -343,7 +356,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		lblFolderShp = new JLabel(BUNDLE.getString("EpaPanel.lblFolderData.text"));
 		panel_4.add(lblFolderShp, "cell 1 2");
 		
-		scrollPane_4 = new JScrollPane();
+		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel_4.add(scrollPane_4, "cell 2 2,grow");
 		
@@ -422,7 +435,7 @@ public class EpaPanel extends JPanel implements ActionListener {
 		label.setText(BUNDLE.getString("Form.label.text"));
 		panel_4.add(label, "cell 1 7");
 		
-		scrollPane_2 = new JScrollPane();
+		JScrollPane scrollPane_2 = new JScrollPane();
 		panel_4.add(scrollPane_2, "cell 2 7,grow");
 
 		txtFileInp = new JTextArea();
@@ -442,11 +455,11 @@ public class EpaPanel extends JPanel implements ActionListener {
 		chkExec.setActionCommand("Exportaci\u00F3n a INP");
 		panel_4.add(chkExec, "flowx,cell 0 8 3 1,alignx left");
 
-		JLabel label_1 = new JLabel();
-		label_1.setText(BUNDLE.getString("Form.label_1.text"));
-		panel_4.add(label_1, "cell 1 9");
+		lblFileRpt = new JLabel();
+		lblFileRpt.setText(BUNDLE.getString("Form.label_1.text"));
+		panel_4.add(lblFileRpt, "cell 1 9");
 		
-		scrollPane_3 = new JScrollPane();
+		JScrollPane scrollPane_3 = new JScrollPane();
 		panel_4.add(scrollPane_3, "cell 2 9,grow");
 
 		txtFileRpt = new JTextArea();
@@ -466,16 +479,16 @@ public class EpaPanel extends JPanel implements ActionListener {
 		chkImport.setActionCommand("Exportaci\u00F3n a INP");
 		panel_4.add(chkImport, "cell 0 10 2 1");
 
-		JLabel label_2 = new JLabel();
-		label_2.setText(BUNDLE.getString("Form.label_2.text"));
-		label_2.setName("lbl_project");
-		panel_4.add(label_2, "cell 1 11");
+		lblResultName = new JLabel();
+		lblResultName.setText(BUNDLE.getString("Form.label_2.text"));
+		lblResultName.setName("lbl_project");
+		panel_4.add(lblResultName, "cell 1 11");
 
-		txtProject = new JTextField();
-		txtProject.setName("txt_project");
+		txtResultName = new JTextField();
+		txtResultName.setName("txt_project");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
-		txtProject.setDocument(maxLength);				
-		panel_4.add(txtProject, "cell 2 11,growx,aligny top");
+		txtResultName.setDocument(maxLength);				
+		panel_4.add(txtResultName, "cell 2 11,growx,aligny top");
 
 		btnAccept = new JButton();
 		btnAccept.setMinimumSize(new Dimension(60, 9));
