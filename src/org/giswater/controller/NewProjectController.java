@@ -175,7 +175,13 @@ public class NewProjectController extends AbstractController{
 		
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
 		
-		boolean status = MainDao.createSchema(software, schemaName, sridValue);	
+		boolean status;
+		if (software.equals("HECRAS")){
+			status = MainDao.createSchemaHecRas(software, schemaName, sridValue);	
+		}
+		else{
+			status = MainDao.createSchema(software, schemaName, sridValue);	
+		}
 		if (status){
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()){

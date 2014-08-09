@@ -40,6 +40,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
@@ -508,6 +509,30 @@ public class Utils {
 		return content;
 		
 	}	
+	
+	
+	public static ArrayList<String> fileToArray(String filePath) {
+		
+		File fileName = new File(filePath);			
+		if (!fileName.exists()){
+			showError("inp_error_notfound", filePath);
+			return null;
+		}
+		ArrayList<String> fileContent = new ArrayList<String>();
+		String line;
+		try {
+			RandomAccessFile raf = new RandomAccessFile(filePath, "r");
+			while (raf.getFilePointer() < raf.length()){		
+				line = raf.readLine().trim();	
+				fileContent.add(line);
+			}
+			raf.close();
+		} catch (IOException e) {
+			Utils.showError(e);
+		}	
+		return fileContent;
+		
+	}
 
 	
 	public static void setSqlLog(String string) {
@@ -629,8 +654,7 @@ public class Utils {
 	        }		        
 	    }		
 		
-	}
-	
+	}	
 	
 	
 }

@@ -9,10 +9,37 @@ This version of Giswater is provided by Giswater Association
 -- Changes incorporated in version 1.1.101 - 09/09/2014 
 --------------------------------------------------------------------------------------------------
 
+-- WARNING: PGadmin message: Query executed with one row discarted. IT'S OK. The discarted row is show the result of f() update_infiltration (number one). Doesn't matter
+
+
+----------------------------------------------------------------
+-- FIXED BUGS
+----------------------------------------------------------------
+
+-------------------------------
+-- Bugs on v_inp_usage when LID is used
+-------------------------------
+
+-- Fixed integer values of 'number' & 'toperv' for epaswmm.sql scripts of 1.0 release. Transparent for epaswmm.sql up to 1.0 release
+
+DROP VIEW "SCHEMA_NAME"."v_inp_lidusage";
+CREATE VIEW "SCHEMA_NAME"."v_inp_lidusage" AS SELECT inp_lidusage_subc_x_lidco.subc_id, inp_lidusage_subc_x_lidco.lidco_id, inp_lidusage_subc_x_lidco."number"::integer, inp_lidusage_subc_x_lidco.area, inp_lidusage_subc_x_lidco.width, inp_lidusage_subc_x_lidco.initsat, inp_lidusage_subc_x_lidco.fromimp, inp_lidusage_subc_x_lidco.toperv::integer, inp_lidusage_subc_x_lidco.rptfile, sector_selection.sector_id FROM ((SCHEMA_NAME.sector_selection JOIN SCHEMA_NAME.subcatchment ON (((subcatchment.sector_id)::text = (sector_selection.sector_id)::text))) JOIN SCHEMA_NAME.inp_lidusage_subc_x_lidco ON (((inp_lidusage_subc_x_lidco.subc_id)::text = (subcatchment.subc_id)::text)));
+
+
+-------------------------------
+-- Bugs on runoff quantity table when LID is used
+-------------------------------
+
+ALTER TABLE "SCHEMA_NAME"."rpt_runoff_quant"
+ADD COLUMN "initlid_sto" numeric(12,4);
+
+
+
 -- ------------------------------------------------------------
 -- Incorporation of hydrology catalog
 -- Views, tables & fields needed
 -- ------------------------------------------------------------
+
 
 -- ----------------------------
 -- Table structure for cat_hydrology
@@ -176,75 +203,3 @@ ADD COLUMN "vymax" numeric(12,4);
 DROP VIEW "SCHEMA_NAME"."v_rpt_subcatchrunoff_sum";
 CREATE VIEW "SCHEMA_NAME"."v_rpt_subcatchrunoff_sum" AS 
 SELECT rpt_subcathrunoff_sum.id, rpt_subcathrunoff_sum.result_id, rpt_subcathrunoff_sum.subc_id, rpt_subcathrunoff_sum.tot_precip, rpt_subcathrunoff_sum.tot_runon, rpt_subcathrunoff_sum.tot_evap, rpt_subcathrunoff_sum.tot_infil, rpt_subcathrunoff_sum.tot_runoff, rpt_subcathrunoff_sum.tot_runofl, rpt_subcathrunoff_sum.peak_runof, rpt_subcathrunoff_sum.runoff_coe,  rpt_subcathrunoff_sum.hmax,  rpt_subcathrunoff_sum.vxmax,  rpt_subcathrunoff_sum.vymax, subcatchment.sector_id, subcatchment.the_geom FROM ((SCHEMA_NAME.result_selection JOIN SCHEMA_NAME.rpt_subcathrunoff_sum ON (((result_selection.result_id)::text = (rpt_subcathrunoff_sum.result_id)::text))) JOIN SCHEMA_NAME.subcatchment ON (((rpt_subcathrunoff_sum.subc_id)::text = (subcatchment.subc_id)::text)));
-
-
-
-
--- ------------------------------------------------------------
--- i18n - Internationalitzation - BRAZIL
--- Views for calculate 'tensao trativa'
--- ------------------------------------------------------------
-
--- ----------------------------
--- View structure for i18n_br_v_arc_x_n1
--- ----------------------------
-
-CREATE VIEW "SCHEMA_NAME"."i18n_br_v_arc_x_n1" AS 
- SELECT arc.arc_id,
-    node.node_id,
-    node.top_elev,
-    node.ymax,
-    arc.z1
-   FROM (SCHEMA_NAME.arc
-   JOIN SCHEMA_NAME.node ON (((arc.node_1)::text = (node.node_id)::text)));
-
--- ----------------------------
--- View structure for i18n_br_v_arc_x_n2
--- ----------------------------
-  
-CREATE VIEW "SCHEMA_NAME"."i18n_br_v_arc_x_n2" AS 
- SELECT arc.arc_id,
-    node.node_id,
-    node.top_elev,
-    node.ymax,
-    arc.z2
-   FROM (SCHEMA_NAME.arc
-   JOIN SCHEMA_NAME.node ON (((arc.node_2)::text = (node.node_id)::text)));
-   
--- ----------------------------
--- View structure for i18n_br_v_arc_x_node
--- ----------------------------
-
-CREATE VIEW "SCHEMA_NAME"."i18n_br_v_arc_x_node" AS 
- SELECT i18n_br_v_arc_x_n1.arc_id,
-    i18n_br_v_arc_x_n1.node_id AS node1,
-    i18n_br_v_arc_x_n1.top_elev AS top_elev1,
-    i18n_br_v_arc_x_n1.ymax AS ymax1,
-    i18n_br_v_arc_x_n1.z1,
-    i18n_br_v_arc_x_n2.node_id AS node2,
-    i18n_br_v_arc_x_n2.top_elev AS top_elev2,
-    i18n_br_v_arc_x_n2.ymax AS ymax2,
-    i18n_br_v_arc_x_n2.z2,
-    ((((i18n_br_v_arc_x_n1.top_elev - i18n_br_v_arc_x_n1.ymax) + i18n_br_v_arc_x_n1.z1) - ((i18n_br_v_arc_x_n2.top_elev - i18n_br_v_arc_x_n2.ymax) + i18n_br_v_arc_x_n2.z2)) / (st_length2d(arc.the_geom))::numeric(16,3)) AS slope,
-    arc.the_geom
-   FROM ((SCHEMA_NAME.i18n_br_v_arc_x_n1
-   JOIN SCHEMA_NAME.i18n_br_v_arc_x_n2 ON (((i18n_br_v_arc_x_n2.arc_id)::text = (i18n_br_v_arc_x_n1.arc_id)::text)))
-   JOIN SCHEMA_NAME.arc ON (((arc.arc_id)::text = (i18n_br_v_arc_x_n2.arc_id)::text)));
-
--- ----------------------------
--- View structure for i18n_br_v_rpt_nbr
--- ----------------------------
-
-CREATE VIEW "SCHEMA_NAME"."i18n_br_v_rpt_nbr" AS 
- SELECT i18n_br_v_arc_x_node.arc_id,
-    i18n_br_v_arc_x_node.slope,
-    rpt_arcflow_sum.max_flow,
-    rpt_arcflow_sum.max_veloc,
-    rpt_arcflow_sum.mfull_dept,
-    (i18n_br_v_arc_x_node.slope * (((rpt_arcflow_sum.max_veloc * cat_mat.n) / (i18n_br_v_arc_x_node.slope ^ 0.5)) ^ ((3 / 2))::numeric)) AS t_trativa
-   FROM (((SCHEMA_NAME.i18n_br_v_arc_x_node
-   JOIN SCHEMA_NAME.rpt_arcflow_sum ON (((rpt_arcflow_sum.arc_id)::text = (i18n_br_v_arc_x_node.arc_id)::text)))
-   JOIN SCHEMA_NAME.arc ON (((arc.arc_id)::text = (rpt_arcflow_sum.arc_id)::text)))
-   JOIN SCHEMA_NAME.cat_mat ON (((arc.matcat_id)::text = (cat_mat.id)::text)));
-
-

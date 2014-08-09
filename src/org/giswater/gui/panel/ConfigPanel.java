@@ -336,21 +336,31 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		panel_1.add(panel, "cell 0 0 3 1,grow");
 		panel.setLayout(new MigLayout("", "[][:150:300px][50px:n][45.00]", "[5px:n][][][][][][][][][][][5px][][10.00][][10px]"));
 		
+	    ButtonGroup group = new ButtonGroup();
+	    ButtonGroup group2 = new ButtonGroup();
+	    ButtonGroup group3 = new ButtonGroup();
+	    ButtonGroup group5 = new ButtonGroup();
+	    ButtonGroup group6 = new ButtonGroup();
+	    ButtonGroup group7 = new ButtonGroup();
+	    ButtonGroup group8 = new ButtonGroup();
+	    ButtonGroup group9 = new ButtonGroup();
+	    ButtonGroup group10 = new ButtonGroup();
+		
 		JLabel lblOpenInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenInpFiles.text")); 
 		panel.add(lblOpenInpFiles, "cell 0 1,alignx trailing");
-		
 		
 		JLabel lblOpenRptFiles = new JLabel("Open RPT files:");
 		panel.add(lblOpenRptFiles, "cell 0 2,alignx trailing");
 		
+		lblImportResults = new JLabel(BUNDLE.getString("ConfigPanel.lblImportResults.text"));
+		panel.add(lblImportResults, "cell 0 3,alignx right");
+
+		
 		JLabel lblOverwriteInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteInpFiles.text")); 
-	    panel.add(lblOverwriteInpFiles, "cell 0 3,alignx trailing");
+	    panel.add(lblOverwriteInpFiles, "cell 0 4,alignx trailing");
 	    
 	    JLabel lblOverwriteRptFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteRptFiles.text")); 
-	    panel.add(lblOverwriteRptFiles, "cell 0 4,alignx right");
-	    
-	    lblImportResults = new JLabel(BUNDLE.getString("ConfigPanel.lblImportResults.text")); //$NON-NLS-1$
-	    panel.add(lblImportResults, "cell 0 5,alignx right");
+	    panel.add(lblOverwriteRptFiles, "cell 0 5,alignx right");
 	    
 	    JLabel lblCreateSqlLog = new JLabel(BUNDLE.getString("ConfigPanel.lblCreateSqlLog.text")); 
 	    panel.add(lblCreateSqlLog, "cell 0 6,alignx trailing");
@@ -370,45 +380,25 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    JLabel lblDbAdmin = new JLabel(BUNDLE.getString("ConfigPanel.lblDbAdmin.text")); 
 	    panel.add(lblDbAdmin, "cell 0 14,alignx trailing");
 	    
-	    ButtonGroup group = new ButtonGroup();
-	    ButtonGroup group2 = new ButtonGroup();
-	    ButtonGroup group3 = new ButtonGroup();
-	    ButtonGroup group5 = new ButtonGroup();
-	    ButtonGroup group6 = new ButtonGroup();
-	    ButtonGroup group7 = new ButtonGroup();
-	    ButtonGroup group8 = new ButtonGroup();
-	    ButtonGroup group9 = new ButtonGroup();
-	    ButtonGroup group10 = new ButtonGroup();
-	    
 	    optInpOwEnabled = new JRadioButton("Enabled");
 	    optInpOwEnabled.setName("true");
-	    panel.add(optInpOwEnabled, "flowx,cell 1 3");
+	    panel.add(optInpOwEnabled, "flowx,cell 1 4");
 	    group7.add(optInpOwEnabled);
 	    
 	    optInpOwDisabled = new JRadioButton("Disabled");
 	    optInpOwDisabled.setName("false");
-	    panel.add(optInpOwDisabled, "cell 1 3");
+	    panel.add(optInpOwDisabled, "cell 1 4");
 	    group7.add(optInpOwDisabled);
 	    
 	    optRptOwEnabled = new JRadioButton("Enabled");
 	    optRptOwEnabled.setName("true");
-	    panel.add(optRptOwEnabled, "flowx,cell 1 4");
+	    panel.add(optRptOwEnabled, "flowx,cell 1 5");
 	    group8.add(optRptOwEnabled);
 	    
 	    optRptOwDisabled = new JRadioButton("Disabled");
 	    optRptOwDisabled.setName("false");
-	    panel.add(optRptOwDisabled, "cell 1 4");
+	    panel.add(optRptOwDisabled, "cell 1 5");
 	    group8.add(optRptOwDisabled);
-	    
-	    optImportEnabled = new JRadioButton("Enabled");
-	    optImportEnabled.setName("true");
-	    panel.add(optImportEnabled, "flowx,cell 1 5");
-	    group10.add(optImportEnabled);
-	    
-	    optImportDisabled = new JRadioButton("Disabled");
-	    optImportDisabled.setName("true");
-	    panel.add(optImportDisabled, "flowx,cell 1 5");
-	    group10.add(optImportDisabled);
 	    
 	    optInpAlways = new JRadioButton(BUNDLE.getString("ConfigPanel.always")); 
 	    optInpAlways.setName("always");
@@ -512,6 +502,16 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    
 	    JLabel lblMb = new JLabel(BUNDLE.getString("ConfigPanel.lblMb.text")); 
 	    panel.add(lblMb, "cell 1 10");    
+		
+		optImportEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optImportEnabled.text"));
+		optImportEnabled.setName("true");
+		panel.add(optImportEnabled, "flowx,cell 1 3");
+		group10.add(optImportEnabled);
+		
+	    optImportDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optImportDisabled.text"));
+	    optImportDisabled.setName("true");
+	    panel.add(optImportDisabled, "cell 1 3");
+	    group10.add(optImportDisabled);
 		
 		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); 
 		panel_1.add(lblNotepad, "cell 0 2 3 1,aligny top");

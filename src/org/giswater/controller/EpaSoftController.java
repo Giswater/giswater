@@ -345,9 +345,6 @@ public class EpaSoftController extends AbstractController{
             }
         }
         
-        // Force refresh schema
-        //schemaChanged();
-        
     }
     
     

@@ -69,20 +69,36 @@ public class ProjectPreferencesController extends AbstractController{
 		selectSourceType();
 		
 		// Customize buttons and title
+		customizePanel();
+
+	}
+	
+	
+	private void customizePanel(){
+		
 		if (waterSoftware.equals("EPASWMM")){
 			epaSoftPanel.setDesignButton("Raingage", "showRaingage");
 			epaSoftPanel.setOptionsButton("Options", "showInpOptions");
 			epaSoftPanel.setReportButton("Report options", "showReport");
+			mainFrame.hecRasFrame.setVisible(false);
+			mainFrame.epaSoftFrame.setVisible(true);
+			mainFrame.epaSoftFrame.setTitle(waterSoftware);
 		}
 		else if (waterSoftware.equals("EPANET")){
 			epaSoftPanel.setDesignButton("Times values", "showTimesValues");
 			epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
 			epaSoftPanel.setReportButton("Report options", "showReportEpanet");
+			mainFrame.hecRasFrame.setVisible(false);
+			mainFrame.epaSoftFrame.setVisible(true);
+			mainFrame.epaSoftFrame.setTitle(waterSoftware);
 		}
-		mainFrame.epaSoftFrame.setTitle(waterSoftware);
-
+		else{
+			mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
+			mainFrame.hecRasFrame.setVisible(true);
+			mainFrame.epaSoftFrame.setVisible(false);
+		}
+		
 	}
-	
 	
 	private boolean checkPreferences() {
 		
@@ -110,16 +126,8 @@ public class ProjectPreferencesController extends AbstractController{
 		mainFrame.putProjectPreferencecsParams();		
 		//MainDao.saveGswPropertiesFile();
 		
-		// Check water software
-		if (waterSoftware.equals("HECRAS")){
-			mainFrame.hecRasFrame.setVisible(true);
-			mainFrame.epaSoftFrame.setVisible(false);	
-		}
-		else{
-			mainFrame.hecRasFrame.setVisible(false);
-			mainFrame.epaSoftFrame.setVisible(true);	
-			mainFrame.epaSoftFrame.setTitle(waterSoftware);
-		}
+		// Customize buttons and title
+		customizePanel();
 		
 		// Check schema version
 		MainDao.checkSchemaVersion();
@@ -253,16 +261,13 @@ public class ProjectPreferencesController extends AbstractController{
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			Utils.showMessage(view, "connection_opened");
 			
-			// Hecras panel
-			mainFrame.hecRasFrame.getPanel().setSchemaModel(MainDao.getSchemas("HECRAS"));
+			// Hecras form
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
 			
 			// TODO: Update pg_pass.conf
 			// updatePgPass();
 		} 
-		else{
-			mainFrame.hecRasFrame.getPanel().setSchemaModel(null);
-		}
+
 		
 		return isConnected;
 		
@@ -279,25 +284,29 @@ public class ProjectPreferencesController extends AbstractController{
 			view.enableDbfStorage(false);
 			// Check if we already are connected
 			if (MainDao.isConnected()){
+				mainFrame.hecRasFrame.getPanel().enableButtons(true);
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
 				view.setVersionSoftware(MainDao.getAvailableVersions("postgis", waterSoftware));
 				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
+				if (schemaList != null && schemaList.size() > 0){
+					setSchema(schemaList.get(0));
+				} else {
+					setSchema("");
+				}
 				boolean enabled = view.setSchemaModel(schemaList);
 				view.setSelectedSchema(MainDao.getGswProperties().get("SCHEMA"));						
 				epaSoftPanel.enablePreprocess(enabled);
-				epaSoftPanel.enableDatabaseButtons(true);
-				epaSoftPanel.enableAccept(true);
+				epaSoftPanel.enableAccept(enabled);
 			} 
 			else{
+				mainFrame.hecRasFrame.getPanel().enableButtons(false);
 				mainFrame.enableMenuDatabase(false);
 				view.enableProjectManagement(false);
 				view.setSchemaModel(null);	
-				epaSoftPanel.enablePreprocess(false);
 				epaSoftPanel.enableDatabaseButtons(false);
 				epaSoftPanel.enableAccept(false);
 			}
-			schemaChanged();
 		}
 		
 		// DBF selected
@@ -305,6 +314,7 @@ public class ProjectPreferencesController extends AbstractController{
 			view.enableConnectionParameters(false);
 			view.enableProjectManagement(false);
 			view.enableDbfStorage(true);			
+			mainFrame.hecRasFrame.getPanel().enableButtons(false);
 			mainFrame.enableMenuDatabase(false);
 			view.setVersionSoftware(MainDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
@@ -339,12 +349,16 @@ public class ProjectPreferencesController extends AbstractController{
 		
 		MainDao.setSoftwareName(waterSoftware);		
 		if (MainDao.isConnected()){
-			String schemaName = view.getSelectedSchema();
-			MainDao.setSchema(schemaName);
-			checkDataManagerTables(schemaName);
-			checkPostprocessTables(schemaName);
+			setSchema(view.getSelectedSchema());
 		}
 		
+	}
+	
+	
+	private void setSchema(String schemaName){
+		MainDao.setSchema(schemaName);
+		checkDataManagerTables(schemaName);
+		checkPostprocessTables(schemaName);
 	}
 	
 	
@@ -489,35 +503,36 @@ public class ProjectPreferencesController extends AbstractController{
     		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
     		boolean enabled = view.setSchemaModel(schemaList);
     		epaSoftPanel.enablePreprocess(enabled);
-        	schemaName = view.getSelectedSchema();
-        	MainDao.setSchema(schemaName);
-			checkDataManagerTables(schemaName);
-			checkPostprocessTables(schemaName);
+        	setSchema(view.getSelectedSchema());
     		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
     		Utils.showMessage(view, "schema_deleted", "");
         }
         
 	}		
-		
 	
-	public void deleteData(){
+	
+	public void renameSchema(){
 		
 		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){
-        	// Get SRID before delete schema
-			String table = "arc";
-			if (waterSoftware.equals("HECRAS")){
-				table = "banks";
-			}
-			String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();            	
-        	MainDao.deleteSchema(schemaName);
-    		createSchema(schemaName, schemaSrid);
-        }
+		if (schemaName.equals("")) return;
+		
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		if (newSchemaName == null){
+			return;
+		}
+		newSchemaName = validateName(newSchemaName);
+		if (newSchemaName.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
+		if (MainDao.executeUpdateSql(sql, true)){
+			selectSourceType();
+			Utils.showMessage("Project renamed successfuly");
+		}
 		
 	}
-	
+		
 
 	public void createGisProject(){
 		mainFrame.gisFrame.setVisible(true);

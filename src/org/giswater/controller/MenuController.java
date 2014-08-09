@@ -81,6 +81,9 @@ public class MenuController extends AbstractController{
 		// Restore contents of .sql file into current Database
 		MainDao.executeRestore(filePath);
 		
+		// Refresh schemas
+		view.ppFrame.getPanel().selectSourceType();
+		
 	}
 	
 	
@@ -338,7 +341,6 @@ public class MenuController extends AbstractController{
     	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
     	hecRasPanel.setFileAsc(MainDao.getGswProperties().get("HECRAS_FILE_ASC"));
     	hecRasPanel.setFileSdf(MainDao.getGswProperties().get("HECRAS_FILE_SDF"));
-    	hecRasPanel.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));
     	
 	}    
     

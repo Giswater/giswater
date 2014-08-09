@@ -48,6 +48,7 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.gui.frame.ProjectPreferencesFrame;
 import org.giswater.util.Utils;
+import java.awt.event.KeyEvent;
 
 
 public class ProjectPreferencesPanel extends JPanel implements ActionListener {
@@ -322,18 +323,21 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		add(lblInfo, "cell 0 7 2 1");
 		
 		btnApply = new JButton();
+		btnApply.setMnemonic(KeyEvent.VK_P);
 		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); 
 		btnApply.setMinimumSize(new Dimension(75, 23));
 		btnApply.setActionCommand("applyPreferences");
 		add(btnApply, "flowx,cell 2 7,alignx right");
 		
 		btnAccept = new JButton();
+		btnAccept.setMnemonic(KeyEvent.VK_A);
 		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
 		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnAccept.setActionCommand("acceptPreferences");
 		add(btnAccept, "cell 2 7,alignx right");
 		
 		btnClose = new JButton();
+		btnClose.setMnemonic(KeyEvent.VK_C);
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnClose.setActionCommand("closePreferences");

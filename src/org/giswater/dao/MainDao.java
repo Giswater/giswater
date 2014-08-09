@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
@@ -94,7 +95,7 @@ public class MainDao {
 		boolean exists = false;
 		int i = 1;
 		do {
-			tempPath = rootFolder + CONFIG_FOLDER + "temp_"+i+".gsw";
+			tempPath = rootFolder + CONFIG_FOLDER + "temp_" + i + ".gsw";
 			File file = new File(tempPath);
 			exists = file.exists();
 			i++;
@@ -279,7 +280,7 @@ public class MainDao {
 		
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
 		int count = 0;
-		do{
+		do {
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
 			isConnected = setConnectionPostgis(host, port, db, user, password, false);
@@ -588,6 +589,14 @@ public class MainDao {
     }
 
     
+    public static void commit() {
+    	try {
+			connectionPostgis.commit();
+		} catch (SQLException e) {
+            Utils.showError(e);
+		}
+    }	
+    
 	public static boolean executeUpdateSql(String sql) {
 		return executeUpdateSql(sql, false);
 	}	
@@ -745,6 +754,12 @@ public class MainDao {
     public static boolean checkDatabase(String dbName) {
         String sql = "SELECT 1 FROM pg_database WHERE datname = '"+dbName+"'";
         return checkQuery(sql);
+    } 
+    
+    // Check if schema exists
+    public static boolean checkSchema(String schemaName) {
+    	String sql = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '"+schemaName+"'";
+    	return checkQuery(sql);
     } 
     
     
@@ -966,7 +981,6 @@ public class MainDao {
 	}
 	
 	
-	// TODO:
 	public static boolean createSchema(String softwareName, String schemaName, String srid) {
 		
 		boolean status = false;
@@ -1105,11 +1119,12 @@ public class MainDao {
 	// Called when we apply or accept changes in Project Preferences form
 	public static void checkSchemaVersion() {
 		
-		if (schema.equals("")) return;
+		if (schema == null || schema.equals("")) return;
 		
 		Integer schemaVersion = getSchemaVersion();
 		Integer updateVersion = updateMap.get(softwareName);
 		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
+		if (updateVersion == -1) return;
 		if (updateVersion > schemaVersion && updateSchemaVersion){
 			String msg = "Would you like to update '"+schema+"' to the current software version?\n" +
 				"It's strongly advisable to make a backup before updating it.";
@@ -1151,6 +1166,9 @@ public class MainDao {
 			Integer fileVersion = Utils.parseInt(files[files.length-1].getName().replace(".sql", ""));
 			updateMap.put(name.toUpperCase(), fileVersion);	
 		}
+		else{
+			updateMap.put(name.toUpperCase(), -1);	
+		}
 		
 	}
 
@@ -1161,7 +1179,7 @@ public class MainDao {
 	
 	public static boolean updateSchema(Integer schemaVersion) {
 		
-		boolean status = false;
+		boolean status = true;
 			
 		// Iterate over all files inside updates/<softwareName> folder
 		String folder = updatesFolder + softwareName + File.separator;
@@ -1253,8 +1271,37 @@ public class MainDao {
 		}
 		bin+= File.separator;
 		
+		// Read file in order to get schema_name
+		// Check if that schema already exists in Database
+		String schemaName = getSchemaName(sqlPath);
+		boolean exists = checkSchema(schemaName);
+		if (exists){
+			// Get backup schema name
+			boolean existsBackup = false;
+			String backupName = schemaName+"_backup";
+			int i = 0;
+			do {
+				if (i > 0){
+					backupName = schemaName+"_backup"+i;
+				}
+				existsBackup = checkSchema(backupName);
+				i++;
+			} while (existsBackup);
+			String msg = "Schema '"+schemaName+"' already exists in the Database.\n" +
+				"We will rename it automatically to '"+backupName+"' before restoring selected file.\n" +
+				"Would you like to continue?";
+			int answer = Utils.confirmDialog(msg);
+			if (answer != 0) {
+				return false;
+			}
+			// Rename current schema
+			String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+backupName;
+			if (!MainDao.executeUpdateSql(sql, true)){
+				return false;
+			} 
+		}
+		
 		// Set content of .bat file
-		//aux= "\""+bin+"pg_restore.exe\" -U "+user+" -h "+host+" -p "+port+" -w -d "+db+" -v \""+sqlPath+"\"";
 		aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+logFolder+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
@@ -1280,6 +1327,25 @@ public class MainDao {
 	}	
 	
 	
+	private static String getSchemaName(String filePath) {
+		
+		// Read file until we found pattern: CREATE SCHEMA <schema_name>;
+		String schemaName = "";
+		ArrayList<String> fileContent = Utils.fileToArray(filePath);
+		for (String line : fileContent){
+			if (line.length() > 15){
+				String pattern = line.substring(0, 13).toUpperCase();
+				if (pattern.equals("CREATE SCHEMA")){
+					schemaName = line.substring(14, line.length() - 1);
+					return schemaName;
+				}
+			}
+		}
+		return schemaName;
+		
+	}
+	
+
 	// Gis functions
 	public static Integer getTableSrid(String schema, String table) {
 		
@@ -1367,7 +1433,7 @@ public class MainDao {
 	}		
 		
 	
-	// hecRas functions
+	// HEC RAS functions
 	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
 		
 		boolean status = false;
@@ -1381,7 +1447,7 @@ public class MainDao {
 			content = content.replace("SRID_VALUE", srid);			
 			content = content.replace("__USER__", gswProp.get("POSTGIS_USER"));		
 			Utils.logSql(content);
-			status = executeUpdateSql(content, true, true);
+			status = executeUpdateSql(content, false, true);
         } catch (FileNotFoundException e) {
             Utils.showError("inp_error_notfound", filePath);
         } catch (IOException e) {

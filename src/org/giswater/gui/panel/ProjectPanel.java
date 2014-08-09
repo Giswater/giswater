@@ -53,6 +53,8 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
 	private JCheckBox chkLoadData;
+	private JLabel lbloptional;
+	private JLabel label;
 	
 	
 	public ProjectPanel(String defaultSrid) {
@@ -92,6 +94,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtAuthor.setDocument(maxLength);
 		add(txtAuthor, "cell 1 3,growx");
 		
+		lbloptional = new JLabel("(optional)");
+		add(lbloptional, "cell 2 3");
+		
 		JLabel lblDate = new JLabel("Date:");
 		add(lblDate, "cell 0 4,alignx trailing");
 		
@@ -103,6 +108,9 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		Date date = new Date();
 		txtDate.setText(dateFormat.format(date));
 		add(txtDate, "cell 1 4,growx");
+		
+		label = new JLabel("(optional)");
+		add(label, "cell 2 4");
 		
 		panelSrid = new JPanel();
 		panelSrid.setBorder(new TitledBorder(null, "Select SRID", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
@@ -183,9 +191,6 @@ public class ProjectPanel extends JPanel implements ActionListener{
 			public void keyReleased(KeyEvent e) {
 				if (controller != null){
 					controller.updateTableModel();
-				}
-				else{
-					hecRasController.updateTableModel();
 				}
 			}
 		});
