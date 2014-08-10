@@ -271,12 +271,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnDelete.setActionCommand("deleteSchema");
 		panelManagement.add(btnDelete, "cell 4 0,alignx right");
 		
-		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text")); 
-		btnRename.setVisible(false);
+		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text"));
 		btnRename.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setEnabled(false);
-		btnRename.setActionCommand("deleteData"); 
+		btnRename.setActionCommand("renameSchema");
 		panelManagement.add(btnRename, "cell 5 0,alignx right");
 		
 		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text")); 

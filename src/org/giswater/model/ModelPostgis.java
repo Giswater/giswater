@@ -497,7 +497,7 @@ public class ModelPostgis extends Model {
     	ModelPostgis.projectName = projectName;
 
     	// Ask confirmation to user
-        String importRpt = MainDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "true").toLowerCase();
+        String importRpt = MainDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "false").toLowerCase();
         if (importRpt.equals("false")) {
            	int res = Utils.confirmDialog("import_sure");    		
            	if (res == JOptionPane.NO_OPTION) {
@@ -950,7 +950,6 @@ public class ModelPostgis extends Model {
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
 		if (softwareName.equals("EPANET")) {
-			// TODO:
 			if (tokens.size() < 2){
 				Utils.logError("Line not valid");
 				return true;

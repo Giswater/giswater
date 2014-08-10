@@ -70,12 +70,9 @@ public class EpaSoftController extends AbstractController{
     private File fileInp;
     private File fileRpt;
     private String projectName;
-    private boolean exportChecked;
-    private boolean execChecked;
-    private boolean importChecked; 
-	
-	private File dirShp;
-	private boolean readyShp = false;
+    private boolean exportSelected;
+    private boolean execSelected;
+    private boolean importSelected; 
 
     
     public EpaSoftController(EpaSoftPanel view, MainFrame mf) {
@@ -245,12 +242,10 @@ public class EpaSoftController extends AbstractController{
     }
     
     
-    // TODO:
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	Boolean dbSelected = ppPanel.getOptDatabaseSelected();
-    	if (dbSelected){
+    	if (ppPanel.getOptDatabaseSelected()){
     		executePostgis();
     	} else{
     		executeDbf();
@@ -265,11 +260,11 @@ public class EpaSoftController extends AbstractController{
         boolean continueExec = true;
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -298,7 +293,7 @@ public class EpaSoftController extends AbstractController{
 		}        
         
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -314,7 +309,7 @@ public class EpaSoftController extends AbstractController{
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -327,7 +322,7 @@ public class EpaSoftController extends AbstractController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError("file_rpt_not_selected");
                 return;
@@ -350,19 +345,21 @@ public class EpaSoftController extends AbstractController{
     
 	public void executeDbf() {
 
-		if (!readyShp) {
-			Utils.showError(view, "dir_shp_not_selected");
+		String pathFolderShp = ppPanel.getFolderShp();
+		File folderShp = new File(pathFolderShp);
+		if (!folderShp.exists()){
+			Utils.showError("Selected data folder not exists. Please set a valid one");
 			return;
 		}
-
-        boolean continueExec = true;
+		gswProp.put(ppPanel.getWaterSoftware()+"_FOLDER_SHP", pathFolderShp);
+		MainDao.savePropertiesFile();
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -382,16 +379,16 @@ public class EpaSoftController extends AbstractController{
 			return;
 		}
 		
+		// Check if all necessary files exist
+		if (!ModelDbf.checkFiles(pathFolderShp)) {
+			return;
+		}
+		
 		// Get INP template file
 		String templatePath = MainDao.getInpFolder()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			Utils.showError(view, "inp_error_notfound", templatePath);				
-			return;
-		}
-
-		// Check if all necessary files exist
-		if (!ModelDbf.checkFiles(dirShp.getAbsolutePath())) {
 			return;
 		}
 
@@ -401,8 +398,9 @@ public class EpaSoftController extends AbstractController{
             return;
         }    
         
+        boolean continueExec = true;
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -411,7 +409,7 @@ public class EpaSoftController extends AbstractController{
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -424,7 +422,7 @@ public class EpaSoftController extends AbstractController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError(view, "file_rpt_not_selected");
                 return;

@@ -161,7 +161,6 @@ public class ProjectPreferencesController extends AbstractController{
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File dirShp = chooser.getSelectedFile();
 			view.setFolderShp(dirShp.getAbsolutePath());
-			MainDao.getGswProperties().put("FOLDER_SHP", dirShp.getAbsolutePath());
 		}
 
 	}
@@ -276,14 +275,13 @@ public class ProjectPreferencesController extends AbstractController{
 	
 	public void selectSourceType(){
 
-		Boolean dbSelected = view.getOptDatabaseSelected();
-		
 		// Database selected
-		if (dbSelected){
+		if (view.getOptDatabaseSelected()) {
 			view.enableConnectionParameters(true);
 			view.enableDbfStorage(false);
+			epaSoftPanel.enableRunAndImport(true);
 			// Check if we already are connected
-			if (MainDao.isConnected()){
+			if (MainDao.isConnected()) {
 				mainFrame.hecRasFrame.getPanel().enableButtons(true);
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
@@ -299,7 +297,7 @@ public class ProjectPreferencesController extends AbstractController{
 				epaSoftPanel.enablePreprocess(enabled);
 				epaSoftPanel.enableAccept(enabled);
 			} 
-			else{
+			else {
 				mainFrame.hecRasFrame.getPanel().enableButtons(false);
 				mainFrame.enableMenuDatabase(false);
 				view.enableProjectManagement(false);
@@ -310,10 +308,11 @@ public class ProjectPreferencesController extends AbstractController{
 		}
 		
 		// DBF selected
-		else{
+		else {
 			view.enableConnectionParameters(false);
 			view.enableProjectManagement(false);
-			view.enableDbfStorage(true);			
+			view.enableDbfStorage(true);		
+			epaSoftPanel.enableRunAndImport(false);
 			mainFrame.hecRasFrame.getPanel().enableButtons(false);
 			mainFrame.enableMenuDatabase(false);
 			view.setVersionSoftware(MainDao.getAvailableVersions("dbf", waterSoftware));
@@ -516,7 +515,7 @@ public class ProjectPreferencesController extends AbstractController{
 		String schemaName = view.getSelectedSchema();
 		if (schemaName.equals("")) return;
 		
-		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
 		if (newSchemaName == null){
 			return;
 		}

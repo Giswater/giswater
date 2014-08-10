@@ -42,6 +42,7 @@ import org.giswater.controller.EpaSoftController;
 import org.giswater.gui.frame.EpaSoftFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
+import javax.swing.JRadioButton;
 
 
 public class EpaSoftPanel extends JPanel implements ActionListener {
@@ -67,7 +68,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JButton btnReport;
 	
 	private JPanel panelFileManager;
-	private JTextField txtProject;
+	private JTextField txtResultName;
 	private JTextArea txtFileRpt;
 	private JTextArea txtFileInp;
 	private JButton btnFileInp;
@@ -86,6 +87,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	
 	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
 	private static final Integer BUTTON_WIDTH = 125;
+	private JLabel lblFileRpt;
+	private JLabel lblResultName;
+	private JCheckBox chkSubcatchments;
+	private JRadioButton opt1D;
+	private JRadioButton opt2D;
 
 	
 	public EpaSoftPanel() {
@@ -165,11 +171,16 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
 		add(panelFileManager, "cell 1 3,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][106.00][::5px][grow][]", "[::20px][35px:45px:45px][20][35px:n][20][][]"));
+		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][grow][]", "[::20px][35px:45px:45px][20][35px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); 
-		panelFileManager.add(chkExport, "cell 0 0 4 1,aligny bottom");
+		panelFileManager.add(chkExport, "cell 0 0 2 1,aligny bottom");
+		
+		chkSubcatchments = new JCheckBox();
+		chkSubcatchments.setVisible(false);
+		chkSubcatchments.setText(BUNDLE.getString("EpaSoftPanel.chkSubcatchments.text")); //$NON-NLS-1$
+		panelFileManager.add(chkSubcatchments, "cell 3 0");
 
 		JLabel label = new JLabel();
 		label.setText(BUNDLE.getString("Form.label.text")); 
@@ -193,11 +204,15 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text")); 
 		chkExec.setName("chk_exec");
 		chkExec.setActionCommand("Exportaci\u00F3n a INP");
-		panelFileManager.add(chkExec, "cell 0 2 4 1,alignx left,aligny bottom");
+		panelFileManager.add(chkExec, "cell 0 2 3 1,alignx left,aligny bottom");
+		
+		opt1D = new JRadioButton(BUNDLE.getString("EpaSoftPanel.opt1D.text")); //$NON-NLS-1$
+		opt1D.setVisible(false);
+		panelFileManager.add(opt1D, "flowx,cell 3 2");
 
-		JLabel label_1 = new JLabel();
-		label_1.setText(BUNDLE.getString("Form.label_1.text")); 
-		panelFileManager.add(label_1, "cell 1 3,alignx right");
+		lblFileRpt = new JLabel();
+		lblFileRpt.setText(BUNDLE.getString("Form.label_1.text")); 
+		panelFileManager.add(lblFileRpt, "cell 1 3,alignx right");
 		
 		scrollPane_3 = new JScrollPane();
 		panelFileManager.add(scrollPane_3, "cell 3 3,grow");
@@ -217,18 +232,18 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		chkImport.setText(BUNDLE.getString("Form.chkImport.text")); 
 		chkImport.setName("chk_import");
 		chkImport.setActionCommand("Exportaci\u00F3n a INP");
-		panelFileManager.add(chkImport, "cell 0 4 4 1,aligny bottom");
+		panelFileManager.add(chkImport, "cell 0 4 2 1,aligny bottom");
 
-		JLabel label_2 = new JLabel();
-		label_2.setText(BUNDLE.getString("Form.label_2.text")); 
-		label_2.setName("lbl_project");
-		panelFileManager.add(label_2, "cell 1 5,alignx right");
+		lblResultName = new JLabel();
+		lblResultName.setText(BUNDLE.getString("Form.label_2.text")); 
+		lblResultName.setName("lbl_project");
+		panelFileManager.add(lblResultName, "cell 1 5,alignx right");
 
-		txtProject = new JTextField();
-		txtProject.setName("txt_project");
+		txtResultName = new JTextField();
+		txtResultName.setName("txt_project");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
-		txtProject.setDocument(maxLength);				
-		panelFileManager.add(txtProject, "cell 3 5,growx,aligny top");
+		txtResultName.setDocument(maxLength);				
+		panelFileManager.add(txtResultName, "cell 3 5,growx,aligny top");
 
 		btnAccept = new JButton();
 		btnAccept.setMinimumSize(new Dimension(80, 23));
@@ -237,6 +252,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
 		panelFileManager.add(btnAccept, "flowx,cell 3 6,alignx right");
+		
+		opt2D = new JRadioButton(BUNDLE.getString("EpaSoftPanel.opt2D.text")); //$NON-NLS-1$
+		opt2D.setVisible(false);
+		panelFileManager.add(opt2D, "cell 3 2");
 		
 		panelPostprocess = new JPanel();
 		panelPostprocess.setBorder(new TitledBorder(null, "Postprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
@@ -336,24 +355,39 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	}
 
 	public void setProjectName(String projectName) {
-		txtProject.setText(projectName);
+		txtResultName.setText(projectName);
 	}
 
 	public String getProjectName() {
-		return txtProject.getText().trim();
+		return txtResultName.getText().trim();
 	}
 	
-	public boolean isExportChecked() {
+	public boolean isSubcatchmentsSelected() {
+		return chkSubcatchments.isSelected();
+	}
+	
+	public boolean isExportSelected() {
 		return chkExport.isSelected();
 	}
 
-	public boolean isExecChecked() {
+	public boolean isExecSelected() {
 		return chkExec.isSelected();
 	}
 
-	public boolean isImportChecked() {
+	public boolean isImportSelected() {
 		return chkImport.isSelected();
 	}	
+	
+	public void enableRunAndImport(boolean enable) {
+		chkSubcatchments.setEnabled(enable);
+		chkExec.setEnabled(enable);
+		lblFileRpt.setEnabled(enable);
+		txtFileRpt.setEnabled(enable);
+		btnFileRpt.setEnabled(enable);
+		chkImport.setEnabled(enable);
+		lblResultName.setEnabled(enable);
+		txtResultName.setEnabled(enable);		
+	}
 	
 	public void enableAccept(boolean enable){
 		btnAccept.setEnabled(enable);
