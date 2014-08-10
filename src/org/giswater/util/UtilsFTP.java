@@ -259,7 +259,9 @@ public class UtilsFTP {
 	        // Get last build version available of the last minor version folders
         	client.changeWorkingDirectory(newMinorVersionFolder);
         	updateBuildVersion = checkBuildVersion(majorVersion, minorVersion, buildVersion);
-		} catch (NumberFormatException | IOException e) {
+		} catch (NumberFormatException e) {
+			Utils.logError(e);
+		} catch (IOException e) {
 			Utils.logError(e);
 		}
 

@@ -505,7 +505,7 @@ public class MainDao {
             Statement stat = connectionConfig.createStatement();
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()) {
-            	 result = rs.getString(1);
+            	result = rs.getString(1);
             }
             rs.close();
             stat.close();

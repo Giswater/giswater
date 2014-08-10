@@ -61,9 +61,9 @@ public class MainController{
     private File fileInp;
     private File fileRpt;
     private String projectName;
-    private boolean exportChecked;
-    private boolean execChecked;
-    private boolean importChecked;
+    private boolean exportSelected;
+    private boolean execSelected;
+    private boolean importSelected;
     
     private String usersFolder;
     private MainFrame mainFrame;
@@ -73,11 +73,6 @@ public class MainController{
 	private TableColumnModel tcm;
 	private ProjectPanel projectPanel;
 	private JDialog projectDialog;
-	
-	// DBF only
-	private File dirShp;
-	private boolean readyShp = false;
-	private boolean dbSelected = false;
 
     
     public MainController(EpaPanel view, MainFrame mf, String software) {
@@ -132,11 +127,8 @@ public class MainController{
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			dirShp = chooser.getSelectedFile();
-			view.setFolderShp(dirShp.getAbsolutePath());
-			gswProp.put(software+"_FOLDER_SHP", dirShp.getAbsolutePath());
-			MainDao.savePropertiesFile();
-			readyShp = true;
+			File folderShp = chooser.getSelectedFile();
+			view.setFolderShp(folderShp.getAbsolutePath());
 		}
 
 	}
@@ -171,9 +163,8 @@ public class MainController{
 	
 	public void selectSourceType(boolean askQuestion){
 
-		dbSelected = view.getOptDatabaseSelected();
 		// Database selected
-		if (dbSelected){
+		if (view.getOptDatabaseSelected()){
 			// Check if we already are connected
 			if (MainDao.isConnected()){
 				mainFrame.enableCatalog(true);
@@ -199,11 +190,13 @@ public class MainController{
 				mainFrame.enableCatalog(false);
 				view.enableControlsDbf(false);
 				view.enableControlsDatabase(false);
+				view.enableRunAndImport(true);
 				view.enableAccept(false);
 				view.setSchemaModel(null);				
 			}
 			schemaChanged();
 		}
+		
 		// DBF selected
 		else{
 			mainFrame.enableCatalog(false);
@@ -416,7 +409,7 @@ public class MainController{
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	if (dbSelected){
+    	if (view.getOptDatabaseSelected()){
     		executePostgis();
     	} else{
     		executeDbf();
@@ -431,11 +424,11 @@ public class MainController{
         boolean continueExec = true;
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -464,7 +457,7 @@ public class MainController{
 		}        
         
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -475,12 +468,13 @@ public class MainController{
                 	showSectorSelection();
                 }
                 return;
-            }               
-            continueExec = ModelPostgis.processAll(fileInp);
+            }        
+            boolean selected = view.isSubcatchmentsSelected();
+            continueExec = ModelPostgis.processAll(fileInp, selected);
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -493,7 +487,7 @@ public class MainController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError("file_rpt_not_selected");
                 return;
@@ -519,19 +513,21 @@ public class MainController{
     
 	public void executeDbf() {
 
-		if (!readyShp) {
-			Utils.showError(view, "dir_shp_not_selected");
+		String pathFolderShp = view.getFolderShp();
+		File folderShp = new File(pathFolderShp);
+		if (!folderShp.exists()){
+			Utils.showError("Selected data folder not exists. Please set a valid one");
 			return;
 		}
-
-        boolean continueExec = true;
+		gswProp.put(software+"_FOLDER_SHP", pathFolderShp);
+		MainDao.savePropertiesFile();
         
         // Which checks are selected?
-        exportChecked = view.isExportChecked();
-        execChecked = view.isExecChecked();
-        importChecked = view.isImportChecked();        
+        exportSelected = view.isExportSelected();
+        execSelected = view.isExecSelected();
+        importSelected = view.isImportSelected();        
         
-        if (!exportChecked && !execChecked && !importChecked){
+        if (!exportSelected && !execSelected && !importSelected){
             Utils.showError(view, "select_option");
             return;
         }
@@ -551,16 +547,16 @@ public class MainController{
 			return;
 		}
 		
+		// Check if all necessary files exist
+		if (!ModelDbf.checkFiles(pathFolderShp)) {
+			return;
+		}
+		
 		// Get INP template file
 		String templatePath = MainDao.getFolderConfig()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			Utils.showError(view, "inp_error_notfound", templatePath);				
-			return;
-		}
-
-		// Check if all necessary files exist
-		if (!ModelDbf.checkFiles(dirShp.getAbsolutePath())) {
 			return;
 		}
 
@@ -570,8 +566,9 @@ public class MainController{
             return;
         }    
         
+        boolean continueExec = true;
         // Export to INP
-        if (exportChecked) {
+        if (exportSelected) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -580,7 +577,7 @@ public class MainController{
         }
 
         // Run SWMM
-        if (execChecked && continueExec) {
+        if (execSelected && continueExec) {
             if (!getFileInp()) {
                 Utils.showError(view, "file_inp_not_selected");
                 return;
@@ -593,7 +590,7 @@ public class MainController{
         }
 
         // Import RPT to Postgis
-        if (importChecked && continueExec) {
+        if (importSelected && continueExec) {
             if (!getFileRpt()) {
                 Utils.showError(view, "file_rpt_not_selected");
                 return;
@@ -747,23 +744,27 @@ public class MainController{
         }
         
 	}		
-		
 	
-	public void deleteData(){
+	
+	public void renameSchema(){
 		
 		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){
-        	// Get SRID before delete schema
-			String table = "arc";
-			if (software.equals("HECRAS")){
-				table = "banks";
-			}
-			String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();            	
-        	MainDao.deleteSchema(schemaName);
-    		createSchema(schemaName, schemaSrid);
-        }
+		if (schemaName.equals("")) return;
+		
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
+		if (newSchemaName == null){
+			return;
+		}
+		newSchemaName = validateName(newSchemaName);
+		if (newSchemaName.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
+		if (MainDao.executeUpdateSql(sql, true)){
+			selectSourceType(false);
+			Utils.showMessage("Project renamed successfuly");
+		}
 		
 	}
 	

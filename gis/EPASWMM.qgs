@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.2.0-Valmiera">
+<qgis projectname="" version="2.4.0-Chugiak">
     <title></title>
     <mapcanvas>
         <units>meters</units>
@@ -4275,85 +4275,6 @@
             <excludeAttributesWFS/>
             <attributeactions/>
         </maplayer>
-        <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
-            <id>v_inp_edit_conduit20130814133609454</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
-            <title></title>
-            <abstract></abstract>
-            <keywordList>
-                <value></value>
-            </keywordList>
-            <layername>v_inp_edit_conduit</layername>
-            <srs>
-                <spatialrefsys>
-                    <proj4>__PROJ4__</proj4>
-                    <srsid>__SRSID__</srsid>
-                    <srid>__SRID__</srid>
-                    <authid>__AUTHID__</authid>
-                    <description>__DESCRIPTION__</description>
-                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
-                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
-                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
-                </spatialrefsys>
-            </srs>
-            <provider encoding="System">postgres</provider>
-            <previewExpression></previewExpression>
-            <vectorjoins/>
-            <renderer-v2 symbollevels="0" type="singleSymbol">
-                <symbols>
-                    <symbol alpha="1" type="line" name="0">
-                        <layer pass="0" class="SimpleLine" locked="0">
-                            <prop k="capstyle" v="square"/>
-                            <prop k="color" v="158,117,245,255"/>
-                            <prop k="customdash" v="5;2"/>
-                            <prop k="customdash_unit" v="MM"/>
-                            <prop k="joinstyle" v="bevel"/>
-                            <prop k="offset" v="0"/>
-                            <prop k="offset_unit" v="MM"/>
-                            <prop k="penstyle" v="solid"/>
-                            <prop k="use_custom_dash" v="0"/>
-                            <prop k="width" v="0.26"/>
-                            <prop k="width_unit" v="MM"/>
-                        </layer>
-                    </symbol>
-                </symbols>
-                <rotation field=""/>
-                <sizescale field="" scalemethod="area"/>
-            </renderer-v2>
-            <customproperties/>
-            <blendMode>0</blendMode>
-            <featureBlendMode>0</featureBlendMode>
-            <layerTransparency>0</layerTransparency>
-            <displayfield>arc_id</displayfield>
-            <label>0</label>
-            <labelattributes>
-                <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="MS Shell Dlg 2"/>
-                <size fieldname="" units="pt" value="12"/>
-                <bold fieldname="" on="0"/>
-                <italic fieldname="" on="0"/>
-                <underline fieldname="" on="0"/>
-                <strikeout fieldname="" on="0"/>
-                <color fieldname="" red="0" blue="0" green="0"/>
-                <x fieldname=""/>
-                <y fieldname=""/>
-                <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-                <angle fieldname="" value="0" auto="0"/>
-                <alignment fieldname="" value="center"/>
-                <buffercolor fieldname="" red="255" blue="255" green="255"/>
-                <buffersize fieldname="" units="pt" value="1"/>
-                <bufferenabled fieldname="" on=""/>
-                <multilineenabled fieldname="" on=""/>
-                <selectedonly on=""/>
-            </labelattributes>
-            <editform>.</editform>
-            <editforminit></editforminit>
-            <annotationform>.</annotationform>
-            <editorlayout>generatedlayout</editorlayout>
-            <excludeAttributesWMS/>
-            <excludeAttributesWFS/>
-            <attributeactions/>
-        </maplayer>
         <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>v_inp_edit_conduit20130814154154302</id>
             <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ type=LINESTRING table="SCHEMA_NAME"."v_inp_edit_conduit" (the_geom) sql=</datasource>
@@ -7279,39 +7200,6 @@
             <attributeactions/>
         </maplayer>
         <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
-            <id>v_rpt_high_flowinest_ind20131028233644472</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='result_id' table="SCHEMA_NAME"."v_rpt_high_flowinest_ind" sql=</datasource>
-            <title></title>
-            <abstract></abstract>
-            <keywordList>
-                <value></value>
-            </keywordList>
-            <layername>v_rpt_high_flowinest_ind</layername>
-            <srs>
-                <spatialrefsys>
-                    <proj4>__PROJ4__</proj4>
-                    <srsid>__SRSID__</srsid>
-                    <srid>__SRID__</srid>
-                    <authid>__AUTHID__</authid>
-                    <description>__DESCRIPTION__</description>
-                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
-                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
-                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
-                </spatialrefsys>
-            </srs>
-            <customproperties/>
-            <provider encoding="UTF-8">postgres</provider>
-            <previewExpression></previewExpression>
-            <vectorjoins/>
-            <editform>.</editform>
-            <editforminit></editforminit>
-            <annotationform>.</annotationform>
-            <editorlayout>generatedlayout</editorlayout>
-            <excludeAttributesWMS/>
-            <excludeAttributesWFS/>
-            <attributeactions/>
-        </maplayer>
-        <maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
             <id>v_rpt_high_flowinest_ind20131029125258325</id>
             <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' table="SCHEMA_NAME"."v_rpt_high_flowinest_ind" sql=</datasource>
             <title></title>
@@ -8202,85 +8090,6 @@
                 <edittype labelontop="0" editable="1" type="0" name="time_hour"/>
                 <edittype labelontop="0" editable="1" type="0" name="totinf_vol"/>
             </edittypes>
-            <editform>.</editform>
-            <editforminit></editforminit>
-            <annotationform>.</annotationform>
-            <editorlayout>generatedlayout</editorlayout>
-            <excludeAttributesWMS/>
-            <excludeAttributesWFS/>
-            <attributeactions/>
-        </maplayer>
-        <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="0" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
-            <id>v_rpt_nodesurcharge_sum20131125215932269</id>
-            <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='id' srid=__SRID__ type=POINT table="SCHEMA_NAME"."v_rpt_nodesurcharge_sum" (the_geom) sql=</datasource>
-            <title></title>
-            <abstract></abstract>
-            <keywordList>
-                <value></value>
-            </keywordList>
-            <layername>v_rpt_nodesurcharge_sum</layername>
-            <srs>
-                <spatialrefsys>
-                    <proj4>__PROJ4__</proj4>
-                    <srsid>__SRSID__</srsid>
-                    <srid>__SRID__</srid>
-                    <authid>__AUTHID__</authid>
-                    <description>__DESCRIPTION__</description>
-                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
-                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
-                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
-                </spatialrefsys>
-            </srs>
-            <provider encoding="System">postgres</provider>
-            <previewExpression></previewExpression>
-            <vectorjoins/>
-            <renderer-v2 symbollevels="0" type="singleSymbol">
-                <symbols>
-                    <symbol alpha="1" type="marker" name="0">
-                        <layer pass="0" class="SimpleMarker" locked="0">
-                            <prop k="angle" v="0"/>
-                            <prop k="color" v="244,108,100,255"/>
-                            <prop k="color_border" v="0,0,0,255"/>
-                            <prop k="name" v="circle"/>
-                            <prop k="offset" v="0,0"/>
-                            <prop k="offset_unit" v="MM"/>
-                            <prop k="outline_width" v="0"/>
-                            <prop k="outline_width_unit" v="MM"/>
-                            <prop k="scale_method" v="area"/>
-                            <prop k="size" v="2"/>
-                            <prop k="size_unit" v="MM"/>
-                        </layer>
-                    </symbol>
-                </symbols>
-                <rotation field=""/>
-                <sizescale field="" scalemethod="area"/>
-            </renderer-v2>
-            <customproperties/>
-            <blendMode>0</blendMode>
-            <featureBlendMode>0</featureBlendMode>
-            <layerTransparency>0</layerTransparency>
-            <displayfield>id</displayfield>
-            <label>0</label>
-            <labelattributes>
-                <label fieldname="" text="Etiqueta"/>
-                <family fieldname="" name="MS Shell Dlg 2"/>
-                <size fieldname="" units="pt" value="12"/>
-                <bold fieldname="" on="0"/>
-                <italic fieldname="" on="0"/>
-                <underline fieldname="" on="0"/>
-                <strikeout fieldname="" on="0"/>
-                <color fieldname="" red="0" blue="0" green="0"/>
-                <x fieldname=""/>
-                <y fieldname=""/>
-                <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-                <angle fieldname="" value="0" auto="0"/>
-                <alignment fieldname="" value="center"/>
-                <buffercolor fieldname="" red="255" blue="255" green="255"/>
-                <buffersize fieldname="" units="pt" value="1"/>
-                <bufferenabled fieldname="" on=""/>
-                <multilineenabled fieldname="" on=""/>
-                <selectedonly on=""/>
-            </labelattributes>
             <editform>.</editform>
             <editforminit></editforminit>
             <annotationform>.</annotationform>
@@ -10010,7 +9819,87 @@
         <WMSOnlineResource type="QString"></WMSOnlineResource>
         <WMSContactPerson type="QString"></WMSContactPerson>
         <Identify>
-            <disabledLayers type="QStringList"/>
+             <disabledLayers type="QStringList">
+<value>cat_arc20131118220914103</value>
+                <value>cat_mat20131118220914333</value>
+                <value>inp_aquifer20130502001943216</value>
+                <value>inp_buildup_land_x_pol20130502001943356</value>
+                <value>inp_controls20130502001943496</value>
+                <value>inp_coverage_land_x_subc20130502001943543</value>
+                <value>inp_curve20130502001943559</value>
+                <value>inp_curve_id20130502001943590</value>
+                <value>inp_dwf20130502001943668</value>
+                <value>inp_dwf_pol_x_node20130502001943730</value>
+                <value>inp_evaporation20130502001943808</value>
+                <value>inp_files20130502001943886</value>
+                <value>inp_groundwater20130502001943918</value>
+                <value>inp_hydrograph20130502001944027</value>
+                <value>inp_inflows20130510210240664</value>
+                <value>inp_inflows20130510210322301</value>
+                <value>inp_inflows_pol_x_node20130502001944105</value>
+                <value>inp_landuses20130502001944198</value>
+                <value>inp_lid_control20130502001944230</value>
+                <value>inp_lidusage_subc_x_lidco20130502001944261</value>
+                <value>inp_loadings_pol_x_subc20130502001944308</value>
+                <value>inp_pattern20130502001944666</value>
+                <value>inp_pollutant20130502001944744</value>
+                <value>inp_rdii20130502001944869</value>
+                <value>inp_snowmelt20130502001944994</value>
+                <value>inp_snowpack20130502001945041</value>
+                <value>inp_temperature20130502001945166</value>
+                <value>inp_timeseries20130502001945212</value>
+                <value>inp_timser_id20130502001945290</value>
+                <value>inp_transects20130502001945322</value>
+                <value>inp_treatment_node_x_pol20130502001945384</value>
+                <value>inp_type_arc20131203172354136</value>
+                <value>inp_type_node20131203172354178</value>
+                <value>inp_typevalue_divider20130510201056083</value>
+                <value>inp_typevalue_evap20130510201056192</value>
+                <value>inp_typevalue_orifice20130820181504348</value>
+                <value>inp_typevalue_orifice20130820181522603</value>
+                <value>inp_typevalue_outfall20130510201056223</value>
+                <value>inp_typevalue_outlet20130510201056239</value>
+                <value>inp_typevalue_pattern20130510201056255</value>
+                <value>inp_typevalue_raingage20130510201056286</value>
+                <value>inp_typevalue_storage20130510201056301</value>
+                <value>inp_typevalue_temp20130510201056333</value>
+                <value>inp_typevalue_timeseries20130510201056379</value>
+                <value>inp_typevalue_windsp20130510201056348</value>
+                <value>inp_value_allnone20130510201056395</value>
+                <value>inp_value_buildup20130510201056411</value>
+                <value>inp_value_catarc20131203194117147</value>
+                <value>inp_value_curve20130510201056442</value>
+                <value>inp_value_files_actio20130510201056457</value>
+                <value>inp_value_files_type20130510201056489</value>
+                <value>inp_value_inflows20130820184335228</value>
+                <value>inp_value_lidcontrol20130510201056535</value>
+                <value>inp_value_orifice20130820181504380</value>
+                <value>inp_value_pollutants20130820183952332</value>
+                <value>inp_value_raingage20130510201056613</value>
+                <value>inp_value_routeto20131203183008942</value>
+                <value>inp_value_status20131203183008942</value>
+                <value>inp_value_timserid20130510201056629</value>
+                <value>inp_value_treatment20130820184904124</value>
+                <value>inp_value_washoff20130510201056645</value>
+                <value>inp_value_weirs20130510201056691</value>
+                <value>inp_value_yesno20130510201056177</value>
+                <value>inp_washoff_land_x_pol20130502003900025</value>
+                <value>inp_washoff_land_x_pol20130502003948384</value>
+                <value>inp_windspeed20130502002620511</value>
+                <value>v_rpt_continuity_errors20131125232949348</value>
+                <value>v_rpt_critical_elements20131125232949488</value>
+                <value>v_rpt_flowrouting_cont20131125232949588</value>
+                <value>v_rpt_groundwater_cont20131125232949728</value>
+                <value>v_rpt_high_cont_errors20131029125258305</value>
+                <value>v_rpt_high_flowinest_ind20131029125258325</value>
+                <value>v_rpt_instability_index20131029125258337</value>
+                <value>v_rpt_qualrouting20131029125258348</value>
+                <value>v_rpt_rainfall_dep20131029125258375</value>
+                <value>v_rpt_routing_timestep20131029125258396</value>
+                <value>v_rpt_runoff_qual20131029125258406</value>
+                <value>v_rpt_runoff_quant20131029125258431</value>
+                <value>v_rpt_timestep_critelem20131029125258450</value>
+            </disabledLayers>
         </Identify>
         <WMSContactPhone type="QString"></WMSContactPhone>
         <SpatialRefSys>

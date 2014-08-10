@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.2.0-Valmiera">
+<qgis projectname="" version="2.4.0-Chugiak">
     <title></title>
     <mapcanvas>
         <units>meters</units>
@@ -4767,7 +4767,46 @@
         <WMSOnlineResource type="QString"></WMSOnlineResource>
         <WMSContactPerson type="QString"></WMSContactPerson>
         <Identify>
-            <disabledLayers type="QStringList"/>
+            <disabledLayers type="QStringList">
+				<value>cat_mat20130814093412133</value>
+                <value>inp_controls20130813215614633</value>
+                <value>inp_curve20130813215614676</value>
+                <value>inp_curve_id20130813215614916</value>
+                <value>inp_demand20130813215614853</value>
+                <value>inp_emitter20130813215614777</value>
+                <value>inp_energy_el20130813215614758</value>
+                <value>inp_energy_gl20130813215614719</value>
+                <value>inp_label20130813215614969</value>
+                <value>inp_mixing20130813215615038</value>
+                <value>inp_pattern20130813215615249</value>
+                <value>inp_quality20130813215615383</value>
+                <value>inp_reactions_el20130813215615426</value>
+                <value>inp_reactions_gl20130813215615454</value>
+                <value>inp_rules20130813215615549</value>
+                <value>inp_source20130813215615594</value>
+                <value>inp_tags20130813215615648</value>
+                <value>inp_type_arc20131204000650536</value>
+                <value>inp_type_node20131204000650818</value>
+                <value>inp_typevalue_energy20130820191532221</value>
+                <value>inp_typevalue_pump20130820191532119</value>
+                <value>inp_typevalue_reactions_gl20130820191532066</value>
+                <value>inp_typevalue_source20130820191532007</value>
+                <value>inp_typevalue_valve20130821012434840</value>
+                <value>inp_value_ampm20130820191531964</value>
+                <value>inp_value_curve20131125203728568</value>
+                <value>inp_value_mixing20130820191531874</value>
+                <value>inp_value_noneall20130820191531819</value>
+                <value>inp_value_param_energy20130820191531503</value>
+                <value>inp_value_reactions_el20130820191531445</value>
+                <value>inp_value_reactions_gl20130820191531375</value>
+                <value>inp_value_st_pipe20130820191531294</value>
+                <value>inp_value_status20130820191531216</value>
+                <value>inp_value_times20130820191531149</value>
+                <value>inp_value_yesno20130820191531037</value>
+                <value>inp_value_yesnofull20130820191530965</value>
+                <value>v_rpt_energy_usage20131203141738082</value>
+                <value>v_rpt_hydraulic_status20131203141738132</value>
+			</disabledLayers>
         </Identify>
         <WMSContactPhone type="QString"></WMSContactPhone>
         <SpatialRefSys>

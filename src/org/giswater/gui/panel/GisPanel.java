@@ -61,7 +61,7 @@ import org.giswater.util.Utils;
 public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	private GisFrame gisFrame;	
 	private JTabbedPane tabbedPane;
@@ -203,7 +203,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 		// Panel Database connection
 		panel_1 = new JPanel();
-		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null); //$NON-NLS-1$
+		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null);
 		panel_1.setLayout(new MigLayout("", "[115px:n:115px][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
@@ -221,7 +221,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		panel_1.add(btnProjectFolder, "cell 3 0");
 		btnProjectFolder.setText("...");
 		btnProjectFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnProjectFolder.setActionCommand("chooseProjectFolder"); //$NON-NLS-1$
+		btnProjectFolder.setActionCommand("chooseProjectFolder");
 		
 		lblProjectName = new JLabel(BUNDLE.getString("Gis.lblProjectName"));
 		panel_1.add(lblProjectName, "cell 0 1,alignx right");
@@ -231,7 +231,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectName.setText((String) null);
 		txtProjectName.setColumns(10);
 		
-		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); //$NON-NLS-1$
+		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text"));
 		panel_1.add(lblSoftware, "cell 0 2,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
@@ -239,7 +239,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
 		panel_1.add(cboSoftware, "cell 1 2,growx");
 		
-		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text")); //$NON-NLS-1$
+		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text"));
 		panel_1.add(lblDataStorage, "cell 0 3,alignx trailing");
 		
 		cboDataStorage = new JComboBox<String>();
@@ -247,17 +247,17 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		cboDataStorage.setModel(new DefaultComboBoxModel<String>(new String[] {"Database", "DBF"}));
 		panel_1.add(cboDataStorage, "cell 1 3,growx");
 		
-		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); //$NON-NLS-1$
+		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text"));
 		panel_1.add(lblSchema, "cell 0 4,alignx trailing");
 		
 		cboSchema = new JComboBox<String>();
 		panel_1.add(cboSchema, "cell 1 4,growx");
 		
-		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); //$NON-NLS-1$
+		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text"));
 		btnAccept.setActionCommand("gisAccept");
 		panel_1.add(btnAccept, "cell 2 5,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); //$NON-NLS-1$
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.addActionListener(this);
 		btnClose.setActionCommand("closePanel");
 		panel_1.add(btnClose, "cell 3 5");

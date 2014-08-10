@@ -55,7 +55,7 @@ import org.giswater.dao.MainDao;
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text");
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
@@ -393,7 +393,10 @@ public class Utils {
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
 			p.waitFor();
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
+			logError(e);
+			return false;			
+		} catch (InterruptedException e) {
 			logError(e);
 			return false;
 		}	
@@ -426,7 +429,9 @@ public class Utils {
 
 		try {
 			Desktop.getDesktop().browse(new URI(url));
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
+			logError(e);
+		} catch (URISyntaxException e) {
 			logError(e);
 		}
 		
