@@ -43,7 +43,7 @@ import org.giswater.util.Utils;
 
 public class SectorSelectionPanel extends JPanel {
 	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final long serialVersionUID = 7046850563517014315L;
 	private final String TABLE_SECTOR = "sector";
 	private final String TABLE_SECTOR_SELECTION = "sector_selection";
@@ -102,12 +102,12 @@ public class SectorSelectionPanel extends JPanel {
 		table.setRowSelectionAllowed(true);
 		scrollPane.setViewportView(table);
 		
-		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text")); //$NON-NLS-1$
+		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text")); 
 		btnInsert.setMaximumSize(new Dimension(79, 23));
 		btnInsert.setMinimumSize(new Dimension(79, 23));
 		add(btnInsert, "flowx,cell 1 4,alignx left");
 		
-		btnDelete = new JButton(BUNDLE.getString("TableWindowPanel.btnDelete.text")); //$NON-NLS-1$
+		btnDelete = new JButton(BUNDLE.getString("TableWindowPanel.btnDelete.text")); 
 		btnDelete.setMinimumSize(new Dimension(79, 23));
 		btnDelete.setMaximumSize(new Dimension(79, 23));
 		btnDelete.setVisible(false);

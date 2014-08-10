@@ -20,9 +20,7 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -47,7 +45,7 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class CatalogController {
+public class CatalogController extends AbstractController{
 
 	private AbstractCatalogDialog view;
     private ResultSet rs;
@@ -63,29 +61,7 @@ public class CatalogController {
         this.total = MainDao.getRowCount(rs);
 	    view.setController(this);        
 	}
-	
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
-	
+
 	
 	public void setComponents(){
 		setComponents(true);
@@ -176,7 +152,10 @@ public class CatalogController {
 		}		
 		else if (comboName.equals("curve_type")){
 			tableName = "inp_value_curve";
-		}				
+		}		
+		else if (comboName.equals("infiltration")){
+			tableName = "inp_value_options_in";
+		}
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -262,6 +241,7 @@ public class CatalogController {
 			else if (!action.equals("create_detail")){
 				rs.updateRow();
 			}
+			MainDao.commit();
 			
 		} catch (SQLException e) {
 			Utils.showError(e);

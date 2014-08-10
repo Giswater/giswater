@@ -26,34 +26,30 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 
-import org.giswater.controller.MainController;
-import org.giswater.gui.panel.EpaPanel;
+import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.util.Utils;
 
 
-public class EpaFrame extends JInternalFrame implements InternalFrameListener{
+public class EpaSoftFrame extends JInternalFrame {
 
 	private static final long serialVersionUID = 5510726193938743935L;
-	private EpaPanel panel;
-	private MainController controller;
+	private EpaSoftPanel panel;
 	
 	
-	public EpaFrame(){
+	public EpaSoftFrame(){
 		initComponents();
 	}
 	
 
-	public EpaPanel getPanel(){
+	public EpaSoftPanel getPanel(){
 		return panel;
 	}
 	
 	           
     private void initComponents() {
 
-    	panel = new EpaPanel();
+    	panel = new EpaSoftPanel();
 
     	panel.setFrame(this);
         setTitle("");
@@ -61,7 +57,6 @@ public class EpaFrame extends JInternalFrame implements InternalFrameListener{
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 		setMaximizable(true);        
         setVisible(false);
-        addInternalFrameListener(this);
         
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {
@@ -88,39 +83,6 @@ public class EpaFrame extends JInternalFrame implements InternalFrameListener{
         pack();
         
     }
-
-
-	@Override
-	public void internalFrameActivated(InternalFrameEvent arg0) {
-		if (controller == null){
-			controller = panel.getController();
-		}
-		controller.schemaChanged();
-	}
-
-
-	@Override
-	public void internalFrameClosed(InternalFrameEvent arg0) { }
-
-
-	@Override
-	public void internalFrameClosing(InternalFrameEvent arg0) { }
-
-
-	@Override
-	public void internalFrameDeactivated(InternalFrameEvent arg0) { }
-
-
-	@Override
-	public void internalFrameDeiconified(InternalFrameEvent arg0) { }
-
-
-	@Override
-	public void internalFrameIconified(InternalFrameEvent arg0) { }
-
-
-	@Override
-	public void internalFrameOpened(InternalFrameEvent arg0) { }
 
     
 }

@@ -20,64 +20,53 @@
  */
 package org.giswater.gui.frame;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
-import javax.swing.WindowConstants;
 
-import org.giswater.gui.panel.DatabasePanel;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Utils;
 
 
-public class DatabaseFrame extends JInternalFrame {
+public class ProjectPreferencesFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
-	private DatabasePanel panel;
+	private static final long serialVersionUID = -8028876402273265808L;
+	private ProjectPreferencesPanel panel;
 	
 	
-	public DatabaseFrame(){
+	public ProjectPreferencesFrame(){
 		initComponents();
 	}
 	
-	
-	public DatabasePanel getPanel(){
+	public ProjectPreferencesPanel getPanel(){
 		return panel;
 	}
 	
-	           
+	
     private void initComponents() {
 
-    	panel = new DatabasePanel();
+    	panel = new ProjectPreferencesPanel();
 
     	panel.setFrame(this);
-    	setTitle(Utils.getBundleString("db_options"));
-		setMaximizable(true);    	
-        setClosable(true);
-        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        
-        setFrameIcon(new ImageIcon(Utils.getIconPath()));
-		try {
-			setIcon(true);
-		} catch (PropertyVetoException e) {
-			Utils.logError(e.getMessage());
-		}        
+    	setClosable(true);
+		setMaximizable(true);        
+        setVisible(false);
+    	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-        			.addContainerGap())
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(14, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
         

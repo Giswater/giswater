@@ -250,8 +250,8 @@ public class UtilsFTP {
 		try {
 			// Get last minor version available in root folder
 	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-	        String currentMinorVersion = "versions_"+majorVersion+"."+minorVersion;
-	        updateMinorVersion = checkMinorVersion(currentMinorVersion);
+	        String currentMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
+	        updateMinorVersion = checkMinorVersion(currentMinorVersionFolder);
 	        if (!updateMinorVersion){
 	        	newMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
 	        	newMinorVersion = minorVersion;
@@ -273,7 +273,7 @@ public class UtilsFTP {
 	}
 
 	
-	private boolean checkMinorVersion(String currentMinorVersion) {
+	private boolean checkMinorVersion(String currentMinorVersionFolder) {
 		
         boolean updateMinorVersion = false;
         FTPFile[] listFolders = listDirectories();
@@ -281,7 +281,7 @@ public class UtilsFTP {
         newMinorVersionFolder = folder.getName().trim().toLowerCase();
         newMinorVersion = Integer.parseInt(newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1));
         Utils.getLogger().info("FTP last minor version folder name: "+newMinorVersionFolder);
-        if (!currentMinorVersion.equals(newMinorVersionFolder)){
+        if (!currentMinorVersionFolder.equals(newMinorVersionFolder)){
         	updateMinorVersion = true;
         }
         return updateMinorVersion;

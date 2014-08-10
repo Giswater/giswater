@@ -23,6 +23,7 @@ package org.giswater.util;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,23 +40,35 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+import javax.swing.border.TitledBorder;
 
 import org.giswater.dao.MainDao;
+
+import com.toedter.calendar.JDateChooser;
 
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); 
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
@@ -496,12 +509,43 @@ public class Utils {
 		return content;
 		
 	}	
+	
+	
+	public static ArrayList<String> fileToArray(String filePath) {
+		
+		File fileName = new File(filePath);			
+		if (!fileName.exists()){
+			showError("inp_error_notfound", filePath);
+			return null;
+		}
+		ArrayList<String> fileContent = new ArrayList<String>();
+		String line;
+		try {
+			RandomAccessFile raf = new RandomAccessFile(filePath, "r");
+			while (raf.getFilePointer() < raf.length()){		
+				line = raf.readLine().trim();	
+				fileContent.add(line);
+			}
+			raf.close();
+		} catch (IOException e) {
+			Utils.showError(e);
+		}	
+		return fileContent;
+		
+	}
 
 	
 	public static void setSqlLog(String string) {
 		isSqlLogged = Boolean.parseBoolean(string);
 	}	
 	
+	public static Integer parseInt(String s) {
+		Integer value = -1;
+		if (isInteger(s)){
+			value = Integer.parseInt(s);
+		}
+		return value;
+	}
 	
 	public static boolean isInteger(String s) {
 	    try { 
@@ -521,7 +565,6 @@ public class Utils {
 		}
 		return true;
 	}
-	
 	
 	
 	public static boolean portAvailable(int port) {
@@ -552,6 +595,66 @@ public class Utils {
 	    return false;
     
 	}
+	
+	
+	public static void setPanelEnabled(JPanel panel, Boolean enabled){
+		
+	    Component[] comps = panel.getComponents();
+	    for (Component comp : comps) {
+	        if (comp instanceof JLabel || comp instanceof JComboBox || comp instanceof JCheckBox || comp instanceof JButton ||
+	        	comp instanceof JTextField || comp instanceof JTextArea || comp instanceof JDateChooser){
+	            comp.setEnabled(enabled);
+	        }
+	        else if (comp instanceof JPanel){
+	        	JPanel aux = (JPanel) comp;
+	    		Utils.setPanelEnabled(aux, enabled);
+	        }	  
+	        else if (comp instanceof JScrollPane){
+	        	JScrollPane scrollPane = (JScrollPane) comp; 
+	        	JViewport viewport = scrollPane.getViewport();
+	    	    Component[] comps2 = viewport.getComponents();
+	    	    for (Component comp2 : comps2) {
+	    	        if (comp2 instanceof JLabel || comp2 instanceof JComboBox || comp instanceof JCheckBox || comp instanceof JButton ||
+	    		        comp2 instanceof JTextField || comp2 instanceof JTextArea || comp2 instanceof JDateChooser){
+	    	        	comp.setEnabled(enabled);
+	    		    }	    	    	
+	    	    }
+	        }		        
+	    }		
+		
+	}
+	
+	
+	public static void setPanelFont(JPanel panel, Font fontPanel, Font fontComponents){
+		
+	    Component[] comps = panel.getComponents();
+	    for (Component comp : comps) {
+	        if (comp instanceof JLabel || comp instanceof JComboBox || 
+	        	comp instanceof JTextField || comp instanceof JTextArea || comp instanceof JDateChooser){
+	            comp.setFont(fontComponents);
+	        }
+	        else if (comp instanceof JPanel){
+	        	JPanel aux = (JPanel) comp;
+	    		TitledBorder tb = (TitledBorder) aux.getBorder();	 
+	    		if (tb!=null){
+	    			tb.setTitleFont(fontPanel);
+	    			Utils.setPanelFont(aux, fontPanel, fontComponents);
+	    		}
+	        }	  
+	        else if (comp instanceof JScrollPane){
+	        	JScrollPane scrollPane = (JScrollPane) comp; 
+	        	JViewport viewport = scrollPane.getViewport();
+	    	    Component[] comps2 = viewport.getComponents();
+	    	    for (Component comp2 : comps2) {
+	    	        if (comp2 instanceof JLabel || comp2 instanceof JComboBox || 
+	    		        comp2 instanceof JTextField || comp2 instanceof JTextArea || comp2 instanceof JDateChooser){
+	    	        	comp2.setFont(fontComponents);
+	    		    }	    	    	
+	    	    }
+	        }		        
+	    }		
+		
+	}	
 	
 	
 }
