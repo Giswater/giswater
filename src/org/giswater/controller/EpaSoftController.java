@@ -548,7 +548,7 @@ public class EpaSoftController extends AbstractController{
 		
 		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
 		if (rs == null) return;		
-		String softwareName = MainDao.getSoftwareName();
+		String softwareName = MainDao.getWaterSoftware();
 		AbstractOptionsDialog dialog = null;
 		if (softwareName.equals("EPASWMM")){
 			dialog = new ResultCatDialog();	

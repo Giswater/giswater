@@ -379,7 +379,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	}	
 	
 	public void enableRunAndImport(boolean enable) {
-		chkSubcatchments.setEnabled(enable);
 		chkExec.setEnabled(enable);
 		lblFileRpt.setEnabled(enable);
 		txtFileRpt.setEnabled(enable);
@@ -462,6 +461,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
     
 	public void setTitle(String title) {
 		getFrame().setTitle(title);		
+	}
+	
+	public void setSubcatchmentVisible(boolean visible) {
+		chkSubcatchments.setVisible(visible);	
 	}
 
 	

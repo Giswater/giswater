@@ -22,6 +22,7 @@ package org.giswater.controller;
 
 import java.awt.Cursor;
 import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.JDialog;
@@ -58,7 +59,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public void changeSoftware(){
+	public void changeSoftware() {
 		
 		// Update software version 
 		waterSoftware = view.getWaterSoftware();
@@ -74,12 +75,13 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private void customizePanel(){
+	private void customizePanel() {
 		
 		if (waterSoftware.equals("EPASWMM")){
 			epaSoftPanel.setDesignButton("Raingage", "showRaingage");
 			epaSoftPanel.setOptionsButton("Options", "showInpOptions");
 			epaSoftPanel.setReportButton("Report options", "showReport");
+			epaSoftPanel.setSubcatchmentVisible(true);
 			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setVisible(true);
 			mainFrame.epaSoftFrame.setTitle(waterSoftware);
@@ -88,6 +90,7 @@ public class ProjectPreferencesController extends AbstractController{
 			epaSoftPanel.setDesignButton("Times values", "showTimesValues");
 			epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
 			epaSoftPanel.setReportButton("Report options", "showReportEpanet");
+			epaSoftPanel.setSubcatchmentVisible(false);
 			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setVisible(true);
 			mainFrame.epaSoftFrame.setTitle(waterSoftware);
@@ -112,7 +115,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public boolean applyPreferences(){
+	public boolean applyPreferences() {
 		
 		// Check if everything is set
 		if (!checkPreferences()){
@@ -137,14 +140,14 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public void acceptPreferences(){
+	public void acceptPreferences() {
 		if (applyPreferences()){
 			closePreferences();	
 		}
 	}
 	
 	
-	public void closePreferences(){
+	public void closePreferences() {
 		view.getFrame().setVisible(false);	
 	}
 
@@ -167,7 +170,7 @@ public class ProjectPreferencesController extends AbstractController{
 	
 	
 	// Database configuration
-	private void checkDataManagerTables(String schemaName){
+	private void checkDataManagerTables(String schemaName) {
 		epaSoftPanel.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
 		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
 		epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
@@ -177,13 +180,13 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private void checkPostprocessTables(String schemaName){
+	private void checkPostprocessTables(String schemaName) {
 		epaSoftPanel.enableResultCatalog(MainDao.checkTable(schemaName, "rpt_result_cat"));
 		epaSoftPanel.enableResultSelector(MainDao.checkTable(schemaName, "result_selection"));
 	}
 	
 	
-	public void testConnection(){
+	public void testConnection() {
 	
 		if (MainDao.isConnected()){
 			closeConnection();
@@ -201,7 +204,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}	
 	
 	
-	private void closeConnection(){
+	private void closeConnection() {
 		
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
@@ -211,7 +214,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private boolean openConnection(){
+	private boolean openConnection() {
 		
 		String host, port, db, user, password;
 		
@@ -262,18 +265,15 @@ public class ProjectPreferencesController extends AbstractController{
 			
 			// Hecras form
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
-			
-			// TODO: Update pg_pass.conf
-			// updatePgPass();
+
 		} 
 
-		
 		return isConnected;
 		
 	}	
 	
 	
-	public void selectSourceType(){
+	public void selectSourceType() {
 
 		// Database selected
 		if (view.getOptDatabaseSelected()) {
@@ -323,7 +323,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public void isConnected(){
+	public void isConnected() {
 
 		// Check if we already are connected
 		if (MainDao.isConnected()){
@@ -344,9 +344,9 @@ public class ProjectPreferencesController extends AbstractController{
 	}	
 	
 	
-	public void schemaChanged(){
+	public void schemaChanged() {
 		
-		MainDao.setSoftwareName(waterSoftware);		
+		MainDao.setWaterSoftware(waterSoftware);		
 		if (MainDao.isConnected()){
 			setSchema(view.getSelectedSchema());
 		}
@@ -354,14 +354,14 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private void setSchema(String schemaName){
+	private void setSchema(String schemaName) {
 		MainDao.setSchema(schemaName);
 		checkDataManagerTables(schemaName);
 		checkPostprocessTables(schemaName);
 	}
 	
 	
-	public void schemaTest(String schemaName){
+	public void schemaTest(String schemaName) {
 		view.setSelectedSchema(schemaName);
 	}
 	
@@ -376,7 +376,7 @@ public class ProjectPreferencesController extends AbstractController{
 	
 	
 	// Project Management
-	private String validateName(String schemaName){
+	private String validateName(String schemaName) {
 		
 		String validate;
 		validate = schemaName.trim().toLowerCase();
@@ -387,7 +387,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private String getUserSrid(String defaultSrid){
+	private String getUserSrid(String defaultSrid) {
 		
 		String sridValue = "";
 		Boolean sridQuestion = Boolean.parseBoolean(MainDao.getPropertiesFile().get("SRID_QUESTION"));
@@ -405,7 +405,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public void createSchema(){
+	public void createSchema() {
 		createSchemaAssistant();
 	}
 	
@@ -429,7 +429,7 @@ public class ProjectPreferencesController extends AbstractController{
 
 
 	// Only called by deleteData
-	public void createSchema(String defaultSchemaName, String defaultSridSchema){
+	public void createSchema(String defaultSchemaName, String defaultSridSchema) {
 		
 		String schemaName = defaultSchemaName;
 		if (defaultSchemaName.equals("")){
@@ -490,7 +490,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	public void deleteSchema(){
+	public void deleteSchema() {
 		
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
@@ -510,7 +510,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}		
 	
 	
-	public void renameSchema(){
+	public void renameSchema() {
 		
 		String schemaName = view.getSelectedSchema();
 		if (schemaName.equals("")) return;
@@ -525,10 +525,56 @@ public class ProjectPreferencesController extends AbstractController{
 			return;
 		}
 		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
+		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true)){
 			selectSourceType();
 			Utils.showMessage("Project renamed successfuly");
 		}
+		
+	}
+	
+	
+	public void copySchema() {
+		
+		String schemaName = view.getSelectedSchema();
+		if (schemaName.equals("")) return;
+		
+		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
+		if (newSchemaName == null){
+			return;
+		}
+		newSchemaName = validateName(newSchemaName);
+		if (newSchemaName.equals("")){
+			Utils.showError(view, "schema_valid_name");
+			return;
+		}
+		
+		// Set wait cursor
+		mainFrame.ppFrame.getPanel().enableControlsText(false);
+		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
+
+		String sql = "SELECT "+schemaName+".clone_schema('"+schemaName+"', '"+newSchemaName+"')";
+		Utils.logSql(sql);
+		if (MainDao.executeSql(sql, true)){
+			// Now we have to execute functrigger.sql
+			try {
+				String folderRoot = new File(".").getCanonicalPath()+File.separator;
+				String filePath = folderRoot+"sql"+File.separator+waterSoftware+"_functrigger.sql";
+				String content = Utils.readFile(filePath);
+				content = content.replace("SCHEMA_NAME", newSchemaName);
+				Utils.logSql(content);
+				if (MainDao.executeSql(content, true)){
+					selectSourceType();
+					Utils.showMessage("Project copied successfuly");
+				}
+			} catch (IOException e) {
+				Utils.logError(e);
+			}	
+		}
+		
+		// Refresh view
+		mainFrame.ppFrame.getPanel().enableControlsText(true);
+		mainFrame.setCursorFrames(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 	}
 		

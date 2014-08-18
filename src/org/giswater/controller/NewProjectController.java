@@ -48,7 +48,7 @@ public class NewProjectController extends AbstractController{
     
     public NewProjectController(ProjectPanel view) {
     	this.view = view;	
-    	this.software = MainDao.getSoftwareName();
+    	this.software = MainDao.getWaterSoftware();
 	}
    
 	

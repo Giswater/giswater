@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -47,7 +48,7 @@ public class MainDao {
 	private static Connection connectionConfig;   // SQLite
     private static Connection connectionDrivers;  // SQLite 
     private static Connection connectionPostgis;  // Postgis
-	private static String softwareName;   // EPASWMM or EPANET
+	private static String waterSoftware;   // EPASWMM or EPANET
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String inpFolder;   // appPath + "inp"
@@ -64,6 +65,11 @@ public class MainDao {
 	private static Boolean updateSchemaVersion = true;   // If true, schemas will be updated to the last version available
 	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
 	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
+	private static String host;
+	private static String port;
+	private static String db;
+	private static String user;
+	private static String password;
     
 	private static final String MINOR_VERSION = "1.1";
     private static final String ROOT_FOLDER = "giswater" + File.separator;
@@ -121,12 +127,12 @@ public class MainDao {
 		return connectionPostgis;
 	}	
 
-	public static String getSoftwareName() {
-		return softwareName;
+	public static String getWaterSoftware() {
+		return waterSoftware;
 	}	
 	
-	public static void setSoftwareName(String param) {
-		softwareName = param;
+	public static void setWaterSoftware(String param) {
+		waterSoftware = param;
 	}
 	
 	public static boolean isConnected() {
@@ -257,21 +263,26 @@ public class MainDao {
 	}
     
 	
+	private static void getConnectionParameters(){
+
+		// Get parameteres connection from properties file
+		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
+		port = gswProp.get("POSTGIS_PORT", "5431");
+		db = gswProp.get("POSTGIS_DATABASE", "giswater_ddb");
+		user = gswProp.get("POSTGIS_USER", "postgres");
+		password = gswProp.get("POSTGIS_PASSWORD");		
+		password = Encryption.decrypt(password);
+		password = (password == null) ? "" : password;
+		
+	}
+	
 	
 	private static boolean commonSteps(){
 		
 		if (isConnected) return true;
 		
-		String host, port, db, user, password;
-		
 		// Get parameteres connection from properties file
-		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
-		port = gswProp.get("POSTGIS_PORT", "5431");
-		db = gswProp.get("POSTGIS_DATABASE", "postgres");
-		user = gswProp.get("POSTGIS_USER", "postgres");
-		password = gswProp.get("POSTGIS_PASSWORD");		
-		password = Encryption.decrypt(password);
-		password = (password == null) ? "" : password;
+		getConnectionParameters();
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")){
 			Utils.getLogger().info("Autoconnection not possible. Check parameters in properties file");
@@ -842,12 +853,8 @@ public class MainDao {
 		
         ResultSet rs = null;        
         try {
-        	//connection.setAutoCommit(true);
-        	// Rollback to prevent...  ERROR: current transaction is aborted, commands ignored until end of transaction block
-        	rollback();
         	Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = stat.executeQuery(sql);
-            //connection.setAutoCommit(false);
         } catch (SQLException e) {
 			if (showError){
 				Utils.showError(e, sql);
@@ -1051,15 +1058,7 @@ public class MainDao {
 	
 	public static boolean executeScript(String scriptPath, String batPath) {
 
-		String aux;
-		String bin, host, port, db, user;
-		
-		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
-		port = gswProp.getProperty("POSTGIS_PORT", "5431");
-		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
-		user = gswProp.getProperty("POSTGIS_USER", "postgres");
-		
+		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
@@ -1068,7 +1067,8 @@ public class MainDao {
 		bin+= File.separator;
 		
 		// Set content of .bat file
-		aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
+		getConnectionParameters();
+		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
 		aux+= "\nexit";		
 		Utils.getLogger().info(aux);
 
@@ -1122,9 +1122,9 @@ public class MainDao {
 		if (schema == null || schema.equals("")) return;
 		
 		Integer schemaVersion = getSchemaVersion();
-		Integer updateVersion = updateMap.get(softwareName);
+		Integer updateVersion = updateMap.get(waterSoftware);
 		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
-		if (updateVersion == -1) return;
+		if (updateVersion == null || updateVersion == -1) return;
 		if (updateVersion > schemaVersion && updateSchemaVersion){
 			String msg = "Would you like to update '"+schema+"' to the current software version?\n" +
 				"It's strongly advisable to make a backup before updating it.";
@@ -1132,7 +1132,7 @@ public class MainDao {
 			if (answer == 0){
 				if (updateSchema(schemaVersion)){
 					String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
-						" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareName+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
+						" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 					Utils.getLogger().info(sql);
 					executeSql(sql, true);
 					Utils.showMessage("Project successfully updated.");
@@ -1180,9 +1180,8 @@ public class MainDao {
 	public static boolean updateSchema(Integer schemaVersion) {
 		
 		boolean status = true;
-			
 		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder + softwareName + File.separator;
+		String folder = updatesFolder + waterSoftware + File.separator;
 		File[] files = new File(folder).listFiles();
 		Arrays.sort(files);
 		for (File file : files) {
@@ -1204,7 +1203,6 @@ public class MainDao {
 				}
 			}
 		}
-		
 		return status;
 		
 	}
@@ -1212,14 +1210,7 @@ public class MainDao {
 	
 	public static boolean executeDump(String schema, String sqlPath) {
 
-		String aux;
-		String bin, host, port, db, user;
-		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
-		port = gswProp.getProperty("POSTGIS_PORT", "5431");
-		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
-		user = gswProp.getProperty("POSTGIS_USER", "postgres");
-		
+		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
@@ -1227,8 +1218,13 @@ public class MainDao {
 		}
 		bin+= File.separator;
 		
+		// Check pgPass file and insert param if necessary
+		getConnectionParameters();
+		String param = host+":"+port+":"+db+":"+user+":"+password;
+		checkPgPass(param);
+		
 		// Set content of .bat file
-		aux= "\""+bin+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
+		String aux= "\""+bin+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
 		aux+= "\nexit";		
 		Utils.getLogger().info(aux);
 
@@ -1253,17 +1249,46 @@ public class MainDao {
 	}	
 	
 	
+	private static void checkPgPass(String param) {
+
+		// Get AppData folder
+		String pgPassFolder = System.getProperty("user.home") + "/AppData/Roaming/postgresql";
+		File folder = new File(pgPassFolder);
+		if (!folder.exists()) {
+			Utils.logError("pgPass folder not exists", pgPassFolder);
+			return;
+		}
+		File file = new File(pgPassFolder + "/pgpass.conf");
+		if (!file.exists()) {
+			Utils.logError("pgPass file not exists", file.getAbsolutePath());
+			return;
+		}
+		
+		// Read contents of file looking for param
+		try {
+			RandomAccessFile raf = new RandomAccessFile(file, "rw");
+			long fileLength = raf.length();
+			boolean found = false;
+			while (raf.getFilePointer() < fileLength || found) {
+				String line = raf.readLine().trim().toLowerCase();	
+				if (line.equals(param.toLowerCase())){
+					found = true;
+				}
+			}
+			if (!found) {
+				raf.writeBytes("\n"+param);
+			}
+			raf.close();
+		} catch (IOException e) {
+			Utils.logError(e);
+		}
+
+	}
+
+	
 	public static boolean executeRestore(String sqlPath) {
 
-		String aux, logFolder;
-		String bin, host, port, db, user;
-		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
-		port = gswProp.getProperty("POSTGIS_PORT", "5431");
-		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
-		user = gswProp.getProperty("POSTGIS_USER", "postgres");
-		logFolder = Utils.getLogFolder();
-		
+		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
@@ -1301,8 +1326,13 @@ public class MainDao {
 			} 
 		}
 		
+		// Check pgPass file and insert param if necessary
+		getConnectionParameters();
+		String param = host+":"+port+":"+db+":"+user+":"+password;
+		checkPgPass(param);
+		
 		// Set content of .bat file
-		aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+logFolder+"restore.log\"";
+		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
@@ -1474,18 +1504,10 @@ public class MainDao {
 
 	public static boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
 
-		String fileSql, aux, logFolder;
-		String bin, host, port, db, user, srid;
-		
-		bin = gswProp.getProperty("POSTGIS_BIN", "");
-		host = gswProp.getProperty("POSTGIS_HOST", "127.0.0.1");
-		port = gswProp.getProperty("POSTGIS_PORT", "5431");
-		db = gswProp.getProperty("POSTGIS_DATABASE", "giswater");
-		user = gswProp.getProperty("POSTGIS_USER", "postgres");
-		srid = gswProp.get("SRID_USER");			
-		logFolder = Utils.getLogFolder();
-		fileSql = logFolder + rasterName.replace(".asc", ".sql");
-		
+		String srid = gswProp.get("SRID_USER");			
+		String logFolder = Utils.getLogFolder();
+		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
+		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
@@ -1503,7 +1525,7 @@ public class MainDao {
 		}
 		
 		// Set content of .bat file
-		aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
+		String aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
 		aux+= "\n";
 		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
 		aux+= "\n";		

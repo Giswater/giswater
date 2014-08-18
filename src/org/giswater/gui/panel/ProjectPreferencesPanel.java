@@ -242,7 +242,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
-		panelManagement.setBorder(new TitledBorder(null, "Project Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
+		panelManagement.setBorder(new TitledBorder(null, "Project Data Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
 		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59.00px][][][][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
@@ -278,8 +278,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnRename.setActionCommand("renameSchema");
 		panelManagement.add(btnRename, "cell 5 0,alignx right");
 		
-		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text")); 
-		btnCopy.setVisible(false);
+		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text"));
 		btnCopy.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setEnabled(false);

@@ -362,6 +362,7 @@ public class CatalogController extends AbstractController{
 				total--;
 				if (total == 0) current = 0;
 				setComponents();
+		        MainDao.commit();
 	        }   
 		} catch (SQLException e) {
 			Utils.showError(e);

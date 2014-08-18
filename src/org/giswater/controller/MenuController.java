@@ -307,6 +307,7 @@ public class MenuController extends AbstractController{
     	// Panel Water Software
     	String waterSoftware = MainDao.getGswProperties().get("SOFTWARE").toUpperCase();
     	ppPanel.setWaterSoftware(waterSoftware);
+    	MainDao.setWaterSoftware(waterSoftware);
 		
 		// Panel DBF
 		updateDbfParams(ppPanel);
@@ -360,14 +361,17 @@ public class MenuController extends AbstractController{
     
 	// Menu Project example
 	public void exampleEpanet(){
+		MainDao.setWaterSoftware("EPANET");
 		createExampleSchema("epanet");
 	}
 
 	public void exampleEpaswmm(){
+		MainDao.setWaterSoftware("EPASWMM");
 		createExampleSchema("epaswmm");
 	}
 
 	public void exampleHecras(){
+		MainDao.setWaterSoftware("HECRAS");
        	createExampleSchema("hecras");
 	}
 	

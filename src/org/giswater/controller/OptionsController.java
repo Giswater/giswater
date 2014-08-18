@@ -159,7 +159,7 @@ public class OptionsController extends AbstractController{
 			tableName = "inp_value_options_fu";
 		}
 		else if (comboName.equals("hydrology")){
-			tableName = "inp_value_options_in";
+			tableName = "cat_hydrology";
 		}
 		else if (comboName.equals("force_main_equation")){
 			tableName = "inp_value_options_fme";
@@ -440,6 +440,7 @@ public class OptionsController extends AbstractController{
 					}
 				}
 				setComponents();
+				MainDao.commit();
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);
