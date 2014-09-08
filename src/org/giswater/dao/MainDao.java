@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -78,6 +79,7 @@ public class MainDao {
 	private static final String CONFIG_FILE = "giswater";
 	private static final String GSW_FILE = "default_"+MINOR_VERSION+".gsw";
 	private static final String INIT_DB = "giswater_ddb";
+	private static final String DEFAULT_DB = "postgres";
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
@@ -87,8 +89,8 @@ public class MainDao {
 	private static final String TABLE_HECRAS = "banks";		
 	
 	
-	public static String getInitDb(){
-		return INIT_DB;
+	public static String getDb(){
+		return db;
 	}
 	
 	public static String getGswDefaultPath(){
@@ -268,7 +270,7 @@ public class MainDao {
 		// Get parameteres connection from properties file
 		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 		port = gswProp.get("POSTGIS_PORT", "5431");
-		db = gswProp.get("POSTGIS_DATABASE", "giswater_ddb");
+		db = gswProp.get("POSTGIS_DATABASE", "postgres");
 		user = gswProp.get("POSTGIS_USER", "postgres");
 		password = gswProp.get("POSTGIS_PASSWORD");		
 		password = Encryption.decrypt(password);
@@ -285,7 +287,7 @@ public class MainDao {
 		getConnectionParameters();
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")){
-			Utils.getLogger().info("Autoconnection not possible. Check parameters in properties file");
+			Utils.getLogger().info("Connection not possible. Check parameters in properties file");
 			return false;
 		}
 		
@@ -295,7 +297,30 @@ public class MainDao {
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
 			isConnected = setConnectionPostgis(host, port, db, user, password, false);
-		} while (!isConnected && count < 5);
+		} while (!isConnected && count < 4);
+		
+		// Try to connect to the default database if we couldn't connect previously
+		if (!isConnected) {
+			Utils.getLogger().info("Connection not possible. Trying to connect to 'postgres' database instead");
+			db = "postgres";
+			count = 0;
+			do {
+				count++;
+				Utils.getLogger().info("Trying to connect to default Database: " + count);
+				isConnected = setConnectionPostgis(host, port, db, user, password, false);
+			} while (!isConnected && count < 4);
+		}
+
+		if (isConnected){
+			// Get Postgis data and bin folder
+	    	String dataPath = MainDao.getDataDirectory();
+	    	gswProp.put("POSTGIS_DATA", dataPath);
+	        File dataFolder = new File(dataPath);
+	        String binPath = dataFolder.getParent() + File.separator + "bin";
+	    	gswProp.put("POSTGIS_BIN", binPath);	
+			Utils.getLogger().info("Connection successful");
+	    	Utils.getLogger().info("Postgre data directory: " + dataPath);	
+		}
 		
 		return isConnected;
 		
@@ -308,15 +333,8 @@ public class MainDao {
 			commonSteps();
 		}
 		
-		if (isConnected){
-			// Get Postgis data and bin folder
-	    	String dataPath = MainDao.getDataDirectory();
-	    	gswProp.put("POSTGIS_DATA", dataPath);
-	        File dataFolder = new File(dataPath);
-	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	    	gswProp.put("POSTGIS_BIN", binPath);	
-			Utils.getLogger().info("Autoconnection successful");
-	    	Utils.getLogger().info("Postgre data directory: " + dataPath);		    	
+		if (isConnected){    	
+	    	// Check Postgre and Postgis versions
 	    	postgreVersion = MainDao.checkPostgreVersion();	        
         	postgisVersion = MainDao.checkPostgisVersion();	        
         	Utils.getLogger().info("Postgre version: " + postgreVersion);
@@ -339,35 +357,38 @@ public class MainDao {
 	
 	public static boolean initializeDatabase(){
 		
-		if (!isConnected){
-			commonSteps();
-			if (isConnected){
+		if (isConnected) return true;
+		
+		commonSteps();
+		if (isConnected){
+			if (db.equals(DEFAULT_DB)){
 				if (!MainDao.checkDatabase(INIT_DB)){
 					Utils.getLogger().info("Creating database... " + INIT_DB);
-					initDatabase();
-					// Close current connection in order to connect later to default Database just created
-					closeConnectionPostgis();	
-					return true;
+					if (!initDatabase()){
+						return false;
+					}
 				} 
-			}
-			else{
-				Utils.getLogger().info("initializeDatabase: Autoconnection error");			
-				return false;	
-			}
-			return false;
+				gswProp.setProperty("POSTGIS_DATABASE", INIT_DB);
+				// Close current connection in order to connect later to Database just created: giswater_ddb
+				closeConnectionPostgis();	
+				return true;
+			} 
+			return true;
 		}
-		return true;
+		
+		Utils.getLogger().info("initializeDatabase: Autoconnection error");			
+		return false;
 		
 	}	 	
     
 	
-	private static void initDatabase(){
+	private static boolean initDatabase(){
 		
 		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
 		if (!file.exists()){
 			Utils.showError("postgis_not_found", bin);
-			return;			
+			return false;			
 		}
 		bin+= File.separator;
 		
@@ -378,11 +399,11 @@ public class MainDao {
 			content = Utils.readFile(filePath);
 			Utils.logSql(content);
 			executeUpdateSql(content, true, false);
-			gswProp.setProperty("POSTGIS_DATABASE", INIT_DB);
 		} catch (IOException e) {
 			Utils.logError(e);
-			return;
+			return false;
 		}
+		return true;
 
 	}
 	
@@ -1106,9 +1127,14 @@ public class MainDao {
 			schemaVersion = schemaMap.get(schema);
 		} 
 		else{
-			String sql = "SELECT giswater FROM "+schema+".version ORDER BY date DESC";
-			String aux = stringQuery(sql);
-			schemaVersion = Utils.parseInt(aux.replace(".", ""));
+			String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
+			if (checkTable(schema, "version")){
+				String aux = stringQuery(sql);
+				schemaVersion = Utils.parseInt(aux.replace(".", ""));
+			}
+			else{
+				schemaVersion = -1;
+			}
 			schemaMap.put(schema, schemaVersion);
 		}
 		return schemaVersion;
@@ -1125,20 +1151,26 @@ public class MainDao {
 		Integer updateVersion = updateMap.get(waterSoftware);
 		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
 		if (updateVersion == null || updateVersion == -1) return;
-		if (updateVersion > schemaVersion && updateSchemaVersion){
+		if (updateVersion > schemaVersion && updateSchemaVersion) {
 			String msg = "Would you like to update '"+schema+"' to the current software version?\n" +
 				"It's strongly advisable to make a backup before updating it.";
 			int answer = Utils.confirmDialog(msg, "Update Schema");
-			if (answer == 0){
-				if (updateSchema(schemaVersion)){
+			if (answer == 0) {
+				if (schemaVersion == -1) {
+					String sql = "CREATE TABLE "+schema+".version (" +
+						" id SERIAL, giswater varchar(16), wsoftware varchar(16), postgres varchar(512)," +
+						" postgis varchar(512),	date timestamp(6) DEFAULT now(), CONSTRAINT version_pkey PRIMARY KEY (id))";
+					executeSql(sql, true);
+				}
+				if (updateSchema(schemaVersion)) {
 					String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
 						" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 					Utils.getLogger().info(sql);
 					executeSql(sql, true);
-					Utils.showMessage("Project successfully updated.");
+					MainClass.mdi.showMessage("Project successfully updated.");
 				}
-				else{
-					Utils.showError("Project could not be updated to the current version.\nOpen .log file for more details");
+				else {
+					MainClass.mdi.showError("Project could not be updated to the current version. Open .log file for more details");
 				}
 			}
 		}

@@ -21,10 +21,12 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
+import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -127,7 +129,20 @@ public class MenuController extends AbstractController{
 
     }
     
+    
+    private void openFrame(String prefix, JInternalFrame frame) {
+
+        boolean maximized = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_MAXIMIZED", "true"));
+        try {
+        	frame.setVisible(true);
+       		frame.setMaximum(maximized);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}
+    	
+    }
 	
+    
     // Project preferences
     public void gswNew(){
     	
@@ -153,8 +168,8 @@ public class MenuController extends AbstractController{
     
     public void gswEdit(){
     	action = "edit";
-    	gswOpen(false, false);
-		view.ppFrame.setVisible(true);
+		//view.updateFrames();
+		openFrame("PP", view.ppFrame);
     }
     
     
@@ -172,13 +187,13 @@ public class MenuController extends AbstractController{
 	public void gswOpen(boolean chooseFile, boolean acceptPreferences){
 		
 		String gswPath = "";
-		if (chooseFile){
+		if (chooseFile) {
 			gswPath = gswChooseFile();
 			if (gswPath == "") return;
 			MainDao.setGswPath(gswPath);
 			prop.put("FILE_GSW", gswPath);			
 		}
-		else{
+		else {
 			gswPath = MainDao.getGswPath();
 		}
 		if (gswPath == "") return;
@@ -275,7 +290,7 @@ public class MenuController extends AbstractController{
 		
         // Initialize Database?   
         if (MainDao.initializeDatabase()){
-        	ppPanel.setDatabase(MainDao.getInitDb());
+        	ppPanel.setDatabase(MainDao.getDb());
         }
         
         // Autoconnect?
@@ -296,6 +311,9 @@ public class MenuController extends AbstractController{
 			view.enableMenuDatabase(false);
 		}
 		ppPanel.setSelectedSchema(MainDao.getGswProperties().get("SCHEMA"));
+		
+		// Update Status Bar
+		view.updateConnectionInfo();
 		
 	}
 	
@@ -378,7 +396,7 @@ public class MenuController extends AbstractController{
 	
 	private void createExampleSchema(String softwareName){
 		
-		// TODO: Get default SRID. Never ask user
+		// Get default SRID. Never ask user
 //		String sridValue = prop.get("SRID_DEFAULT", "25831");		
 //		if (sridValue.equals("")) return;
 		String sridValue = "25831";		

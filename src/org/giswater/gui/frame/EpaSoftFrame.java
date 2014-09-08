@@ -55,7 +55,7 @@ public class EpaSoftFrame extends JInternalFrame {
         setTitle("");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		setMaximizable(true);        
+		setMaximizable(true);     
         setVisible(false);
         
         setFrameIcon(new ImageIcon(Utils.getIconPath()));

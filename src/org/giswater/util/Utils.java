@@ -55,6 +55,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -78,6 +79,7 @@ public class Utils {
     private static Logger loggerSql;
 	private static String logFolder;
 	private static String gisFolder;
+	private static String appPath;
 	private static boolean isSqlLogged;	
     
     
@@ -126,15 +128,16 @@ public class Utils {
     
     public static String getAppPath(){
     	
-    	CodeSource codeSource = MainDao.class.getProtectionDomain().getCodeSource();
-    	File jarFile;
-    	String appPath = "";
-    	try {
-    		jarFile = new File(codeSource.getLocation().toURI().getPath());
-    	   	appPath = jarFile.getParentFile().getPath() + File.separator;  
-    	}
-    	catch (URISyntaxException e) {
-    		JOptionPane.showMessageDialog(null, e.getMessage(), "getAppPath Error", JOptionPane.ERROR_MESSAGE);
+    	if (appPath == null){
+	    	CodeSource codeSource = MainDao.class.getProtectionDomain().getCodeSource();
+	    	File jarFile;
+	    	try {
+	    		jarFile = new File(codeSource.getLocation().toURI().getPath());
+	    	   	appPath = jarFile.getParentFile().getPath() + File.separator;  
+	    	}
+	    	catch (URISyntaxException e) {
+	    		JOptionPane.showMessageDialog(null, e.getMessage(), "getAppPath Error", JOptionPane.ERROR_MESSAGE);
+	    	}
     	}
     	return appPath;
     	
@@ -601,7 +604,7 @@ public class Utils {
 		
 	    Component[] comps = panel.getComponents();
 	    for (Component comp : comps) {
-	        if (comp instanceof JLabel || comp instanceof JComboBox || comp instanceof JCheckBox || comp instanceof JButton ||
+	        if (comp instanceof JLabel || comp instanceof JRadioButton || comp instanceof JComboBox || comp instanceof JCheckBox || comp instanceof JButton ||
 	        	comp instanceof JTextField || comp instanceof JTextArea || comp instanceof JDateChooser){
 	            comp.setEnabled(enabled);
 	        }

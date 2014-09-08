@@ -22,12 +22,15 @@ package org.giswater.gui.frame;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.util.ResourceBundle;
 
 import javax.swing.Box;
@@ -36,12 +39,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
+import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ConfigController;
 import org.giswater.controller.EpaSoftController;
@@ -56,7 +65,6 @@ import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import java.awt.event.InputEvent;
 
 
 public class MainFrame extends JFrame implements ActionListener{
@@ -66,7 +74,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
 	private PropertiesMap prop;
-	private String versionCode;
 	
     private JDesktopPane desktopPane;
     
@@ -106,8 +113,17 @@ public class MainFrame extends JFrame implements ActionListener{
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	public GisFrame gisFrame;
+	private JPanel statusPanel;
+	private JProgressBar progressInfo;
+	private JLabel lblInfo;
+	private JLabel lblProcessInfo;
 
-
+	private JLabel lblVersion;
+	
+	private ImageIcon iconInfo;
+	private ImageIcon iconAlert;
+	private ImageIcon iconGreen;
+	private ImageIcon iconRed;
 
 	
 	/**
@@ -120,8 +136,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public MainFrame(boolean isConnected, String versionCode, boolean newVersion, String ftpVersion) {
 		
-		this.versionCode = versionCode;
 		initConfig();
+		setVersionInfo(versionCode);
+		setIcons();
 		setNewVersionVisible(newVersion, ftpVersion);
 		try {
 			initFrames();
@@ -132,7 +149,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 	}
 
-	
+
 	public void setNewVersionVisible(boolean newVersion, String ftpVersion) {
 		mnNewVersionAvailable.setVisible(newVersion);
 		String msg = "Download version v"+ftpVersion;
@@ -303,19 +320,43 @@ public class MainFrame extends JFrame implements ActionListener{
 		desktopPane = new JDesktopPane();
 		desktopPane.setVisible(true);
 		desktopPane.setBackground(Color.LIGHT_GRAY);
+		
+        statusPanel = new JPanel();
+        statusPanel.setBounds(0, 507, 784, 32);
+        desktopPane.add(statusPanel);
+        statusPanel.setLayout(new MigLayout("", "[250.00][20px:n][216.00,grow][150px:n][120px:n]", "[20px:n,fill]"));
+        
+        lblInfo = new JLabel();
+        lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        statusPanel.add(lblInfo, "cell 0 0");
+        
+        lblProcessInfo = new JLabel();
+        lblProcessInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        statusPanel.add(lblProcessInfo, "cell 2 0,alignx right");
+        
+        progressInfo = new JProgressBar();
+        progressInfo.setVisible(false);
+        statusPanel.add(progressInfo, "cell 3 0,growx");
+        
+        lblVersion = new JLabel();
+        lblVersion.setFont(new Font("Tahoma", Font.BOLD, 11));
+        statusPanel.add(lblVersion, "cell 4 0,alignx right");
+                
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(desktopPane)
+                .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
                     .addGap(1, 1, 1)
-        ));
-        
+                    .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
 		setupListeners();
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -337,7 +378,7 @@ public class MainFrame extends JFrame implements ActionListener{
         ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
         gisFrame = new GisFrame();
-        
+              
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
         desktopPane.add(ppFrame);            
@@ -350,7 +391,7 @@ public class MainFrame extends JFrame implements ActionListener{
         gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
         ppFrame.setTitle("Project Preferences");
         epaSoftFrame.setTitle("Main form");
-
+        
         // Get info from properties
 		getMainParams("MAIN");
 
@@ -365,9 +406,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void updateTitle(String path){
 		String title = BUNDLE.getString("MainFrame.this.title");
-		if (versionCode != null){
-			title+= " v"+versionCode;
-		}
 		title+= " - " + path;
 		setTitle(title);
 	}
@@ -376,10 +414,10 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void updateFrames(){
 		
 		try {
-			getFrameParams(ppFrame, "PP");
 			getFrameParams(configFrame, "CONFIG");			
 			getFrameParams(epaSoftFrame, "EPASOFT");
 			getFrameParams(hecRasFrame, "HECRAS");
+			getFrameParams(ppFrame, "PP");
 		} catch (PropertyVetoException e) {
 			Utils.logError(e);
 		}           
@@ -390,11 +428,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	private void getFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
 
         int x, y;
-        boolean visible;
+        boolean visible, maximized;
         x = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_X", "0"));
         y = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_Y", "0"));
         visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
+        maximized = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_MAXIMIZED", "true"));
         frame.setLocation(x, y);
+       	frame.setMaximum(maximized);
         frame.setVisible(visible);
 		
 	}
@@ -402,10 +442,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	private void putFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
 		
-		MainDao.getGswProperties().put(prefix + "_X", frame.getX());
-		MainDao.getGswProperties().put(prefix + "_Y", frame.getY());
+		//MainDao.getGswProperties().put(prefix + "_MAXIMIZED", frame.isMaximum());
 		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
-		MainDao.getGswProperties().put(prefix + "_SELECTED", frame.isSelected());
+		if (!frame.isMaximum()) {
+			MainDao.getGswProperties().put(prefix + "_X", frame.getX());
+			MainDao.getGswProperties().put(prefix + "_Y", frame.getY());
+		}
 		
 	}
 	
@@ -519,6 +561,7 @@ public class MainFrame extends JFrame implements ActionListener{
     	// Get GIS parameters
     	putGisParams();
     	
+    	// Save .gsw file
     	MainDao.saveGswPropertiesFile();
         
 	}	
@@ -577,14 +620,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 
-	public void openHecras() {
-		manageFrames(hecRasFrame);
-	}	
-	
-	public void openProjectPreferences() {
-		manageFrames(ppFrame);
-	}	
-
 	public void openSoftware() {
 		manageFrames(configFrame);
 	}
@@ -619,7 +654,12 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
     private void manageFrames(JInternalFrame frame) {
-		frame.setVisible(true);         
+		try {
+			frame.setMaximum(true);
+			frame.setVisible(true);        
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}
     }
 
 
@@ -630,6 +670,106 @@ public class MainFrame extends JFrame implements ActionListener{
 		configFrame.getPanel().setCursor(cursor);
 		gisFrame.getPanel().setCursor(cursor);
 		this.setCursor(cursor);
+		
+	}
+
+	
+	// Status Bar functions
+	private void setVersionInfo(String version) {
+		lblVersion.setText("Version "+version);		
+	}
+	
+	
+	public void setIcons() {
+		
+		String path;
+		String imgFolder = Utils.getAppPath() + "images" + File.separator;
+		
+		path = imgFolder + "info_20.png";	
+		if (new File(path).exists()) {
+			iconInfo = new ImageIcon(path);
+		}
+		path = imgFolder + "alert_20.png";	
+		if (new File(path).exists()) {
+			iconAlert = new ImageIcon(path);
+		}
+		path = imgFolder + "green_20.png";	
+		if (new File(path).exists()) {
+			iconGreen = new ImageIcon(path);
+		}
+		path = imgFolder + "red_20.png";	
+		if (new File(path).exists()) {
+			iconRed = new ImageIcon(path);
+		}
+		
+	}
+
+	
+	public void updateConnectionInfo() {
+		
+		String schema;
+		String info;
+		if (MainDao.isConnected()) {
+			info = "Status: Connected";
+			schema = MainDao.getSchema();
+			if (schema != null){
+				info+= " - Project name: "+schema;
+			}
+			lblInfo.setIcon(iconGreen);
+		}
+		else {
+			info = "Status: NOT connected";
+			lblInfo.setIcon(iconRed);
+		}
+		lblInfo.setText(info);
+		
+	}
+	
+	public void setProgressVisible(boolean visible) {
+		progressInfo.setValue(0);
+		progressInfo.setVisible(visible);
+	}
+	
+	public void setProgressBarValue(int progress) {
+		progressInfo.setVisible(true);
+		progressInfo.setIndeterminate(true);
+		progressInfo.setValue(progress);
+	}
+
+	public void setProgressBarEnd() {
+		progressInfo.setVisible(true);
+		progressInfo.setIndeterminate(false);
+		progressInfo.setValue(100);
+	}
+	
+	public void showMessage(String msg) {
+		lblProcessInfo.setIcon(iconInfo);		
+		lblProcessInfo.setText(Utils.getBundleString(msg));
+		resetProcessInfo();		
+	}
+	
+	public void showError(String msg) {
+		lblProcessInfo.setIcon(iconAlert);	
+		lblProcessInfo.setText(Utils.getBundleString(msg));
+		Utils.logError(msg);
+		resetProcessInfo();
+	}
+	
+	
+	public void resetProcessInfo() {
+		
+		// Show info 5 seconds
+		int delay = 5000;
+		ActionListener taskPerformer = new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				lblProcessInfo.setIcon(null);
+				lblProcessInfo.setText("");
+				progressInfo.setVisible(false);
+		    }
+		};
+		Timer timer = new Timer(delay, taskPerformer);
+		timer.setRepeats(false);
+		timer.start();
 		
 	}
 	

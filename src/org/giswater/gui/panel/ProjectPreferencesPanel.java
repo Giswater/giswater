@@ -261,7 +261,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCreate.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCreate.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCreate.setEnabled(false);
-		btnCreate.setActionCommand("createSchema");
+		btnCreate.setActionCommand("createSchemaAssistant");
 		
 		btnDelete = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnDelete.text")); 
 		btnDelete.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));

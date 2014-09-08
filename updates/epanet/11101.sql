@@ -15,6 +15,12 @@ This version of Giswater is provided by Giswater Association
 -- ------------------------------------------------------------
 
 -- ----------------------------
+-- Table modified structure for rpt_arc
+-- ----------------------------
+ALTER TABLE "SCHEMA_NAME"."rpt_arc"
+ADD COLUMN "status" varchar(16);
+
+-- ----------------------------
 -- Table modified structure for rpt_result_cat
 -- ----------------------------
 ALTER TABLE "SCHEMA_NAME"."rpt_result_cat"

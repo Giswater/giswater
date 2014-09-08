@@ -389,7 +389,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 			Utils.getLogger().info("Template Folder: "+templatePath);			
 			Utils.getLogger().info("GIS Folder: "+destPath);
-			this.requestFocusInWindow();			
+			this.requestFocusInWindow();
+	    	// TODO: Progress Bar
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
@@ -429,14 +430,16 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	            }
 			}
 			
-			this.requestFocusInWindow();			
+			this.requestFocusInWindow();
+			
+	    	// TODO: Progress Bar
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));	
 			
 			// Get parameteres connection from properties file
 			String host, port, db, user, password;			
 			host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 			port = gswProp.get("POSTGIS_PORT", "5431");
-			db = gswProp.get("POSTGIS_DATABASE", "giswater");
+			db = gswProp.get("POSTGIS_DATABASE", "postgres");
 			user = gswProp.get("POSTGIS_USER", "postgres");
 			password = gswProp.get("POSTGIS_PASSWORD");		
 			password = Encryption.decrypt(password);

@@ -20,7 +20,6 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.io.File;
 import java.sql.ResultSet;
 
@@ -34,10 +33,11 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.TableModelSrid;
+import org.giswater.task.CreateSchemaTask;
 import org.giswater.util.Utils;
 
 
-public class NewProjectController extends AbstractController{
+public class NewProjectController extends AbstractController {
 
 	private ProjectPanel view;
 	private String software;
@@ -171,44 +171,15 @@ public class NewProjectController extends AbstractController{
 		
 		// Save properties
 		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
+		MainDao.savePropertiesFile(); 
 		
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
-		
-		boolean status;
-		if (software.equals("HECRAS")){
-			status = MainDao.createSchemaHecRas(software, schemaName, sridValue);	
-		}
-		else{
-			status = MainDao.createSchema(software, schemaName, sridValue);	
-		}
-		if (status){
-			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()){
-				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-				Utils.getLogger().info(sql);
-				MainDao.executeSql(sql, false);
-				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.getLogger().info(sql);
-				// Last SQL script. So commit all process
-				MainDao.executeSql(sql, true);
-				Utils.showMessage(view, "schema_creation_completed");
-			}
-			else{
-				MainDao.rollbackSchema(schemaName);
-				Utils.logError("Error updateSchema. Schema could not be created");
-			}
-		}
-		else{
-			MainDao.rollbackSchema(schemaName);
-			Utils.logError("Error createSchema. Schema could not be created");
-		}
-		
-		// Refresh view
-		parentPanel.setSchemaModel(MainDao.getSchemas(software));	
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-		closeProject();
+		// Execute task: CreateSchema
+		CreateSchemaTask task = new CreateSchemaTask(software, schemaName, sridValue);
+        task.setParams(title, author, date);
+        task.setController(this);
+        task.setParentPanel(parentPanel);
+        task.addPropertyChangeListener(this);
+        task.execute();
 		
 	}
 	
@@ -223,7 +194,7 @@ public class NewProjectController extends AbstractController{
 	}
 	
 	
-	// TODO:
+	// TODO: When Load Data check is enabled
 	public void loadData(){
 		
 	}
@@ -250,6 +221,6 @@ public class NewProjectController extends AbstractController{
         }
 
     }
-	
+
 	
 }

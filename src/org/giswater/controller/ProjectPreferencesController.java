@@ -20,9 +20,8 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
+import java.beans.PropertyVetoException;
 import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.JDialog;
@@ -34,11 +33,12 @@ import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.task.CopySchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 
 
-public class ProjectPreferencesController extends AbstractController{
+public class ProjectPreferencesController extends AbstractController {
 
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
@@ -70,36 +70,49 @@ public class ProjectPreferencesController extends AbstractController{
 		selectSourceType();
 		
 		// Customize buttons and title
-		customizePanel();
+		// customizePanel();
 
 	}
 	
 	
 	private void customizePanel() {
 		
-		if (waterSoftware.equals("EPASWMM")){
-			epaSoftPanel.setDesignButton("Raingage", "showRaingage");
-			epaSoftPanel.setOptionsButton("Options", "showInpOptions");
-			epaSoftPanel.setReportButton("Report options", "showReport");
-			epaSoftPanel.setSubcatchmentVisible(true);
-			mainFrame.hecRasFrame.setVisible(false);
-			mainFrame.epaSoftFrame.setVisible(true);
-			mainFrame.epaSoftFrame.setTitle(waterSoftware);
-		}
-		else if (waterSoftware.equals("EPANET")){
-			epaSoftPanel.setDesignButton("Times values", "showTimesValues");
-			epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
-			epaSoftPanel.setReportButton("Report options", "showReportEpanet");
-			epaSoftPanel.setSubcatchmentVisible(false);
-			mainFrame.hecRasFrame.setVisible(false);
-			mainFrame.epaSoftFrame.setVisible(true);
-			mainFrame.epaSoftFrame.setTitle(waterSoftware);
-		}
-		else{
-			mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
-			mainFrame.hecRasFrame.setVisible(true);
+		if (waterSoftware.equals("HECRAS")) {
 			mainFrame.epaSoftFrame.setVisible(false);
+			mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
+        	try {
+				mainFrame.hecRasFrame.setMaximum(true);
+				mainFrame.hecRasFrame.setVisible(true);
+			} catch (PropertyVetoException e) {
+				Utils.logError(e);
+			}			
 		}
+		else {
+			if (waterSoftware.equals("EPASWMM")) {
+				epaSoftPanel.setDesignButton("Raingage", "showRaingage");
+				epaSoftPanel.setOptionsButton("Options", "showInpOptions");
+				epaSoftPanel.setReportButton("Report options", "showReport");
+				epaSoftPanel.setSubcatchmentVisible(true);
+			}
+			else if (waterSoftware.equals("EPANET")) {
+				epaSoftPanel.setDesignButton("Times values", "showTimesValues");
+				epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
+				epaSoftPanel.setReportButton("Report options", "showReportEpanet");
+				epaSoftPanel.setSubcatchmentVisible(false);
+			}
+			mainFrame.hecRasFrame.setVisible(false);
+			mainFrame.epaSoftFrame.setTitle(waterSoftware);
+	        boolean maximized = Boolean.parseBoolean(MainDao.getGswProperties().get("EPASOFT_MAXIMIZED", "true"));
+	        if (maximized) {
+	        	try {
+					mainFrame.epaSoftFrame.setMaximum(maximized);
+					mainFrame.epaSoftFrame.setVisible(true);
+				} catch (PropertyVetoException e) {
+					Utils.logError(e);
+				}
+	        }			
+		}
+		mainFrame.updateConnectionInfo();
 		
 	}
 	
@@ -200,6 +213,9 @@ public class ProjectPreferencesController extends AbstractController{
 			}
 		}
 		selectSourceType();
+		
+		// Update Status Bar
+		mainFrame.updateConnectionInfo();
 		
 	}	
 	
@@ -387,30 +403,7 @@ public class ProjectPreferencesController extends AbstractController{
 	}
 	
 	
-	private String getUserSrid(String defaultSrid) {
-		
-		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(MainDao.getPropertiesFile().get("SRID_QUESTION"));
-		if (sridQuestion){
-			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
-			if (sridValue == null){
-				return "";
-			}
-		}
-		else{
-			sridValue = defaultSrid;
-		}
-		return sridValue.trim().toLowerCase();
-		
-	}
-	
-	
-	public void createSchema() {
-		createSchemaAssistant();
-	}
-	
-	
-	private void createSchemaAssistant() {
+	public void createSchemaAssistant() {
 		
 		String defaultSrid = MainDao.getPropertiesFile().get("SRID_DEFAULT", "25831");		
 		ProjectPanel projectPanel = new ProjectPanel(defaultSrid);
@@ -426,68 +419,6 @@ public class ProjectPreferencesController extends AbstractController{
         projectDialog.setVisible(true);
 		
 	}
-
-
-	// Only called by deleteData
-	public void createSchema(String defaultSchemaName, String defaultSridSchema) {
-		
-		String schemaName = defaultSchemaName;
-		if (defaultSchemaName.equals("")){
-			schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
-			if (schemaName == null){
-				return;
-			}
-			schemaName = validateName(schemaName);
-			if (schemaName.equals("")){
-				Utils.showError(view, "schema_valid_name");
-				return;
-			}
-		}
-		String sridValue = "";
-		if (defaultSridSchema.equals("")){
-			String defaultSrid = MainDao.getPropertiesFile().get("SRID_DEFAULT", "25831");		
-			sridValue = getUserSrid(defaultSrid);
-		}
-		else{
-			sridValue = defaultSridSchema;
-		}
-		if (sridValue.equals("")){
-			return;
-		}
-		Integer srid;
-		try{
-			srid = Integer.parseInt(sridValue);
-		} catch (NumberFormatException e){
-			Utils.showError(view, "error_srid");
-			return;
-		}	
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-		boolean isSridOk = MainDao.checkSrid(srid);
-		if (!isSridOk && srid != 0){
-			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-				Utils.getBundleString("srid_valid");			
-			Utils.showError(view, msg);
-			return;
-		}
-		
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
-		
-		boolean status = MainDao.createSchema(waterSoftware, schemaName, sridValue);	
-		if (status && defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_creation_completed");
-		}
-		else if (status && !defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_truncate_completed");
-		}
-		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
-		boolean enabled = view.setSchemaModel(schemaList);
-		epaSoftPanel.enablePreprocess(enabled);
-		schemaChanged();
-		
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		
-	}
 	
 	
 	public void deleteSchema() {
@@ -496,15 +427,13 @@ public class ProjectPreferencesController extends AbstractController{
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(view, msg);        
         if (res == 0){     
-        	view.requestFocusInWindow();
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
+        	view.requestFocusInWindow();     	
         	MainDao.deleteSchema(schemaName);
     		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
     		boolean enabled = view.setSchemaModel(schemaList);
     		epaSoftPanel.enablePreprocess(enabled);
         	setSchema(view.getSelectedSchema());
-    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-    		Utils.showMessage(view, "schema_deleted", "");
+        	mainFrame.showMessage("schema_deleted");
         }
         
 	}		
@@ -521,14 +450,14 @@ public class ProjectPreferencesController extends AbstractController{
 		}
 		newSchemaName = validateName(newSchemaName);
 		if (newSchemaName.equals("")){
-			Utils.showError(view, "schema_valid_name");
+        	mainFrame.showError("schema_valid_name");
 			return;
 		}
 		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
 		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true)){
 			selectSourceType();
-			Utils.showMessage("Project renamed successfuly");
+        	mainFrame.showMessage("Project renamed successfuly");
 		}
 		
 	}
@@ -548,40 +477,20 @@ public class ProjectPreferencesController extends AbstractController{
 			Utils.showError(view, "schema_valid_name");
 			return;
 		}
-		
-		// Set wait cursor
-		mainFrame.ppFrame.getPanel().enableControlsText(false);
-		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
 
-		String sql = "SELECT "+schemaName+".clone_schema('"+schemaName+"', '"+newSchemaName+"')";
-		Utils.logSql(sql);
-		if (MainDao.executeSql(sql, true)){
-			// Now we have to execute functrigger.sql
-			try {
-				String folderRoot = new File(".").getCanonicalPath()+File.separator;
-				String filePath = folderRoot+"sql"+File.separator+waterSoftware+"_functrigger.sql";
-				String content = Utils.readFile(filePath);
-				content = content.replace("SCHEMA_NAME", newSchemaName);
-				Utils.logSql(content);
-				if (MainDao.executeSql(content, true)){
-					selectSourceType();
-					Utils.showMessage("Project copied successfuly");
-				}
-			} catch (IOException e) {
-				Utils.logError(e);
-			}	
-		}
-		
-		// Refresh view
-		mainFrame.ppFrame.getPanel().enableControlsText(true);
-		mainFrame.setCursorFrames(new Cursor(Cursor.DEFAULT_CURSOR));
-		
+		// Execute task: CreateSchema
+		CopySchemaTask task = new CopySchemaTask(schemaName, newSchemaName);
+        task.setController(this);
+        task.setParentPanel(view);
+        task.addPropertyChangeListener(this);
+        task.execute();
+        		
 	}
 		
 
 	public void createGisProject(){
 		mainFrame.gisFrame.setVisible(true);
 	}
-	
+    
 		
 }
