@@ -305,7 +305,8 @@ public class EpaSoftController extends AbstractController{
                 }
                 return;
             }               
-            continueExec = ModelPostgis.processAll(fileInp);
+            boolean selected = view.isSubcatchmentsSelected();
+            continueExec = ModelPostgis.processAll(fileInp, selected);
         }
 
         // Run SWMM

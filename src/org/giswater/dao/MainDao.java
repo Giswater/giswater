@@ -1212,6 +1212,7 @@ public class MainDao {
 	public static boolean updateSchema(Integer schemaVersion) {
 		
 		boolean status = true;
+		
 		// Iterate over all files inside updates/<softwareName> folder
 		String folder = updatesFolder + waterSoftware + File.separator;
 		File[] files = new File(folder).listFiles();
@@ -1301,7 +1302,7 @@ public class MainDao {
 			RandomAccessFile raf = new RandomAccessFile(file, "rw");
 			long fileLength = raf.length();
 			boolean found = false;
-			while (raf.getFilePointer() < fileLength || found) {
+			while (raf.getFilePointer() < fileLength && !found) {
 				String line = raf.readLine().trim().toLowerCase();	
 				if (line.equals(param.toLowerCase())){
 					found = true;
@@ -1311,9 +1312,9 @@ public class MainDao {
 				raf.writeBytes("\n"+param);
 			}
 			raf.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Utils.logError(e);
-		}
+		} 
 
 	}
 
@@ -1377,8 +1378,7 @@ public class MainDao {
 		if (!Utils.openFile(batFile.getAbsolutePath())){
 			return false;
 		}
-		
-//		Utils.showMessage("Project restored successfully");
+//		Utils.showMessage("Restoring project data...");
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {}

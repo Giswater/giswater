@@ -81,7 +81,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		}
 		
 		// Refresh view
-    	Utils.setPanelEnabled(parentPanel, false);
+    	Utils.setPanelEnabled(parentPanel, true);
 		parentPanel.setSchemaModel(MainDao.getSchemas(software));	
 		
 		return null;

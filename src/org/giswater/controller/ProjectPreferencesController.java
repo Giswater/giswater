@@ -62,7 +62,8 @@ public class ProjectPreferencesController extends AbstractController {
 	public void changeSoftware() {
 		
 		// Update software version 
-		waterSoftware = view.getWaterSoftware();
+		setWaterSoftware(view.getWaterSoftware());
+		MainDao.setWaterSoftware(waterSoftware);
 		view.setVersionSoftware(MainDao.getAvailableVersions("postgis", waterSoftware));
 		view.setInfo("");
 		

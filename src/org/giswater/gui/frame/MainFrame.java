@@ -74,6 +74,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
 	private PropertiesMap prop;
+	private String versionCode;
 	
     private JDesktopPane desktopPane;
     
@@ -136,8 +137,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public MainFrame(boolean isConnected, String versionCode, boolean newVersion, String ftpVersion) {
 		
+		this.versionCode = versionCode;
 		initConfig();
-		setVersionInfo(versionCode);
 		setIcons();
 		setNewVersionVisible(newVersion, ftpVersion);
 		try {
@@ -324,7 +325,7 @@ public class MainFrame extends JFrame implements ActionListener{
         statusPanel = new JPanel();
         statusPanel.setBounds(0, 507, 784, 32);
         desktopPane.add(statusPanel);
-        statusPanel.setLayout(new MigLayout("", "[250.00][20px:n][216.00,grow][150px:n][120px:n]", "[20px:n,fill]"));
+        statusPanel.setLayout(new MigLayout("", "[250.00][20px:n][216.00,grow][150px:n][::1px]", "[20px:n,fill]"));
         
         lblInfo = new JLabel();
         lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -339,6 +340,7 @@ public class MainFrame extends JFrame implements ActionListener{
         statusPanel.add(progressInfo, "cell 3 0,growx");
         
         lblVersion = new JLabel();
+        lblVersion.setVisible(false);
         lblVersion.setFont(new Font("Tahoma", Font.BOLD, 11));
         statusPanel.add(lblVersion, "cell 4 0,alignx right");
                 
@@ -406,6 +408,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void updateTitle(String path){
 		String title = BUNDLE.getString("MainFrame.this.title");
+		if (versionCode != null) {
+			title+= " v"+versionCode;
+		}
 		title+= " - " + path;
 		setTitle(title);
 	}
@@ -675,11 +680,6 @@ public class MainFrame extends JFrame implements ActionListener{
 
 	
 	// Status Bar functions
-	private void setVersionInfo(String version) {
-		lblVersion.setText("Version "+version);		
-	}
-	
-	
 	public void setIcons() {
 		
 		String path;
@@ -713,7 +713,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			info = "Status: Connected";
 			schema = MainDao.getSchema();
 			if (schema != null){
-				info+= " - Project name: "+schema;
+				info+= " - Project data: "+schema;
 			}
 			lblInfo.setIcon(iconGreen);
 		}
