@@ -39,7 +39,6 @@ public class HecRasFrame extends JInternalFrame {
 	
 	
 	public HecRasFrame(){
-		setResizable(true);
 		initComponents();
 	}
 	
@@ -57,7 +56,7 @@ public class HecRasFrame extends JInternalFrame {
         setTitle("HEC-RAS");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		setMaximizable(true);
+		setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {

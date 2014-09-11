@@ -71,6 +71,7 @@ public class MainDao {
 	private static String db;
 	private static String user;
 	private static String password;
+	private static String bin;
     
 	private static final String MINOR_VERSION = "1.1";
     private static final String ROOT_FOLDER = "giswater" + File.separator;
@@ -265,9 +266,16 @@ public class MainDao {
 	}
     
 	
-	private static void getConnectionParameters(){
+	private static boolean getConnectionParameters(){
 
 		// Get parameteres connection from properties file
+		bin = gswProp.getProperty("POSTGIS_BIN", "");
+		File file = new File(bin);
+		if (!file.exists()){
+			Utils.showError("postgis_not_found", bin);
+			return false;			
+		}
+		bin+= File.separator;
 		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 		port = gswProp.get("POSTGIS_PORT", "5431");
 		db = gswProp.get("POSTGIS_DATABASE", "postgres");
@@ -275,6 +283,8 @@ public class MainDao {
 		password = gswProp.get("POSTGIS_PASSWORD");		
 		password = Encryption.decrypt(password);
 		password = (password == null) ? "" : password;
+		
+		return true;
 		
 	}
 	
@@ -284,7 +294,7 @@ public class MainDao {
 		if (isConnected) return true;
 		
 		// Get parameteres connection from properties file
-		getConnectionParameters();
+		if (!getConnectionParameters()) return false;
 		
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")){
 			Utils.getLogger().info("Connection not possible. Check parameters in properties file");
@@ -403,6 +413,32 @@ public class MainDao {
 			Utils.logError(e);
 			return false;
 		}
+		return true;
+
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private static boolean initDatabaseScript() {
+		
+		// Execute script that creates working Database
+		// Set content of .bat file
+		if (!getConnectionParameters()) return false;
+		String aux= "\""+bin+"createdb\" -U "+user+" -h "+host+" -p "+port+" -w " + INIT_DB;
+		aux+= "\nexit";		
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File	
+		String batPath = Utils.getLogFolder() + "createdb.bat";
+		File batFile = new File(batPath);        
+		Utils.fillFile(batFile, aux);    		
+		Utils.openFile(batFile.getAbsolutePath());
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {}
+		batFile.delete();
+		
 		return true;
 
 	}
@@ -592,11 +628,9 @@ public class MainDao {
         String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
-            connectionPostgis.setAutoCommit(false);
         } catch (SQLException e) {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
-                connectionPostgis.setAutoCommit(false);
             } catch (SQLException e1) {
             	if (showError){
             		Utils.showError(e1.getMessage());
@@ -665,6 +699,7 @@ public class MainDao {
 	public static boolean executeSql(String sql, boolean commit) {
 		
 		try {
+			System.out.println(connectionPostgis.getTransactionIsolation());   // 2
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()){
@@ -718,7 +753,7 @@ public class MainDao {
     }	
 	
 	
-	private static boolean checkQuery(String sql){
+	private static boolean checkQuery(String sql) {
 		
 		boolean check = false;
         try {
@@ -733,21 +768,27 @@ public class MainDao {
 	}
 	
 	
-	public static String stringQuery(String sql){
+	public static String stringQuery(String sql, boolean showError) {
 		
     	String value = "";
         try {
-    		ResultSet rs = getResultset(sql);      	
-			if (rs.next()){
-				value = rs.getString(1);
-			}
-	        rs.close();	
+    		ResultSet rs = getResultset(sql, showError);      	
+    		if (rs != null) {
+				if (rs.next()){
+					value = rs.getString(1);
+				}
+				rs.close();	
+    		}
 		} catch (SQLException e) {
         	Utils.logError(e.getMessage());
 		}
         return value;
         
 	}	
+	
+	public static String stringQuery(String sql) {
+		return stringQuery(sql, true);
+	}
 	
 	
     // Check if the table exists
@@ -802,7 +843,7 @@ public class MainDao {
     
     public static String checkPostgisVersion(){
         String sql = "SELECT PostGIS_full_version()";
-        return stringQuery(sql);
+        return stringQuery(sql, false);
     }
     
     
@@ -887,6 +928,10 @@ public class MainDao {
         
 	}
 
+	
+	public static ResultSet getResultset(String sql, boolean showError){
+		return getResultset(connectionPostgis, sql, showError);
+	}
 	
 	public static ResultSet getResultset(String sql){
 		return getResultset(connectionPostgis, sql, true);
@@ -1079,16 +1124,8 @@ public class MainDao {
 	
 	public static boolean executeScript(String scriptPath, String batPath) {
 
-		String bin = gswProp.getProperty("POSTGIS_BIN", "");
-		File file = new File(bin);
-		if (!file.exists()){
-			Utils.showError("postgis_not_found", bin);
-			return false;			
-		}
-		bin+= File.separator;
-		
 		// Set content of .bat file
-		getConnectionParameters();
+		if (!getConnectionParameters()) return false;
 		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
 		aux+= "\nexit";		
 		Utils.getLogger().info(aux);
@@ -1243,16 +1280,8 @@ public class MainDao {
 	
 	public static boolean executeDump(String schema, String sqlPath) {
 
-		String bin = gswProp.getProperty("POSTGIS_BIN", "");
-		File file = new File(bin);
-		if (!file.exists()){
-			Utils.showError("postgis_not_found", bin);
-			return false;			
-		}
-		bin+= File.separator;
-		
 		// Check pgPass file and insert param if necessary
-		getConnectionParameters();
+		if (!getConnectionParameters()) return false;
 		String param = host+":"+port+":"+db+":"+user+":"+password;
 		checkPgPass(param);
 		
@@ -1360,7 +1389,7 @@ public class MainDao {
 		}
 		
 		// Check pgPass file and insert param if necessary
-		getConnectionParameters();
+		if (!getConnectionParameters()) return false;
 		String param = host+":"+port+":"+db+":"+user+":"+password;
 		checkPgPass(param);
 		

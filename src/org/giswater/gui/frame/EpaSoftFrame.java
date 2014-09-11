@@ -20,8 +20,6 @@
  */
 package org.giswater.gui.frame;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
@@ -55,16 +53,9 @@ public class EpaSoftFrame extends JInternalFrame {
         setTitle("");
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		setMaximizable(true);     
         setVisible(false);
         
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
-		try {
-			setIcon(true);
-		} catch (PropertyVetoException e) {
-			Utils.logError(e.getMessage());
-		}        
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)

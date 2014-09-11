@@ -95,17 +95,15 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JTextField txtDescription;
 	private JScrollPane scrollPane_1;
 	
-	private JPanel panelGis;
-	private JButton btnCreateGisProject;
-	
 	private JButton btnAccept;
 	private JButton btnApply;
 	private JButton btnClose;
 	
-	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
-	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	private static final Font FONT_PANEL_TITLE2 = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Integer BUTTON_WIDTH = 72;
 	private JLabel lblInfo;
+	private JButton btnCreateGisProject;
 
 	
 	public ProjectPreferencesPanel() {
@@ -115,46 +113,55 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig(){
 		
-		setLayout(new MigLayout("", "[90px:n][][154.00px:n,grow][]", "[5px][][][35.00][61.00][][59.00][]"));
+		setLayout(new MigLayout("", "[90px:n][][][][154.00px:n][::97px]", "[][][][61.00][][]"));
 		
 		JLabel lblWaterSoftware = new JLabel("Water software:");
-		add(lblWaterSoftware, "cell 0 1,alignx right");
+		add(lblWaterSoftware, "cell 0 0,alignx right");
 		
 		optEpaSwmm = new JRadioButton("EPASWMM");
 		optEpaSwmm.setActionCommand("changeSoftware"); 
-		add(optEpaSwmm, "flowx,cell 1 1");
+		add(optEpaSwmm, "flowx,cell 1 0");
 		
 		optEpanet = new JRadioButton("EPANET");
 		optEpanet.setActionCommand("changeSoftware"); 
-		add(optEpanet, "cell 1 1");
+		add(optEpanet, "cell 2 0");
 		
 		optHecras = new JRadioButton("HEC-RAS");
 		optHecras.setActionCommand("changeSoftware"); 
-		add(optHecras, "cell 1 1");
+		add(optHecras, "cell 3 0");
+		
+		ButtonGroup groupSoftware = new ButtonGroup();
+		groupSoftware.add(optEpaSwmm);	
+		groupSoftware.add(optEpanet);
+		groupSoftware.add(optHecras);	
 		
 		JLabel lblVersion = new JLabel("Version:");
-		add(lblVersion, "cell 0 2,alignx trailing");
+		add(lblVersion, "cell 0 1,alignx trailing");
 		
 		cboVersionSoftware = new JComboBox<String>();
-		add(cboVersionSoftware, "cell 1 2,growx");
+		add(cboVersionSoftware, "cell 1 1 3 1,growx");
 		
 		JLabel label = new JLabel("Data storage:");
-		add(label, "cell 0 3,alignx right");
+		add(label, "cell 0 2,alignx right");
+		
+		optDatabase = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optDatabase.text")); //$NON-NLS-1$
+		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		optDatabase.setActionCommand("selectSourceType");
+		add(optDatabase, "flowx,cell 1 2");
 		
 		optDbf = new JRadioButton("DBF");
 		optDbf.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		optDbf.setActionCommand("selectSourceType");
-		add(optDbf, "flowx,cell 1 3");
+		add(optDbf, "cell 2 2");
 		
-		optDatabase = new JRadioButton("Database");
-		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		optDatabase.setActionCommand("selectSourceType");
-		add(optDatabase, "cell 1 3");
+		ButtonGroup groupStorage = new ButtonGroup();
+		groupStorage.add(optDatabase);
+		groupStorage.add(optDbf);
 		
 		panelDbf = new JPanel();
-		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelDbf, "cell 0 4 4 1,grow");
-		panelDbf.setLayout(new MigLayout("", "[75px:n][100px:n,grow][10px:n][]", "[]"));
+		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelDbf, "cell 0 3 6 1,grow");
+		panelDbf.setLayout(new MigLayout("", "[75px:n][300.00px:n,grow][10px:n][::80px][10px:n]", "[34px:n]"));
 		
 		JLabel lblFolderShp = new JLabel("Data folder:");
 		panelDbf.add(lblFolderShp, "cell 0 0,alignx right");
@@ -168,21 +175,21 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtInput.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnFolderShp = new JButton();
-		btnFolderShp.setMinimumSize(new Dimension(60, 9));
-		panelDbf.add(btnFolderShp, "cell 3 0");
+		btnFolderShp.setMinimumSize(new Dimension(72, 9));
+		panelDbf.add(btnFolderShp, "cell 3 0,alignx right");
 		btnFolderShp.setText("...");
 		btnFolderShp.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFolderShp.setActionCommand("chooseFolderShp");
 		
 		panelDB = new JPanel();
-		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelDB, "cell 0 5 4 1,grow");
+		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelDB, "cell 0 4 6 1,grow");
 		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
 		panelDatabase = new JPanel();
-		panelDB.add(panelDatabase, "cell 0 0");
-		panelDatabase.setBorder(new TitledBorder(null, "Connection Parameters", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
-		panelDatabase.setLayout(new MigLayout("", "[65px:n][100px:n:100px][20px][::120px]", "[][][][][][][]"));
+		panelDB.add(panelDatabase, "cell 0 0,growx");
+		panelDatabase.setBorder(new TitledBorder(null, "Connection Parameters", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
+		panelDatabase.setLayout(new MigLayout("", "[65px:n][100px:n:100px][20px][grow]", "[][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); 
 		panelDatabase.add(lblNewLabel, "cell 0 0,alignx right");
@@ -232,17 +239,17 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		chkRemember = new JCheckBox("Remember password");
 		chkRemember.setSelected(true);
-		panelDatabase.add(chkRemember, "cell 1 6");
+		panelDatabase.add(chkRemember, "flowx,cell 3 6,alignx right");
 		
 		btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); 
 		btnTest.setMaximumSize(new Dimension(120, 23));
 		btnTest.setMinimumSize(new Dimension(120, 23));
 		btnTest.setActionCommand("testConnection");
-		panelDatabase.add(btnTest, "flowx,cell 3 6");
+		panelDatabase.add(btnTest, "cell 3 6,alignx right");
 		
 		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
-		panelManagement.setBorder(new TitledBorder(null, "Project Data Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
+		panelManagement.setBorder(new TitledBorder(null, "Project Data Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
 		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59.00px][][][][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
@@ -306,49 +313,35 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtDescription.setColumns(10);
 		panelManagement.add(txtDescription, "cell 1 2 6 1,growx");
 		
-		panelGis = new JPanel();
-		panelGis.setBorder(new TitledBorder(null, "GIS Project", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelGis, "cell 0 6 4 1,grow");
-		panelGis.setLayout(new MigLayout("", "[]", "[]"));
-		
-		btnCreateGisProject = new JButton();
-		panelGis.add(btnCreateGisProject, "cell 0 0");
-		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text")); 
-		btnCreateGisProject.setMinimumSize(new Dimension(80, 23));
-		btnCreateGisProject.setActionCommand("createGisProject"); 
-		
 		lblInfo = new JLabel(""); 
-		add(lblInfo, "cell 0 7 2 1");
+		add(lblInfo, "flowx,cell 0 5 2 1");
 		
 		btnApply = new JButton();
 		btnApply.setMnemonic(KeyEvent.VK_P);
 		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); 
-		btnApply.setMinimumSize(new Dimension(75, 23));
+		btnApply.setMinimumSize(new Dimension(72, 23));
 		btnApply.setActionCommand("applyPreferences");
-		add(btnApply, "flowx,cell 2 7,alignx right");
+		add(btnApply, "flowx,cell 4 5,alignx right");
 		
 		btnAccept = new JButton();
 		btnAccept.setMnemonic(KeyEvent.VK_A);
 		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
 		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnAccept.setActionCommand("acceptPreferences");
-		add(btnAccept, "cell 2 7,alignx right");
+		add(btnAccept, "cell 4 5,alignx right");
 		
 		btnClose = new JButton();
 		btnClose.setMnemonic(KeyEvent.VK_C);
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnClose.setActionCommand("closePreferences");
-		add(btnClose, "cell 3 7");
-		
-		// Group the radio buttons
-		ButtonGroup groupSoftware = new ButtonGroup();
-		groupSoftware.add(optEpanet);
-		groupSoftware.add(optEpaSwmm);	
-		groupSoftware.add(optHecras);	
-		ButtonGroup groupStorage = new ButtonGroup();
-		groupStorage.add(optDbf);
-		groupStorage.add(optDatabase);
+		add(btnClose, "cell 5 5,alignx left");
+			
+		btnCreateGisProject = new JButton();
+		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text_1")); //$NON-NLS-1$
+		btnCreateGisProject.setMinimumSize(new Dimension(80, 23));
+		btnCreateGisProject.setActionCommand("createGisProject");
+		add(btnCreateGisProject, "cell 0 5 2 1,alignx right");
 		
 		setupListeners();
 	    
@@ -367,6 +360,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		optDbf.addActionListener(this);
 		optDatabase.addActionListener(this);
 		
+		// Panel DBF
+		btnFolderShp.addActionListener(this);
+		
 		// Panel Database connection
 		btnTest.addActionListener(this);
 		btnApply.addActionListener(this);
@@ -380,7 +376,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnRename.addActionListener(this);
 		btnCopy.addActionListener(this);
 		
-		// Panel Gis Project
+		// Gis Project
 		btnCreateGisProject.addActionListener(this);
 
 	}

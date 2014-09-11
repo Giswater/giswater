@@ -57,9 +57,8 @@ public class GisFrame extends JInternalFrame {
 
     	panel.setFrame(this);
     	setClosable(true);
-		setMaximizable(true);        
+    	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE); 
         setVisible(false);
-    	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
         GroupLayout layout = new GroupLayout(getContentPane());

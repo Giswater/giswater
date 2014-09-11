@@ -118,8 +118,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JProgressBar progressInfo;
 	private JLabel lblInfo;
 	private JLabel lblProcessInfo;
-
-	private JLabel lblVersion;
 	
 	private ImageIcon iconInfo;
 	private ImageIcon iconAlert;
@@ -325,7 +323,7 @@ public class MainFrame extends JFrame implements ActionListener{
         statusPanel = new JPanel();
         statusPanel.setBounds(0, 507, 784, 32);
         desktopPane.add(statusPanel);
-        statusPanel.setLayout(new MigLayout("", "[250.00][20px:n][216.00,grow][150px:n][::1px]", "[20px:n,fill]"));
+        statusPanel.setLayout(new MigLayout("", "[50px:80px,grow][10px:n][100px:200px,grow][130px:n:130px]", "[20px:n,fill]"));
         
         lblInfo = new JLabel();
         lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -333,16 +331,11 @@ public class MainFrame extends JFrame implements ActionListener{
         
         lblProcessInfo = new JLabel();
         lblProcessInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        statusPanel.add(lblProcessInfo, "cell 2 0,alignx right");
+        statusPanel.add(lblProcessInfo, "cell 2 0,alignx left");
         
         progressInfo = new JProgressBar();
         progressInfo.setVisible(false);
-        statusPanel.add(progressInfo, "cell 3 0,growx");
-        
-        lblVersion = new JLabel();
-        lblVersion.setVisible(false);
-        lblVersion.setFont(new Font("Tahoma", Font.BOLD, 11));
-        statusPanel.add(lblVersion, "cell 4 0,alignx right");
+        statusPanel.add(progressInfo, "cell 3 0,alignx left");
                 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -388,7 +381,7 @@ public class MainFrame extends JFrame implements ActionListener{
         desktopPane.add(gisFrame);
         
         // Set specific configuration
-        gisFrame.setLocation(175, 80);
+        //gisFrame.setLocation(175, 80);
         gisFrame.setGisExtension("qgs");
         gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
         ppFrame.setTitle("Project Preferences");
@@ -402,6 +395,12 @@ public class MainFrame extends JFrame implements ActionListener{
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this);
+        
+        //epaSoftFrame.setMaximizable(true);
+        epaSoftFrame.setMaximum(true);
+        ppFrame.setMaximum(true);
+        gisFrame.setMaximum(true);
+        configFrame.setMaximum(true);
 		
 	}
 	
@@ -710,15 +709,18 @@ public class MainFrame extends JFrame implements ActionListener{
 		String schema;
 		String info;
 		if (MainDao.isConnected()) {
-			info = "Status: Connected";
+			info = "Connected";
 			schema = MainDao.getSchema();
-			if (schema != null){
-				info+= " - Project data: "+schema;
+			if (schema != null && !schema.equals("")){
+				info+= " - "+schema;
+			}
+			else {
+				info+= " - Any project data selected";
 			}
 			lblInfo.setIcon(iconGreen);
 		}
 		else {
-			info = "Status: NOT connected";
+			info = "NOT connected";
 			lblInfo.setIcon(iconRed);
 		}
 		lblInfo.setText(info);
@@ -751,6 +753,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void showError(String msg) {
 		lblProcessInfo.setIcon(iconAlert);	
 		lblProcessInfo.setText(Utils.getBundleString(msg));
+		Utils.logError(msg);
+		resetProcessInfo();
+	}
+	
+	public void showError(String msg, String param) {
+		lblProcessInfo.setIcon(iconAlert);	
+		lblProcessInfo.setText(Utils.getBundleString(msg) + " "+param);
 		Utils.logError(msg);
 		resetProcessInfo();
 	}

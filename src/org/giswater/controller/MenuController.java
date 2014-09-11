@@ -289,14 +289,13 @@ public class MenuController extends AbstractController{
 		}
 		
         // Initialize Database?   
-        if (MainDao.initializeDatabase()){
-        	ppPanel.setDatabase(MainDao.getDb());
-        }
+        MainDao.initializeDatabase();
         
         // Autoconnect?
         Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
        	if (autoConnect && remember){
        		MainDao.silenceConnection();
+       		ppPanel.setDatabase(MainDao.getDb());
         }
         
         // Update text open/close button

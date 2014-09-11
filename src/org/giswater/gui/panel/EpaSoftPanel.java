@@ -42,7 +42,6 @@ import org.giswater.controller.EpaSoftController;
 import org.giswater.gui.frame.EpaSoftFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
-import javax.swing.JRadioButton;
 
 
 public class EpaSoftPanel extends JPanel implements ActionListener {
@@ -85,13 +84,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JButton btnResultSelector;
 	private JButton btnClose;
 	
-	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
-	private static final Integer BUTTON_WIDTH = 125;
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	private static final Integer BUTTON_WIDTH = 121;
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
 	private JCheckBox chkSubcatchments;
-	private JRadioButton opt1D;
-	private JRadioButton opt2D;
 
 	
 	public EpaSoftPanel() {
@@ -106,11 +103,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][614.00px,grow]", "[5px][87.00][][][][]"));
+		setLayout(new MigLayout("", "[583.00px][::10px]", "[5px][87.00][][][][]"));
 		
 		panelDataManager = new JPanel();
-		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelDataManager, "cell 1 1,grow");
+		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelDataManager, "cell 0 1 2 1,grow");
 		panelDataManager.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n][]", "[][]"));
 		
 		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text"));
@@ -131,21 +128,22 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnTimeseries = new JButton(BUNDLE.getString("EpaSoftPanel.btnTimeseries.text")); 
 		btnTimeseries.setEnabled(false);
 		btnTimeseries.setActionCommand("showTimeseries");
-		panelDataManager.add(btnTimeseries, "cell 3 0,growx");
+		panelDataManager.add(btnTimeseries, "cell 0 1,growx");
 		
 		btnArcCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnArcCatalog.text")); 
 		btnArcCatalog.setEnabled(false);
 		btnArcCatalog.setActionCommand("showArcCatalog");
-		panelDataManager.add(btnArcCatalog, "cell 0 1,growx");
+		panelDataManager.add(btnArcCatalog, "cell 1 1,growx");
 		
-		btnHydrologyCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnSimulationCatalog.text")); 
+		btnHydrologyCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnSimulationCatalog.text"));
+		btnHydrologyCatalog.setPreferredSize(new Dimension(110, 23));
 		btnHydrologyCatalog.setEnabled(false);
 		btnHydrologyCatalog.setActionCommand("showHydrologyCatalog");
-		panelDataManager.add(btnHydrologyCatalog, "cell 1 1,growx");
+		panelDataManager.add(btnHydrologyCatalog, "cell 2 1");
 		
 		panelPreprocess = new JPanel();
-		panelPreprocess.setBorder(new TitledBorder(null, "Preprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelPreprocess, "cell 1 2,grow");
+		panelPreprocess.setBorder(new TitledBorder(null, "Preprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelPreprocess, "cell 0 2 2 1,grow");
 		panelPreprocess.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]", "[]"));
 		
 		btnSectorSelection = new JButton("Sector selection");
@@ -169,9 +167,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelPreprocess.add(btnReport, "cell 3 0,growx");
 		
 		panelFileManager = new JPanel();
-		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelFileManager, "cell 1 3,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][grow][]", "[::20px][35px:45px:45px][20][35px:n][20][][]"));
+		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelFileManager, "cell 0 3 2 1,grow");
+		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][364.00][72px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); 
@@ -195,20 +193,17 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		txtFileInp.setLineWrap(true);
 
 		btnFileInp = new JButton();
+		btnFileInp.setMinimumSize(new Dimension(72, 9));
 		btnFileInp.setActionCommand("chooseFileInp");
 		btnFileInp.setText("...");
 		btnFileInp.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileInp, "cell 4 1,alignx left");
+		panelFileManager.add(btnFileInp, "cell 4 1,growx");
 
 		chkExec = new JCheckBox();
 		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text")); 
 		chkExec.setName("chk_exec");
 		chkExec.setActionCommand("Exportaci\u00F3n a INP");
 		panelFileManager.add(chkExec, "cell 0 2 3 1,alignx left,aligny bottom");
-		
-		opt1D = new JRadioButton(BUNDLE.getString("EpaSoftPanel.opt1D.text")); //$NON-NLS-1$
-		opt1D.setVisible(false);
-		panelFileManager.add(opt1D, "flowx,cell 3 2");
 
 		lblFileRpt = new JLabel();
 		lblFileRpt.setText(BUNDLE.getString("Form.label_1.text")); 
@@ -223,10 +218,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		txtFileRpt.setLineWrap(true);
 
 		btnFileRpt = new JButton();
+		btnFileRpt.setMinimumSize(new Dimension(72, 9));
 		btnFileRpt.setActionCommand("chooseFileRpt");
 		btnFileRpt.setText("...");
 		btnFileRpt.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileRpt, "cell 4 3,alignx left");
+		panelFileManager.add(btnFileRpt, "cell 4 3,growx");
 
 		chkImport = new JCheckBox();
 		chkImport.setText(BUNDLE.getString("Form.chkImport.text")); 
@@ -244,41 +240,37 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
 		txtResultName.setDocument(maxLength);				
 		panelFileManager.add(txtResultName, "cell 3 5,growx,aligny top");
-
+		
 		btnAccept = new JButton();
-		btnAccept.setMinimumSize(new Dimension(80, 23));
+		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setEnabled(false);
 		btnAccept.setText(BUNDLE.getString("Form.btnAccept.text")); 
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
-		panelFileManager.add(btnAccept, "flowx,cell 3 6,alignx right");
-		
-		opt2D = new JRadioButton(BUNDLE.getString("EpaSoftPanel.opt2D.text")); //$NON-NLS-1$
-		opt2D.setVisible(false);
-		panelFileManager.add(opt2D, "cell 3 2");
+		panelFileManager.add(btnAccept, "flowx,cell 4 6,alignx right");
 		
 		panelPostprocess = new JPanel();
-		panelPostprocess.setBorder(new TitledBorder(null, "Postprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelPostprocess, "cell 1 4,grow");
-		panelPostprocess.setLayout(new MigLayout("", "["+BUTTON_WIDTH+"px:n]["+BUTTON_WIDTH+"px:n]", "[]"));
+		panelPostprocess.setBorder(new TitledBorder(null, "Postprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelPostprocess, "cell 0 4 2 1,grow");
+		panelPostprocess.setLayout(new MigLayout("", "[121px:n][121px:n]", "[]"));
 		
 		btnResultCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultCatalog.text")); 
-		btnResultCatalog.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
+		btnResultCatalog.setPreferredSize(new Dimension(121, 23));
 		btnResultCatalog.setEnabled(false);
 		btnResultCatalog.setActionCommand("scenarioCatalog");
 		panelPostprocess.add(btnResultCatalog, "cell 0 0");
 		
 		btnResultSelector = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultSelector.text")); 
-		btnResultSelector.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
+		btnResultSelector.setPreferredSize(new Dimension(121, 23));
 		btnResultSelector.setEnabled(false);
 		btnResultSelector.setActionCommand("scenarioManagement");
 		panelPostprocess.add(btnResultSelector, "cell 1 0");
 		
 		btnClose = new JButton();
 		btnClose.setText("Close");
-		btnClose.setMinimumSize(new Dimension(80, 23));
+		btnClose.setMinimumSize(new Dimension(72, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 1 5,alignx right");
+		add(btnClose, "cell 0 5,alignx right");
 
 		setupListeners();
 

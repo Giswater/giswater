@@ -22,6 +22,7 @@
 package org.giswater.gui.panel;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.MainClass;
 import org.giswater.gui.frame.GisFrame;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
@@ -188,7 +190,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00][]", "[10px:n][40px][][][][][10px:n][]"));
+		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00][]", "[10px:n][34px:n][][][][][10px:n][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
 		add(lblProjectFolder, "cell 0 1,alignx right");
@@ -202,6 +204,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectFolder.setText("");
 		
 		btnProjectFolder = new JButton();
+		btnProjectFolder.setMinimumSize(new Dimension(72, 9));
 		add(btnProjectFolder, "cell 3 1");
 		btnProjectFolder.setText("...");
 		btnProjectFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -238,10 +241,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		add(cboSchema, "cell 1 5,growx");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("gisAccept");
 		add(btnAccept, "cell 2 7,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
+		btnClose.setMinimumSize(new Dimension(72, 23));
 		btnClose.addActionListener(this);
 		btnClose.setActionCommand("closePanel");
 		add(btnClose, "cell 3 7");
@@ -325,12 +330,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String gisType = getDataStorage();
 		
 		if (folder.equals("")){
-			Utils.showMessage("You have to select a Folder");
+			MainClass.mdi.showMessage("You have to select a Folder");
 			return;
 		}
 		
 		if (name.equals("")){
-			Utils.showMessage("You have to select a Name");
+			MainClass.mdi.showMessage("You have to select a Name");
 			return;
 		}
 		
@@ -339,7 +344,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()){
 				String schema = getSelectedSchema();
 				if (schema.equals("")){
-					Utils.showMessage(this, "any_schema_selected");
+					MainClass.mdi.showMessage("any_schema_selected");
 					return;
 				}
 				String table = "arc";
@@ -358,7 +363,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				}
 			} 
 			else{
-				Utils.showMessage(this, "You should connect to a Database");
+				MainClass.mdi.showMessage("You should connect to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}			
@@ -373,14 +378,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
 		if (software.equals("HECRAS")){
-			Utils.showMessage(this, "gis_dbf_option");
+			MainClass.mdi.showMessage("gis_dbf_option");
 			return;
 		}
     	String gisFolder = Utils.getGisFolder();
 		String templatePath = gisFolder + software;
 		File templateFolder = new File(templatePath);
 		if (!templateFolder.exists()){
-			Utils.showError(this, "inp_error_notfound", templatePath);
+			MainClass.mdi.showError("inp_error_notfound", templatePath);
 			return;
 		}
 		
@@ -396,7 +401,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
             // Ending message
 			String msg = Utils.getBundleString("gis_end") + "\n" + destPath + Utils.getBundleString("gis_end2");
-    		Utils.showMessage(this, msg);            
+			MainClass.mdi.showMessage(msg);            
 		} catch (Exception e) {
         	Utils.showError(e);
 		}
@@ -411,10 +416,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 
 	    	String gisFolder = Utils.getGisFolder();
-	    	templatePath = gisFolder + software+"."+gisExtension;
+	    	templatePath = gisFolder + software+"2."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
-				Utils.showError(this, "inp_error_notfound", templatePath);
+	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
 				return;
 			}
 			File folder = new File(folderPath);
@@ -480,7 +485,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
             }  	        
 			
         } catch (FileNotFoundException e) {
-    	    Utils.showError(this, "inp_error_notfound", templatePath);
+    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
     	} catch (IOException e) {
         	Utils.showError(e, templatePath);
     	}

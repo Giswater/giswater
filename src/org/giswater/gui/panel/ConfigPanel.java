@@ -43,6 +43,7 @@ import org.giswater.gui.frame.ConfigFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 import javax.swing.JRadioButton;
+import java.awt.Dimension;
 
 
 public class ConfigPanel extends JPanel implements ActionListener {
@@ -329,12 +330,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); 
-		panel_1.setLayout(new MigLayout("", "[:120.00:120px][220][]", "[387.00,grow][10px][][][10px:n][25]"));
+		panel_1.setLayout(new MigLayout("", "[:120.00:120px][237.00][:72px:72px]", "[387.00,grow][10px][][][10px:n][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[][:150:300px][50px:n][45.00]", "[5px:n][][][][][][][][][][][5px][][10.00][][10px]"));
+		panel.setLayout(new MigLayout("", "[][:150:300px][37.00px:n][::75px]", "[5px:n][][][][][][][][][][][5px][][10.00][][10px]"));
 		
 	    ButtonGroup group = new ButtonGroup();
 	    ButtonGroup group2 = new ButtonGroup();
@@ -495,6 +496,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    panel.add(txtFileDbAdmin, "cell 1 14 2 1,growx");
 	    
 	    btnFileDbAdmin = new JButton();
+	    btnFileDbAdmin.setMinimumSize(new Dimension(72, 9));
 	    btnFileDbAdmin.setText("...");
 	    btnFileDbAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
 	    btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
@@ -520,12 +522,14 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		panel_1.add(lblNotepad2, "cell 0 3");
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("configAccept");
 		panel_1.add(btnAccept, "cell 1 5,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
+		btnClose.setMinimumSize(new Dimension(72, 23));
 		btnClose.setActionCommand("closePanel");
-		panel_1.add(btnClose, "cell 2 5");
+		panel_1.add(btnClose, "cell 2 5,alignx right");
 
 		setupListeners();
 

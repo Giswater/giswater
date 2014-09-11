@@ -131,11 +131,7 @@ public class ModelPostgis extends Model {
 	}    
 	
 	
-    // Main procedure
-    public static boolean processAll(File fileInp) {
-    	return processAll(fileInp, false);
-    }
-    
+    // Main procedure 
     public static boolean processAll(File fileInp, boolean isSubcatchmentSelected) {
 
         Utils.getLogger().info("exportINP");
@@ -660,9 +656,6 @@ public class ModelPostgis extends Model {
 
         // Insert into result_selection commiting transaction
    		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
-        
-        // Ending message
-        Utils.showMessage("import_end");                
 
 		return true;
 		

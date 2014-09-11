@@ -52,27 +52,19 @@ import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
-import org.giswater.model.Model;
-import org.giswater.model.ModelDbf;
-import org.giswater.model.ModelPostgis;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
+import org.giswater.task.ExecuteTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class EpaSoftController extends AbstractController{
+public class EpaSoftController extends AbstractController {
 
 	private EpaSoftPanel view;
 	private ProjectPreferencesPanel ppPanel;
 	private MainFrame mainFrame;
     private PropertiesMap gswProp;
-    private File fileInp;
-    private File fileRpt;
-    private String projectName;
-    private boolean exportSelected;
-    private boolean execSelected;
-    private boolean importSelected; 
 
     
     public EpaSoftController(EpaSoftPanel view, MainFrame mf) {
@@ -173,7 +165,7 @@ public class EpaSoftController extends AbstractController{
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            fileInp = chooser.getSelectedFile();
+            File fileInp = chooser.getSelectedFile();
             String path = fileInp.getAbsolutePath();
             if (path.lastIndexOf(".") == -1) {
                 path += ".inp";
@@ -196,7 +188,7 @@ public class EpaSoftController extends AbstractController{
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            fileRpt = chooser.getSelectedFile();
+            File fileRpt = chooser.getSelectedFile();
             String path = fileRpt.getAbsolutePath();
             if (path.lastIndexOf(".") == -1) {
                 path += ".rpt";
@@ -208,36 +200,36 @@ public class EpaSoftController extends AbstractController{
     }
     
     
-    private boolean getFileInp(){
+    public File getFileInp(){
     	
         String path = view.getFileInp();
-        if (path.equals("")){
-            return false;        	
+        if (path.equals("")) {
+            return null;        	
         }
         if (path.lastIndexOf(".") == -1) {
             path += ".inp";
         }
-        fileInp = new File(path);        
+        File fileInp = new File(path);        
         gswProp.put("FILE_INP", fileInp.getAbsolutePath());
         MainDao.savePropertiesFile();
-        return true;    
+        return fileInp;    
         
     }
 
     
-    private boolean getFileRpt(){
+    public File getFileRpt(){
     	
         String path = view.getFileRpt();
-        if (path.equals("")){
-            return false;        	
+        if (path.equals("")) {
+            return null;        	
         }
         if (path.lastIndexOf(".") == -1) {
             path += ".rpt";
         }
-        fileRpt = new File(path);        
+        File fileRpt = new File(path);        
         gswProp.put("FILE_RPT", fileRpt.getAbsolutePath());
         MainDao.savePropertiesFile();
-        return true;    
+        return fileRpt;    
         
     }
     
@@ -245,204 +237,19 @@ public class EpaSoftController extends AbstractController{
     public void execute(){
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    	if (ppPanel.getOptDatabaseSelected()){
-    		executePostgis();
-    	} else{
-    		executeDbf();
-    	}
+    	
+		// Execute task
+    	ExecuteTask task = new ExecuteTask();
+        task.setController(this);
+        task.setParentPanel(view);
+        task.setProjectPreferencesPanel(ppPanel);
+        task.setDbSelected(ppPanel.getOptDatabaseSelected());
+        task.addPropertyChangeListener(this);
+        task.execute();
+        
     	view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));    	
     
     }
-
-    
-    public void executePostgis() {
-
-        boolean continueExec = true;
-        
-        // Which checks are selected?
-        exportSelected = view.isExportSelected();
-        execSelected = view.isExecSelected();
-        importSelected = view.isImportSelected();        
-        
-        if (!exportSelected && !execSelected && !importSelected){
-            Utils.showError(view, "select_option");
-            return;
-        }
-
-        // Get schema from Project Preferences view
-        String schema = ppPanel.getSelectedSchema();
-        if (schema.equals("")){
-            Utils.showError(view, "any_schema_selected");
-            return;
-        }
-        MainDao.setSchema(schema);
-        
-        // Get software version from Project Preferences view
-        String softwareId = ppPanel.getVersionSoftware();
-        if (softwareId.equals("")){
-            Utils.showError(view, "any_software_selected");
-            return;
-        }
-        String version = MainDao.getSoftwareVersion("postgis", softwareId);
-        Model.setSoftwareVersion(version);
-        
-		// Get Sqlite Database			
-		String sqlitePath = version + ".sqlite";
-		if (!Model.setConnectionDrivers(sqlitePath)){
-			return;
-		}        
-        
-        // Export to INP
-        if (exportSelected) {
-            if (!getFileInp()) {
-                Utils.showError(view, "file_inp_not_selected");
-                return;
-            }      
-            if (!ModelPostgis.checkSectorSelection()) {
-        		int res = Utils.confirmDialog(view, "sector_selection_empty");        
-                if (res == 0){            	
-                	showSectorSelection();
-                }
-                return;
-            }               
-            boolean selected = view.isSubcatchmentsSelected();
-            continueExec = ModelPostgis.processAll(fileInp, selected);
-        }
-
-        // Run SWMM
-        if (execSelected && continueExec) {
-            if (!getFileInp()) {
-                Utils.showError(view, "file_inp_not_selected");
-                return;
-            }            
-            if (!getFileRpt()) {
-                Utils.showError(view, "file_rpt_not_selected");
-                return;
-            }                  
-            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
-        }
-
-        // Import RPT to Postgis
-        if (importSelected && continueExec) {
-            if (!getFileRpt()) {
-                Utils.showError("file_rpt_not_selected");
-                return;
-            }            
-            projectName = view.getProjectName();
-            if (projectName.equals("")){
-                Utils.showError("project_name");
-            } 
-            else{
-           		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
-            	Model.closeFile();
-            	if (!continueExec){
-					MainDao.rollback();
-            	}
-            }
-        }
-        
-    }
-    
-    
-	public void executeDbf() {
-
-		String pathFolderShp = ppPanel.getFolderShp();
-		File folderShp = new File(pathFolderShp);
-		if (!folderShp.exists()){
-			Utils.showError("Selected data folder not exists. Please set a valid one");
-			return;
-		}
-		gswProp.put(ppPanel.getWaterSoftware()+"_FOLDER_SHP", pathFolderShp);
-		MainDao.savePropertiesFile();
-        
-        // Which checks are selected?
-        exportSelected = view.isExportSelected();
-        execSelected = view.isExecSelected();
-        importSelected = view.isImportSelected();        
-        
-        if (!exportSelected && !execSelected && !importSelected){
-            Utils.showError(view, "select_option");
-            return;
-        }
-        
-        // Get software version from Project Preferences view
-		String id = ppPanel.getVersionSoftware();
-        if (id.equals("")){
-            Utils.showError(view, "any_software_selected");
-            return;
-        }
-        String version = MainDao.getSoftwareVersion("dbf", id);
-        Model.setSoftwareVersion(version);
-		
-		// Get Sqlite Database			
-		String sqlitePath = version + ".sqlite";
-		if (!Model.setConnectionDrivers(sqlitePath)){
-			return;
-		}
-		
-		// Check if all necessary files exist
-		if (!ModelDbf.checkFiles(pathFolderShp)) {
-			return;
-		}
-		
-		// Get INP template file
-		String templatePath = MainDao.getInpFolder()+version+".inp";
-		File fileTemplate = new File(templatePath);
-		if (!fileTemplate.exists()) {
-			Utils.showError(view, "inp_error_notfound", templatePath);				
-			return;
-		}
-
-		// Process all shapes and output to INP file
-        if (!getFileInp()) {
-            Utils.showError(view, "file_inp_not_selected");
-            return;
-        }    
-        
-        boolean continueExec = true;
-        // Export to INP
-        if (exportSelected) {
-            if (!getFileInp()) {
-                Utils.showError(view, "file_inp_not_selected");
-                return;
-            }                
-            continueExec = ModelDbf.processAll(fileInp);
-        }
-
-        // Run SWMM
-        if (execSelected && continueExec) {
-            if (!getFileInp()) {
-                Utils.showError(view, "file_inp_not_selected");
-                return;
-            }            
-            if (!getFileRpt()) {
-                Utils.showError(view, "file_rpt_not_selected");
-                return;
-            }                  
-            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
-        }
-
-        // Import RPT to Postgis
-        if (importSelected && continueExec) {
-            if (!getFileRpt()) {
-                Utils.showError(view, "file_rpt_not_selected");
-                return;
-            }            
-            projectName = view.getProjectName();
-            if (projectName.equals("")){
-                Utils.showError(view, "project_name");
-            } 
-            else{
-           		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
-            	Model.closeFile();
-            	if (!continueExec){
-					MainDao.rollback();
-            	}
-            }
-        }        
-
-	}    
-    
 
 	
 	// Data Manager

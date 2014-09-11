@@ -172,7 +172,7 @@ public class ProjectPreferencesController extends AbstractController {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(MainDao.getGswProperties().get(waterSoftware+"_FOLDER_SHP", usersFolder));
+		File file = new File(MainDao.getGswProperties().get("FOLDER_SHP", usersFolder));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -226,7 +226,7 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setConnectionText(Utils.getBundleString("open_connection"));
 		mainFrame.hecRasFrame.getPanel().enableButtons(false);
 		MainDao.closeConnectionPostgis();
-		Utils.showMessage(view, "connection_closed");			
+		mainFrame.showMessage("connection_closed");			
 		
 	}
 	
@@ -278,7 +278,7 @@ public class ProjectPreferencesController extends AbstractController {
         	}
 	    	
 			view.setConnectionText(Utils.getBundleString("close_connection"));
-			Utils.showMessage(view, "connection_opened");
+			mainFrame.showMessage("connection_opened");
 			
 			// Hecras form
 			mainFrame.hecRasFrame.getPanel().enableButtons(true);
@@ -475,7 +475,7 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		newSchemaName = validateName(newSchemaName);
 		if (newSchemaName.equals("")){
-			Utils.showError(view, "schema_valid_name");
+			mainFrame.showError("schema_valid_name");
 			return;
 		}
 
@@ -490,7 +490,14 @@ public class ProjectPreferencesController extends AbstractController {
 		
 
 	public void createGisProject(){
+		
 		mainFrame.gisFrame.setVisible(true);
+		try {
+			mainFrame.gisFrame.setSelected(true);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}
+		
 	}
     
 		

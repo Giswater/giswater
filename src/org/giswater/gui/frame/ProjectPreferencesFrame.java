@@ -49,10 +49,9 @@ public class ProjectPreferencesFrame extends JInternalFrame {
     	panel = new ProjectPreferencesPanel();
 
     	panel.setFrame(this);
-    	setClosable(true);
-		setMaximizable(true);        
-        setVisible(false);
+    	setClosable(true);    
     	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
         GroupLayout layout = new GroupLayout(getContentPane());
