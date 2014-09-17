@@ -530,7 +530,7 @@ public class MainDao {
     
     public static boolean loadGswPropertiesFile() {
 
-    	if (gswPath.equals("")){
+    	if (gswPath.equals("")) {
     		gswPath = rootFolder + CONFIG_FOLDER + GSW_FILE;
     	}
     	Utils.getLogger().info("Loading gsw file: "+gswPath);        

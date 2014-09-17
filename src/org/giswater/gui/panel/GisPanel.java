@@ -64,6 +64,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
+	private JDialog parent;
 	private GisFrame gisFrame;	
 	private JLabel lblProjectFolder;
 	private JButton btnProjectFolder;
@@ -90,6 +91,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		setDefaultValues();
 	}
 	
+	public JDialog getDialog() {
+		return parent;
+	}
+	
+	public void setParent(JDialog gisDialog) {
+		parent = gisDialog;		
+	}
+	
 	public GisFrame getFrame(){
 		return gisFrame;
 	}
@@ -98,10 +107,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		this.gisFrame = gisFrame;
 	}
 	
-	public JDialog getDialog() {
-		return new JDialog();
-	}
-
 	public void setGisExtension(String gis) {
 		this.gisExtension = gis;
 	}	
@@ -190,7 +195,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00][]", "[10px:n][34px:n][][][][][10px:n][]"));
+		setLayout(new MigLayout("", "[][:225px:300px][40.00][]", "[5px:n][34px:n][][][][][10px:n][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
 		add(lblProjectFolder, "cell 0 1,alignx right");
@@ -259,10 +264,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	// Setup component's listener
 	private void setupListeners() {
 		
+		addFocusListener(this);	
 		btnProjectFolder.addActionListener(this);
 		btnAccept.addActionListener(this);	
 		cboDataStorage.addActionListener(this);		
-		addFocusListener(this);	
 		btnClose.addActionListener(this);	
 		cboSoftware.addActionListener(this);
 		cboSchema.addFocusListener(new FocusAdapter() {
@@ -340,8 +345,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		}
 		
 		// Create GIS Project
-		if (gisType.equals("DATABASE")){
-			if (MainDao.isConnected()){
+		if (gisType.equals("DATABASE")) {
+			if (MainDao.isConnected()) {
 				String schema = getSelectedSchema();
 				if (schema.equals("")){
 					MainClass.mdi.showMessage("any_schema_selected");
@@ -362,7 +367,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema, schemaSrid);
 				}
 			} 
-			else{
+			else {
 				MainClass.mdi.showMessage("You should connect to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
@@ -416,7 +421,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 
 	    	String gisFolder = Utils.getGisFolder();
-	    	templatePath = gisFolder + software+"2."+gisExtension;
+	    	templatePath = gisFolder + software+"."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
 	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
@@ -517,6 +522,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getActionCommand().equals("chooseProjectFolder")){
 			chooseProjectFolder();
 		}
@@ -530,8 +536,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			gisAccept();
 		}
 		else if (e.getActionCommand().equals("closePanel")){
-			this.getFrame().setVisible(false);	
-		}		
+			//this.getFrame().setVisible(false);	
+			getDialog().dispose();
+		}	
+		
 	}
 	
 	@Override
@@ -541,6 +549,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	@Override
 	public void focusLost(FocusEvent e) { }
+
 	
-	
+
 }

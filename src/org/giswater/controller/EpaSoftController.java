@@ -78,7 +78,7 @@ public class EpaSoftController extends AbstractController {
 	}
 	
 	
-	public void showSectorSelection(){
+	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection", 380, 280);
         panel.setParent(dialog);
@@ -86,7 +86,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showInpOptions(){
+	public void showInpOptions() {
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;
 		OptionsDialog dialog = new OptionsDialog();
@@ -94,7 +94,7 @@ public class EpaSoftController extends AbstractController {
 	}
 	
 	
-	public void showInpOptionsEpanet(){
+	public void showInpOptionsEpanet() {
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;		
 		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
@@ -102,7 +102,7 @@ public class EpaSoftController extends AbstractController {
 	}
 
 	
-	public void showRaingage(){
+	public void showRaingage() {
 		ResultSet rs = MainDao.getTableResultset("raingage");
 		if (rs == null) return;		
 		RaingageDialog dialog = new RaingageDialog();
@@ -110,7 +110,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showTimesValues(){
+	public void showTimesValues() {
 		ResultSet rs = MainDao.getTableResultset("inp_times");
 		if (rs == null) return;		
 		TimesDialog dialog = new TimesDialog();
@@ -118,7 +118,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showReport(){
+	public void showReport() {
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportDialog dialog = new ReportDialog();
@@ -126,7 +126,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showReportEpanet(){
+	public void showReportEpanet() {
 		ResultSet rs = MainDao.getTableResultset("inp_report");
 		if (rs == null) return;		
 		ReportEpanetDialog dialog = new ReportEpanetDialog();
@@ -134,7 +134,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs){
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs) {
 		
 		OptionsController controller = new OptionsController(dialog, rs);
         if (MainDao.getRowCount(rs) == 0){
@@ -200,7 +200,7 @@ public class EpaSoftController extends AbstractController {
     }
     
     
-    public File getFileInp(){
+    public File getFileInp() {
     	
         String path = view.getFileInp();
         if (path.equals("")) {
@@ -217,7 +217,7 @@ public class EpaSoftController extends AbstractController {
     }
 
     
-    public File getFileRpt(){
+    public File getFileRpt() {
     	
         String path = view.getFileRpt();
         if (path.equals("")) {
@@ -234,7 +234,7 @@ public class EpaSoftController extends AbstractController {
     }
     
     
-    public void execute(){
+    public void execute() {
        	
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	
@@ -253,7 +253,7 @@ public class EpaSoftController extends AbstractController {
 
 	
 	// Data Manager
-	public void showProjectId(){
+	public void showProjectId() {
 		ResultSet rs = MainDao.getTableResultset("inp_project_id");
 		if (rs == null) return;		
 		ProjectDialog dialog = new ProjectDialog();
@@ -261,7 +261,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showArcCatalog(){
+	public void showArcCatalog() {
 		ResultSet rs = MainDao.getTableResultset("cat_arc");
 		if (rs == null) return;		
 		ArcCatalogDialog dialog = new ArcCatalogDialog();
@@ -269,7 +269,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showHydrologyCatalog(){
+	public void showHydrologyCatalog() {
 		ResultSet rs = MainDao.getTableResultset("cat_hydrology");
 		if (rs == null) return;		
 		HydrologyCatalogDialog dialog = new HydrologyCatalogDialog();
@@ -277,7 +277,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showMaterialCatalog(){
+	public void showMaterialCatalog() {
 		
 		ResultSet rs = MainDao.getTableResultset("cat_mat");
 		if (rs == null) return;
@@ -293,14 +293,14 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showPatterns(){
+	public void showPatterns() {
 		
 		ResultSet rs = MainDao.getTableResultset("inp_pattern");
 		if (rs == null) return;		
 		PatternsDialog dialog = new PatternsDialog();
-		if (ppPanel.getWaterSoftware().equals("EPASWMM")){
+		if (ppPanel.getWaterSoftware().equals("EPASWMM")) {
 			dialog.enableType(true);
-		} else{
+		} else {
 			dialog.enableType(false);
 		}
 		showCatalog(dialog, rs);
@@ -308,7 +308,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showTimeseries(){
+	public void showTimeseries() {
 		
 		ResultSet rsMain = MainDao.getTableResultset("inp_timser_id", "*", "id");
 		ResultSet rsRelated = MainDao.getTableResultset("inp_timeseries", "*", "id");		
@@ -321,7 +321,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void showCurves(){
+	public void showCurves() {
 		
 		ResultSet rsMain = MainDao.getTableResultset("inp_curve_id", "*", "id");
 		ResultSet rsRelated = MainDao.getTableResultset("inp_curve", "*", "id");		
@@ -332,15 +332,37 @@ public class EpaSoftController extends AbstractController {
 		showCatalog(dialog, rsMain);
 		
 	}		
+	
+	
+	// TODO:
+	public void showEmitters() {
+	
+	}
+	
+	public void showDemands() {
+		
+	}
+	
+	public void showRules() {
+		
+	}
+	
+	public void showControls() {
+		
+	}
+	
+	public void showProjectData() {
+		
+	}
 
 	
-	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs){
+	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
 		
 		CatalogController controller = new CatalogController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0){
+        if (MainDao.getRowCount(rs) == 0) {
             controller.create();
         }
-        else{
+        else {
             controller.moveFirst();
         }		
 		dialog.setModal(true);
@@ -352,16 +374,16 @@ public class EpaSoftController extends AbstractController {
 	
 	
 	// Analysis
-	public void scenarioCatalog(){
+	public void scenarioCatalog() {
 		
 		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
 		if (rs == null) return;		
 		String softwareName = MainDao.getWaterSoftware();
 		AbstractOptionsDialog dialog = null;
-		if (softwareName.equals("EPASWMM")){
+		if (softwareName.equals("EPASWMM")) {
 			dialog = new ResultCatDialog();	
 		}
-		else{
+		else {
 			dialog = new ResultCatEpanetDialog();
 		}
 		showOptions(dialog, rs, "result_cat_empty");
@@ -369,7 +391,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void scenarioManagement(){
+	public void scenarioManagement() {
 		
 		ResultSet rs = MainDao.getTableResultset("result_selection");
 		if (rs == null) return;		
@@ -379,17 +401,17 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg){
+	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg) {
 		
 		// Only show form if exists one record
 		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) != 0){
+        if (MainDao.getRowCount(rs) != 0) {
             controller.moveFirst();
     	    dialog.setModal(true);
     	    dialog.setLocationRelativeTo(null);   
     	    dialog.setVisible(true);	
         }
-        else{
+        else {
         	Utils.showMessage(view, errorMsg);
         }
 	    
@@ -413,7 +435,7 @@ public class EpaSoftController extends AbstractController {
 	}	
 	
 	
-	public void closePanel(){
+	public void closePanel() {
 		view.getFrame().setVisible(false);
 	}
 	

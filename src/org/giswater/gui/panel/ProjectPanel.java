@@ -26,6 +26,7 @@ import org.giswater.controller.HecRasController;
 import org.giswater.controller.NewProjectController;
 import org.giswater.model.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
+import java.awt.Dimension;
 
 
 public class ProjectPanel extends JPanel implements ActionListener{
@@ -44,15 +45,15 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	private JTable tblSrid;
 	private JButton btnAccept;
 	private JButton btnClose;
-	private JLabel lblInpFile;
-	private JTextArea txtFileLoadInp;
+	private JLabel lblFile;
+	private JTextArea txtFile;
 	private JScrollPane scrollPane;
-	private JButton btnFileInp;
+	private JButton btnFile;
 	private JPanel panelSrid;
 	private String defaultSrid;
 	
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
-	private JCheckBox chkLoadData;
+	private JCheckBox chkImportData;
 	private JLabel lbloptional;
 	private JLabel label;
 	
@@ -65,40 +66,40 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[][217.00px:n,grow][grow]", "[5px:n][][][][][5px:n][240.00,grow][5px:n][][40px:40px][5px:n][]"));
+		setLayout(new MigLayout("", "[][217.00px:n][::65px]", "[][][][][5px:n][240.00,grow][][34px:n][5px:n][]"));
 		
 		JLabel lblProjectName = new JLabel("Project name:");
-		add(lblProjectName, "cell 0 1,alignx trailing,aligny center");
+		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
 		
 		txtName = new JTextField();
 		txtName.setColumns(10);
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(25);		
 		txtName.setDocument(maxLength);		
-		add(txtName, "cell 1 1,growx,aligny bottom");
+		add(txtName, "cell 1 0,growx,aligny bottom");
 		
 		JLabel lblProjectTitle = new JLabel("Project title:");
-		add(lblProjectTitle, "cell 0 2,alignx trailing");
+		add(lblProjectTitle, "cell 0 1,alignx trailing");
 		
 		txtTitle = new JTextField();
 		txtTitle.setColumns(10);
 		maxLength = new MaxLengthTextDocument(250);		
 		txtTitle.setDocument(maxLength);	
-		add(txtTitle, "cell 1 2,growx");
+		add(txtTitle, "cell 1 1,growx");
 		
 		JLabel lblAuthor = new JLabel("Author:");
-		add(lblAuthor, "cell 0 3,alignx trailing");
+		add(lblAuthor, "cell 0 2,alignx trailing");
 		
 		txtAuthor = new JTextField();
 		txtAuthor.setColumns(10);
 		maxLength = new MaxLengthTextDocument(50);		
 		txtAuthor.setDocument(maxLength);
-		add(txtAuthor, "cell 1 3,growx");
+		add(txtAuthor, "cell 1 2,growx");
 		
 		lbloptional = new JLabel("(optional)");
-		add(lbloptional, "cell 2 3");
+		add(lbloptional, "cell 2 2");
 		
 		JLabel lblDate = new JLabel("Date:");
-		add(lblDate, "cell 0 4,alignx trailing");
+		add(lblDate, "cell 0 3,alignx trailing");
 		
 		txtDate = new JTextField();
 		txtDate.setColumns(10);
@@ -107,55 +108,55 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		DateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
 		Date date = new Date();
 		txtDate.setText(dateFormat.format(date));
-		add(txtDate, "cell 1 4,growx");
+		add(txtDate, "cell 1 3,growx");
 		
 		label = new JLabel("(optional)");
-		add(label, "cell 2 4");
+		add(label, "cell 2 3");
 		
 		panelSrid = new JPanel();
 		panelSrid.setBorder(new TitledBorder(null, "Select SRID", TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null));
-		panelSrid.setLayout(new MigLayout("", "[62px:n][200.00px:n][50px:n][::95.00px]", "[][][::217.00px,grow]"));
-		add(panelSrid, "cell 0 6 3 1,grow");
+		panelSrid.setLayout(new MigLayout("", "[70px:n][217.00px:n][55px:n][::13.00px]", "[][][::217.00px,grow]"));
+		add(panelSrid, "cell 0 5 3 1,grow");
 		
 		JLabel lblFilter = new JLabel("Filter:");
-		panelSrid.add(lblFilter, "cell 0 0");
+		panelSrid.add(lblFilter, "cell 0 0,alignx right");
 		
 		txtFilter = new JTextField(defaultSrid);
 		panelSrid.add(txtFilter, "cell 1 0,growx");
 		txtFilter.setColumns(10);
 		
-		chkLoadData = new JCheckBox("Load Data");
-		chkLoadData.setEnabled(false);
-		chkLoadData.setActionCommand("loadData");
-		add(chkLoadData, "cell 0 8");
+		chkImportData = new JCheckBox("Import Data");
+		chkImportData.setActionCommand("loadData");
+		add(chkImportData, "cell 0 6");
 		
-		lblInpFile = new JLabel("Project file:");
-		lblInpFile.setEnabled(false);
-		add(lblInpFile, "cell 0 9,alignx right");
+		lblFile = new JLabel("Data file:");
+		add(lblFile, "cell 0 7,alignx right");
 		
 		scrollPane = new JScrollPane();
-		add(scrollPane, "cell 1 9,grow");
+		add(scrollPane, "cell 1 7,grow");
 		
-		txtFileLoadInp = new JTextArea();
-		txtFileLoadInp.setEnabled(false);
-		txtFileLoadInp.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		scrollPane.setViewportView(txtFileLoadInp);
+		txtFile = new JTextArea();
+		txtFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		scrollPane.setViewportView(txtFile);
 		
-		btnFileInp = new JButton("...");
-		btnFileInp.setEnabled(false);
-		btnFileInp.setActionCommand("chooseFileLoadInp");
-		add(btnFileInp, "cell 2 9");
+		btnFile = new JButton("...");
+		btnFile.setMinimumSize(new Dimension(65, 23));
+		btnFile.setActionCommand("chooseFile");
+		add(btnFile, "cell 2 7");
 		
 		btnAccept = new JButton("Accept");
 		btnAccept.setActionCommand("acceptProject");
-		add(btnAccept, "flowx,cell 1 11,alignx trailing");
+		add(btnAccept, "flowx,cell 1 9,alignx trailing");
 		
 		btnClose = new JButton("Close");
+		btnClose.setMaximumSize(new Dimension(65, 23));
+		btnClose.setMinimumSize(new Dimension(65, 23));
+		btnClose.setPreferredSize(new Dimension(65, 23));
 		btnClose.setActionCommand("closeProject");
-		add(btnClose, "cell 2 11");
+		add(btnClose, "cell 2 9,growx");
 		
 		JLabel lblType = new JLabel("Type:");
-		panelSrid.add(lblType, "cell 0 1");
+		panelSrid.add(lblType, "cell 0 1,alignx right");
 		
 		chkGeogcs = new JCheckBox("GEOGCS");
 		panelSrid.add(chkGeogcs, "flowx,cell 1 1");
@@ -196,8 +197,8 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		});
 		chkGeogcs.addActionListener(this);
 		chkProjcs.addActionListener(this);
-		chkLoadData.addActionListener(this);
-		btnFileInp.addActionListener(this);
+		chkImportData.addActionListener(this);
+		btnFile.addActionListener(this);
 		btnAccept.addActionListener(this);
 		btnClose.addActionListener(this);
 		
@@ -285,8 +286,16 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	}
 
 
-	public void setFileLoadInp(String path) {
-		txtFileLoadInp.setText(path);
+	public void setFileImport(String path) {
+		txtFile.setText(path);
+	}
+
+
+	public void enableImportData(boolean enabled) {
+		chkImportData.setEnabled(enabled);
+		lblFile.setEnabled(enabled);
+		txtFile.setEnabled(enabled);
+		btnFile.setEnabled(enabled);		
 	}
 
 	

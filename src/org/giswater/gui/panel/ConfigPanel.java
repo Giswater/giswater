@@ -322,20 +322,20 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:500px:531px][-33.00]", "[5px][grow]"));
+		setLayout(new MigLayout("", "[][-33.00]", "[grow]"));
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(tabbedPane, "cell 1 1,grow");
+		add(tabbedPane, "cell 0 0,grow");
 
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab(BUNDLE.getString("Config.panel.title"), null, panel_1, null); 
-		panel_1.setLayout(new MigLayout("", "[:120.00:120px][237.00][:72px:72px]", "[387.00,grow][10px][][][10px:n][25]"));
+		panel_1.setLayout(new MigLayout("", "[::130px][237.00][:72px:72px]", "[][5px][][][5px:n][25]"));
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[][:150:300px][37.00px:n][::75px]", "[5px:n][][][][][][][][][][][5px][][10.00][][10px]"));
+		panel.setLayout(new MigLayout("", "[][:150:300px][37.00px:n][::75px]", "[5px:n][][][][][][][][][][][2px][][10.00][]"));
 		
 	    ButtonGroup group = new ButtonGroup();
 	    ButtonGroup group2 = new ButtonGroup();

@@ -104,6 +104,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private static final Integer BUTTON_WIDTH = 72;
 	private JLabel lblInfo;
 	private JButton btnCreateGisProject;
+	private ButtonGroup groupSoftware;
 
 	
 	public ProjectPreferencesPanel() {
@@ -113,46 +114,40 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig(){
 		
-		setLayout(new MigLayout("", "[90px:n][][][][154.00px:n][::97px]", "[][][][61.00][][]"));
+		setLayout(new MigLayout("", "[8px:n][78.00px:n][75px:n:75px][65px:n:65px][][10px:n][154.00px:n][][]", "[][][61.00][][]"));
 		
 		JLabel lblWaterSoftware = new JLabel("Water software:");
-		add(lblWaterSoftware, "cell 0 0,alignx right");
+		add(lblWaterSoftware, "cell 0 0 2 1,alignx right");
 		
 		optEpaSwmm = new JRadioButton("EPASWMM");
 		optEpaSwmm.setActionCommand("changeSoftware"); 
-		add(optEpaSwmm, "flowx,cell 1 0");
+		add(optEpaSwmm, "flowx,cell 2 0");
 		
 		optEpanet = new JRadioButton("EPANET");
 		optEpanet.setActionCommand("changeSoftware"); 
-		add(optEpanet, "cell 2 0");
+		add(optEpanet, "cell 3 0");
 		
 		optHecras = new JRadioButton("HEC-RAS");
 		optHecras.setActionCommand("changeSoftware"); 
-		add(optHecras, "cell 3 0");
+		add(optHecras, "cell 4 0");
 		
-		ButtonGroup groupSoftware = new ButtonGroup();
+		groupSoftware = new ButtonGroup();
 		groupSoftware.add(optEpaSwmm);	
 		groupSoftware.add(optEpanet);
-		groupSoftware.add(optHecras);	
-		
-		JLabel lblVersion = new JLabel("Version:");
-		add(lblVersion, "cell 0 1,alignx trailing");
-		
-		cboVersionSoftware = new JComboBox<String>();
-		add(cboVersionSoftware, "cell 1 1 3 1,growx");
-		
+		groupSoftware.add(optHecras);
+
 		JLabel label = new JLabel("Data storage:");
-		add(label, "cell 0 2,alignx right");
+		add(label, "cell 1 1,alignx right");
 		
 		optDatabase = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optDatabase.text")); //$NON-NLS-1$
 		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		optDatabase.setActionCommand("selectSourceType");
-		add(optDatabase, "flowx,cell 1 2");
+		add(optDatabase, "flowx,cell 2 1");
 		
 		optDbf = new JRadioButton("DBF");
 		optDbf.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		optDbf.setActionCommand("selectSourceType");
-		add(optDbf, "cell 2 2");
+		add(optDbf, "cell 3 1");
 		
 		ButtonGroup groupStorage = new ButtonGroup();
 		groupStorage.add(optDatabase);
@@ -160,8 +155,8 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		panelDbf = new JPanel();
 		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelDbf, "cell 0 3 6 1,grow");
-		panelDbf.setLayout(new MigLayout("", "[75px:n][300.00px:n,grow][10px:n][::80px][10px:n]", "[34px:n]"));
+		add(panelDbf, "cell 0 2 9 1,grow");
+		panelDbf.setLayout(new MigLayout("", "[75px:n][300.00px:n,grow][10px:n][][8px:n]", "[34px:n]"));
 		
 		JLabel lblFolderShp = new JLabel("Data folder:");
 		panelDbf.add(lblFolderShp, "cell 0 0,alignx right");
@@ -176,14 +171,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		btnFolderShp = new JButton();
 		btnFolderShp.setMinimumSize(new Dimension(72, 9));
-		panelDbf.add(btnFolderShp, "cell 3 0,alignx right");
+		panelDbf.add(btnFolderShp, "cell 3 0,growx");
 		btnFolderShp.setText("...");
 		btnFolderShp.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFolderShp.setActionCommand("chooseFolderShp");
 		
 		panelDB = new JPanel();
 		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelDB, "cell 0 4 6 1,grow");
+		add(panelDB, "cell 0 3 9 1,grow");
 		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
 		panelDatabase = new JPanel();
@@ -314,34 +309,37 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement.add(txtDescription, "cell 1 2 6 1,growx");
 		
 		lblInfo = new JLabel(""); 
-		add(lblInfo, "flowx,cell 0 5 2 1");
+		add(lblInfo, "flowx,cell 1 4 2 1");
 		
 		btnApply = new JButton();
 		btnApply.setMnemonic(KeyEvent.VK_P);
 		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); 
 		btnApply.setMinimumSize(new Dimension(72, 23));
 		btnApply.setActionCommand("applyPreferences");
-		add(btnApply, "flowx,cell 4 5,alignx right");
+		add(btnApply, "flowx,cell 6 4,alignx right");
 		
 		btnAccept = new JButton();
 		btnAccept.setMnemonic(KeyEvent.VK_A);
 		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
 		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnAccept.setActionCommand("acceptPreferences");
-		add(btnAccept, "cell 4 5,alignx right");
+		add(btnAccept, "cell 6 4,alignx right");
 		
 		btnClose = new JButton();
 		btnClose.setMnemonic(KeyEvent.VK_C);
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnClose.setActionCommand("closePreferences");
-		add(btnClose, "cell 5 5,alignx left");
+		add(btnClose, "cell 7 4,growx");
 			
 		btnCreateGisProject = new JButton();
 		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text_1")); //$NON-NLS-1$
 		btnCreateGisProject.setMinimumSize(new Dimension(80, 23));
 		btnCreateGisProject.setActionCommand("createGisProject");
-		add(btnCreateGisProject, "cell 0 5 2 1,alignx right");
+		add(btnCreateGisProject, "cell 1 4 2 1,alignx right");
+		
+		cboVersionSoftware = new JComboBox<String>();
+		add(cboVersionSoftware, "cell 6 0 2 1,growx");
 		
 		setupListeners();
 	    
@@ -445,13 +443,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		optEpanet.setSelected(false);
 		optEpaSwmm.setSelected(false);
 		optHecras.setSelected(false);
-		if (waterSoftware.equals("EPANET")){
+		groupSoftware.clearSelection();
+		if (waterSoftware.equals("EPANET")) {
 			optEpanet.setSelected(true);
 		}
-		else if (waterSoftware.equals("EPASWMM")){
+		else if (waterSoftware.equals("EPASWMM")) {
 			optEpaSwmm.setSelected(true);
 		}	
-		else if (waterSoftware.equals("HECRAS")){
+		else if (waterSoftware.equals("HECRAS")) {
 			optHecras.setSelected(true);
 		}
 		controller.setWaterSoftware(waterSoftware);

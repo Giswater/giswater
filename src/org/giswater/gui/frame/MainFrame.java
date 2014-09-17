@@ -22,6 +22,7 @@ package org.giswater.gui.frame;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,7 +77,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private PropertiesMap prop;
 	private String versionCode;
 	
-    private JDesktopPane desktopPane;
+    public JDesktopPane desktopPane;
     
     private JMenu mnProject;
 	private JMenuItem mntmOpenProject;
@@ -230,7 +231,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmExampleEpanet = new JMenuItem(BUNDLE.getString("MainFrame.mntmNewMenuItem.text"), KeyEvent.VK_W);
 		mntmExampleEpanet.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.CTRL_MASK));
-		//mntmExampleEpanet.setMnemonic(KeyEvent.VK_W);
 		mnProjectExample.add(mntmExampleEpanet);
 		mntmExampleEpanet.setActionCommand("exampleEpanet"); 
 		
@@ -321,35 +321,36 @@ public class MainFrame extends JFrame implements ActionListener{
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		
         statusPanel = new JPanel();
-        statusPanel.setBounds(0, 507, 784, 32);
+        statusPanel.setBounds(0, 608, 649, 22);
         desktopPane.add(statusPanel);
-        statusPanel.setLayout(new MigLayout("", "[50px:80px,grow][10px:n][100px:200px,grow][130px:n:130px]", "[20px:n,fill]"));
+        statusPanel.setLayout(new MigLayout("", "[50px:80px,grow][10px:n][100px:200px,grow][130px:n:130px]", "[20px:n:20px,fill]"));
         
         lblInfo = new JLabel();
-        lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 11));
         statusPanel.add(lblInfo, "cell 0 0");
         
         lblProcessInfo = new JLabel();
-        lblProcessInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblProcessInfo.setFont(new Font("Tahoma", Font.PLAIN, 11));
         statusPanel.add(lblProcessInfo, "cell 2 0,alignx left");
         
         progressInfo = new JProgressBar();
+        progressInfo.setFont(new Font("Tahoma", Font.PLAIN, 10));
         progressInfo.setVisible(false);
         statusPanel.add(progressInfo, "cell 3 0,alignx left");
                 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(desktopPane)
-                .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(statusPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
+                    .addComponent(desktopPane, GroupLayout.DEFAULT_SIZE, 765, Short.MAX_VALUE)
                     .addGap(1, 1, 1)
-                    .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(statusPanel, GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
 
 		setupListeners();
@@ -366,8 +367,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	@SuppressWarnings("unused")
 	private void initFrames() throws PropertyVetoException{
-
-        // Create and Add frames to main Panel
+		
+		// Create and Add frames to main Panel
         epaSoftFrame = new EpaSoftFrame();
         hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
@@ -381,26 +382,30 @@ public class MainFrame extends JFrame implements ActionListener{
         desktopPane.add(gisFrame);
         
         // Set specific configuration
-        //gisFrame.setLocation(175, 80);
+        gisFrame.setLocation(100, 80);
         gisFrame.setGisExtension("qgs");
         gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
         ppFrame.setTitle("Project Preferences");
         epaSoftFrame.setTitle("Main form");
         
-        // Get info from properties
-		getMainParams("MAIN");
-
         // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel());
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this);
         
-        //epaSoftFrame.setMaximizable(true);
-        epaSoftFrame.setMaximum(true);
-        ppFrame.setMaximum(true);
-        gisFrame.setMaximum(true);
-        configFrame.setMaximum(true);
+        // Set frame sizes accordin desktop size
+        getMainParams("MAIN");
+        setVisible(true);
+        Dimension desktopSize = desktopPane.getSize();
+        epaSoftFrame.setSize(desktopSize);
+        epaSoftFrame.setPreferredSize(desktopSize);
+        hecRasFrame.setSize(desktopSize);
+        hecRasFrame.setPreferredSize(desktopSize);
+        ppFrame.setSize(desktopSize);
+        ppFrame.setPreferredSize(desktopSize);
+        configFrame.setSize(desktopSize);
+        configFrame.setPreferredSize(desktopSize);
 		
 	}
 	
@@ -417,41 +422,26 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public void updateFrames(){
 		
-		try {
-			getFrameParams(configFrame, "CONFIG");			
-			getFrameParams(epaSoftFrame, "EPASOFT");
-			getFrameParams(hecRasFrame, "HECRAS");
-			getFrameParams(ppFrame, "PP");
-		} catch (PropertyVetoException e) {
-			Utils.logError(e);
-		}           
+		getFrameParams(configFrame, "CONFIG");			
+		getFrameParams(epaSoftFrame, "EPASOFT");
+		getFrameParams(hecRasFrame, "HECRAS");
+		getFrameParams(ppFrame, "PP");           
 		
 	}
 	
 	
-	private void getFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
+	private void getFrameParams (JInternalFrame frame, String prefix) {
 
-        int x, y;
-        boolean visible, maximized;
-        x = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_X", "0"));
-        y = Integer.parseInt(MainDao.getGswProperties().get(prefix + "_Y", "0"));
+        boolean visible;
         visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
-        maximized = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_MAXIMIZED", "true"));
-        frame.setLocation(x, y);
-       	frame.setMaximum(maximized);
         frame.setVisible(visible);
 		
 	}
 	
 	
-	private void putFrameParams (JInternalFrame frame, String prefix) throws PropertyVetoException{
+	private void putFrameParams (JInternalFrame frame, String prefix) {
 		
-		//MainDao.getGswProperties().put(prefix + "_MAXIMIZED", frame.isMaximum());
 		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
-		if (!frame.isMaximum()) {
-			MainDao.getGswProperties().put(prefix + "_X", frame.getX());
-			MainDao.getGswProperties().put(prefix + "_Y", frame.getY());
-		}
 		
 	}
 	
@@ -461,21 +451,21 @@ public class MainFrame extends JFrame implements ActionListener{
         int x, y, width, height;
         boolean maximized;
         x = Integer.parseInt(prop.get(prefix + "_X", "200"));
-        y = Integer.parseInt(prop.get(prefix + "_Y", "50"));
-        width = Integer.parseInt(prop.get(prefix + "_WIDTH", "800"));
-        height = Integer.parseInt(prop.get(prefix + "_HEIGHT", "600"));
+        y = Integer.parseInt(prop.get(prefix + "_Y", "100"));
+        width = Integer.parseInt(prop.get(prefix + "_WIDTH", "665"));
+        height = Integer.parseInt(prop.get(prefix + "_HEIGHT", "690"));
         maximized = Boolean.parseBoolean(prop.get(prefix + "_MAXIMIZED", "false"));
         this.setLocation(x, y);
         this.setSize(width, height);
         
-        if (maximized){
+        if (maximized) {
         	this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         }
                 
 	}
 	
 	
-	private void putMainParams (String prefix) throws PropertyVetoException{
+	private void putMainParams (String prefix) {
 		
 		boolean maximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
 		prop.put(prefix + "_MAXIMIZED", maximized);		
@@ -488,7 +478,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	
-	public void putEpaSoftParams(){
+	public void putEpaSoftParams() {
 		
 		EpaSoftPanel epaSoftPanel = epaSoftFrame.getPanel();
     	MainDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
@@ -498,7 +488,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}    
 	
     
-    public void putHecrasParams(){
+    public void putHecrasParams() {
     	
     	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
     	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
@@ -507,7 +497,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
     
     
-    public void putProjectPreferencecsParams(){
+    public void putProjectPreferencecsParams() {
     	
     	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
     	
@@ -536,7 +526,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	   
     
     
-    public void putGisParams(){
+    public void putGisParams() {
     	
     	GisPanel gisPanel = gisFrame.getPanel();
     	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
@@ -548,7 +538,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
     
 	
-	public void saveGswFile(){
+	public void saveGswFile() {
 
 		// Update FILE_GSW parameter 
 		prop.put("FILE_GSW", MainDao.getGswPath());
@@ -571,24 +561,20 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	
-	public void closeApp(){
+	public void closeApp() {
 	
-        try {
-	        putFrameParams(epaSoftFrame, "EPASOFT");
-	        putFrameParams(hecRasFrame, "HECRAS");
-	        putFrameParams(ppFrame, "PP");        
-	        putFrameParams(configFrame, "CONFIG");	
-	        putMainParams("MAIN");
-	        saveGswFile();  
-	    	Utils.getLogger().info("Application closed");	        
-		} catch (PropertyVetoException e) {
-            Utils.logError(e.getMessage());			
-		}
+        putFrameParams(epaSoftFrame, "EPASOFT");
+		putFrameParams(hecRasFrame, "HECRAS");
+		putFrameParams(ppFrame, "PP");        
+		putFrameParams(configFrame, "CONFIG");	
+		putMainParams("MAIN");
+		saveGswFile();  
+		Utils.getLogger().info("Application closed");
 		
 	}
 	
 	
-	private void setupListeners(){
+	private void setupListeners() {
 		
 		mntmNewPreferences.addActionListener(this);
 		mntmOpenProject.addActionListener(this);
@@ -684,19 +670,19 @@ public class MainFrame extends JFrame implements ActionListener{
 		String path;
 		String imgFolder = Utils.getAppPath() + "images" + File.separator;
 		
-		path = imgFolder + "info_20.png";	
+		path = imgFolder + "info_16.png";	
 		if (new File(path).exists()) {
 			iconInfo = new ImageIcon(path);
 		}
-		path = imgFolder + "alert_20.png";	
+		path = imgFolder + "alert_16.png";	
 		if (new File(path).exists()) {
 			iconAlert = new ImageIcon(path);
 		}
-		path = imgFolder + "green_20.png";	
+		path = imgFolder + "green_16.png";	
 		if (new File(path).exists()) {
 			iconGreen = new ImageIcon(path);
 		}
-		path = imgFolder + "red_20.png";	
+		path = imgFolder + "red_16.png";	
 		if (new File(path).exists()) {
 			iconRed = new ImageIcon(path);
 		}
@@ -707,20 +693,18 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void updateConnectionInfo() {
 		
 		String schema;
-		String info;
+		String info = "";
 		if (MainDao.isConnected()) {
-			info = "Connected";
 			schema = MainDao.getSchema();
 			if (schema != null && !schema.equals("")){
-				info+= " - "+schema;
+				info+= schema;
 			}
 			else {
-				info+= " - Any project data selected";
+				info+= "Any project data selected";
 			}
 			lblInfo.setIcon(iconGreen);
 		}
 		else {
-			info = "NOT connected";
 			lblInfo.setIcon(iconRed);
 		}
 		lblInfo.setText(info);

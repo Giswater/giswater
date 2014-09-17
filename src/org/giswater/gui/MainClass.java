@@ -86,7 +86,6 @@ public class MainClass {
 				// Create MainFrame and Menu controller
 				mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
 				MenuController menuController = new MenuController(mdi, versionCode, ftp);            	
-				mdi.setVisible(true);
 
 				// By default open last gsw
 				menuController.gswOpen(false);

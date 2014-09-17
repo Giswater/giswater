@@ -155,11 +155,11 @@ public class MenuController extends AbstractController{
     	// Copy contents from default to temp
     	// Open gsw temp file
     	boolean ok = Utils.copyFile(gswDefaultPath, gswTempPath);
-    	if (ok){
+    	if (ok) {
 	    	MainDao.setGswPath(gswTempPath);
 	    	gswOpen(false, false);
     	}
-    	else{
+    	else {
     		Utils.logError("Error copying the file");
     	}
     	
@@ -168,7 +168,6 @@ public class MenuController extends AbstractController{
     
     public void gswEdit(){
     	action = "edit";
-		//view.updateFrames();
 		openFrame("PP", view.ppFrame);
     }
     
@@ -198,9 +197,14 @@ public class MenuController extends AbstractController{
 		}
 		if (gswPath == "") return;
 		
-		if (action.equals("open")){
-	        // Load .gsw file into memory
+		// Load .gsw file into memory
+		MainDao.loadGswPropertiesFile();
+		if (action.equals("new") && action.equals("new")){
 			MainDao.loadGswPropertiesFile();
+			MainDao.getGswProperties().put("SOFTWARE", "");
+			MainDao.getGswProperties().put("VERSION", "");
+			MainDao.getGswProperties().put("STORAGE", "");
+			MainDao.getGswProperties().put("SCHEMA", "");
 		}
 		
 		// Update frames position and panels
@@ -209,22 +213,26 @@ public class MenuController extends AbstractController{
 		updateEpaSoftPanel();  		
 		updateGisPanel();
 		updateProjectPreferencesPanel();
-		if (acceptPreferences){
+		if (acceptPreferences) {
 			view.ppFrame.getPanel().getController().acceptPreferences();
 		}
 
     	// Update application title
     	view.updateTitle(gswPath);
+    	
+    	if (action.equals("new")) {
+    		view.ppFrame.setVisible(true);
+    	}
 		
 	}
 
 	
-	public void gswSave(){
+	public void gswSave() {
 		view.saveGswFile();
 	}
 
 	
-	public void gswSaveAs(){
+	public void gswSaveAs() {
 		String gswPath = gswChooseFile(true);
 		if (gswPath == "") return;		
     	MainDao.setGswPath(gswPath);
@@ -233,11 +241,11 @@ public class MenuController extends AbstractController{
 	}
 	
 	
-	private String gswChooseFile(){
+	private String gswChooseFile() {
 		return gswChooseFile(false);
 	}
 	
-	private String gswChooseFile(boolean save){
+	private String gswChooseFile(boolean save) {
 		
 		String path = "";
         JFileChooser chooser = new JFileChooser();
@@ -265,7 +273,7 @@ public class MenuController extends AbstractController{
 	}
 
 	
-	private void updateDbfParams(ProjectPreferencesPanel ppPanel){
+	private void updateDbfParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel DBF
 		ppPanel.setFolderShp(MainDao.getGswProperties().get("FOLDER_SHP"));
@@ -273,7 +281,7 @@ public class MenuController extends AbstractController{
 	}
 	
 	
-	private void updateDatabaseParams(ProjectPreferencesPanel ppPanel){
+	private void updateDatabaseParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel Database
 		ppPanel.setHost(MainDao.getGswProperties().get("POSTGIS_HOST"));
@@ -317,7 +325,7 @@ public class MenuController extends AbstractController{
 	}
 	
 	
-    private void updateProjectPreferencesPanel(){
+    private void updateProjectPreferencesPanel() {
     	
     	ProjectPreferencesPanel ppPanel = view.ppFrame.getPanel();
     	
@@ -333,10 +341,11 @@ public class MenuController extends AbstractController{
 		updateDatabaseParams(ppPanel);
 		
 		String storage = MainDao.getGswProperties().get("STORAGE").toUpperCase();
-		if (storage.equals("DBF")){
+		if (storage.equals("DBF")) {
 			ppPanel.setDbfSelected(true);
 			ppPanel.selectSourceType(); 
-		} else{
+		} 
+		else {
 			ppPanel.setDatabaseSelected(true);
 			ppPanel.selectSourceType(); 
 		}
@@ -344,7 +353,7 @@ public class MenuController extends AbstractController{
 	}	    
     
 
-    private void updateEpaSoftPanel(){
+    private void updateEpaSoftPanel() {
     	
     	EpaSoftPanel epaSoftPanel = view.epaSoftFrame.getPanel();
     	epaSoftPanel.setFileInp(MainDao.getGswProperties().get("FILE_INP"));
@@ -354,7 +363,7 @@ public class MenuController extends AbstractController{
 	}   
     
  
-    private void updateHecrasPanel(){
+    private void updateHecrasPanel() {
     	
     	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
     	hecRasPanel.setFileAsc(MainDao.getGswProperties().get("HECRAS_FILE_ASC"));
@@ -363,7 +372,7 @@ public class MenuController extends AbstractController{
 	}    
     
     
-    private void updateGisPanel(){
+    private void updateGisPanel() {
     	
     	GisPanel gisPanel = view.gisFrame.getPanel();
     	gisPanel.setProjectFolder(MainDao.getGswProperties().get("GIS_FOLDER"));
@@ -377,23 +386,23 @@ public class MenuController extends AbstractController{
  
     
 	// Menu Project example
-	public void exampleEpanet(){
+	public void exampleEpanet() {
 		MainDao.setWaterSoftware("EPANET");
 		createExampleSchema("epanet");
 	}
 
-	public void exampleEpaswmm(){
+	public void exampleEpaswmm() {
 		MainDao.setWaterSoftware("EPASWMM");
 		createExampleSchema("epaswmm");
 	}
 
-	public void exampleHecras(){
+	public void exampleHecras() {
 		MainDao.setWaterSoftware("HECRAS");
        	createExampleSchema("hecras");
 	}
 	
 	
-	private void createExampleSchema(String softwareName){
+	private void createExampleSchema(String softwareName) {
 		
 		// Get default SRID. Never ask user
 //		String sridValue = prop.get("SRID_DEFAULT", "25831");		
@@ -411,7 +420,7 @@ public class MenuController extends AbstractController{
 		
 		String schemaName = "sample_"+softwareName;
 		boolean status = true;
-		if (softwareName.equals("hecras")){
+		if (softwareName.equals("hecras")) {
 			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
 		}
 		else{
@@ -420,7 +429,7 @@ public class MenuController extends AbstractController{
 		
 		if (status){
 			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()){
+			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('example "+softwareName+"', 'giswater software', '')";
 				Utils.getLogger().info(sql);
 				MainDao.executeSql(sql, false);
@@ -442,7 +451,7 @@ public class MenuController extends AbstractController{
 						MainDao.rollbackSchema(schemaName);
 						return;
 					}
-					if (softwareName.equals("hecras")){				
+					if (softwareName.equals("hecras")) {				
 						// Trough Load Raster
 						String rasterName = "sample_mdt.asc";	 						
 						String rasterPath = folderRoot+"samples/"+rasterName;	 						
@@ -450,7 +459,7 @@ public class MenuController extends AbstractController{
 							Utils.showMessage(view, "schema_creation_completed", schemaName);
 						}						
 					}	
-					else{
+					else {
 						Utils.showMessage(view, "schema_creation_completed", schemaName);
 					}
 				} catch (Exception e) {
@@ -463,7 +472,7 @@ public class MenuController extends AbstractController{
 				Utils.logError("Error updateSchema. Schema could not be created");
 			}		
 		}
-		else{
+		else {
 			MainDao.rollbackSchema(schemaName);
 			Utils.logError("Error createSchema. Schema could not be created");
 		}

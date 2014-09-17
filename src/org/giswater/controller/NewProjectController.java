@@ -25,8 +25,6 @@ import java.sql.ResultSet;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
@@ -40,7 +38,7 @@ import org.giswater.util.Utils;
 public class NewProjectController extends AbstractController {
 
 	private ProjectPanel view;
-	private String software;
+	private String waterSoftware;
 	private TableModelSrid model;
 	private TableColumnModel tcm;
 	private ProjectPreferencesPanel parentPanel;
@@ -48,7 +46,7 @@ public class NewProjectController extends AbstractController {
     
     public NewProjectController(ProjectPanel view) {
     	this.view = view;	
-    	this.software = MainDao.getWaterSoftware();
+    	this.waterSoftware = MainDao.getWaterSoftware();
 	}
    
 	
@@ -174,7 +172,7 @@ public class NewProjectController extends AbstractController {
 		MainDao.savePropertiesFile(); 
 		
 		// Execute task: CreateSchema
-		CreateSchemaTask task = new CreateSchemaTask(software, schemaName, sridValue);
+		CreateSchemaTask task = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
         task.setParams(title, author, date);
         task.setController(this);
         task.setParentPanel(parentPanel);
@@ -194,33 +192,38 @@ public class NewProjectController extends AbstractController {
 	}
 	
 	
-	// TODO: When Load Data check is enabled
-	public void loadData(){
+    public void chooseFile() {
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setDialogTitle(Utils.getBundleString("Select file"));
+        File file = new File(MainDao.getGswProperties().get("FILE_INP", MainDao.getRootFolder()));	
+        chooser.setCurrentDirectory(file.getParentFile());
+        int returnVal = chooser.showOpenDialog(view);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileImport = chooser.getSelectedFile();
+            view.setFileImport(fileImport.getAbsolutePath());            
+        }
+
+    }
+
+
+	public void enableImportData() {
+		
+		if (waterSoftware.equals("HECRAS")) {
+			view.enableImportData(false);	
+		}
+		else {
+			view.enableImportData(true);	
+		}
 		
 	}
 	
 	
-    public void chooseFileLoadInp() {
-
-        JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("INP extension file", "inp");
-        chooser.setFileFilter(filter);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_load_inp"));
-        File file = new File(MainDao.getGswProperties().get("FILE_INP_LOAD", MainDao.getRootFolder()));	
-        chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(view);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File fileLoadInp = chooser.getSelectedFile();
-            String path = fileLoadInp.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".inp";
-                fileLoadInp = new File(path);
-            }
-            view.setFileLoadInp(fileLoadInp.getAbsolutePath());            
-        }
-
-    }
+	// TODO: When Import Data check is enabled
+	public void importData(){
+		
+	}
 
 	
 }

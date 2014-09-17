@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
+import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
@@ -40,12 +41,16 @@ import org.giswater.util.Utils;
 
 public class ProjectPreferencesController extends AbstractController {
 
+	private static final Integer PROJECT_DIALOG_WIDTH = 420; 
+	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
+	private static final Integer GIS_DIALOG_WIDTH = 420; 
+	private static final Integer GIS_DIALOG_HEIGHT = 245; 
+	
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
 	private EpaSoftPanel epaSoftPanel;
     private String usersFolder;
 	private String waterSoftware;
-	private JDialog projectDialog;
 
 
 	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
@@ -78,6 +83,7 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	private void customizePanel() {
 		
+		// HECRAS
 		if (waterSoftware.equals("HECRAS")) {
 			mainFrame.epaSoftFrame.setVisible(false);
 			mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
@@ -88,14 +94,22 @@ public class ProjectPreferencesController extends AbstractController {
 				Utils.logError(e);
 			}			
 		}
+		
+		// EPASWMM or EPANET
 		else {
 			if (waterSoftware.equals("EPASWMM")) {
+				epaSoftPanel.setButton4("Timeseries", "showTimeseries");
+				epaSoftPanel.setButton5("Arc Catalog", "showArcCatalog");
+				epaSoftPanel.setButton6("Hydrologic catalog", "showHydrologyCatalog");
 				epaSoftPanel.setDesignButton("Raingage", "showRaingage");
 				epaSoftPanel.setOptionsButton("Options", "showInpOptions");
 				epaSoftPanel.setReportButton("Report options", "showReport");
 				epaSoftPanel.setSubcatchmentVisible(true);
 			}
 			else if (waterSoftware.equals("EPANET")) {
+				epaSoftPanel.setButton4("Emitters", "showEmitters");
+				epaSoftPanel.setButton5("Demands", "showDemands");
+				epaSoftPanel.setButton6("Rules", "showRules");
 				epaSoftPanel.setDesignButton("Times values", "showTimesValues");
 				epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
 				epaSoftPanel.setReportButton("Report options", "showReportEpanet");
@@ -113,6 +127,7 @@ public class ProjectPreferencesController extends AbstractController {
 				}
 	        }			
 		}
+		
 		mainFrame.updateConnectionInfo();
 		
 	}
@@ -185,12 +200,24 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	// Database configuration
 	private void checkDataManagerTables(String schemaName) {
-		epaSoftPanel.enableConduit(MainDao.checkTable(schemaName, "cat_arc"));
+		
 		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
-		epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
-		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-		epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
 		epaSoftPanel.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));	
+		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
+		epaSoftPanel.enableControls(MainDao.checkTable(schemaName, "inp_controls"));	
+		epaSoftPanel.enableProjectData(MainDao.checkTable(schemaName, "inp_project_id"));	
+		
+		if (waterSoftware.equals("EPASWMM")) {
+			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
+			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "cat_arc"));
+			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
+		}
+		else if (waterSoftware.equals("EPANET")) {
+			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_emitter"));
+			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "inp_demand"));
+			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "inp_rules"));	
+		}
+		
 	}
 	
 	
@@ -413,9 +440,10 @@ public class ProjectPreferencesController extends AbstractController {
 		npController.setParentPanel(view);
 		npController.initModel();
 		npController.updateTableModel();
+		npController.enableImportData();
 		
 		// Open New Project dialog
-        projectDialog = Utils.openDialogForm(projectPanel, view, "Create Project", 420, 480);
+        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, "Create Project", PROJECT_DIALOG_WIDTH, PROJECT_DIALOG_HEIGHT);
         projectPanel.setParent(projectDialog);
         projectDialog.setVisible(true);
 		
@@ -489,15 +517,16 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 		
 
-	public void createGisProject(){
+	public void createGisProject() {
 		
-		mainFrame.gisFrame.setVisible(true);
-		try {
-			mainFrame.gisFrame.setSelected(true);
-		} catch (PropertyVetoException e) {
-			Utils.logError(e);
-		}
+//		mainFrame.gisFrame.setVisible(true);
+//		mainFrame.gisFrame.getPanel().selectSourceType();
 		
+		GisPanel gisPanel = new GisPanel();
+		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, "Create GIS Project", GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT);
+		gisPanel.setParent(gisDialog);
+        gisDialog.setVisible(true);
+        
 	}
     
 		

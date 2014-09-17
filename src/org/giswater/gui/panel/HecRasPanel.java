@@ -60,7 +60,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnFileSdf;
 	private JButton btnClose;
 
-	private static final Font FONT_14 = new Font("Tahoma", Font.BOLD, 14);
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	
 	
 	public HecRasPanel() {
@@ -133,12 +133,12 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[5px:n][:572.00px:531px,grow]", "[5px:n][][]"));
+		setLayout(new MigLayout("", "[:572.00px:531px][10px:n:8px]", "[5px:n][][]"));
 		
 		panelFileManager = new JPanel();
-		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_14, null));
-		add(panelFileManager, "cell 1 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[50px:n][grow][10px:n][][]", "[40px:n][10px:n][40px:n]"));
+		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelFileManager, "cell 0 1 2 1,grow");
+		panelFileManager.setLayout(new MigLayout("", "[50px:n][grow][5px:n][][]", "[34px:n][10px:n][34px:n]"));
 		
 		JLabel lblAscFile_1 = new JLabel();
 		panelFileManager.add(lblAscFile_1, "cell 0 0,alignx right");
@@ -153,15 +153,17 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		txtFileAsc.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnFileAsc = new JButton();
+		btnFileAsc.setMinimumSize(new Dimension(65, 9));
 		panelFileManager.add(btnFileAsc, "cell 3 0");
 		btnFileAsc.setActionCommand("chooseFileAsc");
 		btnFileAsc.setText("...");
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
+		btnLoadRaster.setPreferredSize(new Dimension(98, 23));
 		panelFileManager.add(btnLoadRaster, "cell 4 0");
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
-		btnLoadRaster.setMinimumSize(new Dimension(110, 23));
+		btnLoadRaster.setMinimumSize(new Dimension(85, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
 		
 		JLabel lblAscFile = new JLabel();
@@ -177,20 +179,22 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		btnFileSdf = new JButton();
+		btnFileSdf.setMinimumSize(new Dimension(65, 9));
 		panelFileManager.add(btnFileSdf, "cell 3 2");
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
+		btnExportSdf.setPreferredSize(new Dimension(98, 23));
 		panelFileManager.add(btnExportSdf, "cell 4 2");
-		btnExportSdf.setMinimumSize(new Dimension(110, 23));
+		btnExportSdf.setMinimumSize(new Dimension(80, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 1 2,alignx right");
-		btnClose.setMinimumSize(new Dimension(60, 23));
+		add(btnClose, "cell 0 2,alignx right");
+		btnClose.setMinimumSize(new Dimension(65, 23));
 		btnClose.setMaximumSize(new Dimension(105, 23));
 		btnClose.setActionCommand("closePanel");
 
