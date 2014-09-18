@@ -37,7 +37,6 @@ import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaSoftPanel;
-import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
@@ -211,7 +210,6 @@ public class MenuController extends AbstractController{
 		view.updateFrames();
 		updateHecrasPanel();
 		updateEpaSoftPanel();  		
-		updateGisPanel();
 		updateProjectPreferencesPanel();
 		if (acceptPreferences) {
 			view.ppFrame.getPanel().getController().acceptPreferences();
@@ -370,20 +368,7 @@ public class MenuController extends AbstractController{
     	hecRasPanel.setFileSdf(MainDao.getGswProperties().get("HECRAS_FILE_SDF"));
     	
 	}    
-    
-    
-    private void updateGisPanel() {
-    	
-    	GisPanel gisPanel = view.gisFrame.getPanel();
-    	gisPanel.setProjectFolder(MainDao.getGswProperties().get("GIS_FOLDER"));
-    	gisPanel.setProjectName(MainDao.getGswProperties().get("GIS_NAME"));
-    	gisPanel.setProjectSoftware(MainDao.getGswProperties().get("GIS_SOFTWARE"));
-    	gisPanel.setDataStorage(MainDao.getGswProperties().get("GIS_TYPE"));  
-    	gisPanel.setSelectedSchema(MainDao.getGswProperties().get("GIS_SCHEMA"));  
-    	
-	}       
-    
- 
+     
     
 	// Menu Project example
 	public void exampleEpanet() {
@@ -521,7 +506,7 @@ public class MenuController extends AbstractController{
 		String info2 = "Please read the documentation and enjoy using the software";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2, versionCode);
 		about.setModal(true);
-		about.setLocationRelativeTo(null);
+		about.setLocationRelativeTo(view);
 		about.setVisible(true);
 		
 	}
@@ -548,7 +533,7 @@ public class MenuController extends AbstractController{
 		String info3 = "View license file";
 		LicenseDialog about = new LicenseDialog(title, info, info1, info2, info3);
 		about.setModal(true);
-		about.setLocationRelativeTo(null);
+		about.setLocationRelativeTo(view);
 		about.setVisible(true);
 		
 	}
@@ -563,7 +548,7 @@ public class MenuController extends AbstractController{
 			" Vicente de Medina, Xavier Torret</i> and <i>David Erill</i></HTML>";
 		AcknowledgmentDialog about = new AcknowledgmentDialog(title, info, info2);
 		about.setModal(true);
-		about.setLocationRelativeTo(null);
+		about.setLocationRelativeTo(view);
 		about.setVisible(true);
 		
 	}

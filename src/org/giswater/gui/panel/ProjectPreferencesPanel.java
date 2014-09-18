@@ -440,9 +440,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	// Water software
 	public void setWaterSoftware(String waterSoftware) {
 		
-		optEpanet.setSelected(false);
-		optEpaSwmm.setSelected(false);
-		optHecras.setSelected(false);
 		groupSoftware.clearSelection();
 		if (waterSoftware.equals("EPANET")) {
 			optEpanet.setSelected(true);

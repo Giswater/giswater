@@ -114,7 +114,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
-	public GisFrame gisFrame;
 	private JPanel statusPanel;
 	private JProgressBar progressInfo;
 	private JLabel lblInfo;
@@ -321,9 +320,9 @@ public class MainFrame extends JFrame implements ActionListener{
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		
         statusPanel = new JPanel();
-        statusPanel.setBounds(0, 608, 649, 22);
+        statusPanel.setBounds(54, 596, 446, 34);
         desktopPane.add(statusPanel);
-        statusPanel.setLayout(new MigLayout("", "[50px:80px,grow][10px:n][100px:200px,grow][130px:n:130px]", "[20px:n:20px,fill]"));
+        statusPanel.setLayout(new MigLayout("", "[50px:80px,grow][10px:n][100px:200px,grow][130px:n:130px]", "[::25px,fill]"));
         
         lblInfo = new JLabel();
         lblInfo.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -331,7 +330,7 @@ public class MainFrame extends JFrame implements ActionListener{
         
         lblProcessInfo = new JLabel();
         lblProcessInfo.setFont(new Font("Tahoma", Font.PLAIN, 11));
-        statusPanel.add(lblProcessInfo, "cell 2 0,alignx left");
+        statusPanel.add(lblProcessInfo, "cell 2 0,alignx right");
         
         progressInfo = new JProgressBar();
         progressInfo.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -373,18 +372,13 @@ public class MainFrame extends JFrame implements ActionListener{
         hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
-        gisFrame = new GisFrame();
               
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
         desktopPane.add(ppFrame);            
         desktopPane.add(configFrame);
-        desktopPane.add(gisFrame);
         
         // Set specific configuration
-        gisFrame.setLocation(100, 80);
-        gisFrame.setGisExtension("qgs");
-        gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
         ppFrame.setTitle("Project Preferences");
         epaSoftFrame.setTitle("Main form");
         
@@ -411,12 +405,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	public void updateTitle(String path){
+		
 		String title = BUNDLE.getString("MainFrame.this.title");
 		if (versionCode != null) {
-			title+= " v"+versionCode;
+			title+= " "+versionCode;
 		}
 		title+= " - " + path;
 		setTitle(title);
+		
 	}
 	
 	
@@ -526,9 +522,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	   
     
     
-    public void putGisParams() {
+    public void putGisParams(GisPanel gisPanel) {
     	
-    	GisPanel gisPanel = gisFrame.getPanel();
     	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
     	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
     	MainDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
@@ -551,9 +546,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		// Get Project preferences parameters
 		putProjectPreferencecsParams();		
-    	
-    	// Get GIS parameters
-    	putGisParams();
     	
     	// Save .gsw file
     	MainDao.saveGswPropertiesFile();
@@ -614,20 +606,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		manageFrames(configFrame);
 	}
 	
-	public void openGisProject() {
-		
-		manageFrames(gisFrame);
-		gisFrame.setGisExtension("qgs");
-		gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
-		try {
-			gisFrame.setMaximum(false);
-		} catch (PropertyVetoException e) {
-            Utils.logError(e);
-		}		
-		
-	}	
-	
-	
+
 	public void updateEpaFrames(){
 		ppFrame.getPanel().selectSourceType();
 	}
@@ -658,7 +637,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		epaSoftFrame.getPanel().setCursor(cursor);
 		hecRasFrame.getPanel().setCursor(cursor);
 		configFrame.getPanel().setCursor(cursor);
-		gisFrame.getPanel().setCursor(cursor);
 		this.setCursor(cursor);
 		
 	}

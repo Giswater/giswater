@@ -53,7 +53,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
-import org.giswater.gui.frame.GisFrame;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -65,7 +64,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private JDialog parent;
-	private GisFrame gisFrame;	
 	private JLabel lblProjectFolder;
 	private JButton btnProjectFolder;
 	private JLabel lblProjectName;
@@ -77,7 +75,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JComboBox<String> cboSoftware;
 
     private PropertiesMap gswProp;
-	private String gisExtension;   // qgs or gvp
+	private String gisExtension = "qgs";
 	private JComboBox<String> cboSchema;
 	private JLabel lblSchema;
 	private JLabel lblDataStorage;
@@ -98,18 +96,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	public void setParent(JDialog gisDialog) {
 		parent = gisDialog;		
 	}
-	
-	public GisFrame getFrame(){
-		return gisFrame;
-	}
-
-	public void setFrame(GisFrame gisFrame){
-		this.gisFrame = gisFrame;
-	}
-	
-	public void setGisExtension(String gis) {
-		this.gisExtension = gis;
-	}	
 	
 	public void setProjectFolder(String path) {
 		txtProjectFolder.setText(path);
@@ -376,6 +362,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		else if (gisType.equals("DBF")){
 			gisProjectDbf(gisExtension, folder + File.separator, name, software);
 		}
+		
+		MainClass.mdi.putGisParams(this);
 		
 	}
 
