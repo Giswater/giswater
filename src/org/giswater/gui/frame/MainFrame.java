@@ -364,7 +364,6 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	@SuppressWarnings("unused")
 	private void initFrames() throws PropertyVetoException{
 		
 		// Create and Add frames to main Panel
@@ -386,7 +385,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		new HecRasController(hecRasFrame.getPanel());
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
-        EpaSoftController mcEpaSof = new EpaSoftController(epaSoftFrame.getPanel(), this);
+        new EpaSoftController(epaSoftFrame.getPanel(), this);
         
         // Set frame sizes accordin desktop size
         getMainParams("MAIN");

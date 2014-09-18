@@ -84,24 +84,25 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JScrollPane scrollPane;
 	
 	
-	public ConfigPanel(ConfigFrame configFrame) {
-		this.configFrame = configFrame;
+	public ConfigPanel() {
 		try {
 			initConfig();
 		} catch (MissingResourceException e) {
 			Utils.showError(e);
-			System.exit(ERROR);
 		}		
 	}
 	
-	public ConfigFrame getFrame(){
+	public ConfigFrame getFrame() {
 		return configFrame;
 	}
-
+	
+	public void setFrame(ConfigFrame configFrame) {
+		this.configFrame = configFrame;
+	}
+	
 	public void setController(ConfigController controller) {
 		this.controller = controller;
 	}
-	
 	
 	public void setAutoConnect(String isChecked) {
 		Boolean connect = Boolean.parseBoolean(isChecked);
@@ -129,27 +130,27 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		return txtFileDbAdmin.getText().trim().toLowerCase();
 	}	
 	
-	public void setOpenInp(String status){
-		if (status.equals("always")){
+	public void setOpenInp(String status) {
+		if (status.equals("always")) {
 			optInpAlways.setSelected(true);
 		}
-		else if (status.equals("ask")){
+		else if (status.equals("ask")) {
 			optInpAsk.setSelected(true);
 		}
-		else if (status.equals("never")){
+		else if (status.equals("never")) {
 			optInpNever.setSelected(true);
 		}		
 	}
 	
 	public String getOpenInp() {
 		String value = "";
-		if (optInpAlways.isSelected()){
+		if (optInpAlways.isSelected()) {
 			value = optInpAlways.getName();
 		}
-		else if (optInpAsk.isSelected()){
+		else if (optInpAsk.isSelected()) {
 			value = optInpAsk.getName();
 		}
-		else if (optInpNever.isSelected()){
+		else if (optInpNever.isSelected()) {
 			value = optInpNever.getName();
 		}		
 		return value;
@@ -169,147 +170,147 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	public String getOverwriteInp() {
 		String value = "false";
-		if (optInpOwEnabled.isSelected()){
+		if (optInpOwEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setOverwriteInp(String status){
-		if (status.equals("true")){
+	public void setOverwriteInp(String status) {
+		if (status.equals("true")) {
 			optInpOwEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optInpOwDisabled.setSelected(true);
 		}	
 	}
 	
 	public String getOverwriteRpt() {
 		String value = "false";
-		if (optRptOwEnabled.isSelected()){
+		if (optRptOwEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setOverwriteRpt(String status){
-		if (status.equals("true")){
+	public void setOverwriteRpt(String status) {
+		if (status.equals("true")) {
 			optRptOwEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optRptOwDisabled.setSelected(true);
 		}	
 	}
 	
 	public String getAutoImportRpt() {
 		String value = "false";
-		if (optImportEnabled.isSelected()){
+		if (optImportEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
 	public void setAutoImportRpt(String status) {
-		if (status.equals("true")){
+		if (status.equals("true")) {
 			optImportEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optImportDisabled.setSelected(true);
 		}	
 	}
 	
 	public String getOpenRpt() {
 		String value = "";
-		if (optRptAlways.isSelected()){
+		if (optRptAlways.isSelected()) {
 			value = optRptAlways.getName();
 		}
-		else if (optRptAsk.isSelected()){
+		else if (optRptAsk.isSelected()) {
 			value = optRptAsk.getName();
 		}
-		else if (optRptNever.isSelected()){
+		else if (optRptNever.isSelected()) {
 			value = optRptNever.getName();
 		}		
 		return value;
 	}	
 	
-	public void setSqlLog(String status){
-		if (status.equals("true")){
+	public void setSqlLog(String status) {
+		if (status.equals("true")) {
 			optSQLEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optSQLDisabled.setSelected(true);
 		}
 	}
 	
 	public String getSqlLog() {
 		String value = "false";
-		if (optSQLEnabled.isSelected()){
+		if (optSQLEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setSridQuestion(String status){
-		if (status.equals("true")){
+	public void setSridQuestion(String status) {
+		if (status.equals("true")) {
 			optSridEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optSridDisabled.setSelected(true);
 		}
 	}
 	
 	public String getSridQuestion() {
 		String value = "false";
-		if (optSridEnabled.isSelected()){
+		if (optSridEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setLoadRaster(String status){
-		if (status.equals("true")){
+	public void setLoadRaster(String status) {
+		if (status.equals("true")) {
 			optLoadRasterEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optLoadRasterDisabled.setSelected(true);
 		}
 	}
 	
 	public String getLoadRaster() {
 		String value = "false";
-		if (optLoadRasterEnabled.isSelected()){
+		if (optLoadRasterEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setCheckUpdates(String status){
-		if (status.equals("true")){
+	public void setCheckUpdates(String status) {
+		if (status.equals("true")) {
 			optUpdatesEnabled.setSelected(true);
 		}
-		else if (status.equals("false")){
+		else if (status.equals("false")) {
 			optUpdatesDisabled.setSelected(true);
 		}
 	}
 	
 	public String getCheckUpdates() {
 		String value = "false";
-		if (optUpdatesEnabled.isSelected()){
+		if (optUpdatesEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
 	}	
 	
-	public void setLogFolderSize(Integer size){
+	public void setLogFolderSize(Integer size) {
 		txtLogFolderSize.setText(size.toString());
 	}
 	
 	public Integer getLogFolderSize() {
 		Integer size = 10;
         String aux = txtLogFolderSize.getText();
-        try{
+        try {
 	        size = Integer.parseInt(aux);		
-		} catch (NumberFormatException e){
+		} catch (NumberFormatException e) {
         	String msg = "Value of Log folder size is not valid. It must be a number";
         	Utils.logError(msg);
         }              
@@ -319,7 +320,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n][80px:n][72.00][72px:n][75px:n]", "[8px:n][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
+		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n][80px:n][65px][72px:110px][75px:n]", "[8px:n][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -331,7 +332,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    ButtonGroup group8 = new ButtonGroup();
 	    ButtonGroup group9 = new ButtonGroup();
 	    ButtonGroup group10 = new ButtonGroup();
-	    
 	    
 		JLabel lblOpenInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenInpFiles.text"));
 		add(lblOpenInpFiles, "cell 1 1,alignx trailing");
@@ -369,9 +369,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		optRptNever.setName("never");
 		group2.add(optRptNever);		   	    
 		
-
-		
-		
 		lblImportResults = new JLabel(BUNDLE.getString("ConfigPanel.lblImportResults.text"));
 		add(lblImportResults, "cell 1 3,alignx right");
 		
@@ -384,10 +381,9 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(optImportDisabled, "cell 4 3");
 	    optImportDisabled.setName("true");
 	    group10.add(optImportDisabled);
-		
-				
-				JLabel lblOverwriteInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteInpFiles.text"));
-				add(lblOverwriteInpFiles, "cell 1 4,alignx right");
+	
+		JLabel lblOverwriteInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteInpFiles.text"));
+		add(lblOverwriteInpFiles, "cell 1 4,alignx right");
 		
 		optInpOwEnabled = new JRadioButton("Enabled");
 		add(optInpOwEnabled, "cell 3 4");
@@ -415,18 +411,18 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblCreateSqlLog = new JLabel(BUNDLE.getString("ConfigPanel.lblCreateSqlLog.text"));
 		add(lblCreateSqlLog, "cell 1 6,alignx right");
 			    
-			    optSQLEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
-			    add(optSQLEnabled, "cell 3 6");
-			    optSQLEnabled.setName("true");
-			    group3.add(optSQLEnabled);
-			    
-			    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); 
-			    add(optSQLDisabled, "cell 4 6");
-			    optSQLDisabled.setName("false");
-			    group3.add(optSQLDisabled);
-		
-			    JLabel lblSrid = new JLabel(BUNDLE.getString("ConfigPanel.lblSrid.text"));
-			    add(lblSrid, "cell 1 7,alignx right");
+	    optSQLEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
+	    add(optSQLEnabled, "cell 3 6");
+	    optSQLEnabled.setName("true");
+	    group3.add(optSQLEnabled);
+	    
+	    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); 
+	    add(optSQLDisabled, "cell 4 6");
+	    optSQLDisabled.setName("false");
+	    group3.add(optSQLDisabled);
+
+	    JLabel lblSrid = new JLabel(BUNDLE.getString("ConfigPanel.lblSrid.text"));
+	    add(lblSrid, "cell 1 7,alignx right");
 		
 		optSridEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
 		add(optSridEnabled, "cell 3 7");
@@ -438,8 +434,8 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		optSridDisabled.setName("false");
 		group5.add(optSridDisabled);
 		
-			    JLabel lblLoadRaster = new JLabel(BUNDLE.getString("ConfigPanel.lblLoadRaster.text"));
-			    add(lblLoadRaster, "cell 1 8,alignx right");
+	    JLabel lblLoadRaster = new JLabel(BUNDLE.getString("ConfigPanel.lblLoadRaster.text"));
+	    add(lblLoadRaster, "cell 1 8,alignx right");
 		
 		optLoadRasterEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
 		add(optLoadRasterEnabled, "cell 3 8");
@@ -468,10 +464,10 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(lblLogFolderSize, "cell 1 10,alignx right");
 		
 		JLabel lblMb = new JLabel(BUNDLE.getString("ConfigPanel.lblMb.text"));
-		add(lblMb, "cell 4 10,alignx left");
+		add(lblMb, "cell 5 10,alignx left");
 		
 		btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text")); 
-		add(btnOpenLogFolder, "cell 5 10 2 1,alignx right");
+		add(btnOpenLogFolder, "cell 6 10,alignx right");
 		btnOpenLogFolder.setActionCommand("openLogFolder");
 		
 		chkAutostart = new JCheckBox(BUNDLE.getString("ConfigPanel.chkAutostart.text")); 
@@ -501,20 +497,20 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
 		
 		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text"));
-		add(lblNotepad, "cell 2 16 5 1");
+		add(lblNotepad, "cell 3 16 4 1");
 		
 		JLabel lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text"));
-		add(lblNotepad2, "cell 2 17 6 1");
+		add(lblNotepad2, "cell 3 17 5 1");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(4);		
 		
 		txtLogFolderSize = new JTextField();
-		add(txtLogFolderSize, "cell 3 10,growx");
+		add(txtLogFolderSize, "cell 3 10 2 1,growx");
 		txtLogFolderSize.setText("");
 		txtLogFolderSize.setColumns(8);
 		txtLogFolderSize.setDocument(maxLength);	
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
-		add(btnAccept, "cell 6 19");
+		add(btnAccept, "cell 6 19,alignx right");
 		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("configAccept");
 		
