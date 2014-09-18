@@ -184,15 +184,21 @@ public class MenuController extends AbstractController{
 	
 	public void gswOpen(boolean chooseFile, boolean acceptPreferences){
 		
+		File gswFile = null;
 		String gswPath = "";
+		String gswName = "";
 		if (chooseFile) {
-			gswPath = gswChooseFile();
-			if (gswPath == "") return;
+			gswFile = gswChooseFile();
+			if (gswFile == null) return;		
+			gswPath = gswFile.getAbsolutePath();
+			gswName = gswFile.getName();
 			MainDao.setGswPath(gswPath);
 			prop.put("FILE_GSW", gswPath);			
 		}
 		else {
 			gswPath = MainDao.getGswPath();
+			gswFile = new File(gswPath);
+			gswName = gswFile.getName();
 		}
 		if (gswPath == "") return;
 		
@@ -216,7 +222,7 @@ public class MenuController extends AbstractController{
 		}
 
     	// Update application title
-    	view.updateTitle(gswPath);
+    	view.updateTitle(gswName);
     	
     	if (action.equals("new")) {
     		view.ppFrame.setVisible(true);
@@ -228,37 +234,41 @@ public class MenuController extends AbstractController{
 	public void gswSave() {
 		view.saveGswFile();
 	}
-
 	
 	public void gswSaveAs() {
-		String gswPath = gswChooseFile(true);
-		if (gswPath == "") return;		
+		
+		File gswFile = gswChooseFile(true);
+		if (gswFile == null) return;		
+		String gswPath = gswFile.getAbsolutePath();
+		String gswName = gswFile.getName();
     	MainDao.setGswPath(gswPath);
     	view.saveGswFile();
-    	view.updateTitle(gswPath);    	
+    	view.updateTitle(gswName);  
+    	
 	}
 	
 	
-	private String gswChooseFile() {
+	private File gswChooseFile() {
 		return gswChooseFile(false);
 	}
 	
-	private String gswChooseFile(boolean save) {
+	private File gswChooseFile(boolean save) {
 		
 		String path = "";
+		File file = null;
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("GSW extension file", "gsw");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("GSW file"));
-        if (save){
+        if (save) {
         	chooser.setApproveButtonText("Save");        
         }
         File fileProp = new File(prop.get("FILE_GSW", System.getProperty("user.home")));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
+            file = chooser.getSelectedFile();
             path = file.getAbsolutePath();
             if (path.lastIndexOf(".") == -1) {
                 path += ".gsw";
@@ -266,7 +276,7 @@ public class MenuController extends AbstractController{
             }
         }
         
-        return path;
+        return file;
         
 	}
 

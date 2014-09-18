@@ -139,19 +139,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		initConfig();
 		setIcons();
 		setNewVersionVisible(newVersion, ftpVersion);
-		try {
-			initFrames();
-			hecRasFrame.getPanel().enableButtons(isConnected);
-		} catch (PropertyVetoException e) {
-            Utils.logError(e.getMessage());
-		}
+		initFrames();
+		hecRasFrame.getPanel().enableButtons(isConnected);
 		
 	}
 
 
 	public void setNewVersionVisible(boolean newVersion, String ftpVersion) {
 		mnNewVersionAvailable.setVisible(newVersion);
-		String msg = "Download version v"+ftpVersion;
+		String msg = "Download version "+ftpVersion;
 		mntmDownload.setText(msg);
 	}
 
@@ -364,7 +360,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	private void initFrames() throws PropertyVetoException{
+	private void initFrames() {
 		
 		// Create and Add frames to main Panel
         epaSoftFrame = new EpaSoftFrame();
@@ -403,7 +399,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	public void updateTitle(String path){
+	public void updateTitle(String path) {
 		
 		String title = BUNDLE.getString("MainFrame.this.title");
 		if (versionCode != null) {
@@ -415,7 +411,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	public void updateFrames(){
+	public void updateFrames() {
 		
 		getFrameParams(configFrame, "CONFIG");			
 		getFrameParams(epaSoftFrame, "EPASOFT");
@@ -441,7 +437,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	private void getMainParams (String prefix) throws PropertyVetoException{
+	private void getMainParams (String prefix) {
 
         int x, y, width, height;
         boolean maximized;
