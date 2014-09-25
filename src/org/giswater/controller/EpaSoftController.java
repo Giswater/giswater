@@ -21,11 +21,13 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.ResultSet;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -425,18 +427,36 @@ public class EpaSoftController extends AbstractController {
 		String software = gswProp.get("SOFTWARE");
 		view.setTitle(software);
 		String storage = gswProp.get("STORAGE");
-		if (storage.equals("DBF")){
+		if (storage.equals("DBF")) {
 			view.enableDatabaseButtons(false);
 		}
-		else{
+		else {
 			view.enableDatabaseButtons(true);
 		}
 				
 	}	
 	
 	
+    public void gswEdit() {
+		openFrame(mainFrame.ppFrame);
+    }
+    
+    
+    private void openFrame(JInternalFrame frame) {
+
+        try {
+        	frame.setVisible(true);
+       		frame.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}
+    	
+    }
+    
+    
 	public void closePanel() {
 		view.getFrame().setVisible(false);
+		gswEdit();
 	}
 	
 	

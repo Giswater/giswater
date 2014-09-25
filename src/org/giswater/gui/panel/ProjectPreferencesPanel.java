@@ -96,7 +96,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JScrollPane scrollPane_1;
 	
 	private JButton btnAccept;
-	private JButton btnApply;
 	private JButton btnClose;
 	
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
@@ -311,13 +310,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		lblInfo = new JLabel(""); 
 		add(lblInfo, "flowx,cell 1 4 2 1");
 		
-		btnApply = new JButton();
-		btnApply.setMnemonic(KeyEvent.VK_P);
-		btnApply.setText(BUNDLE.getString("ProjectPreferencesPanel.btnApply.text")); 
-		btnApply.setMinimumSize(new Dimension(72, 23));
-		btnApply.setActionCommand("applyPreferences");
-		add(btnApply, "flowx,cell 6 4,alignx right");
-		
 		btnAccept = new JButton();
 		btnAccept.setMnemonic(KeyEvent.VK_A);
 		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
@@ -363,7 +355,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		// Panel Database connection
 		btnTest.addActionListener(this);
-		btnApply.addActionListener(this);
 		btnAccept.addActionListener(this);
 		btnClose.addActionListener(this);
 		

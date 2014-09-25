@@ -61,6 +61,11 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnClose;
 
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	private JPanel panel;
+	private JButton btnNewButton;
+	private JButton btnErrorFile;
+	private JButton btnProjectData;
+	private JButton btnExportMdt;
 	
 	
 	public HecRasPanel() {
@@ -133,7 +138,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[:572.00px:531px][10px:n:8px]", "[5px:n][][]"));
+		setLayout(new MigLayout("", "[:507.00px:531px][10px:n:8px]", "[5px:n][][::50px][10px:n][]"));
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
@@ -192,8 +197,29 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panel, "cell 0 2 2 1,grow");
+		panel.setLayout(new MigLayout("", "[][][][]", "[]"));
+		
+		btnNewButton = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
+		btnNewButton.setMinimumSize(new Dimension(120, 23));
+		panel.add(btnNewButton, "cell 0 0");
+		
+		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
+		btnErrorFile.setMinimumSize(new Dimension(120, 23));
+		panel.add(btnErrorFile, "cell 1 0");
+		
+		btnProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
+		btnProjectData.setMinimumSize(new Dimension(120, 23));
+		panel.add(btnProjectData, "cell 2 0");
+		
+		btnExportMdt = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
+		btnExportMdt.setMinimumSize(new Dimension(120, 23));
+		panel.add(btnExportMdt, "cell 3 0");
+		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 0 2,alignx right");
+		add(btnClose, "cell 0 4,alignx right");
 		btnClose.setMinimumSize(new Dimension(65, 23));
 		btnClose.setMaximumSize(new Dimension(105, 23));
 		btnClose.setActionCommand("closePanel");

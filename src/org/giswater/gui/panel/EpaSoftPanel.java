@@ -90,6 +90,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
 	private JCheckBox chkSubcatchments;
+	private JButton btnEditProjectPreferences;
 
 	
 	public EpaSoftPanel() {
@@ -163,7 +164,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnSectorSelection = new JButton("Sector selection");
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection"); 
-		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
+		panelPreprocess.add(btnSectorSelection, "cell 0 0,alignx center");
 		
 		btnOptions = new JButton("Options");
 		btnOptions.setEnabled(false);
@@ -280,6 +281,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnResultSelector.setActionCommand("scenarioManagement");
 		panelPostprocess.add(btnResultSelector, "cell 1 0");
 		
+		btnEditProjectPreferences = new JButton(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
+		btnEditProjectPreferences.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.actionCommand")); //$NON-NLS-1$
+		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
+		add(btnEditProjectPreferences, "flowx,cell 0 8,alignx right");
+		
 		btnClose = new JButton();
 		btnClose.setText("Close");
 		btnClose.setMinimumSize(new Dimension(65, 23));
@@ -318,6 +324,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		// Postprocess options
 		btnResultCatalog.addActionListener(this);
 		btnResultSelector.addActionListener(this);
+		
+		btnEditProjectPreferences.addActionListener(this);
+		btnClose.addActionListener(this);
 		
 	}
 	

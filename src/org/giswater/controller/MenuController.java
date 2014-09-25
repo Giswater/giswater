@@ -45,7 +45,7 @@ import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
 
 
-public class MenuController extends AbstractController{
+public class MenuController extends AbstractController {
 
 	private MainFrame view;
 	private PropertiesMap prop;
@@ -71,11 +71,11 @@ public class MenuController extends AbstractController{
 	
 
 	// Menu File
-	public void openProject(){ 
+	public void openProject() { 
 		
 		// Select .sql to restore
 		String filePath = chooseFileBackup();
-		if (filePath.equals("")){
+		if (filePath.equals("")) {
 			return;
 		}
 		
@@ -88,16 +88,16 @@ public class MenuController extends AbstractController{
 	}
 	
 	
-	public void saveProject(){ 
+	public void saveProject() { 
 		
 		String schema = MainDao.getSchema();
-		if (schema == null){
+		if (schema == null) {
 			String msg = "Any schema selected. You need to select one to backup";
 			Utils.showMessage(msg);
 			return;
 		}
 		String filePath = chooseFileBackup();
-		if (filePath.equals("")){
+		if (filePath.equals("")) {
 			return;
 		}
 		MainDao.executeDump(schema, filePath);
@@ -131,10 +131,9 @@ public class MenuController extends AbstractController{
     
     private void openFrame(String prefix, JInternalFrame frame) {
 
-        boolean maximized = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_MAXIMIZED", "true"));
         try {
         	frame.setVisible(true);
-       		frame.setMaximum(maximized);
+       		frame.setMaximum(true);
 		} catch (PropertyVetoException e) {
 			Utils.logError(e);
 		}
@@ -143,7 +142,7 @@ public class MenuController extends AbstractController{
 	
     
     // Project preferences
-    public void gswNew(){
+    public void gswNew() {
     	
     	action = "new";
     	
@@ -165,24 +164,24 @@ public class MenuController extends AbstractController{
     }
     
     
-    public void gswEdit(){
+    public void gswEdit() {
     	action = "edit";
 		openFrame("PP", view.ppFrame);
     }
     
     
-	public void gswOpen(){
+	public void gswOpen() {
     	action = "open";
 		gswOpen(true, true);
 	}
 	
-	public void gswOpen(boolean chooseFile){
+	public void gswOpen(boolean chooseFile) {
     	action = "open";
 		gswOpen(chooseFile, true);
 	}
 	
 	
-	public void gswOpen(boolean chooseFile, boolean acceptPreferences){
+	public void gswOpen(boolean chooseFile, boolean acceptPreferences) {
 		
 		File gswFile = null;
 		String gswPath = "";
@@ -204,7 +203,7 @@ public class MenuController extends AbstractController{
 		
 		// Load .gsw file into memory
 		MainDao.loadGswPropertiesFile();
-		if (action.equals("new") && action.equals("new")){
+		if (action.equals("new") && action.equals("new")) {
 			MainDao.loadGswPropertiesFile();
 			MainDao.getGswProperties().put("SOFTWARE", "");
 			MainDao.getGswProperties().put("VERSION", "");
@@ -298,9 +297,9 @@ public class MenuController extends AbstractController{
 		ppPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));		
 		Boolean remember = Boolean.parseBoolean(MainDao.getGswProperties().get("POSTGIS_REMEMBER"));
 		ppPanel.setRemember(remember);
-		if (remember){
+		if (remember) {
 			ppPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
-		} else{
+		} else {
 			ppPanel.setPassword("");
 		}
 		
@@ -309,18 +308,18 @@ public class MenuController extends AbstractController{
         
         // Autoconnect?
         Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
-       	if (autoConnect && remember){
+       	if (autoConnect && remember) {
        		MainDao.silenceConnection();
        		ppPanel.setDatabase(MainDao.getDb());
         }
         
         // Update text open/close button
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			ppPanel.setConnectionText(Utils.getBundleString("close_connection"));
 			ppPanel.enableConnectionParameters(false);			
 			view.enableMenuDatabase(true);
 		}
-		else{
+		else {
 			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));
 			ppPanel.enableConnectionParameters(true);			
 			view.enableMenuDatabase(false);
@@ -423,7 +422,7 @@ public class MenuController extends AbstractController{
 			status = MainDao.createSchema(softwareName, schemaName, sridValue);
 		}
 		
-		if (status){
+		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('example "+softwareName+"', 'giswater software', '')";
@@ -487,10 +486,10 @@ public class MenuController extends AbstractController{
 		
 		String path = prop.get("FILE_DBADMIN");
 		File file = new File(path);
-		if (!file.exists()){
+		if (!file.exists()) {
 			path = MainDao.getRootFolder() + path;
 			file = new File(path);
-			if (!file.exists()){
+			if (!file.exists()) {
 				Utils.showMessage(view, "File not found: \n" + file.getAbsolutePath());
 				return;
 			}
@@ -609,7 +608,7 @@ public class MenuController extends AbstractController{
 		// Choose file to download
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String localePath = chooseFileSetup(remoteName);
-		if (!localePath.equals("")){
+		if (!localePath.equals("")) {
 			DownloadPanel panel = new DownloadPanel(remoteName, localePath, ftp);
 	        JDialog downloadDialog = Utils.openDialogForm(panel, view, "Download Process", 290, 135);
 	        downloadDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); 
