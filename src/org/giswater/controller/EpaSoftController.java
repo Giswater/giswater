@@ -27,7 +27,6 @@ import java.sql.ResultSet;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -69,10 +68,10 @@ public class EpaSoftController extends AbstractController {
     private PropertiesMap gswProp;
 
     
-    public EpaSoftController(EpaSoftPanel view, MainFrame mf) {
+    public EpaSoftController(EpaSoftPanel view, MainFrame mainFrame) {
     	
     	this.view = view;	
-    	this.mainFrame = mf;
+    	this.mainFrame = mainFrame;
     	this.ppPanel = mainFrame.ppFrame.getPanel();
         this.gswProp = MainDao.getGswProperties();
 	    view.setController(this);        
@@ -438,19 +437,14 @@ public class EpaSoftController extends AbstractController {
 	
 	
     public void gswEdit() {
-		openFrame(mainFrame.ppFrame);
-    }
-    
-    
-    private void openFrame(JInternalFrame frame) {
-
+    	
         try {
-        	frame.setVisible(true);
-       		frame.setMaximum(true);
+        	mainFrame.ppFrame.setVisible(true);
+        	mainFrame.ppFrame.setMaximum(true);
 		} catch (PropertyVetoException e) {
 			Utils.logError(e);
 		}
-    	
+        
     }
     
     

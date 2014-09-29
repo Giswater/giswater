@@ -58,6 +58,7 @@ public class MainDao {
 	private static String configPath;   // rootPath + CONFIG_FOLDER + Properties file
 	private static String gswPath;   // Current gsw Project preferences File
 	private static String gswDefaultPath;   // Default gsw Project preferences File
+	private static String gswTemplatePath;   // Template gsw Project preferences File. Used to create new gsw files
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
 	private static String giswaterVersion;
@@ -78,7 +79,8 @@ public class MainDao {
 	private static final String CONFIG_FOLDER = "config" + File.separator;
 	private static final String CONFIG_DB = "config.sqlite";
 	private static final String CONFIG_FILE = "giswater";
-	private static final String GSW_FILE = "default_"+MINOR_VERSION+".gsw";
+	private static final String GSW_DEFAULT_FILE = "default_"+MINOR_VERSION+".gsw";
+	private static final String GSW_TEMPLATE_FILE = "template_"+MINOR_VERSION+".gsw";
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
@@ -90,12 +92,16 @@ public class MainDao {
 	private static final String TABLE_HECRAS = "banks";		
 	
 	
-	public static String getDb(){
+	public static String getDb() {
 		return db;
 	}
 	
-	public static String getGswDefaultPath(){
+	public static String getGswDefaultPath() {
 		return gswDefaultPath;
+	}
+	
+	public static String getGswTemplatePath() {
+		return gswTemplatePath;
 	}
 	
 	public static String getGswTempPath() {
@@ -114,7 +120,7 @@ public class MainDao {
 		
 	}
 	
-	public static String getGswPath(){
+	public static String getGswPath() {
 		return gswPath;
 	}
 	
@@ -188,13 +194,14 @@ public class MainDao {
     	// Load Properties files
     	if (!loadPropertiesFile()) return false;
     	
-    	// Load default gsw file
-    	gswDefaultPath = rootFolder + CONFIG_FOLDER + GSW_FILE;
+    	// Get default and template gsw files
+    	gswDefaultPath = rootFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
+    	gswTemplatePath = rootFolder + CONFIG_FOLDER + GSW_TEMPLATE_FILE;
     	
     	// Load last gsw file
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	File gswFile = new File(gswPath);
-    	if (!gswFile.exists()){
+    	if (!gswFile.exists()) {
         	// Get default gsw path
             gswPath = gswDefaultPath;
         	gswFile = new File(gswPath);  
@@ -215,7 +222,7 @@ public class MainDao {
         getLastUpdates();
 
     	// Set Config DB connection
-        if (!setConnectionConfig(CONFIG_DB)){
+        if (!setConnectionConfig(CONFIG_DB)) {
         	return false;
         }
         
@@ -240,7 +247,7 @@ public class MainDao {
 		        }
 	        }
         }
-        catch (NumberFormatException e){
+        catch (NumberFormatException e) {
         	String msg = "Value of parameter LOG_FOLDER_SIZE is not valid. It must be a number";
         	Utils.logError(msg);
         }
@@ -250,7 +257,7 @@ public class MainDao {
     }
        
     
-	public static void executePostgisService(String service){
+	public static void executePostgisService(String service) {
 		
 		String folder = rootFolder + PORTABLE_FOLDER;
 		String path = folder + PORTABLE_FILE;		
@@ -260,22 +267,31 @@ public class MainDao {
 			return;
 		}
 		String data = folder + "data";
-		String exec = "start \"PostgreSQL server running\" \""+path+"\" "+service+" -D \""+data+"\"";
-		Utils.execService(exec);
+		
+		// Set content of .vbs file
+		String aux = "Set wshShell = CreateObject(\"WScript.Shell\")";
+		aux+= "\nwshShell.Run \""+path+" start -D "+data+"\", 0, False";
+		Utils.getLogger().info(aux);
+		aux+= "\nSet wshShell = Nothing";
+
+        // Fill and execute .vbs File	
+		File vbsFile = new File( Utils.getLogFolder() + "hide.vbs");        
+		Utils.fillFile(vbsFile, aux);    		
+		Utils.openFile(vbsFile.getAbsolutePath());
 		
 	}
     
 	
-	private static boolean getConnectionParameters(){
+	private static boolean getConnectionParameters() {
 
 		// Get parameteres connection from properties file
 		bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
-		if (!file.exists()){
-			Utils.showError("postgis_not_found", bin);
-			return false;			
+		if (!file.exists()) {
+			Utils.logError("postgis_not_found", bin);	
 		}
 		bin+= File.separator;
+		
 		host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 		port = gswProp.get("POSTGIS_PORT", "5431");
 		db = gswProp.get("POSTGIS_DATABASE", "postgres");
@@ -289,14 +305,14 @@ public class MainDao {
 	}
 	
 	
-	private static boolean commonSteps(){
+	private static boolean commonSteps() {
 		
 		if (isConnected) return true;
 		
 		// Get parameteres connection from properties file
 		if (!getConnectionParameters()) return false;
 		
-		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")){
+		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
 			Utils.getLogger().info("Connection not possible. Check parameters in properties file");
 			return false;
 		}
@@ -321,7 +337,7 @@ public class MainDao {
 			} while (!isConnected && count < 4);
 		}
 
-		if (isConnected){
+		if (isConnected) {
 			// Get Postgis data and bin folder
 	    	String dataPath = MainDao.getDataDirectory();
 	    	gswProp.put("POSTGIS_DATA", dataPath);
@@ -339,11 +355,11 @@ public class MainDao {
 		
 	public static boolean silenceConnection(){
 		
-		if (!isConnected){
+		if (!isConnected) {
 			commonSteps();
 		}
 		
-		if (isConnected){    	
+		if (isConnected) {    	
 	    	// Check Postgre and Postgis versions
 	    	postgreVersion = MainDao.checkPostgreVersion();	        
         	postgisVersion = MainDao.checkPostgisVersion();	        
@@ -353,7 +369,7 @@ public class MainDao {
 				String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
 				executeUpdateSql(sql, true, false);			  	
         	}
-        	else{
+        	else {
         		Utils.getLogger().info("Postgis version: " + postgisVersion);
         	}
     		return true;
@@ -370,11 +386,11 @@ public class MainDao {
 		if (isConnected) return true;
 		
 		commonSteps();
-		if (isConnected){
-			if (db.equals(DEFAULT_DB)){
+		if (isConnected) {
+			if (db.equals(DEFAULT_DB)) {
 				if (!MainDao.checkDatabase(INIT_DB)){
 					Utils.getLogger().info("Creating database... " + INIT_DB);
-					if (!initDatabase()){
+					if (!initDatabase()) {
 						return false;
 					}
 				} 
@@ -392,7 +408,7 @@ public class MainDao {
 	}	 	
     
 	
-	private static boolean initDatabase(){
+	private static boolean initDatabase() {
 		
 		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
@@ -444,7 +460,7 @@ public class MainDao {
 	}
 	
 	
-	public static void rollback(){
+	public static void rollback() {
 		try {
 			connectionPostgis.rollback();
 		} catch (SQLException e) {
@@ -507,7 +523,7 @@ public class MainDao {
 
         // If versioned properties file not exists, try to load default one instead	
         File file = new File(configPath);
-        if (!file.exists()){
+        if (!file.exists()) {
         	configFile = CONFIG_FILE + ".properties";
         	configPath = rootFolder + CONFIG_FOLDER + configFile;
         	Utils.getLogger().info("Default properties file: "+configPath);   
@@ -531,7 +547,7 @@ public class MainDao {
     public static boolean loadGswPropertiesFile() {
 
     	if (gswPath.equals("")) {
-    		gswPath = rootFolder + CONFIG_FOLDER + GSW_FILE;
+    		gswPath = rootFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
     	}
     	Utils.getLogger().info("Loading gsw file: "+gswPath);        
 
@@ -975,13 +991,13 @@ public class MainDao {
 	}	
 
 	
-    public static Vector<String> getAvailableVersions(String type, String software){
+    public static Vector<String> getAvailableVersions(String type, String software) {
 
         Vector<String> vector = new Vector<String>();
         String sql = "SELECT id" +
         	" FROM "+type+"_software" +  
         	" WHERE available = 1 AND software_name = '"+software+"'" +
-        	" ORDER BY id DESC";            
+        	" ORDER BY id ASC";            
 		try {
             Statement stmt = connectionConfig.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -1256,7 +1272,7 @@ public class MainDao {
 		Arrays.sort(files);
 		for (File file : files) {
 			Integer fileVersion = Utils.parseInt(file.getName().replace(".sql", ""));
-			if (fileVersion > schemaVersion){
+			if (fileVersion > schemaVersion) {
 		    	String content;
 				try {
 					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
@@ -1293,10 +1309,10 @@ public class MainDao {
         // Fill and execute .bat File
 		String batPath = sqlPath.replace(".sql", ".bat");
 		File batFile = new File(batPath);        
-		if (!Utils.fillFile(batFile, aux)){
+		if (!Utils.fillFile(batFile, aux)) {
 			return false;    		
 		}
-		if (!Utils.openFile(batFile.getAbsolutePath())){
+		if (!Utils.openFile(batFile.getAbsolutePath())) {
 			return false;
 		}
 		
@@ -1368,7 +1384,7 @@ public class MainDao {
 			String backupName = schemaName+"_backup";
 			int i = 0;
 			do {
-				if (i > 0){
+				if (i > 0) {
 					backupName = schemaName+"_backup"+i;
 				}
 				existsBackup = checkSchema(backupName);
@@ -1494,11 +1510,11 @@ public class MainDao {
 		String aux = content;
 		String tableName;
 		String geomName;
-		if (software.equals("HECRAS")){
+		if (software.equals("HECRAS")) {
 			tableName = "xscutlines";
 			geomName = "geom";
 		}
-		else{
+		else {
 			tableName = "node";
 			geomName = "the_geom";
 		}
@@ -1507,7 +1523,7 @@ public class MainDao {
 			" FROM (SELECT ST_Collect("+geomName+") AS gometries FROM "+schemaName+"."+tableName+") AS foo";
         try {
     		ResultSet rs = getResultset(sql);
-            if (rs.next()){
+            if (rs.next()) {
             	aux = aux.replace("__XMIN__", (rs.getString(2) == null) ? "-1.555992" : rs.getString(2));
             	aux = aux.replace("__YMIN__", (rs.getString(4) == null) ? "-1.000000" : rs.getString(4));            	
             	aux = aux.replace("__XMAX__", (rs.getString(1) == null) ? "1.555992" : rs.getString(1));
@@ -1556,7 +1572,7 @@ public class MainDao {
 	}
 	
 	
-	public static boolean clearData(String schemaName){
+	public static boolean clearData(String schemaName) {
 		String sql = "SELECT "+schemaName+".gr_clear();";
 		Utils.logSql(sql);
 		return executeSql(sql, true);	
@@ -1570,7 +1586,7 @@ public class MainDao {
 		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		String bin = gswProp.getProperty("POSTGIS_BIN", "");
 		File file = new File(bin);
-		if (!file.exists()){
+		if (!file.exists()) {
 			Utils.showError("postgis_not_found", bin);
 			return false;			
 		}
@@ -1580,7 +1596,7 @@ public class MainDao {
 		if (MainDao.checkTableHasData(schemaName, "mdt")){
 			String msg = "MDT table already loaded. Do you want to overwrite it?";
 			int res = Utils.confirmDialog(msg);
-			if (res != 0){
+			if (res != 0) {
 				return false;
 			}			
 		}

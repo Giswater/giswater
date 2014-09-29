@@ -114,10 +114,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
+	
 	private JPanel statusPanel;
-	private JProgressBar progressInfo;
 	private JLabel lblInfo;
 	private JLabel lblProcessInfo;
+	private JProgressBar progressInfo;
 	
 	private ImageIcon iconInfo;
 	private ImageIcon iconAlert;
@@ -378,7 +379,7 @@ public class MainFrame extends JFrame implements ActionListener{
         epaSoftFrame.setTitle("Main form");
         
         // Define one controller per panel           
-		new HecRasController(hecRasFrame.getPanel());
+		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         new EpaSoftController(epaSoftFrame.getPanel(), this);
@@ -412,28 +413,21 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	public void updateFrames() {
-		
 		getFrameParams(configFrame, "CONFIG");			
 		getFrameParams(epaSoftFrame, "EPASOFT");
 		getFrameParams(hecRasFrame, "HECRAS");
 		getFrameParams(ppFrame, "PP");           
-		
 	}
 	
 	
 	private void getFrameParams (JInternalFrame frame, String prefix) {
-
-        boolean visible;
-        visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
+        boolean visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
         frame.setVisible(visible);
-		
 	}
 	
 	
 	private void putFrameParams (JInternalFrame frame, String prefix) {
-		
 		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
-		
 	}
 	
 	

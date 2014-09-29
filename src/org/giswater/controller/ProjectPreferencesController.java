@@ -74,9 +74,6 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Get schemas from selected water software
 		selectSourceType();
-		
-		// Customize buttons and title
-		// customizePanel();
 
 	}
 	
@@ -117,15 +114,12 @@ public class ProjectPreferencesController extends AbstractController {
 			}
 			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setTitle(waterSoftware);
-	        boolean maximized = Boolean.parseBoolean(MainDao.getGswProperties().get("EPASOFT_MAXIMIZED", "true"));
-	        if (maximized) {
-	        	try {
-					mainFrame.epaSoftFrame.setMaximum(maximized);
-					mainFrame.epaSoftFrame.setVisible(true);
-				} catch (PropertyVetoException e) {
-					Utils.logError(e);
-				}
-	        }			
+        	try {
+				mainFrame.epaSoftFrame.setMaximum(true);
+				mainFrame.epaSoftFrame.setVisible(true);
+			} catch (PropertyVetoException e) {
+				Utils.logError(e);
+			}
 		}
 		
 		mainFrame.updateConnectionInfo();
@@ -135,8 +129,8 @@ public class ProjectPreferencesController extends AbstractController {
 	private boolean checkPreferences() {
 		
 		view.setInfo("");
-		if (waterSoftware.equals("")){
-			view.setInfo("You have to select Water Software");
+		if (waterSoftware.equals("")) {
+			mainFrame.showError("You have to select Water Software");
 			return false;
 		}
 		return true;
@@ -147,7 +141,7 @@ public class ProjectPreferencesController extends AbstractController {
 	public boolean applyPreferences() {
 		
 		// Check if everything is set
-		if (!checkPreferences()){
+		if (!checkPreferences()) {
 			view.getFrame().setVisible(true);
 			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setVisible(false);	
@@ -170,7 +164,7 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	
 	public void acceptPreferences() {
-		if (applyPreferences()){
+		if (applyPreferences()) {
 			closePreferences();	
 		}
 	}
@@ -229,13 +223,13 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void testConnection() {
 	
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			closeConnection();
 			mainFrame.enableMenuDatabase(false);
 			view.enableConnectionParameters(true);			
 		}
 		else{
-			if (openConnection()){
+			if (openConnection()) {
 				mainFrame.enableMenuDatabase(true);
 				view.enableConnectionParameters(false);
 			}
@@ -370,17 +364,17 @@ public class ProjectPreferencesController extends AbstractController {
 	public void isConnected() {
 
 		// Check if we already are connected
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			view.setSchemaModel(MainDao.getSchemas(waterSoftware));
 			String gswSchema = MainDao.getGswProperties().get("SCHEMA").trim();
-			if (!gswSchema.equals("")){
+			if (!gswSchema.equals("")) {
 				view.setSelectedSchema(gswSchema);	
 			}
 			else{
 				schemaChanged();
 			}
 		} 
-		else{
+		else {
 			view.setSchemaModel(null);				
 		}
 		mainFrame.enableMenuDatabase(MainDao.isConnected());
@@ -391,7 +385,7 @@ public class ProjectPreferencesController extends AbstractController {
 	public void schemaChanged() {
 		
 		MainDao.setWaterSoftware(waterSoftware);		
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			setSchema(view.getSelectedSchema());
 		}
 		
@@ -422,8 +416,7 @@ public class ProjectPreferencesController extends AbstractController {
 	// Project Management
 	private String validateName(String schemaName) {
 		
-		String validate;
-		validate = schemaName.trim().toLowerCase();
+		String validate = schemaName.trim().toLowerCase();
 		validate = validate.replace(" ", "_");
 		validate = validate.replaceAll("[^\\p{ASCII}]", "");
 		return validate;
@@ -474,11 +467,11 @@ public class ProjectPreferencesController extends AbstractController {
 		if (schemaName.equals("")) return;
 		
 		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
-		if (newSchemaName == null){
+		if (newSchemaName == null) {
 			return;
 		}
 		newSchemaName = validateName(newSchemaName);
-		if (newSchemaName.equals("")){
+		if (newSchemaName.equals("")) {
         	mainFrame.showError("schema_valid_name");
 			return;
 		}
@@ -498,11 +491,11 @@ public class ProjectPreferencesController extends AbstractController {
 		if (schemaName.equals("")) return;
 		
 		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
-		if (newSchemaName == null){
+		if (newSchemaName == null) {
 			return;
 		}
 		newSchemaName = validateName(newSchemaName);
-		if (newSchemaName.equals("")){
+		if (newSchemaName.equals("")) {
 			mainFrame.showError("schema_valid_name");
 			return;
 		}
@@ -518,9 +511,6 @@ public class ProjectPreferencesController extends AbstractController {
 		
 
 	public void createGisProject() {
-		
-//		mainFrame.gisFrame.setVisible(true);
-//		mainFrame.gisFrame.getPanel().selectSourceType();
 		
 		GisPanel gisPanel = new GisPanel();
 		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, "Create GIS Project", GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT);

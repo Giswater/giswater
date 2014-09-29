@@ -62,10 +62,11 @@ public class HecRasPanel extends JPanel implements ActionListener {
 
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	private JPanel panel;
-	private JButton btnNewButton;
+	private JButton btnLogFile;
 	private JButton btnErrorFile;
 	private JButton btnProjectData;
 	private JButton btnExportMdt;
+	private JButton btnEditProjectPreferences;
 	
 	
 	public HecRasPanel() {
@@ -202,9 +203,9 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		add(panel, "cell 0 2 2 1,grow");
 		panel.setLayout(new MigLayout("", "[][][][]", "[]"));
 		
-		btnNewButton = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
-		btnNewButton.setMinimumSize(new Dimension(120, 23));
-		panel.add(btnNewButton, "cell 0 0");
+		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
+		btnLogFile.setMinimumSize(new Dimension(120, 23));
+		panel.add(btnLogFile, "cell 0 0");
 		
 		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
 		btnErrorFile.setMinimumSize(new Dimension(120, 23));
@@ -217,6 +218,11 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportMdt = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
 		btnExportMdt.setMinimumSize(new Dimension(120, 23));
 		panel.add(btnExportMdt, "cell 3 0");
+		
+		btnEditProjectPreferences = new JButton("Edit Project Preferences");
+		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
+		btnEditProjectPreferences.setActionCommand("gswEdit");
+		add(btnEditProjectPreferences, "flowx,cell 0 4,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
 		add(btnClose, "cell 0 4,alignx right");
@@ -237,6 +243,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnFileAsc.addActionListener(this);
 		btnFileSdf.addActionListener(this);
 		
+		btnEditProjectPreferences.addActionListener(this);		
 		btnClose.addActionListener(this);		
 
 	}

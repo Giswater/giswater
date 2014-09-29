@@ -282,7 +282,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelPostprocess.add(btnResultSelector, "cell 1 0");
 		
 		btnEditProjectPreferences = new JButton(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
-		btnEditProjectPreferences.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.actionCommand")); //$NON-NLS-1$
+		btnEditProjectPreferences.setActionCommand("gswEdit");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		add(btnEditProjectPreferences, "flowx,cell 0 8,alignx right");
 		

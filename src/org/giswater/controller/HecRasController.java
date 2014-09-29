@@ -21,6 +21,7 @@
 package org.giswater.controller;
 
 import java.awt.Cursor;
+import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JFileChooser;
@@ -28,6 +29,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -36,15 +38,17 @@ import org.giswater.util.Utils;
 public class HecRasController extends AbstractController{
 
 	private HecRasPanel view;
+	private MainFrame mainFrame;
     private PropertiesMap gswProp;
     private File fileSdf;
     private File fileAsc;    
     private String userHomeFolder;
 
     
-    public HecRasController(HecRasPanel view) {
+    public HecRasController(HecRasPanel view, MainFrame mainFrame) {
     	
     	this.view = view;	
+    	this.mainFrame = mainFrame;
         this.gswProp = MainDao.getGswProperties();
     	this.userHomeFolder = System.getProperty("user.home");
 	    view.setControl(this);         	
@@ -194,6 +198,18 @@ public class HecRasController extends AbstractController{
 		}
 		
 	}
+	
+	
+    public void gswEdit() {
+
+        try {
+        	mainFrame.ppFrame.setVisible(true);
+        	mainFrame.ppFrame.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
+		}
+        
+    }
     
 	
 }

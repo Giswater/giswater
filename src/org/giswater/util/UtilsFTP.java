@@ -196,8 +196,8 @@ public class UtilsFTP {
 	        else{
 	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+filePath);
 	        }
-        } catch (IOException ex) {
-        	Utils.logError("Could not determine size of the file: " + ex.getMessage());
+        } catch (IOException e) {
+        	Utils.logError("Could not determine size of the file: " + e.getMessage());
         }
         return size;
         
@@ -209,14 +209,14 @@ public class UtilsFTP {
 	}
 	
 	
-	public boolean prepareConnection(){
+	public boolean prepareConnection() {
 		
-		if (!isConnected()){
-	        if (!connect()){
+		if (!isConnected()) {
+	        if (!connect()) {
 	        	Utils.logError("FTP host not valid. Check FTP parameters defined in config.properties file");
 	        	return false;
 	        }
-	        if (!login()){
+	        if (!login()) {
 	        	Utils.logError("FTP user or password not valid. Check FTP parameters defined in config.properties file");
 	        	return false;
 	        }
@@ -252,7 +252,7 @@ public class UtilsFTP {
 	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
 	        String currentMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
 	        updateMinorVersion = checkMinorVersion(currentMinorVersionFolder);
-	        if (!updateMinorVersion){
+	        if (!updateMinorVersion) {
 	        	newMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
 	        	newMinorVersion = minorVersion;
 	        }
@@ -281,7 +281,7 @@ public class UtilsFTP {
         newMinorVersionFolder = folder.getName().trim().toLowerCase();
         newMinorVersion = Integer.parseInt(newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1));
         Utils.getLogger().info("FTP last minor version folder name: "+newMinorVersionFolder);
-        if (!currentMinorVersionFolder.equals(newMinorVersionFolder)){
+        if (!currentMinorVersionFolder.equals(newMinorVersionFolder)) {
         	updateMinorVersion = true;
         }
         return updateMinorVersion;
@@ -302,7 +302,7 @@ public class UtilsFTP {
         if (newMinorVersion > minorVersion) {
         	return true;
         }
-        if (version > buildVersion){
+        else if (newMinorVersion == minorVersion && version > buildVersion) {
         	return true;
         }
         return false;
@@ -312,14 +312,14 @@ public class UtilsFTP {
 
 	public boolean downloadLastVersion(String remoteName, String localPath) {
 		
-		if (!prepareConnection()){
+		if (!prepareConnection()) {
 			return false;
 		}
 
 		try {
 			changeDirectory();
 	        FTPFile[] ftpFile = client.listFiles(remoteName);
-	        if (ftpFile.length > 0){
+	        if (ftpFile.length > 0) {
 	            FileOutputStream fos = new FileOutputStream(localPath);		
 				client.retrieveFile(remoteName, fos);
 	        }
@@ -343,7 +343,7 @@ public class UtilsFTP {
     	
     	boolean status = false;
         try {
-     		if (!prepareConnection()){
+     		if (!prepareConnection()) {
     			return false;
     		}
             boolean success = client.setFileType(FTP.BINARY_FILE_TYPE);
@@ -351,8 +351,8 @@ public class UtilsFTP {
             	Utils.showError("Could not set binary file type.");
             }
             inputStream = client.retrieveFileStream(downloadPath);
-        } catch (IOException ex) {
-        	Utils.showError("Error downloading file: " + ex.getMessage());
+        } catch (IOException e) {
+        	Utils.showError("Error downloading file: " + e.getMessage());
         }
         
         status = true;

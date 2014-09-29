@@ -56,8 +56,8 @@ public class MenuController extends AbstractController {
 	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);	
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
-	private final String URL_REFERENCE = "http://www.giswater.org/node/75";
-	private final String URL_WEB = "http://www.giswater.org";
+	private final String URL_REFERENCE = "https://vimeo.com/giswater";
+	private final String URL_WEB = "https://www.giswater.org/community";
 	private final String UPDATE_FILE = "giswater_stand-alone_update_";
 
 	
@@ -146,19 +146,22 @@ public class MenuController extends AbstractController {
     	
     	action = "new";
     	
-    	// Get default and temp path names
-    	String gswDefaultPath = MainDao.getGswDefaultPath();
-    	String gswTempPath = MainDao.getGswTempPath();
-    	
-    	// Copy contents from default to temp
-    	// Open gsw temp file
-    	boolean ok = Utils.copyFile(gswDefaultPath, gswTempPath);
+    	// Get template path name
+    	String gswTemplatePath = MainDao.getGswTemplatePath();
+
+    	// Get path of gsw file to create
+		File gswFile = gswChooseFile(true);
+		if (gswFile == null) return;		
+		String gswNewPath = gswFile.getAbsolutePath();
+
+    	// Copy contents from template gsw file to new gsw file and open it
+    	boolean ok = Utils.copyFile(gswTemplatePath, gswNewPath);
     	if (ok) {
-	    	MainDao.setGswPath(gswTempPath);
+	    	MainDao.setGswPath(gswNewPath);
 	    	gswOpen(false, false);
     	}
     	else {
-    		Utils.logError("Error copying the file");
+    		Utils.logError("Error creating new gsw file");
     	}
     	
     }
@@ -203,7 +206,7 @@ public class MenuController extends AbstractController {
 		
 		// Load .gsw file into memory
 		MainDao.loadGswPropertiesFile();
-		if (action.equals("new") && action.equals("new")) {
+		if (action.equals("new")) {
 			MainDao.loadGswPropertiesFile();
 			MainDao.getGswProperties().put("SOFTWARE", "");
 			MainDao.getGswProperties().put("VERSION", "");
@@ -263,7 +266,7 @@ public class MenuController extends AbstractController {
         if (save) {
         	chooser.setApproveButtonText("Save");        
         }
-        File fileProp = new File(prop.get("FILE_GSW", System.getProperty("user.home")));	
+        File fileProp = new File(prop.get("FILE_GSW", Utils.getLogFolder()));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
