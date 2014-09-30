@@ -332,7 +332,6 @@ public class OptionsController extends AbstractController{
 			else if (!action.equals("create_detail")){
 				rs.updateRow();
 			}
-			MainDao.commit();
 			
 		} catch (SQLException e) {
 			Utils.showError(e);
