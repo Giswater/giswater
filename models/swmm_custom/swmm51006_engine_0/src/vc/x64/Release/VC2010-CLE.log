@@ -1,0 +1,136 @@
+﻿Build started 10/8/2014 2:04:59 PM.
+     1>Project "C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\VC2010-CLE.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /openmp /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TC /errorReport:prompt ..\climate.c ..\controls.c ..\culvert.c ..\datetime.c ..\dwflow.c ..\dynwave.c ..\error.c ..\findroot.c ..\flowrout.c ..\forcmain.c ..\gage.c ..\gwater.c ..\hash.c ..\hotstart.c ..\iface.c ..\infil.c ..\inflow.c ..\input.c ..\inputrpt.c ..\keywords.c ..\kinwave.c ..\landuse.c ..\lid.c ..\lidproc.c ..\link.c ..\massbal.c ..\mathexpr.c ..\mempool.c ..\node.c ..\odesolve.c ..\output.c ..\project.c ..\qualrout.c ..\rain.c ..\rdii.c ..\report.c ..\routing.c ..\runoff.c ..\shape.c ..\snow.c ..\stats.c ..\statsrpt.c ..\subcatch.c ..\swmm5.c ..\table.c ..\toposort.c ..\transect.c ..\treatmnt.c ..\xsect.c
+         climate.c
+     1>..\climate.c(871): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\climate.c(908): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\climate.c(1050): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+         controls.c
+         culvert.c
+         datetime.c
+         dwflow.c
+         dynwave.c
+         error.c
+         findroot.c
+         flowrout.c
+         forcmain.c
+         gage.c
+         gwater.c
+         hash.c
+         hotstart.c
+         iface.c
+         infil.c
+         inflow.c
+         input.c
+     1>..\input.c(173): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\input.c(178): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>..\input.c(653): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\input.c(825): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\input.c(830): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\input.c(838): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+         inputrpt.c
+         keywords.c
+         Compiling...
+         kinwave.c
+         landuse.c
+         lid.c
+         lidproc.c
+         link.c
+         massbal.c
+         mathexpr.c
+     1>..\mathexpr.c(753): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+         mempool.c
+         node.c
+         odesolve.c
+         output.c
+     1>..\output.c(477): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+         project.c
+     1>..\project.c(277): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+         qualrout.c
+         rain.c
+     1>..\rain.c(592): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>..\rain.c(601): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>..\rain.c(619): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>..\rain.c(723): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+         rdii.c
+         report.c
+         routing.c
+         runoff.c
+     1>..\runoff.c(399): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\runoff.c(408): warning C4267: '+=' : conversion from 'size_t' to 'int', possible loss of data
+         shape.c
+         snow.c
+         Compiling...
+         stats.c
+         statsrpt.c
+         subcatch.c
+         swmm5.c
+         table.c
+         toposort.c
+         transect.c
+         treatmnt.c
+         xsect.c
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /DEBUG /PDB:"C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.lib" /MACHINE:X64 x64\Release\climate.obj
+         x64\Release\controls.obj
+         x64\Release\culvert.obj
+         x64\Release\datetime.obj
+         x64\Release\dwflow.obj
+         x64\Release\dynwave.obj
+         x64\Release\error.obj
+         x64\Release\findroot.obj
+         x64\Release\flowrout.obj
+         x64\Release\forcmain.obj
+         x64\Release\gage.obj
+         x64\Release\gwater.obj
+         x64\Release\hash.obj
+         x64\Release\hotstart.obj
+         x64\Release\iface.obj
+         x64\Release\infil.obj
+         x64\Release\inflow.obj
+         x64\Release\input.obj
+         x64\Release\inputrpt.obj
+         x64\Release\keywords.obj
+         x64\Release\kinwave.obj
+         x64\Release\landuse.obj
+         x64\Release\lid.obj
+         x64\Release\lidproc.obj
+         x64\Release\link.obj
+         x64\Release\massbal.obj
+         x64\Release\mathexpr.obj
+         x64\Release\mempool.obj
+         x64\Release\node.obj
+         x64\Release\odesolve.obj
+         x64\Release\output.obj
+         x64\Release\project.obj
+         x64\Release\qualrout.obj
+         x64\Release\rain.obj
+         x64\Release\rdii.obj
+         x64\Release\report.obj
+         x64\Release\routing.obj
+         x64\Release\runoff.obj
+         x64\Release\shape.obj
+         x64\Release\snow.obj
+         x64\Release\stats.obj
+         x64\Release\statsrpt.obj
+         x64\Release\subcatch.obj
+         x64\Release\swmm5.obj
+         x64\Release\table.obj
+         x64\Release\toposort.obj
+         x64\Release\transect.obj
+         x64\Release\treatmnt.obj
+         x64\Release\xsect.obj
+            Creating library C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.lib and object C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.exp
+         Generating code
+         Finished generating code
+         VC2010-CLE.vcxproj -> C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.exe
+       PostBuildEvent:
+         copy C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\x64\Release\swmm51006_c_x64.exe ..\..\..\..\bin\
+         :VCEnd
+                 1 file(s) copied.
+     1>Done Building Project "C:\Users\admin\Desktop\GISWATER\Source\models\swmm_custom\swmm51006_engine_0\src\vc\VC2010-CLE.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.97
