@@ -1,6 +1,0 @@
-objects.h:
-
-Crear objeto AreasInterface, con ID de nodos vecinos.
-Modficar TSubcatch para añadir calado y caudal
-
-

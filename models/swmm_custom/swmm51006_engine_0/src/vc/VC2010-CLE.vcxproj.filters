@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\climate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\controls.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\culvert.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\datetime.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dwflow.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dynwave.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\error.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\findroot.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\flowrout.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\forcmain.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gage.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gwater.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hash.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hotstart.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\iface.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\infil.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inflow.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\input.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\inputrpt.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\keywords.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\kinwave.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\landuse.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lid.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lidproc.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\link.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\massbal.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mathexpr.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mempool.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\node.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\odesolve.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\output.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\project.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\qualrout.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\rain.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\rdii.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\report.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\routing.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\runoff.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shape.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\snow.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\stats.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\statsrpt.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\subcatch.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\swmm5.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\table.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\toposort.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\transect.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\treatmnt.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xsect.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\consts.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\datetime.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\enums.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\error.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\findroot.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\funcs.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\globals.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hash.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\headers.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\infil.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\keywords.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lid.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\macros.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mathexpr.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mempool.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\objects.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\odesolve.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\swmm5.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\text.h">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="header">
+      <UniqueIdentifier>{e75f1270-d5ce-4af4-bc31-23bd223e95b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{8adb3369-4129-4ace-a9b6-00d8da95e03f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
