@@ -60,7 +60,7 @@ public class MainClass {
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
 				if (versionCode == null){
-					versionCode = "1.0.165";
+					versionCode = "1.1.105";
 				}
 				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				
@@ -86,7 +86,6 @@ public class MainClass {
 				// Create MainFrame and Menu controller
 				mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
 				MenuController menuController = new MenuController(mdi, versionCode, ftp);            	
-				mdi.setVisible(true);
 
 				// By default open last gsw
 				menuController.gswOpen(false);

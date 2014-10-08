@@ -20,9 +20,7 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -51,7 +49,7 @@ import org.giswater.util.Utils;
 import com.toedter.calendar.JDateChooser;
 
 
-public class OptionsController {
+public class OptionsController extends AbstractController{
 
 	private AbstractOptionsDialog view;
     private ResultSet rs;
@@ -67,28 +65,6 @@ public class OptionsController {
         this.total = MainDao.getRowCount(rs);
 	    view.setController(this);        
 	}
-	
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
 	
 	
 	public boolean setComponents(){
@@ -109,7 +85,14 @@ public class OptionsController {
 				view.setComboModel(combo, getComboValues(key));
 				String value = "";
 				if (fillData){
-					value = rs.getString(key);
+					// Process hydrology field
+					if (key.equals("hydrology")){
+						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
+						value = MainDao.stringQuery(sql);
+					}
+					else{
+						value = rs.getString(key);
+					}
 				}
 				view.setComboSelectedItem(combo, value);
 			}
@@ -175,8 +158,8 @@ public class OptionsController {
 		else if (comboName.equals("flow_units")){
 			tableName = "inp_value_options_fu";
 		}
-		else if (comboName.equals("infiltration")){
-			tableName = "inp_value_options_in";
+		else if (comboName.equals("hydrology")){
+			tableName = "cat_hydrology";
 		}
 		else if (comboName.equals("force_main_equation")){
 			tableName = "inp_value_options_fme";
@@ -285,7 +268,14 @@ public class OptionsController {
 						rs.updateNull(key);						
 					} 
 					else{
-						rs.updateString(key, (String) value);
+						// Save into hydrology_selection
+						if (key.equals("hydrology")){
+							String sql = "UPDATE "+MainDao.getSchema()+".hydrology_selection SET hydrology_id = '"+value+"'";
+							MainDao.executeUpdateSql(sql, true);
+						}
+						else{
+							rs.updateString(key, (String) value);
+						}
 					}
 				}
 			}
@@ -449,6 +439,7 @@ public class OptionsController {
 					}
 				}
 				setComponents();
+				MainDao.commit();
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);

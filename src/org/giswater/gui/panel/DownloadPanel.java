@@ -37,15 +37,15 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
         this.local = local;
         this.ftp = ftp;
         
-		setLayout(new MigLayout("", "[10px:n][250.00][10px:n]", "[10px:n][][25px:n][::20px][]"));
+		setLayout(new MigLayout("", "[5px:n][250.00][5px:n]", "[][25px:n][::20px][]"));
 		
 		lblInfo = new JLabel("");
-		add(lblInfo, "cell 1 1");
+		add(lblInfo, "cell 1 0");
 		
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		progressBar.setMinimumSize(new Dimension(10, 25));
-		add(progressBar, "cell 1 2,growx,aligny center");
+		add(progressBar, "cell 1 1,growx,aligny center");
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -53,7 +53,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 				cancelDownload();
 			}
 		});
-		add(btnCancelar, "cell 1 4,alignx trailing");
+		add(btnCancelar, "cell 1 3,alignx trailing");
 		
 		startDownload();
 		

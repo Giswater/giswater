@@ -21,46 +21,37 @@
 package org.giswater.gui.frame;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
-import org.giswater.gui.panel.GisPanel;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Utils;
 
 
-public class GisFrame extends JInternalFrame {
+public class ProjectPreferencesFrame extends JInternalFrame {
 
 	private static final long serialVersionUID = -8028876402273265808L;
-	private GisPanel panel;
+	private ProjectPreferencesPanel panel;
 	
 	
-	public GisFrame(){
+	public ProjectPreferencesFrame(){
 		initComponents();
 	}
 	
-	public GisPanel getPanel(){
+	public ProjectPreferencesPanel getPanel(){
 		return panel;
 	}
-
-	public void setGisExtension(String gisExtension) {
-		panel.setGisExtension(gisExtension);
-	}	
-
-	public void setGisTitle(String title) {
-		setTitle(title);			
-		panel.setPanelTitle(title);
-	}		
+	
 	
     private void initComponents() {
 
-    	panel = new GisPanel();
+    	panel = new ProjectPreferencesPanel();
 
     	panel.setFrame(this);
-    	setClosable(true);
-		setMaximizable(true);        
-        setVisible(false);
+    	setClosable(true);    
     	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
         GroupLayout layout = new GroupLayout(getContentPane());

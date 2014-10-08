@@ -54,7 +54,8 @@ public class Model {
 		return false;
     }    
     
-    public static void setSoftwareVersion(String softwareVersion){
+    
+    public static void setSoftwareVersion(String softwareVersion) {
     	Model.softwareVersion = softwareVersion;
     	if (softwareVersion.substring(0, 4).toLowerCase().equals("swmm")){
     		softwareName = "SWMM";
@@ -62,6 +63,7 @@ public class Model {
     		softwareName = "EPANET";
     	}
     }
+    
     
     public static void closeFile(){
     	try {
@@ -72,5 +74,6 @@ public class Model {
 			Utils.logError(e);
 		}
     }
+    
     
 }

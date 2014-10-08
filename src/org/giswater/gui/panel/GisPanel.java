@@ -22,6 +22,7 @@
 package org.giswater.gui.panel;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,14 +46,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.frame.GisFrame;
+import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -61,10 +61,9 @@ import org.giswater.util.Utils;
 public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
-	private GisFrame gisFrame;	
-	private JTabbedPane tabbedPane;
+	private JDialog parent;
 	private JLabel lblProjectFolder;
 	private JButton btnProjectFolder;
 	private JLabel lblProjectName;
@@ -76,12 +75,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private JComboBox<String> cboSoftware;
 
     private PropertiesMap gswProp;
-	private String gisExtension;   // qgs or gvp
+	private String gisExtension = "qgs";
 	private JComboBox<String> cboSchema;
 	private JLabel lblSchema;
 	private JLabel lblDataStorage;
 	private JComboBox<String> cboDataStorage;
-	private JPanel panel_1;
 	private JButton btnClose;
     
 
@@ -91,25 +89,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		setDefaultValues();
 	}
 	
-	public GisFrame getFrame(){
-		return gisFrame;
-	}
-
-	public void setFrame(GisFrame gisFrame){
-		this.gisFrame = gisFrame;
-	}
-	
 	public JDialog getDialog() {
-		return new JDialog();
+		return parent;
 	}
-
-	public void setGisExtension(String gis) {
-		this.gisExtension = gis;
-	}	
 	
-	public void setPanelTitle(String title) {
-		tabbedPane.setTitleAt(0, title);
-	}	
+	public void setParent(JDialog gisDialog) {
+		parent = gisDialog;		
+	}
 	
 	public void setProjectFolder(String path) {
 		txtProjectFolder.setText(path);
@@ -195,22 +181,13 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8.00][:531px:531px][40.00]", "[5px][226.00][12]"));
-
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(tabbedPane, "cell 1 1,grow");
-
-		// Panel Database connection
-		panel_1 = new JPanel();
-		tabbedPane.addTab(BUNDLE.getString("Gis.panel.title"), null, panel_1, null);
-		panel_1.setLayout(new MigLayout("", "[115px:n:115px][135:n:135][133.00][]", "[40][25:25][25:25][25:25][25:25][]"));
+		setLayout(new MigLayout("", "[][:225px:300px][40.00][]", "[5px:n][34px:n][][][][][10px:n][]"));
 		
 		lblProjectFolder = new JLabel(BUNDLE.getString("Gis.lblProjectFolder"));
-		panel_1.add(lblProjectFolder, "cell 0 0,alignx right");
+		add(lblProjectFolder, "cell 0 1,alignx right");
 		
 		scrollPane = new JScrollPane();
-		panel_1.add(scrollPane, "cell 1 0 2 1,grow");
+		add(scrollPane, "cell 1 1 2 1,grow");
 		
 		txtProjectFolder = new JTextArea();
 		txtProjectFolder.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -218,49 +195,52 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectFolder.setText("");
 		
 		btnProjectFolder = new JButton();
-		panel_1.add(btnProjectFolder, "cell 3 0");
+		btnProjectFolder.setMinimumSize(new Dimension(72, 9));
+		add(btnProjectFolder, "cell 3 1");
 		btnProjectFolder.setText("...");
 		btnProjectFolder.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnProjectFolder.setActionCommand("chooseProjectFolder");
+		btnProjectFolder.setActionCommand("chooseProjectFolder"); 
 		
 		lblProjectName = new JLabel(BUNDLE.getString("Gis.lblProjectName"));
-		panel_1.add(lblProjectName, "cell 0 1,alignx right");
+		add(lblProjectName, "cell 0 2,alignx right");
 		
 		txtProjectName = new JTextField();
-		panel_1.add(txtProjectName, "cell 1 1,growx");
+		add(txtProjectName, "cell 1 2,growx");
 		txtProjectName.setText((String) null);
 		txtProjectName.setColumns(10);
 		
-		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text"));
-		panel_1.add(lblSoftware, "cell 0 2,alignx trailing");
+		lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); 
+		add(lblSoftware, "cell 0 3,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
 		cboSoftware.setActionCommand("softwareChanged");
 		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
-		panel_1.add(cboSoftware, "cell 1 2,growx");
+		add(cboSoftware, "cell 1 3,growx");
 		
-		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text"));
-		panel_1.add(lblDataStorage, "cell 0 3,alignx trailing");
+		lblDataStorage = new JLabel(BUNDLE.getString("GisPanel.lblDataStorage.text")); 
+		add(lblDataStorage, "cell 0 4,alignx trailing");
 		
 		cboDataStorage = new JComboBox<String>();
 		cboDataStorage.setActionCommand("selectSourceType");
 		cboDataStorage.setModel(new DefaultComboBoxModel<String>(new String[] {"Database", "DBF"}));
-		panel_1.add(cboDataStorage, "cell 1 3,growx");
+		add(cboDataStorage, "cell 1 4,growx");
 		
-		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text"));
-		panel_1.add(lblSchema, "cell 0 4,alignx trailing");
+		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); 
+		add(lblSchema, "cell 0 5,alignx trailing");
 		
 		cboSchema = new JComboBox<String>();
-		panel_1.add(cboSchema, "cell 1 4,growx");
+		add(cboSchema, "cell 1 5,growx");
 		
-		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text"));
+		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("gisAccept");
-		panel_1.add(btnAccept, "cell 2 5,alignx right");
+		add(btnAccept, "cell 2 7,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
+		btnClose.setMinimumSize(new Dimension(72, 23));
 		btnClose.addActionListener(this);
 		btnClose.setActionCommand("closePanel");
-		panel_1.add(btnClose, "cell 3 5");
+		add(btnClose, "cell 3 7");
 
 		setupListeners();
 
@@ -269,10 +249,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	// Setup component's listener
 	private void setupListeners() {
+		
+		addFocusListener(this);	
 		btnProjectFolder.addActionListener(this);
 		btnAccept.addActionListener(this);	
 		cboDataStorage.addActionListener(this);		
-		tabbedPane.addFocusListener(this);	
 		btnClose.addActionListener(this);	
 		cboSoftware.addActionListener(this);
 		cboSchema.addFocusListener(new FocusAdapter() {
@@ -281,6 +262,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				getFocus();
 			}
 		});		
+		
 	}
 
 	
@@ -339,21 +321,21 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String gisType = getDataStorage();
 		
 		if (folder.equals("")){
-			Utils.showMessage("You have to select a Folder");
+			MainClass.mdi.showMessage("You have to select a Folder");
 			return;
 		}
 		
 		if (name.equals("")){
-			Utils.showMessage("You have to select a Name");
+			MainClass.mdi.showMessage("You have to select a Name");
 			return;
 		}
 		
 		// Create GIS Project
-		if (gisType.equals("DATABASE")){
-			if (MainDao.isConnected()){
+		if (gisType.equals("DATABASE")) {
+			if (MainDao.isConnected()) {
 				String schema = getSelectedSchema();
 				if (schema.equals("")){
-					Utils.showMessage(this, "any_schema_selected");
+					MainClass.mdi.showMessage("any_schema_selected");
 					return;
 				}
 				String table = "arc";
@@ -371,8 +353,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 					gisProjectDatabase(gisExtension, folder + File.separator, name, software, schema, schemaSrid);
 				}
 			} 
-			else{
-				Utils.showMessage(this, "You should connect to a Database");
+			else {
+				MainClass.mdi.showMessage("You should connect to a Database");
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}			
@@ -381,20 +363,22 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			gisProjectDbf(gisExtension, folder + File.separator, name, software);
 		}
 		
+		MainClass.mdi.putGisParams(this);
+		
 	}
 
 	
 	private void gisProjectDbf(String gisExtension, String folder, String name, String software) {
 		
 		if (software.equals("HECRAS")){
-			Utils.showMessage(this, "gis_dbf_option");
+			MainClass.mdi.showMessage("gis_dbf_option");
 			return;
 		}
     	String gisFolder = Utils.getGisFolder();
 		String templatePath = gisFolder + software;
 		File templateFolder = new File(templatePath);
 		if (!templateFolder.exists()){
-			Utils.showError(this, "inp_error_notfound", templatePath);
+			MainClass.mdi.showError("inp_error_notfound", templatePath);
 			return;
 		}
 		
@@ -403,13 +387,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 			Utils.getLogger().info("Template Folder: "+templatePath);			
 			Utils.getLogger().info("GIS Folder: "+destPath);
-			this.requestFocusInWindow();			
+			this.requestFocusInWindow();
+	    	// TODO: Progress Bar
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));				
 			Utils.copyDirectory(templateFolder, destFolder);			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
             // Ending message
 			String msg = Utils.getBundleString("gis_end") + "\n" + destPath + Utils.getBundleString("gis_end2");
-    		Utils.showMessage(this, msg);            
+			MainClass.mdi.showMessage(msg);            
 		} catch (Exception e) {
         	Utils.showError(e);
 		}
@@ -427,7 +412,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	    	templatePath = gisFolder + software+"."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()){
-				Utils.showError(this, "inp_error_notfound", templatePath);
+	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
 				return;
 			}
 			File folder = new File(folderPath);
@@ -443,14 +428,16 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	            }
 			}
 			
-			this.requestFocusInWindow();			
+			this.requestFocusInWindow();
+			
+	    	// TODO: Progress Bar
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));	
 			
 			// Get parameteres connection from properties file
 			String host, port, db, user, password;			
 			host = gswProp.get("POSTGIS_HOST", "127.0.0.1");		
 			port = gswProp.get("POSTGIS_PORT", "5431");
-			db = gswProp.get("POSTGIS_DATABASE", "giswater");
+			db = gswProp.get("POSTGIS_DATABASE", "postgres");
 			user = gswProp.get("POSTGIS_USER", "postgres");
 			password = gswProp.get("POSTGIS_PASSWORD");		
 			password = Encryption.decrypt(password);
@@ -491,7 +478,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
             }  	        
 			
         } catch (FileNotFoundException e) {
-    	    Utils.showError(this, "inp_error_notfound", templatePath);
+    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
     	} catch (IOException e) {
         	Utils.showError(e, templatePath);
     	}
@@ -523,6 +510,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getActionCommand().equals("chooseProjectFolder")){
 			chooseProjectFolder();
 		}
@@ -536,8 +524,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			gisAccept();
 		}
 		else if (e.getActionCommand().equals("closePanel")){
-			this.getFrame().setVisible(false);	
-		}		
+			//this.getFrame().setVisible(false);	
+			getDialog().dispose();
+		}	
+		
 	}
 	
 	@Override
@@ -547,6 +537,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	@Override
 	public void focusLost(FocusEvent e) { }
+
 	
-	
+
 }

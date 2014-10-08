@@ -75,12 +75,13 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelGeneral.add(comboBox_2, "cell 4 0,growx");
 		comboBox_2.setName("ignore_rainfall");
 
-		JLabel lblInfiltration = new JLabel("Infiltration:");
-		panelGeneral.add(lblInfiltration, "cell 0 1,alignx trailing");
+		JLabel lblHydrology = new JLabel("Hydrology:");
+		lblHydrology.setName("");
+		panelGeneral.add(lblHydrology, "cell 0 1,alignx trailing");
 
-		JComboBox infiltration = new JComboBox();
-		panelGeneral.add(infiltration, "cell 1 1,growx");
-		infiltration.setName("infiltration");
+		JComboBox hydrology = new JComboBox();
+		panelGeneral.add(hydrology, "cell 1 1,growx");
+		hydrology.setName("hydrology");
 		
 		JLabel lblIgnoreSnowmelt = new JLabel("Ignore snowmelt:");
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 3 1,alignx trailing");

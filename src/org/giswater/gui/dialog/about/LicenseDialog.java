@@ -56,7 +56,7 @@ public class LicenseDialog extends JDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());
 		setTitle(title);		
-		setSize(655, 260);
+		setSize(640, 260);
 		getContentPane().setLayout(new MigLayout("", "[5px:n:5px][150px,grow][5px:n:5px]", "[5px][25px][][30.00px][30.00]"));
 		
 		JLabel lblInfo = new JLabel(info.toUpperCase());

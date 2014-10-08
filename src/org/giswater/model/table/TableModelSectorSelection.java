@@ -44,7 +44,7 @@ public class TableModelSectorSelection extends TableModelSuper {
 	}
 
 	
-	public void setCombos(){
+	public void setCombos() {
 		TableColumnModel tcm = table.getColumnModel();		
 		TableColumn column = tcm.getColumn(0);
 		Vector<String> vector = MainDao.getTable(tableLookup, null, true, "*");
