@@ -10,6 +10,9 @@ build_runnable.xml
 build_runnable_jar.xml
 samples/*.asc
 samples/sample_mdt.sql
+models/swmm2d/2D/[Bb]in/
+models/swmm_custom/swmm51006_engine_0/src/vc/[Bb]in/
+src/org/giswater/task/TestTask.java
 
 
 #################
@@ -17,10 +20,9 @@ samples/sample_mdt.sql
 #################
 
 build.num
-*.pydevproject
 .project
 .metadata
-./bin/
+bin/**
 tmp/
 *.tmp
 *.bak
@@ -45,7 +47,7 @@ local.properties
 
 
 #######################
-## Visual Studio swmm2d & swmmcustom
+## Visual Studio 
 #######################
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -62,8 +64,6 @@ local.properties
 [Rr]elease/
 x64/
 build/
-models/swmm2d/2D/[Bb]in/
-models/swmm_custom/swmm51006_engine_0/src/vc/[Bb]in/
 [Oo]bj/
 
 # MSTest test Results
@@ -197,36 +197,3 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
-
-
-#############
-## Python
-#############
-
-*.py[co]
-
-# Packages
-*.egg
-*.egg-info
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
-.installed.cfg
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-
-#Translations
-*.mo
-
-#Mr Developer
-.mr.developer.cfg
-src/org/giswater/task/TestTask.java
