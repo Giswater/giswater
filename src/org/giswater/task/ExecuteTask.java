@@ -142,8 +142,6 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 			MainClass.mdi.showError("Selected data folder not exists. Please set a valid one");
 			return null;
 		}
-		MainDao.getGswProperties().put("FOLDER_SHP", pathFolderShp);
-		MainDao.savePropertiesFile();
         
         // Which checks are selected?
         boolean exportSelected = view.isExportSelected();

@@ -67,14 +67,14 @@ public class OptionsController extends AbstractController{
 	}
 	
 	
-	public boolean setComponents(){
+	public boolean setComponents() {
 		return setComponents(true);
 	}
 	
 	
 	// Update ComboBox items and selected item
 	@SuppressWarnings({"unchecked", "rawtypes"})	
-	public boolean setComponents(boolean fillData){
+	public boolean setComponents(boolean fillData) {
 
 		try {
 			
@@ -86,11 +86,11 @@ public class OptionsController extends AbstractController{
 				String value = "";
 				if (fillData){
 					// Process hydrology field
-					if (key.equals("hydrology")){
+					if (key.equals("hydrology")) {
 						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
 						value = MainDao.stringQuery(sql);
 					}
-					else{
+					else {
 						value = rs.getString(key);
 					}
 				}
@@ -101,8 +101,11 @@ public class OptionsController extends AbstractController{
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
 			    Object value = "";
-				if (fillData){
-					value = rs.getObject(key);
+				if (fillData) {
+					// Check if field exists in the table
+					if (MainDao.checkColumn(rs, key)) {
+						value = rs.getObject(key);
+					}
 				}
 				view.setTextField(component, value);
 			}	
@@ -113,7 +116,7 @@ public class OptionsController extends AbstractController{
 			    JDateChooser component = entry.getValue();
 			    String aux = null;
 			    Date value = null;
-				if (fillData){
+				if (fillData) {
 					aux = rs.getString(key);
 					if (aux != null){
 						try {
@@ -144,64 +147,64 @@ public class OptionsController extends AbstractController{
 		String fields = "*";
 		
 		// Raingage
-		if (comboName.equals("form_type")){
+		if (comboName.equals("form_type")) {
 			tableName = "inp_value_raingage";
 		}
-		else if (comboName.equals("timser_id")){
+		else if (comboName.equals("timser_id")) {
 			tableName = "inp_timser_id";
 		}
-		else if (comboName.equals("rgage_type")){
+		else if (comboName.equals("rgage_type")) {
 			tableName = "inp_typevalue_raingage";
 		}		
 		
 		// Options
-		else if (comboName.equals("flow_units")){
+		else if (comboName.equals("flow_units")) {
 			tableName = "inp_value_options_fu";
 		}
-		else if (comboName.equals("hydrology")){
+		else if (comboName.equals("hydrology")) {
 			tableName = "cat_hydrology";
 		}
-		else if (comboName.equals("force_main_equation")){
+		else if (comboName.equals("force_main_equation")) {
 			tableName = "inp_value_options_fme";
 		}
-		else if (comboName.equals("flow_routing")){
+		else if (comboName.equals("flow_routing")) {
 			tableName = "inp_value_options_fr";
 		}
-		else if (comboName.equals("inertial_damping")){
+		else if (comboName.equals("inertial_damping")) {
 			tableName = "inp_value_options_id";
 		}
-		else if (comboName.equals("link_offsets")){
+		else if (comboName.equals("link_offsets")) {
 			tableName = "inp_value_options_lo";
 		}
-		else if (comboName.equals("normal_flow_limited")){
+		else if (comboName.equals("normal_flow_limited")) {
 			tableName = "inp_value_options_nfl";
 		}	
 
 		// Options Epanet
-		else if (comboName.equals("units")){
+		else if (comboName.equals("units")) {
 			tableName = "inp_value_opti_units";
 		}
-		else if (comboName.equals("pattern")){
+		else if (comboName.equals("pattern")) {
 			tableName = "inp_pattern";
 		}
-		else if (comboName.equals("hydraulics")){
+		else if (comboName.equals("hydraulics")) {
 			tableName = "inp_value_opti_hyd";
 		}
-		else if (comboName.equals("unbalanced")){
+		else if (comboName.equals("unbalanced")) {
 			tableName = "inp_value_opti_unbal";
 		}	
 		
 		// Options Epanet or Report Epanet
-		else if (comboName.equals("headloss")){
-			if (view instanceof OptionsEpanetDialog){			
+		else if (comboName.equals("headloss")) {
+			if (view instanceof OptionsEpanetDialog) {			
 				tableName = "inp_value_opti_headloss";
 			}
 			else{
 				tableName = "inp_value_yesno";
 			}
 		}			
-		else if (comboName.equals("quality")){
-			if (view instanceof OptionsEpanetDialog){			
+		else if (comboName.equals("quality")) {
+			if (view instanceof OptionsEpanetDialog) {			
 				tableName = "inp_value_opti_qual";
 			}
 			else{
@@ -210,18 +213,18 @@ public class OptionsController extends AbstractController{
 		}
 		
 		// Report
-		else if (comboName.equals("status")){
+		else if (comboName.equals("status")) {
 			tableName = "inp_value_yesnofull";
 		}		
 
 		// ResultSelection
-		else if (comboName.equals("result_id")){
+		else if (comboName.equals("result_id")) {
 			tableName = "rpt_result_cat";
 			fields = "result_id";
 		}	
 		
 		// Times
-		else if (comboName.equals("statistic")){
+		else if (comboName.equals("statistic")) {
 			tableName = "inp_value_times";
 		}
 		
@@ -250,10 +253,10 @@ public class OptionsController extends AbstractController{
 				key = entry.getKey();
 				JDateChooser date = entry.getValue();
 				auxDate = date.getDate();
-				if (auxDate == null){
+				if (auxDate == null) {
 					rs.updateNull(key);						
 				} 
-				else{
+				else {
 					value = sdf.format(auxDate); 					
 					rs.updateString(key, (String) value);
 				}
@@ -264,12 +267,12 @@ public class OptionsController extends AbstractController{
 				JComboBox combo = entry.getValue();
 				if (combo.isEnabled()){
 					value = combo.getSelectedItem();
-					if (value == null || ((String)value).trim().equals("")){
+					if (value == null || ((String)value).trim().equals("")) {
 						rs.updateNull(key);						
 					} 
 					else{
 						// Save into hydrology_selection
-						if (key.equals("hydrology")){
+						if (key.equals("hydrology")) {
 							String sql = "UPDATE "+MainDao.getSchema()+".hydrology_selection SET hydrology_id = '"+value+"'";
 							MainDao.executeUpdateSql(sql, true);
 						}
@@ -283,45 +286,48 @@ public class OptionsController extends AbstractController{
 			HashMap<String, JTextField> textMap = view.textMap; 			
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
-				JTextField component = entry.getValue();
-				if (component.isEnabled()){
-					value = component.getText();
-					int col = rs.findColumn(key);
-					int columnType = metadata.getColumnType(col);
-					if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
-						if (value == null || ((String)value).trim().equals("")){
-							rs.updateNull(col);						
-						} 
-						else{
-							rs.updateString(col, (String) value);
+				// Check if field exists in the table
+				if (MainDao.checkColumn(rs, key)) {
+					JTextField component = entry.getValue();
+					if (component.isEnabled()){
+						value = component.getText();
+						int col = rs.findColumn(key);
+						int columnType = metadata.getColumnType(col);
+						if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
+							if (value == null || ((String)value).trim().equals("")) {
+								rs.updateNull(col);						
+							} 
+							else {
+								rs.updateString(col, (String) value);
+							}
 						}
+						else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
+							if (((String)value).trim().equals("")){
+								rs.updateNull(col);
+							} 
+							else {					
+								Integer aux = Integer.parseInt(value.toString());
+								rs.updateInt(col, aux);						
+							}
+						}
+						else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
+							columnType == Types.FLOAT || columnType == Types.REAL) {
+							if (((String)value).trim().equals("")){
+								rs.updateNull(col);
+							} 
+							else {					
+								Double aux = Double.parseDouble(value.toString().replace(",", "."));
+								rs.updateDouble(col, aux);						
+							}
+						}	
+						else if (columnType == Types.TIME || columnType == Types.DATE) {
+							rs.updateTimestamp(col, (Timestamp) value);
+						}			
 					}
-					else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
-						if (((String)value).trim().equals("")){
-							rs.updateNull(col);
-						} 
-						else{					
-							Integer aux = Integer.parseInt(value.toString());
-							rs.updateInt(col, aux);						
-						}
-					}
-					else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
-						columnType == Types.FLOAT || columnType == Types.REAL) {
-						if (((String)value).trim().equals("")){
-							rs.updateNull(col);
-						} 
-						else{					
-							Double aux = Double.parseDouble(value.toString().replace(",", "."));
-							rs.updateDouble(col, aux);						
-						}
-					}	
-					else if (columnType == Types.TIME || columnType == Types.DATE) {
-						rs.updateTimestamp(col, (Timestamp) value);
-					}			
-				}
+				}	
 			}
 			
-			if (action.equals("create")){
+			if (action.equals("create")) {
 				rs.insertRow();
 				rs.last();
 				total++;
@@ -329,7 +335,7 @@ public class OptionsController extends AbstractController{
 				action = "saved";
 				setComponents();
 			}
-			else if (!action.equals("create_detail")){
+			else if (!action.equals("create_detail")) {
 				rs.updateRow();
 			}
 			
@@ -343,7 +349,7 @@ public class OptionsController extends AbstractController{
 	}
 	
 	
-	private void manageNavigationButtons(){
+	private void manageNavigationButtons() {
 		
 		if (action.equals("create")){
 			Utils.getLogger().info("Editing new record...");
@@ -375,11 +381,11 @@ public class OptionsController extends AbstractController{
 	}		
 	
 	
-	public void movePrevious(){
+	public void movePrevious() {
 		
 		action = "other";
 		try {
-			if (!rs.isFirst()){
+			if (!rs.isFirst()) {
 				rs.previous();
 				current--;		
 				setComponents();
@@ -391,11 +397,11 @@ public class OptionsController extends AbstractController{
 	}
 	
 	
-	public void moveNext(){
+	public void moveNext() {
 		
 		action = "other";
 		try {
-			if (!rs.isLast()){
+			if (!rs.isLast()) {
 				rs.next();
 				current++;
 				setComponents();
@@ -420,7 +426,7 @@ public class OptionsController extends AbstractController{
 	}	
 	
 
-	public void delete(){
+	public void delete() {
 		
 		action = "other";
 		try {
@@ -452,22 +458,22 @@ public class OptionsController extends AbstractController{
 	public void changeCombo(String comboName, String value) {
 		
 		boolean isVisible = false;
-		if (comboName.equals("hydraulics")){
+		if (comboName.equals("hydraulics")) {
 			if (value.toUpperCase().equals("USE") || value.toUpperCase().equals("SAVE")){
 				isVisible = true;
 			}
 		}
-		else if (comboName.equals("unbalanced")){
-			if (value.toUpperCase().equals("CONTINUE")){
+		else if (comboName.equals("unbalanced")) {
+			if (value.toUpperCase().equals("CONTINUE")) {
 				isVisible = true;
 			}
 		}		
-		else if (comboName.equals("quality")){
-			if (value.toUpperCase().equals("TRACE")){
+		else if (comboName.equals("quality")) {
+			if (value.toUpperCase().equals("TRACE")) {
 				isVisible = true;
 			}
 		}		
-		if (view instanceof OptionsEpanetDialog){
+		if (view instanceof OptionsEpanetDialog) {
 			OptionsEpanetDialog optionsEpanetDialog = (OptionsEpanetDialog) view;
 			optionsEpanetDialog.setComboEnabled(comboName, isVisible);
 		}		
@@ -476,9 +482,9 @@ public class OptionsController extends AbstractController{
 	
 	
 	// ResultSelectionDialog
-	public void changeResultSelection(){
+	public void changeResultSelection() {
 		
-		if (view instanceof ResultSelectionDialog){
+		if (view instanceof ResultSelectionDialog) {
 			ResultSelectionDialog dialog = (ResultSelectionDialog) view;
 			String result = dialog.getResultSelection();
 	        // Update table: result_selection
@@ -511,15 +517,15 @@ public class OptionsController extends AbstractController{
 	
     
     // Raingage
-    public void changeRaingageType(){
+    public void changeRaingageType() {
     	
 		if (view instanceof RaingageDialog){
 			RaingageDialog child = (RaingageDialog) view;
 			String value = child.getRaingageType();
-			if (value.equals("FILE")){
+			if (value.equals("FILE")) {
 				child.enablePanelFile(true);
 			} 
-			else{
+			else {
 				child.enablePanelFile(false);
 			}
 		}

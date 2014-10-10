@@ -50,7 +50,7 @@ public class NewProjectController extends AbstractController {
 	}
    
 	
-	public void initModel(){
+	public void initModel() {
 		
         model = new TableModelSrid();
         JTable table = view.getTable();
@@ -64,7 +64,7 @@ public class NewProjectController extends AbstractController {
 		model.setRs(rs);
 		view.setTableModel(model);    
 		// Rendering just first time
-		if (tcm.getColumnCount() > 0){
+		if (tcm.getColumnCount() > 0) {
 			tcm.getColumn(0).setMaxWidth(50);   
 			tcm.getColumn(1).setMaxWidth(40);   
 		}
@@ -77,15 +77,15 @@ public class NewProjectController extends AbstractController {
 		String filterType = "";
 		Boolean isGeo = view.isGeoSelected();
 		Boolean isProj = view.isProjSelected();
-		if (!isGeo && !isProj){
+		if (!isGeo && !isProj) {
 			Utils.showMessage("You have to select at least one Type: GEOGCS or PROJCS");
 			return;
 		}
-		if (isGeo){
+		if (isGeo) {
 			filterType = "substr(srtext, 1, 6) = 'GEOGCS'";
 		}
-		if (isProj){
-			if (!filterType.equals("")){
+		if (isProj) {
+			if (!filterType.equals("")) {
 				filterType+= " OR ";
 			}
 			filterType+= "substr(srtext, 1, 6) = 'PROJCS'";
@@ -108,8 +108,8 @@ public class NewProjectController extends AbstractController {
 		if (!filter.equals("")){
 			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
 		} 
-		if (!filterType.equals("")){
-			if (filter.equals("")){
+		if (!filterType.equals("")) {
+			if (filter.equals("")) {
 				sql+= " WHERE ";
 			}
 			else{
@@ -126,7 +126,7 @@ public class NewProjectController extends AbstractController {
 	}
 	
 	
-	private String validateName(String schemaName){
+	private String validateName(String schemaName) {
 		
 		String validate;
 		validate = schemaName.trim().toLowerCase();
@@ -137,30 +137,30 @@ public class NewProjectController extends AbstractController {
 	}
 	
 	
-	public void acceptProject(){
+	public void acceptProject() {
 		
 		// SRID
 		String sridValue = view.getSrid();
-		if (sridValue.equals("-1")){
+		if (sridValue.equals("-1")) {
 			Utils.showMessage(view, Utils.getBundleString("srid_select"));
 			return;
 		}
 		
 		// Project Name
 		String schemaName = view.getName();
-		if (schemaName.equals("")){
+		if (schemaName.equals("")) {
 			Utils.showMessage(view, Utils.getBundleString("enter_schema_name"));
 			return;
 		}
 		schemaName = validateName(schemaName);
-		if (schemaName.equals("")){
+		if (schemaName.equals("")) {
 			Utils.showError(view, "schema_valid_name");
 			return;
 		}
 		
 		// Project Title, Author and Date
 		String title = view.getTitle();
-		if (title.equals("")){
+		if (title.equals("")) {
 			Utils.showMessage(view, Utils.getBundleString("enter_schema_title"));
 			return;
 		}
@@ -182,7 +182,7 @@ public class NewProjectController extends AbstractController {
 	}
 	
 	
-	public void closeProject(){
+	public void closeProject() {
 		view.getDialog().dispose();
 	}
 
@@ -221,7 +221,7 @@ public class NewProjectController extends AbstractController {
 	
 	
 	// TODO: When Import Data check is enabled
-	public void importData(){
+	public void importData() {
 		
 	}
 

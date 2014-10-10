@@ -135,18 +135,9 @@ public class ModelPostgis extends Model {
     public static boolean processAll(File fileInp, boolean isSubcatchmentSelected) {
 
         Utils.getLogger().info("exportINP");
-
-		iniProperties = MainDao.getPropertiesFile();         
-    	String sql = "";
-   	
+        String sql= "";
+        
         try {
-        	
-            // If not set, get default INP output file
-            if (fileInp == null) {
-                String sFile = iniProperties.get("DEFAULT_INP");
-                sFile = MainDao.getInpFolder() + sFile;
-                fileInp = new File(sFile);
-            }
             
             // Overwrite INP file if already exists?
             if (fileInp.exists()){
@@ -396,33 +387,19 @@ public class ModelPostgis extends Model {
     }    
 
     
-    // Exec SWMM
     public static boolean execEPASOFT(File fileInp, File fileRpt) {
 
         Utils.getLogger().info("execEPASOFT");
         
-		iniProperties = MainDao.getPropertiesFile(); 
-		String exeCmd = iniProperties.get("DEFAULT_FILE_" + softwareName, "");
-        File exeFile = new File(exeCmd);
+		String exeName = MainDao.getGswProperties().get("EXE_NAME");
+        File exeFile = new File(exeName);
+        exeName = Utils.getAppPath() + "epa" + File.separator + exeName;	
+	    exeFile = new File(exeName);			
         
-		// If file doesn't exists, append application path (path was relative)
-		if (!exeFile.exists()){
-			exeCmd = Utils.getAppPath() + exeCmd;	
-	        exeFile = new File(exeCmd);			
-		}
-        
-        // Check anyway if exists
-		if (!exeFile.exists()){
-			String msg = Utils.getBundleString("software_not_found") + " " + exeCmd + "\n" + 
-				Utils.getBundleString("software_path");
-			exeCmd = JOptionPane.showInputDialog(null, msg);
-            exeFile = new File(exeCmd);
-    		if (!exeFile.exists()){            
-    			Utils.showError("inp_error_notfound", exeCmd);
-    			return false;
-    		}
-    		iniProperties.put("DEFAULT_FILE_" + softwareName, exeCmd);
-    		MainDao.savePropertiesFile();
+        // Check if file exists
+		if (!exeFile.exists()){         
+    		Utils.showError("inp_error_notfound", exeName);
+    		return false;
 		}
 
         if (!fileInp.exists()){
@@ -446,7 +423,7 @@ public class ModelPostgis extends Model {
         File fileOut = new File(sFile);
 
         // Create command
-        exeCmd = "\"" + exeCmd + "\"";
+        String exeCmd = "\"" + exeName + "\"";
         exeCmd += " \"" + fileInp.getAbsolutePath() + "\" \"" + fileRpt.getAbsolutePath() + "\" \"" + fileOut.getAbsolutePath() + "\"";
 
         // Ending message
@@ -487,8 +464,7 @@ public class ModelPostgis extends Model {
         
     	Utils.getLogger().info("importRpt");
 
-    	abortRptProcess = false;
-		iniProperties = MainDao.getPropertiesFile();   
+    	abortRptProcess = false; 
     	ModelPostgis.fileRpt = fileRpt;
     	ModelPostgis.projectName = projectName;
 
@@ -502,7 +478,7 @@ public class ModelPostgis extends Model {
         }  
 
        	// Check if we want to overwrite previous results
-        Boolean overwrite = Boolean.parseBoolean(iniProperties.get("IMPORT_OVERWRITE", "false"));
+        Boolean overwrite = Boolean.parseBoolean(MainDao.getPropertiesFile().get("IMPORT_OVERWRITE", "false"));
         Utils.getLogger().info("IMPORT_OVERWRITE: " + overwrite);
         
     	// Check if Project Name exists in rpt_result_id

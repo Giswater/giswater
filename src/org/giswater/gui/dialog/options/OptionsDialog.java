@@ -41,6 +41,14 @@ import net.miginfocom.swing.MigLayout;
 public class OptionsDialog extends AbstractOptionsDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
+	private JTextField txtMaxTrials;
+	private JTextField txtSysFlowTol;
+	private JTextField txtHeadTol;
+	private JTextField txtLatFlowTol;
+	private JLabel lblMaxTrials;
+	private JLabel lblHeadTol;
+	private JLabel lblSysFlowTol;
+	private JLabel lblLatFlowTol;
 	
 	
 	public OptionsDialog() {
@@ -49,11 +57,11 @@ public class OptionsDialog extends AbstractOptionsDialog {
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Options Table");
-		setBounds(100, 100, 680, 600);
-		getContentPane().setLayout(new MigLayout("", "[90.00][200px]", "[][][][36.00]"));
+		setBounds(100, 100, 680, 616);
+		getContentPane().setLayout(new MigLayout("", "[90.00][200px]", "[][][157.00][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -272,7 +280,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JPanel panelDynamic = new JPanel();
 		panelDynamic.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DYNAMIC WAVE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelDynamic, "cell 0 2 2 1,grow");
-		panelDynamic.setLayout(new MigLayout("", "[90.00][200.00][10px][100px][200px]", "[][][]"));
+		panelDynamic.setLayout(new MigLayout("", "[90.00][200.00,grow][10px][100px][200px,grow]", "[][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel("Force main:");
 		panelDynamic.add(lblNewLabel, "cell 0 0,alignx trailing");
@@ -324,6 +332,42 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		textField_14.setName("min_surfarea");
 		textField_14.setColumns(10);
 		
+		lblMaxTrials = new JLabel("Max trials:");
+		lblMaxTrials.setName("");
+		panelDynamic.add(lblMaxTrials, "cell 0 3,alignx trailing");
+		
+		txtMaxTrials = new JTextField();
+		txtMaxTrials.setName("max_trials");
+		txtMaxTrials.setColumns(10);
+		panelDynamic.add(txtMaxTrials, "cell 1 3,growx");
+		
+		lblHeadTol = new JLabel("Head tolerance:");
+		lblHeadTol.setName("");
+		panelDynamic.add(lblHeadTol, "cell 3 3,alignx trailing");
+		
+		txtHeadTol = new JTextField();
+		txtHeadTol.setName("head_tolerance");
+		txtHeadTol.setColumns(10);
+		panelDynamic.add(txtHeadTol, "cell 4 3,growx");
+		
+		lblSysFlowTol = new JLabel("Sys flow tolerance:");
+		lblSysFlowTol.setName("");
+		panelDynamic.add(lblSysFlowTol, "cell 0 4,alignx trailing");
+		
+		txtSysFlowTol = new JTextField();
+		txtSysFlowTol.setName("sys_flow_tol");
+		txtSysFlowTol.setColumns(10);
+		panelDynamic.add(txtSysFlowTol, "cell 1 4,growx");
+		
+		lblLatFlowTol = new JLabel("Lat flow tolerance:");
+		lblLatFlowTol.setName("");
+		panelDynamic.add(lblLatFlowTol, "cell 3 4,alignx trailing");
+		
+		txtLatFlowTol = new JTextField();
+		txtLatFlowTol.setName("lat_flow_tol");
+		txtLatFlowTol.setColumns(10);
+		panelDynamic.add(txtLatFlowTol, "cell 4 4,growx");
+		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
@@ -335,6 +379,18 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		
 		setupListeners();
 		
+	}
+
+	
+	public void setFieldsEnabled (boolean enabled) {
+		lblMaxTrials.setEnabled(enabled);
+		lblSysFlowTol.setEnabled(enabled);
+		lblHeadTol.setEnabled(enabled);
+		lblLatFlowTol.setEnabled(enabled);
+		txtMaxTrials.setEnabled(enabled);
+		txtSysFlowTol.setEnabled(enabled);
+		txtHeadTol.setEnabled(enabled);
+		txtLatFlowTol.setEnabled(enabled);
 	}
 	
 	

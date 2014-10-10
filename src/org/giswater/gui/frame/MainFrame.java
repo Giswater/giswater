@@ -487,20 +487,21 @@ public class MainFrame extends JFrame implements ActionListener{
     	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
     	
     	MainDao.getGswProperties().put("SOFTWARE", ppPanel.getWaterSoftware());    	
-    	MainDao.getGswProperties().put("VERSION", ppPanel.getVersionSoftware());    	
+    	String versionId = ppPanel.getVersionSoftware();
+    	String exeName = MainDao.getExeName(versionId);
+    	MainDao.getGswProperties().put("VERSION", versionId);  
+    	MainDao.getGswProperties().put("EXE_NAME", exeName);  
     	if (ppPanel.getOptDatabaseSelected()){
     		MainDao.getGswProperties().put("STORAGE", "DATABASE");
     	}
-    	else if (ppPanel.getOptDbfSelected()){
+    	else if (ppPanel.getOptDbfSelected()) {
     		MainDao.getGswProperties().put("STORAGE", "DBF");
     	}
-    	else{
+    	else {
     		MainDao.getGswProperties().put("STORAGE", "");
     	}	
     	MainDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
     	MainDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
-    	
-    	//PropertiesMap gswProp = MainDao.getGswProperties();
     	MainDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
     	MainDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
     	MainDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());

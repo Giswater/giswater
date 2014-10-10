@@ -93,16 +93,14 @@ public class ModelDbf extends Model{
 	public static boolean processAll(File fileInp) {
 
         Utils.getLogger().info("exportINP(dbf)");
-
-		iniProperties = MainDao.getPropertiesFile();         
     	String sql = "";
-
+    	
 		try {
 			
             // Get INP template File
             String templatePath = MainDao.getInpFolder() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
-            if (!fileTemplate.exists()){
+            if (!fileTemplate.exists()) {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
             	return false;
             }			
@@ -132,7 +130,7 @@ public class ModelDbf extends Model{
             String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
             	Utils.getBundleString("view_file");
     		int res = Utils.confirmDialog(msg);             
-            if (res == JOptionPane.YES_OPTION){
+            if (res == JOptionPane.YES_OPTION) {
             	Utils.openFile(fileInp.getAbsolutePath());
             }               
             return true;
@@ -158,15 +156,15 @@ public class ModelDbf extends Model{
 		}
 
 		// If file is null or out of bounds or not exists then exit function
-		if (fileIndex < 0){
+		if (fileIndex < 0) {
 			return;
 		}
 		File file = dbfFiles.get(fileIndex);		
-		if (file == null){
+		if (file == null) {
 			Utils.getLogger().info("Check .sqlite file. table_id value "+fileIndex+" not found in inp_table");
 			return;
 		}
-		if (!file.exists()){
+		if (!file.exists()) {
 			Utils.getLogger().info("File not found: " + file.getAbsolutePath());
 			return;
 		}
@@ -175,7 +173,7 @@ public class ModelDbf extends Model{
 		try{
 			lMapDades = readDBF(file);
 		}
-		catch (Exception e){
+		catch (Exception e) {
 			Utils.logError(e);
 		}
 		if (lMapDades.isEmpty()) {

@@ -69,7 +69,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Update software version 
 		setWaterSoftware(view.getWaterSoftware());
 		MainDao.setWaterSoftware(waterSoftware);
-		view.setVersionSoftware(MainDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
 		view.setInfo("");
 		
 		// Get schemas from selected water software
@@ -323,7 +323,7 @@ public class ProjectPreferencesController extends AbstractController {
 				mainFrame.hecRasFrame.getPanel().enableButtons(true);
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
-				view.setVersionSoftware(MainDao.getAvailableVersions("postgis", waterSoftware));
+				view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
 				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
 				if (schemaList != null && schemaList.size() > 0){
 					setSchema(schemaList.get(0));
@@ -353,7 +353,7 @@ public class ProjectPreferencesController extends AbstractController {
 			epaSoftPanel.enableRunAndImport(false);
 			mainFrame.hecRasFrame.getPanel().enableButtons(false);
 			mainFrame.enableMenuDatabase(false);
-			view.setVersionSoftware(MainDao.getAvailableVersions("dbf", waterSoftware));
+			view.setVersionSoftwareModel(MainDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
 		}
@@ -409,7 +409,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	public void setVersionSoftware() {
-		view.setVersionSoftware(MainDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
 	}
 	
 	

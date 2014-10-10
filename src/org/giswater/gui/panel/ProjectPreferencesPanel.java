@@ -461,10 +461,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 	}	
 	
-	public void setVersionSoftware(Vector<String> v) {
+	public void setVersionSoftwareModel(Vector<String> v) {
 		ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(v);
 		cboVersionSoftware.setModel(cbm);		
 	}
+	
+	public void setVersionSoftware(String version) {
+		cboVersionSoftware.setSelectedItem(version);
+	}	
 	
 	public String getVersionSoftware() {
 		String elem = "";
@@ -473,6 +477,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		}
 		return elem;
 	}	
+	
 		
 
 	// Panel DBF
@@ -497,11 +502,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	public boolean setSchemaModel(Vector<String> v) {
 		
 		ComboBoxModel<String> cbm = null;
-		if (v != null){
+		if (v != null) {
 			cbm = new DefaultComboBoxModel<String>(v);
 			cboSchema.setModel(cbm);		
 		} 
-		else{
+		else {
 			DefaultComboBoxModel<String> theModel = (DefaultComboBoxModel<String>) cboSchema.getModel();
 			theModel.removeAllElements();
 		}

@@ -29,13 +29,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.giswater.dao.MainDao;
-import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
 public class Model {
 
-	protected static PropertiesMap iniProperties;
     protected static Connection connectionDrivers;
     protected static String softwareVersion = "";
     protected static String softwareName = "";    

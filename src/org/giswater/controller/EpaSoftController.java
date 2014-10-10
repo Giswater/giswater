@@ -91,6 +91,11 @@ public class EpaSoftController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_options");
 		if (rs == null) return;
 		OptionsDialog dialog = new OptionsDialog();
+		// Disable fields if VERSION < 5.1
+		String version = ppPanel.getVersionSoftware();
+		if (version.equals("EPASWMM_50022")) {
+			dialog.setFieldsEnabled(false);
+		}
 		showOptions(dialog, rs);
 	}
 	
@@ -138,10 +143,10 @@ public class EpaSoftController extends AbstractController {
 	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs) {
 		
 		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0){
+        if (MainDao.getRowCount(rs) == 0) {
             controller.create();
         }
-        else{
+        else {
             controller.moveFirst();
         }
         dialog.setModal(true);
@@ -335,7 +340,7 @@ public class EpaSoftController extends AbstractController {
 	}		
 	
 	
-	// TODO:
+	// TODO: Implement it
 	public void showEmitters() {
 	
 	}
@@ -417,23 +422,6 @@ public class EpaSoftController extends AbstractController {
         }
 	    
 	}
-
-
-	// TODO: Update view content when frame is activated or...
-	public void updateView() {
-		
-		// Get parameters from current gsw file
-		String software = gswProp.get("SOFTWARE");
-		view.setTitle(software);
-		String storage = gswProp.get("STORAGE");
-		if (storage.equals("DBF")) {
-			view.enableDatabaseButtons(false);
-		}
-		else {
-			view.enableDatabaseButtons(true);
-		}
-				
-	}	
 	
 	
     public void gswEdit() {

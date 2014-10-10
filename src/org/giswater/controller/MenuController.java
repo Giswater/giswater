@@ -359,6 +359,7 @@ public class MenuController extends AbstractController {
 			ppPanel.setDatabaseSelected(true);
 			ppPanel.selectSourceType(); 
 		}
+		ppPanel.setVersionSoftware(MainDao.getGswProperties().get("VERSION"));
 		
 	}	    
     
