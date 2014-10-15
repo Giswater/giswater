@@ -23,19 +23,22 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.sql.ResultSet;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
+import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class HecRasController extends AbstractController{
+public class HecRasController extends AbstractController {
 
 	private HecRasPanel view;
 	private MainFrame mainFrame;
@@ -57,7 +60,7 @@ public class HecRasController extends AbstractController{
 	}
 
     
-    private void setDefaultValues(){
+    private void setDefaultValues() {
     	
     	fileSdf = new File(gswProp.getProperty("HECRAS_FILE_SDF", userHomeFolder));
     	view.setFileSdf(fileSdf.getAbsolutePath());
@@ -69,7 +72,7 @@ public class HecRasController extends AbstractController{
     }
 	
 	
-	public void closePanel(){
+	public void closePanel() {
 		view.getFrame().setVisible(false);
 	}
 		
@@ -120,10 +123,10 @@ public class HecRasController extends AbstractController{
     }    
     
 
-    private boolean getFileSdf(){
+    private boolean getFileSdf() {
     	
         String path = view.getFileSdf();
-        if (path.equals("")){
+        if (path.equals("")) {
             return false;        	
         }
         if (path.lastIndexOf(".") == -1) {
@@ -137,7 +140,7 @@ public class HecRasController extends AbstractController{
     }
     
     
-    private boolean getFileAsc(){
+    private boolean getFileAsc() {
     	
         String path = view.getFileAsc();
         if (path.equals("")){
@@ -154,7 +157,7 @@ public class HecRasController extends AbstractController{
     }
 
     
-    public void loadRaster(){
+    public void loadRaster() {
     	
 		// Check ASC file is set
 		if (!getFileAsc()) {
@@ -190,10 +193,10 @@ public class HecRasController extends AbstractController{
 		auxIn = folderIn + File.separator + fileName;
 		auxOut = fileSdf.getAbsolutePath();
 		boolean ok = Utils.copyFile(auxIn, auxOut);
-		if (!ok){
+		if (!ok) {
 			Utils.showError("sdf_error");
 		}
-		else{
+		else {
 			Utils.showMessage(view, "sdf_ok", fileSdf.getAbsolutePath());
 		}
 		
@@ -210,6 +213,31 @@ public class HecRasController extends AbstractController{
 		}
         
     }
+    
+    
+	// Data Manager
+	public void showProjectData() {
+		ResultSet rs = MainDao.getTableResultset("inp_project_id");
+		if (rs == null) return;		
+		ProjectDialog dialog = new ProjectDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
+		
+		CatalogController controller = new CatalogController(dialog, rs);
+        if (MainDao.getRowCount(rs) == 0) {
+            controller.create();
+        }
+        else {
+            controller.moveFirst();
+        }		
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		
+		
+	}	
     
 	
 }

@@ -33,7 +33,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
+import org.giswater.gui.dialog.catalog.ControlsDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
+import org.giswater.gui.dialog.catalog.DemandDialog;
+import org.giswater.gui.dialog.catalog.EmitterDialog;
 import org.giswater.gui.dialog.catalog.HydrologyCatalogDialog;
 import org.giswater.gui.dialog.catalog.MaterialsDialog;
 import org.giswater.gui.dialog.catalog.PatternsDialog;
@@ -259,7 +262,7 @@ public class EpaSoftController extends AbstractController {
 
 	
 	// Data Manager
-	public void showProjectId() {
+	public void showProjectData() {
 		ResultSet rs = MainDao.getTableResultset("inp_project_id");
 		if (rs == null) return;		
 		ProjectDialog dialog = new ProjectDialog();
@@ -341,25 +344,36 @@ public class EpaSoftController extends AbstractController {
 	
 	
 	// TODO: Implement it
-	public void showEmitters() {
-	
+	public void showEmitter() {
+		ResultSet rs = MainDao.getTableResultset("inp_emitter");
+		if (rs == null) return;		
+		EmitterDialog dialog = new EmitterDialog();
+		showCatalog(dialog, rs);
 	}
 	
 	public void showDemands() {
-		
+		ResultSet rs = MainDao.getTableResultset("inp_demand");
+		if (rs == null) return;		
+		DemandDialog dialog = new DemandDialog();
+		showCatalog(dialog, rs);		
 	}
 	
 	public void showRules() {
-		
+		ResultSet rs = MainDao.getTableResultset("inp_rules");
+		if (rs == null) return;		
+		ControlsDialog dialog = new ControlsDialog();
+		dialog.setTitle("Table inp_rules");
+		showCatalog(dialog, rs);
 	}
 	
 	public void showControls() {
-		
+		ResultSet rs = MainDao.getTableResultset("inp_controls");
+		if (rs == null) return;		
+		ControlsDialog dialog = new ControlsDialog();
+		dialog.setTitle("Table inp_controls");
+		showCatalog(dialog, rs);
 	}
 	
-	public void showProjectData() {
-		
-	}
 
 	
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
@@ -376,7 +390,6 @@ public class EpaSoftController extends AbstractController {
 		dialog.setVisible(true);		
 		
 	}	
-	
 	
 	
 	// Analysis

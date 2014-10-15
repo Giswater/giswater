@@ -34,15 +34,14 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-public class ProjectDialog extends AbstractCatalogDialog {
+public class ControlsDialog extends AbstractCatalogDialog {
 
 	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
 	
 	
-	public ProjectDialog() {
+	public ControlsDialog() {
 		initConfig();
 		createComponentMap();
 	}
@@ -50,9 +49,9 @@ public class ProjectDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle("Table inp_project_id");
-		setBounds(0, 0, 344, 206);
-		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[113.00][5px][30.00]"));
+		setTitle("Table inp_controls");
+		setBounds(0, 0, 344, 187);
+		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[88.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -60,29 +59,21 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel("Title:");
+		JLabel lblStatistic = new JLabel("Id:");
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
 		textField = new JTextField();
-		textField.setName("title");
+		textField.setName("id");
 		panelGeneral.add(textField, "cell 1 0,growx");
 		textField.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel("Author:");
+		JLabel lblAuthor = new JLabel("Text:");
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
 		textField_1 = new JTextField();
-		textField_1.setName("author");
+		textField_1.setName("text");
 		textField_1.setColumns(10);
 		panelGeneral.add(textField_1, "cell 1 1,growx");
-		
-		JLabel lblDate = new JLabel("Date:");
-		panelGeneral.add(lblDate, "cell 0 2,alignx trailing");
-		
-		textField_2 = new JTextField();
-		textField_2.setName("date");
-		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 1 2,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());

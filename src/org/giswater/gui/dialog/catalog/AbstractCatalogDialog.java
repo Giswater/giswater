@@ -40,7 +40,7 @@ import org.giswater.controller.CatalogController;
 
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractCatalogDialog extends JDialog implements ActionListener{
+public abstract class AbstractCatalogDialog extends JDialog implements ActionListener {
 	
 	private static final long serialVersionUID = -7319857198967955753L;
 	protected CatalogController controller;
@@ -57,7 +57,7 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	public AbstractCatalogDialog() { }
 	
 	
-	public CatalogController getController(){
+	public CatalogController getController() {
 		return controller;
 	}
 	
@@ -67,49 +67,54 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	}	
 	
 	
+	public void setTitleDialog(String title) {
+		setTitle(title);
+	}
+	
+	
 	public void setComboModel(JComboBox<String> combo, Vector<String> items) {
-		if (items != null){
+		if (items != null) {
 			ComboBoxModel<String> cbm = new DefaultComboBoxModel<String>(items);
 			combo.setModel(cbm);
 		}
 	}	
 	
 	
-	public void setComboSelectedItem(JComboBox combo, String item){
+	public void setComboSelectedItem(JComboBox combo, String item) {
 		combo.setSelectedItem(item);
 	}	
 	
 	
 	public void setTextField(JTextField textField, Object value) {
-		if (value != null){
+		if (value != null) {
 			textField.setText(value.toString());
 		}
-		else{
+		else {
 			textField.setText("");
 		}
 	}	
 	
 	
-	public void enableDelete(boolean enable){
-		if (btnDelete != null){		
+	public void enableDelete(boolean enable) {
+		if (btnDelete != null) {		
 			btnDelete.setEnabled(enable);
 		}
 	}	
 	
-	public void enablePrevious(boolean enable){
-		if (btnPrevious != null){
+	public void enablePrevious(boolean enable) {
+		if (btnPrevious != null) {
 			btnPrevious.setEnabled(enable);
 		}
 	}
 	
-	public void enableNext(boolean enable){
-		if (btnNext != null){
+	public void enableNext(boolean enable) {
+		if (btnNext != null) {
 			btnNext.setEnabled(enable);
 		}
 	}	
 	
-	public void enableSave(boolean enable){
-		if (btnSave != null){
+	public void enableSave(boolean enable) {
+		if (btnSave != null) {
 			btnSave.setEnabled(enable);
 		}
 	}		
@@ -122,7 +127,7 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
         Component[] components = getContentPane().getComponents();
 
         for (int j=0; j<components.length; j++) {
-        	if (components[j] instanceof JPanel){
+        	if (components[j] instanceof JPanel) {
         		JPanel panel = (JPanel) components[j];            
 	            Component[] comp = panel.getComponents();        
 	            for (int i=0; i < comp.length; i++) {        
@@ -144,27 +149,27 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 
 	protected void setupListeners() {
 		
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 				controller.closeWindow();
 			}
 		});		
-		if (btnPrevious != null){
+		if (btnPrevious != null) {
 			btnPrevious.addActionListener(this);
 		}
-		if (btnNext != null){
+		if (btnNext != null) {
 			btnNext.addActionListener(this);
 		}
-		if (btnCreate != null){
+		if (btnCreate != null) {
 			btnCreate.addActionListener(this);
 		}
-		if (btnDelete != null){
+		if (btnDelete != null) {
 			btnDelete.addActionListener(this);
 		}	
-		if (btnSave != null){
+		if (btnSave != null) {
 			btnSave.addActionListener(this);		
 		}	
-		if (btnClose != null){
+		if (btnClose != null) {
 			btnClose.addActionListener(this);		
 		}		
 		

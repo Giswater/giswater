@@ -104,7 +104,7 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.setSubcatchmentVisible(true);
 			}
 			else if (waterSoftware.equals("EPANET")) {
-				epaSoftPanel.setButton4("Emitters", "showEmitters");
+				epaSoftPanel.setButton4("Emitters", "showEmitter");
 				epaSoftPanel.setButton5("Demands", "showDemands");
 				epaSoftPanel.setButton6("Rules", "showRules");
 				epaSoftPanel.setDesignButton("Times values", "showTimesValues");
