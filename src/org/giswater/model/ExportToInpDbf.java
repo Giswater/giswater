@@ -45,52 +45,41 @@ import org.giswater.dao.MainDao;
 import org.giswater.util.Utils;
 
 
-public class ModelDbf extends Model{
+public class ExportToInpDbf extends Model{
 
 	private static Map<Integer, File> dbfFiles;
 	private static final String POLYGONS_TARGET = "POLYGONS";
 
 	
-	// Read content of the DBF file and saved it in an Array
-	@SuppressWarnings("resource")
-	public static ArrayList<LinkedHashMap<String, String>> readDBF(File file) {
+	// Check all the necessary files to run the process
+	public static boolean checkFiles(String sDirShp) {
 
-		FileChannel in;
-		Row row;
-		ArrayList<LinkedHashMap<String, String>> mAux = null;
-		LinkedHashMap<String, String> mDades;
+        dbfFiles = new HashMap<Integer, File>();
+        
+		String sql = "SELECT id, dbf_table FROM inp_table WHERE id > -1 ORDER BY id";
 		try {
-			mAux = new ArrayList<LinkedHashMap<String, String>>();
-			in = new FileInputStream(file).getChannel();
-			DbaseFileReader r = new DbaseFileReader(in);
-			int fields = r.getHeader().getNumFields();
-			while (r.hasNext()) {
-				mDades = new LinkedHashMap<String, String>();
-				row = r.readRow();
-				for (int i = 0; i < fields; i++) {
-					String field = r.getHeader().getFieldName(i).toLowerCase();
-					Object oAux = row.read(i);
-					String value = oAux.toString();
-					mDades.put(field, value);
-				}
-				mAux.add(mDades);
+			Statement stat = connectionDrivers.createStatement();
+			ResultSet rs = stat.executeQuery(sql);		
+			while (rs.next()) {
+				String sDBF = sDirShp + File.separator + rs.getString("dbf_table").trim() + ".dbf";
+				dbfFiles.put(rs.getInt("id"), new File(sDBF));
 			}
-			r.close();
-		} catch (FileNotFoundException e) {
-			return mAux;
-		} catch (IOException e) {
-			return mAux;
-		} catch (Exception e){
-			Utils.logError(e.getMessage());
-		}
+			rs.close();
+		} catch (SQLException e) {
+			Utils.showError(e);				
+			return false;	
+		} catch (NullPointerException e) {
+			Utils.showError(e);				
+			return false;	
+		}			
 
-		return mAux;
+		return true;
 
 	}
-
-
+	
+	
 	// Main procedure
-	public static boolean processAll(File fileInp) {
+	public static boolean process(File fileInp) {
 
         Utils.getLogger().info("exportINP(dbf)");
     	String sql = "";
@@ -226,32 +215,43 @@ public class ModelDbf extends Model{
 
 	}
 
+	
+	// Read content of the DBF file and saved it in an Array
+	@SuppressWarnings("resource")
+	private static ArrayList<LinkedHashMap<String, String>> readDBF(File file) {
 
-	// Check all the necessary files to run the process
-	public static boolean checkFiles(String sDirShp) {
-
-        dbfFiles = new HashMap<Integer, File>();
-        
-		String sql = "SELECT id, dbf_table FROM inp_table WHERE id > -1 ORDER BY id";
+		FileChannel in;
+		Row row;
+		ArrayList<LinkedHashMap<String, String>> mAux = null;
+		LinkedHashMap<String, String> mDades;
 		try {
-			Statement stat = connectionDrivers.createStatement();
-			ResultSet rs = stat.executeQuery(sql);		
-			while (rs.next()) {
-				String sDBF = sDirShp + File.separator + rs.getString("dbf_table").trim() + ".dbf";
-				dbfFiles.put(rs.getInt("id"), new File(sDBF));
+			mAux = new ArrayList<LinkedHashMap<String, String>>();
+			in = new FileInputStream(file).getChannel();
+			DbaseFileReader r = new DbaseFileReader(in);
+			int fields = r.getHeader().getNumFields();
+			while (r.hasNext()) {
+				mDades = new LinkedHashMap<String, String>();
+				row = r.readRow();
+				for (int i = 0; i < fields; i++) {
+					String field = r.getHeader().getFieldName(i).toLowerCase();
+					Object oAux = row.read(i);
+					String value = oAux.toString();
+					mDades.put(field, value);
+				}
+				mAux.add(mDades);
 			}
-			rs.close();
-		} catch (SQLException e) {
-			Utils.showError(e);				
-			return false;	
-		} catch (NullPointerException e) {
-			Utils.showError(e);				
-			return false;	
-		}			
+			r.close();
+		} catch (FileNotFoundException e) {
+			return mAux;
+		} catch (IOException e) {
+			return mAux;
+		} catch (Exception e){
+			Utils.logError(e.getMessage());
+		}
 
-		return true;
+		return mAux;
 
 	}
-
 	
+
 }

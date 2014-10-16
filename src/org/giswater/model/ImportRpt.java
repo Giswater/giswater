@@ -1,23 +1,3 @@
-/*
- * This file is part of Giswater
- * Copyright (C) 2013 Tecnics Associats
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- * 
- * Author:
- *   David Erill <derill@giswater.org>
- */
 package org.giswater.model;
 
 import java.io.File;
@@ -34,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
@@ -48,425 +26,32 @@ import org.giswater.dao.MainDao;
 import org.giswater.util.Utils;
 
 
-public class ModelPostgis extends Model {
+public class ImportRpt extends Model {
 
-    private static String insertSql;
 	private static ArrayList<String> tokens;
 	private static ArrayList<ArrayList<String>> tokensList;	
-	private static File fileRpt;
-	private static String projectName;
+	private static String insertSql;
 	private static int lineNumber;   // Number of lines read or current line to process
+	private static ArrayList<String> fileContent;
 	private static int totalLines;   // Total number of lines inside .rpt file
 	private static ArrayList<String> pollutants;
-	private static ArrayList<String> fileContent;
-	
 	private static String firstLine;
 	private static String lastTimeHydraulic = "";
 	private static boolean continueProcess = true;
 	private static boolean abortRptProcess = false;
 	
-	private static final String OPTIONS_TABLE = "v_inp_options";
-	private static final String REPORTS_TABLE = "v_inp_report";
-	private static final String REPORTS_TABLE2 = "inp_report";
-	private static final String TIMES_TABLE = "v_inp_times";
-	private static final String PATTERNS_TABLE = "inp_pattern";
-	private static final Integer DEFAULT_SPACE = 23;
-
-
-    // Read content of the table saved it in an Array
-    private static ArrayList<LinkedHashMap<String, String>> getTableData(String tableName) {
-
-    	LinkedHashMap<String, String> mDades;
-        ArrayList<LinkedHashMap<String, String>> mAux = new ArrayList<LinkedHashMap<String, String>>();
-        String sql = "SELECT * FROM " + MainDao.getSchema() + "." +  tableName;
-        PreparedStatement ps;
-        try {
-            ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            // Get columns name
-            int fields = rsmd.getColumnCount();
-            String[] columns = new String[fields];
-            for (int i = 0; i < fields; i++) {
-                columns[i] = rsmd.getColumnName(i + 1);
-            }
-            String value;
-            while (rs.next()) {
-                mDades = new LinkedHashMap<String, String>();
-                for (int i = 0; i < fields; i++) {
-                    Object o = rs.getObject(i + 1);
-                    if (o != null) {
-                        value = o.toString();
-                        mDades.put(columns[i], value);
-                    }
-                }
-                mAux.add(mDades);
-            }
-            rs.close();
-        } catch (SQLException e) {
-        	Utils.showError(e, sql);
-        }
-        return mAux;
-
-    }
-
-
-    
-	public static boolean checkSectorSelection() {
-		
-		boolean result = false;
-		String sql = "SELECT COUNT(*) FROM "+MainDao.getSchema()+".sector_selection";
-		PreparedStatement ps;
-		try {
-			ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				result = (rs.getInt(1) > 0);
-			}
-		} catch (SQLException e) {
-			Utils.showError(e, sql);
-		}
-		return result;
-		
-	}    
+	private static File fileRpt;
+	private static String projectName;
 	
 	
-    // Main procedure 
-    public static boolean processAll(File fileInp, boolean isSubcatchmentSelected) {
-
-        Utils.getLogger().info("exportINP");
-        String sql= "";
-        
-        try {
-            
-            // Overwrite INP file if already exists?
-            if (fileInp.exists()) {
-                String owInp = MainDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
-	            if (owInp.equals("false")) {
-	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
-	            	int res = Utils.confirmDialog(msg);             
-	            	if (res == JOptionPane.NO_OPTION){
-	                   	return false;
-	                }   
-	            }  
-            }
-            
-            // Get INP template File
-            String templatePath = MainDao.getInpFolder() + softwareVersion + ".inp";
-            File fileTemplate = new File(templatePath);
-            if (!fileTemplate.exists()) {
-            	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
-            	return false;
-            }
-                
-            // Open template and output file
-            rat = new RandomAccessFile(fileTemplate, "r");
-            raf = new RandomAccessFile(fileInp, "rw");
-            raf.setLength(0);
-
-            // Get content of target table
-            sql = "SELECT target.id as target_id, target.name as target_name, lines, main.id as main_id, main.dbase_table as table_name "
-        		+ "FROM inp_target as target " 
-        		+ "INNER JOIN inp_table as main ON target.table_id = main.id";             
-            Statement stat = connectionDrivers.createStatement();            
-            ResultSet rs = stat.executeQuery(sql);
-            while (rs.next()) {
-            	Utils.getLogger().info("INP target: " + rs.getInt("target_id") + " - " + rs.getString("table_name") + " - " + rs.getInt("lines"));
-            	if (rs.getString("table_name").equals(OPTIONS_TABLE) || 
-            		rs.getString("table_name").equals(REPORTS_TABLE) || rs.getString("table_name").equals(REPORTS_TABLE2) ||
-            		rs.getString("table_name").equals(TIMES_TABLE)){
-            		processTarget2(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
-            	}
-            	else{
-            		processTarget(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
-            	}
-            }
-            rs.close();
-            
-            // Subcatchment function
-            if (isSubcatchmentSelected){
-            	Utils.getLogger().info("Process subcatchments");
-            	
-            	stat = MainDao.getConnectionPostgis().createStatement();
-            	
-                // Get content of target table
-            	sql = "SELECT " + MainDao.getSchema() + ".gw_dump_subcatchments();";            
-                rs = stat.executeQuery(sql);
-                
-                while (rs.next()) {                	
-                	raf.writeBytes(rs.getString("gw_dump_subcatchments"));
-                	raf.writeBytes("\r\n");
-                }            	
-         
-            }
-            
-            rat.close();
-            raf.close();
-
-            // Open INP file?
-            String openInp = MainDao.getPropertiesFile().get("OPEN_INP").toLowerCase();
-            if (openInp.equals("always")) {
-            	Utils.openFile(fileInp.getAbsolutePath());
-            }
-            else if (openInp.equals("ask")) {
-                String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
-            	int res = Utils.confirmDialog(msg);             
-            	if (res == JOptionPane.YES_OPTION) {
-                   	Utils.openFile(fileInp.getAbsolutePath());
-                }   
-            }                            
-            return true;
-
-        } catch (IOException e) {
-            Utils.showError(e);
-            return false;
-        } catch (SQLException e) {
-            Utils.showError(e, sql);
-            return false;
-        }
-
-    }
-    
-
-    // Process target specified by id parameter
-    private static void processTarget(int id, String tableName, int lines) throws IOException, SQLException {
-
-        // Go to the first line of the target
-        for (int i = 1; i <= lines; i++) {
-            String line = rat.readLine().trim();
-            raf.writeBytes(line + "\r\n");
-        }
-
-        // If table is null or doesn't exit then exit function
-        if (!MainDao.checkTable(MainDao.getSchema(), tableName) && !MainDao.checkView(MainDao.getSchema(), tableName)) {
-        	Utils.getLogger().info("Table or view doesn't exist: " + tableName);
-            return;
-        }
-
-        // Get data of the specified Postgis table
-        lMapDades = getTableData(tableName);
-        if (lMapDades.isEmpty()) {
-        	Utils.getLogger().info("Table or view empty: " + tableName);
-            return;
-        }
-
-        // Get table columns to write into this target
-        mHeader = new LinkedHashMap<String, Integer>();
-        String sql = "SELECT name, space FROM inp_target_fields" + 
-        	" WHERE target_id = " + id + " ORDER BY pos";
-        Statement stat = connectionDrivers.createStatement();
-        ResultSet rs = stat.executeQuery(sql);
-        while (rs.next()) {
-            mHeader.put(rs.getString("name").trim().toLowerCase(), rs.getInt("space"));
-        }
-        rs.close();
-
-        ListIterator<LinkedHashMap<String, String>> itData = lMapDades.listIterator();
-        LinkedHashMap<String, String> rowData;   // Current Postgis row data
-        String sKey;
-        int size, sizeId;
-        Set<String> set = mHeader.keySet();
-        Iterator<String> itKey = set.iterator();        
-        
-        if (tableName.equals(PATTERNS_TABLE)){
-	        // Iterate over Postgis table
-	        while (itData.hasNext()) {
-	            rowData = itData.next();
-	            itKey = set.iterator();
-	            // First element: id
-                String sKeyId = (String) itKey.next();
-                sKeyId = sKeyId.toLowerCase();
-                sizeId = mHeader.get(sKeyId);
-	            parseField(rowData, sKeyId, sizeId);
-	            // Every Postgis row fills 4 lines -> 6 factors per line	            
-	            int i = 0;
-	            while (itKey.hasNext()) {
-	            	// Iterate over fields specified in table target_fields
-	                sKey = (String) itKey.next();
-	                sKey = sKey.toLowerCase();
-	                size = mHeader.get(sKey);
-		            parseField(rowData, sKey, size);
-	            	i++;
-	            	if (i%6 == 0 && i%24 != 0){
-	    	            raf.writeBytes("\r\n");
-	    	            parseField(rowData, sKeyId, sizeId);		    	            
-	            	}
-				}
-	            raf.writeBytes("\r\n");
-	        }
-        }
-        
-        else{
-	        // Iterate over Postgis table
-	        while (itData.hasNext()) {
-	            rowData = itData.next();
-	            itKey = set.iterator();
-	            // Iterate over fields specified in table target_fields
-	            while (itKey.hasNext()) {
-	                sKey = (String) itKey.next();
-	                sKey = sKey.toLowerCase();
-	                size = mHeader.get(sKey);
-		            parseField(rowData, sKey, size);	
-	            }
-	            raf.writeBytes("\r\n");
-	        }
-        }
-        
-    }
-
-    
-    private static void parseField(LinkedHashMap<String, String> rowData, String sKey, int size) throws IOException {
-
-        // Write to the output file if the field exists in Postgis table
-        if (rowData.containsKey(sKey)) {
-            String sValor = (String) rowData.get(sKey);
-            raf.writeBytes(sValor);
-            // Complete spaces with empty values
-            for (int j = sValor.length(); j <= size; j++) {
-                raf.writeBytes(" ");
-            }
-        } // If key doesn't exist write empty spaces
-        else {
-            for (int j = 0; j <= size; j++) {
-                raf.writeBytes(" ");
-            }
-        }
-        if (size == 0){
-        	raf.writeBytes(" ");
-        }        
-        
-	}
-
-
-	// Process target options or target report
-    private static void processTarget2(int id, String tableName, int lines) throws IOException, SQLException {
-
-        // Go to the first line of the target
-        for (int i = 1; i <= lines; i++) {
-            String line = rat.readLine().trim();
-            raf.writeBytes(line + "\r\n");
-        }
-
-        // If table is null or doesn't exit then exit function
-        if (!MainDao.checkTable(tableName) && !MainDao.checkView(tableName)) {
-            return;
-        }
-
-        // Get data of the specified Postgis table
-        ArrayList<LinkedHashMap<String, String>> options = getTableData(tableName);
-        if (options.isEmpty()) {
-        	Utils.getLogger().info("Empty table: " + tableName);        	
-            return;
-        }
-
-        ListIterator<LinkedHashMap<String, String>> it = options.listIterator();
-        LinkedHashMap<String, String> m;   // Current Postgis row data
-        String sValor = null;
-        int size = DEFAULT_SPACE;
-        
-        // Iterate over Postgis table (only one element)
-        while (it.hasNext()) {
-            m = it.next();
-            Set<String> set = m.keySet();
-            Iterator<String> itKey = set.iterator();
-            // Iterate over fields and write 
-            while (itKey.hasNext()) {
-                // Write to the output file (one per row)
-            	String sKey = (String) itKey.next();
-                sValor = (String) m.get(sKey);
-                raf.writeBytes(sKey.toUpperCase());
-                // Complete spaces with empty values
-                for (int j = sKey.length(); j <= size; j++) {
-                    raf.writeBytes(" ");
-                }
-                raf.writeBytes(sValor);
-                raf.writeBytes("\r\n");                
-            }
-        }
-
-    }    
-
-    
-    public static boolean execEPASOFT(File fileInp, File fileRpt) {
-
-        Utils.getLogger().info("execEPASOFT");
-        
-		String exeName = MainDao.getGswProperties().get("EXE_NAME");
-        File exeFile = new File(exeName);
-        exeName = Utils.getAppPath() + "epa" + File.separator + exeName;	
-	    exeFile = new File(exeName);			
-        
-        // Check if file exists
-		if (!exeFile.exists()){         
-    		Utils.showError("inp_error_notfound", exeName);
-    		return false;
-		}
-
-        if (!fileInp.exists()){
-			Utils.showError("inp_error_notfound", fileInp.getAbsolutePath());     
-			return false;
-        }
-        
-        // Overwrite RPT file if already exists?
-        if (fileRpt.exists()){
-            String owRpt = MainDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
-            if (owRpt.equals("false")){
-                String msg = "Selected file already exists:\n"+fileRpt.getAbsolutePath()+"\nDo you want to overwrite it?";
-            	int res = Utils.confirmDialog(msg);             
-            	if (res == JOptionPane.NO_OPTION){
-                   	return false;
-                }   
-            }  
-        }
-        
-        String sFile = fileRpt.getAbsolutePath().replace(".rpt", ".out");
-        File fileOut = new File(sFile);
-
-        // Create command
-        String exeCmd = "\"" + exeName + "\"";
-        exeCmd += " \"" + fileInp.getAbsolutePath() + "\" \"" + fileRpt.getAbsolutePath() + "\" \"" + fileOut.getAbsolutePath() + "\"";
-
-        // Ending message
-        Utils.getLogger().info(exeCmd);            
-
-        // Exec process
-		try {
-			Process p = Runtime.getRuntime().exec(exeCmd);
-	        p.waitFor();			
-	        p.destroy();
-		} catch (IOException e) {
-			Utils.showError("inp_error_io", exeCmd);
-			return false;
-		} catch (InterruptedException e) {
-			Utils.showError("inp_error_io", exeCmd);
-			return false;
-		}
-
-        // Open RPT file
-        String openFile = MainDao.getPropertiesFile().get("OPEN_RPT").toLowerCase();
-        if (openFile.equals("always")){
-        	Utils.openFile(fileRpt.getAbsolutePath());
-        }
-        else if (openFile.equals("ask")) {    
-            String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
-        	int res = Utils.confirmDialog(msg);             
-        	if (res == JOptionPane.YES_OPTION) {
-               	Utils.openFile(fileRpt.getAbsolutePath());
-            }   
-        }                            
-        return true;
-
-    }
-
-
-    // Import RPT file into Postgis tables
-    public static boolean importRpt(File fileRpt, String projectName) {
+	// Import RPT file into Postgis tables
+    public static boolean process(File fileRpt, String projectName) {
         
     	Utils.getLogger().info("importRpt");
 
     	abortRptProcess = false; 
-    	ModelPostgis.fileRpt = fileRpt;
-    	ModelPostgis.projectName = projectName;
+    	ImportRpt.fileRpt = fileRpt;
+    	ImportRpt.projectName = projectName;
 
     	// Ask confirmation to user
         String importRpt = MainDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "false").toLowerCase();
@@ -485,7 +70,7 @@ public class ModelPostgis extends Model {
     	boolean exists = false;
     	if (existsProjectName()) {
     		exists = true;
-            if (!overwrite){
+            if (!overwrite) {
             	int res = Utils.confirmDialog("project_exists");    		
             	if (res == JOptionPane.NO_OPTION) {
             		return false;
@@ -532,12 +117,14 @@ public class ModelPostgis extends Model {
             boolean ok = false;
             boolean processTarget = true;
             boolean continueTarget;
+            // EPASWMM
             if (softwareName.equals("SWMM")) {
             	ok = processRpt(rpt);
 				if (abortRptProcess) {
 					return false;
 				}
             } 
+            // EPANET
             else {
             	// Target node or arc
         		if (rpt.getId() >= 40) {
@@ -636,23 +223,8 @@ public class ModelPostgis extends Model {
 		return true;
 		
     }
-
-
-	private static boolean openRptFile() {
-		
-		Boolean ok = true;
-		try {
-			rat = new RandomAccessFile(fileRpt, "r");
-			lineNumber = 0;
-		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath());
-			ok = false;
-		}	
-		return ok;
-		
-	}
-
 	
+    
 	private static boolean getRptContent() {
 		
 		fileContent = new ArrayList<String>();
@@ -675,8 +247,8 @@ public class ModelPostgis extends Model {
 		return ok;
 		
 	}
-
-
+	
+    
 	private static boolean existsProjectName() {
 		
 		String sql = "SELECT * FROM "+MainDao.getSchema()+".rpt_result_cat " +
@@ -689,6 +261,21 @@ public class ModelPostgis extends Model {
             Utils.showError(e, sql);
 			return false;
 		}
+		
+	}
+	
+	
+	private static boolean openRptFile() {
+		
+		Boolean ok = true;
+		try {
+			rat = new RandomAccessFile(fileRpt, "r");
+			lineNumber = 0;
+		} catch (FileNotFoundException e) {
+			Utils.showError("inp_error_notfound", fileRpt.getAbsolutePath());
+			ok = false;
+		}	
+		return ok;
 		
 	}
 
@@ -768,7 +355,7 @@ public class ModelPostgis extends Model {
 		
 	}	
 	
-
+	
 	private static void getPollutants(RptTarget rpt) {
 		
 		String line = "";
@@ -1409,11 +996,11 @@ public class ModelPostgis extends Model {
 		
 	}	
 	
-	
+
 	private static String readLine(){
 		String line = fileContent.get(lineNumber - 1);
 		return line;
 	}
 	
-
+	
 }

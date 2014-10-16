@@ -9,9 +9,11 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.model.ExecuteEpa;
+import org.giswater.model.ExportToInp;
+import org.giswater.model.ExportToInpDbf;
+import org.giswater.model.ImportRpt;
 import org.giswater.model.Model;
-import org.giswater.model.ModelDbf;
-import org.giswater.model.ModelPostgis;
 import org.giswater.util.Utils;
 
 
@@ -85,7 +87,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
             	MainClass.mdi.showError("file_inp_not_selected");
                 return null;
             }      
-            if (!ModelPostgis.checkSectorSelection()) {
+            if (!ExportToInp.checkSectorSelection()) {
         		int res = Utils.confirmDialog(view, "sector_selection_empty");        
                 if (res == 0){            	
                 	controller.showSectorSelection();
@@ -93,7 +95,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }               
             boolean selected = view.isSubcatchmentsSelected();
-            continueExec = ModelPostgis.processAll(fileInp, selected);
+            continueExec = ExportToInp.process(fileInp, selected);
         }
 
         // Run SWMM
@@ -106,7 +108,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 Utils.showError(view, "file_rpt_not_selected");
                 return null;
             }                  
-            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
+            continueExec = ExecuteEpa.process(fileInp, fileRpt);
         }
 
         // Import RPT to Postgis
@@ -116,11 +118,11 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }            
             String projectName = view.getProjectName();
-            if (projectName.equals("")){
+            if (projectName.equals("")) {
                 Utils.showError("project_name");
             } 
-            else{
-           		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
+            else {
+           		continueExec = ImportRpt.process(fileRpt, projectName);
             	Model.closeFile();
             	if (!continueExec){
 					MainDao.rollback();
@@ -169,7 +171,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 		}
 		
 		// Check if all necessary files exist
-		if (!ModelDbf.checkFiles(pathFolderShp)) {
+		if (!ExportToInpDbf.checkFiles(pathFolderShp)) {
 			return null;
 		}
 		
@@ -183,49 +185,15 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 
 		// Process all shapes and output to INP file
 		File fileInp = controller.getFileInp();
-    	File fileRpt = controller.getFileRpt();
-        
-        boolean continueExec = true;
+
         // Export to INP
         if (exportSelected) {
             if (fileInp == null) {
             	MainClass.mdi.showError("file_inp_not_selected");
                 return null;
             }   
-            continueExec = ModelDbf.processAll(fileInp);
+            ExportToInpDbf.process(fileInp);
         }
-
-        // Run SWMM
-        if (execSelected && continueExec) {
-            if (fileInp == null) {
-            	MainClass.mdi.showError("file_inp_not_selected");
-                return null;
-            }   
-            if (fileRpt == null) {
-                Utils.showError(view, "file_rpt_not_selected");
-                return null;
-            }                  
-            continueExec = ModelPostgis.execEPASOFT(fileInp, fileRpt);
-        }
-
-        // Import RPT to Postgis
-        if (importSelected && continueExec) {
-            if (fileRpt == null) {
-            	MainClass.mdi.showError("file_rpt_not_selected");
-                return null;
-            }              
-            String projectName = view.getProjectName();
-            if (projectName.equals("")){
-            	MainClass.mdi.showError("project_name");
-            } 
-            else{
-           		continueExec = ModelPostgis.importRpt(fileRpt, projectName);
-            	Model.closeFile();
-            	if (!continueExec){
-					MainDao.rollback();
-            	}
-            }
-        }     
         
     	status = true;
     	return null;
