@@ -140,7 +140,7 @@ public class ModelPostgis extends Model {
         try {
             
             // Overwrite INP file if already exists?
-            if (fileInp.exists()){
+            if (fileInp.exists()) {
                 String owInp = MainDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
 	            if (owInp.equals("false")) {
 	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
@@ -205,13 +205,13 @@ public class ModelPostgis extends Model {
 
             // Open INP file?
             String openInp = MainDao.getPropertiesFile().get("OPEN_INP").toLowerCase();
-            if (openInp.equals("always")){
+            if (openInp.equals("always")) {
             	Utils.openFile(fileInp.getAbsolutePath());
             }
-            else if (openInp.equals("ask")){
+            else if (openInp.equals("ask")) {
                 String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
             	int res = Utils.confirmDialog(msg);             
-            	if (res == JOptionPane.YES_OPTION){
+            	if (res == JOptionPane.YES_OPTION) {
                    	Utils.openFile(fileInp.getAbsolutePath());
                 }   
             }                            

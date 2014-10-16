@@ -48,6 +48,14 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		
 		setProgress(1);
 		
+		// Check if schema already exists
+		if (MainDao.checkSchema(schemaName)) {
+			String msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
+			int res = Utils.confirmDialog(parentPanel, msg, "Create Project");
+			if (res != 0) return null; 
+			MainDao.deleteSchema(schemaName);
+		}
+		
     	// Close view and disable parent view
 		controller.closeProject();
     	Utils.setPanelEnabled(parentPanel, false);
@@ -71,12 +79,12 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 				MainDao.executeSql(sql, true);
 			}
 			else {
-				MainDao.rollbackSchema(schemaName);
+				MainDao.deleteSchema(schemaName);
 				status = false;
 			}
 		}
 		else {
-			MainDao.rollbackSchema(schemaName);
+			MainDao.deleteSchema(schemaName);
 			status = false;
 		}
 		

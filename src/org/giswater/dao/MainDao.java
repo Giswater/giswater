@@ -821,7 +821,7 @@ public class MainDao {
         try {
     		ResultSet rs = getResultset(sql, showError);      	
     		if (rs != null) {
-				if (rs.next()){
+				if (rs.next()) {
 					value = rs.getString(1);
 				}
 				rs.close();	
@@ -1093,12 +1093,6 @@ public class MainDao {
 		sql = "DELETE FROM public.geometry_columns WHERE f_table_schema = '"+schemaName+"'";
 		executeUpdateSql(sql, true);			
 	}
-
-	
-	public static void rollbackSchema(String schemaName) {
-		rollback();
-		deleteSchema(schemaName);
-	}
 	
 	
 	public static boolean createSchema(String softwareName, String schemaName, String srid) {
@@ -1141,7 +1135,6 @@ public class MainDao {
 						status = executeSql(content, false);
 					}					
 				}
-				
 			}
 			
         } catch (FileNotFoundException e) {
@@ -1599,10 +1592,14 @@ public class MainDao {
 	}
 	
 	
-	public static boolean createSdfFile(String schemaName, String fileName) {
-		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"');";
+	public static Integer createSdfFile(String schemaName, String fileName, 
+		boolean MA, boolean IA, boolean Levees, boolean BO, boolean Manning) {
+		
+		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"', "+MA+", "+IA+", "+Levees+", "+BO+", "+Manning+");";
 		Utils.logSql(sql);
-		return executeSql(sql, true);			
+		Integer value = Integer.parseInt(stringQuery(sql));
+        return value;	
+        
 	}
 	
 	
@@ -1645,6 +1642,11 @@ public class MainDao {
 		
 		return true;
 			
+	}
+
+	public static String getErrorMessage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -30,6 +30,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.frame.MainFrame;
@@ -90,9 +91,12 @@ public class HecRasController extends AbstractController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileSdf = chooser.getSelectedFile();
             String path = fileSdf.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".sdf";
-                fileSdf = new File(path);
+            if (path != null && path.length() >= 4) {  
+                String ext = path.substring(path.length() - 4).toLowerCase();
+                if (!ext.equals(".sdf")) {
+                    path += ".sdf";
+                    fileSdf = new File(path);
+                }
             }
             view.setFileSdf(fileSdf.getAbsolutePath());            
         }
@@ -113,9 +117,12 @@ public class HecRasController extends AbstractController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
         	fileAsc = chooser.getSelectedFile();
             String path = fileAsc.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".asc";
-                fileAsc = new File(path);
+            if (path != null && path.length() >= 4) {  
+                String ext = path.substring(path.length() - 4).toLowerCase();
+                if (!ext.equals(".asc")) {
+                    path += ".asc";
+                    fileAsc = new File(path);
+                }
             }
             view.setFileAsc(fileAsc.getAbsolutePath());            
         }
@@ -161,7 +168,7 @@ public class HecRasController extends AbstractController {
     	
 		// Check ASC file is set
 		if (!getFileAsc()) {
-			Utils.showError("file_asc_not_selected");
+			MainClass.mdi.showError("file_asc_not_selected");
 			return;
 		}
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
@@ -178,26 +185,33 @@ public class HecRasController extends AbstractController {
    	
 		// Check SDF file is set
 		if (!getFileSdf()) {
-			Utils.showError("file_sdf_not_selected");
+			MainClass.mdi.showError("file_sdf_not_selected");
 			return;
 		}
 
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        
 		String schemaName = MainDao.getSchema();
 		String fileName = fileSdf.getName();
-		MainDao.createSdfFile(schemaName, fileName);
-		
-		// Copy file from Postgis Data Directory to folder specified by the user
-		String auxIn, auxOut;
-		String folderIn = gswProp.getProperty("POSTGIS_DATA");
-		auxIn = folderIn + File.separator + fileName;
-		auxOut = fileSdf.getAbsolutePath();
-		boolean ok = Utils.copyFile(auxIn, auxOut);
-		if (!ok) {
-			Utils.showError("sdf_error");
+		Integer result = MainDao.createSdfFile(schemaName, fileName, 
+			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
+		if (result == 0) {
+			// Copy file from Postgis Data Directory to folder specified by the user
+			String auxIn, auxOut;
+			String folderIn = gswProp.getProperty("POSTGIS_DATA");
+			auxIn = folderIn + File.separator + fileName;
+			auxOut = fileSdf.getAbsolutePath();
+			boolean ok = Utils.copyFile(auxIn, auxOut);
+			if (!ok) {
+				MainClass.mdi.showError("sdf_error");
+			}
+			else {
+				MainClass.mdi.showMessage("sdf_ok");
+			}
 		}
 		else {
-			Utils.showMessage(view, "sdf_ok", fileSdf.getAbsolutePath());
+			// TODO: Get error from table and show to the user
+			String msg = MainDao.getErrorMessage();
+			MainClass.mdi.showError(msg);
 		}
 		
 	}

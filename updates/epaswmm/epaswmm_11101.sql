@@ -287,14 +287,6 @@ SELECT rpt_arcflow_sum.id, result_selection.result_id, rpt_arcflow_sum.arc_id, r
 
 
 -- ------------------------------------------------------------
--- Incorporation of 1 new column on rpt_runoff_quant
--- ------------------------------------------------------------
-
-ALTER TABLE "SCHEMA_NAME"."rpt_runoff_quant"
-ADD COLUMN "init_lid_storage" numeric(6,4);
-
-
--- ------------------------------------------------------------
 -- Incorporation of 2 new columns on rpt_flowrouting_cont
 -- ------------------------------------------------------------
 

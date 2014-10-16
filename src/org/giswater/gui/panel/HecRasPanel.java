@@ -42,12 +42,14 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import javax.swing.JCheckBox;
 
 
 public class HecRasPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 
 	private HecRasController controller;	
 	private HecRasFrame hecRasFrame;
@@ -56,17 +58,22 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnLoadRaster;
 	private JButton btnExportSdf;
 	private JTextArea txtFileAsc;
+	private JCheckBox chkExportSA;
+	private JCheckBox chkExportIA;
+	private JCheckBox chkExportLevees;
+	private JCheckBox chkExportBO;
+	private JCheckBox chkExportManning;
 	private JTextArea txtFileSdf;
 	private JButton btnFileSdf;
-	private JButton btnClose;
 
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
-	private JPanel panel;
+	private JPanel panelDataManager;
 	private JButton btnLogFile;
 	private JButton btnErrorFile;
-	private JButton btnProjectData;
+	private JButton btnShowProjectData;
 	private JButton btnExportMdt;
+	
 	private JButton btnEditProjectPreferences;
+	private JButton btnClose;
 	
 	
 	public HecRasPanel() {
@@ -104,12 +111,12 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		// Check if we have to enable Load Raster button
 		PropertiesMap prop = MainDao.getPropertiesFile();
 		boolean isLoad = Boolean.parseBoolean(prop.getProperty("LOAD_RASTER", "false"));
-		if (isEnabled && isLoad){
+		if (isEnabled && isLoad) {
 			btnLoadRaster.setEnabled(true);
 			txtFileAsc.setEnabled(true);
 			btnFileAsc.setEnabled(true);
 		} 
-		else{
+		else {
 			btnLoadRaster.setEnabled(false);
 			txtFileAsc.setEnabled(false);
 			btnFileAsc.setEnabled(false);
@@ -137,6 +144,27 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	}	
 
 	
+	public boolean isMASelected() {
+		return chkExportSA.isSelected();
+	}
+	
+	public boolean isIASelected() {
+		return chkExportIA.isSelected();
+	}
+	
+	public boolean isLeveesSelected() {
+		return chkExportLevees.isSelected();
+	}
+	
+	public boolean isBOSelected() {
+		return chkExportBO.isSelected();
+	}
+	
+	public boolean isManningSelected() {
+		return chkExportManning.isSelected();
+	}
+	
+	
 	private void initConfig() throws MissingResourceException {
 
 		setLayout(new MigLayout("", "[:507.00px:531px][10px:n:8px]", "[5px:n][][::50px][10px:n][]"));
@@ -144,7 +172,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 1 2 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[50px:n][grow][5px:n][][]", "[34px:n][10px:n][34px:n]"));
+		panelFileManager.setLayout(new MigLayout("", "[50px:n][grow][5px:n][][]", "[34px:n][5px:n][][34px:n]"));
 		
 		JLabel lblAscFile_1 = new JLabel();
 		panelFileManager.add(lblAscFile_1, "cell 0 0,alignx right");
@@ -172,12 +200,18 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnLoadRaster.setMinimumSize(new Dimension(85, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
 		
+		chkExportSA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportSa.text")); //$NON-NLS-1$
+		panelFileManager.add(chkExportSA, "flowx,cell 1 2");
+		
+		JLabel lbloptionalParameters = new JLabel(BUNDLE.getString("HecRasPanel.lbloptionalParameters.text")); //$NON-NLS-1$
+		panelFileManager.add(lbloptionalParameters, "cell 3 2 2 1");
+		
 		JLabel lblAscFile = new JLabel();
-		panelFileManager.add(lblAscFile, "cell 0 2,alignx right");
+		panelFileManager.add(lblAscFile, "cell 0 3,alignx right");
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text"));
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		panelFileManager.add(scrollPane_3, "cell 1 2,grow");
+		panelFileManager.add(scrollPane_3, "cell 1 3,grow");
 		
 		txtFileSdf = new JTextArea();
 		scrollPane_3.setViewportView(txtFileSdf);
@@ -186,38 +220,51 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		
 		btnFileSdf = new JButton();
 		btnFileSdf.setMinimumSize(new Dimension(65, 9));
-		panelFileManager.add(btnFileSdf, "cell 3 2");
+		panelFileManager.add(btnFileSdf, "cell 3 3");
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
 		btnExportSdf.setPreferredSize(new Dimension(98, 23));
-		panelFileManager.add(btnExportSdf, "cell 4 2");
+		panelFileManager.add(btnExportSdf, "cell 4 3");
 		btnExportSdf.setMinimumSize(new Dimension(80, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		
-		panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel, "cell 0 2 2 1,grow");
-		panel.setLayout(new MigLayout("", "[][][][]", "[]"));
+		chkExportIA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportIa.text")); //$NON-NLS-1$
+		panelFileManager.add(chkExportIA, "cell 1 2");
+		
+		chkExportLevees = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportLevees.text")); //$NON-NLS-1$
+		panelFileManager.add(chkExportLevees, "cell 1 2");
+		
+		chkExportBO = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxBo.text")); //$NON-NLS-1$
+		panelFileManager.add(chkExportBO, "cell 1 2,alignx right,aligny top");
+		
+		chkExportManning = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxManning.text")); //$NON-NLS-1$
+		panelFileManager.add(chkExportManning, "cell 1 2");
+		
+		panelDataManager = new JPanel();
+		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panelDataManager, "cell 0 2 2 1,grow");
+		panelDataManager.setLayout(new MigLayout("", "[][][][]", "[]"));
 		
 		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
 		btnLogFile.setMinimumSize(new Dimension(120, 23));
-		panel.add(btnLogFile, "cell 0 0");
+		panelDataManager.add(btnLogFile, "cell 0 0");
 		
 		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
 		btnErrorFile.setMinimumSize(new Dimension(120, 23));
-		panel.add(btnErrorFile, "cell 1 0");
+		panelDataManager.add(btnErrorFile, "cell 1 0");
 		
-		btnProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
-		btnProjectData.setMinimumSize(new Dimension(120, 23));
-		panel.add(btnProjectData, "cell 2 0");
+		btnShowProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
+		btnShowProjectData.setActionCommand(BUNDLE.getString("HecRasPanel.btnProjectData.actionCommand")); //$NON-NLS-1$
+		btnShowProjectData.setMinimumSize(new Dimension(120, 23));
+		panelDataManager.add(btnShowProjectData, "cell 2 0");
 		
 		btnExportMdt = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
 		btnExportMdt.setMinimumSize(new Dimension(120, 23));
-		panel.add(btnExportMdt, "cell 3 0");
+		panelDataManager.add(btnExportMdt, "cell 3 0");
 		
 		btnEditProjectPreferences = new JButton("Edit Project Preferences");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
@@ -242,6 +289,9 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportSdf.addActionListener(this);
 		btnFileAsc.addActionListener(this);
 		btnFileSdf.addActionListener(this);
+		
+		// Data Manager
+		btnShowProjectData.addActionListener(this);
 		
 		btnEditProjectPreferences.addActionListener(this);		
 		btnClose.addActionListener(this);		

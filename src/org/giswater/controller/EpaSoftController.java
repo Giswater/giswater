@@ -176,9 +176,12 @@ public class EpaSoftController extends AbstractController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileInp = chooser.getSelectedFile();
             String path = fileInp.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".inp";
-                fileInp = new File(path);
+            if (path != null && path.length() >= 4) {  
+                String ext = path.substring(path.length() - 4).toLowerCase();
+                if (!ext.equals(".inp")) {
+                    path += ".inp";
+                    fileInp = new File(path);
+                }
             }
             view.setFileInp(fileInp.getAbsolutePath());            
         }
@@ -199,9 +202,12 @@ public class EpaSoftController extends AbstractController {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileRpt = chooser.getSelectedFile();
             String path = fileRpt.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".rpt";
-                fileRpt = new File(path);
+            if (path != null && path.length() >= 4) {  
+                String ext = path.substring(path.length() - 4).toLowerCase();
+                if (!ext.equals(".rpt")) {
+                    path += ".rpt";
+                    fileRpt = new File(path);
+                }
             }
             view.setFileRpt(fileRpt.getAbsolutePath());
         }

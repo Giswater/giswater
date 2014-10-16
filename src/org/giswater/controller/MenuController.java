@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
 import org.giswater.gui.dialog.about.WelcomeDialog;
@@ -93,7 +94,7 @@ public class MenuController extends AbstractController {
 		String schema = MainDao.getSchema();
 		if (schema == null) {
 			String msg = "Any schema selected. You need to select one to backup";
-			Utils.showMessage(msg);
+			MainClass.mdi.showMessage(msg);
 			return;
 		}
 		String filePath = chooseFileBackup();
@@ -407,17 +408,25 @@ public class MenuController extends AbstractController {
 		if (softwareName.equals("hecras")) {
 			sridValue = "23031";		
 		}
-
+		
 		// Ask confirmation
-		String msg = "Project called 'sample_"+softwareName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
+		String schemaName = "sample_"+softwareName;
+		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
 		int res = Utils.confirmDialog(view, msg, "Create DB sample");
 		if (res != 0) return; 
+		
+		// Check if schema already exists
+		if (MainDao.checkSchema(schemaName)) {
+			msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
+			res = Utils.confirmDialog(view, msg, "Create DB sample");
+			if (res != 0) return; 
+			MainDao.deleteSchema(schemaName);
+		}
 		
 		// Set wait cursor
 		view.ppFrame.getPanel().enableControlsText(false);
 		view.setCursorFrames(waitCursor);
 		
-		String schemaName = "sample_"+softwareName;
 		boolean status = true;
 		if (softwareName.equals("hecras")) {
 			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
@@ -447,32 +456,34 @@ public class MenuController extends AbstractController {
 					// Last SQL script. So commit all process
 					boolean result = MainDao.executeSql(content, true);		
 					if (!result) {
-						MainDao.rollbackSchema(schemaName);
+						MainDao.deleteSchema(schemaName);
 						return;
 					}
 					if (softwareName.equals("hecras")) {				
 						// Trough Load Raster
 						String rasterName = "sample_mdt.asc";	 						
 						String rasterPath = folderRoot+"samples/"+rasterName;	 						
-						if (MainDao.loadRaster(schemaName, rasterPath, rasterName)){
-							Utils.showMessage(view, "schema_creation_completed", schemaName);
+						if (MainDao.loadRaster(schemaName, rasterPath, rasterName)) {
+							msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
+							MainClass.mdi.showMessage(msg);
 						}						
 					}	
 					else {
-						Utils.showMessage(view, "schema_creation_completed", schemaName);
+						msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
+						MainClass.mdi.showMessage(msg);
 					}
 				} catch (Exception e) {
-					MainDao.rollbackSchema(schemaName);
+					MainDao.deleteSchema(schemaName);
 		            Utils.showError(e);
 				}
 			}
-			else{
-				MainDao.rollbackSchema(schemaName);
+			else {
+				MainDao.deleteSchema(schemaName);
 				Utils.logError("Error updateSchema. Schema could not be created");
 			}		
 		}
 		else {
-			MainDao.rollbackSchema(schemaName);
+			MainDao.deleteSchema(schemaName);
 			Utils.logError("Error createSchema. Schema could not be created");
 		}
 
@@ -580,19 +591,19 @@ public class MenuController extends AbstractController {
 		Utils.openWeb(URL_WEB);
 	}	
 	
-	public void checkUpdates(){
+	public void checkUpdates() {
 		
 		// Check if new version is available
 		Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
 		Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
 		Integer buildVersion = Integer.parseInt(versionCode.substring(4));
-		if (ftp == null){
+		if (ftp == null) {
 			ftp = new UtilsFTP();
 		}
 		boolean newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
 		String ftpVersion = ftp.getFtpVersion();
 		view.setNewVersionVisible(newVersion, ftpVersion);
-		if (!newVersion){
+		if (!newVersion) {
 			Utils.showMessage(view, "This version is up to date.\nAny new version has been found in the repository.");
 		}
 		
@@ -601,7 +612,7 @@ public class MenuController extends AbstractController {
 	
 	
 	// Download new version
-	public void downloadNewVersion(){
+	public void downloadNewVersion() {
 		
 		Utils.getLogger().info("Downloading last version...");
 		
