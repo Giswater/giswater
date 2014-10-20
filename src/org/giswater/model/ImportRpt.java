@@ -8,17 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -27,9 +23,7 @@ import org.giswater.util.Utils;
 
 
 public class ImportRpt extends Model {
-
-	private static ArrayList<String> tokens;
-	private static ArrayList<ArrayList<String>> tokensList;	
+	
 	private static String insertSql;
 	private static int lineNumber;   // Number of lines read or current line to process
 	private static ArrayList<String> fileContent;
@@ -39,9 +33,15 @@ public class ImportRpt extends Model {
 	private static String lastTimeHydraulic = "";
 	private static boolean continueProcess = true;
 	private static boolean abortRptProcess = false;
-	
 	private static File fileRpt;
 	private static String projectName;
+	
+	private static LinkedHashMap<Integer, RptTarget> mapRptTargets = null;
+	
+	// Each rptElem corresponds to one line of a .rpt file
+	private static RptToken rptToken = null;
+	private static ArrayList<RptToken> rptTokens;	
+	private static ArrayList<ArrayList<RptToken>> rptTokensList;	
 	
 	
 	// Import RPT file into Postgis tables
@@ -88,132 +88,108 @@ public class ImportRpt extends Model {
     	}
     	Utils.getLogger().info("Getting contents completed");
     	
-        // Get info from rpt_target into memory
-        TreeMap<Integer, RptTarget> targets = new TreeMap<Integer, RptTarget>();
-        String sql = "SELECT id, db_table, description, type, title_lines, tokens, dbf_table" +
-        	" FROM rpt_target" +
-        	" WHERE type <> 0 ORDER BY id";
-        try {
-            Statement stat = connectionDrivers.createStatement();
-            ResultSet rs = stat.executeQuery(sql);
-            while (rs.next()) {
-                RptTarget rpt = new RptTarget(rs);
-                targets.put(rpt.getId(), rpt);
-            }
-            rs.close();
-            MainDao.getConnectionPostgis().setAutoCommit(false);       
-        } catch (SQLException e) {
-            Utils.showError(e, sql);
-            return false;
+    	// Initialize targets if needed
+    	if (mapRptTargets == null) {
+    		initRptTargets();
+    	}
+    	
+        // EPASWMM
+        if (softwareName.equals("SWMM")) {
+        	processEPASWMM(overwrite, exists);
+        } 
+        // EPANET
+        else {
+        	processEPANET(overwrite, exists);
         }
-        
+    	       
+		return true;
+		
+    }
+    
+
+	private static boolean processEPASWMM(Boolean overwrite, Boolean exists) {
+
         // Iterate over targets
-        Iterator<Entry<Integer, RptTarget>> it = targets.entrySet().iterator();
+        Iterator<Entry<Integer, RptTarget>> it = mapRptTargets.entrySet().iterator();
+        while (it.hasNext()) {
+        	insertSql = "";
+            Map.Entry<Integer, RptTarget> mapEntry = it.next();
+            RptTarget rptTarget = mapEntry.getValue();
+            boolean ok = processRptTarget(rptTarget);
+			if (abortRptProcess) return false;
+            if (!continueProcess) return false;
+            postProcessTarget(rptTarget, ok, true, overwrite, exists);
+        } // end iterations over targets (while)
+
+        // Insert into result_selection commiting transaction
+   		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
+   		
+   		return true;
+		
+	}
+
+    
+    private static boolean processEPANET(Boolean overwrite, boolean exists) {
+
+        // Iterate over targets
+    	String sql = "";
+        Iterator<Entry<Integer, RptTarget>> it = mapRptTargets.entrySet().iterator();
         while (it.hasNext()) {
         	
         	insertSql = "";
             Map.Entry<Integer, RptTarget> mapEntry = it.next();
-            RptTarget rpt = mapEntry.getValue();
+            RptTarget rptTarget = mapEntry.getValue();
             boolean ok = false;
             boolean processTarget = true;
             boolean continueTarget;
-            // EPASWMM
-            if (softwareName.equals("SWMM")) {
-            	ok = processRpt(rpt);
-				if (abortRptProcess) {
-					return false;
-				}
-            } 
-            // EPANET
-            else {
-            	// Target node or arc
-        		if (rpt.getId() >= 40) {
-        			processTarget = false;
-        			continueTarget = true;
-        			if (overwrite) {
-        				sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable();
-        				Utils.logSql(sql);
-        				MainDao.executeUpdateSql(sql);
-        			}
-        			else {
-        				if (exists) {
-        					sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable() + 
-        						" WHERE result_id = '"+projectName+"'";
-        					Utils.logSql(sql);
-        					MainDao.executeUpdateSql(sql);
-        				}
-		    		}            			
-        			while (continueTarget) {
-            			insertSql = "";            				
-        				ok = processRptEpanet(rpt);
-        				if (abortRptProcess) {
-        					return false;
-        				}
-        	        	if (ok) {
-        		    		if (!insertSql.equals("")) {
-        		            	if (softwareName.equals("EPANET") && rpt.getId() >= 40) {
-        		            		firstLine = firstLine.substring(15, 24).trim(); 
-        		            		sql = "UPDATE "+MainDao.getSchema()+"."+rpt.getTable() + 
-        		            			" SET time = '"+firstLine+"' WHERE time is null;";
-        		            		insertSql+= sql;
-        		            	}          	
-        		            	Utils.logSql(insertSql);
-        			    		if (!MainDao.executeUpdateSql(insertSql)) {
-        							return false;
-        						}
-        		    		}
-        	        	}
-        				continueTarget = (lineNumber > 0);            	        	
-        			}
-        			MainDao.commit();
-        		}
-        		// Target different than node or arc
-        		else {
-    				ok = processRptEpanet(rpt);
-    				if (abortRptProcess) {
-    					return false;
-    				}    				
-        		}
-            }
             
-            if (!continueProcess) {
-            	return false;
-            }
-            
-        	if (ok && processTarget) {
+        	// Target node or arc
+    		if (rptTarget.getId() == 40 || rptTarget.getId() == 50) {
+    			processTarget = false;
+    			continueTarget = true;
     			if (overwrite) {
-    				sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable();
+    				sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
     				Utils.logSql(sql);
     				MainDao.executeUpdateSql(sql);
     			}
     			else {
     				if (exists) {
-    					sql = "DELETE FROM "+MainDao.getSchema()+"."+rpt.getTable() + 
+    					sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable() + 
     						" WHERE result_id = '"+projectName+"'";
     					Utils.logSql(sql);
     					MainDao.executeUpdateSql(sql);
     				}
-	    		} 
-	    		if (!insertSql.equals("")) {
-	    			Utils.logSql(insertSql);	            	
-		    		boolean status = MainDao.executeUpdateSql(insertSql, true);
-		    		if (!status) {
-		    			// TODO: i18n
-		    			String msg = "Import aborted. Some data values are not valid in current target: ";
-		    			msg+= "\n" + rpt.getDescription();
-		    			msg+= "\nOpen current .log file for more details";
-		    			Utils.showError(msg);
-		    			return false;
-		    		}
-	    		}
-        	} 
-        	else {
-        		Utils.getLogger().info("Target not found: " + rpt.getId() + " - " + rpt.getDescription());
-        		if (softwareName.equals("EPANET") && rpt.getId() == 10) {
-        			sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+ " (result_id) VALUES ('"+projectName+"')";
-        			MainDao.executeUpdateSql(sql, true);
-        		}
-        	}
+	    		}            			
+    			while (continueTarget) {
+        			insertSql = "";       
+    				ok = processRptEpanet(rptTarget);
+    				if (abortRptProcess) return false;
+    	        	if (ok) {
+    		    		if (!insertSql.equals("")) {
+    		            	if (softwareName.equals("EPANET") && rptTarget.getId() >= 40) {
+    		            		firstLine = firstLine.substring(15, 24).trim(); 
+    		            		sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable() + 
+    		            			" SET time = '"+firstLine+"' WHERE time is null;";
+    		            		insertSql+= sql;
+    		            	}          	
+    		            	Utils.logSql(insertSql);
+    			    		if (!MainDao.executeUpdateSql(insertSql)) {
+    							return false;
+    						}
+    		    		}
+    	        	}
+    				continueTarget = (lineNumber > 0);            	        	
+    			}
+    		}
+    		
+    		// Target different than node or arc
+    		else {
+				ok = processRptEpanet(rptTarget);
+				if (abortRptProcess) return false;				
+    		}
+            
+            if (!continueProcess) return false;
+            postProcessTarget(rptTarget, ok, processTarget, overwrite, exists);
         	
         } // end iterations over targets (while)
 
@@ -222,6 +198,100 @@ public class ImportRpt extends Model {
 
 		return true;
 		
+	}
+    
+    
+	private static boolean postProcessTarget(RptTarget rptTarget, boolean ok, boolean processTarget, boolean overwrite, boolean exists) {
+		
+		String sql;
+    	if (ok && processTarget) {
+			if (overwrite) {
+				sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
+				Utils.logSql(sql);
+				MainDao.executeUpdateSql(sql);
+			}
+			else {
+				if (exists) {
+					sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable() + 
+						" WHERE result_id = '"+projectName+"'";
+					Utils.logSql(sql);
+					MainDao.executeUpdateSql(sql);
+				}
+    		} 
+    		if (!insertSql.equals("")) {
+    			Utils.logSql(insertSql);	            	
+	    		boolean status = MainDao.executeUpdateSql(insertSql, true);
+	    		if (!status) {
+	    			// TODO: i18n
+	    			String msg = "Import aborted. Some data values are not valid in current target: ";
+	    			msg+= "\n" + rptTarget.getDescription();
+	    			msg+= "\nOpen current .log file for more details";
+	    			Utils.showError(msg);
+	    			return false;
+	    		}
+    		}
+    	} 
+    	else {
+    		Utils.getLogger().info("Target not found: " + rptTarget.getId() + " - " + rptTarget.getDescription());
+    		if (softwareName.equals("EPANET") && rptTarget.getId() == 10) {
+    			sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+ " (result_id) VALUES ('"+projectName+"')";
+    			MainDao.executeUpdateSql(sql, true);
+    		}
+    	}
+		
+		return true;
+		
+	}
+
+	
+	private static String readLine(){
+		String line = fileContent.get(lineNumber - 1);
+		return line;
+	}
+	
+	
+	private static boolean initRptTargets() {
+    	
+        // Get info from rpt_target into memory
+        mapRptTargets = new LinkedHashMap<Integer, RptTarget>();
+        String sql = "SELECT id, db_table, description, type, title_lines, tokens, parametrized" +
+        	" FROM rpt_target" +
+        	" WHERE type <> 0" + 
+        	" ORDER BY id";
+        try {
+            ResultSet rs = MainDao.getResultset(connectionDrivers, sql, true, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            while (rs.next()) {
+            	RptTarget rptTarget = new RptTarget(rs);
+                mapRptTargets.put(rptTarget.getId(), rptTarget);
+            }
+            rs.close();  
+        } catch (SQLException e) {
+            Utils.showError(e, sql);
+            return false;
+        }    	
+        
+        // Iterate over targets and get info from rpt_target_fields into memory
+        Iterator<Entry<Integer, RptTarget>> it = mapRptTargets.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, RptTarget> mapEntry = it.next();
+            RptTarget rptTarget = mapEntry.getValue();
+            sql = "SELECT target_id || '_' || db_name as id, target_id, rpt_name, db_name, db_type" +
+            	" FROM rpt_target_fields" + 
+            	" WHERE target_id = "+rptTarget.getId();
+            ResultSet rs = MainDao.getResultset(connectionDrivers, sql, true, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            try {
+				while (rs.next()) {
+					RptTargetField rptTargetField = new RptTargetField(rs);
+					rptTarget.addRptTargetField(rptTargetField);
+				}
+				rs.close();            
+			} catch (SQLException e) {
+	            Utils.showError(e, sql);
+	            return false;
+			}
+        }
+    	return true;
+    	
     }
 	
     
@@ -280,38 +350,43 @@ public class ImportRpt extends Model {
 	}
 
 		
-	private static boolean processRpt(RptTarget rpt) {
+	// Process current RptTarget
+	private static boolean processRptTarget(RptTarget rptTarget) {
 
 		// Read lines until rpt.getDescription() is found		
 		boolean found = false;
 		String line;
 		String aux;
 		
-		Utils.getLogger().info("Target: " + rpt.getId() + " - " + rpt.getDescription());
+		Utils.getLogger().info("Target: "+rptTarget.getId()+ " - "+rptTarget.getDescription());
+		
+		if (rptTarget.getId() == 40) {
+			System.out.println(rptTarget.getId());
+		}
 		
 		// Read lines until rpt.getDescription() is found		
-		while (!found){
+		while (!found) {
 			if (lineNumber >= totalLines) {
 				lineNumber = 0;
 				return false;
 			}
 			lineNumber++;				
 			line = readLine();
-			if (line.length() >= rpt.getDescription().length()) {
-				aux = line.substring(0, rpt.getDescription().length()).toLowerCase();
-				if (aux.equals(rpt.getDescription().toLowerCase())) {
+			if (line.length() >= rptTarget.getDescription().length()) {
+				aux = line.substring(0, rptTarget.getDescription().length()).toLowerCase();
+				if (aux.equals(rptTarget.getDescription().toLowerCase())) {
 					found = true;
-					Utils.getLogger().info("Target line number: " + lineNumber);						
+					Utils.getLogger().info("Target line number: "+lineNumber);						
 				}
 			}
 		}
 		
-        if (rpt.getType() == 3 || rpt.getType() == 5 || rpt.getType() == 6) {
-        	getPollutants(rpt);
+        if (rptTarget.getType() == 3 || rptTarget.getType() == 5 || rptTarget.getType() == 6) {
+        	getPollutants(rptTarget);
         }
 		
 		// Jump number of lines specified in rpt.getTitleLines()
-		for (int i = 1; i <= rpt.getTitleLines(); i++) {
+		for (int i = 1; i <= rptTarget.getTitleLines(); i++) {
 			lineNumber++;
 			line = readLine();
 			// Check if we have reached next Target
@@ -321,34 +396,39 @@ public class ImportRpt extends Model {
 		}		
 		
 		// Get Database fields related to this Target
-		if (rpt.getColumnCount() == 0) {
-			String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
-	        PreparedStatement ps;
+		if (rptTarget.getColumnCount() == 0) {
+			String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
 			try {
-				ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-		        ResultSet rs = ps.executeQuery();
+		        ResultSet rs = MainDao.getResultset(sql);
 		        ResultSetMetaData rsmd = rs.getMetaData();	
-		        for (int i=1; i <= rsmd.getColumnCount(); i++) {
-		        	rpt.addColumnName(rsmd.getColumnName(i));
-		        	rpt.addColumnType(rsmd.getColumnType(i));
+		        for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+		        	rptTarget.addColumnName(rsmd.getColumnName(i));
+		        	rptTarget.addColumnType(rsmd.getColumnType(i));
 		        }
 		        rs.close();
 			} catch (SQLException e) {
 				Utils.showError(e, sql);
 			}
 		}
-		
+			
 		// Read following lines until blank line is found
-		tokensList = new ArrayList<ArrayList<String>>();		
-		continueProcess = parseLines(rpt);
-		if (rpt.getType() == 2 && rpt.getId() != 10) {
-			processTokens(rpt);
+		rptTokensList = new ArrayList<ArrayList<RptToken>>();		
+		rptTokens = new ArrayList<RptToken>();	
+
+		if (rptTarget.getId() == 10) {
+			parseLinesAnalysis(rptTarget);
+			processTokensAnalysis(rptTarget);
 		}
-		else if (rpt.getType() == 2 && rpt.getId() == 10) {
-			processTokensAnalysis(rpt);
+		else if (rptTarget.getType() == 2 && rptTarget.getId() != 10) {
+			continueProcess = parseLines(rptTarget);
+			processTokensCheck(rptTarget);
 		}
-		else if (rpt.getType() == 3) {
-			processTokens3(rpt);
+		else if (rptTarget.getType() == 3) {
+			continueProcess = parseLines(rptTarget);
+			processTokens3(rptTarget);
+		}
+		else {
+			continueProcess = parseLines(rptTarget);
 		}
 		
 		return true;
@@ -356,6 +436,44 @@ public class ImportRpt extends Model {
 	}	
 	
 	
+	private static boolean processTokensCheck(RptTarget rptTarget) {
+		
+		boolean result;
+		if (rptTarget.getParametrized() == 0) {
+			result = processTokens(rptTarget);
+		}
+		else {
+			result = processTokensParametrized(rptTarget);
+		}
+		return result;
+		
+	}
+	
+	
+	
+	private static boolean parseLinesAnalysis(RptTarget rptTarget) {
+
+		boolean result = true;
+		rptTokens = new ArrayList<RptToken>();			
+		boolean blankLine = false;		
+		while (!blankLine) {
+			lineNumber++;
+			String line = readLine();
+			blankLine = (line.length() == 0);
+			if (!blankLine) {
+				Scanner scanner = new Scanner(line);
+				parseLine2(scanner, rptTarget, true);						
+			}
+			if (abortRptProcess) {
+				return false;
+			}
+		}		
+		
+		return result;
+		
+	}
+
+
 	private static void getPollutants(RptTarget rpt) {
 		
 		String line = "";
@@ -364,7 +482,7 @@ public class ImportRpt extends Model {
 			lineNumber--;
 			line = readLine();		
 		} 
-		else{
+		else {
 			jumpLines = (rpt.getType() == 5) ? 4 : 5;
 			for (int i = 1; i <= jumpLines; i++) {		
 				lineNumber++;					
@@ -373,7 +491,7 @@ public class ImportRpt extends Model {
 		}
 		
 		boolean blankLine = (line.length() == 0);
-		if (!blankLine){
+		if (!blankLine) {
 			Scanner scanner = new Scanner(line);
 			if (rpt.getType() == 3 || rpt.getType() == 6) {
 				int jumpScanner	= (rpt.getType() == 3) ? 1 : 4;
@@ -382,10 +500,10 @@ public class ImportRpt extends Model {
 				}
 			}
 			// Get pollutant name
-			parseLine1(scanner, false);		
+			parseLine1(scanner);		
 			pollutants = new ArrayList<String>();	
-			for (int i = 0; i < tokens.size(); i++) {
-				pollutants.add(tokens.get(i));
+			for (int i = 0; i < rptTokens.size(); i++) {
+				pollutants.add(rptTokens.get(i).getRptValue());
 			}
 		}		
 		
@@ -396,46 +514,41 @@ public class ImportRpt extends Model {
 	private static boolean parseLines(RptTarget rpt) {
 		
 		boolean result = true;
-		tokens = new ArrayList<String>();			
+		rptTokens = new ArrayList<RptToken>();			
 		boolean blankLine = false;		
 		while (!blankLine) {
 			lineNumber++;
 			String line = readLine();
 			blankLine = (line.length() == 0);
-			if (!blankLine){
+			if (!blankLine) {
 				Scanner scanner = new Scanner(line);
 				if (rpt.getType() == 1) {
-					parseLine1(scanner, false);
-					result = processTokens(rpt);
-					if (!result){
-						return false;
-					}
+					parseLine1(scanner);
+					result = processTokensCheck(rpt);
+					if (!result) return false;
 				}		
-				else if (rpt.getType() == 2) {					
+				else if (rpt.getType() == 2) {			
 					parseLine2(scanner, rpt, true);
 				}
 				else if (rpt.getType() == 3) {	
-					tokens = new ArrayList<String>();
+					rptTokens = new ArrayList<RptToken>();	
 					parseLine2(scanner, rpt, false);
-					tokensList.add(tokens);
+					rptTokensList.add(rptTokens);
 				}					
 				else if (rpt.getType() == 4) {					
-					parseLine1(scanner, true);
-					processTokens(rpt);							
+					parseLineType4(scanner);
+					processTokensCheck(rpt);							
 				}	
 				else if (rpt.getType() == 5) {					
-					tokens = new ArrayList<String>();
-					parseLine1(scanner, false);
+					parseLine1(scanner);
 					processTokens5(rpt);						
 				}				
 				else if (rpt.getType() == 6) {					
-					tokens = new ArrayList<String>();
-					parseLine1(scanner, false);
+					parseLine1(scanner);
 					processTokens6(rpt);						
 				}			
 				else if (rpt.getType() == 7) {					
-					tokens = new ArrayList<String>();
-					parseLine1(scanner, false);
+					parseLine1(scanner);
 					processTokens6(rpt);						
 				}							
 			}
@@ -450,262 +563,341 @@ public class ImportRpt extends Model {
 	
 
 	// Parse values of current line
-	private static void parseLine1(Scanner scanner, boolean together) {
+	private static void parseLine1(Scanner scanner) {
 		
-		tokens = new ArrayList<String>();	
-		String token = "";
+		rptTokens = new ArrayList<RptToken>();	
+		String rptValue = "";
 		while (scanner.hasNext()) {
-			if (together){
-				token += " " + scanner.next();
-			}
-			else{
-				token = scanner.next();
-				tokens.add(token);
-			}
-		}
-		if (together){
-			tokens.add(token.trim());
+			rptValue = scanner.next();
+			RptToken rptToken = new RptToken("", rptValue);
+			rptTokens.add(rptToken);	
 		}
 		
 	}	
 	
 	
-	// Parse values of current line that contains ".." in it
-	private static void parseLine2(Scanner scanner, RptTarget rpt, boolean together) {
+	private static void parseLineType4(Scanner scanner) {
 		
+		rptTokens = new ArrayList<RptToken>();	
+		String rptValue = "";
+		while (scanner.hasNext()) {
+			rptValue+= " "+scanner.next();
+		}
+		rptToken = new RptToken("", rptValue.trim());
+		rptTokens.add(rptToken);	
+		
+	}
+	
+	
+
+	
+	
+	// Parse values of current line that contains ".." in it
+	private static void parseLine2(Scanner scanner, RptTarget rptTarget, boolean together) {
+		
+		String rptName = "";
+		String rptValue = "";
 		String token;
-		boolean valid = false;
-		String aux = "";
+		boolean valueFound = false;
 		int numTokens = 0;
 		while (scanner.hasNext()) {
 			token = scanner.next();
-			if (valid == true){
+			if (token.contains("..")) {
+				valueFound = true;
+			}
+			if (valueFound && !token.contains("..")) {
 				numTokens++;
-				if (numTokens <= rpt.getTokens()) {
-					if (together){
-						aux += token + " ";
+				if (numTokens <= rptTarget.getTokens()) {
+					if (together) {
+						rptValue+= token + " ";
 					}
-					else{
-						tokens.add(token);						
+					else {
+						rptName = rptName.substring(0, rptName.length() - 1);
+						rptToken = new RptToken(rptName, token);
+						rptTokens.add(rptToken);						
 					}
 				}
 			}
-			if (token.contains("..")) {
-				valid = true;
+			if (!valueFound && !token.contains("..")) {
+				rptName+= token.toLowerCase() + "_";
 			}
 		}
-		if (valid == true && together) {
-			tokens.add(aux.trim());			
+		
+		if (valueFound && together) {
+			rptName = rptName.substring(0, rptName.length() - 1);
+			rptToken = new RptToken(rptName, rptValue.trim());
+			rptTokens.add(rptToken);	
 		}
 		
 	}
 	
 	
-	private static boolean processTokens(RptTarget rpt) {
+	private static boolean processTokens(RptTarget rptTarget) {
 
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
+		
 		if (softwareName.equals("EPANET")) {
-			if (tokens.size() < 2){
+			if (rptTokens.size() < 2) {
 				Utils.logError("Line not valid");
 				return true;
 			}
 		}
-		int j;
-		for (int i=0; i<tokens.size(); i++) {
-			j = i + 3;
-			switch (rpt.getColumnType(j)) {
+		
+    	for (int i=0; i<rptTokens.size(); i++) {        	
+    		RptToken rptToken = rptTokens.get(i);
+			int j = i+3;
+			String value = rptToken.getRptValue();
+			switch (rptTarget.getColumnType(j)) {
 			case Types.NUMERIC:
 			case Types.DOUBLE:
 			case Types.INTEGER:
-				boolean ok = Utils.isNumeric(tokens.get(i));
+				boolean ok = Utils.isNumeric(value);
 				if (!ok) {
 					// TODO: i18n
 					String msg = "An error ocurred in line number: "+lineNumber;
-					msg+= "\nField "+rpt.getColumnName(j)+ " does not contain a valid numeric value: "+tokens.get(i);
+					msg+= "\nField "+rptTarget.getColumnName(j)+ " does not contain a valid numeric value: "+value;
 					msg+= "\nImport process will be aborted";
 					Utils.showError(msg);
 					abortRptProcess = true;
 					return false;
 				}
-				values += tokens.get(i) + ", ";
+				values+= value+", ";
 				break;					
 			case Types.VARCHAR:
-				values += "'" + tokens.get(i) + "', ";
+				values+= "'"+value+"', ";
 				break;					
 			default:
-				values += "'" + tokens.get(i) + "', ";
+				values+= "'"+value+"', ";
 				break;
 			}
-			fields += rpt.getColumnName(j) + ", ";
+			fields+= rptTarget.getColumnName(j) + ", ";
 		}
 	
-		fields = fields.substring(0, fields.length() - 2);
-		values = values.substring(0, values.length() - 2);
-		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
-		insertSql += sql;
+        // Build SQL Insert sentence
+    	insertSql+= buildSql(rptTarget, fields, values);
 		
 		return true;
 		
 	}
 	
 	
-	private static void processTokens3(RptTarget rpt) {
+	private static boolean processTokensParametrized(RptTarget rptTarget) {
+
+		String fields = "result_id, ";
+		String values = "'"+projectName+"', ";
+		
+		if (softwareName.equals("EPANET")) {
+			if (rptTokens.size() < 2) {
+				Utils.logError("Line not valid");
+				return true;
+			}
+		}
+		
+		// Set ResultSet for rpt destination table
+        String sqlDest = "SELECT * FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
+        ResultSet rsDest = MainDao.getResultset(sqlDest);
+        
+        // Iterate over rptTokens
+    	for (int i=0; i<rptTokens.size(); i++) {        	
+    		RptToken rptToken = rptTokens.get(i);
+        	// Search if that RptTargetField exists in the Database
+            String sql = "SELECT db_name, db_type" +
+            	" FROM rpt_target_fields" +
+            	" WHERE target_id = "+rptTarget.getId()+" AND lower(rpt_name) = '"+rptToken.getRptName()+"'";
+            ResultSet rs = MainDao.getResultset(connectionDrivers, sql, true, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            try {
+				if (rs.next()) {
+					// Check if that field exists in rpt destination table
+					String fieldName = rs.getString("db_name");
+					boolean exists = MainDao.checkColumn(rsDest, fieldName);
+					if (exists) {
+						fields+= fieldName + ", ";
+						String rptValue = rptToken.getRptValue();
+						if (rs.getInt("db_type") != 0) {
+							boolean ok = Utils.isNumeric(rptValue);
+							if (!ok) {
+								// TODO: i18n
+								String msg = "An error ocurred in line number: "+lineNumber;
+								msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
+								msg+= "\nImport process will be aborted";
+								Utils.showError(msg);
+								return false;
+							}
+							values+= rptValue + ", ";
+						}				
+						else {
+							values+= "'"+rptValue+"', ";	
+						}
+						Utils.getLogger().info(fieldName+": "+rptValue);
+					}
+					else {
+						Utils.getLogger().info("Field not exists in table '"+rptTarget.getTable()+"': "+fieldName);	
+					}
+				}
+				else {
+	        		Utils.getLogger().info("Target field not found in driver database: "+rptToken.getRptName());					
+				}
+				rs.close();            
+			} catch (SQLException e) {
+	            Utils.showError(e, sql);
+	            return false;
+			}
+        }
+	
+        // Build SQL Insert sentence
+    	insertSql+= buildSql(rptTarget, fields, values);
+		
+		return true;
+		
+	}
+	
+	
+	private static String buildSql(RptTarget rptTarget, String fields, String values) {
+		fields = fields.substring(0, fields.length() - 2);
+		values = values.substring(0, values.length() - 2);
+		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
+		return sql;
+	}
+
+
+	private static void processTokens3(RptTarget rptTarget) {
 
 		// Iterate over pollutants
 		for (int i=0; i<pollutants.size(); i++) {
 			String fields = "result_id, poll_id, ";
 			String values = "'"+projectName+"', '"+pollutants.get(i)+"', ";
 			// Iterate over fields
-			for (int j=0; j<tokensList.size(); j++) {
-				String value = tokensList.get(j).get(i);
-	        	switch (rpt.getColumnType(j + 4)) {
-				case Types.NUMERIC:
-				case Types.DOUBLE:
-				case Types.INTEGER:
-					values += value + ", ";
-					break;					
-				case Types.VARCHAR:
-					values += "'" + value + "', ";
-					break;					
-				default:
-					values += "'" + value + "', ";
-					break;
-				}
-				fields += rpt.getColumnName(j + 4) + ", ";        	
+			for (int j=0; j<rptTokensList.size(); j++) {
+				String value = rptTokensList.get(j).get(i).getRptValue();
+				values += "'"+value+"', ";
+				fields += rptTarget.getColumnName(j + 4) + ", ";        	
 			}
-			fields = fields.substring(0, fields.length() - 2);
-			values = values.substring(0, values.length() - 2);
-			String sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
-			insertSql += sql;				
+	        // Build SQL Insert sentence
+	    	insertSql+= buildSql(rptTarget, fields, values);			
         }
 		
 	}		
 		
 	
-	private static void processTokens5(RptTarget rpt) {
+	private static void processTokens5(RptTarget rptTarget) {
 
 		String fields = "result_id, subc_id, poll_id, value";
-		String fixedValues = "'"+projectName+"', '"+tokens.get(0)+ "', ";
-		String sql;
-		String values;
-		Double units;
+		String fixedValues = "'"+projectName+"', '"+rptTokens.get(0).getRptValue()+ "', ";
 		
 		// No permetre tipus String (peta a Subcatchment)
 		try {
-			Integer.parseInt(tokens.get(0));
-		} catch (NumberFormatException e){
+			Integer.parseInt(rptTokens.get(0).getRptValue());
+		} catch (NumberFormatException e) {
 			return;
 		}
 		
 		// Iterate over pollutants
-		if (tokens.size() > pollutants.size()) {
+		if (rptTokens.size() > pollutants.size()) {
 			for (int i=0; i<pollutants.size(); i++) {
-				units = Double.valueOf(tokens.get(i + 1));
-				values = fixedValues + "'"+pollutants.get(i)+"', "+units;
-				sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
-				insertSql += sql;		        
+				Double units = Double.valueOf(rptTokens.get(i+1).getRptValue());
+				String values = fixedValues + "'"+pollutants.get(i)+"', "+units;
+				String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
+				insertSql+= sql;		        
 			}
 		}
 		
 	}	
 
 	
-	private static void processTokens6(RptTarget rpt) {
+	private static void processTokens6(RptTarget rptTarget) {
 		
 		String fields = "result_id, node_id, flow_freq, avg_flow, max_flow, total_vol";
 		String fields2 = "result_id, node_id, poll_id, value";		
-		String fixedValues = "'"+projectName+"', '"+tokens.get(0)+ "', ";
-		String values;
-		String sql;
-		Double units;
+		String fixedValues = "'"+projectName+"', '"+rptTokens.get(0).getRptValue()+ "', ";
 	
 		// If found separator o resume line skip them
-		if (tokens.size() < 5 || tokens.get(0).equals("System")) {
+		if (rptTokens.size() < 5 || rptTokens.get(0).getRptValue().equals("System")) {
 			return;
 		}
 		
 		// Iterate over first 5 fields
-		values = fixedValues;
-		for (int j = 1; j < 5; j++) {
-			values += tokens.get(j) + ", ";
+		String values = fixedValues;
+		for (int j=1; j<5; j++) {
+			values+= rptTokens.get(j).getRptValue() + ", ";
 		}
 		values = values.substring(0, values.length() - 2);		
-		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
+		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;				
 		
-		// Iterate over pollutants
+		// TODO: Table name hardcoded
 		for (int i = 0; i < pollutants.size(); i++) {
-			int j = i + 5;
-			units = Double.valueOf(tokens.get(j));
-			values = fixedValues + "'"+pollutants.get(i)+ "', "+units;
+			int j = i+5;
+			Double units = Double.valueOf(rptTokens.get(j).getRptValue());
+			values = fixedValues + "'"+pollutants.get(i)+"', "+units;
 			sql = "DELETE FROM "+MainDao.getSchema()+".rpt_outfallload_sum " +
-				"WHERE result_id = '"+projectName+"' AND node_id = '"+tokens.get(0)+"' AND poll_id = '"+pollutants.get(i)+ "';\n";
-			insertSql += sql;	
+				"WHERE result_id = '"+projectName+"' AND node_id = '"+rptTokens.get(0).getRptValue()+"' AND poll_id = '"+pollutants.get(i)+ "';\n";
+			insertSql+= sql;	
 			sql = "INSERT INTO "+MainDao.getSchema()+".rpt_outfallload_sum ("+fields2+") VALUES ("+values+");\n";
-			insertSql += sql;		        
+			insertSql+= sql;		        
 		}
 		
 	}
 	
 	
-	private static boolean processTokensAnalysis(RptTarget rpt) {
+	private static boolean processTokensAnalysis(RptTarget rptTarget) {
 
-		final int NORMAL_NUM_FIELDS = 16;
-		final String[] fieldArray = new String[] {"infil_m", "wet_tstep", "dry_tstep"};
-		final Set<String> fieldList = new HashSet<String>(Arrays.asList(fieldArray));
-		
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
-		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
-		try {
-	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        ResultSetMetaData rsmd = rs.getMetaData();	
-	        rs.close();
-	        int k = 0;
-	        int size = tokens.size();   
-	        for (int j=3; j<rsmd.getColumnCount(); j++){
-	        	int i = j - 3 - k;
-        		// Check if we have to process this field
-	        	String fieldName = rsmd.getColumnName(j);
-	        	Utils.getLogger().info(fieldName+": "+tokens.get(i));
-        		if (size < NORMAL_NUM_FIELDS && fieldList.contains(fieldName)){
-        			k++;
-        			continue;
-        		}
-       			fields+= rsmd.getColumnName(j) + ", ";
-        		switch (rsmd.getColumnType(j)) {
-				case Types.NUMERIC:
-				case Types.DOUBLE:
-				case Types.INTEGER:
-					boolean ok = Utils.isNumeric(tokens.get(i));
-					if (!ok){
-						// TODO: i18n
-						String msg = "An error ocurred in line number: "+lineNumber;
-						msg+= "\nField "+rsmd.getColumnName(j)+ " does not contain a valid numeric value: "+tokens.get(i);
-						msg+= "\nImport process will be aborted";
-						Utils.showError(msg);
-						return false;
+        
+		// Set ResultSet for rpt destination table
+		String sqlDest = "SELECT * FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
+        ResultSet rsDest = MainDao.getResultset(sqlDest);
+        
+        // Iterate over rptTokens
+    	for (int i=0; i<rptTokens.size(); i++) {        	
+    		RptToken rptToken = rptTokens.get(i);
+        	// Search if that RptTargetField exists in the Database
+    		String sql = "SELECT db_name, db_type" +
+            	" FROM rpt_target_fields" +
+            	" WHERE target_id = "+rptTarget.getId()+" AND lower(rpt_name) = '"+rptToken.getRptName()+"'";
+            ResultSet rs = MainDao.getResultset(connectionDrivers, sql, true, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            try {
+				if (rs.next()) {
+					// Check if that field exists in rpt destination table
+					String fieldName = rs.getString("db_name");
+					boolean exists = MainDao.checkColumn(rsDest, fieldName);
+					if (exists) {
+						fields+= fieldName + ", ";
+						String rptValue = rptToken.getRptValue();
+						if (rs.getInt("db_type") != 0) {
+							boolean ok = Utils.isNumeric(rptValue);
+							if (!ok) {
+								// TODO: i18n
+								String msg = "An error ocurred in line number: "+lineNumber;
+								msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
+								msg+= "\nImport process will be aborted";
+								Utils.showError(msg);
+								return false;
+							}
+							values+= rptValue + ", ";
+						}				
+						else {
+							values+= "'"+rptValue+"', ";	
+						}
+						Utils.getLogger().info(fieldName+": "+rptValue);
 					}
-					values+= tokens.get(i) + ", ";
-					break;					
-				case Types.VARCHAR:
-					values+= "'" + tokens.get(i) + "', ";
-					break;					
-				default:
-					values+= "'" + tokens.get(i) + "', ";
-					break;
+					else {
+						Utils.getLogger().info("Field not exists in table '"+rptTarget.getTable()+"': "+fieldName);	
+					}
 				}
-	        }
-		} catch (SQLException e) {
-			Utils.showError(e, sql);
-		}
+				else {
+	        		Utils.getLogger().info("Target field not found in driver database: "+rptToken.getRptName());					
+				}
+				rs.close();            
+			} catch (SQLException e) {
+	            Utils.showError(e, sql);
+	            return false;
+			}
+        }
 	
-		fields = fields.substring(0, fields.length() - 2);
-		values = values.substring(0, values.length() - 2);
-		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
-		insertSql += sql;
+        // Build SQL Insert sentence
+    	insertSql+= buildSql(rptTarget, fields, values);
 		
 		return true;
 		
@@ -713,25 +905,25 @@ public class ImportRpt extends Model {
 
 	
 	// Epanet
-	private static boolean processRptEpanet(RptTarget rpt) {
+	private static boolean processRptEpanet(RptTarget rptTarget) {
 
 		boolean found = false;
 		String line = "";
 		String aux;
 		
-		Utils.getLogger().info("Target: "+rpt.getId()+" - "+rpt.getDescription());
+		Utils.getLogger().info("Target: "+rptTarget.getId()+" - "+rptTarget.getDescription());
 
 		// Read lines until rpt.getDescription() is found			
-		while (!found){
-			if (lineNumber >= totalLines){
+		while (!found) {
+			if (lineNumber >= totalLines) {
 				lineNumber = 0;
 				return false;
 			}
 			lineNumber++;				
 			line = readLine();
-			if (line.length() >= rpt.getDescription().length()){
-				aux = line.substring(0, rpt.getDescription().length()).toLowerCase();
-				if (aux.equals(rpt.getDescription().toLowerCase())){
+			if (line.length() >= rptTarget.getDescription().length()) {
+				aux = line.substring(0, rptTarget.getDescription().length()).toLowerCase();
+				if (aux.equals(rptTarget.getDescription().toLowerCase())) {
 					found = true;
 					firstLine = line;						
 					Utils.getLogger().info("Target line number: " + lineNumber);						
@@ -739,10 +931,10 @@ public class ImportRpt extends Model {
 			}
 		}
 		
-		int jumpLines = rpt.getTitleLines();
+		int jumpLines = rptTarget.getTitleLines();
 		String fieldsList = "*";
 		// Target node
-		if (rpt.getId() == 40){
+		if (rptTarget.getId() == 40) {
 			jumpLines = 2;
 			fieldsList = "id, result_id, node_id";
 			for (int i=1; i<=2; i++) {
@@ -750,25 +942,26 @@ public class ImportRpt extends Model {
 				line = readLine();
 			}
 			Scanner scanner = new Scanner(line);
-			parseLine1(scanner, false);		
-			for (String column : tokens) {
-				if (column.toLowerCase().equals("node")){
+			parseLine1(scanner);		
+			for (int i=0; i<rptTokens.size(); i++) {
+				String column = rptTokens.get(i).getRptValue().toLowerCase();
+				if (column.equals("node")){
 					// Just ignore them
 				}
-				else if (column.toLowerCase().equals("pressure")){
+				else if (column.equals("pressure")){
 					fieldsList+= ", press";
 				}	
 				// Elevation, Demand, Head, Quality
-				else if (column.toLowerCase().equals("elevation") || column.toLowerCase().equals("demand")
-					|| column.toLowerCase().equals("head") || column.toLowerCase().equals("quality")) {
-					fieldsList+= ", "+column.toLowerCase();
+				else if (column.equals("elevation") || column.equals("demand")
+					|| column.equals("head") || column.equals("quality")) {
+					fieldsList+= ", "+column;
 				}
 			}
 			fieldsList+= ", other, time";
 		}
 		
 		// Target arc
-		else if (rpt.getId() == 50){
+		else if (rptTarget.getId() == 50) {
 			jumpLines = 2;
 			fieldsList = "id, result_id, arc_id";
 			for (int i=1; i<=2; i++) {
@@ -776,22 +969,23 @@ public class ImportRpt extends Model {
 				line = readLine();
 			}
 			Scanner scanner = new Scanner(line);
-			parseLine1(scanner, false);		
-			for (String column : tokens) {
-				if (column.toLowerCase().equals("node") || column.toLowerCase().equals("status")){
+			parseLine1(scanner);		
+			for (int i=0; i<rptTokens.size(); i++) {
+				String column = rptTokens.get(i).getRptValue().toLowerCase();
+				if (column.equals("node") || column.equals("status")){
 					// Just ignore them
 				}
-				else if (column.toLowerCase().equals("velocity") || column.toLowerCase().equals("velocityunit")){
+				else if (column.equals("velocity") || column.equals("velocityunit")){
 					fieldsList+= ", vel";
 				}	
-				else if (column.toLowerCase().equals("f-factor")){
+				else if (column.equals("f-factor")){
 					fieldsList+= ", ffactor";
 				}	
 				// Length, Diameter, Flow, Headloss, Setting, Reaction
-				else if (column.toLowerCase().equals("length") || column.toLowerCase().equals("diameter")
-					|| column.toLowerCase().equals("flow") || column.toLowerCase().equals("headloss") 
-					|| column.toLowerCase().equals("setting") || column.toLowerCase().equals("reaction")) {
-					fieldsList+= ", "+column.toLowerCase();
+				else if (column.equals("length") || column.equals("diameter")
+					|| column.equals("flow") || column.equals("headloss") 
+					|| column.equals("setting") || column.equals("reaction")) {
+					fieldsList+= ", "+column;
 				}
 			}
 			fieldsList+= ", other, time";			
@@ -808,14 +1002,14 @@ public class ImportRpt extends Model {
 		}		
 		
 		// Get Database fields related to this Target
-		if (rpt.getColumnCount() == 0){
-			String sql = "SELECT "+fieldsList+" FROM "+MainDao.getSchema()+"."+rpt.getTable();
+		if (rptTarget.getColumnCount() == 0) {
+			String sql = "SELECT "+fieldsList+" FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
 			try {
 				ResultSet rs = MainDao.getResultset(sql);
 				ResultSetMetaData rsmd = rs.getMetaData();	
-		        for (int i = 1; i <= rsmd.getColumnCount(); i++){
-		        	rpt.addColumnName(rsmd.getColumnName(i));
-		        	rpt.addColumnType(rsmd.getColumnType(i));
+		        for (int i=1; i<=rsmd.getColumnCount(); i++){
+		        	rptTarget.addColumnName(rsmd.getColumnName(i));
+		        	rptTarget.addColumnType(rsmd.getColumnType(i));
 		        }
 		        rs.close();
 			} catch (SQLException e) {
@@ -824,16 +1018,16 @@ public class ImportRpt extends Model {
 		}
 		
 		// Read following lines until blank line is found
-		tokensList = new ArrayList<ArrayList<String>>();
+		rptTokensList = new ArrayList<ArrayList<RptToken>>();
 		// Target Hydraulic Status
-		if (rpt.getId() == 20) {
-			parseLinesHydraulic(rpt);
+		if (rptTarget.getId() == 20) {
+			parseLinesHydraulic(rptTarget);
 		}
 		else {
-			parseLines(rpt);
+			parseLines(rptTarget);
 			// Target Input Data File
-			if (rpt.getId() == 10) {
-				processTokensInputData(rpt);
+			if (rptTarget.getId() == 10) {
+				processTokensInputData(rptTarget);
 			}
 		}
 		
@@ -845,16 +1039,17 @@ public class ImportRpt extends Model {
 	// Parse all lines of Hydraulic Target
 	private static void parseLinesHydraulic(RptTarget rpt) {
 			
+		rptTokens = new ArrayList<RptToken>();		
 		boolean blankLine = false;		
 		int numBlankLines = 0;
-		while (numBlankLines < 2){
+		while (numBlankLines < 2) {
 			try {
 				lineNumber++;
 				String line = readLine();
 				blankLine = (line.length()==0);
 				if (!blankLine){
 					Scanner scanner = new Scanner(line);
-					tokens = parseLineHydraulic(scanner);
+					rptTokens = parseLineHydraulic(scanner);
 					processTokensHydraulic(rpt);
 					numBlankLines = 0;					
 				}
@@ -870,59 +1065,61 @@ public class ImportRpt extends Model {
 	
 	
 	// Parse values of current line
-	private static ArrayList<String> parseLineHydraulic(Scanner scanner) {
+	private static ArrayList<RptToken> parseLineHydraulic(Scanner scanner) {
 		
-		ArrayList<String> tokens = new ArrayList<String>();	
+		ArrayList<RptToken> tokens = new ArrayList<RptToken>();	
 		String token = "";
 		String first = "";
 		boolean firstWord = true;
-		while (scanner.hasNext()){
-			if (firstWord){
+		while (scanner.hasNext()) {
+			if (firstWord) {
 				first = scanner.next();
 				firstWord = false;
 			}
-			else{
-				token += " " + scanner.next();
+			else {
+				token+= " " + scanner.next();
 			}
 		}
-		tokens.add(first.trim());
-		tokens.add(token.trim());
+		RptToken rptFirst = new RptToken("first", first.trim());
+		RptToken rptToken = new RptToken("token", token.trim());
+		tokens.add(rptFirst);
+		tokens.add(rptToken);
 		
 		return tokens;
 		
 	}	
 	
 	
-	private static void processTokensHydraulic(RptTarget rpt) {
+	private static void processTokensHydraulic(RptTarget rptTarget) {
 
 		String fields = "result_id, time, text";
 		String values = "'"+projectName+"', ";
         String time;
         String text = "";
-        time = tokens.get(0);
-        time = tokens.get(0).substring(0, time.length() - 1);
+        time = rptTokens.get(0).getRptValue();
+        time = rptTokens.get(0).getRptValue().substring(0, time.length() - 1);
         if (time.substring(0, 7).toLowerCase().equals("warning")){
-        	text = tokens.get(0) + " ";
+        	text = rptTokens.get(0).getRptValue() + " ";
         	time = lastTimeHydraulic;
         } else{
         	lastTimeHydraulic = time;
         }
-        text += tokens.get(1);
+        text += rptTokens.get(1).getRptValue();
 		values += "'"+time+"', '"+text+"'";
-		String sql = "INSERT INTO " + MainDao.getSchema() + "." + rpt.getTable() + " (" + fields + ") VALUES (" + values + ");\n";
+		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;
 		
 	}
 	
 	
-	private static boolean processTokensInputData(RptTarget rpt) {
+	private static boolean processTokensInputData(RptTarget rptTarget) {
 
 		// Number of fields without water quality parameters
 		final int NORMAL_NUM_FIELDS = 19;
 		Boolean existWaterFields = false;
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
-		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rpt.getTable();
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
 		
 		try {
 			
@@ -930,55 +1127,57 @@ public class ImportRpt extends Model {
 	        ResultSet rs = ps.executeQuery();
 	        ResultSetMetaData rsmd = rs.getMetaData();	
 	        int m = 2;
-	        if (tokens.size() > NORMAL_NUM_FIELDS){
+	        if (rptTokens.size() > NORMAL_NUM_FIELDS){
 	        	existWaterFields = true;
 	        	m = 0;
 	        }
 	        //System.out.println(rsmd.getColumnCount());    // 24
-        	if (tokens.size() < rsmd.getColumnCount() - 6){
+        	if (rptTokens.size() < rsmd.getColumnCount() - 6) {
         		Utils.logError("Line not valid");
         		return true;
         	}
 	        rs.close();
 	        
 	        int k = 0;
-	        for (int j=3; j<rsmd.getColumnCount() - m; j++){
-	        	int i = j - 3;
-	        	int columnIndex = j - k;
-        		if (existWaterFields){
-        			if (i == 14){
+	        for (int j=3; j<rsmd.getColumnCount() - m; j++) {
+	        	int i = j-3;
+	        	int columnIndex = j-k;
+        		if (existWaterFields) {
+        			if (i == 14) {
         				columnIndex = rsmd.getColumnCount() - 1;
         				k++;
         			}
-        			else if (i == 15){
+        			else if (i == 15) {
         				columnIndex = rsmd.getColumnCount();
         				k++;
         			}
         		} 
         		String fieldName = rsmd.getColumnName(columnIndex);
         		fields+= fieldName + ", ";
-        		Utils.getLogger().info(fieldName+": "+tokens.get(i));
+        		RptToken rptToken = rptTokens.get(i);
+        		String rptValue = rptToken.getRptValue();
+        		Utils.getLogger().info(fieldName+": "+rptValue);
         		switch (rsmd.getColumnType(columnIndex)) {
 				case Types.NUMERIC:
 				case Types.DOUBLE:
 				case Types.INTEGER:
-					boolean ok = Utils.isNumeric(tokens.get(i));
+					boolean ok = Utils.isNumeric(rptTokens.get(i).getRptValue());
 					if (!ok){
 						// TODO: i18n
 						String msg = "An error ocurred in line number: "+lineNumber;
-						msg+= "\nField "+rsmd.getColumnName(columnIndex)+ " does not contain a valid numeric value: "+tokens.get(i);
+						msg+= "\nField "+rsmd.getColumnName(columnIndex)+ " does not contain a valid numeric value: "+rptTokens.get(i).getRptValue();
 						msg+= "\nImport process will be aborted";
 						Utils.showError(msg);
 						abortRptProcess = true;
 						return false;
 					}
-					values += tokens.get(i) + ", ";
+					values+= rptValue+", ";
 					break;					
 				case Types.VARCHAR:
-					values += "'" + tokens.get(i) + "', ";
+					values+= "'"+rptValue+"', ";
 					break;					
 				default:
-					values += "'" + tokens.get(i) + "', ";
+					values+= "'"+rptValue+"', ";
 					break;
 				}
 	        }
@@ -987,20 +1186,12 @@ public class ImportRpt extends Model {
 			Utils.showError(e, sql);
 		}
 	
-		fields = fields.substring(0, fields.length() - 2);
-		values = values.substring(0, values.length() - 2);
-		sql = "INSERT INTO "+MainDao.getSchema()+"."+rpt.getTable()+" ("+fields+") VALUES ("+values+");\n";
-		insertSql += sql;
+        // Build SQL Insert sentence
+    	insertSql+= buildSql(rptTarget, fields, values);
 		
 		return true;
 		
 	}	
-	
-
-	private static String readLine(){
-		String line = fileContent.get(lineNumber - 1);
-		return line;
-	}
 	
 	
 }

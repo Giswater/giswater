@@ -146,7 +146,7 @@ public class EpaSoftController extends AbstractController {
 	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs) {
 		
 		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0) {
+        if (MainDao.getNumberOfRows(rs) == 0) {
             controller.create();
         }
         else {
@@ -385,7 +385,7 @@ public class EpaSoftController extends AbstractController {
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
 		
 		CatalogController controller = new CatalogController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0) {
+        if (MainDao.getNumberOfRows(rs) == 0) {
             controller.create();
         }
         else {
@@ -430,7 +430,7 @@ public class EpaSoftController extends AbstractController {
 		
 		// Only show form if exists one record
 		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getRowCount(rs) != 0) {
+        if (MainDao.getNumberOfRows(rs) != 0) {
             controller.moveFirst();
     	    dialog.setModal(true);
     	    dialog.setLocationRelativeTo(null);   

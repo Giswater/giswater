@@ -241,7 +241,7 @@ public class HecRasController extends AbstractController {
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
 		
 		CatalogController controller = new CatalogController(dialog, rs);
-        if (MainDao.getRowCount(rs) == 0) {
+        if (MainDao.getNumberOfRows(rs) == 0) {
             controller.create();
         }
         else {

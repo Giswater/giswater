@@ -958,23 +958,27 @@ public class MainDao {
 	}
 	
 	
-	private static ResultSet getResultset(Connection connection, String sql, boolean showError) {
+	public static ResultSet getResultset(Connection connection, String sql, boolean showError, int type, int concurrency) {
 		
         ResultSet rs = null;        
         try {
-        	Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        	Statement stat = connection.createStatement(type, concurrency);
             rs = stat.executeQuery(sql);
         } catch (SQLException e) {
-			if (showError){
+			if (showError) {
 				Utils.showError(e, sql);
-			} else{
+			} 
+			else {
 				Utils.logError(e, sql);
 			}
         }
         return rs;   
         
 	}
-
+	
+	public static ResultSet getResultset(Connection connection, String sql, boolean showError) {
+		return getResultset(connection, sql, showError, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+	}
 	
 	public static ResultSet getResultset(String sql, boolean showError) {
 		return getResultset(connectionPostgis, sql, showError);
@@ -1147,19 +1151,23 @@ public class MainDao {
 	}
 
 
-	public static int getRowCount(ResultSet resultSet) {
+	public static int getNumberOfRows(ResultSet rs) {
 		
-	    if (resultSet == null) {
-	        return 0;
-	    }
+		if (rs == null) {
+			return 0;
+		}
 	    try {
-	        resultSet.last();
-	        return resultSet.getRow();
+	    	if (rs.getType() == ResultSet.TYPE_FORWARD_ONLY) {
+	    		System.out.println("FORWARD");
+	    		return 0;
+	    	}
+	        rs.last();
+	        return rs.getRow();
 	    } catch (SQLException e) {
 	    	Utils.logError(e);
 	    } finally {
 	        try {
-	            resultSet.beforeFirst();
+	            rs.beforeFirst();
 	        } catch (SQLException e) {
 	            Utils.logError(e);
 	        }

@@ -58,7 +58,7 @@ public class CatalogController extends AbstractController {
 		this.view = dialog;
         this.rs = rs;
         this.current = 1;
-        this.total = MainDao.getRowCount(rs);
+        this.total = MainDao.getNumberOfRows(rs);
 	    view.setController(this);        
 	}
 
