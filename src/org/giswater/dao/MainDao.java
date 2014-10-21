@@ -1620,7 +1620,7 @@ public class MainDao {
 
 	public static boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
 
-		String srid = gswProp.get("SRID_USER");			
+		String srid = MainDao.getTableSrid(schemaName, "mdt").toString();
 		String logFolder = Utils.getLogFolder();
 		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		

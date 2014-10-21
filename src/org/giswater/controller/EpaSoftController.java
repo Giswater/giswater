@@ -455,6 +455,13 @@ public class EpaSoftController extends AbstractController {
     }
     
     
+    public void exportSelected() {
+    	if (!ppPanel.getVersionSoftware().equals("EPASWMM_51006_2D")) {
+    		view.setSubcatchmentEnabled(view.isExportSelected());
+    	}
+    }
+    
+    
 	public void closePanel() {
 		view.getFrame().setVisible(false);
 		gswEdit();

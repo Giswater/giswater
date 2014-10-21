@@ -194,7 +194,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setPreferredSize(new Dimension(98, 23));
+		btnLoadRaster.setPreferredSize(new Dimension(100, 23));
 		panelFileManager.add(btnLoadRaster, "cell 4 0");
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
 		btnLoadRaster.setMinimumSize(new Dimension(85, 23));
@@ -226,7 +226,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
-		btnExportSdf.setPreferredSize(new Dimension(98, 23));
+		btnExportSdf.setPreferredSize(new Dimension(100, 23));
 		panelFileManager.add(btnExportSdf, "cell 4 3");
 		btnExportSdf.setMinimumSize(new Dimension(80, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));

@@ -102,6 +102,15 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.setOptionsButton("Options", "showInpOptions");
 				epaSoftPanel.setReportButton("Report options", "showReport");
 				epaSoftPanel.setSubcatchmentVisible(true);
+				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
+					epaSoftPanel.setSubcatchmentSelected(true);
+					epaSoftPanel.setSubcatchmentEnabled(false);
+				}
+				else {
+					epaSoftPanel.setSubcatchmentSelected(false);
+					epaSoftPanel.setSubcatchmentEnabled(true);
+				}
+				epaSoftPanel.exportSelected();
 			}
 			else if (waterSoftware.equals("EPANET")) {
 				epaSoftPanel.setButton4("Emitters", "showEmitter");
@@ -111,6 +120,7 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
 				epaSoftPanel.setReportButton("Report options", "showReportEpanet");
 				epaSoftPanel.setSubcatchmentVisible(false);
+				epaSoftPanel.setSubcatchmentSelected(false);
 			}
 			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setTitle(waterSoftware);

@@ -106,9 +106,10 @@ public class HecRasController extends AbstractController {
     
     public void chooseFileAsc() {
 
+    	// TODO: Delete filter
         JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("ASC extension file", "asc");
-        chooser.setFileFilter(filter);
+//        FileFilter filter = new FileNameExtensionFilter("ASC extension file", "asc");
+//        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
         File file = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));	
@@ -120,7 +121,7 @@ public class HecRasController extends AbstractController {
             if (path != null && path.length() >= 4) {  
                 String ext = path.substring(path.length() - 4).toLowerCase();
                 if (!ext.equals(".asc")) {
-                    path += ".asc";
+                    path+= ".asc";
                     fileAsc = new File(path);
                 }
             }
@@ -150,11 +151,11 @@ public class HecRasController extends AbstractController {
     private boolean getFileAsc() {
     	
         String path = view.getFileAsc();
-        if (path.equals("")){
+        if (path.equals("")) {
             return false;        	
         }
         if (path.lastIndexOf(".") == -1) {
-            path += ".asc";
+            path+= ".asc";
         }
         fileAsc = new File(path);        
         gswProp.put("HECRAS_FILE_ASC", fileAsc.getAbsolutePath());

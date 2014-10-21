@@ -119,7 +119,7 @@ public class ImportRpt extends Model {
 			if (abortRptProcess) return false;
             if (!continueProcess) return false;
             postProcessTarget(rptTarget, ok, true, overwrite, exists);
-        } // end iterations over targets (while)
+        }
 
         // Insert into result_selection commiting transaction
    		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
@@ -162,16 +162,14 @@ public class ImportRpt extends Model {
 	    		}            			
     			while (continueTarget) {
         			insertSql = "";       
-    				ok = processRptEpanet(rptTarget);
+    				ok = processRptTargetEpanet(rptTarget);
     				if (abortRptProcess) return false;
     	        	if (ok) {
     		    		if (!insertSql.equals("")) {
-    		            	if (softwareName.equals("EPANET") && rptTarget.getId() >= 40) {
-    		            		firstLine = firstLine.substring(15, 24).trim(); 
-    		            		sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable() + 
-    		            			" SET time = '"+firstLine+"' WHERE time is null;";
-    		            		insertSql+= sql;
-    		            	}          	
+		            		firstLine = firstLine.substring(15, 24).trim(); 
+		            		sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable() + 
+		            			" SET time = '"+firstLine+"' WHERE time is null;";
+		            		insertSql+= sql;       	
     		            	Utils.logSql(insertSql);
     			    		if (!MainDao.executeUpdateSql(insertSql)) {
     							return false;
@@ -184,7 +182,7 @@ public class ImportRpt extends Model {
     		
     		// Target different than node or arc
     		else {
-				ok = processRptEpanet(rptTarget);
+				ok = processRptTargetEpanet(rptTarget);
 				if (abortRptProcess) return false;				
     		}
             
@@ -222,7 +220,6 @@ public class ImportRpt extends Model {
     			Utils.logSql(insertSql);	            	
 	    		boolean status = MainDao.executeUpdateSql(insertSql, true);
 	    		if (!status) {
-	    			// TODO: i18n
 	    			String msg = "Import aborted. Some data values are not valid in current target: ";
 	    			msg+= "\n" + rptTarget.getDescription();
 	    			msg+= "\nOpen current .log file for more details";
@@ -350,7 +347,7 @@ public class ImportRpt extends Model {
 	}
 
 		
-	// Process current RptTarget
+	// Process current RptTarget (EPASWMM)
 	private static boolean processRptTarget(RptTarget rptTarget) {
 
 		// Read lines until rpt.getDescription() is found		
@@ -360,9 +357,9 @@ public class ImportRpt extends Model {
 		
 		Utils.getLogger().info("Target: "+rptTarget.getId()+ " - "+rptTarget.getDescription());
 		
-		if (rptTarget.getId() == 40) {
-			System.out.println(rptTarget.getId());
-		}
+//		if (rptTarget.getId() == 40) {
+//			System.out.println(rptTarget.getId());
+//		}
 		
 		// Read lines until rpt.getDescription() is found		
 		while (!found) {
@@ -450,7 +447,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	
+	// EPASWMM
 	private static boolean parseLinesAnalysis(RptTarget rptTarget) {
 
 		boolean result = true;
@@ -474,6 +471,7 @@ public class ImportRpt extends Model {
 	}
 
 
+	// EPASWMM
 	private static void getPollutants(RptTarget rpt) {
 		
 		String line = "";
@@ -589,9 +587,6 @@ public class ImportRpt extends Model {
 	}
 	
 	
-
-	
-	
 	// Parse values of current line that contains ".." in it
 	private static void parseLine2(Scanner scanner, RptTarget rptTarget, boolean together) {
 		
@@ -605,6 +600,7 @@ public class ImportRpt extends Model {
 			if (token.contains("..")) {
 				valueFound = true;
 			}
+			// TODO: EPANET Number of Junctions...
 			if (valueFound && !token.contains("..")) {
 				numTokens++;
 				if (numTokens <= rptTarget.getTokens()) {
@@ -648,29 +644,25 @@ public class ImportRpt extends Model {
     		RptToken rptToken = rptTokens.get(i);
 			int j = i+3;
 			String value = rptToken.getRptValue();
+			Integer dbType;
 			switch (rptTarget.getColumnType(j)) {
 			case Types.NUMERIC:
 			case Types.DOUBLE:
 			case Types.INTEGER:
-				boolean ok = Utils.isNumeric(value);
-				if (!ok) {
-					// TODO: i18n
-					String msg = "An error ocurred in line number: "+lineNumber;
-					msg+= "\nField "+rptTarget.getColumnName(j)+ " does not contain a valid numeric value: "+value;
-					msg+= "\nImport process will be aborted";
-					Utils.showError(msg);
-					abortRptProcess = true;
-					return false;
-				}
-				values+= value+", ";
-				break;					
-			case Types.VARCHAR:
-				values+= "'"+value+"', ";
-				break;					
+				dbType = 1;
+				break;									
 			default:
-				values+= "'"+value+"', ";
+				dbType = 0;
 				break;
 			}
+			
+			String result = processField(rptTarget.getColumnName(j), value, dbType);
+			if (result.equals("-1")) {
+				abortRptProcess = true;
+				return false;
+			}
+			values+= result+", ";
+			
 			fields+= rptTarget.getColumnName(j) + ", ";
 		}
 	
@@ -714,22 +706,12 @@ public class ImportRpt extends Model {
 					if (exists) {
 						fields+= fieldName + ", ";
 						String rptValue = rptToken.getRptValue();
-						if (rs.getInt("db_type") != 0) {
-							boolean ok = Utils.isNumeric(rptValue);
-							if (!ok) {
-								// TODO: i18n
-								String msg = "An error ocurred in line number: "+lineNumber;
-								msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
-								msg+= "\nImport process will be aborted";
-								Utils.showError(msg);
-								return false;
-							}
-							values+= rptValue + ", ";
-						}				
-						else {
-							values+= "'"+rptValue+"', ";	
+						Integer dbType = rs.getInt("db_type");
+						String result = processField(fieldName, rptValue, dbType);
+						if (result.equals("-1")) {
+							return false;
 						}
-						Utils.getLogger().info(fieldName+": "+rptValue);
+						values+= result+", ";
 					}
 					else {
 						Utils.getLogger().info("Field not exists in table '"+rptTarget.getTable()+"': "+fieldName);	
@@ -750,14 +732,6 @@ public class ImportRpt extends Model {
 		
 		return true;
 		
-	}
-	
-	
-	private static String buildSql(RptTarget rptTarget, String fields, String values) {
-		fields = fields.substring(0, fields.length() - 2);
-		values = values.substring(0, values.length() - 2);
-		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
-		return sql;
 	}
 
 
@@ -805,6 +779,7 @@ public class ImportRpt extends Model {
 	}	
 
 	
+	// Outfall Loading Summary (only)
 	private static void processTokens6(RptTarget rptTarget) {
 		
 		String fields = "result_id, node_id, flow_freq, avg_flow, max_flow, total_vol";
@@ -825,7 +800,7 @@ public class ImportRpt extends Model {
 		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
 		insertSql += sql;				
 		
-		// TODO: Table name hardcoded
+		// Table name hardcoded. Not present in sqlite database
 		for (int i = 0; i < pollutants.size(); i++) {
 			int j = i+5;
 			Double units = Double.valueOf(rptTokens.get(j).getRptValue());
@@ -865,22 +840,12 @@ public class ImportRpt extends Model {
 					if (exists) {
 						fields+= fieldName + ", ";
 						String rptValue = rptToken.getRptValue();
-						if (rs.getInt("db_type") != 0) {
-							boolean ok = Utils.isNumeric(rptValue);
-							if (!ok) {
-								// TODO: i18n
-								String msg = "An error ocurred in line number: "+lineNumber;
-								msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
-								msg+= "\nImport process will be aborted";
-								Utils.showError(msg);
-								return false;
-							}
-							values+= rptValue + ", ";
-						}				
-						else {
-							values+= "'"+rptValue+"', ";	
+						Integer dbType = rs.getInt("db_type");
+						String result = processField(fieldName, rptValue, dbType);
+						if (result.equals("-1")) {
+							return false;
 						}
-						Utils.getLogger().info(fieldName+": "+rptValue);
+						values+= result+", ";
 					}
 					else {
 						Utils.getLogger().info("Field not exists in table '"+rptTarget.getTable()+"': "+fieldName);	
@@ -904,8 +869,38 @@ public class ImportRpt extends Model {
 	}
 
 	
-	// Epanet
-	private static boolean processRptEpanet(RptTarget rptTarget) {
+	private static String processField(String fieldName, String rptValue, Integer dbType) {
+		
+		String result;
+		if (dbType != 0) {
+			boolean ok = Utils.isNumeric(rptValue);
+			if (!ok) {
+				String msg = "An error ocurred in line number: "+lineNumber;
+				msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
+				msg+= "\nImport process will be aborted";
+				Utils.showError(msg);
+				result = "-1";
+			}
+			result = rptValue;
+		}				
+		else {
+			result = "'"+rptValue+"'";	
+		}
+		return result;
+		
+	}
+
+
+	private static String buildSql(RptTarget rptTarget, String fields, String values) {
+		fields = fields.substring(0, fields.length() - 2);
+		values = values.substring(0, values.length() - 2);
+		String sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+" ("+fields+") VALUES ("+values+");\n";
+		return sql;
+	}
+	
+	
+	// EPANET
+	private static boolean processRptTargetEpanet(RptTarget rptTarget) {
 
 		boolean found = false;
 		String line = "";
@@ -935,6 +930,7 @@ public class ImportRpt extends Model {
 		String fieldsList = "*";
 		// Target node
 		if (rptTarget.getId() == 40) {
+			
 			jumpLines = 2;
 			fieldsList = "id, result_id, node_id";
 			for (int i=1; i<=2; i++) {
@@ -945,23 +941,30 @@ public class ImportRpt extends Model {
 			parseLine1(scanner);		
 			for (int i=0; i<rptTokens.size(); i++) {
 				String column = rptTokens.get(i).getRptValue().toLowerCase();
-				if (column.equals("node")){
+				if (column.equals("node")) {
 					// Just ignore them
 				}
-				else if (column.equals("pressure")){
+				else if (column.equals("pressure")) {
 					fieldsList+= ", press";
 				}	
-				// Elevation, Demand, Head, Quality
+				// Quality
+				else if (column.equals("quality") || column.equals("chemical")
+					|| column.equals("%_factor") || column.equals("age")) {
+					fieldsList+= ", quality";
+				}
+				// Elevation, Demand, Head 
 				else if (column.equals("elevation") || column.equals("demand")
 					|| column.equals("head") || column.equals("quality")) {
 					fieldsList+= ", "+column;
 				}
 			}
 			fieldsList+= ", other, time";
+			
 		}
 		
 		// Target arc
 		else if (rptTarget.getId() == 50) {
+			
 			jumpLines = 2;
 			fieldsList = "id, result_id, arc_id";
 			for (int i=1; i<=2; i++) {
@@ -972,13 +975,13 @@ public class ImportRpt extends Model {
 			parseLine1(scanner);		
 			for (int i=0; i<rptTokens.size(); i++) {
 				String column = rptTokens.get(i).getRptValue().toLowerCase();
-				if (column.equals("node") || column.equals("status")){
+				if (column.equals("node") || column.equals("status")) {
 					// Just ignore them
 				}
-				else if (column.equals("velocity") || column.equals("velocityunit")){
+				else if (column.equals("velocity") || column.equals("velocityunit")) {
 					fieldsList+= ", vel";
 				}	
-				else if (column.equals("f-factor")){
+				else if (column.equals("f-factor")) {
 					fieldsList+= ", ffactor";
 				}	
 				// Length, Diameter, Flow, Headloss, Setting, Reaction
@@ -988,7 +991,8 @@ public class ImportRpt extends Model {
 					fieldsList+= ", "+column;
 				}
 			}
-			fieldsList+= ", other, time";			
+			fieldsList+= ", other, time";	
+			
 		}
 		
 		// Jump number of lines specified in rpt.getTitleLines()
@@ -1036,8 +1040,8 @@ public class ImportRpt extends Model {
 	}	
 
 	
-	// Parse all lines of Hydraulic Target
-	private static void parseLinesHydraulic(RptTarget rpt) {
+	// EPANET: Parse all lines of Hydraulic Status Target
+	private static void parseLinesHydraulic(RptTarget rptTarget) {
 			
 		rptTokens = new ArrayList<RptToken>();		
 		boolean blankLine = false;		
@@ -1047,13 +1051,13 @@ public class ImportRpt extends Model {
 				lineNumber++;
 				String line = readLine();
 				blankLine = (line.length()==0);
-				if (!blankLine){
+				if (!blankLine) {
 					Scanner scanner = new Scanner(line);
 					rptTokens = parseLineHydraulic(scanner);
-					processTokensHydraulic(rpt);
+					processTokensHydraulic(rptTarget);
 					numBlankLines = 0;					
 				}
-				else{
+				else {
 					numBlankLines++;
 				}
 			} catch (Exception e) {
@@ -1064,7 +1068,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	// Parse values of current line
+	// EPANET: Parse values of current line
 	private static ArrayList<RptToken> parseLineHydraulic(Scanner scanner) {
 		
 		ArrayList<RptToken> tokens = new ArrayList<RptToken>();	
@@ -1090,6 +1094,7 @@ public class ImportRpt extends Model {
 	}	
 	
 	
+	// EPANET
 	private static void processTokensHydraulic(RptTarget rptTarget) {
 
 		String fields = "result_id, time, text";
@@ -1112,6 +1117,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
+	// EPANET
 	private static boolean processTokensInputData(RptTarget rptTarget) {
 
 		// Number of fields without water quality parameters
@@ -1140,6 +1146,7 @@ public class ImportRpt extends Model {
 	        
 	        int k = 0;
 	        for (int j=3; j<rsmd.getColumnCount() - m; j++) {
+	        	
 	        	int i = j-3;
 	        	int columnIndex = j-k;
         		if (existWaterFields) {
@@ -1154,32 +1161,26 @@ public class ImportRpt extends Model {
         		} 
         		String fieldName = rsmd.getColumnName(columnIndex);
         		fields+= fieldName + ", ";
-        		RptToken rptToken = rptTokens.get(i);
-        		String rptValue = rptToken.getRptValue();
-        		Utils.getLogger().info(fieldName+": "+rptValue);
-        		switch (rsmd.getColumnType(columnIndex)) {
-				case Types.NUMERIC:
-				case Types.DOUBLE:
-				case Types.INTEGER:
-					boolean ok = Utils.isNumeric(rptTokens.get(i).getRptValue());
-					if (!ok){
-						// TODO: i18n
-						String msg = "An error ocurred in line number: "+lineNumber;
-						msg+= "\nField "+rsmd.getColumnName(columnIndex)+ " does not contain a valid numeric value: "+rptTokens.get(i).getRptValue();
-						msg+= "\nImport process will be aborted";
-						Utils.showError(msg);
-						abortRptProcess = true;
-						return false;
-					}
-					values+= rptValue+", ";
-					break;					
-				case Types.VARCHAR:
-					values+= "'"+rptValue+"', ";
-					break;					
-				default:
-					values+= "'"+rptValue+"', ";
-					break;
-				}
+        		String rptValue = rptTokens.get(i).getRptValue();		
+    			Integer dbType;
+    			switch (rptTarget.getColumnType(columnIndex)) {
+    			case Types.NUMERIC:
+    			case Types.DOUBLE:
+    			case Types.INTEGER:
+    				dbType = 1;
+    				break;									
+    			default:
+    				dbType = 0;
+    				break;
+    			}
+    			
+    			String result = processField(rptTarget.getColumnName(j), rptValue, dbType);
+    			if (result.equals("-1")) {
+    				abortRptProcess = true;
+    				return false;
+    			}
+    			values+= result+", ";
+        		
 	        }
 	        
 		} catch (SQLException e) {

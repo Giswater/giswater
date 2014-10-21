@@ -49,6 +49,8 @@ public class ExportToInp extends Model {
 	private static final String PATTERNS_TABLE = "inp_pattern";
 	private static final Integer DEFAULT_SPACE = 23;
 
+	private static boolean isVersion51;
+	
 
     public static boolean checkSectorSelection() {
 		
@@ -70,10 +72,11 @@ public class ExportToInp extends Model {
 	
 	
     // Export to INP 
-    public static boolean process(File fileInp, boolean isSubcatchmentSelected) {
+    public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51) {
 
         Utils.getLogger().info("exportINP");
         String sql= "";
+        ExportToInp.isVersion51 = isVersion51;
         
         try {
             
@@ -83,7 +86,7 @@ public class ExportToInp extends Model {
 	            if (owInp.equals("false")) {
 	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
 	            	int res = Utils.confirmDialog(msg);             
-	            	if (res == JOptionPane.NO_OPTION){
+	            	if (res == JOptionPane.NO_OPTION) {
 	                   	return false;
 	                }   
 	            }  
@@ -112,7 +115,7 @@ public class ExportToInp extends Model {
             	Utils.getLogger().info("INP target: " + rs.getInt("target_id") + " - " + rs.getString("table_name") + " - " + rs.getInt("lines"));
             	if (rs.getString("table_name").equals(OPTIONS_TABLE) || 
             		rs.getString("table_name").equals(REPORTS_TABLE) || rs.getString("table_name").equals(REPORTS_TABLE2) ||
-            		rs.getString("table_name").equals(TIMES_TABLE)){
+            		rs.getString("table_name").equals(TIMES_TABLE)) {
             		processTarget2(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
             	}
             	else {
@@ -122,20 +125,15 @@ public class ExportToInp extends Model {
             rs.close();
             
             // Subcatchment function
-            if (isSubcatchmentSelected){
-            	Utils.getLogger().info("Process subcatchments");
-            	
-            	stat = MainDao.getConnectionPostgis().createStatement();
-            	
+            if (isSubcatchmentSelected) {
+            	Utils.getLogger().info("Process subcatchments");    	
                 // Get content of target table
-            	sql = "SELECT " + MainDao.getSchema() + ".gw_dump_subcatchments();";            
-                rs = stat.executeQuery(sql);
-                
+            	sql = "SELECT "+MainDao.getSchema()+".gw_dump_subcatchments();";            
+            	rs = MainDao.getResultset(sql);
                 while (rs.next()) {                	
                 	raf.writeBytes(rs.getString("gw_dump_subcatchments"));
                 	raf.writeBytes("\r\n");
                 }            	
-         
             }
             
             rat.close();
@@ -313,14 +311,22 @@ public class ExportToInp extends Model {
             while (itKey.hasNext()) {
                 // Write to the output file (one per row)
             	String sKey = (String) itKey.next();
-                sValor = (String) m.get(sKey);
-                raf.writeBytes(sKey.toUpperCase());
-                // Complete spaces with empty values
-                for (int j = sKey.length(); j <= size; j++) {
-                    raf.writeBytes(" ");
-                }
-                raf.writeBytes(sValor);
-                raf.writeBytes("\r\n");                
+            	// If we are working with EPASWMM version < 5.1, not process these fields
+            	if ((!ExportToInp.isVersion51) && 
+            		(sKey.equals("max_trials") || sKey.equals("head_tolerance") || sKey.equals("sys_flow_tol") || sKey.equals("lat_flow_tol"))) {
+            		// Ignore them	
+            		System.out.println("SS");
+            	}
+            	else {
+	                sValor = (String) m.get(sKey);
+	                raf.writeBytes(sKey.toUpperCase());
+	                // Complete spaces with empty values
+	                for (int j = sKey.length(); j <= size; j++) {
+	                    raf.writeBytes(" ");
+	                }
+	                raf.writeBytes(sValor);
+	                raf.writeBytes("\r\n");   
+            	}
             }
         }
 
@@ -332,11 +338,9 @@ public class ExportToInp extends Model {
 
     	LinkedHashMap<String, String> mDades;
         ArrayList<LinkedHashMap<String, String>> mAux = new ArrayList<LinkedHashMap<String, String>>();
-        String sql = "SELECT * FROM " + MainDao.getSchema() + "." +  tableName;
-        PreparedStatement ps;
+        String sql = "SELECT * FROM "+MainDao.getSchema()+"."+tableName;
         try {
-            ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = MainDao.getResultset(sql);
             ResultSetMetaData rsmd = rs.getMetaData();
             // Get columns name
             int fields = rsmd.getColumnCount();

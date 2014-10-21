@@ -187,6 +187,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
+		chkExport.setActionCommand(BUNDLE.getString("EpaSoftPanel.chkExport.actionCommand")); //$NON-NLS-1$
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); 
 		panelFileManager.add(chkExport, "cell 0 0 2 1,aligny bottom");
 		
@@ -319,6 +320,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		// File manager
 		btnFileInp.addActionListener(this);
 		btnFileRpt.addActionListener(this);
+		chkExport.addActionListener(this);
 		btnAccept.addActionListener(this);
 		
 		// Postprocess options
@@ -512,6 +514,19 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	public void setSubcatchmentVisible(boolean visible) {
 		chkSubcatchments.setVisible(visible);	
 	}
+	
+	public void setSubcatchmentEnabled(boolean enabled) {
+		chkSubcatchments.setEnabled(enabled);	
+	}
+	
+	public void setSubcatchmentSelected(boolean selected) {
+		chkSubcatchments.setSelected(selected);	
+	}
+	
+	public void exportSelected() {
+		controller.exportSelected();
+	}
 
+	
 	
 }

@@ -445,7 +445,6 @@ public class OptionsController extends AbstractController{
 					}
 				}
 				setComponents();
-				MainDao.commit();
 	        }   
 		} catch (SQLException e) {
 			Utils.logError(e);

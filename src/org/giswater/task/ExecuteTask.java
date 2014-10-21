@@ -95,7 +95,11 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }               
             boolean selected = view.isSubcatchmentsSelected();
-            continueExec = ExportToInp.process(fileInp, selected);
+            boolean isVersion51 = false;
+            if (!ppPanel.getVersionSoftware().equals("EPASWMM_50022")) {
+            	isVersion51 = true;
+            }
+            continueExec = ExportToInp.process(fileInp, selected, isVersion51);
         }
 
         // Run SWMM

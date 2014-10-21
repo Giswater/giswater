@@ -167,10 +167,6 @@ public class NewProjectController extends AbstractController {
 		String author = view.getAuthor();
 		String date = view.getDate();
 		
-		// Save properties
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile(); 
-		
 		// Execute task: CreateSchema
 		CreateSchemaTask task = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
         task.setParams(title, author, date);
