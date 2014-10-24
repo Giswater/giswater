@@ -25,7 +25,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.util.Utils;
 
 
@@ -37,7 +37,7 @@ public class ExecuteEpa extends Model {
 
         Utils.getLogger().info("execEPASOFT");
         
-		String exeName = MainDao.getGswProperties().get("EXE_NAME");
+		String exeName = PropertiesDao.getGswProperties().get("EXE_NAME");
         File exeFile = new File(exeName);
         exeName = Utils.getAppPath() + "epa" + File.separator + exeName;	
 	    exeFile = new File(exeName);			
@@ -55,7 +55,7 @@ public class ExecuteEpa extends Model {
         
         // Overwrite RPT file if already exists?
         if (fileRpt.exists()) {
-            String owRpt = MainDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
+            String owRpt = PropertiesDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
             if (owRpt.equals("false")) {
                 String msg = "Selected file already exists:\n"+fileRpt.getAbsolutePath()+"\nDo you want to overwrite it?";
             	int res = Utils.confirmDialog(msg);             
@@ -89,7 +89,7 @@ public class ExecuteEpa extends Model {
 		}
 
         // Open RPT file
-        String openFile = MainDao.getPropertiesFile().get("OPEN_RPT").toLowerCase();
+        String openFile = PropertiesDao.getPropertiesFile().get("OPEN_RPT").toLowerCase();
         if (openFile.equals("always")) {
         	Utils.openFile(fileRpt.getAbsolutePath());
         }

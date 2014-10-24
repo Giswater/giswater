@@ -58,7 +58,9 @@ import org.giswater.controller.EpaSoftController;
 import org.giswater.controller.HecRasController;
 import org.giswater.controller.MenuController;
 import org.giswater.controller.ProjectPreferencesController;
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
@@ -164,7 +166,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		setIconImage(image.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		prop = MainDao.getPropertiesFile();
+		prop = PropertiesDao.getPropertiesFile();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -421,13 +423,13 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
 	private void getFrameParams (JInternalFrame frame, String prefix) {
-        boolean visible = Boolean.parseBoolean(MainDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
+        boolean visible = Boolean.parseBoolean(PropertiesDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
         frame.setVisible(visible);
 	}
 	
 	
 	private void putFrameParams (JInternalFrame frame, String prefix) {
-		MainDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
+		PropertiesDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
 	}
 	
 	
@@ -458,7 +460,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		prop.put(prefix + "_Y", this.getY());
 		prop.put(prefix + "_WIDTH", this.getWidth());
 		prop.put(prefix + "_HEIGHT", this.getHeight());
-		MainDao.savePropertiesFile(); 
+		PropertiesDao.savePropertiesFile(); 
 		
 	}	
 	
@@ -466,9 +468,9 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void putEpaSoftParams() {
 		
 		EpaSoftPanel epaSoftPanel = epaSoftFrame.getPanel();
-    	MainDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
-    	MainDao.getGswProperties().put("FILE_RPT", epaSoftPanel.getFileRpt());
-    	MainDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
+		PropertiesDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
+		PropertiesDao.getGswProperties().put("FILE_RPT", epaSoftPanel.getFileRpt());
+		PropertiesDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
     	
 	}    
 	
@@ -476,8 +478,8 @@ public class MainFrame extends JFrame implements ActionListener{
     public void putHecrasParams() {
     	
     	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
-    	MainDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
-    	MainDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
+    	PropertiesDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
+    	PropertiesDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
     	
 	}	
     
@@ -486,39 +488,39 @@ public class MainFrame extends JFrame implements ActionListener{
     	
     	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
     	
-    	MainDao.getGswProperties().put("SOFTWARE", ppPanel.getWaterSoftware());    	
+    	PropertiesDao.getGswProperties().put("SOFTWARE", ppPanel.getWaterSoftware());    	
     	String versionId = ppPanel.getVersionSoftware();
-    	String exeName = MainDao.getExeName(versionId);
-    	MainDao.getGswProperties().put("VERSION", versionId);  
-    	MainDao.getGswProperties().put("EXE_NAME", exeName);  
+    	String exeName = ConfigDao.getExeName(versionId);
+    	PropertiesDao.getGswProperties().put("VERSION", versionId);  
+    	PropertiesDao.getGswProperties().put("EXE_NAME", exeName);  
     	if (ppPanel.getOptDatabaseSelected()){
-    		MainDao.getGswProperties().put("STORAGE", "DATABASE");
+    		PropertiesDao.getGswProperties().put("STORAGE", "DATABASE");
     	}
     	else if (ppPanel.getOptDbfSelected()) {
-    		MainDao.getGswProperties().put("STORAGE", "DBF");
+    		PropertiesDao.getGswProperties().put("STORAGE", "DBF");
     	}
     	else {
-    		MainDao.getGswProperties().put("STORAGE", "");
+    		PropertiesDao.getGswProperties().put("STORAGE", "");
     	}	
-    	MainDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
-    	MainDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
-    	MainDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
-    	MainDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
-    	MainDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());
-    	MainDao.getGswProperties().put("POSTGIS_USER", ppPanel.getUser());
-    	MainDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(ppPanel.getPassword()));
-    	MainDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.getRemember().toString());
+    	PropertiesDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
+    	PropertiesDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
+    	PropertiesDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
+    	PropertiesDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
+    	PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());
+    	PropertiesDao.getGswProperties().put("POSTGIS_USER", ppPanel.getUser());
+    	PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(ppPanel.getPassword()));
+    	PropertiesDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.getRemember().toString());
     	
 	}	   
     
     
     public void putGisParams(GisPanel gisPanel) {
     	
-    	MainDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
-    	MainDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
-    	MainDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
-    	MainDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
-    	MainDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
+    	PropertiesDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
+    	PropertiesDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
+    	PropertiesDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
+    	PropertiesDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
+    	PropertiesDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
     	
 	}	
     
@@ -526,7 +528,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public void saveGswFile() {
 
 		// Update FILE_GSW parameter 
-		prop.put("FILE_GSW", MainDao.getGswPath());
+		prop.put("FILE_GSW", PropertiesDao.getGswPath());
 		
 		// Get EPASOFT (EPANET or SWMM) parameters
 		putEpaSoftParams();
@@ -538,7 +540,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		putProjectPreferencecsParams();		
     	
     	// Save .gsw file
-    	MainDao.saveGswPropertiesFile();
+		PropertiesDao.saveGswPropertiesFile();
         
 	}	
 	

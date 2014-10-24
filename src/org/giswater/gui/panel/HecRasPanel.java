@@ -28,6 +28,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,11 +39,10 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.HecRasController;
-import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.HecRasFrame;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
-import javax.swing.JCheckBox;
 
 
 public class HecRasPanel extends JPanel implements ActionListener {
@@ -109,7 +109,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportSdf.setEnabled(isEnabled);
 		
 		// Check if we have to enable Load Raster button
-		PropertiesMap prop = MainDao.getPropertiesFile();
+		PropertiesMap prop = PropertiesDao.getPropertiesFile();
 		boolean isLoad = Boolean.parseBoolean(prop.getProperty("LOAD_RASTER", "false"));
 		if (isEnabled && isLoad) {
 			btnLoadRaster.setEnabled(true);

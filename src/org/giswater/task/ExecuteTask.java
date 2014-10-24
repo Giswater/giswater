@@ -1,3 +1,23 @@
+/*
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author:
+ *   David Erill <derill@giswater.org>
+ */
 package org.giswater.task;
 
 import java.io.File;
@@ -5,6 +25,7 @@ import java.io.File;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.EpaSoftController;
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.panel.EpaSoftPanel;
@@ -68,7 +89,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         	MainClass.mdi.showError("any_software_selected");
             return null;
         }
-        String version = MainDao.getSoftwareVersion("postgis", softwareId);
+        String version = ConfigDao.getSoftwareVersion("postgis", softwareId);
         Model.setSoftwareVersion(version);
         
 		// Get Sqlite Database			
@@ -165,7 +186,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         	MainClass.mdi.showError("any_software_selected");
             return null;
         }
-        String version = MainDao.getSoftwareVersion("dbf", id);
+        String version = ConfigDao.getSoftwareVersion("dbf", id);
         Model.setSoftwareVersion(version);
 		
 		// Get Sqlite Database			
@@ -180,7 +201,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 		}
 		
 		// Get INP template file
-		String templatePath = MainDao.getInpFolder()+version+".inp";
+		String templatePath = ConfigDao.getInpFolder()+version+".inp";
 		File fileTemplate = new File(templatePath);
 		if (!fileTemplate.exists()) {
 			MainClass.mdi.showError("inp_error_notfound", templatePath);				

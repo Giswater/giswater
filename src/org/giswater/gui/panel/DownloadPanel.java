@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.util.DownloadTask;
+import org.giswater.task.DownloadTask;
 import org.giswater.util.UtilsFTP;
 
 

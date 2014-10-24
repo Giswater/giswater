@@ -30,7 +30,9 @@ import javax.swing.JInternalFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.giswater.dao.ExecuteDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.about.AcknowledgmentDialog;
 import org.giswater.gui.dialog.about.LicenseDialog;
@@ -40,6 +42,7 @@ import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.task.CreateExampleSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -48,13 +51,11 @@ import org.giswater.util.UtilsFTP;
 
 public class MenuController extends AbstractController {
 
-	private MainFrame view;
+	private MainFrame mainFrame;
 	private PropertiesMap prop;
 	private String versionCode;
 	private UtilsFTP ftp;
 	private String action;
-	private Cursor waitCursor = new Cursor(Cursor.WAIT_CURSOR);
-	private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);	
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "https://vimeo.com/giswater";
@@ -63,11 +64,11 @@ public class MenuController extends AbstractController {
 
 	
 	public MenuController(MainFrame mainFrame, String versionCode, UtilsFTP ftp) {
-		this.view = mainFrame;
-		this.prop = MainDao.getPropertiesFile();
+		this.mainFrame = mainFrame;
+		this.prop = PropertiesDao.getPropertiesFile();
 		this.versionCode = versionCode;
 		this.ftp = ftp;
-		view.setControl(this);	
+		mainFrame.setControl(this);	
 	}
 	
 
@@ -81,10 +82,10 @@ public class MenuController extends AbstractController {
 		}
 		
 		// Restore contents of .sql file into current Database
-		MainDao.executeRestore(filePath);
+		ExecuteDao.executeRestore(filePath);
 		
 		// Refresh schemas
-		view.ppFrame.getPanel().selectSourceType();
+		mainFrame.ppFrame.getPanel().selectSourceType();
 		
 	}
 	
@@ -101,7 +102,7 @@ public class MenuController extends AbstractController {
 		if (filePath.equals("")) {
 			return;
 		}
-		MainDao.executeDump(schema, filePath);
+		ExecuteDao.executeDump(schema, filePath);
 		
 	}
 
@@ -114,9 +115,9 @@ public class MenuController extends AbstractController {
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_sql"));
-        File file = new File(MainDao.getGswProperties().get("FILE_SQL", usersFolder));	
+        File file = new File(PropertiesDao.getGswProperties().get("FILE_SQL", usersFolder));	
         chooser.setCurrentDirectory(file);
-        int returnVal = chooser.showOpenDialog(view);
+        int returnVal = chooser.showOpenDialog(mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileSql = chooser.getSelectedFile();
             path = fileSql.getAbsolutePath();
@@ -148,7 +149,7 @@ public class MenuController extends AbstractController {
     	action = "new";
     	
     	// Get template path name
-    	String gswTemplatePath = MainDao.getGswTemplatePath();
+    	String gswTemplatePath = PropertiesDao.getGswTemplatePath();
 
     	// Get path of gsw file to create
 		File gswFile = gswChooseFile(true);
@@ -158,7 +159,7 @@ public class MenuController extends AbstractController {
     	// Copy contents from template gsw file to new gsw file and open it
     	boolean ok = Utils.copyFile(gswTemplatePath, gswNewPath);
     	if (ok) {
-	    	MainDao.setGswPath(gswNewPath);
+    		PropertiesDao.setGswPath(gswNewPath);
 	    	gswOpen(false, false);
     	}
     	else {
@@ -170,7 +171,7 @@ public class MenuController extends AbstractController {
     
     public void gswEdit() {
     	action = "edit";
-		openFrame("PP", view.ppFrame);
+		openFrame("PP", mainFrame.ppFrame);
     }
     
     
@@ -195,47 +196,47 @@ public class MenuController extends AbstractController {
 			if (gswFile == null) return;		
 			gswPath = gswFile.getAbsolutePath();
 			gswName = gswFile.getName();
-			MainDao.setGswPath(gswPath);
+			PropertiesDao.setGswPath(gswPath);
 			prop.put("FILE_GSW", gswPath);			
 		}
 		else {
-			gswPath = MainDao.getGswPath();
+			gswPath = PropertiesDao.getGswPath();
 			gswFile = new File(gswPath);
 			gswName = gswFile.getName();
 		}
 		if (gswPath == "") return;
 		
 		// Load .gsw file into memory
-		MainDao.loadGswPropertiesFile();
+		PropertiesDao.loadGswPropertiesFile();
 		if (action.equals("new")) {
-			MainDao.loadGswPropertiesFile();
-			MainDao.getGswProperties().put("SOFTWARE", "");
-			MainDao.getGswProperties().put("VERSION", "");
-			MainDao.getGswProperties().put("STORAGE", "");
-			MainDao.getGswProperties().put("SCHEMA", "");
+			PropertiesDao.loadGswPropertiesFile();
+			PropertiesDao.getGswProperties().put("SOFTWARE", "");
+			PropertiesDao.getGswProperties().put("VERSION", "");
+			PropertiesDao.getGswProperties().put("STORAGE", "");
+			PropertiesDao.getGswProperties().put("SCHEMA", "");
 		}
 		
 		// Update frames position and panels
-		view.updateFrames();
+		mainFrame.updateFrames();
 		updateHecrasPanel();
 		updateEpaSoftPanel();  		
 		updateProjectPreferencesPanel();
 		if (acceptPreferences) {
-			view.ppFrame.getPanel().getController().acceptPreferences();
+			mainFrame.ppFrame.getPanel().getController().acceptPreferences();
 		}
 
     	// Update application title
-    	view.updateTitle(gswName);
+    	mainFrame.updateTitle(gswName);
     	
     	if (action.equals("new")) {
-    		view.ppFrame.setVisible(true);
+    		mainFrame.ppFrame.setVisible(true);
     	}
 		
 	}
 
 	
 	public void gswSave() {
-		view.saveGswFile();
+		mainFrame.saveGswFile();
 	}
 	
 	public void gswSaveAs() {
@@ -244,9 +245,9 @@ public class MenuController extends AbstractController {
 		if (gswFile == null) return;		
 		String gswPath = gswFile.getAbsolutePath();
 		String gswName = gswFile.getName();
-    	MainDao.setGswPath(gswPath);
-    	view.saveGswFile();
-    	view.updateTitle(gswName);  
+		PropertiesDao.setGswPath(gswPath);
+    	mainFrame.saveGswFile();
+    	mainFrame.updateTitle(gswName);  
     	
 	}
 	
@@ -269,7 +270,7 @@ public class MenuController extends AbstractController {
         }
         File fileProp = new File(prop.get("FILE_GSW", Utils.getLogFolder()));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(view);
+        int returnVal = chooser.showOpenDialog(mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             file = chooser.getSelectedFile();
             path = file.getAbsolutePath();
@@ -287,7 +288,7 @@ public class MenuController extends AbstractController {
 	private void updateDbfParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel DBF
-		ppPanel.setFolderShp(MainDao.getGswProperties().get("FOLDER_SHP"));
+		ppPanel.setFolderShp(PropertiesDao.getGswProperties().get("FOLDER_SHP"));
 		
 	}
 	
@@ -295,14 +296,14 @@ public class MenuController extends AbstractController {
 	private void updateDatabaseParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel Database
-		ppPanel.setHost(MainDao.getGswProperties().get("POSTGIS_HOST"));
-		ppPanel.setPort(MainDao.getGswProperties().get("POSTGIS_PORT"));
-		ppPanel.setDatabase(MainDao.getGswProperties().get("POSTGIS_DATABASE"));
-		ppPanel.setUser(MainDao.getGswProperties().get("POSTGIS_USER"));		
-		Boolean remember = Boolean.parseBoolean(MainDao.getGswProperties().get("POSTGIS_REMEMBER"));
+		ppPanel.setHost(PropertiesDao.getGswProperties().get("POSTGIS_HOST"));
+		ppPanel.setPort(PropertiesDao.getGswProperties().get("POSTGIS_PORT"));
+		ppPanel.setDatabase(PropertiesDao.getGswProperties().get("POSTGIS_DATABASE"));
+		ppPanel.setUser(PropertiesDao.getGswProperties().get("POSTGIS_USER"));		
+		Boolean remember = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_REMEMBER"));
 		ppPanel.setRemember(remember);
 		if (remember) {
-			ppPanel.setPassword(Encryption.decrypt(MainDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
+			ppPanel.setPassword(Encryption.decrypt(PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
 		} else {
 			ppPanel.setPassword("");
 		}
@@ -321,27 +322,27 @@ public class MenuController extends AbstractController {
 		if (MainDao.isConnected()) {
 			ppPanel.setConnectionText(Utils.getBundleString("close_connection"));
 			ppPanel.enableConnectionParameters(false);			
-			view.enableMenuDatabase(true);
+			mainFrame.enableMenuDatabase(true);
 		}
 		else {
 			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));
 			ppPanel.enableConnectionParameters(true);			
-			view.enableMenuDatabase(false);
+			mainFrame.enableMenuDatabase(false);
 		}
-		ppPanel.setSelectedSchema(MainDao.getGswProperties().get("SCHEMA"));
+		ppPanel.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));
 		
 		// Update Status Bar
-		view.updateConnectionInfo();
+		mainFrame.updateConnectionInfo();
 		
 	}
 	
 	
     private void updateProjectPreferencesPanel() {
     	
-    	ProjectPreferencesPanel ppPanel = view.ppFrame.getPanel();
+    	ProjectPreferencesPanel ppPanel = mainFrame.ppFrame.getPanel();
     	
     	// Panel Water Software
-    	String waterSoftware = MainDao.getGswProperties().get("SOFTWARE").toUpperCase();
+    	String waterSoftware = PropertiesDao.getGswProperties().get("SOFTWARE").toUpperCase();
     	ppPanel.setWaterSoftware(waterSoftware);
     	MainDao.setWaterSoftware(waterSoftware);
 		
@@ -351,7 +352,7 @@ public class MenuController extends AbstractController {
 		// Panel Database
 		updateDatabaseParams(ppPanel);
 		
-		String storage = MainDao.getGswProperties().get("STORAGE").toUpperCase();
+		String storage = PropertiesDao.getGswProperties().get("STORAGE").toUpperCase();
 		if (storage.equals("DBF")) {
 			ppPanel.setDbfSelected(true);
 			ppPanel.selectSourceType(); 
@@ -360,26 +361,26 @@ public class MenuController extends AbstractController {
 			ppPanel.setDatabaseSelected(true);
 			ppPanel.selectSourceType(); 
 		}
-		ppPanel.setVersionSoftware(MainDao.getGswProperties().get("VERSION"));
+		ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
 		
 	}	    
     
 
     private void updateEpaSoftPanel() {
     	
-    	EpaSoftPanel epaSoftPanel = view.epaSoftFrame.getPanel();
-    	epaSoftPanel.setFileInp(MainDao.getGswProperties().get("FILE_INP"));
-    	epaSoftPanel.setFileRpt(MainDao.getGswProperties().get("FILE_RPT"));
-    	epaSoftPanel.setProjectName(MainDao.getGswProperties().get("PROJECT_NAME"));
+    	EpaSoftPanel epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
+    	epaSoftPanel.setFileInp(PropertiesDao.getGswProperties().get("FILE_INP"));
+    	epaSoftPanel.setFileRpt(PropertiesDao.getGswProperties().get("FILE_RPT"));
+    	epaSoftPanel.setProjectName(PropertiesDao.getGswProperties().get("PROJECT_NAME"));
 		
 	}   
     
  
     private void updateHecrasPanel() {
     	
-    	HecRasPanel hecRasPanel = view.hecRasFrame.getPanel();
-    	hecRasPanel.setFileAsc(MainDao.getGswProperties().get("HECRAS_FILE_ASC"));
-    	hecRasPanel.setFileSdf(MainDao.getGswProperties().get("HECRAS_FILE_SDF"));
+    	HecRasPanel hecRasPanel = mainFrame.hecRasFrame.getPanel();
+    	hecRasPanel.setFileAsc(PropertiesDao.getGswProperties().get("HECRAS_FILE_ASC"));
+    	hecRasPanel.setFileSdf(PropertiesDao.getGswProperties().get("HECRAS_FILE_SDF"));
     	
 	}    
      
@@ -401,97 +402,27 @@ public class MenuController extends AbstractController {
 	}
 	
 	
-	private void createExampleSchema(String softwareName) {
-		
+	private void createExampleSchema(String waterSoftware) {
+        
 		// Get SRID
 		String sridValue = "25831";		
-		if (softwareName.equals("hecras")) {
+		if (waterSoftware.equals("hecras")) {
 			sridValue = "23031";		
 		}
 		
 		// Ask confirmation
-		String schemaName = "sample_"+softwareName;
+		String schemaName = "sample_"+waterSoftware;
 		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
-		int res = Utils.confirmDialog(view, msg, "Create DB sample");
+		int res = Utils.confirmDialog(mainFrame, msg, "Create example project");
 		if (res != 0) return; 
 		
-		// Check if schema already exists
-		if (MainDao.checkSchema(schemaName)) {
-			msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
-			res = Utils.confirmDialog(view, msg, "Create DB sample");
-			if (res != 0) return; 
-			MainDao.deleteSchema(schemaName);
-		}
-		
-		// Set wait cursor
-		view.ppFrame.getPanel().enableControlsText(false);
-		view.setCursorFrames(waitCursor);
-		
-		boolean status = true;
-		if (softwareName.equals("hecras")) {
-			status = MainDao.createSchemaHecRas(softwareName, schemaName, sridValue);
-		}
-		else {
-			status = MainDao.createSchema(softwareName, schemaName, sridValue);
-		}
-		
-		if (status) {
-			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()) {
-				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('example "+softwareName+"', 'giswater software', '')";
-				Utils.getLogger().info(sql);
-				MainDao.executeSql(sql, false);
-				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareName+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.getLogger().info(sql);
-				MainDao.executeSql(sql, false);
-				// Once schema has been created, load data 
-				try {			
-					String folderRoot = new File(".").getCanonicalPath() + File.separator;				
-					// From sample .sql file					
-					String filePath = folderRoot+"samples/sample_"+softwareName+".sql";	 
-			    	Utils.getLogger().info("Reading file: "+filePath); 				
-			    	String content = Utils.readFile(filePath);
-					Utils.logSql(content);		
-					// Last SQL script. So commit all process
-					boolean result = MainDao.executeSql(content, true);		
-					if (!result) {
-						MainDao.deleteSchema(schemaName);
-						return;
-					}
-					if (softwareName.equals("hecras")) {				
-						// Trough Load Raster
-						String rasterName = "sample_mdt.asc";	 						
-						String rasterPath = folderRoot+"samples/"+rasterName;	 						
-						if (MainDao.loadRaster(schemaName, rasterPath, rasterName)) {
-							msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
-							MainClass.mdi.showMessage(msg);
-						}						
-					}	
-					else {
-						msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
-						MainClass.mdi.showMessage(msg);
-					}
-				} catch (Exception e) {
-					MainDao.deleteSchema(schemaName);
-		            Utils.showError(e);
-				}
-			}
-			else {
-				MainDao.deleteSchema(schemaName);
-				Utils.logError("Error updateSchema. Schema could not be created");
-			}		
-		}
-		else {
-			MainDao.deleteSchema(schemaName);
-			Utils.logError("Error createSchema. Schema could not be created");
-		}
-
-		// Refresh view
-		view.ppFrame.getPanel().enableControlsText(true);
-		view.setCursorFrames(defaultCursor);
-		view.updateEpaFrames();
-		
+		// Execute task: CreateSchema
+		CreateExampleSchemaTask task = new CreateExampleSchemaTask(waterSoftware, schemaName, sridValue);
+		task.setController(this);
+        task.setParentPanel(mainFrame);
+        task.addPropertyChangeListener(this);
+        task.execute();
+				
 	}
 
 	
@@ -505,7 +436,7 @@ public class MenuController extends AbstractController {
 			path = MainDao.getRootFolder() + path;
 			file = new File(path);
 			if (!file.exists()) {
-				Utils.showMessage(view, "File not found: \n" + file.getAbsolutePath());
+				Utils.showMessage(mainFrame, "File not found: \n" + file.getAbsolutePath());
 				return;
 			}
 		}
@@ -517,7 +448,7 @@ public class MenuController extends AbstractController {
 	
 	// Menu Configuration 
 	public void showSoftware() {
-		view.openSoftware();
+		mainFrame.openSoftware();
 	}
 	
 	
@@ -531,7 +462,7 @@ public class MenuController extends AbstractController {
 		String info2 = "Please read the documentation and enjoy using the software";
 		WelcomeDialog about = new WelcomeDialog(title, info, info2, versionCode);
 		about.setModal(true);
-		about.setLocationRelativeTo(view);
+		about.setLocationRelativeTo(mainFrame);
 		about.setVisible(true);
 		
 	}
@@ -558,7 +489,7 @@ public class MenuController extends AbstractController {
 		String info3 = "View license file";
 		LicenseDialog about = new LicenseDialog(title, info, info1, info2, info3);
 		about.setModal(true);
-		about.setLocationRelativeTo(view);
+		about.setLocationRelativeTo(mainFrame);
 		about.setVisible(true);
 		
 	}
@@ -573,7 +504,7 @@ public class MenuController extends AbstractController {
 			" Vicente de Medina, Xavier Torret</i> and <i>David Erill</i></HTML>";
 		AcknowledgmentDialog about = new AcknowledgmentDialog(title, info, info2);
 		about.setModal(true);
-		about.setLocationRelativeTo(view);
+		about.setLocationRelativeTo(mainFrame);
 		about.setVisible(true);
 		
 	}
@@ -602,9 +533,9 @@ public class MenuController extends AbstractController {
 		}
 		boolean newVersion = ftp.checkVersion(majorVersion, minorVersion, buildVersion);
 		String ftpVersion = ftp.getFtpVersion();
-		view.setNewVersionVisible(newVersion, ftpVersion);
+		mainFrame.setNewVersionVisible(newVersion, ftpVersion);
 		if (!newVersion) {
-			Utils.showMessage(view, "This version is up to date.\nAny new version has been found in the repository.");
+			Utils.showMessage(mainFrame, "This version is up to date.\nAny new version has been found in the repository.");
 		}
 		
 	}
@@ -621,14 +552,14 @@ public class MenuController extends AbstractController {
 		String ftpVersion = ftp.getFtpVersion();
 		String remoteName = UPDATE_FILE+ftpVersion+".exe";
 		// Choose file to download
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		mainFrame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String localePath = chooseFileSetup(remoteName);
 		if (!localePath.equals("")) {
 			DownloadPanel panel = new DownloadPanel(remoteName, localePath, ftp);
-	        JDialog downloadDialog = Utils.openDialogForm(panel, view, "Download Process", 290, 135);
+	        JDialog downloadDialog = Utils.openDialogForm(panel, mainFrame, "Download Process", 290, 135);
 	        downloadDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); 
 	        downloadDialog.setVisible(true);
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			mainFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 		
 	}
@@ -645,7 +576,7 @@ public class MenuController extends AbstractController {
         File file = new File(usersFolder+fileName);	
         chooser.setCurrentDirectory(file);
         chooser.setSelectedFile(file);
-        int returnVal = chooser.showOpenDialog(view);
+        int returnVal = chooser.showOpenDialog(mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileSql = chooser.getSelectedFile();
             path = fileSql.getAbsolutePath();

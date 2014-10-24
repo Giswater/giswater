@@ -20,8 +20,7 @@
  */
 package org.giswater.task;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.SwingWorker;
 
@@ -32,25 +31,25 @@ import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Utils;
 
 
-public class CopySchemaTask extends SwingWorker<Void, Void> {
+public class DeleteSchemaTask extends SwingWorker<Void, Void> {
 	
 	private ProjectPreferencesPanel parentPanel;
 	private ProjectPreferencesController controller;
+	private String waterSoftware;
 	private String schemaName;
-	private String newSchemaName;
 	private boolean status;
 	
 	
-	public CopySchemaTask(String schemaName, String newSchemaName) {
+	public DeleteSchemaTask(String waterSoftware, String schemaName) {
+		this.waterSoftware = waterSoftware;
 		this.schemaName = schemaName;
-		this.newSchemaName = newSchemaName;
 	}
 	
-	public void setParentPanel(ProjectPreferencesPanel parentPanel){
+	public void setParentPanel(ProjectPreferencesPanel parentPanel) {
 		this.parentPanel = parentPanel;
 	}
 	
-	public void setController(ProjectPreferencesController controller){
+	public void setController(ProjectPreferencesController controller) {
 		this.controller = controller;
 	}
 	
@@ -63,27 +62,14 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
     	// Disable view
     	Utils.setPanelEnabled(parentPanel, false);
 
-		String sql = "SELECT "+schemaName+".clone_schema('"+schemaName+"', '"+newSchemaName+"')";
-		Utils.logSql(sql);
-		status = MainDao.executeSql(sql, true);
-		if (status){
-			// Now we have to execute functrigger.sql
-			try {
-				String folderRoot = new File(".").getCanonicalPath()+File.separator;
-				String filePath = folderRoot+"sql"+File.separator+MainDao.getWaterSoftware()+"_functrigger.sql";
-				String content = Utils.readFile(filePath);
-				content = content.replace("SCHEMA_NAME", newSchemaName);
-				Utils.logSql(content);
-				if (MainDao.executeSql(content, true)){
-					controller.selectSourceType();
-				}
-			} catch (IOException e) {
-				Utils.logError(e);
-				status = false;
-			}	
-		}
+    	parentPanel.requestFocusInWindow();     	
+    	MainDao.deleteSchema(schemaName);
+		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
+		boolean enabled = parentPanel.setSchemaModel(schemaList);
+		controller.enablePreprocess(enabled);
+		controller.setSchema(parentPanel.getSelectedSchema());
 		
-		// Refresh view
+		// Enable view
     	Utils.setPanelEnabled(parentPanel, true);
 		
 		return null;
@@ -95,10 +81,10 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage("Project copied successfuly");
+    		MainClass.mdi.showMessage("schema_deleted");
     	}
     	else {
-    		MainClass.mdi.showError("Schema could not be copied");
+    		MainClass.mdi.showError("Schema could not be deleted");
     	}
 		
     }

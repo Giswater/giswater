@@ -1,9 +1,0 @@
-diff a/src/org/giswater/gui/frame/MainFrame.java b/src/org/giswater/gui/frame/MainFrame.java	(rejected hunks)
-@@ -381,6 +381,7 @@
-         desktopPane.add(gisFrame);
-         
-         // Set specific configuration
-+        //gisFrame.setLocation(175, 80);
-         gisFrame.setGisExtension("qgs");
-         gisFrame.setGisTitle(Utils.getBundleString("gis_panel_qgis"));
-         ppFrame.setTitle("Project Preferences");

@@ -28,13 +28,16 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
+import org.giswater.task.DeleteSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 
@@ -69,7 +72,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Update software version 
 		setWaterSoftware(view.getWaterSoftware());
 		MainDao.setWaterSoftware(waterSoftware);
-		view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 		view.setInfo("");
 		
 		// Get schemas from selected water software
@@ -191,7 +194,7 @@ public class ProjectPreferencesController extends AbstractController {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(MainDao.getGswProperties().get("FOLDER_SHP", usersFolder));
+		File file = new File(PropertiesDao.getGswProperties().get("FOLDER_SHP", usersFolder));
 		chooser.setCurrentDirectory(file);
 		int returnVal = chooser.showOpenDialog(view);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -278,23 +281,23 @@ public class ProjectPreferencesController extends AbstractController {
 		MainDao.setConnected(isConnected);
 		
 		if (isConnected){
-			MainDao.getGswProperties().put("POSTGIS_HOST", host);
-			MainDao.getGswProperties().put("POSTGIS_PORT", port);
-			MainDao.getGswProperties().put("POSTGIS_DATABASE", db);
-			MainDao.getGswProperties().put("POSTGIS_USER", user);
+			PropertiesDao.getGswProperties().put("POSTGIS_HOST", host);
+			PropertiesDao.getGswProperties().put("POSTGIS_PORT", port);
+			PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", db);
+			PropertiesDao.getGswProperties().put("POSTGIS_USER", user);
 			// Save encrypted password
 			if (view.getRemember()){
-				MainDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(password));
+				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(password));
 			} else{
-				MainDao.getGswProperties().put("POSTGIS_PASSWORD", "");
+				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", "");
 			}
 			
 			// Get Postgis data and bin Folder
 	    	String dataPath = MainDao.getDataDirectory();
-	    	MainDao.getGswProperties().put("POSTGIS_DATA", dataPath);
+	    	PropertiesDao.getGswProperties().put("POSTGIS_DATA", dataPath);
 	        File dataFolder = new File(dataPath);
 	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	        MainDao.getGswProperties().put("POSTGIS_BIN", binPath);
+	        PropertiesDao.getGswProperties().put("POSTGIS_BIN", binPath);
 	        Utils.getLogger().info("Connection successful");
 	        Utils.getLogger().info("Postgre data directory: " + dataPath);	
 	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
@@ -333,7 +336,7 @@ public class ProjectPreferencesController extends AbstractController {
 				mainFrame.hecRasFrame.getPanel().enableButtons(true);
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
-				view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
+				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
 				if (schemaList != null && schemaList.size() > 0){
 					setSchema(schemaList.get(0));
@@ -341,7 +344,7 @@ public class ProjectPreferencesController extends AbstractController {
 					setSchema("");
 				}
 				boolean enabled = view.setSchemaModel(schemaList);
-				view.setSelectedSchema(MainDao.getGswProperties().get("SCHEMA"));						
+				view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
 				epaSoftPanel.enablePreprocess(enabled);
 				epaSoftPanel.enableAccept(enabled);
 			} 
@@ -363,7 +366,7 @@ public class ProjectPreferencesController extends AbstractController {
 			epaSoftPanel.enableRunAndImport(false);
 			mainFrame.hecRasFrame.getPanel().enableButtons(false);
 			mainFrame.enableMenuDatabase(false);
-			view.setVersionSoftwareModel(MainDao.getAvailableVersions("dbf", waterSoftware));
+			view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
 		}
@@ -376,7 +379,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Check if we already are connected
 		if (MainDao.isConnected()) {
 			view.setSchemaModel(MainDao.getSchemas(waterSoftware));
-			String gswSchema = MainDao.getGswProperties().get("SCHEMA").trim();
+			String gswSchema = PropertiesDao.getGswProperties().get("SCHEMA").trim();
 			if (!gswSchema.equals("")) {
 				view.setSelectedSchema(gswSchema);	
 			}
@@ -402,7 +405,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	private void setSchema(String schemaName) {
+	public void setSchema(String schemaName) {
 		MainDao.setSchema(schemaName);
 		checkDataManagerTables(schemaName);
 		checkPostprocessTables(schemaName);
@@ -413,13 +416,16 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setSelectedSchema(schemaName);
 	}
 	
+	public void enablePreprocess(boolean enabled) {
+		epaSoftPanel.enablePreprocess(enabled);
+	}
 	
 	public void setWaterSoftware(String waterSoftware) {
 		this.waterSoftware = waterSoftware;
 	}
 	
 	public void setVersionSoftware() {
-		view.setVersionSoftwareModel(MainDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 	}
 	
 	
@@ -436,7 +442,7 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void createSchemaAssistant() {
 		
-		String defaultSrid = MainDao.getPropertiesFile().get("SRID_DEFAULT", "25831");		
+		String defaultSrid = PropertiesDao.getPropertiesFile().get("SRID_DEFAULT", "25831");		
 		ProjectPanel projectPanel = new ProjectPanel(defaultSrid);
 		NewProjectController npController = new NewProjectController(projectPanel);
 		projectPanel.setController(npController);
@@ -458,14 +464,13 @@ public class ProjectPreferencesController extends AbstractController {
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
 		int res = Utils.confirmDialog(view, msg);        
-        if (res == 0){     
-        	view.requestFocusInWindow();     	
-        	MainDao.deleteSchema(schemaName);
-    		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
-    		boolean enabled = view.setSchemaModel(schemaList);
-    		epaSoftPanel.enablePreprocess(enabled);
-        	setSchema(view.getSelectedSchema());
-        	mainFrame.showMessage("schema_deleted");
+        if (res == 0) {     
+    		// Execute task: DeleteSchema
+    		DeleteSchemaTask task = new DeleteSchemaTask(waterSoftware, schemaName);
+            task.setController(this);
+            task.setParentPanel(view);
+            task.addPropertyChangeListener(this);
+            task.execute();
         }
         
 	}		

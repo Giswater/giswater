@@ -34,8 +34,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
-import java.net.DatagramSocket;
-import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
@@ -119,16 +117,21 @@ public class Utils {
     }
 	   
 	
-	public static void logSql(String msg){
-		if (isSqlLogged){
+	public static void setSqlLog(String string) {
+		isSqlLogged = Boolean.parseBoolean(string);
+	}	
+	
+	
+	public static void logSql(String msg) {
+		if (isSqlLogged) {
 			loggerSql.info(msg);
 		}
 	}
 	
     
-    public static String getAppPath(){
+    public static String getAppPath() {
     	
-    	if (appPath == null){
+    	if (appPath == null) {
 	    	CodeSource codeSource = MainDao.class.getProtectionDomain().getCodeSource();
 	    	File jarFile;
 	    	try {
@@ -143,23 +146,23 @@ public class Utils {
     	
     }
     
-    public static String getIconPath(){
+    public static String getIconPath() {
     	return getAppPath() + ICON_PATH;
     }    
     
-    public static String getLogFolder(){
+    public static String getLogFolder() {
     	return logFolder;
     }    
     
-    public static String getGisFolder(){
+    public static String getGisFolder() {
     	return gisFolder;
     }       
 
-	public static String getBundleString(String key){
+	public static String getBundleString(String key) {
 		return getBundleString(BUNDLE_TEXT, key);
 	}
 	
-	public static String getBundleString(ResourceBundle bundle, String key){
+	public static String getBundleString(ResourceBundle bundle, String key) {
 		try{
 			return bundle.getString(key.toLowerCase());
 		} catch (Exception e){
@@ -168,11 +171,11 @@ public class Utils {
 	}
 	
 	
-	public static JDialog openDialogForm(JPanel view, Component parent, String title){
+	public static JDialog openDialogForm(JPanel view, Component parent, String title) {
 		return openDialogForm(view, parent, title, -1, -1);
 	}
 		
-	public static JDialog openDialogForm(JPanel view, Component parent, String title, int width, int height){
+	public static JDialog openDialogForm(JPanel view, Component parent, String title, int width, int height) {
 		
 		JDialog f = new JDialog();
 		f.setTitle(title);
@@ -206,68 +209,7 @@ public class Utils {
         return parsedDate;
     }
 
-    
-    public static void copyDirectory(File sourceLocation, File targetLocation) throws IOException {
-        if (sourceLocation.isDirectory()) {
-            if (!targetLocation.exists()) {
-                targetLocation.mkdir();
-            }
-
-            String[] children = sourceLocation.list();
-            for (int i=0; i<children.length; i++) {
-                copyDirectory(new File(sourceLocation, children[i]),
-                        new File(targetLocation, children[i]));
-            }
-        } 
-        else {
-            InputStream in = new FileInputStream(sourceLocation);
-            OutputStream out = new FileOutputStream(targetLocation);
-            // Copy the bits from instream to outstream
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-        }
-    }
-    
-
-    public static boolean copyFile(String srFile, String dtFile) {
-
-    	boolean ok = false;
-    	
-        try {
-
-            File f1 = new File(srFile);
-            File f2 = new File(dtFile);
-            InputStream in = new FileInputStream(f1);
-
-            // For Overwrite the file.
-            OutputStream out = new FileOutputStream(f2);
-
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-        	logger.info("File from: " + srFile + "\nFile to:   " + dtFile);
-            ok = true;
-            
-        } catch (FileNotFoundException e) {
-        	logError(e.getMessage() + " in the specified directory.");
-        } catch (IOException e) {
-        	logError(e.getMessage());
-        }
-        
-    	return ok;
-    	
-    }
-
-    
+   
     public static void showMessage(String msg) {
     	showMessage(msg, "");
     }
@@ -340,9 +282,9 @@ public class Utils {
     }    
     
     public static void logError(String msg, String param) {
-    	if (logger != null){
+    	if (logger != null) {
     		String errorMsg = getBundleString(msg);
-    		if (!param.equals("")){
+    		if (!param.equals("")) {
     			errorMsg += "\nParameter: " + param;
     		}    	
     		logger.warning(errorMsg);
@@ -351,7 +293,7 @@ public class Utils {
     
     public static void logError(Exception e, String param) {
         
-    	if (logger != null){
+    	if (logger != null) {
 	    	StringWriter sw = new StringWriter();
 	        PrintWriter pw = new PrintWriter(sw, true);
 	        e.printStackTrace(pw);
@@ -392,7 +334,7 @@ public class Utils {
     }       
     
     
-    public static void execService(String process){
+    public static void execService(String process) {
 		
 		try {
 			getLogger().info(process);
@@ -404,7 +346,7 @@ public class Utils {
 	}
 	
     
-	public static boolean execProcess(String process){
+	public static boolean execProcess(String process) {
 		
 		try{    
 			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
@@ -418,10 +360,10 @@ public class Utils {
 	}
 	
 	
-	public static boolean openFile(String filePath){
+	public static boolean openFile(String filePath) {
 
 		File exec = new File(filePath);
-		if (exec.exists()){
+		if (exec.exists()) {
 			try {
 				Desktop.getDesktop().open(exec);
 			} catch (IOException e) {
@@ -438,26 +380,78 @@ public class Utils {
 	}    
 	
 	
-	public static void openWeb(String url){
+    public static void copyDirectory(File sourceLocation, File targetLocation) throws IOException {
+    	
+        if (sourceLocation.isDirectory()) {
+            if (!targetLocation.exists()) {
+                targetLocation.mkdir();
+            }
 
-		try {
-			Desktop.getDesktop().browse(new URI(url));
-		} catch (IOException | URISyntaxException e) {
-			logError(e);
-		}
-		
-	} 	
+            String[] children = sourceLocation.list();
+            for (int i=0; i<children.length; i++) {
+                copyDirectory(new File(sourceLocation, children[i]),
+                        new File(targetLocation, children[i]));
+            }
+        } 
+        else {
+            InputStream in = new FileInputStream(sourceLocation);
+            OutputStream out = new FileOutputStream(targetLocation);
+            // Copy the bits from instream to outstream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
+        
+    }
+    
+
+    public static boolean copyFile(String srFile, String dtFile) {
+
+    	boolean ok = false;
+    	
+        try {
+
+            File f1 = new File(srFile);
+            File f2 = new File(dtFile);
+            InputStream in = new FileInputStream(f1);
+
+            // For Overwrite the file.
+            OutputStream out = new FileOutputStream(f2);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        	logger.info("File from: " + srFile + "\nFile to:   " + dtFile);
+            ok = true;
+            
+        } catch (FileNotFoundException e) {
+        	logError(e.getMessage() + " in the specified directory.");
+        } catch (IOException e) {
+        	logError(e.getMessage());
+        }
+        
+    	return ok;
+    	
+    }
+    
 	
-	
-	public static void deleteFile(String filePath){
+	public static void deleteFile(String filePath) {
 		
 		File f = new File(filePath);
 	
 	    // Make sure the file or directory exists and isn't write protected
-	    if (!f.exists()){
+	    if (!f.exists()) {
 	    	logError("Delete: no such file or directory: " + filePath);
 	    }
-	    if (!f.canWrite()){
+	    if (!f.canWrite()) {
 	    	logError("Delete: write protected: " + filePath);	    	
 	    }
 	
@@ -494,7 +488,7 @@ public class Utils {
 	}		
 	
 	
-	public static String readFile(String filePath) throws IOException{
+	public static String readFile(String filePath) throws IOException {
 		
 		File fileName = new File(filePath);			
 		if (!fileName.exists()){
@@ -538,9 +532,16 @@ public class Utils {
 	}
 
 	
-	public static void setSqlLog(String string) {
-		isSqlLogged = Boolean.parseBoolean(string);
-	}	
+	public static void openWeb(String url) {
+
+		try {
+			Desktop.getDesktop().browse(new URI(url));
+		} catch (IOException | URISyntaxException e) {
+			logError(e);
+		}
+		
+	} 	
+	
 	
 	public static Integer parseInt(String s) {
 		Integer value = -1;
@@ -570,37 +571,7 @@ public class Utils {
 	}
 	
 	
-	public static boolean portAvailable(int port) {
-		
-		ServerSocket ss = null;
-	    DatagramSocket ds = null;
-	    try {
-	        ss = new ServerSocket(port);
-	        ss.setReuseAddress(true);
-	        ds = new DatagramSocket(port);
-	        ds.setReuseAddress(true);
-	        return true;
-	    } catch (Exception e) {
-	    	Utils.logError("Service already started");
-	    } finally {
-	        if (ds != null) {
-	            ds.close();
-	        }
-	        if (ss != null) {
-	            try {
-	                ss.close();
-	            } catch (IOException e) {
-	    	    	Utils.logError(e);
-	            }
-	        }
-	    }
-
-	    return false;
-    
-	}
-	
-	
-	public static void setPanelEnabled(JPanel panel, Boolean enabled){
+	public static void setPanelEnabled(JPanel panel, Boolean enabled) {
 		
 	    Component[] comps = panel.getComponents();
 	    for (Component comp : comps) {
@@ -608,11 +579,11 @@ public class Utils {
 	        	comp instanceof JTextField || comp instanceof JTextArea || comp instanceof JDateChooser){
 	            comp.setEnabled(enabled);
 	        }
-	        else if (comp instanceof JPanel){
+	        else if (comp instanceof JPanel) {
 	        	JPanel aux = (JPanel) comp;
 	    		Utils.setPanelEnabled(aux, enabled);
 	        }	  
-	        else if (comp instanceof JScrollPane){
+	        else if (comp instanceof JScrollPane) {
 	        	JScrollPane scrollPane = (JScrollPane) comp; 
 	        	JViewport viewport = scrollPane.getViewport();
 	    	    Component[] comps2 = viewport.getComponents();
@@ -628,7 +599,7 @@ public class Utils {
 	}
 	
 	
-	public static void setPanelFont(JPanel panel, Font fontPanel, Font fontComponents){
+	public static void setPanelFont(JPanel panel, Font fontPanel, Font fontComponents) {
 		
 	    Component[] comps = panel.getComponents();
 	    for (Component comp : comps) {
@@ -636,7 +607,7 @@ public class Utils {
 	        	comp instanceof JTextField || comp instanceof JTextArea || comp instanceof JDateChooser){
 	            comp.setFont(fontComponents);
 	        }
-	        else if (comp instanceof JPanel){
+	        else if (comp instanceof JPanel) {
 	        	JPanel aux = (JPanel) comp;
 	    		TitledBorder tb = (TitledBorder) aux.getBorder();	 
 	    		if (tb!=null){
@@ -644,7 +615,7 @@ public class Utils {
 	    			Utils.setPanelFont(aux, fontPanel, fontComponents);
 	    		}
 	        }	  
-	        else if (comp instanceof JScrollPane){
+	        else if (comp instanceof JScrollPane) {
 	        	JScrollPane scrollPane = (JScrollPane) comp; 
 	        	JViewport viewport = scrollPane.getViewport();
 	    	    Component[] comps2 = viewport.getComponents();

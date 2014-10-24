@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.ControlsDialog;
@@ -76,7 +77,7 @@ public class EpaSoftController extends AbstractController {
     	this.view = view;	
     	this.mainFrame = mainFrame;
     	this.ppPanel = mainFrame.ppFrame.getPanel();
-        this.gswProp = MainDao.getGswProperties();
+        this.gswProp = PropertiesDao.getGswProperties();
 	    view.setController(this);        
     	
 	}
@@ -226,7 +227,7 @@ public class EpaSoftController extends AbstractController {
         }
         File fileInp = new File(path);        
         gswProp.put("FILE_INP", fileInp.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        PropertiesDao.savePropertiesFile();
         return fileInp;    
         
     }
@@ -243,7 +244,7 @@ public class EpaSoftController extends AbstractController {
         }
         File fileRpt = new File(path);        
         gswProp.put("FILE_RPT", fileRpt.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        PropertiesDao.savePropertiesFile();
         return fileRpt;    
         
     }

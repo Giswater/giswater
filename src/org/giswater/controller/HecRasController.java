@@ -29,7 +29,9 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.giswater.dao.HecRasDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ProjectDialog;
@@ -53,7 +55,7 @@ public class HecRasController extends AbstractController {
     	
     	this.view = view;	
     	this.mainFrame = mainFrame;
-        this.gswProp = MainDao.getGswProperties();
+        this.gswProp = PropertiesDao.getGswProperties();
     	this.userHomeFolder = System.getProperty("user.home");
 	    view.setControl(this);         	
     	setDefaultValues();
@@ -106,10 +108,7 @@ public class HecRasController extends AbstractController {
     
     public void chooseFileAsc() {
 
-    	// TODO: Delete filter
         JFileChooser chooser = new JFileChooser();
-//        FileFilter filter = new FileNameExtensionFilter("ASC extension file", "asc");
-//        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
         File file = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));	
@@ -142,7 +141,7 @@ public class HecRasController extends AbstractController {
         }
         fileSdf = new File(path);        
         gswProp.put("FILE_SDF", fileSdf.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        PropertiesDao.savePropertiesFile();
         return true;    
         
     }
@@ -159,7 +158,7 @@ public class HecRasController extends AbstractController {
         }
         fileAsc = new File(path);        
         gswProp.put("HECRAS_FILE_ASC", fileAsc.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        PropertiesDao.savePropertiesFile();
         return true;    
         
     }
@@ -176,7 +175,7 @@ public class HecRasController extends AbstractController {
 		String schemaName = MainDao.getSchema();
 		String filePath = fileAsc.getAbsolutePath();
 		String fileName = fileAsc.getName();
-    	MainDao.loadRaster(schemaName, filePath, fileName);  	
+    	HecRasDao.loadRaster(schemaName, filePath, fileName);  	
         	
     }
     
@@ -193,7 +192,7 @@ public class HecRasController extends AbstractController {
 		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        
 		String schemaName = MainDao.getSchema();
 		String fileName = fileSdf.getName();
-		Integer result = MainDao.createSdfFile(schemaName, fileName, 
+		Integer result = HecRasDao.createSdfFile(schemaName, fileName, 
 			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
 		if (result == 0) {
 			// Copy file from Postgis Data Directory to folder specified by the user

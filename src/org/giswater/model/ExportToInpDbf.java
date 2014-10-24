@@ -41,7 +41,7 @@ import javax.swing.JOptionPane;
 
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader.Row;
-import org.giswater.dao.MainDao;
+import org.giswater.dao.ConfigDao;
 import org.giswater.util.Utils;
 
 
@@ -87,7 +87,7 @@ public class ExportToInpDbf extends Model{
 		try {
 			
             // Get INP template File
-            String templatePath = MainDao.getInpFolder() + softwareVersion + ".inp";
+            String templatePath = ConfigDao.getInpFolder() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()) {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());

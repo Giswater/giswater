@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.giswater.dao.MainDao;
+import org.giswater.dao.ConfigDao;
 import org.giswater.util.Utils;
 
 
@@ -45,8 +45,8 @@ public class Model {
     
     
     public static boolean setConnectionDrivers(String sqlitePath) {
-		if (MainDao.setConnectionDrivers(sqlitePath)){
-			connectionDrivers = MainDao.getConnectionDrivers();
+		if (ConfigDao.setConnectionDrivers(sqlitePath)) {
+			connectionDrivers = ConfigDao.getConnectionDrivers();
 			return true;
 		}
 		return false;
@@ -63,9 +63,9 @@ public class Model {
     }
     
     
-    public static void closeFile(){
+    public static void closeFile() {
     	try {
-    		if (rat != null){
+    		if (rat != null) {
     			rat.close();
     		}
 		} catch (IOException e) {

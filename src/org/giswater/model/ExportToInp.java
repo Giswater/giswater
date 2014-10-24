@@ -36,7 +36,9 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.util.Utils;
 
 
@@ -82,7 +84,7 @@ public class ExportToInp extends Model {
             
             // Overwrite INP file if already exists?
             if (fileInp.exists()) {
-                String owInp = MainDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
+                String owInp = PropertiesDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
 	            if (owInp.equals("false")) {
 	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
 	            	int res = Utils.confirmDialog(msg);             
@@ -93,7 +95,7 @@ public class ExportToInp extends Model {
             }
             
             // Get INP template File
-            String templatePath = MainDao.getInpFolder() + softwareVersion + ".inp";
+            String templatePath = ConfigDao.getInpFolder() + softwareVersion + ".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()) {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
@@ -140,7 +142,7 @@ public class ExportToInp extends Model {
             raf.close();
 
             // Open INP file?
-            String openInp = MainDao.getPropertiesFile().get("OPEN_INP").toLowerCase();
+            String openInp = PropertiesDao.getPropertiesFile().get("OPEN_INP").toLowerCase();
             if (openInp.equals("always")) {
             	Utils.openFile(fileInp.getAbsolutePath());
             }

@@ -28,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.TableModelSrid;
@@ -193,7 +194,7 @@ public class NewProjectController extends AbstractController {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("Select file"));
-        File file = new File(MainDao.getGswProperties().get("FILE_INP", MainDao.getRootFolder()));	
+        File file = new File(PropertiesDao.getGswProperties().get("FILE_INP", MainDao.getRootFolder()));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

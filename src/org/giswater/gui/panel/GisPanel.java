@@ -51,7 +51,9 @@ import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
@@ -84,7 +86,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
     
 
 	public GisPanel() {
-        this.gswProp = MainDao.getGswProperties();        
+        this.gswProp = PropertiesDao.getGswProperties();        
 		initConfig();
 		setDefaultValues();
 	}
@@ -449,7 +451,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			Utils.getLogger().info("Creating GIS file... " + destPath);	    		
 
 			// Replace spatialrefsys and extent parameters
-    		content = MainDao.replaceSpatialParameters(schemaSrid, content);
+    		content = ConfigDao.replaceSpatialParameters(schemaSrid, content);
     		content = MainDao.replaceExtentParameters(software, schema, content);
     		
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter

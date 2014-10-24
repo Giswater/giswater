@@ -26,6 +26,7 @@ import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
@@ -71,7 +72,7 @@ public class MainClass {
 				boolean newVersion = false;
 				String ftpVersion = "";
 				UtilsFTP ftp = null;
-				String aux = MainDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
+				String aux = PropertiesDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
 				Boolean autoCheck = Boolean.parseBoolean(aux);
 				if (autoCheck){
 					// Check if new version is available

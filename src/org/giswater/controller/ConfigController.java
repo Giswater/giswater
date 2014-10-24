@@ -26,7 +26,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ConfigPanel;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -40,7 +40,7 @@ public class ConfigController extends AbstractController{
 	
 	public ConfigController(ConfigPanel dbPanel) {
 		this.view = dbPanel;	
-        this.prop = MainDao.getPropertiesFile();
+        this.prop = PropertiesDao.getPropertiesFile();
 	    view.setController(this);        
     	setDefaultValues();    	
 	}
