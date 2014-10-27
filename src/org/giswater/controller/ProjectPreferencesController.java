@@ -400,6 +400,7 @@ public class ProjectPreferencesController extends AbstractController {
 		MainDao.setWaterSoftware(waterSoftware);		
 		if (MainDao.isConnected()) {
 			setSchema(view.getSelectedSchema());
+			mainFrame.updateConnectionInfo();
 		}
 		
 	}

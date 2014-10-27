@@ -167,12 +167,12 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[:507.00px:531px][10px:n:8px]", "[5px:n][][::50px][10px:n][]"));
+		setLayout(new MigLayout("", "[507.00px,grow][10px:n:8px]", "[5px:n][153.00][3px:n][::50px][10px:n][]"));
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 1 2 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[50px:n][grow][5px:n][][]", "[34px:n][5px:n][][34px:n]"));
+		panelFileManager.setLayout(new MigLayout("", "[50px:n][313.00][5px:n][][]", "[34px:n][5px:n][][34px:n]"));
 		
 		JLabel lblAscFile_1 = new JLabel();
 		panelFileManager.add(lblAscFile_1, "cell 0 0,alignx right");
@@ -194,7 +194,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setPreferredSize(new Dimension(100, 23));
+		btnLoadRaster.setPreferredSize(new Dimension(120, 23));
 		panelFileManager.add(btnLoadRaster, "cell 4 0");
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
 		btnLoadRaster.setMinimumSize(new Dimension(85, 23));
@@ -226,7 +226,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
-		btnExportSdf.setPreferredSize(new Dimension(100, 23));
+		btnExportSdf.setPreferredSize(new Dimension(120, 23));
 		panelFileManager.add(btnExportSdf, "cell 4 3");
 		btnExportSdf.setMinimumSize(new Dimension(80, 23));
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
@@ -246,7 +246,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		
 		panelDataManager = new JPanel();
 		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panelDataManager, "cell 0 2 2 1,grow");
+		add(panelDataManager, "cell 0 3 2 1,grow");
 		panelDataManager.setLayout(new MigLayout("", "[][][][]", "[]"));
 		
 		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
@@ -269,10 +269,10 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnEditProjectPreferences = new JButton("Edit Project Preferences");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		btnEditProjectPreferences.setActionCommand("gswEdit");
-		add(btnEditProjectPreferences, "flowx,cell 0 4,alignx right");
+		add(btnEditProjectPreferences, "flowx,cell 0 5,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 0 4,alignx right");
+		add(btnClose, "cell 0 5,alignx right");
 		btnClose.setMinimumSize(new Dimension(65, 23));
 		btnClose.setMaximumSize(new Dimension(105, 23));
 		btnClose.setActionCommand("closePanel");

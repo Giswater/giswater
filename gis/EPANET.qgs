@@ -1,6 +1,7 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
 <qgis projectname="" version="2.4.0-Chugiak">
     <title></title>
+	<relations/>
     <mapcanvas>
         <units>meters</units>
         <extent>
@@ -23,7 +24,7 @@
             </spatialrefsys>
         </destinationsrs>
     </mapcanvas>
-    <legend updateDrawingOrder="false" activeLayer="sector20131125210050415">
+    <legend updateDrawingOrder="true" activeLayer="sector20131125210050415">
         <legendgroup open="false" checked="Qt::Unchecked" name="GIS FEATURES">
             <legendlayer drawingOrder="0" open="true" checked="Qt::Unchecked" name="Arc" showFeatureCount="0">
                 <filegroup open="true" hidden="false">

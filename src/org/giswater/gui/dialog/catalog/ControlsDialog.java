@@ -78,11 +78,33 @@ public class ControlsDialog extends AbstractCatalogDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
+		btnCreate = new JButton("+");
+		btnCreate.setToolTipText("Insert record");
+		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCreate.setActionCommand("create");
+		getContentPane().add(btnCreate, "flowx,cell 1 2");
+		
+		btnDelete = new JButton("-");
+		btnDelete.setToolTipText("Delete record");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnDelete.setActionCommand("delete");
+		getContentPane().add(btnDelete, "cell 1 2");
+		
+		btnPrevious = new JButton("<");
+		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setActionCommand("movePrevious");
+		getContentPane().add(btnPrevious, "cell 1 2");
+		
+		btnNext = new JButton(">");
+		btnNext.setToolTipText("Next record");
+		btnNext.setActionCommand("moveNext");
+		getContentPane().add(btnNext, "cell 1 2");
+		
 		btnSave = new JButton("Save");
 		btnSave.setToolTipText("Save record");
-		btnSave.setActionCommand("saveData");		
-		getContentPane().add(btnSave, "cell 1 2,alignx right");		
-
+		btnSave.setActionCommand("saveData");
+		getContentPane().add(btnSave, "cell 1 2,alignx right");
+		
 		btnClose = new JButton("Close");
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");

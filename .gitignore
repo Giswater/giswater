@@ -12,7 +12,7 @@ samples/*.asc
 samples/sample_mdt.sql
 models/swmm2d/2D/[Bb]in/
 models/swmm_custom/swmm51006_engine_0/src/vc/[Bb]in/
-src/org/giswater/task/TestTask.java
+sign_1.1.bat
 
 
 #################

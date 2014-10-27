@@ -109,10 +109,8 @@ public class ImportRpt extends Model {
     	}
     	Utils.getLogger().info("Getting contents completed");
     	
-    	// Initialize targets if needed
-    	if (mapRptTargets == null) {
-    		initRptTargets();
-    	}
+    	// Initialize targets 
+   		initRptTargets();
     	
         // EPASWMM
         if (softwareName.equals("SWMM")) {
