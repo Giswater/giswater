@@ -33,15 +33,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
-@SuppressWarnings("rawtypes")
 public class ReportEpanetDialog extends AbstractOptionsDialog {
-
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtStatistic;
-	private JTextField textField_1;
 	
 	
 	public ReportEpanetDialog() {
@@ -50,6 +47,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
 		setTitle("Report Table");
@@ -66,7 +64,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 0,alignx trailing");
 		
-		JComboBox comboBox_2 = new JComboBox();
+		JComboBox<String> comboBox_2 = new JComboBox<String>();
 		comboBox_2.setName("status");
 		panelGeneral.add(comboBox_2, "cell 1 0,growx");
 		
@@ -74,16 +72,16 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		lblLinks.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblLinks, "cell 3 0,alignx trailing");
 		
-		textField_1 = new JTextField();
-		textField_1.setName("links");
-		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 4 0,growx");
+		JTextField txtLinks = new JTextField();
+		txtLinks.setName("links");
+		txtLinks.setDocument(new MaxLengthTextDocument(254));	
+		panelGeneral.add(txtLinks, "cell 4 0,growx");
 		
 		JLabel lblReportTimestep = new JLabel("Summary:");
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 1,alignx trailing");
 		
-		JComboBox comboBox_3 = new JComboBox();
+		JComboBox<String> comboBox_3 = new JComboBox<String>();
 		comboBox_3.setName("summary");
 		panelGeneral.add(comboBox_3, "cell 1 1,growx");
 		
@@ -107,7 +105,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 2,alignx trailing");
 		
-		JComboBox comboBox_15 = new JComboBox();
+		JComboBox<String> comboBox_15 = new JComboBox<String>();
 		comboBox_15.setName("diameter");
 		panelGeneral.add(comboBox_15, "cell 4 2,growx");
 		
@@ -115,10 +113,10 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		lblNodes.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblNodes, "cell 0 3,alignx trailing");
 		
-		txtStatistic = new JTextField();
-		txtStatistic.setName("nodes");
-		txtStatistic.setColumns(10);
-		panelGeneral.add(txtStatistic, "cell 1 3,growx");
+		JTextField txtNodes = new JTextField();
+		txtNodes.setName("nodes");
+		txtNodes.setDocument(new MaxLengthTextDocument(254));	
+		panelGeneral.add(txtNodes, "cell 1 3,growx");
 		
 		JLabel lblStatistic = new JLabel("Flow:");
 		panelGeneral.add(lblStatistic, "cell 3 3,alignx trailing");

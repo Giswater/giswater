@@ -699,9 +699,15 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void showMessage(String msg) {
+		showMessage(msg, false);
+	}
+	
+	public void showMessage(String msg, boolean isFixed) {
 		lblProcessInfo.setIcon(iconInfo);		
 		lblProcessInfo.setText(Utils.getBundleString(msg));
-		resetProcessInfo();		
+		if (!isFixed) {
+			resetProcessInfo();		
+		}
 	}
 	
 	public void showError(String msg) {

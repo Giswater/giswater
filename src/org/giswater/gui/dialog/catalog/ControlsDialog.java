@@ -31,15 +31,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
 public class ControlsDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField;
-	private JTextField textField_1;
-	
 	
 	public ControlsDialog() {
 		initConfig();
@@ -62,18 +60,19 @@ public class ControlsDialog extends AbstractCatalogDialog {
 		JLabel lblStatistic = new JLabel("Id:");
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
-		textField = new JTextField();
-		textField.setName("id");
-		panelGeneral.add(textField, "cell 1 0,growx");
-		textField.setColumns(10);
+		JTextField txtId = new JTextField();
+		txtId.setName("id");
+		txtId.setDocument(new MaxLengthTextDocument(20));
+		panelGeneral.add(txtId, "cell 1 0,growx");
+		txtId.setColumns(10);
 		
 		JLabel lblAuthor = new JLabel("Text:");
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
-		textField_1 = new JTextField();
-		textField_1.setName("text");
-		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 1 1,growx");
+		JTextField txtText = new JTextField();
+		txtText.setName("text");
+		txtText.setDocument(new MaxLengthTextDocument(254));
+		panelGeneral.add(txtText, "cell 1 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());

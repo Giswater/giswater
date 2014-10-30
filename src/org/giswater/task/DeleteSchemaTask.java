@@ -71,6 +71,7 @@ public class DeleteSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Enable view
     	Utils.setPanelEnabled(parentPanel, true);
+    	controller.schemaChanged();
     	status = true;
     	
 		return null;

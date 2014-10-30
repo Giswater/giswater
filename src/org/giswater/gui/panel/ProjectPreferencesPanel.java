@@ -47,6 +47,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.gui.frame.ProjectPreferencesFrame;
+import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 import java.awt.event.KeyEvent;
 
@@ -291,13 +292,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		txtAuthor = new JTextField();
 		panelManagement.add(txtAuthor, "cell 1 1 3 1,growx");
-		txtAuthor.setColumns(10);
+		txtAuthor.setDocument(new MaxLengthTextDocument(50));
 		
 		lblAuthor = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblAuthor.text")); 
 		panelManagement.add(lblAuthor, "cell 4 1,alignx right");
 		
 		txtDate = new JTextField();
-		txtDate.setColumns(10);
+		txtDate.setDocument(new MaxLengthTextDocument(12));
 		panelManagement.add(txtDate, "cell 5 1 2 1,growx");
 		
 		lblDate = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblDate.text")); 

@@ -65,6 +65,7 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
 
 		String sql = "SELECT "+schemaName+".clone_schema('"+schemaName+"', '"+newSchemaName+"')";
 		Utils.logSql(sql);
+		MainClass.mdi.showMessage("Be patient, copy process can last several minutes...", true);
 		status = MainDao.executeSql(sql, true);
 		if (status){
 			// Now we have to execute functrigger.sql
@@ -85,6 +86,7 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
 		
 		// Refresh view
     	Utils.setPanelEnabled(parentPanel, true);
+    	parentPanel.setSelectedSchema(newSchemaName);
 		
 		return null;
     	

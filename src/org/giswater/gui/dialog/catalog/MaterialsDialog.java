@@ -31,6 +31,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
@@ -58,21 +60,21 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 	private void initConfig(){
 
 		setTitle("Table cat_mat");
-		setBounds(100, 100, 454, 218);
-		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[126.00][5px][36.00]"));
+		setBounds(100, 100, 454, 190);
+		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[89.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][][][]"));
+		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][]"));
 		
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
 		txtId = new JTextField();
 		txtId.setName("id");
-		txtId.setColumns(10);
+		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
 		lblOther = new JLabel("n:");
@@ -80,7 +82,7 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		
 		txtOther = new JTextField();
 		txtOther.setName("n");
-		txtOther.setColumns(10);
+		txtOther.setDocument(new MaxLengthTextDocument(14));
 		panelGeneral.add(txtOther, "cell 4 0,growx");
 		
 		JLabel lblTsectid = new JLabel("descript:");
@@ -88,7 +90,7 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		
 		txtDescript = new JTextField();
 		txtDescript.setName("descript");
-		txtDescript.setColumns(10);
+		txtDescript.setDocument(new MaxLengthTextDocument(100));
 		panelGeneral.add(txtDescript, "cell 1 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        

@@ -40,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("rawtypes")
 public class OptionsDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtMaxTrials;
 	private JTextField txtSysFlowTol;
 	private JTextField txtHeadTol;

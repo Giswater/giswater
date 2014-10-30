@@ -25,6 +25,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,16 +33,12 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JComboBox;
+
+import org.giswater.util.MaxLengthTextDocument;
 
 
 public class DemandDialog extends AbstractCatalogDialog{
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtDescript;
-	private JComboBox<String> cboNode;
-	private JTextField textField;
-	
 	
 	public DemandDialog() {
 		initConfig();
@@ -64,7 +61,7 @@ public class DemandDialog extends AbstractCatalogDialog{
 		JLabel lblInfiltration = new JLabel("Node Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		cboNode = new JComboBox<String>();
+		JComboBox<String> cboNode = new JComboBox<String>();
 		cboNode.setName("node_id");
 		cboNode.setActionCommand("");
 		panelGeneral.add(cboNode, "cell 1 0,growx");
@@ -72,26 +69,26 @@ public class DemandDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Demand:");
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		txtDescript = new JTextField();
-		txtDescript.setName("demand");
-		txtDescript.setColumns(10);
-		panelGeneral.add(txtDescript, "cell 1 1,growx");
+		JTextField txtDemand = new JTextField();
+		txtDemand.setName("demand");
+		txtDemand.setDocument(new MaxLengthTextDocument(18));
+		panelGeneral.add(txtDemand, "cell 1 1,growx");
 		
 		JLabel lblPatternId = new JLabel("Pattern id:");
 		panelGeneral.add(lblPatternId, "cell 0 2,alignx trailing");
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setName("pattern_id");
-		comboBox.setActionCommand("");
-		panelGeneral.add(comboBox, "cell 1 2,growx");
+		JComboBox<String> cboPattern = new JComboBox<String>();
+		cboPattern.setName("pattern_id");
+		cboPattern.setActionCommand("");
+		panelGeneral.add(cboPattern, "cell 1 2,growx");
 		
 		JLabel lblDemandType = new JLabel("Demand type:");
 		panelGeneral.add(lblDemandType, "cell 0 3,alignx trailing");
 		
-		textField = new JTextField();
-		textField.setName("deman_type");
-		textField.setColumns(10);
-		panelGeneral.add(textField, "cell 1 3,growx");
+		JTextField txtDemandType = new JTextField();
+		txtDemandType.setName("deman_type");
+		txtDemandType.setDocument(new MaxLengthTextDocument(18));
+		panelGeneral.add(txtDemandType, "cell 1 3,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		

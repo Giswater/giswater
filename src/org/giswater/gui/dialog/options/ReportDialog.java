@@ -33,16 +33,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
-@SuppressWarnings("rawtypes")
 public class ReportDialog extends AbstractOptionsDialog {
-
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtStatistic;
-	private JTextField textField_1;
-	private JTextField textField_2;
 
 	
 	public ReportDialog() {
@@ -51,6 +47,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 	}
 	
 
+	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
 		setTitle("Report Table");
@@ -74,10 +71,10 @@ public class ReportDialog extends AbstractOptionsDialog {
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 3 0,alignx trailing");
 		
-		textField_2 = new JTextField();
-		textField_2.setName("subcatchments");
-		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 4 0,growx");
+		JTextField txtSubcatchments = new JTextField();
+		txtSubcatchments.setName("subcatchments");	
+		txtSubcatchments.setDocument(new MaxLengthTextDocument(4));	
+		panelGeneral.add(txtSubcatchments, "cell 4 0,growx");
 		
 		JLabel lblNewLabel_1 = new JLabel("Continuity:");
 		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
@@ -90,10 +87,10 @@ public class ReportDialog extends AbstractOptionsDialog {
 		lblNodes.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblNodes, "cell 3 1,alignx trailing");
 		
-		txtStatistic = new JTextField();
-		txtStatistic.setName("nodes");
-		txtStatistic.setColumns(10);
-		panelGeneral.add(txtStatistic, "cell 4 1,growx");
+		JTextField txtNodes = new JTextField();
+		txtNodes.setName("nodes");
+		txtNodes.setDocument(new MaxLengthTextDocument(4));	
+		panelGeneral.add(txtNodes, "cell 4 1,growx");
 		
 		JLabel lblPatternTimestep = new JLabel("Flowstats:");
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -107,10 +104,10 @@ public class ReportDialog extends AbstractOptionsDialog {
 		lblLinks.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblLinks, "cell 3 2,alignx trailing");
 		
-		textField_1 = new JTextField();
-		textField_1.setName("links");
-		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 4 2,growx");
+		JTextField txtLinks = new JTextField();
+		txtLinks.setName("links");
+		txtLinks.setDocument(new MaxLengthTextDocument(4));	
+		panelGeneral.add(txtLinks, "cell 4 2,growx");
 		
 		JLabel lblReportTimestep = new JLabel("Controls:");
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);

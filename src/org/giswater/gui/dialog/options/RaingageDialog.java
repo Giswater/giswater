@@ -32,13 +32,14 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
 public class RaingageDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtSta;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -110,7 +111,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 
 		textField_5 = new JTextField();
 		textField_5.setName("rg_id");
-		textField_5.setColumns(10);
+		textField_5.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_5, "cell 1 0,growx");
 								
 		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
@@ -133,7 +134,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 
 		textField_1 = new JTextField();
 		textField_1.setName("intvl");
-		textField_1.setColumns(10);
+		textField_1.setDocument(new MaxLengthTextDocument(50));
 		panelGeneral.add(textField_1, "cell 1 2,growx");
 
 		JLabel lblInfiltration = new JLabel("Scf:");
@@ -141,7 +142,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		
 		textField_2 = new JTextField();
 		textField_2.setName("scf");
-		textField_2.setColumns(10);
+		textField_2.setDocument(new MaxLengthTextDocument(14));
 		panelGeneral.add(textField_2, "cell 4 2,growx");
 
 		ImageIcon image = new ImageIcon("images/imago.png");
@@ -187,7 +188,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		txtUnits = new JTextField();
 		panelFile.add(txtUnits, "cell 1 0,growx");
 		txtUnits.setName("units");
-		txtUnits.setColumns(10);
+		txtUnits.setDocument(new MaxLengthTextDocument(3));
 
 		JLabel lblMinSlope = new JLabel("Sta:");
 		panelFile.add(lblMinSlope, "cell 2 0 2 1,alignx right");
@@ -196,7 +197,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		txtSta = new JTextField();
 		panelFile.add(txtSta, "cell 4 0,growx");
 		txtSta.setName("sta");
-		txtSta.setColumns(10);
+		txtSta.setDocument(new MaxLengthTextDocument(12));
 								
 		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
 		panelFile.add(lblIgnoreGroundwater, "cell 0 1,alignx right");
@@ -204,7 +205,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		txtFname = new JTextField();
 		panelFile.add(txtFname, "cell 1 1 2 1,growx");
 		txtFname.setName("fname");
-		txtFname.setColumns(10);
+		txtFname.setDocument(new MaxLengthTextDocument(254));
 
 		btnFileFname = new JButton("...");
 		btnFileFname.setActionCommand("chooseFileFname");

@@ -42,15 +42,14 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.model.table.TableModelCurves;
+import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 
 
 public class CurvesDialog extends AbstractCatalogDialog{
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtId;
-	private JLabel lblOther;
 	private JTable table;
+	private JTextField txtId;
 	private JPanel panelGeneral;
 	private JScrollPane panelTable;
 	private JComboBox<String> comboBox;
@@ -115,7 +114,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		
 		txtId = new JTextField();
 		txtId.setName("id");
-		txtId.setColumns(10);
+		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
 		JLabel lblTsectid = new JLabel("Type:");
@@ -131,7 +130,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		
-		lblOther = new JLabel("Curves detail:");
+		JLabel lblOther = new JLabel("Curves detail:");
 		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelGeneral.add(lblOther, "cell 0 2 2 1,alignx left");
 		

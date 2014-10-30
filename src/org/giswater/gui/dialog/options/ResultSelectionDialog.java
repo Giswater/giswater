@@ -35,7 +35,6 @@ import net.miginfocom.swing.MigLayout;
 
 public class ResultSelectionDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private JComboBox<String> cboResultSelection;
 	
 

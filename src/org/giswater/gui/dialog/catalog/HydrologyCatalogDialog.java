@@ -32,6 +32,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
@@ -81,7 +83,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		
 		txtId = new JTextField();
 		txtId.setName("id");
-		txtId.setColumns(10);
+		txtId.setDocument(new MaxLengthTextDocument(20));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 				
 		JLabel lblFlowUnits = new JLabel("Infiltration:");
@@ -97,7 +99,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		
 		txtDescription = new JTextField();
 		txtDescription.setName("descript");
-		txtDescription.setColumns(10);
+		txtDescription.setDocument(new MaxLengthTextDocument(254));
 		panelGeneral.add(txtDescription, "cell 1 1 4 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        

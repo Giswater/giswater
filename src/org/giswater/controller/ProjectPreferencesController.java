@@ -516,7 +516,7 @@ public class ProjectPreferencesController extends AbstractController {
 			return;
 		}
 
-		// Execute task: CreateSchema
+		// Execute task: CopySchema
 		CopySchemaTask task = new CopySchemaTask(schemaName, newSchemaName);
         task.setController(this);
         task.setParentPanel(view);

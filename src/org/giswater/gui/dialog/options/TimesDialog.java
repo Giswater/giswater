@@ -33,23 +33,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
-@SuppressWarnings("rawtypes")
 public class TimesDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtQuality;
-	private JTextField txtHydraulic;
-	private JTextField txtDuration;
-	private JTextField txtRule;
-	private JTextField txtPattern;
-	private JTextField txtReport;
-	private JTextField txtReportStart;
-	private JTextField txtPatternStart;
-	private JTextField txtStart;
-	
 	
 	public TimesDialog() {
 		initConfig();
@@ -72,85 +62,85 @@ public class TimesDialog extends AbstractOptionsDialog {
 		JLabel lblFlowUnits = new JLabel("Duration:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 		
-		txtDuration = new JTextField();
+		JTextField txtDuration = new JTextField();
 		txtDuration.setName("duration");
-		txtDuration.setColumns(10);
+		txtDuration.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtDuration, "cell 1 0,growx");
 		
 		JLabel lblInfiltration = new JLabel("Hydraulic timestep:");
 		panelGeneral.add(lblInfiltration, "cell 3 0,alignx trailing");
 		
-		txtHydraulic = new JTextField();
+		JTextField txtHydraulic = new JTextField();
 		txtHydraulic.setName("hydraulic_timestep");
-		txtHydraulic.setColumns(10);
+		txtHydraulic.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtHydraulic, "cell 4 0,growx");
 		
 		JLabel lblNewLabel_1 = new JLabel("Quality timestep:");
 		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
 		
-		txtQuality = new JTextField();
+		JTextField txtQuality = new JTextField();
 		txtQuality.setName("quality_timestep");
-		txtQuality.setColumns(10);
+		txtQuality.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtQuality, "cell 1 1,growx");
 		
 		JLabel lblRuleTimestep = new JLabel("Rule timestep:");
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRuleTimestep, "cell 3 1,alignx trailing");
 		
-		txtRule = new JTextField();
+		JTextField txtRule = new JTextField();
 		txtRule.setName("rule_timestep");
-		txtRule.setColumns(10);
+		txtRule.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtRule, "cell 4 1,growx");
 		
 		JLabel lblPatternTimestep = new JLabel("Pattern timestep:");
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 2,alignx trailing");
 		
-		txtPattern = new JTextField();
+		JTextField txtPattern = new JTextField();
 		txtPattern.setName("pattern_timestep");
-		txtPattern.setColumns(10);
+		txtPattern.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtPattern, "cell 1 2,growx");
 		
 		JLabel lblPatternStep = new JLabel("Pattern start:");
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternStep, "cell 3 2,alignx trailing");
 		
-		txtPatternStart = new JTextField();
+		JTextField txtPatternStart = new JTextField();
 		txtPatternStart.setName("pattern_start");
-		txtPatternStart.setColumns(10);
+		txtPatternStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtPatternStart, "cell 4 2,growx");
 		
 		JLabel lblReportTimestep = new JLabel("Report timestep:");
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 3,alignx trailing");
 		
-		txtReport = new JTextField();
+		JTextField txtReport = new JTextField();
 		txtReport.setName("report_timestep");
-		txtReport.setColumns(10);
+		txtReport.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtReport, "cell 1 3,growx");
 		
 		JLabel lblReportStart = new JLabel("Report start:");
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 3,alignx trailing");
 		
-		txtReportStart = new JTextField();
+		JTextField txtReportStart = new JTextField();
 		txtReportStart.setName("report_start");
-		txtReportStart.setColumns(10);
+		txtReportStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtReportStart, "cell 4 3,growx");
 		
 		JLabel lblStartClocktime = new JLabel("Start clocktime:");
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 0 4,alignx trailing");
 		
-		txtStart = new JTextField();
+		JTextField txtStart = new JTextField();
 		txtStart.setName("start_clocktime");
-		txtStart.setColumns(10);
+		txtStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtStart, "cell 1 4,growx");
 		
 		JLabel lblStatistic = new JLabel("Statistic:");
 		panelGeneral.add(lblStatistic, "cell 3 4,alignx trailing");
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setName("statistic");
 		panelGeneral.add(comboBox, "cell 4 4,growx");
 		

@@ -39,29 +39,9 @@ import net.miginfocom.swing.MigLayout;
 
 public class ResultCatDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtQuality;
-	private JTextField txtHydraulic;
-	private JTextField txtDuration;
-	private JTextField txtRule;
-	private JTextField txtPattern;
-	private JTextField txtReport;
-	private JTextField txtReportStart;
-	private JTextField txtPatternStart;
-	private JTextField txtStart;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JButton btnDelete;
-	private JLabel lblImportDate;
-	private JTextField textField_8;
 	
 	
 	public ResultCatDialog() {
@@ -96,17 +76,15 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblFlowUnits = new JLabel("Result id:");
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 		
-		txtDuration = new JTextField();
-		txtDuration.setName("result_id");
-		txtDuration.setColumns(10);
-		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
-		txtDuration.setDocument(maxLength);		
-		panelGeneral.add(txtDuration, "cell 1 0 3 1,growx");
+		JTextField txtResultId = new JTextField();
+		txtResultId.setName("result_id");
+		txtResultId.setDocument(new MaxLengthTextDocument(16));	
+		panelGeneral.add(txtResultId, "cell 1 0 3 1,growx");
 		
-		lblImportDate = new JLabel("Import date & time:");
+		JLabel lblImportDate = new JLabel("Import date & time:");
 		panelGeneral.add(lblImportDate, "cell 0 1,alignx trailing");
 		
-		textField_8 = new JTextField();
+		JTextField textField_8 = new JTextField();
 		textField_8.setName("exec_date");
 		textField_8.setEnabled(false);
 		textField_8.setColumns(10);
@@ -115,7 +93,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblNewLabel_1 = new JLabel("Flow units:");
 		panelGeneral.add(lblNewLabel_1, "cell 0 2,alignx trailing");
 		
-		txtQuality = new JTextField();
+		JTextField txtQuality = new JTextField();
 		txtQuality.setEnabled(false);
 		txtQuality.setName("flow_units");
 		txtQuality.setColumns(10);
@@ -124,7 +102,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblFlowRouteM = new JLabel("Flow route m:");
 		panelGeneral.add(lblFlowRouteM, "cell 3 2,alignx trailing");
 		
-		txtHydraulic = new JTextField();
+		JTextField txtHydraulic = new JTextField();
 		txtHydraulic.setEnabled(false);
 		txtHydraulic.setName("flowrout_m");
 		txtHydraulic.setColumns(10);
@@ -134,7 +112,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 3,alignx trailing");
 		
-		txtPattern = new JTextField();
+		JTextField txtPattern = new JTextField();
 		txtPattern.setEnabled(false);
 		txtPattern.setName("rain_runof");
 		txtPattern.setColumns(10);
@@ -144,7 +122,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblStartDate.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartDate, "cell 3 3,alignx trailing");
 		
-		txtRule = new JTextField();
+		JTextField txtRule = new JTextField();
 		txtRule.setEnabled(false);
 		txtRule.setName("start_date");
 		txtRule.setColumns(10);
@@ -154,7 +132,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 4,alignx trailing");
 		
-		txtReport = new JTextField();
+		JTextField txtReport = new JTextField();
 		txtReport.setEnabled(false);
 		txtReport.setName("snowmelt");
 		txtReport.setColumns(10);
@@ -164,7 +142,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternStep, "cell 3 4,alignx trailing");
 		
-		txtPatternStart = new JTextField();
+		JTextField txtPatternStart = new JTextField();
 		txtPatternStart.setEnabled(false);
 		txtPatternStart.setName("end_date");
 		txtPatternStart.setColumns(10);
@@ -174,7 +152,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 0 5,alignx trailing");
 		
-		txtStart = new JTextField();
+		JTextField txtStart = new JTextField();
 		txtStart.setEnabled(false);
 		txtStart.setName("groundw");
 		txtStart.setColumns(10);
@@ -184,7 +162,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 5,alignx trailing");
 		
-		txtReportStart = new JTextField();
+		JTextField txtReportStart = new JTextField();
 		txtReportStart.setEnabled(false);
 		txtReportStart.setName("dry_days");
 		txtReportStart.setColumns(10);
@@ -194,7 +172,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblFlowRouting.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblFlowRouting, "cell 0 6,alignx trailing");
 		
-		textField = new JTextField();
+		JTextField textField = new JTextField();
 		textField.setEnabled(false);
 		textField.setName("flow_rout");
 		textField.setColumns(10);
@@ -203,7 +181,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblStatistic = new JLabel("Report timestep:");
 		panelGeneral.add(lblStatistic, "cell 3 6,alignx trailing");
 		
-		textField_4 = new JTextField();
+		JTextField textField_4 = new JTextField();
 		textField_4.setEnabled(false);
 		textField_4.setName("rep_tstep");
 		textField_4.setColumns(10);
@@ -213,7 +191,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblPondAll.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPondAll, "cell 0 7,alignx trailing");
 		
-		textField_1 = new JTextField();
+		JTextField textField_1 = new JTextField();
 		textField_1.setEnabled(false);
 		textField_1.setName("pond_all");
 		textField_1.setColumns(10);
@@ -222,7 +200,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblInfiltration = new JLabel("Wet timestep:");
 		panelGeneral.add(lblInfiltration, "cell 3 7,alignx trailing");
 		
-		textField_5 = new JTextField();
+		JTextField textField_5 = new JTextField();
 		textField_5.setEnabled(false);
 		textField_5.setName("wet_tstep");
 		textField_5.setColumns(10);
@@ -232,7 +210,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblWaterQ.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblWaterQ, "cell 0 8,alignx trailing");
 		
-		textField_2 = new JTextField();
+		JTextField textField_2 = new JTextField();
 		textField_2.setEnabled(false);
 		textField_2.setName("water_q");
 		textField_2.setColumns(10);
@@ -242,7 +220,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRuleTimestep, "cell 3 8,alignx trailing");
 		
-		textField_6 = new JTextField();
+		JTextField textField_6 = new JTextField();
 		textField_6.setEnabled(false);
 		textField_6.setName("dry_tstep");
 		textField_6.setColumns(10);
@@ -251,7 +229,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		JLabel lblInfilM = new JLabel("Infil m:");
 		panelGeneral.add(lblInfilM, "cell 0 9,alignx trailing");
 		
-		textField_3 = new JTextField();
+		JTextField textField_3 = new JTextField();
 		textField_3.setEnabled(false);
 		textField_3.setName("infil_m");
 		textField_3.setColumns(10);
@@ -261,7 +239,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		lblRoutTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRoutTimestep, "cell 3 9,alignx trailing");
 		
-		textField_7 = new JTextField();
+		JTextField textField_7 = new JTextField();
 		textField_7.setEnabled(false);
 		textField_7.setName("rout_tstep");
 		textField_7.setColumns(10);

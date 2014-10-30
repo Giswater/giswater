@@ -84,10 +84,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {
-				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('example "+waterSoftware+"', 'giswater software', '')";
-				Utils.getLogger().info(sql);
-				MainDao.executeSql(sql, false);
-				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
+				String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 				Utils.getLogger().info(sql);
 				MainDao.executeSql(sql, false);

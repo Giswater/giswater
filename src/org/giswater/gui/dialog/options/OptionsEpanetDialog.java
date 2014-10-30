@@ -34,13 +34,14 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("rawtypes")
 public class OptionsEpanetDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private JTextField txtUnbalancedN;
 	private JTextField txtHydraulicsFname;
 	private JTextField txtNode;
@@ -109,7 +110,7 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		
 		txtHydraulicsFname = new JTextField();
 		txtHydraulicsFname.setName("hydraulics_fname");
-		txtHydraulicsFname.setColumns(10);
+		txtHydraulicsFname.setDocument(new MaxLengthTextDocument(254));
 		panelGeneral.add(txtHydraulicsFname, "cell 4 2,growx");
 		
 		JLabel lblLinkOffsets = new JLabel("Quality:");
@@ -140,8 +141,8 @@ public class OptionsEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.add(lblUnbalanced, "cell 3 4,alignx trailing");
 		
 		txtUnbalancedN = new JTextField();
-		txtUnbalancedN.setName("unbalanced_n");
-		txtUnbalancedN.setColumns(10);
+		txtUnbalancedN.setName("unbalanced_n");	
+		txtUnbalancedN.setDocument(new MaxLengthTextDocument(12));
 		panelGeneral.add(txtUnbalancedN, "cell 4 4,growx");
 		
 		JLabel lblMinSlope = new JLabel("Viscosity:");

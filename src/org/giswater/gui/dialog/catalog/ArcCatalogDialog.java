@@ -32,23 +32,15 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 import net.miginfocom.swing.MigLayout;
 
 
-@SuppressWarnings("rawtypes")
 public class ArcCatalogDialog extends AbstractCatalogDialog{
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField_2;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_9;
 	private JTextField txtTsect;
-	private JComboBox cboShape;
+	private JComboBox<String> cboShape;
 	private JTextField txtCurve;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
@@ -88,15 +80,15 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		textField_2 = new JTextField();
+		JTextField textField_2 = new JTextField();
 		textField_2.setName("id");
-		textField_2.setColumns(10);
+		textField_2.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 				
 		JLabel lblFlowUnits = new JLabel("Shape:");
 		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
 
-		cboShape = new JComboBox();
+		cboShape = new JComboBox<String>();
 		cboShape.setActionCommand("shapeChanged");
 		panelGeneral.add(cboShape, "cell 4 0,growx");
 		cboShape.setName("shape");
@@ -104,9 +96,9 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 		JLabel lblShortDesc = new JLabel("short desc:");
 		panelGeneral.add(lblShortDesc, "cell 0 1,alignx trailing");
 		
-		textField_9 = new JTextField();
+		JTextField textField_9 = new JTextField();
 		textField_9.setName("short_des");
-		textField_9.setColumns(10);
+		textField_9.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_9, "cell 1 1,growx");
 		
 		JLabel lblCurveid = new JLabel("curve_id:");
@@ -115,15 +107,15 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 		txtCurve = new JTextField();
 		txtCurve.setEnabled(false);
 		txtCurve.setName("curve_id");
-		txtCurve.setColumns(10);
+		txtCurve.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtCurve, "cell 4 1,growx");
 		
 		JLabel lblGeomr = new JLabel("Real geom:");
 		panelGeneral.add(lblGeomr, "cell 0 2,alignx trailing");
 		
-		textField_7 = new JTextField();
+		JTextField textField_7 = new JTextField();
 		textField_7.setName("geom_r");
-		textField_7.setColumns(10);
+		textField_7.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_7, "cell 1 2,growx");
 		
 		JLabel lblTsectid = new JLabel("tsect_id:");
@@ -132,47 +124,47 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 		txtTsect = new JTextField();
 		txtTsect.setEnabled(false);
 		txtTsect.setName("tsect_id");
-		txtTsect.setColumns(10);
+		txtTsect.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtTsect, "cell 4 2,growx");
 		
 		JLabel lblGeom = new JLabel("geom1:");
 		panelGeneral.add(lblGeom, "cell 0 3,alignx trailing");
 		
-		textField = new JTextField();
+		JTextField textField = new JTextField();
 		textField.setName("geom1");
-		textField.setColumns(10);
+		textField.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField, "cell 1 3,growx");
 		
 		JLabel lblGeom_2 = new JLabel("geom3:");
 		panelGeneral.add(lblGeom_2, "cell 3 3,alignx trailing");
 		
-		textField_5 = new JTextField();
+		JTextField textField_5 = new JTextField();
 		textField_5.setName("geom3");
-		textField_5.setColumns(10);
+		textField_5.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_5, "cell 4 3,growx");
 		
 		JLabel lblGeom_1 = new JLabel("geom2:");
 		panelGeneral.add(lblGeom_1, "cell 0 4,alignx trailing");
 		
-		textField_3 = new JTextField();
+		JTextField textField_3 = new JTextField();
 		textField_3.setName("geom2");
-		textField_3.setColumns(10);
+		textField_3.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_3, "cell 1 4,growx");
 		
 		JLabel lblGeom_3 = new JLabel("geom4:");
 		panelGeneral.add(lblGeom_3, "cell 3 4,alignx trailing");
 		
-		textField_6 = new JTextField();
+		JTextField textField_6 = new JTextField();
 		textField_6.setName("geom4");
-		textField_6.setColumns(10);
+		textField_6.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_6, "cell 4 4,growx");
 		
 		JLabel lblIgnoreSnowmelt = new JLabel("description:");
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 5,alignx trailing");
 		
-		textField_4 = new JTextField();
+		JTextField textField_4 = new JTextField();
 		textField_4.setName("descript");
-		textField_4.setColumns(10);
+		textField_4.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_4, "cell 1 5 4 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        

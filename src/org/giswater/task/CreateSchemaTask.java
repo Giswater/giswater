@@ -112,6 +112,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		// Refresh view
     	Utils.setPanelEnabled(parentPanel, true);
 		parentPanel.setSchemaModel(MainDao.getSchemas(waterSoftware));	
+		parentPanel.setSelectedSchema(schemaName);
 		
 		return null;
     	

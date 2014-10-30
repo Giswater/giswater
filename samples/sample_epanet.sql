@@ -18,9 +18,8 @@ INSERT INTO "sample_epanet"."cat_mat" VALUES ('PVC', 'PVC', '150.0000');
 -- ----------------------------
 -- Records of sector
 -- ----------------------------
- 
-INSERT INTO "sample_epanet"."sector" VALUES ('sector_01', null, '0106000020E7640000010000000103000000010000006A0000006C3BF85F639B19416F232A593E7551412E299A0DAF9B1941909C597D3B7551416A3FE9BC399B19414910F63D34755141F498709CEE9A19412158859B37755141F999F5F96A9A194180BE957830755141F0FEF5DC629A19417CB962063075514144A02CBBE3991941A2EFEC0829755141EBFC97B36A99194134265C6122755141293C0273F39819411DB4CFD21B75514130650477C198194133524013197551416B8EE46D7B981941E6153C3515755141A0C7FB30039819413E5B90910E7551419BE08C75EF97194188D2A17A0D7551411FB694008C971941F78B76050875514138E89E880A9719417EBEB0EA00755141ED0F9892B8961941A4944D6BFC7451419713C3B381961941D5645057F9745141E6EEB02BCD95194107E6B736EF745141E9E561C9C795194132CD5721EF745141CC67794DC29519411547E510EF745141CBC22EC1BC951941527A9105EF745141AEF9AC2BB7951941B3665CFFEE7451413E101F94B19519419CD066FEEE7451413D2DB602AC9519412DF38F02EF745141E8529D7EA6951941DF6BC70BEF7451413722ED0B9E95194165729225EF745141D6D7D6B2959519417289B548EF745141B4E6C2848D9519419689FF74EF745141CF750D918595194127C2FDA9EF74514122D0010F81951941790883CDEF74514194A5AEAB7C951941201BD5F5EF745141D3404B70789519419770B222F07451412C7EFC6274951941BFE1E953F0745141E038E78970951941D7822989F0745141BC4C30EB6C95194173CA2FC2F0745141FE93FC8C699519412F088AFEF0745141EC12BF194E95194107F9B43BF3745141370F21CC9094194170776AAC02755141C0D349BC2E9419419D64FAAB0A755141D8319504EC931941F6E70F1D107551414ED8A706D793194125437F2F11755141B80609D9C9931941FE7D534A12755141F1E448C7A1931941A4154AA615755141B927F58B7D931941702E9D1917755141C809886C5D9319419DCDEA6318755141C2A8E580CD921941FE8DC82B1E755141E65B0608949219418218BE7A2075514120488F9D6F921941A01588F1217551414E80E12B6B9219415EC1A08521755141698CA5C8429219417F98632923755141B2842BBCB9911941BC59C7B92875514162C46010A99119413AD30B6729755141AD598392B49119410189555D2B755141C08470684491194162CD9CFF2F7551418EE2F54B3F911941189BAB35307551410535A4EEBE9019410E084A833575514181C098C61E901941A5F9DC123C755141418DBB2512901941CD4B749A3C75514154DE3B9A12901941774A91394075514197B44B1A13901941DC4C464A43755141593DE08412901941CC183854487551414EA6C63414901941B2FDFDD94D7551413662CD61159019411D3119F050755141F6EE45DB1690194166B1B9B258755141931391FF1F90194197E06BCB5F75514121D05DCC21901941910878CB667551419668E947249019417573B3256E75514141D0C3B828901941FD662EE07875514176D115DF2A9019411A85D39F7D755141F0F7FD1530901941D7DFFAA3837551412C19B420329019417071963692755141C07236BE389019411901BD11A27551411DA09EF57A9019418F9B287BAA7551413D074D46E39019412A15C9A7AE755141ADFE42C844911941917EA095B0755141C45BFF65AA91194132F81011B0755141963EADEEA492194122197F91A475514174517EC7BD9219414640F37EA37551414E82FF052993194113D78AEC9E7551413DC61436AD931941AA7EE949997551416CD62966319419416F2848A793755141C88F577EA294194159E606D58E7551416690F0AFB5941941CCF30F078E75514107E3DD913A9519410D981F7588755141FCEF873869951941DDF98480867551418BFCF584BD951941AC3FBEB4827551414E302882CF95194168805EE581755141A8D87BCA419619418C3920147D75514163A17271C6961941FAF1A67C77755141F6C32938F4961941D22EAC8E7575514164B877473F9719413D4472CD727551413437000D9597194131FD9C1E6E755141A3023D3359981941E8AD066963755141FADA099CD2981941C32615C85C75514184B6F71245991941A1FE3488567551419CFED3CA779919410B1551C353755141600934B18A9919410D6BFCB752755141262811D79D991941A7F0AFB0517551410137653BB1991941816A8CAD50755141E0B5E8BABD9919418A11410B507551411E7F11D9C4991941FF61D3AE4F755141C93140C04A9A19413E5458154A755141FEE49905DB9A19414A72DF0C4475514167363EA0609B19416BC997763E7551416C3BF85F639B19416F232A593E7551416C3BF85F639B19416F232A593E755141');
- 
+INSERT INTO "sample_epanet"."sector" VALUES ('sector_01', 'sector_sample_epanet', '0106000020E764000001000000010300000001000000310000004344FB8D57901941579E3EEE847551414952F8205C901941B8E002D4967551412BEA86DD5E901941F1B6390E9D7551413CD9D0716790194146526D5EA2755141C252A53388901941664752E5A675514191608F1EC4901941107C78DAAA755141CD78F02601911941C9594B57AD7551414B4A73286091194199E45D54AF75514196093983DB9119419860ED49B175514149511D00F9911941A04440BDAF755141B5BE46E8AD921941115C602EA47551413252FCBE16941941AC9DABDF94755141C78F577EA29419415AE606D58E755141FCEF873869951941DBF98480867551414E302882CF95194168805EE581755141F6C32938F4961941D22EAC8E75755141BEF2646F3C9719414D0EBC8972755141B8A7F68B9A971941C8CDBE026E755141B22277D1FD97194193B3528968755141A8344C506D981941BC3C94776275514160A9766BB2981941E2E516F45E755141CA43B6C34F991941615273F3557551410137653BB1991941816A8CAD50755141B0C634E3339A1941036077F54A755141BE58D480839A1941224D3F97477551410BFAD15B709B1941806778B53D755141C2A48EBD199C19410F36E0BE367551419E9C3986F39B19416CBC9C1C33755141EAE67282AE9B1941FBE7A8EA3575514124193708FA9A1941AC2FF50B2C75514107D9C6CECB9A194101574A97297551414723F9E6179A19412C13ABA61F755141CAB0FBC0ED991941446A39E61C755141309C88F89098194121ABAC8A087551411D554E735E98194151FB59B705755141962F594D3D9819415F273EE5037551410EC2A5985A971941C7A4626AF77451416E6AC5DC6F961941F6EF74CCEA745141D6D7D6B2959519417289B548EF745141BEEC10BC4995194190769F9CF07451415C5A0852729419413182684F02755141DCE1D4EF6B94194131C106B705755141F1E448C7A1931941A4154AA615755141D1BA81A24E9319415BFD9E7E1975514154BF5362D4911941BB61D7152975514169EECA68629019410ED2733838755141CEE8BC0E43901941490775783A755141253AB8DB34901941CEE66D84407551414344FB8D57901941579E3EEE84755141');
+
 
 -- ----------------------------
 -- Records of inp_curve_id
@@ -31,7 +30,6 @@ INSERT INTO "sample_epanet"."sector" VALUES ('sector_01', null, '0106000020E7640
 -- ----------------------------
 -- Records of node
 -- ----------------------------
- 
 INSERT INTO "sample_epanet"."node" VALUES ('1001', '32.5872', 'JUNCTION', 'sector_01', '0101000020E7640000CD34094E9B971941135D5A5F10755141');
 INSERT INTO "sample_epanet"."node" VALUES ('1002', '25.2381', 'JUNCTION', 'sector_01', '0101000020E76400009F193118F19919413680D74631755141');
 INSERT INTO "sample_epanet"."node" VALUES ('1003', '29.8845', 'JUNCTION', 'sector_01', '0101000020E76400000B188641B4981941F1BF6AAC43755141');
@@ -110,7 +108,7 @@ INSERT INTO "sample_epanet"."node" VALUES ('1075', '39.0198', 'JUNCTION', 'secto
 INSERT INTO "sample_epanet"."node" VALUES ('1076', '45.0000', 'JUNCTION', 'sector_01', '0101000020E7640000EE669E768D9419417E6C9F1441755141');
 INSERT INTO "sample_epanet"."node" VALUES ('1077', '39.8220', 'JUNCTION', 'sector_01', '0101000020E7640000C4F7783B0A96194178D23A6130755141');
 INSERT INTO "sample_epanet"."node" VALUES ('1078', '68.2500', 'RESERVOIR', 'sector_01', '0101000020E764000019C4988BF5961941C8EFA5AD9B755141');
- 
+
 
 -- ----------------------------
 -- Records of arc
@@ -229,7 +227,86 @@ INSERT INTO "sample_epanet"."arc" VALUES ('2090', '', '', '200.0000', 'FD', 'PIP
 -- ----------------------------
 -- Records of inp_demand
 -- ----------------------------
- 
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('1', '1077', '0.238400', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('2', '1076', '0.228100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('3', '1075', '0.249500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('4', '1074', '0.229200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('5', '1073', '0.107100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('6', '1072', '0.382700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('7', '1071', '0.121800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('8', '1070', '0.277000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('9', '1069', '0.273000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('10', '1068', '0.519500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('11', '1067', '0.485700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('12', '1066', '0.081300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('13', '1065', '0.264700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('14', '1064', '0.245800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('15', '1063', '0.072100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('16', '1062', '0.776200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('17', '1061', '0.262100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('18', '1060', '0.406000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('19', '1059', '0.298000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('20', '1058', '0.349000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('21', '1057', '0.272900', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('22', '1056', '0.443800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('23', '1055', '0.360000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('24', '1054', '0.485200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('25', '1053', '0.311300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('26', '1052', '0.458800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('27', '1051', '0.767500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('28', '1050', '0.304100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('29', '1049', '0.597600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('30', '1048', '0.611300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('31', '1047', '0.347800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('32', '1046', '0.350800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('33', '1045', '0.547100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('34', '1044', '0.168600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('35', '1043', '0.326000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('36', '1042', '0.237400', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('37', '1041', '0.103400', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('38', '1040', '0.494800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('39', '1039', '0.503000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('40', '1038', '0.522100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('41', '1037', '0.401800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('42', '1036', '0.279700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('43', '1035', '0.787700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('44', '1034', '0.407700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('45', '1033', '0.368700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('46', '1032', '0.224100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('47', '1031', '0.249200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('48', '1030', '0.403900', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('49', '1029', '0.330200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('50', '1028', '0.102600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('51', '1027', '0.139000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('52', '1026', '0.220600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('53', '1025', '0.308700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('54', '1024', '0.378300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('55', '1023', '0.591600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('56', '1022', '0.196200', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('57', '1021', '0.251100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('58', '1020', '0.384700', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('59', '1019', '0.201800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('60', '1018', '0.350000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('61', '1017', '0.351600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('62', '1016', '0.280300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('63', '1015', '0.351000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('64', '1014', '0.253300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('65', '1013', '0.362600', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('66', '1012', '0.522100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('67', '1011', '0.388000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('68', '1010', '0.117800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('69', '1009', '0.332500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('70', '1008', '0.154800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('71', '1007', '0.441500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('72', '1006', '0.287000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('73', '1005', '0.507300', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('74', '1004', '0.461100', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('75', '1003', '0.838500', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('76', '1002', '0.308800', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('77', '1001', '0.580000', 'pattern_01', 'Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('78', '1007', '16.670000', 'pattern_01', 'Hydrant');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('79', '1058', '16.670000', 'pattern_01', 'Hydrant');
+
  
 
 -- ----------------------------
@@ -253,85 +330,84 @@ INSERT INTO "sample_epanet"."arc" VALUES ('2090', '', '', '200.0000', 'FD', 'PIP
 -- ----------------------------
 -- Records of inp_junction
 -- ----------------------------
- 
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1001', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1002', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1003', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1004', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1005', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1006', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1007', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1008', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1009', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1010', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1011', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1012', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1013', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1015', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1016', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1017', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1018', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1019', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1020', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1021', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1022', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1023', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1024', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1025', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1026', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1027', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1028', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1029', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1030', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1031', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1032', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1033', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1034', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1035', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1036', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1037', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1038', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1039', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1040', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1041', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1042', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1043', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1044', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1045', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1046', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1047', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1048', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1049', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1050', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1051', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1052', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1053', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1054', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1055', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1056', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1057', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1058', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1059', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1060', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1061', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1062', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1063', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1064', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1065', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1066', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1067', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1068', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1069', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1070', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1071', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1072', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1073', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1074', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1075', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1076', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1077', '0.5', 'pattern_01');
-INSERT INTO "sample_epanet"."inp_junction" VALUES ('1014', '0.5', 'pattern_01');
- 
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1001', '0.579965', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1002', '0.308760', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1003', '0.838452', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1004', '0.461077', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1005', '0.507322', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1006', '0.287011', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1007', '0.441474', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1008', '0.154832', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1009', '0.332460', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1010', '0.117826', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1011', '0.387998', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1012', '0.522067', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1013', '0.362632', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1014', '0.253264', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1015', '0.350964', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1016', '0.280308', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1017', '0.351573', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1018', '0.349957', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1019', '0.201793', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1020', '0.384735', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1021', '0.251128', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1022', '0.196222', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1023', '0.591631', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1024', '0.378283', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1025', '0.308663', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1026', '0.220585', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1027', '0.139017', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1028', '0.102614', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1029', '0.330209', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1030', '0.403935', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1031', '0.249185', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1032', '0.224081', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1033', '0.368688', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1034', '0.407704', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1035', '0.787750', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1036', '0.279682', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1037', '0.401834', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1038', '0.522082', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1039', '0.503046', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1040', '0.494844', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1041', '0.103360', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1042', '0.237375', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1043', '0.325955', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1044', '0.168609', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1045', '0.547098', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1046', '0.350789', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1047', '0.347807', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1048', '0.611263', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1049', '0.597610', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1050', '0.304097', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1051', '0.767507', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1052', '0.458846', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1053', '0.311335', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1054', '0.485167', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1055', '0.359995', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1056', '0.443823', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1057', '0.272854', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1058', '0.348974', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1059', '0.298018', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1060', '0.405977', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1061', '0.262091', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1062', '0.776151', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1063', '0.072066', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1064', '0.245816', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1065', '0.264732', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1066', '0.081278', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1067', '0.485656', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1068', '0.519501', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1069', '0.272965', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1070', '0.276975', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1071', '0.121793', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1072', '0.382717', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1073', '0.107064', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1074', '0.229207', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1075', '0.249525', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1076', '0.228082', '');
+INSERT INTO "sample_epanet"."inp_junction" VALUES ('1077', '0.238408', '');
+
 
 -- ----------------------------
 -- Records of inp_label
@@ -348,17 +424,18 @@ INSERT INTO "sample_epanet"."inp_junction" VALUES ('1014', '0.5', 'pattern_01');
 -- ----------------------------
 -- Records of inp_pattern
 -- ----------------------------
- 
-INSERT INTO "sample_epanet"."inp_pattern" VALUES ('pattern_01', '0.2000', '0.2000', '0.2500', '0.2600', '0.3000', '0.3000', '0.8000', '1.0000', '1.0000', '1.5000', '1.8000', '1.7000', '1.2000', '1.0000', '0.7000', '0.6000', '0.6000', '0.5000', '0.8000', '0.9000', '1.0000', '1.0000', '0.5000', '0.4000');
- 
+INSERT INTO "sample_epanet"."inp_pattern" VALUES ('pattern_01', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000', '1.0000');
+INSERT INTO "sample_epanet"."inp_pattern" VALUES ('pattern_02', '0.2000', '0.2000', '0.2500', '0.2600', '0.3000', '0.3000', '0.8000', '1.0000', '1.0000', '1.5000', '1.8000', '1.7000', '1.2000', '1.0000', '0.7000', '0.6000', '0.6000', '0.5000', '0.8000', '0.9000', '1.0000', '1.0000', '0.5000', '0.4000');
+INSERT INTO "sample_epanet"."inp_pattern" VALUES ('pattern_03', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000', '0.0000');
+
 
 -- ----------------------------
 -- Records of inp_pipe
 -- ----------------------------
- 
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2001', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2002', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2003', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2004', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2005', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2006', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2007', '0', 'OPEN');
@@ -374,7 +451,12 @@ INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2016', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2017', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2018', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2019', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2020', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2021', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2022', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2023', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2024', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2025', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2026', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2027', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2028', '0', 'OPEN');
@@ -390,6 +472,7 @@ INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2037', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2038', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2039', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2040', '0', 'OPEN');
+INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2041', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2042', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2043', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2044', '0', 'OPEN');
@@ -439,20 +522,12 @@ INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2087', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2088', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2089', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2090', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2004', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2020', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2022', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2023', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2024', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2025', '0', 'OPEN');
-INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2041', '0', 'OPEN');
- 
+
 
 -- ----------------------------
 -- Records of inp_project_id
 -- ----------------------------
- 
-INSERT INTO "sample_epanet"."inp_project_id" VALUES ('Water supply demo project', 'Giswater', 'Dec-2013');
+INSERT INTO "sample_epanet"."inp_project_id" VALUES ('Water supply demo project', 'Giswater', 'Oct-14');
  
 
 -- ----------------------------
@@ -482,8 +557,8 @@ INSERT INTO "sample_epanet"."inp_project_id" VALUES ('Water supply demo project'
 -- ----------------------------
 -- Records of inp_reservoir
 -- ----------------------------
- 
-INSERT INTO "sample_epanet"."inp_reservoir" VALUES ('1078', '75.64', '');
+INSERT INTO "sample_epanet"."inp_reservoir" VALUES ('1078', '75.64', null);
+
  
 
 -- ----------------------------
@@ -520,7 +595,4 @@ INSERT INTO "sample_epanet"."inp_reservoir" VALUES ('1078', '75.64', '');
 -- ----------------------------
 -- Records of sector_selection
 -- ----------------------------
- 
 INSERT INTO "sample_epanet"."sector_selection" VALUES ('sector_01');
- 
-

@@ -53,7 +53,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 
 	private HecRasController controller;	
 	private HecRasFrame hecRasFrame;
-	private JPanel panelFileManager;
+	private JPanel panelLoadDtm;
 	private JButton btnFileAsc;
 	private JButton btnLoadRaster;
 	private JButton btnExportSdf;
@@ -74,6 +74,8 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	
 	private JButton btnEditProjectPreferences;
 	private JButton btnClose;
+	private JPanel panelExportSdf;
+	private JScrollPane scrollPane;
 	
 	
 	public HecRasPanel() {
@@ -167,19 +169,19 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[507.00px,grow][10px:n:8px]", "[5px:n][153.00][3px:n][::50px][10px:n][]"));
+		setLayout(new MigLayout("", "[555.00px][::8px]", "[5px:n][96.00][128.00px:n][::59.00px][10px:n][]"));
 		
-		panelFileManager = new JPanel();
-		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelFileManager, "cell 0 1 2 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[50px:n][313.00][5px:n][][]", "[34px:n][5px:n][][34px:n]"));
+		panelLoadDtm = new JPanel();
+		panelLoadDtm.setBorder(new TitledBorder(null, "Load DTM", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelLoadDtm, "cell 0 1 2 1,grow");
+		panelLoadDtm.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[34px:n][5px:n][]"));
 		
 		JLabel lblAscFile_1 = new JLabel();
-		panelFileManager.add(lblAscFile_1, "cell 0 0,alignx right");
+		panelLoadDtm.add(lblAscFile_1, "cell 0 0,alignx right");
 		lblAscFile_1.setText(BUNDLE.getString("HecRasPanel.lblAscFile_1.text"));
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		panelFileManager.add(scrollPane_2, "cell 1 0,grow");
+		panelLoadDtm.add(scrollPane_2, "cell 2 0,grow");
 		
 		txtFileAsc = new JTextArea();
 		scrollPane_2.setViewportView(txtFileAsc);
@@ -188,83 +190,81 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		
 		btnFileAsc = new JButton();
 		btnFileAsc.setMinimumSize(new Dimension(65, 9));
-		panelFileManager.add(btnFileAsc, "cell 3 0");
+		panelLoadDtm.add(btnFileAsc, "cell 3 0,growx");
 		btnFileAsc.setActionCommand("chooseFileAsc");
 		btnFileAsc.setText("...");
 		btnFileAsc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnLoadRaster = new JButton(BUNDLE.getString("HecRasPanel.btnLoadRaster.text"));
-		btnLoadRaster.setPreferredSize(new Dimension(120, 23));
-		panelFileManager.add(btnLoadRaster, "cell 4 0");
+		panelLoadDtm.add(btnLoadRaster, "cell 3 2,growx");
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
-		btnLoadRaster.setMinimumSize(new Dimension(85, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
 		
-		chkExportSA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportSa.text")); //$NON-NLS-1$
-		panelFileManager.add(chkExportSA, "flowx,cell 1 2");
+		panelExportSdf = new JPanel();
+		panelExportSdf.setBorder(new TitledBorder(null, "Export SDF", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		add(panelExportSdf, "cell 0 2 2 1,grow");
+		panelExportSdf.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[::20px][34px:n][5px:n][]"));
 		
-		JLabel lbloptionalParameters = new JLabel(BUNDLE.getString("HecRasPanel.lbloptionalParameters.text")); //$NON-NLS-1$
-		panelFileManager.add(lbloptionalParameters, "cell 3 2 2 1");
+		chkExportSA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportSa.text"));
+		panelExportSdf.add(chkExportSA, "flowx,cell 2 0");
 		
 		JLabel lblAscFile = new JLabel();
-		panelFileManager.add(lblAscFile, "cell 0 3,alignx right");
+		panelExportSdf.add(lblAscFile, "cell 0 1,alignx right");
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text"));
 		
-		JScrollPane scrollPane_3 = new JScrollPane();
-		panelFileManager.add(scrollPane_3, "cell 1 3,grow");
+		scrollPane = new JScrollPane();
+		panelExportSdf.add(scrollPane, "cell 2 1,grow");
 		
 		txtFileSdf = new JTextArea();
-		scrollPane_3.setViewportView(txtFileSdf);
+		scrollPane.setViewportView(txtFileSdf);
 		txtFileSdf.setLineWrap(true);
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
+		chkExportIA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportIa.text"));
+		panelExportSdf.add(chkExportIA, "cell 2 0");
+		
+		chkExportLevees = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportLevees.text"));
+		panelExportSdf.add(chkExportLevees, "cell 2 0");
+		
+		chkExportBO = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxBo.text"));
+		panelExportSdf.add(chkExportBO, "cell 2 0");
+		
+		chkExportManning = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxManning.text"));
+		panelExportSdf.add(chkExportManning, "cell 2 0");
+		
 		btnFileSdf = new JButton();
+		panelExportSdf.add(btnFileSdf, "cell 3 1,growx");
 		btnFileSdf.setMinimumSize(new Dimension(65, 9));
-		panelFileManager.add(btnFileSdf, "cell 3 3");
 		btnFileSdf.setText("...");
 		btnFileSdf.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileSdf.setActionCommand("chooseFileSdf");
 		
 		btnExportSdf = new JButton(BUNDLE.getString("HecRasPanel.btnExportSdf.text")); 
-		btnExportSdf.setPreferredSize(new Dimension(120, 23));
-		panelFileManager.add(btnExportSdf, "cell 4 3");
-		btnExportSdf.setMinimumSize(new Dimension(80, 23));
+		panelExportSdf.add(btnExportSdf, "cell 3 3,growx");
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
-		
-		chkExportIA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportIa.text")); //$NON-NLS-1$
-		panelFileManager.add(chkExportIA, "cell 1 2");
-		
-		chkExportLevees = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportLevees.text")); //$NON-NLS-1$
-		panelFileManager.add(chkExportLevees, "cell 1 2");
-		
-		chkExportBO = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxBo.text")); //$NON-NLS-1$
-		panelFileManager.add(chkExportBO, "cell 1 2,alignx right,aligny top");
-		
-		chkExportManning = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxManning.text")); //$NON-NLS-1$
-		panelFileManager.add(chkExportManning, "cell 1 2");
 		
 		panelDataManager = new JPanel();
 		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panelDataManager, "cell 0 3 2 1,grow");
-		panelDataManager.setLayout(new MigLayout("", "[][][][]", "[]"));
+		panelDataManager.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][115px:n]", "[]"));
 		
 		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
-		btnLogFile.setMinimumSize(new Dimension(120, 23));
-		panelDataManager.add(btnLogFile, "cell 0 0");
+		btnLogFile.setMinimumSize(new Dimension(0, 23));
+		panelDataManager.add(btnLogFile, "cell 0 0,growx");
 		
 		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
-		btnErrorFile.setMinimumSize(new Dimension(120, 23));
-		panelDataManager.add(btnErrorFile, "cell 1 0");
+		btnErrorFile.setMinimumSize(new Dimension(0, 23));
+		panelDataManager.add(btnErrorFile, "cell 1 0,growx");
 		
 		btnShowProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
 		btnShowProjectData.setActionCommand(BUNDLE.getString("HecRasPanel.btnProjectData.actionCommand")); //$NON-NLS-1$
-		btnShowProjectData.setMinimumSize(new Dimension(120, 23));
-		panelDataManager.add(btnShowProjectData, "cell 2 0");
+		btnShowProjectData.setMinimumSize(new Dimension(0, 23));
+		panelDataManager.add(btnShowProjectData, "cell 2 0,growx");
 		
 		btnExportMdt = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
-		btnExportMdt.setMinimumSize(new Dimension(120, 23));
-		panelDataManager.add(btnExportMdt, "cell 3 0");
+		btnExportMdt.setMinimumSize(new Dimension(0, 23));
+		panelDataManager.add(btnExportMdt, "cell 3 0,growx");
 		
 		btnEditProjectPreferences = new JButton("Edit Project Preferences");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));

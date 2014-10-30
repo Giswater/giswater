@@ -350,7 +350,6 @@ public class EpaSoftController extends AbstractController {
 	}		
 	
 	
-	// TODO: Implement it
 	public void showEmitter() {
 		ResultSet rs = MainDao.getTableResultset("inp_emitter");
 		if (rs == null) return;		
