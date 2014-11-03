@@ -41,6 +41,7 @@ import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsFTP;
 
 
 public class ProjectPreferencesController extends AbstractController {
@@ -89,7 +90,6 @@ public class ProjectPreferencesController extends AbstractController {
 		// HECRAS
 		if (waterSoftware.equals("HECRAS")) {
 			mainFrame.epaSoftFrame.setVisible(false);
-			//mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
         	try {
 				mainFrame.hecRasFrame.setMaximum(true);
 				mainFrame.hecRasFrame.setVisible(true);
@@ -270,14 +270,27 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	private boolean openConnection() {
 		
-		String host, port, db, user, password;
-		
 		// Get parameteres connection from view
-		host = view.getHost();		
-		port = view.getPort();
-		db = view.getDatabase();
-		user = view.getUser();
-		password = view.getPassword();	
+		String host = view.getHost();		
+		String port = view.getPort();
+		String db = view.getDatabase();
+		String user = view.getUser();
+		String password = view.getPassword();	
+		
+		// Check parameters
+		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
+			Utils.showError("Connection not possible. Check parameters");
+			return false;
+		}
+		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
+		
+		// Check if Internet is available
+		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
+			if (!UtilsFTP.isInternetReachable()) {
+				Utils.showError("Connection not possible. Internet is not available");	
+				return false;
+			}
+		}
 		
 		// Try to connect to Database
 		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
@@ -299,9 +312,6 @@ public class ProjectPreferencesController extends AbstractController {
 			// Get Postgis data and bin Folder
 	    	String dataPath = MainDao.getDataDirectory();
 	    	PropertiesDao.getGswProperties().put("POSTGIS_DATA", dataPath);
-	        File dataFolder = new File(dataPath);
-	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	        PropertiesDao.getGswProperties().put("POSTGIS_BIN", binPath);
 	        Utils.getLogger().info("Connection successful");
 	        Utils.getLogger().info("Postgre data directory: " + dataPath);	
 	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
@@ -311,7 +321,7 @@ public class ProjectPreferencesController extends AbstractController {
         		String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
         		MainDao.executeUpdateSql(sql, true, false);			  	
         	}
-        	else{
+        	else {
         		Utils.getLogger().info("Postgis version: " + postgisVersion);
         	}
 	    	

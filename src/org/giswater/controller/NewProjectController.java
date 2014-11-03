@@ -129,8 +129,7 @@ public class NewProjectController extends AbstractController {
 	
 	private String validateName(String schemaName) {
 		
-		String validate;
-		validate = schemaName.trim().toLowerCase();
+		String validate = schemaName.trim().toLowerCase();
 		validate = validate.replace(" ", "_");
 		validate = validate.replaceAll("[^\\p{ASCII}]", "");
 		return validate;
@@ -147,10 +146,14 @@ public class NewProjectController extends AbstractController {
 			return;
 		}
 		
-		// Project Name
+		// Get Project name and validate it
 		String schemaName = view.getName();
 		if (schemaName.equals("")) {
-			Utils.showMessage(view, Utils.getBundleString("enter_schema_name"));
+			Utils.showError(view, Utils.getBundleString("enter_schema_name"));
+			return;
+		}
+		if (Utils.isInteger(schemaName.substring(0, 1))) {
+			Utils.showError(view, "Name cannot start with a number");
 			return;
 		}
 		schemaName = validateName(schemaName);

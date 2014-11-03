@@ -197,7 +197,8 @@ public class MenuController extends AbstractController {
 			gswPath = gswFile.getAbsolutePath();
 			gswName = gswFile.getName();
 			PropertiesDao.setGswPath(gswPath);
-			prop.put("FILE_GSW", gswPath);			
+			prop.put("FILE_GSW", gswPath);		
+			MainDao.closeConnectionPostgis();
 		}
 		else {
 			gswPath = PropertiesDao.getGswPath();

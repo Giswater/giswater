@@ -90,7 +90,7 @@ public class Utils {
                 gisFolder = folderRoot + GIS_FOLDER;
                 File folderFile = new File(logFolder);
                 folderFile.mkdirs();
-                if (!folderFile.exists()){
+                if (!folderFile.exists()) {
                     JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
                 }
                 String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
@@ -235,7 +235,7 @@ public class Utils {
 			}			
 			logger.info(infoMsg);
 		}
-		JOptionPane.showMessageDialog(comp, userMsg, getBundleString("inp_descr"), JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(comp, userMsg, getBundleString("inp_descr"), JOptionPane.INFORMATION_MESSAGE);
 		
     }      
 
@@ -259,7 +259,7 @@ public class Utils {
     public static void showError(Component comp, String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
-		if (!param.equals("")){
+		if (!param.equals("")) {
 			userMsg += "\n" + param;
 		}
 		logError(msg, param);

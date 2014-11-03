@@ -43,7 +43,7 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+dbAdminFolder+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
+		String aux= "\""+bin+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
@@ -106,7 +106,7 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+dbAdminFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
+		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 

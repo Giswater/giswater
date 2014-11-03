@@ -24,9 +24,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -391,5 +393,24 @@ public class UtilsFTP {
         return inputStream;
     }
     
+    
+    // Checks for connection to the internet through dummy request
+    public static boolean isInternetReachable() {
+    	
+        try {
+        	// Trying to retrieve data from the source. If there is no connection, this line will fail
+            URL url = new URL("http://www.google.com");
+            HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
+            urlConnect.getContent();
+        } catch (UnknownHostException e) {
+            return false;
+        }
+        catch (IOException e) {
+            return false;
+        }
+        return true;
+        
+    }
+        
         
 }

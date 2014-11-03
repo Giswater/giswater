@@ -36,6 +36,7 @@ import org.apache.commons.io.FileUtils;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsFTP;
 
 
 public class MainDao {
@@ -46,7 +47,6 @@ public class MainDao {
 	protected static String user;
 	protected static String password;
 	protected static String bin;
-	protected static String dbAdminFolder;
 	protected static String rootFolder;   // UsersFolder + ROOT_FOLDER
 	
     private static Connection connectionPostgis;
@@ -65,10 +65,10 @@ public class MainDao {
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
-
 	private static final String TABLE_EPANET = "inp_demand";		
 	private static final String TABLE_EPASWMM = "inp_divider";	
 	private static final String TABLE_HECRAS = "banks";		
+	private static final Integer NUMBER_OF_ATTEMPTS = 3;		
 	
 	
 	public static String getDb() {
@@ -207,23 +207,17 @@ public class MainDao {
     
 	protected static boolean getConnectionParameters() {
 
-		// Get parameteres connection from properties file
-		bin = PropertiesDao.getGswProperties().get("POSTGIS_BIN", "");
-		if (!bin.equals("")) { 
-			File file = new File(bin);
-			if (!file.exists()) {
-				Utils.logError("postgis_not_found", bin);	
-			}
-			bin+= File.separator;
-		}
-		
+		// Get connection parameteres from properties file
 		String dbAdmin = PropertiesDao.getPropertiesFile().get("FILE_DBADMIN", "");
 		if (!dbAdmin.equals("")) { 
 			File fileAux = new File(dbAdmin);
 			if (!fileAux.exists()) {
 				Utils.logError("Database admin file not found", dbAdmin);	
 			}
-			dbAdminFolder = fileAux.getParent() + File.separator;
+			bin = fileAux.getParent() + File.separator;
+		}
+		else {
+			Utils.logError("Database admin file not found", dbAdmin);
 		}
 		
 		host = PropertiesDao.getGswProperties().get("POSTGIS_HOST", "127.0.0.1");		
@@ -246,38 +240,44 @@ public class MainDao {
 		// Get parameteres connection from properties file
 		if (!getConnectionParameters()) return false;
 		
+		// Check parameters
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
 			Utils.getLogger().info("Connection not possible. Check parameters in properties file");
 			return false;
 		}
-		
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
+		
+		// Check if Internet is available
+		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
+			if (!UtilsFTP.isInternetReachable()) {
+				Utils.showError("Connection not possible. Internet is not available");	
+				return false;
+			}		
+		}
+		
 		int count = 0;
 		do {
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
 			isConnected = setConnectionPostgis(host, port, db, user, password, false);
-		} while (!isConnected && count < 4);
+		} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
 		
 		// Try to connect to the default database if we couldn't connect previously
 		if (!isConnected) {
 			Utils.getLogger().info("Connection not possible. Trying to connect to 'postgres' database instead");
-			db = "postgres";
+			db = DEFAULT_DB;
 			count = 0;
 			do {
 				count++;
 				Utils.getLogger().info("Trying to connect to default Database: " + count);
 				isConnected = setConnectionPostgis(host, port, db, user, password, false);
-			} while (!isConnected && count < 4);
+			} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
 		}
 
 		if (isConnected) {
-			// Get Postgis data and bin folder
+			// Get Postgis data
 	    	String dataPath = MainDao.getDataDirectory();
 	    	PropertiesDao.getGswProperties().put("POSTGIS_DATA", dataPath);
-	        File dataFolder = new File(dataPath);
-	        String binPath = dataFolder.getParent() + File.separator + "bin";
-	        PropertiesDao.getGswProperties().put("POSTGIS_BIN", binPath);	
 			Utils.getLogger().info("Connection successful");
 	    	Utils.getLogger().info("Postgre data directory: " + dataPath);	
 		}
@@ -344,14 +344,6 @@ public class MainDao {
 	
 	private static boolean initDatabase() {
 		
-		String bin = PropertiesDao.getGswProperties().get("POSTGIS_BIN", "");
-		File file = new File(bin);
-		if (!file.exists()){
-			Utils.showError("postgis_not_found", bin);
-			return false;			
-		}
-		bin+= File.separator;
-		
 		// Execute script that creates working Database
 		String filePath = Utils.getAppPath() + "sql" + File.separator + INIT_GISWATER_DDB;
     	String content;
@@ -410,16 +402,19 @@ public class MainDao {
     public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean showError) {
     	
     	schemaMap = new HashMap<String, Integer>();
+    	// TODO: SSL or SSH
         String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
+        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password+"&ssl=true";
+        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
         } catch (SQLException e) {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
             } catch (SQLException e1) {
-            	if (showError){
+            	if (showError) {
             		Utils.showError(e1.getMessage());
-            	} else{
+            	} else {
             		Utils.logError(e1.getMessage());
             	}
                 return false;
