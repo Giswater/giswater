@@ -600,6 +600,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		lblInfo.setText(text);
 		
 	}
+
+	public void enableAccept(boolean enabled) {
+		btnAccept.setEnabled(enabled);
+	}
 	
 		
 }

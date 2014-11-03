@@ -20,7 +20,6 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.ResultSet;
@@ -29,7 +28,6 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.giswater.dao.HecRasDao;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
@@ -37,6 +35,8 @@ import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
+import org.giswater.task.ExportSdfTask;
+import org.giswater.task.LoadDtmTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -171,16 +171,18 @@ public class HecRasController extends AbstractController {
 			MainClass.mdi.showError("file_asc_not_selected");
 			return;
 		}
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
+    	
+		// Execute task
 		String schemaName = MainDao.getSchema();
 		String filePath = fileAsc.getAbsolutePath();
 		String fileName = fileAsc.getName();
-    	HecRasDao.loadRaster(schemaName, filePath, fileName);  	
+		LoadDtmTask task = new LoadDtmTask(schemaName, filePath, fileName);
+        task.addPropertyChangeListener(this);
+        task.execute();
         	
     }
     
     
-    // Create HEC-RAS file    
 	public void exportSdf() {
    	
 		// Check SDF file is set
@@ -189,30 +191,14 @@ public class HecRasController extends AbstractController {
 			return;
 		}
 
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        
 		String schemaName = MainDao.getSchema();
 		String fileName = fileSdf.getName();
-		Integer result = HecRasDao.createSdfFile(schemaName, fileName, 
+//		Integer result = HecRasDao.createSdfFile(schemaName, fileName, 
+//			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
+		ExportSdfTask task = new ExportSdfTask(schemaName, fileSdf, fileName,
 			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
-		if (result == 0) {
-			// Copy file from Postgis Data Directory to folder specified by the user
-			String auxIn, auxOut;
-			String folderIn = gswProp.getProperty("POSTGIS_DATA");
-			auxIn = folderIn + File.separator + fileName;
-			auxOut = fileSdf.getAbsolutePath();
-			boolean ok = Utils.copyFile(auxIn, auxOut);
-			if (!ok) {
-				MainClass.mdi.showError("sdf_error");
-			}
-			else {
-				MainClass.mdi.showMessage("sdf_ok");
-			}
-		}
-		else {
-			// TODO: Get error from table and show to the user
-			String msg = MainDao.getErrorMessage();
-			MainClass.mdi.showError(msg);
-		}
+        task.addPropertyChangeListener(this);
+        task.execute();
 		
 	}
 	

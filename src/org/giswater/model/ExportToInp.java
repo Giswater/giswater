@@ -317,7 +317,6 @@ public class ExportToInp extends Model {
             	if ((!ExportToInp.isVersion51) && 
             		(sKey.equals("max_trials") || sKey.equals("head_tolerance") || sKey.equals("sys_flow_tol") || sKey.equals("lat_flow_tol"))) {
             		// Ignore them	
-            		System.out.println("SS");
             	}
             	else {
 	                sValor = (String) m.get(sKey);

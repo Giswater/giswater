@@ -619,7 +619,6 @@ public class ImportRpt extends Model {
 			if (token.contains("..")) {
 				valueFound = true;
 			}
-			// TODO: EPANET Number of Junctions...
 			if (valueFound && !token.contains("..")) {
 				numTokens++;
 				if (numTokens <= rptTarget.getTokens()) {
@@ -1148,11 +1147,10 @@ public class ImportRpt extends Model {
 		
 		try {
 			
-	        PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
+	        ResultSet rs = MainDao.getResultset(sql);
 	        ResultSetMetaData rsmd = rs.getMetaData();	
 	        int m = 2;
-	        if (rptTokens.size() > NORMAL_NUM_FIELDS){
+	        if (rptTokens.size() > NORMAL_NUM_FIELDS) {
 	        	existWaterFields = true;
 	        	m = 0;
 	        }

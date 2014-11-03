@@ -20,11 +20,15 @@
  */
 package org.giswater.task;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.NewProjectController;
-import org.giswater.dao.HecRasDao;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Utils;
@@ -64,6 +68,83 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
+	
+	public static boolean createSchema(String softwareName, String schemaName, String srid) {
+		
+		boolean status = false;
+		String sql = "CREATE schema "+schemaName;
+		if (!MainDao.executeUpdateSql(sql, false, true)){
+			MainDao.rollback();
+			return status;	
+		}
+		String filePath = "";
+		String content = "";
+    	
+		try {
+
+	    	String folderRoot = new File(".").getCanonicalPath()+File.separator;			
+			filePath = folderRoot+"sql"+File.separator+softwareName+".sql";
+	    	content = Utils.readFile(filePath);
+			
+	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("SRID_VALUE", srid);
+			Utils.logSql(content);
+
+			if (MainDao.executeSql(content, false)) {
+				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
+		    	content = Utils.readFile(filePath);
+				content = content.replace("SCHEMA_NAME", schemaName);		   
+				Utils.logSql(content);
+				if (MainDao.executeSql(content, false)) {
+					filePath = folderRoot+"sql"+File.separator+softwareName+"_value_default.sql";
+			    	content = Utils.readFile(filePath);
+					content = content.replace("SCHEMA_NAME", schemaName);
+					Utils.logSql(content);
+					if (MainDao.executeSql(content, false)) {
+						filePath = folderRoot+"sql"+File.separator+softwareName+"_functrigger.sql";
+				    	content = Utils.readFile(filePath);
+						content = content.replace("SCHEMA_NAME", schemaName);
+						Utils.logSql(content);
+						status = MainDao.executeSql(content, false);
+					}					
+				}
+			}
+			
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+        }
+		return status;
+		
+	}
+	
+	
+	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
+		
+		boolean status = false;
+		String filePath = "";
+		try {		
+			filePath = Utils.getAppPath()+"sql"+File.separator+softwareName+".sql";
+			String content = Utils.readFile(filePath);
+			if (content.equals("")) return false;
+	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
+			content = content.replace("SCHEMA_NAME", schemaName);
+			content = content.replace("SRID_VALUE", srid);			
+			content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));		
+			Utils.logSql(content);
+			status = MainDao.executeUpdateSql(content, false, true);
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+		}
+		return status;
+		
+	}
+	
+	
     @Override
     public Void doInBackground() { 
 		
@@ -82,10 +163,10 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
     	Utils.setPanelEnabled(parentPanel, false);
     	
 		if (waterSoftware.equals("HECRAS")) {
-			status = HecRasDao.createSchemaHecRas(waterSoftware, schemaName, sridValue);	
+			status = createSchemaHecRas(waterSoftware, schemaName, sridValue);	
 		}
 		else {
-			status = MainDao.createSchema(waterSoftware, schemaName, sridValue);	
+			status = createSchema(waterSoftware, schemaName, sridValue);	
 		}
 		if (status) {
 			MainDao.setSchema(schemaName);

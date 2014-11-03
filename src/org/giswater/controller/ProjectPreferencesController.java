@@ -34,6 +34,7 @@ import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
+import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
@@ -52,6 +53,7 @@ public class ProjectPreferencesController extends AbstractController {
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
 	private EpaSoftPanel epaSoftPanel;
+	private HecRasPanel hecRasPanel;
     private String usersFolder;
 	private String waterSoftware;
 
@@ -61,6 +63,7 @@ public class ProjectPreferencesController extends AbstractController {
 		this.view = ppPanel;	
 		this.mainFrame = mf;
 		this.epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
+		this.hecRasPanel = mainFrame.hecRasFrame.getPanel();
     	this.usersFolder = MainDao.getRootFolder(); 
 	    view.setController(this);    
 	    
@@ -86,7 +89,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// HECRAS
 		if (waterSoftware.equals("HECRAS")) {
 			mainFrame.epaSoftFrame.setVisible(false);
-			mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
+			//mainFrame.hecRasFrame.getPanel().enableButtons(MainDao.isConnected());
         	try {
 				mainFrame.hecRasFrame.setMaximum(true);
 				mainFrame.hecRasFrame.setVisible(true);
@@ -241,7 +244,7 @@ public class ProjectPreferencesController extends AbstractController {
 			mainFrame.enableMenuDatabase(false);
 			view.enableConnectionParameters(true);			
 		}
-		else{
+		else {
 			if (openConnection()) {
 				mainFrame.enableMenuDatabase(true);
 				view.enableConnectionParameters(false);
@@ -280,17 +283,18 @@ public class ProjectPreferencesController extends AbstractController {
 		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
 		MainDao.setConnected(isConnected);
 		
-		if (isConnected){
+		if (isConnected) {
 			PropertiesDao.getGswProperties().put("POSTGIS_HOST", host);
 			PropertiesDao.getGswProperties().put("POSTGIS_PORT", port);
 			PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", db);
 			PropertiesDao.getGswProperties().put("POSTGIS_USER", user);
 			// Save encrypted password
-			if (view.getRemember()){
+			if (view.getRemember()) {
 				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(password));
-			} else{
+			} else {
 				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", "");
 			}
+			MainDao.setConnectionParams(host, port, db, user, password);
 			
 			// Get Postgis data and bin Folder
 	    	String dataPath = MainDao.getDataDirectory();
@@ -302,7 +306,7 @@ public class ProjectPreferencesController extends AbstractController {
 	        Utils.getLogger().info("Postgre data directory: " + dataPath);	
 	    	Utils.getLogger().info("Postgre version: " + MainDao.checkPostgreVersion());
         	String postgisVersion = MainDao.checkPostgisVersion();	        
-        	if (postgisVersion.equals("")){
+        	if (postgisVersion.equals("")) {
         		// Enable Postgis to current Database
         		String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
         		MainDao.executeUpdateSql(sql, true, false);			  	
@@ -333,7 +337,6 @@ public class ProjectPreferencesController extends AbstractController {
 			epaSoftPanel.enableRunAndImport(true);
 			// Check if we already are connected
 			if (MainDao.isConnected()) {
-				mainFrame.hecRasFrame.getPanel().enableButtons(true);
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
 				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
@@ -347,14 +350,15 @@ public class ProjectPreferencesController extends AbstractController {
 				view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
 				epaSoftPanel.enablePreprocess(enabled);
 				epaSoftPanel.enableAccept(enabled);
+				hecRasPanel.enableButtons(enabled);
 			} 
 			else {
-				mainFrame.hecRasFrame.getPanel().enableButtons(false);
 				mainFrame.enableMenuDatabase(false);
 				view.enableProjectManagement(false);
 				view.setSchemaModel(null);	
 				epaSoftPanel.enableDatabaseButtons(false);
 				epaSoftPanel.enableAccept(false);
+				hecRasPanel.enableButtons(false);
 			}
 		}
 		
@@ -364,11 +368,11 @@ public class ProjectPreferencesController extends AbstractController {
 			view.enableProjectManagement(false);
 			view.enableDbfStorage(true);		
 			epaSoftPanel.enableRunAndImport(false);
-			mainFrame.hecRasFrame.getPanel().enableButtons(false);
 			mainFrame.enableMenuDatabase(false);
 			view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
+			hecRasPanel.enableButtons(false);
 		}
 		
 	}

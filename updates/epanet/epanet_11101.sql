@@ -15,6 +15,21 @@ This version of Giswater is provided by Giswater Association
 -- ------------------------------------------------------------
 
 -- ----------------------------
+-- Table modified structure for rpt_arc
+-- ----------------------------
+ALTER TABLE "SCHEMA_NAME"."rpt_arc"
+ADD COLUMN "status" varchar(16);
+
+
+-- ----------------------------
+-- Table modified structure for rpt_result_cat
+-- ----------------------------
+ALTER TABLE "SCHEMA_NAME"."rpt_result_cat"
+ADD COLUMN "q_timestep" varchar(16),
+ADD COLUMN "q_tolerance" varchar(16);
+
+
+-- ----------------------------
 -- Table modified structure for rpt_node
 -- ----------------------------
 

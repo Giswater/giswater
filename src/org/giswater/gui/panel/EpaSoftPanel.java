@@ -407,16 +407,16 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		txtResultName.setEnabled(enable);		
 	}
 	
-	public void enableAccept(boolean enable){
+	public void enableAccept(boolean enable) {
 		btnAccept.setEnabled(enable);
 	}	
 	
-	public void setDesignButton(String text, String actionCommand){
+	public void setDesignButton(String text, String actionCommand) {
 		btnDesign.setText(text);
 		btnDesign.setActionCommand(actionCommand);
 	}
 	
-	public void setOptionsButton(String text, String actionCommand){
+	public void setOptionsButton(String text, String actionCommand) {
 		btnOptions.setText(text);
 		btnOptions.setActionCommand(actionCommand);
 	}	

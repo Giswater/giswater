@@ -26,7 +26,6 @@ import java.io.File;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.MenuController;
-import org.giswater.dao.HecRasDao;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.frame.MainFrame;
@@ -58,6 +57,46 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 	}
 
 	
+	private boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
+		
+		String srid = MainDao.getTableSrid(schemaName, "mdt").toString();
+		String logFolder = Utils.getLogFolder();
+		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
+		
+		// Check if DTM table already exists
+		if (MainDao.checkTableHasData(schemaName, "mdt")) {
+			String msg = "DTM table already loaded. Do you want to overwrite it?";
+			int res = Utils.confirmDialog(msg);
+			if (res != 0) {
+				return false;
+			}			
+		}
+		
+		// Set content of .bat file
+		String bin = MainDao.getBin();
+		String user = MainDao.getUser();
+		String host = MainDao.getHost();
+		String port = MainDao.getPort();
+		String db = MainDao.getDb();
+		String aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
+		aux+= "\n";
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
+		aux+= "\n";		
+		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
+		aux+= "\ndel " + fileSql;
+		aux+= "\nexit";				
+		Utils.getLogger().info(aux);
+
+        // Fill and execute .bat File	
+		File batFile = new File(logFolder + "raster2pgsql.bat");        
+		Utils.fillFile(batFile, aux);    		
+		Utils.openFile(batFile.getAbsolutePath());
+		
+    	return true;
+    	
+	}
+	
+	
     @Override
     public Void doInBackground() { 
 		
@@ -76,10 +115,10 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
 		
 		if (waterSoftware.equals("hecras")) {
-			status = HecRasDao.createSchemaHecRas(waterSoftware, schemaName, sridValue);
+			status = CreateSchemaTask.createSchemaHecRas(waterSoftware, schemaName, sridValue);
 		}
 		else {
-			status = MainDao.createSchema(waterSoftware, schemaName, sridValue);
+			status = CreateSchemaTask.createSchema(waterSoftware, schemaName, sridValue);
 		}
 		if (status) {
 			MainDao.setSchema(schemaName);
@@ -106,7 +145,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 						// Trough Load Raster
 						String rasterName = "sample_mdt.asc";	 						
 						String rasterPath = folderRoot+"samples/"+rasterName;	 						
-						if (HecRasDao.loadRaster(schemaName, rasterPath, rasterName)) {
+						if (loadRaster(schemaName, rasterPath, rasterName)) {
 							String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
 							MainClass.mdi.showMessage(msg);
 						}						
@@ -135,6 +174,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		mainFrame.setCursorFrames(new Cursor(Cursor.DEFAULT_CURSOR));
 		controller.gswEdit();
 		mainFrame.updateEpaFrames();
+		mainFrame.ppFrame.getPanel().setSelectedSchema(schemaName);
 		
 		return null;
     	

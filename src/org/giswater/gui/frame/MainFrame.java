@@ -143,7 +143,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		setIcons();
 		setNewVersionVisible(newVersion, ftpVersion);
 		initFrames();
-		hecRasFrame.getPanel().enableButtons(isConnected);
 		
 	}
 
@@ -666,11 +665,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		String info = "";
 		if (MainDao.isConnected()) {
 			schema = MainDao.getSchema();
-			if (schema != null && !schema.equals("")){
+			if (schema != null && !schema.equals("")) {
 				info+= schema;
+				ppFrame.getPanel().enableAccept(true);
 			}
 			else {
 				info+= "Any project data selected";
+				ppFrame.getPanel().enableAccept(false);
 			}
 			lblInfo.setIcon(iconGreen);
 		}
@@ -680,6 +681,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		lblInfo.setText(info);
 		
 	}
+	
 	
 	public void setProgressVisible(boolean visible) {
 		progressInfo.setValue(0);
@@ -699,14 +701,22 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	public void showMessage(String msg) {
-		showMessage(msg, false);
+		showMessage(msg, false, 5000);
 	}
 	
 	public void showMessage(String msg, boolean isFixed) {
+		showMessage(msg, isFixed, 5000);
+	}
+	
+	public void showMessage(String msg, int delay) {
+		showMessage(msg, false, delay);
+	}
+	
+	public void showMessage(String msg, boolean isFixed, int delay) {
 		lblProcessInfo.setIcon(iconInfo);		
 		lblProcessInfo.setText(Utils.getBundleString(msg));
 		if (!isFixed) {
-			resetProcessInfo();		
+			resetProcessInfo(delay);		
 		}
 	}
 	
@@ -724,11 +734,13 @@ public class MainFrame extends JFrame implements ActionListener{
 		resetProcessInfo();
 	}
 	
-	
+	// Show info 5 seconds
 	public void resetProcessInfo() {
+		resetProcessInfo(5000);
+	}
+	
+	public void resetProcessInfo(int delay) {
 		
-		// Show info 5 seconds
-		int delay = 5000;
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				lblProcessInfo.setIcon(null);

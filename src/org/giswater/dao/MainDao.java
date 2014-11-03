@@ -21,7 +21,6 @@
 package org.giswater.dao;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -74,6 +73,34 @@ public class MainDao {
 	
 	public static String getDb() {
 		return db;
+	}
+	
+	public static String getBin() {
+		return bin;
+	}
+	
+	public static String getHost() {
+		return host;
+	}
+	
+	public static String getPort() {
+		return port;
+	}
+	
+	public static String getUser() {
+		return user;
+	}
+	
+	public static String getPassword() {
+		return password;
+	}
+	
+	public static void setConnectionParams(String host, String port, String db, String user, String password) {
+		MainDao.host = host;
+		MainDao.port = port;
+		MainDao.db = db;
+		MainDao.user = user;
+		MainDao.password = password;
 	}
 	
 	public static Connection getConnectionPostgis() {
@@ -295,16 +322,16 @@ public class MainDao {
 		commonSteps();
 		if (isConnected) {
 			if (db.equals(DEFAULT_DB)) {
-				if (!MainDao.checkDatabase(INIT_DB)){
+				if (!MainDao.checkDatabase(INIT_DB)) {
 					Utils.getLogger().info("Creating database... " + INIT_DB);
 					if (!initDatabase()) {
 						return false;
 					}
+					PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", INIT_DB);
+					// Close current connection in order to connect later to Database just created: giswater_ddb
+					closeConnectionPostgis();	
+					return true;
 				} 
-				PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", INIT_DB);
-				// Close current connection in order to connect later to Database just created: giswater_ddb
-				closeConnectionPostgis();	
-				return true;
 			} 
 			return true;
 		}
@@ -778,58 +805,6 @@ public class MainDao {
 	}
 	
 	
-	public static boolean createSchema(String softwareName, String schemaName, String srid) {
-		
-		boolean status = false;
-		String sql = "CREATE schema "+schemaName;
-		if (!executeUpdateSql(sql, false, true)){
-			rollback();
-			return status;	
-		}
-		String filePath = "";
-		String content = "";
-    	
-		try {
-
-	    	String folderRoot = new File(".").getCanonicalPath()+File.separator;			
-			filePath = folderRoot+"sql"+File.separator+softwareName+".sql";
-	    	content = Utils.readFile(filePath);
-			
-	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
-			content = content.replace("SCHEMA_NAME", schemaName);
-			content = content.replace("SRID_VALUE", srid);
-			Utils.logSql(content);
-
-			if (executeSql(content, false)) {
-				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
-		    	content = Utils.readFile(filePath);
-				content = content.replace("SCHEMA_NAME", schemaName);		   
-				Utils.logSql(content);
-				if (executeSql(content, false)) {
-					filePath = folderRoot+"sql"+File.separator+softwareName+"_value_default.sql";
-			    	content = Utils.readFile(filePath);
-					content = content.replace("SCHEMA_NAME", schemaName);
-					Utils.logSql(content);
-					if (executeSql(content, false)) {
-						filePath = folderRoot+"sql"+File.separator+softwareName+"_functrigger.sql";
-				    	content = Utils.readFile(filePath);
-						content = content.replace("SCHEMA_NAME", schemaName);
-						Utils.logSql(content);
-						status = executeSql(content, false);
-					}					
-				}
-			}
-			
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-        }
-		return status;
-		
-	}
-
-
 	public static int getNumberOfRows(ResultSet rs) {
 		
 		if (rs == null) {

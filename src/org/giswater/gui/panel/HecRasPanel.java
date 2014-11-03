@@ -70,7 +70,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnLogFile;
 	private JButton btnErrorFile;
 	private JButton btnShowProjectData;
-	private JButton btnExportMdt;
+	private JButton btnExportDtm;
 	
 	private JButton btnEditProjectPreferences;
 	private JButton btnClose;
@@ -109,6 +109,12 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		txtFileSdf.setEnabled(isEnabled);	
 		btnFileSdf.setEnabled(isEnabled);	
 		btnExportSdf.setEnabled(isEnabled);
+		
+		// Data Manager buttons
+		btnLogFile.setEnabled(isEnabled);
+		btnErrorFile.setEnabled(isEnabled);
+		btnShowProjectData.setEnabled(isEnabled);
+		btnExportDtm.setEnabled(isEnabled);
 		
 		// Check if we have to enable Load Raster button
 		PropertiesMap prop = PropertiesDao.getPropertiesFile();
@@ -262,9 +268,9 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnShowProjectData.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnShowProjectData, "cell 2 0,growx");
 		
-		btnExportMdt = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
-		btnExportMdt.setMinimumSize(new Dimension(0, 23));
-		panelDataManager.add(btnExportMdt, "cell 3 0,growx");
+		btnExportDtm = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
+		btnExportDtm.setMinimumSize(new Dimension(0, 23));
+		panelDataManager.add(btnExportDtm, "cell 3 0,growx");
 		
 		btnEditProjectPreferences = new JButton("Edit Project Preferences");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
