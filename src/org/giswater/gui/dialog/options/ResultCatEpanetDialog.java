@@ -65,8 +65,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 
 		setTitle("Table rpt_result_cat");
 		setBounds(0, 0, 480, 473);
-		getContentPane().setLayout(new MigLayout("", "[90.00][360.00]", "[352.00][5px:n][30]"));
-		MaxLengthTextDocument maxLength20 = new MaxLengthTextDocument(20);		
+		getContentPane().setLayout(new MigLayout("", "[90.00][360.00]", "[352.00][5px:n][30]"));	
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -88,7 +87,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtTimestamp = new JTextField();
 		txtTimestamp.setEnabled(false);
 		txtTimestamp.setName("exec_date");
-		txtTimestamp.setDocument(maxLength20);
 		panelGeneral.add(txtTimestamp, "cell 1 1 3 1,growx");
 		
 		JLabel lblNewLabel_1 = new JLabel("Junction:");
@@ -97,7 +95,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtQuality = new JTextField();
 		txtQuality.setEnabled(false);
 		txtQuality.setName("n_junction");
-		txtQuality.setDocument(maxLength20);
 		panelGeneral.add(txtQuality, "cell 1 2,growx");
 		
 		JLabel lblStartDate = new JLabel("Max tr ch:");
@@ -107,7 +104,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtRule = new JTextField();
 		txtRule.setEnabled(false);
 		txtRule.setName("max_tr_ch");
-		txtRule.setDocument(maxLength20);
 		panelGeneral.add(txtRule, "cell 4 2,growx");
 		
 		JLabel lblPatternTimestep = new JLabel("Reservoir:");
@@ -117,7 +113,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtPattern = new JTextField();
 		txtPattern.setEnabled(false);
 		txtPattern.setName("n_reservoir");
-		txtPattern.setDocument(maxLength20);
 		panelGeneral.add(txtPattern, "cell 1 3,growx");
 		
 		JLabel lblPatternStep = new JLabel("Dam li thr:");
@@ -127,7 +122,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtPatternStart = new JTextField();
 		txtPatternStart.setEnabled(false);
 		txtPatternStart.setName("dam_li_thr");
-		txtPatternStart.setDocument(maxLength20);
 		panelGeneral.add(txtPatternStart, "cell 4 3,growx");
 		
 		JLabel lblReportTimestep = new JLabel("Tank:");
@@ -137,7 +131,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtReport = new JTextField();
 		txtReport.setEnabled(false);
 		txtReport.setName("n_tank");
-		txtReport.setDocument(maxLength20);
 		panelGeneral.add(txtReport, "cell 1 4,growx");
 		
 		JLabel lblReportStart = new JLabel("Max trials:");
@@ -147,7 +140,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtReportStart = new JTextField();
 		txtReportStart.setEnabled(false);
 		txtReportStart.setName("max_trials");
-		txtReportStart.setDocument(maxLength20);
 		panelGeneral.add(txtReportStart, "cell 4 4,growx");
 		
 		JLabel lblStartClocktime = new JLabel("Pipe:");
@@ -157,7 +149,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtStart = new JTextField();
 		txtStart.setEnabled(false);
 		txtStart.setName("n_pipe");
-		txtStart.setDocument(maxLength20);
 		panelGeneral.add(txtStart, "cell 1 5,growx");
 		
 		JLabel lblStatistic = new JLabel("Q Analysis:");
@@ -166,7 +157,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_4 = new JTextField();
 		textField_4.setEnabled(false);
 		textField_4.setName("q_analysis");
-		textField_4.setDocument(maxLength20);
 		panelGeneral.add(textField_4, "cell 4 5,growx");
 		
 		JLabel lblFlowRouting = new JLabel("Pump:");
@@ -176,7 +166,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField = new JTextField();
 		textField.setEnabled(false);
 		textField.setName("n_pump");
-		textField.setDocument(maxLength20);
 		panelGeneral.add(textField, "cell 1 6,growx");
 		
 		JLabel lblInfiltration = new JLabel("Spec grav:");
@@ -185,7 +174,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_5 = new JTextField();
 		textField_5.setEnabled(false);
 		textField_5.setName("spec_grav");
-		textField_5.setDocument(maxLength20);
 		panelGeneral.add(textField_5, "cell 4 6,growx");
 		
 		JLabel lblPondAll = new JLabel("Valve:");
@@ -195,7 +183,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_1 = new JTextField();
 		textField_1.setEnabled(false);
 		textField_1.setName("n_valve");
-		textField_1.setDocument(maxLength20);
 		panelGeneral.add(textField_1, "cell 1 7,growx");
 		
 		JLabel lblRuleTimestep = new JLabel("Kin visc:");
@@ -205,7 +192,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_6 = new JTextField();
 		textField_6.setEnabled(false);
 		textField_6.setName("r_kin_visc");
-		textField_6.setDocument(maxLength20);
 		panelGeneral.add(textField_6, "cell 4 7,growx");
 		
 		JLabel lblWaterQ = new JLabel("Head form:");
@@ -215,7 +201,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_2 = new JTextField();
 		textField_2.setEnabled(false);
 		textField_2.setName("head_form");
-		textField_2.setDocument(maxLength20);
 		panelGeneral.add(textField_2, "cell 1 8,growx");
 		
 		JLabel lblRoutTimestep = new JLabel("Che diff");
@@ -225,7 +210,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_7 = new JTextField();
 		textField_7.setEnabled(false);
 		textField_7.setName("r_che_diff");
-		textField_7.setDocument(maxLength20);
 		panelGeneral.add(textField_7, "cell 4 8,growx");
 		
 		JLabel lblInfilM = new JLabel("Hydra time:");
@@ -234,7 +218,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_3 = new JTextField();
 		textField_3.setEnabled(false);
 		textField_3.setName("hydra_time");
-		textField_3.setDocument(maxLength20);
 		panelGeneral.add(textField_3, "cell 1 9,growx");
 		
 		JLabel lblDemMulti = new JLabel("Dem multi:");
@@ -244,7 +227,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_9 = new JTextField();
 		textField_9.setEnabled(false);
 		textField_9.setName("dem_multi");
-		textField_9.setDocument(maxLength20);
 		panelGeneral.add(textField_9, "cell 4 9,growx");
 		
 		JLabel lblHydraAcc = new JLabel("Hydra acc:");
@@ -253,7 +235,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_8 = new JTextField();
 		textField_8.setEnabled(false);
 		textField_8.setName("hydra_acc");
-		textField_8.setDocument(maxLength20);
 		panelGeneral.add(textField_8, "cell 1 10,growx");
 		
 		JLabel lblTotalDuration = new JLabel("Total duration:");
@@ -263,7 +244,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField textField_10 = new JTextField();
 		textField_10.setEnabled(false);
 		textField_10.setName("total_dura");
-		textField_10.setDocument(maxLength20);
 		panelGeneral.add(textField_10, "cell 4 10,growx");
 		
 		JLabel lblFlowRouteM = new JLabel("St ch freq:");
@@ -272,7 +252,6 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		JTextField txtHydraulic = new JTextField();
 		txtHydraulic.setEnabled(false);
 		txtHydraulic.setName("st_ch_freq");
-		txtHydraulic.setDocument(maxLength20);
 		panelGeneral.add(txtHydraulic, "cell 1 11,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        

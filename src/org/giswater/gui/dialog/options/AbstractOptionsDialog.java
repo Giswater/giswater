@@ -81,10 +81,10 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	
 	
 	public void setTextField(JTextField textField, Object value) {
-		if (value!=null){
+		if (value != null) {
 			textField.setText(value.toString());
 		}
-		else{
+		else {
 			textField.setText("");
 		}
 	}	
@@ -169,9 +169,6 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 			dispose();
 		}
 	}
-
-
-
 
 	
 }
