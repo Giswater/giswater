@@ -37,7 +37,7 @@ import org.giswater.util.MaxLengthTextDocument;
 import net.miginfocom.swing.MigLayout;
 
 
-public class ArcCatalogDialog extends AbstractCatalogDialog{
+public class ArcCatalogDialog extends AbstractCatalogDialog {
 
 	private JTextField txtTsect;
 	private JComboBox<String> cboShape;
@@ -51,21 +51,22 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 	public ArcCatalogDialog() {
 		initConfig();
 		createComponentMap();
+		
 	}	
 
-	public void enablePrevious(boolean enable){
-		if (btnPrevious != null){
+	public void enablePrevious(boolean enable) {
+		if (btnPrevious != null) {
 			btnPrevious.setEnabled(enable);
 		}
 	}
 	
-	public void enableNext(boolean enable){
-		if (btnNext != null){
+	public void enableNext(boolean enable) {
+		if (btnNext != null) {
 			btnNext.setEnabled(enable);
 		}
 	}		
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table cat_arc");
 		setBounds(100, 100, 502, 278);
@@ -221,15 +222,15 @@ public class ArcCatalogDialog extends AbstractCatalogDialog{
 	}
 	
 	
-	public void shapeChanged(){
+	public void shapeChanged() {
 		
 		txtCurve.setEnabled(false);
 		txtTsect.setEnabled(false);
 		String shape = cboShape.getSelectedItem().toString();
-		if (shape.toUpperCase().equals("CUSTOM")){
+		if (shape.toUpperCase().equals("CUSTOM")) {
 			txtCurve.setEnabled(true);
 		}
-		else if (shape.toUpperCase().equals("IRREGULAR")){
+		else if (shape.toUpperCase().equals("IRREGULAR")) {
 			txtTsect.setEnabled(true);
 		}
 		

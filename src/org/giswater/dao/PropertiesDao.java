@@ -100,7 +100,9 @@ public class PropertiesDao {
 		PropertiesDao.rootFolder = rootFolder;
 		
     	// Load Properties files
-    	if (!loadPropertiesFile()) return false;
+    	if (!loadPropertiesFile()) {
+    		Utils.getLogger().info("Error loading Properties file");	  
+    	}
     	
     	// Get default and template gsw files
     	gswDefaultPath = rootFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
@@ -114,7 +116,7 @@ public class PropertiesDao {
             gswPath = gswDefaultPath;
         	gswFile = new File(gswPath);  
     		Utils.getLogger().info("Loading default .gsw file: " + gswPath);	        	
-        	if (!gswFile.exists()){
+        	if (!gswFile.exists()) {
                 Utils.showError("gsw_default_notfound", gswPath);    
                 return false;
         	}

@@ -360,32 +360,6 @@ public class MainDao {
 	}
 	
 	
-	@SuppressWarnings("unused")
-	private static boolean initDatabaseScript() {
-		
-		// Execute script that creates working Database
-		// Set content of .bat file
-		if (!getConnectionParameters()) return false;
-		String aux= "\""+bin+"createdb\" -U "+user+" -h "+host+" -p "+port+" -w " + INIT_DB;
-		aux+= "\nexit";		
-		Utils.getLogger().info(aux);
-
-        // Fill and execute .bat File	
-		String batPath = Utils.getLogFolder() + "createdb.bat";
-		File batFile = new File(batPath);        
-		Utils.fillFile(batFile, aux);    		
-		Utils.openFile(batFile.getAbsolutePath());
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {}
-		batFile.delete();
-		
-		return true;
-
-	}
-	
-	
 	public static void rollback() {
 		try {
 			connectionPostgis.rollback();

@@ -204,7 +204,7 @@ public class ExportToInpDbf extends Model{
 					}
 				}
 				// If key doesn't exist write empty spaces
-				else{
+				else {
 					for (int j = 0; j <= size; j++) {
 						raf.writeBytes(" ");
 					}					
@@ -217,7 +217,6 @@ public class ExportToInpDbf extends Model{
 
 	
 	// Read content of the DBF file and saved it in an Array
-	@SuppressWarnings("resource")
 	private static ArrayList<LinkedHashMap<String, String>> readDBF(File file) {
 
 		FileChannel in;
@@ -245,7 +244,7 @@ public class ExportToInpDbf extends Model{
 			return mAux;
 		} catch (IOException e) {
 			return mAux;
-		} catch (Exception e){
+		} catch (Exception e) {
 			Utils.logError(e.getMessage());
 		}
 

@@ -35,6 +35,7 @@ import org.giswater.util.UtilsFTP;
 public class MainClass {
 
 	public static MainFrame mdi;
+	private final static String CURRENT_VERSION = "1.1.136";
 
 
 	public static void main(String[] args) {
@@ -60,12 +61,13 @@ public class MainClass {
 				// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
-				if (versionCode == null){
-					versionCode = "1.1.123";
+				if (versionCode == null) {
+					versionCode = CURRENT_VERSION;
 				}
 				msg+= "\nVersion: " + versionCode;
 				Utils.getLogger().info(msg);				
-				if (!MainDao.configIni(versionCode)){
+				if (!MainDao.configIni(versionCode)) {
+					Utils.showError("Error initializing Giswater. Application could not start"); 
 					return;
 				}     
 
@@ -74,7 +76,7 @@ public class MainClass {
 				UtilsFTP ftp = null;
 				String aux = PropertiesDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
 				Boolean autoCheck = Boolean.parseBoolean(aux);
-				if (autoCheck){
+				if (autoCheck) {
 					// Check if new version is available
 					Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
 					Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));

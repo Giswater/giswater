@@ -570,7 +570,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtUser.setText(text);
 	}
 
-	@SuppressWarnings("deprecation")
 	public String getPassword() {
 		return txtPassword.getText();
 	}
