@@ -35,7 +35,7 @@ public abstract class AbstractController implements PropertyChangeListener {
 	
 	
     public AbstractController() {
-		usersFolder = MainDao.getRootFolder(); 	
+		usersFolder = MainDao.getGiswaterUsersFolder(); 	
 	}
 	
 	public void action(String actionCommand) {

@@ -29,7 +29,6 @@ import org.giswater.util.Utils;
 
 
 public class ExecuteDao extends MainDao {
-
 	
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
@@ -37,13 +36,19 @@ public class ExecuteDao extends MainDao {
 
 	public static boolean executeDump(String schema, String sqlPath) {
 
+		// Set bin folder
+		if (!MainDao.setBinFolder()) {
+			Utils.showError("Bin folder not found in:\n"+binFolder+"\nGo to Software configuration and set DB Admin location.");
+			return false;
+		}
+		
 		// Check pgPass file and insert param if necessary
 		if (!getConnectionParameters()) return false;
 		String param = host+":"+port+":"+db+":"+user+":"+password;
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+bin+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
+		String aux= "\""+binFolder+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
@@ -70,11 +75,17 @@ public class ExecuteDao extends MainDao {
 	
 	public static boolean executeRestore(String sqlPath) {
 		
+		// Set bin folder
+		if (!MainDao.setBinFolder()) {
+			Utils.showError("Bin folder not found in:\n"+binFolder+"\nGo to Software configuration and set DB Admin location.");
+			return false;
+		}
+		
 		// Read file in order to get schema_name
 		// Check if that schema already exists in Database
 		String schemaName = getSchemaName(sqlPath);
 		boolean exists = checkSchema(schemaName);
-		if (exists){
+		if (exists) {
 			// Get backup schema name
 			boolean existsBackup = false;
 			String backupName = schemaName+"_backup";
@@ -95,7 +106,7 @@ public class ExecuteDao extends MainDao {
 			}
 			// Rename current schema
 			String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+backupName;
-			if (!MainDao.executeUpdateSql(sql, true)){
+			if (!MainDao.executeUpdateSql(sql, true)) {
 				return false;
 			} 
 		}
@@ -106,7 +117,7 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
+		String aux= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
@@ -132,10 +143,10 @@ public class ExecuteDao extends MainDao {
 	
 	public static void executePostgisService(String service) {
 		
-		String folder = rootFolder + PORTABLE_FOLDER;
+		String folder = giswaterUsersFolder + PORTABLE_FOLDER;
 		String path = folder + PORTABLE_FILE;		
 		File file = new File(path);
-		if (!file.exists()){
+		if (!file.exists()) {
 			Utils.logError("Postgis service not found: "+path);
 			return;
 		}
@@ -148,7 +159,7 @@ public class ExecuteDao extends MainDao {
 		aux+= "\nSet wshShell = Nothing";
 
         // Fill and execute .vbs File	
-		File vbsFile = new File( Utils.getLogFolder() + "hide.vbs");        
+		File vbsFile = new File(Utils.getLogFolder() + "hide.vbs");        
 		Utils.fillFile(vbsFile, aux);    		
 		Utils.openFile(vbsFile.getAbsolutePath());
 		
@@ -157,9 +168,15 @@ public class ExecuteDao extends MainDao {
 	
 	public static boolean executeScript(String scriptPath, String batPath) {
 
+		// Set bin folder
+		if (!MainDao.setBinFolder()) {
+			Utils.showError("Bin folder not found in:\n"+binFolder+"\nGo to Software configuration and set DB Admin location.");
+			return false;
+		}
+		
 		// Set content of .bat file
 		if (!getConnectionParameters()) return false;
-		String aux= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
+		String aux= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+ " -f "+scriptPath;
 		aux+= "\nexit";		
 		Utils.getLogger().info(aux);
 
@@ -173,7 +190,7 @@ public class ExecuteDao extends MainDao {
 	}	
 	
 	
-	private static void checkPgPass(String param) {
+	public static void checkPgPass(String param) {
 
 		// Get AppData folder
 		String pgPassFolder = System.getProperty("user.home") + "/AppData/Roaming/postgresql";
@@ -227,6 +244,6 @@ public class ExecuteDao extends MainDao {
 		return schemaName;
 		
 	}
-	
+
 	
 }

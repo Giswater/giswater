@@ -197,7 +197,7 @@ public class NewProjectController extends AbstractController {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("Select file"));
-        File file = new File(PropertiesDao.getGswProperties().get("FILE_INP", MainDao.getRootFolder()));	
+        File file = new File(PropertiesDao.getGswProperties().get("FILE_INP", MainDao.getGiswaterUsersFolder()));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

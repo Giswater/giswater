@@ -47,7 +47,6 @@ import javax.swing.JScrollPane;
 
 public class ConfigPanel extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private ConfigController controller;	

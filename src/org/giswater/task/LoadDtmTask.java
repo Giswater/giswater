@@ -24,6 +24,7 @@ import java.io.File;
 
 import javax.swing.SwingWorker;
 
+import org.giswater.dao.ExecuteDao;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
@@ -60,16 +61,29 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 		}
 		
 		// Set content of .bat file
-		String bin = MainDao.getBin();
 		String user = MainDao.getUser();
 		String host = MainDao.getHost();
 		String port = MainDao.getPort();
 		String db = MainDao.getDb();
-		String aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
+		String password = MainDao.getPassword();
+		
+		// Set bin folder
+		if (!MainDao.setBinFolder()) {
+			String binFolder = MainDao.getBinFolder();
+			Utils.showError("Bin folder not found in:\n"+binFolder+"\nGo to Software configuration and set DB Admin location.");
+			return false;
+		}
+		
+		// Check pgPass file and insert param if necessary
+		String param = host+":"+port+":"+db+":"+user+":"+password;
+		ExecuteDao.checkPgPass(param);
+		
+		String binFolder = MainDao.getBinFolder();
+		String aux = "\""+binFolder+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
 		aux+= "\n";
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
+		aux+= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
 		aux+= "\n";		
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
+		aux+= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
 		aux+= "\ndel " + fileSql;
 		aux+= "\nexit";				
 		Utils.getLogger().info(aux);

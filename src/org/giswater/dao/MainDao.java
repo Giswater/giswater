@@ -46,8 +46,8 @@ public class MainDao {
 	protected static String db;
 	protected static String user;
 	protected static String password;
-	protected static String bin;
-	protected static String rootFolder;   // UsersFolder + ROOT_FOLDER
+	protected static String binFolder;
+	protected static String giswaterUsersFolder;   // UsersFolder + ROOT_FOLDER
 	
     private static Connection connectionPostgis;
 	private static String waterSoftware;   // EPASWMM or EPANET or HECRAS
@@ -61,7 +61,7 @@ public class MainDao {
 	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
 	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
     
-    private static final String ROOT_FOLDER = "giswater" + File.separator;
+    private static final String FOLDER_NAME = "giswater" + File.separator;
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
@@ -75,8 +75,8 @@ public class MainDao {
 		return db;
 	}
 	
-	public static String getBin() {
-		return bin;
+	public static String getBinFolder() {
+		return binFolder;
 	}
 	
 	public static String getHost() {
@@ -131,8 +131,8 @@ public class MainDao {
 		schema = param;
 	}
 
-	public static String getRootFolder() {
-		return rootFolder;
+	public static String getGiswaterUsersFolder() {
+		return giswaterUsersFolder;
 	}	
 	
 	public static String getGiswaterVersion() {
@@ -154,11 +154,13 @@ public class MainDao {
     	// Giswater version
     	giswaterVersion = versionCode;
     	
-        // Set users folder path
-        rootFolder = System.getProperty("user.home") + File.separator + ROOT_FOLDER;
+        // Set Giswater users folder path
+        giswaterUsersFolder = System.getProperty("user.home") + File.separator + FOLDER_NAME;
         
         // Properties files configuration
-        if (!PropertiesDao.configIni(rootFolder)) return false;
+        if (!PropertiesDao.configIni(giswaterUsersFolder)) {
+        	return false;
+        }
          	
     	// Log SQL?
     	Utils.setSqlLog(PropertiesDao.getPropertiesFile().get("SQL_LOG", "false"));
@@ -205,21 +207,46 @@ public class MainDao {
     }
        
     
+	public static boolean setBinFolder() {
+
+		boolean result = false;
+		String dbAdminPath = PropertiesDao.getPropertiesFile().get("FILE_DBADMIN", "");
+		if (!dbAdminPath.equals("")) {
+			File file = new File(dbAdminPath);
+			binFolder = file.getParent();
+			if (!file.exists()) {
+				// If path is relative, make it absolute and check it again
+				if (!file.isAbsolute()) {
+					Utils.getLogger().info("dbAdminFile path not exists: "+dbAdminPath);
+					String absolutePath = giswaterUsersFolder + dbAdminPath;
+					file = new File(absolutePath);
+					binFolder = file.getParent() + File.separator;
+					result = file.exists();
+				}
+				else {
+					result = false;
+				}
+			} 
+			else {
+				binFolder = file.getParent() + File.separator;
+				result = true;
+			}
+		} 
+		
+		return result;
+		
+	}
+	
+    
 	protected static boolean getConnectionParameters() {
 
-		// Get connection parameteres from properties file
-		String dbAdmin = PropertiesDao.getPropertiesFile().get("FILE_DBADMIN", "");
-		if (!dbAdmin.equals("")) { 
-			File fileAux = new File(dbAdmin);
-			if (!fileAux.exists()) {
-				Utils.logError("Database admin file not found", dbAdmin);	
-			}
-			bin = fileAux.getParent() + File.separator;
-		}
-		else {
-			Utils.logError("Database admin file not found", dbAdmin);
+		// Set bin folder
+		if (!setBinFolder()) {
+			Utils.showError("Database admin file not found in:\n"+binFolder+"\nGo to Software configuration and set DB Admin location.");
+			return false;
 		}
 		
+		// Get connection parameteres from properties file
 		host = PropertiesDao.getGswProperties().get("POSTGIS_HOST", "127.0.0.1");		
 		port = PropertiesDao.getGswProperties().get("POSTGIS_PORT", "5431");
 		db = PropertiesDao.getGswProperties().get("POSTGIS_DATABASE", "postgres");

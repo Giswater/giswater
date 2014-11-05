@@ -73,7 +73,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		}
 		
 		// Set content of .bat file
-		String bin = MainDao.getBin();
+		String bin = MainDao.getBinFolder();
 		String user = MainDao.getUser();
 		String host = MainDao.getHost();
 		String port = MainDao.getPort();

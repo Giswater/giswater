@@ -65,7 +65,7 @@ public class ProjectPreferencesController extends AbstractController {
 		this.mainFrame = mf;
 		this.epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
 		this.hecRasPanel = mainFrame.hecRasFrame.getPanel();
-    	this.usersFolder = MainDao.getRootFolder(); 
+    	this.usersFolder = MainDao.getGiswaterUsersFolder(); 
 	    view.setController(this);    
 	    
 	}
@@ -261,7 +261,7 @@ public class ProjectPreferencesController extends AbstractController {
 	private void closeConnection() {
 		
 		view.setConnectionText(Utils.getBundleString("open_connection"));
-		mainFrame.hecRasFrame.getPanel().enableButtons(false);
+		mainFrame.hecRasFrame.getPanel().enableControls(false);
 		MainDao.closeConnectionPostgis();
 		mainFrame.showMessage("connection_closed");			
 		
@@ -329,7 +329,7 @@ public class ProjectPreferencesController extends AbstractController {
 			mainFrame.showMessage("connection_opened");
 			
 			// Hecras form
-			mainFrame.hecRasFrame.getPanel().enableButtons(true);
+			mainFrame.hecRasFrame.getPanel().enableControls(true);
 
 		} 
 
@@ -360,7 +360,7 @@ public class ProjectPreferencesController extends AbstractController {
 				view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
 				epaSoftPanel.enablePreprocess(enabled);
 				epaSoftPanel.enableAccept(enabled);
-				hecRasPanel.enableButtons(enabled);
+				hecRasPanel.enableControls(enabled);
 			} 
 			else {
 				mainFrame.enableMenuDatabase(false);
@@ -368,7 +368,7 @@ public class ProjectPreferencesController extends AbstractController {
 				view.setSchemaModel(null);	
 				epaSoftPanel.enableDatabaseButtons(false);
 				epaSoftPanel.enableAccept(false);
-				hecRasPanel.enableButtons(false);
+				hecRasPanel.enableControls(false);
 			}
 		}
 		
@@ -382,7 +382,7 @@ public class ProjectPreferencesController extends AbstractController {
 			view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
-			hecRasPanel.enableButtons(false);
+			hecRasPanel.enableControls(false);
 		}
 		
 	}

@@ -131,7 +131,7 @@ public class MenuController extends AbstractController {
     }
     
     
-    private void openFrame(String prefix, JInternalFrame frame) {
+    private void openFrame(JInternalFrame frame) {
 
         try {
         	frame.setVisible(true);
@@ -171,7 +171,7 @@ public class MenuController extends AbstractController {
     
     public void gswEdit() {
     	action = "edit";
-		openFrame("PP", mainFrame.ppFrame);
+		openFrame(mainFrame.ppFrame);
     }
     
     
@@ -217,20 +217,21 @@ public class MenuController extends AbstractController {
 			PropertiesDao.getGswProperties().put("SCHEMA", "");
 		}
 		
+		// Update application title
+		mainFrame.updateTitle(gswName);
+		
 		// Update frames position and panels
 		mainFrame.updateFrames();
 		updateHecrasPanel();
 		updateEpaSoftPanel();  		
-		updateProjectPreferencesPanel();
-		if (acceptPreferences) {
-			mainFrame.ppFrame.getPanel().getController().acceptPreferences();
+		if (updateProjectPreferencesPanel()) {
+			if (acceptPreferences) {
+				mainFrame.ppFrame.getPanel().getController().acceptPreferences();
+			}
 		}
-
-    	// Update application title
-    	mainFrame.updateTitle(gswName);
     	
     	if (action.equals("new")) {
-    		mainFrame.ppFrame.setVisible(true);
+    		openFrame(mainFrame.ppFrame);
     	}
 		
 	}
@@ -294,7 +295,7 @@ public class MenuController extends AbstractController {
 	}
 	
 	
-	private void updateDatabaseParams(ProjectPreferencesPanel ppPanel) {
+	private boolean updateDatabaseParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel Database
 		ppPanel.setHost(PropertiesDao.getGswProperties().get("POSTGIS_HOST"));
@@ -310,7 +311,12 @@ public class MenuController extends AbstractController {
 		}
 		
         // Initialize Database?   
-        MainDao.initializeDatabase();
+        if (!MainDao.initializeDatabase()) {
+			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));
+			ppPanel.enableConnectionParameters(true);			
+			mainFrame.enableMenuDatabase(false);
+        	return false;
+        }
         
         // Autoconnect?
         Boolean autoConnect = Boolean.parseBoolean(prop.get("AUTOCONNECT_POSTGIS"));
@@ -335,10 +341,12 @@ public class MenuController extends AbstractController {
 		// Update Status Bar
 		mainFrame.updateConnectionInfo();
 		
+		return true;
+		
 	}
 	
 	
-    private void updateProjectPreferencesPanel() {
+    private boolean updateProjectPreferencesPanel() {
     	
     	ProjectPreferencesPanel ppPanel = mainFrame.ppFrame.getPanel();
     	
@@ -351,18 +359,26 @@ public class MenuController extends AbstractController {
 		updateDbfParams(ppPanel);
 		
 		// Panel Database
-		updateDatabaseParams(ppPanel);
-		
-		String storage = PropertiesDao.getGswProperties().get("STORAGE").toUpperCase();
-		if (storage.equals("DBF")) {
-			ppPanel.setDbfSelected(true);
-			ppPanel.selectSourceType(); 
-		} 
+		if (updateDatabaseParams(ppPanel)) {
+			String storage = PropertiesDao.getGswProperties().get("STORAGE").toUpperCase();
+			if (storage.equals("DBF")) {
+				ppPanel.setDbfSelected(true);
+				ppPanel.selectSourceType(); 
+			} 
+			else {
+				ppPanel.setDatabaseSelected(true);
+				ppPanel.selectSourceType(); 
+			}
+			ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
+			return true;
+		}
+		// If error open configuration file
 		else {
 			ppPanel.setDatabaseSelected(true);
-			ppPanel.selectSourceType(); 
+			ppPanel.selectSourceType();
+			openFrame(mainFrame.configFrame);
+			return false;
 		}
-		ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
 		
 	}	    
     
@@ -434,7 +450,8 @@ public class MenuController extends AbstractController {
 		String path = prop.get("FILE_DBADMIN");
 		File file = new File(path);
 		if (!file.exists()) {
-			path = MainDao.getRootFolder() + path;
+			// Maybe path is relative, so make it absolute and check it again
+			path = MainDao.getGiswaterUsersFolder() + path;
 			file = new File(path);
 			if (!file.exists()) {
 				Utils.showMessage(mainFrame, "File not found: \n" + file.getAbsolutePath());

@@ -104,11 +104,17 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	}
 
 	
-	public void enableButtons(boolean isEnabled) {
+	public void enableControls(boolean isEnabled) {
 		
+		// SDF
 		txtFileSdf.setEnabled(isEnabled);	
 		btnFileSdf.setEnabled(isEnabled);	
 		btnExportSdf.setEnabled(isEnabled);
+		chkExportBO.setEnabled(isEnabled);
+		chkExportIA.setEnabled(isEnabled);
+		chkExportLevees.setEnabled(isEnabled);
+		chkExportManning.setEnabled(isEnabled);
+		chkExportSA.setEnabled(isEnabled);
 		
 		// Data Manager buttons
 		btnLogFile.setEnabled(isEnabled);

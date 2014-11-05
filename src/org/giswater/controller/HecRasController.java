@@ -116,14 +116,6 @@ public class HecRasController extends AbstractController {
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
         	fileAsc = chooser.getSelectedFile();
-            String path = fileAsc.getAbsolutePath();
-            if (path != null && path.length() >= 4) {  
-                String ext = path.substring(path.length() - 4).toLowerCase();
-                if (!ext.equals(".asc")) {
-                    path+= ".asc";
-                    fileAsc = new File(path);
-                }
-            }
             view.setFileAsc(fileAsc.getAbsolutePath());            
         }
 
