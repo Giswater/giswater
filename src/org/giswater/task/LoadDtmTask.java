@@ -47,7 +47,7 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 	
 	private boolean loadRaster() {
 		
-		String srid = MainDao.getTableSrid(schemaName, "mdt").toString();
+		String srid = MainDao.getTableSrid(schemaName, "banks").toString();
 		String logFolder = Utils.getLogFolder();
 		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		
@@ -116,7 +116,6 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
     	else {
     		MainClass.mdi.showError("DTM file could not be loaded");
     	}
-    	//MainClass.mdi.setProgressBarEnd();
 		
     }
 

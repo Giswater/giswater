@@ -138,9 +138,15 @@ public class ProjectPreferencesController extends AbstractController {
 			}
 		}
 		
-		mainFrame.updateConnectionInfo();
+		if (view.getOptDatabaseSelected()) {
+			mainFrame.updateConnectionInfo();
+		}
+		else {
+			mainFrame.resetConnectionInfo();
+		}
 		
 	}
+	
 	
 	private boolean checkPreferences() {
 		
@@ -351,7 +357,7 @@ public class ProjectPreferencesController extends AbstractController {
 				view.enableProjectManagement(true);
 				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
-				if (schemaList != null && schemaList.size() > 0){
+				if (schemaList != null && schemaList.size() > 0) {
 					setSchema(schemaList.get(0));
 				} else {
 					setSchema("");
@@ -370,19 +376,22 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.enableAccept(false);
 				hecRasPanel.enableControls(false);
 			}
+			mainFrame.updateConnectionInfo();
 		}
 		
 		// DBF selected
 		else {
 			view.enableConnectionParameters(false);
 			view.enableProjectManagement(false);
-			view.enableDbfStorage(true);		
+			view.enableDbfStorage(true);	
+			view.enableAccept(true);
 			epaSoftPanel.enableRunAndImport(false);
 			mainFrame.enableMenuDatabase(false);
 			view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
 			hecRasPanel.enableControls(false);
+			mainFrame.resetConnectionInfo();
 		}
 		
 	}
@@ -397,7 +406,7 @@ public class ProjectPreferencesController extends AbstractController {
 			if (!gswSchema.equals("")) {
 				view.setSelectedSchema(gswSchema);	
 			}
-			else{
+			else {
 				schemaChanged();
 			}
 		} 
@@ -542,7 +551,7 @@ public class ProjectPreferencesController extends AbstractController {
 
 	public void createGisProject() {
 		
-		GisPanel gisPanel = new GisPanel();
+		GisPanel gisPanel = new GisPanel(view);
 		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, "Create GIS Project", GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT);
 		gisPanel.setParent(gisDialog);
         gisDialog.setVisible(true);

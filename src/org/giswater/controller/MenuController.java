@@ -363,12 +363,12 @@ public class MenuController extends AbstractController {
 			String storage = PropertiesDao.getGswProperties().get("STORAGE").toUpperCase();
 			if (storage.equals("DBF")) {
 				ppPanel.setDbfSelected(true);
-				ppPanel.selectSourceType(); 
+				ppPanel.enableAccept(true);
 			} 
 			else {
 				ppPanel.setDatabaseSelected(true);
-				ppPanel.selectSourceType(); 
 			}
+			ppPanel.selectSourceType(); 
 			ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
 			return true;
 		}
@@ -605,6 +605,11 @@ public class MenuController extends AbstractController {
         }
         return path;
 
+    }
+    
+    
+    public void exit() {
+    	System.exit(0);
     }
         
 

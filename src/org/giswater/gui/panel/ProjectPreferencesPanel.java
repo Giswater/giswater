@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
@@ -49,22 +50,21 @@ import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.gui.frame.ProjectPreferencesFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
-import java.awt.event.KeyEvent;
 
 
 public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
-	private static final long serialVersionUID = -2576460232916596200L;
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
 	private ProjectPreferencesController controller;
 	private ProjectPreferencesFrame frame;
 	
+	private ButtonGroup groupSoftware;
 	private JRadioButton optEpaSwmm;
 	private JRadioButton optEpanet;
 	private JRadioButton optHecras;
 	
 	private JPanel panelDbf;
+	private JScrollPane scrollPane_1;
 	private JTextArea txtInput;
 	private JButton btnFolderShp;
 	
@@ -88,23 +88,19 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JButton btnTest;
 	
 	private JPanel panelManagement;
-	private JLabel lblTitle;
-	private JLabel lblAuthor;
-	private JLabel lblDate;
 	private JTextField txtAuthor;
 	private JTextField txtDate;
 	private JTextField txtDescription;
-	private JScrollPane scrollPane_1;
 	
+	private JLabel lblInfo;
+	private JButton btnCreateGisProject;
 	private JButton btnAccept;
 	private JButton btnClose;
 	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Font FONT_PANEL_TITLE2 = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Integer BUTTON_WIDTH = 72;
-	private JLabel lblInfo;
-	private JButton btnCreateGisProject;
-	private ButtonGroup groupSoftware;
 
 	
 	public ProjectPreferencesPanel() {
@@ -112,7 +108,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 		
 		setLayout(new MigLayout("", "[8px:n][78.00px:n][75px:n:75px][65px:n:65px][][10px:n][154.00px:n][][]", "[][][61.00][][]"));
 		
@@ -287,21 +283,21 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCopy.setActionCommand("copySchema"); 
 		panelManagement.add(btnCopy, "cell 6 0,alignx right");
 		
-		lblTitle = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblTitle.text")); 
+		JLabel lblTitle = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblTitle.text")); 
 		panelManagement.add(lblTitle, "cell 0 1,alignx right");
 		
 		txtAuthor = new JTextField();
 		panelManagement.add(txtAuthor, "cell 1 1 3 1,growx");
 		txtAuthor.setDocument(new MaxLengthTextDocument(50));
 		
-		lblAuthor = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblAuthor.text")); 
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblAuthor.text")); 
 		panelManagement.add(lblAuthor, "cell 4 1,alignx right");
 		
 		txtDate = new JTextField();
 		txtDate.setDocument(new MaxLengthTextDocument(12));
 		panelManagement.add(txtDate, "cell 5 1 2 1,growx");
 		
-		lblDate = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblDate.text")); 
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblDate.text")); 
 		panelManagement.add(lblDate, "cell 0 2,alignx trailing");
 		
 		txtDescription = new JTextField();
@@ -378,11 +374,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	}
 
 	
-	public ProjectPreferencesFrame getFrame(){
+	public ProjectPreferencesFrame getFrame() {
 		return frame;
 	}
 
-	public void setFrame(ProjectPreferencesFrame frame){
+	public void setFrame(ProjectPreferencesFrame frame) {
 		this.frame = frame;
 	}
 
@@ -390,27 +386,40 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		this.controller = controller;
 	}
 
-	public ProjectPreferencesController getController(){
+	public ProjectPreferencesController getController() {
 		return controller;
 	}
 	
-	public boolean getOptDatabaseSelected(){
+	public String getStorage() {
+		
+		String storage = "";
+		if (optDatabase.isSelected()) {
+			storage = "DATABASE";
+		} 
+		else if (optDbf.isSelected()) {
+			storage = "DBF";
+		}
+		return storage;
+		
+	}
+	
+	public boolean getOptDatabaseSelected() {
 		return optDatabase.isSelected();
 	}
 	
-	public void setDatabaseSelected(boolean isSelected){
+	public void setDatabaseSelected(boolean isSelected) {
 		optDatabase.setSelected(isSelected);
 	}	
 	
-	public boolean getOptDbfSelected(){
+	public boolean getOptDbfSelected() {
 		return optDbf.isSelected();
 	}	
 
-	public void setDbfSelected(boolean isSelected){
+	public void setDbfSelected(boolean isSelected) {
 		optDbf.setSelected(isSelected);
 	}	
 	
-	public void selectSourceType(){
+	public void selectSourceType() {
 		controller.selectSourceType();
 	}
 	
@@ -449,13 +458,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	public String getWaterSoftware() {
 		
 		String waterSoftware = "";
-		if (optEpanet.isSelected()){
+		if (optEpanet.isSelected()) {
 			waterSoftware = "EPANET";
 		} 
-		else if (optEpaSwmm.isSelected()){
+		else if (optEpaSwmm.isSelected()) {
 			waterSoftware = "EPASWMM";
 		}
-		else if (optHecras.isSelected()){
+		else if (optHecras.isSelected()) {
 			waterSoftware = "HECRAS";
 		}			
 		return waterSoftware;
@@ -582,11 +591,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		return chkRemember.isSelected();
 	}
 	
-	public void setRemember(Boolean isSelected){
+	public void setRemember(Boolean isSelected) {
 		chkRemember.setSelected(isSelected);
 	}
 	
-	public void setConnectionText(String text){
+	public void setConnectionText(String text) {
 		btnTest.setText(text);
 	}
 	
@@ -597,7 +606,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 
 	public void setInfo(String text) {
 		lblInfo.setText(text);
-		
 	}
 
 	public void enableAccept(boolean enabled) {

@@ -82,14 +82,15 @@ public class MainFrame extends JFrame implements ActionListener{
     public JDesktopPane desktopPane;
     
     private JMenu mnProject;
-	private JMenuItem mntmOpenProject;
-	private JMenuItem mntmSaveProject;
-	private JSeparator separator;
 	private JMenuItem mntmNewPreferences;
 	private JMenuItem mntmOpenPreferences;
 	private JMenuItem mntmSavePreferences;
 	private JMenuItem mntmSaveAsPreferences;
 	private JMenuItem mntmEditPreferences;
+	private JSeparator separator;
+	private JMenuItem mntmOpenProject;
+	private JMenuItem mntmSaveProject;
+	private JMenuItem mntmExit;
 	
 	private JMenu mnProjectExample;	
 	
@@ -221,6 +222,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSaveProject.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mntmSaveProject.setActionCommand("saveProject");
 		mnProject.add(mntmSaveProject);
+		
+		JSeparator separator_2 = new JSeparator();
+		mnProject.add(separator_2);
+		
+		mntmExit = new JMenuItem(BUNDLE.getString("MainFrame.mntmExit.text")); //$NON-NLS-1$
+		mntmExit.setMnemonic(KeyEvent.VK_Q);
+		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		mntmExit.setActionCommand("exit");
+		mnProject.add(mntmExit);
 		
 		mnProjectExample = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
 		mnProjectExample.setMnemonic(KeyEvent.VK_P);
@@ -566,6 +576,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmSavePreferences.addActionListener(this);
 		mntmSaveAsPreferences.addActionListener(this);
 		mntmEditPreferences.addActionListener(this);
+		mntmExit.addActionListener(this);
 		
 		mntmSoftware.addActionListener(this);
 		
@@ -659,6 +670,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 
 	
+	// Valid when DB is selected
 	public void updateConnectionInfo() {
 		
 		String schema;
@@ -676,10 +688,18 @@ public class MainFrame extends JFrame implements ActionListener{
 			lblInfo.setIcon(iconGreen);
 		}
 		else {
+			ppFrame.getPanel().enableAccept(false);
 			lblInfo.setIcon(iconRed);
 		}
 		lblInfo.setText(info);
 		
+	}
+	
+	
+	public void resetConnectionInfo() {
+		ppFrame.getPanel().enableAccept(true);
+		lblInfo.setIcon(null);
+		lblInfo.setText("");
 	}
 	
 	
@@ -753,6 +773,4 @@ public class MainFrame extends JFrame implements ActionListener{
 		timer.start();
 		
 	}
-	
-	
 }
