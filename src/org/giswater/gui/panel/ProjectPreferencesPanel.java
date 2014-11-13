@@ -76,6 +76,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JTextField txtUser;
 	private JPasswordField txtPassword;
 	private JCheckBox chkRemember;
+	private JCheckBox chkSsl;
 	private JRadioButton optDatabase;
 	private JRadioButton optDbf;
 	private JButton btnCopy;
@@ -230,6 +231,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		chkRemember = new JCheckBox("Remember password");
 		chkRemember.setSelected(true);
 		panelDatabase.add(chkRemember, "flowx,cell 3 6,alignx right");
+		
+		chkSsl = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkSsl.text")); //$NON-NLS-1$
+		chkSsl.setSelected(true);
+		panelDatabase.add(chkSsl, "cell 3 6,alignx right");
 		
 		btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); 
 		btnTest.setMaximumSize(new Dimension(120, 23));
@@ -592,12 +597,20 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtPassword.setText(path);
 	}
 	
-	public Boolean getRemember() {
+	public Boolean isRememberSelected() {
 		return chkRemember.isSelected();
 	}
 	
-	public void setRemember(Boolean isSelected) {
+	public void selectRemember(Boolean isSelected) {
 		chkRemember.setSelected(isSelected);
+	}
+	
+	public Boolean isUseSslSelected() {
+		return chkSsl.isSelected();
+	}
+	
+	public void selectUseSsl(Boolean isSelected) {
+		chkSsl.setSelected(isSelected);
 	}
 	
 	public void setConnectionText(String text) {

@@ -518,7 +518,8 @@ public class MainFrame extends JFrame implements ActionListener{
     	PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());
     	PropertiesDao.getGswProperties().put("POSTGIS_USER", ppPanel.getUser());
     	PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(ppPanel.getPassword()));
-    	PropertiesDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.getRemember().toString());
+    	PropertiesDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.isRememberSelected().toString());
+    	PropertiesDao.getGswProperties().put("POSTGIS_USESSL", ppPanel.isUseSslSelected().toString());
     	
 	}	   
     

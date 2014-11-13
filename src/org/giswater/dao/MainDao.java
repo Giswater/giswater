@@ -46,6 +46,7 @@ public class MainDao {
 	protected static String db;
 	protected static String user;
 	protected static String password;
+	protected static Boolean useSsl;
 	protected static String binFolder;
 	protected static String giswaterUsersFolder;   // UsersFolder + ROOT_FOLDER
 	
@@ -254,6 +255,7 @@ public class MainDao {
 		password = PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD");		
 		password = Encryption.decrypt(password);
 		password = (password == null) ? "" : password;
+		useSsl = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_USESSL"));		
 		
 		return true;
 		
@@ -272,7 +274,7 @@ public class MainDao {
 			Utils.getLogger().info("Connection not possible. Check parameters in properties file");
 			return false;
 		}
-		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
+		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user+" - useSsl:"+useSsl);
 		
 		// Check if Internet is available
 		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
@@ -286,7 +288,7 @@ public class MainDao {
 		do {
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
-			isConnected = setConnectionPostgis(host, port, db, user, password, false);
+			isConnected = setConnectionPostgis(host, port, db, user, password, useSsl, false);
 		} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
 		
 		// Try to connect to the default database if we couldn't connect previously
@@ -297,7 +299,7 @@ public class MainDao {
 			do {
 				count++;
 				Utils.getLogger().info("Trying to connect to default Database: " + count);
-				isConnected = setConnectionPostgis(host, port, db, user, password, false);
+				isConnected = setConnectionPostgis(host, port, db, user, password, useSsl, false);
 			} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
 		}
 
@@ -396,17 +398,13 @@ public class MainDao {
 	}	
 
 	
-	public static boolean setConnectionPostgis(String host, String port, String db, String user, String password) {
-		return setConnectionPostgis(host, port, db, user, password, true);
-	}
-	
-    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean showError) {
+    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean useSsl, boolean showError) {
     	
     	schemaMap = new HashMap<String, Integer>();
-    	// TODO: SSL or SSH
-        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
-        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password+"&ssl=true";
-        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password+"&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
+        if (useSsl) {
+        	connectionString+= "&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+        }
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
         } catch (SQLException e) {

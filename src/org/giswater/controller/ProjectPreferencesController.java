@@ -284,6 +284,7 @@ public class ProjectPreferencesController extends AbstractController {
 		String db = view.getDatabase();
 		String user = view.getUser();
 		String password = view.getPassword();	
+		Boolean useSsl = view.isUseSslSelected();	
 		
 		// Check parameters
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
@@ -301,7 +302,7 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		
 		// Try to connect to Database
-		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password);
+		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password, useSsl, true);
 		MainDao.setConnected(isConnected);
 		
 		if (isConnected) {
@@ -310,7 +311,7 @@ public class ProjectPreferencesController extends AbstractController {
 			PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", db);
 			PropertiesDao.getGswProperties().put("POSTGIS_USER", user);
 			// Save encrypted password
-			if (view.getRemember()) {
+			if (view.isRememberSelected()) {
 				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(password));
 			} else {
 				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", "");

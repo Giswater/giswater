@@ -302,8 +302,10 @@ public class MenuController extends AbstractController {
 		ppPanel.setPort(PropertiesDao.getGswProperties().get("POSTGIS_PORT"));
 		ppPanel.setDatabase(PropertiesDao.getGswProperties().get("POSTGIS_DATABASE"));
 		ppPanel.setUser(PropertiesDao.getGswProperties().get("POSTGIS_USER"));		
+		Boolean useSsl = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_USESSL"));
+		ppPanel.selectUseSsl(useSsl);
 		Boolean remember = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_REMEMBER"));
-		ppPanel.setRemember(remember);
+		ppPanel.selectRemember(remember);
 		if (remember) {
 			ppPanel.setPassword(Encryption.decrypt(PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
 		} else {
