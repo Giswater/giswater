@@ -524,13 +524,8 @@ public class MainFrame extends JFrame implements ActionListener{
     
     
     public void putGisParams(GisPanel gisPanel) {
-    	
     	PropertiesDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
-    	PropertiesDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());
-    	PropertiesDao.getGswProperties().put("GIS_SOFTWARE", gisPanel.getProjectSoftware());
-    	PropertiesDao.getGswProperties().put("GIS_TYPE", gisPanel.getDataStorage());
-    	PropertiesDao.getGswProperties().put("GIS_SCHEMA", gisPanel.getSelectedSchema());
-    	
+    	PropertiesDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());    	
 	}	
     
 	

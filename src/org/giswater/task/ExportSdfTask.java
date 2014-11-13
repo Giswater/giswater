@@ -61,7 +61,7 @@ public class ExportSdfTask extends SwingWorker<Void, Void> {
 			
 		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"', "+MA+", "+IA+", "+Levees+", "+BO+", "+Manning+");";
 		Utils.logSql(sql);
-		Integer value = Integer.parseInt(MainDao.stringQuery(sql));
+		Integer value = Integer.parseInt(MainDao.queryToString(sql));
         return value;	
 	        
 	}

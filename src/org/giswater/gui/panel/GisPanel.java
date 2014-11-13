@@ -291,19 +291,19 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		if (dataStorage.equals("DATABASE")){
 			// Check if we already are connected
 			if (MainDao.isConnected()) {
-				this.enableControls(true);
-				this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
+				enableControls(true);
+				setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
+				setSelectedSchema(ppPanel.getSelectedSchema());
 			} 
 			else {
-				this.enableControls(false);				
-				this.setSchemaModel(null);				
+				enableControls(false);				
+				setSchemaModel(null);				
 			}
 		}
 		// DBF selected
 		else {
-			this.enableControls(false);		
-			this.setSchemaModel(null);					
+			enableControls(false);		
+			setSchemaModel(null);					
 		}		
 		
 	}
@@ -348,8 +348,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				// Update properties file
 				gswProp.put("GIS_FOLDER", folder);
 				gswProp.put("GIS_NAME", name);
-				gswProp.put("GIS_SOFTWARE", software);
-				gswProp.put("GIS_SCHEMA", schema);
 				int answer = Utils.confirmDialog(this, "gis_creation");
 				if (answer == JOptionPane.YES_OPTION) {
 					gisProjectDatabase(GIS_EXTENSION, folder + File.separator, name, software, schema, schemaSrid);
@@ -493,18 +491,18 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String dataStorage = this.getDataStorage();
 		if (dataStorage.equals("DATABASE")) {		
 			if (MainDao.isConnected()) {
-				this.enableControls(true);
-				this.setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-				this.setSelectedSchema(gswProp.get("GIS_SCHEMA"));				
+				enableControls(true);
+				setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
+				setSelectedSchema(ppPanel.getSelectedSchema());	
 			} 
 			else {
-				this.enableControls(false);				
-				this.setSchemaModel(null);
+				enableControls(false);				
+				setSchemaModel(null);
 			}
 		}
 		else {
-			this.enableControls(false);				
-			this.setSchemaModel(null);
+			enableControls(false);				
+			setSchemaModel(null);
 		}
 		
 	}
@@ -539,6 +537,5 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	@Override
 	public void focusLost(FocusEvent e) { }
 
-	
 
 }

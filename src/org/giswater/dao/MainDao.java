@@ -404,9 +404,9 @@ public class MainDao {
     	
     	schemaMap = new HashMap<String, Integer>();
     	// TODO: SSL or SSH
-        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
+        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
         //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password+"&ssl=true";
-        //String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+        String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password+"&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
         } catch (SQLException e) {
@@ -474,7 +474,7 @@ public class MainDao {
 		try {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
-			if (commit && !connectionPostgis.getAutoCommit()){
+			if (commit && !connectionPostgis.getAutoCommit()) {
 	        	connectionPostgis.commit();
 	        }			
 			return true;
@@ -513,7 +513,7 @@ public class MainDao {
         String sql = "SELECT count(*) FROM "+schemaName+"."+tableName;
         try {
     		ResultSet rs = getResultset(sql);
-            if (rs.next()){
+            if (rs.next()) {
             	return (rs.getInt(1) != 0);
             }
             return false;
@@ -525,6 +525,7 @@ public class MainDao {
     }	
 	
 	
+	// Return true if query returns at least one record
 	private static boolean checkQuery(String sql) {
 		
 		boolean check = false;
@@ -540,7 +541,12 @@ public class MainDao {
 	}
 	
 	
-	public static String stringQuery(String sql, boolean showError) {
+	// Execute query and returns it as a String
+	public static String queryToString(String sql) {
+		return queryToString(sql, true);
+	}
+	
+	public static String queryToString(String sql, boolean showError) {
 		
     	String value = "";
         try {
@@ -558,10 +564,6 @@ public class MainDao {
         
 	}	
 	
-	public static String stringQuery(String sql) {
-		return stringQuery(sql, true);
-	}
-	
 	
     // Check if the table exists
 	public static boolean checkTable(String tableName) {
@@ -571,7 +573,7 @@ public class MainDao {
     }	
 	
 	
-    // Check if the table exists
+    // Check if the table exists in the selected schema
 	public static boolean checkTable(String schemaName, String tableName) {
         String sql = "SELECT * FROM pg_tables" +
         	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '"+tableName+"'";
@@ -587,7 +589,7 @@ public class MainDao {
     }    
     
     
-    // Check if the view exists
+    // Check if the view exists in the selected schema
     public static boolean checkView(String schemaName, String viewName) {
         String sql = "SELECT * FROM pg_views" +
         	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(viewname) = '"+viewName+"'";
@@ -607,15 +609,16 @@ public class MainDao {
     	return checkQuery(sql);
     } 
     
-    
+    // Get PostgreSQL version
     public static String checkPostgreVersion() {
         String sql = "SELECT version()";
-        return stringQuery(sql);
+        return queryToString(sql);
     }
     
+    // Get Postgis version
     public static String checkPostgisVersion() {
         String sql = "SELECT PostGIS_full_version()";
-        return stringQuery(sql, false);
+        return queryToString(sql, false);
     }
     
     
@@ -751,20 +754,24 @@ public class MainDao {
 	}
 
 
-	public static Vector<String> getTable(String table, String schemaParam, boolean addBlank, String fields) {
+	public static Vector<String> getTable(String table, String schemaParam) {
+		return getTable(table, schemaParam, false, "*");
+	}
+	
+	public static Vector<String> getTable(String tableName, String schemaName, boolean addBlank, String fields) {
         
         Vector<String> vector = new Vector<String>();
         
         if (addBlank) {
         	vector.add("");
         }
-		if (schemaParam == null) {
-			schemaParam = schema;
+		if (schemaName == null) {
+			schemaName = schema;
 		}
-		if (!checkTable(schemaParam, table)) {
+		if (!checkTable(schemaName, tableName)) {
 			return vector;
 		}
-		String sql = "SELECT "+fields+" FROM "+schemaParam+"."+table;
+		String sql = "SELECT "+fields+" FROM "+schemaName+"."+tableName;
 		try {
     		ResultSet rs = getResultset(sql);
 	        while (rs.next()) {
@@ -777,10 +784,25 @@ public class MainDao {
 		
 	}	
 	
-	
-	public static Vector<String> getTable(String table, String schemaParam) {
-		return getTable(table, schemaParam, false, "*");
-	}
+	public static Vector<Vector<String>> queryToVector(String sql) {
+        
+		Vector<Vector<String>> vector_container = new Vector<Vector<String>>();
+		try {
+    		ResultSet rs = getResultset(sql);
+    		ResultSetMetaData rsmd = rs.getMetaData();
+	        while (rs.next()) {
+	        	Vector<String> vector = new Vector<String>();
+	        	for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+	        		vector.add(rs.getString(i));
+	        	}
+	        	vector_container.add(vector);
+	        }
+		} catch (SQLException e) {
+            Utils.showError(e, sql);
+		}            
+		return vector_container;
+		
+	}	
 	
 	
 	public static void setResultSelect(String schema, String table, String result) {
@@ -853,7 +875,7 @@ public class MainDao {
 		else{
 			String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
 			if (checkTable(schema, "version")) {
-				String aux = stringQuery(sql);
+				String aux = queryToString(sql);
 				schemaVersion = Utils.parseInt(aux.replace(".", ""));
 			}
 			else{
@@ -988,6 +1010,7 @@ public class MainDao {
 	}
 	
 	
+	// TODO: Hardcoded
 	public static String replaceExtentParameters(String software, String schemaName, String content) {
 		
 		String aux = content;

@@ -54,7 +54,6 @@ import org.giswater.util.Utils;
 
 public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
-	
 	private ProjectPreferencesController controller;
 	private ProjectPreferencesFrame frame;
 	
@@ -287,6 +286,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement.add(lblTitle, "cell 0 1,alignx right");
 		
 		txtAuthor = new JTextField();
+		txtAuthor.setEnabled(false);
 		panelManagement.add(txtAuthor, "cell 1 1 3 1,growx");
 		txtAuthor.setDocument(new MaxLengthTextDocument(50));
 		
@@ -294,6 +294,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement.add(lblAuthor, "cell 4 1,alignx right");
 		
 		txtDate = new JTextField();
+		txtDate.setEnabled(false);
 		txtDate.setDocument(new MaxLengthTextDocument(12));
 		panelManagement.add(txtDate, "cell 5 1 2 1,growx");
 		
@@ -301,6 +302,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement.add(lblDate, "cell 0 2,alignx trailing");
 		
 		txtDescription = new JTextField();
+		txtDescription.setEnabled(false);
 		txtDescription.setColumns(10);
 		panelManagement.add(txtDescription, "cell 1 2 6 1,growx");
 		
@@ -429,12 +431,15 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtInput.setEnabled(enable);
 	}	
 	
-	public void enableConnectionParameters(boolean enable){
+	public void enableConnectionParameters(boolean enable) {
 		Utils.setPanelEnabled(panelDatabase, enable);
 	}	
 	
-	public void enableProjectManagement(boolean enable){
+	public void enableProjectManagement(boolean enable) {
 		Utils.setPanelEnabled(panelManagement, enable);
+		txtDescription.setEnabled(false);
+		txtAuthor.setEnabled(false);
+		txtDate.setEnabled(false);
 	}	
 	
 	
@@ -612,5 +617,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnAccept.setEnabled(enabled);
 	}
 	
+	public void updateProjectData(String title, String author, String date) {
+		txtDescription.setText(title);
+		txtAuthor.setText(author);
+		txtDate.setText(date);
+	}
 		
 }

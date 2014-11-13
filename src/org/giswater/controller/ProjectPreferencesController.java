@@ -81,6 +81,8 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Get schemas from selected water software
 		selectSourceType();
+		
+		getProjectData();
 
 	}
 	
@@ -424,6 +426,22 @@ public class ProjectPreferencesController extends AbstractController {
 		if (MainDao.isConnected()) {
 			setSchema(view.getSelectedSchema());
 			mainFrame.updateConnectionInfo();
+			getProjectData();
+		}
+		
+	}
+	
+	
+	public void getProjectData() {
+		
+		String sql = "SELECT title, author, date FROM "+MainDao.getSchema()+".inp_project_id";
+		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
+		if (vector_container.size() > 0) {
+			Vector<String> vector = vector_container.get(0);
+			view.updateProjectData(vector.get(0), vector.get(1), vector.get(2));
+		}
+		else {
+			view.updateProjectData("", "", "");
 		}
 		
 	}

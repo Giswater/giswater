@@ -42,14 +42,14 @@ public abstract class AbstractController implements PropertyChangeListener {
 		
 		try {
 			Method method = this.getClass().getMethod(actionCommand);
-			if (!actionCommand.equals("schemaChanged")){
+			if (!actionCommand.equals("schemaChanged")) {
 				Utils.getLogger().info(method.toString());
 			}
 			method.invoke(this);		
 		} catch (Exception e) {
-			if (Utils.getLogger() != null){			
+			if (Utils.getLogger() != null) {			
 				Utils.logError(e);
-			} else{
+			} else {
 				Utils.showError(e);
 			}
 		}

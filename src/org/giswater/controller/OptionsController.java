@@ -88,7 +88,7 @@ public class OptionsController extends AbstractController{
 					// Process hydrology field
 					if (key.equals("hydrology")) {
 						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
-						value = MainDao.stringQuery(sql);
+						value = MainDao.queryToString(sql);
 					}
 					else {
 						value = rs.getString(key);
