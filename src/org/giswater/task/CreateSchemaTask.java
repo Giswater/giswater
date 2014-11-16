@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.NewProjectController;
@@ -153,8 +154,8 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
 			String msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
-			int res = Utils.confirmDialog(parentPanel, msg, "Create Project");
-			if (res != 0) return null; 
+			int res = Utils.showYesNoDialog(parentPanel, msg, "Create Project");
+			if (res != JOptionPane.YES_OPTION) return null; 
 			MainDao.deleteSchema(schemaName);
 		}
 		

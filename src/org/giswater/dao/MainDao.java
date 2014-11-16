@@ -32,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.io.FileUtils;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
@@ -192,8 +194,8 @@ public class MainDao {
 	        if (sizeMb > warningSize) {
 	            Utils.getLogger().info("Log folder size is: " + sizeMb + " Mb");         	
 	        	String msg = "Log folder size is : " + sizeMb + " Mb\nWould you like to open the folder to perform maintenance?";
-	        	int answer = Utils.confirmDialog(msg);
-		        if (answer == 0) {
+	        	int answer = Utils.showYesNoDialog(msg);
+		        if (answer == JOptionPane.YES_OPTION) {
 		        	Utils.openFile(Utils.getLogFolder());
 		        }
 	        }
@@ -898,8 +900,8 @@ public class MainDao {
 		if (updateVersion > schemaVersion && updateSchemaVersion) {
 			String msg = "Would you like to update '"+schema+"' to the current software version?\n" +
 				"It's strongly advisable to make a backup before updating it.";
-			int answer = Utils.confirmDialog(msg, "Update Schema");
-			if (answer == 0) {
+			int answer = Utils.showYesNoDialog(msg, "Update Schema");
+			if (answer == JOptionPane.YES_OPTION) {
 				if (schemaVersion == -1) {
 					String sql = "CREATE TABLE IF NOT EXISTS "+schema+".version (" +
 						" id SERIAL, giswater varchar(16), wsoftware varchar(16), postgres varchar(512)," +

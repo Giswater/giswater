@@ -153,6 +153,19 @@ WHERE ((cat_hydrology.infiltration)::text = 'HORTON'::text);
 
 
 -- ----------------------------
+-- View structure for v_inp_subcatch
+-- ----------------------------
+
+DROP VIEW "SCHEMA_NAME"."v_inp_subcatch";
+CREATE VIEW "SCHEMA_NAME"."v_inp_subcatch" AS 
+SELECT subcatchment.subc_id, subcatchment.node_id, subcatchment.rg_id, subcatchment.area, subcatchment.imperv, subcatchment.width, subcatchment.slope, subcatchment.clength, subcatchment.snow_id, subcatchment.nimp, subcatchment.nperv, subcatchment.simp, subcatchment.sperv, subcatchment.zero, subcatchment.routeto, subcatchment.rted, sector_selection.sector_id 
+FROM (SCHEMA_NAME.subcatchment 
+JOIN SCHEMA_NAME.sector_selection ON (((subcatchment.sector_id)::text = (sector_selection.sector_id)::text))
+JOIN SCHEMA_NAME.cat_hydrology ON (((subcatchment.hydrology_id)::text = (cat_hydrology.id)::text))
+JOIN SCHEMA_NAME.hydrology_selection ON (((subcatchment.hydrology_id)::text = (hydrology_selection.hydrology_id)::text)));
+
+
+-- ----------------------------
 -- Default value of hydrology records
 -- ----------------------------
 

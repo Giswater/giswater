@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
@@ -359,8 +360,8 @@ public class CatalogController extends AbstractController {
 		
 		action = "other";
 		try {
-			int res = Utils.confirmDialog("delete_record?");
-	        if (res == 0) {
+			int res = Utils.showYesNoDialog("delete_record?");
+	        if (res == JOptionPane.YES_OPTION) {
 				rs.deleteRow();
 				rs.first();
 				current = 1;

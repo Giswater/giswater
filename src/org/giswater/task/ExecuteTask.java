@@ -22,6 +22,7 @@ package org.giswater.task;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.EpaSoftController;
@@ -77,7 +78,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 
         // Get schema from Project Preferences view
         String schema = ppPanel.getSelectedSchema();
-        if (schema.equals("")){
+        if (schema.equals("")) {
         	MainClass.mdi.showError("any_schema_selected");
             return null;
         }
@@ -85,7 +86,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         
         // Get software version from Project Preferences view
         String softwareId = ppPanel.getVersionSoftware();
-        if (softwareId.equals("")){
+        if (softwareId.equals("")) {
         	MainClass.mdi.showError("any_software_selected");
             return null;
         }
@@ -94,13 +95,29 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         
 		// Get Sqlite Database			
 		String sqlitePath = version + ".sqlite";
-		if (!Model.setConnectionDrivers(sqlitePath)){
+		if (!Model.setConnectionDrivers(sqlitePath)) {
 			return null;
 		}        
-        
+		
 		// Get INP and RPT files
 		File fileInp = controller.getFileInp();
 		File fileRpt = controller.getFileRpt();
+		
+		// If EPASWMM 2D and Execute EPA software are selected, check if raster file 'topo.asc' exists
+		if (softwareId.equals("EPASWMM_51006_2D") && execSelected) {
+            if (fileInp == null) {
+            	MainClass.mdi.showError("file_inp_not_selected");
+                return null;
+            } 
+            String rasterPath = fileInp.getParentFile().getAbsolutePath() + File.separator + "topo.asc";
+            File rasterFile = new File(rasterPath);
+            if (!rasterFile.exists()) {
+            	String msg = "You cannot execute EPA software in 2D mode.\n" +
+            		"Raster file named 'topo.asc' not found inside INP folder:\n" + rasterPath;
+            	Utils.showError(view, msg);
+            	return null;
+            }
+		}
 		
         // Export to INP
         if (exportSelected) {
@@ -109,8 +126,8 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }      
             if (!ExportToInp.checkSectorSelection()) {
-        		int res = Utils.confirmDialog(view, "sector_selection_empty");        
-                if (res == 0){            	
+        		int res = Utils.showYesNoDialog(view, "sector_selection_empty");        
+                if (res == JOptionPane.YES_NO_OPTION) {            	
                 	controller.showSectorSelection();
                 }
                 return null;

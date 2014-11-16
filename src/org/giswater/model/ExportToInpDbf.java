@@ -118,7 +118,7 @@ public class ExportToInpDbf extends Model{
             // Ending message
             String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + 
             	Utils.getBundleString("view_file");
-    		int res = Utils.confirmDialog(msg);             
+    		int res = Utils.showYesNoDialog(msg);             
             if (res == JOptionPane.YES_OPTION) {
             	Utils.openFile(fileInp.getAbsolutePath());
             }               

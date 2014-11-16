@@ -77,10 +77,8 @@ public class ImportRpt extends Model {
     	// Ask confirmation to user
         String importRpt = PropertiesDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "false").toLowerCase();
         if (importRpt.equals("false")) {
-           	int res = Utils.confirmDialog("import_sure");    		
-           	if (res == JOptionPane.NO_OPTION) {
-           		return false;
-        	}    	
+           	int res = Utils.showYesNoDialog("import_sure");    		
+           	if (res == JOptionPane.NO_OPTION) return false;  	
         }  
 
        	// Check if we want to overwrite previous results
@@ -92,10 +90,8 @@ public class ImportRpt extends Model {
     	if (existsProjectName()) {
     		exists = true;
             if (!overwrite) {
-            	int res = Utils.confirmDialog("project_exists");    		
-            	if (res == JOptionPane.NO_OPTION) {
-            		return false;
-            	}
+            	int res = Utils.showYesNoDialog("project_exists");    		
+            	if (res == JOptionPane.NO_OPTION) return false;
             }
     	}
     	

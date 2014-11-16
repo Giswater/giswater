@@ -58,10 +58,8 @@ public class ExecuteEpa extends Model {
             String owRpt = PropertiesDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
             if (owRpt.equals("false")) {
                 String msg = "Selected file already exists:\n"+fileRpt.getAbsolutePath()+"\nDo you want to overwrite it?";
-            	int res = Utils.confirmDialog(msg);             
-            	if (res == JOptionPane.NO_OPTION){
-                   	return false;
-                }   
+            	int res = Utils.showYesNoDialog(msg);             
+            	if (res == JOptionPane.NO_OPTION) return false;
             }  
         }
         
@@ -95,7 +93,7 @@ public class ExecuteEpa extends Model {
         }
         else if (openFile.equals("ask")) {    
             String msg = Utils.getBundleString("inp_end") + "\n" + fileRpt.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
-        	int res = Utils.confirmDialog(msg);             
+        	int res = Utils.showYesNoDialog(msg);             
         	if (res == JOptionPane.YES_OPTION) {
                	Utils.openFile(fileRpt.getAbsolutePath());
             }   

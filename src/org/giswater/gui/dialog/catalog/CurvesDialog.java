@@ -32,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -196,8 +197,8 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	
 	private boolean deleteConfirm() {
         if (table.getSelectedRows().length > 0) {
-            int res = Utils.confirmDialog("delete_selected_records?");
-            return (res == 0);
+            int res = Utils.showYesNoDialog("delete_selected_records?");
+            return (res == JOptionPane.YES_OPTION);
         }
         return false;
     }

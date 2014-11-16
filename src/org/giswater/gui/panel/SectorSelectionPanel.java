@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,9 +64,9 @@ public class SectorSelectionPanel extends JPanel {
 	}
 
 	
-	private void setData(){
+	private void setData() {
 		
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
 			if (rs == null) return;		
 			tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
@@ -83,7 +84,7 @@ public class SectorSelectionPanel extends JPanel {
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 		
 		setLayout(new MigLayout("", "[100px:200px:400px,grow]", "[25.00][5px][:130px:200px][5px][]"));
 		
@@ -160,29 +161,29 @@ public class SectorSelectionPanel extends JPanel {
 	}
 	
 	
-	private void delete(){
+	private void delete() {
 		
     	int rowIndex = table.getSelectedRow();
-    	if (rowIndex!=-1){
+    	if (rowIndex!=-1) {
     		String value = (String) table.getModel().getValueAt(rowIndex, 0);
     		String msg = Utils.getBundleString("delete_record?") + "\n" + value;
-            int res = Utils.confirmDialog(msg);
-            if (res == 0){    		
+            int res = Utils.showYesNoDialog(msg);
+            if (res == JOptionPane.YES_OPTION) {    		
             	tableModelSectorSelection.deleteRow(rowIndex);
             	setData();
             }
     	}
-    	else{
+    	else {
     		Utils.showMessage(this, "no_record_selected");
     	}
     	
 	}
 
 	
-	private void deleteAll(){
+	private void deleteAll() {
 		
-        int res = Utils.confirmDialog("question_delete");
-        if (res == 0){
+        int res = Utils.showYesNoDialog("question_delete");
+        if (res == 0) {
         	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
         	MainDao.executeUpdateSql(sql);
     		setData();

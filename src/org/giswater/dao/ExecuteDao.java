@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
@@ -100,10 +102,8 @@ public class ExecuteDao extends MainDao {
 			String msg = "Schema '"+schemaName+"' already exists in the Database.\n" +
 				"We will rename it automatically to '"+backupName+"' before restoring selected file.\n" +
 				"Would you like to continue?";
-			int answer = Utils.confirmDialog(msg);
-			if (answer != 0) {
-				return false;
-			}
+			int answer = Utils.showYesNoDialog(msg);
+			if (answer != JOptionPane.YES_OPTION) return false;
 			// Rename current schema
 			String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+backupName;
 			if (!MainDao.executeUpdateSql(sql, true)) {

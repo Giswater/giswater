@@ -23,10 +23,13 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -76,7 +79,7 @@ public class MenuController extends AbstractController {
 	public void openProject() { 
 		
 		// Select .sql to restore
-		String filePath = chooseFileBackup();
+		String filePath = chooseSqlFile();
 		if (filePath.equals("")) {
 			return;
 		}
@@ -98,7 +101,7 @@ public class MenuController extends AbstractController {
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
-		String filePath = chooseFileBackup();
+		String filePath = chooseSqlFile();
 		if (filePath.equals("")) {
 			return;
 		}
@@ -107,7 +110,7 @@ public class MenuController extends AbstractController {
 	}
 
 	
-    private String chooseFileBackup() {
+    private String chooseSqlFile() {
 
     	String path = "";
         JFileChooser chooser = new JFileChooser();
@@ -128,6 +131,19 @@ public class MenuController extends AbstractController {
         }
         return path;
 
+    }
+    
+    
+    public void exit() {
+    	
+    	String msg = "Do you want to save your project preferences before exiting?";
+    	int answer = Utils.showYesNoCancelDialog(mainFrame, msg);
+    	if (answer == JOptionPane.CANCEL_OPTION) return;
+    	if (answer == JOptionPane.YES_OPTION) {
+    		gswSave();
+    	}
+    	System.exit(0);
+    	
     }
     
     
@@ -414,6 +430,11 @@ public class MenuController extends AbstractController {
 		MainDao.setWaterSoftware("EPASWMM");
 		createExampleSchema("epaswmm");
 	}
+	
+	public void exampleEpaswmm2D() {
+		MainDao.setWaterSoftware("EPASWMM");
+		createExampleSchema("epaswmm2D");
+	}
 
 	public void exampleHecras() {
 		MainDao.setWaterSoftware("HECRAS");
@@ -432,8 +453,8 @@ public class MenuController extends AbstractController {
 		// Ask confirmation
 		String schemaName = "sample_"+waterSoftware;
 		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
-		int res = Utils.confirmDialog(mainFrame, msg, "Create example project");
-		if (res != 0) return; 
+		int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
+		if (res != JOptionPane.YES_OPTION) return; 
 		
 		// Execute task: CreateSchema
 		CreateExampleSchemaTask task = new CreateExampleSchemaTask(waterSoftware, schemaName, sridValue);
@@ -461,6 +482,39 @@ public class MenuController extends AbstractController {
 			}
 		}
 		Utils.openFile(path);
+		
+	}
+	
+	
+	public boolean executeSqlFile() {
+		
+		boolean status = false;
+		// Get selected schema
+		String schema = MainDao.getSchema();
+		if (schema == null) {
+			String msg = "Any schema selected. You need to select one";
+			MainClass.mdi.showMessage(msg);
+			return false;
+		}
+		// Get SQL file to execute
+		String filePath = chooseSqlFile();
+		if (filePath.equals("")) {
+			return false;
+		}
+		
+		try {
+			// Get contents of the file. Replace SCHEMA_NAME for the current one selected
+	    	String content = Utils.readFile(filePath);
+			content = content.replace("SCHEMA_NAME", schema);
+			//content = content.replace("SRID_VALUE", srid);
+			Utils.logSql(content);
+			status = MainDao.executeSql(content);
+        } catch (FileNotFoundException e) {
+            Utils.showError("inp_error_notfound", filePath);
+        } catch (IOException e) {
+            Utils.showError(e, filePath);
+        }
+		return status;
 		
 	}
 	
@@ -607,11 +661,6 @@ public class MenuController extends AbstractController {
         }
         return path;
 
-    }
-    
-    
-    public void exit() {
-    	System.exit(0);
     }
         
 

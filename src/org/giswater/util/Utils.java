@@ -163,9 +163,9 @@ public class Utils {
 	}
 	
 	public static String getBundleString(ResourceBundle bundle, String key) {
-		try{
+		try {
 			return bundle.getString(key.toLowerCase());
-		} catch (Exception e){
+		} catch (Exception e) {
 			return key;	
 		}
 	}
@@ -184,7 +184,7 @@ public class Utils {
 	    f.add(view, BorderLayout.CENTER);
 	    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	    
 	    f.pack();
-	    if (width > -1){
+	    if (width > -1) {
 	    	f.setSize(width, height);
 	    }
 		ImageIcon image = new ImageIcon("images/imago.png"); 
@@ -225,12 +225,12 @@ public class Utils {
     public static void showMessage(Component comp, String msg, String param) {
     	
     	String userMsg = getBundleString(msg);
-		if (!param.equals("")){
+		if (!param.equals("")) {
 			userMsg += "\n" + param;
 		}    	
 		if (logger != null) {
 			String infoMsg = getBundleString(msg);
-			if (!param.equals("")){
+			if (!param.equals("")) {
 				infoMsg += "\nParameter: " + param;
 			}			
 			logger.info(infoMsg);
@@ -312,25 +312,27 @@ public class Utils {
     }         
     
     
-    public static int confirmDialog(String msg) {
-    	return confirmDialog(msg, getBundleString("inp_descr"));
+    public static int showYesNoDialog(String msg) {
+    	return showYesNoDialog(msg, getBundleString("inp_descr"));
     }  
     
     
-    public static int confirmDialog(String msg, String title) {
-    	int reply = JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
-        return reply;    	
+    public static int showYesNoDialog(String msg, String title) {
+    	return JOptionPane.showConfirmDialog(null, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);	
     }          
 
     
-    public static int confirmDialog(Component comp, String msg) {
-    	return confirmDialog(comp, msg, getBundleString("inp_descr"));	
+    public static int showYesNoDialog(Component comp, String msg) {
+    	return showYesNoDialog(comp, msg, getBundleString("inp_descr"));	
     }    
     
     
-    public static int confirmDialog(Component comp, String msg, String title) {
-    	int reply = JOptionPane.showConfirmDialog(comp, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION);
-        return reply;    	
+    public static int showYesNoDialog(Component comp, String msg, String title) {
+    	return JOptionPane.showConfirmDialog(comp, getBundleString(msg), getBundleString(title), JOptionPane.YES_NO_OPTION); 	
+    }    
+    
+    public static int showYesNoCancelDialog(Component comp, String msg) {
+    	return JOptionPane.showConfirmDialog(comp, getBundleString(msg), getBundleString("inp_descr"), JOptionPane.YES_NO_CANCEL_OPTION);  	
     }       
     
     
@@ -458,7 +460,7 @@ public class Utils {
 	    // If it is a directory, make sure it is empty
 	    if (f.isDirectory()) {
 	    	String[] files = f.list();
-	    	if (files.length > 0){
+	    	if (files.length > 0) {
 	    		logError("Delete: directory not empty: " + filePath);
 	    	}
 	    }
@@ -491,14 +493,14 @@ public class Utils {
 	public static String readFile(String filePath) throws IOException {
 		
 		File fileName = new File(filePath);			
-		if (!fileName.exists()){
+		if (!fileName.exists()) {
 			showError("inp_error_notfound", filePath);
 			return "";
 		}
 		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
 		String line;
 		String content = "";
-		while ((line = rat.readLine()) != null){
+		while ((line = rat.readLine()) != null) {
 			content += line + "\n";
 		}
 		rat.close();		
@@ -511,7 +513,7 @@ public class Utils {
 	public static ArrayList<String> fileToArray(String filePath) {
 		
 		File fileName = new File(filePath);			
-		if (!fileName.exists()){
+		if (!fileName.exists()) {
 			showError("inp_error_notfound", filePath);
 			return null;
 		}
@@ -519,7 +521,7 @@ public class Utils {
 		String line;
 		try {
 			RandomAccessFile raf = new RandomAccessFile(filePath, "r");
-			while (raf.getFilePointer() < raf.length()){		
+			while (raf.getFilePointer() < raf.length()) {		
 				line = raf.readLine().trim();	
 				fileContent.add(line);
 			}
@@ -545,7 +547,7 @@ public class Utils {
 	
 	public static Integer parseInt(String s) {
 		Integer value = -1;
-		if (isInteger(s)){
+		if (isInteger(s)) {
 			value = Integer.parseInt(s);
 		}
 		return value;

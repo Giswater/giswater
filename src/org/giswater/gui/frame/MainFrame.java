@@ -98,6 +98,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private JMenuItem mntmSoftware;
 	private JMenuItem mntmExampleEpanet;
 	private JMenuItem mntmExampleEpaswmm;
+	private JMenuItem mntmExampleEpaswmm2D;
 	private JMenuItem mntmExampleHecras;
 	private JMenuItem mntmDatabaseAdministrator;	
 	
@@ -127,6 +128,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	private ImageIcon iconAlert;
 	private ImageIcon iconGreen;
 	private ImageIcon iconRed;
+	private JMenuItem mntmSqlFileLauncher;
 
 	
 	/**
@@ -247,9 +249,14 @@ public class MainFrame extends JFrame implements ActionListener{
 		mnProjectExample.add(mntmExampleEpaswmm);
 		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm"); 
 		
+		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); //$NON-NLS-1$
+		mntmExampleEpaswmm2D.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
+		mntmExampleEpaswmm2D.setActionCommand(BUNDLE.getString("MainFrame.mntmExampleEpaswmm2D.actionCommand")); //$NON-NLS-1$
+		mnProjectExample.add(mntmExampleEpaswmm2D);
+		
 		mntmExampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
 		mntmExampleHecras.setMnemonic(KeyEvent.VK_R);
-		mntmExampleHecras.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
+		mntmExampleHecras.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.CTRL_MASK));
 		mnProjectExample.add(mntmExampleHecras);
 		mntmExampleHecras.setActionCommand("exampleHecras"); 
 		
@@ -262,6 +269,11 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmDatabaseAdministrator.setMnemonic(KeyEvent.VK_D);
 		mnData.add(mntmDatabaseAdministrator);
 		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");
+		
+		mntmSqlFileLauncher = new JMenuItem(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.text")); //$NON-NLS-1$
+		mntmSqlFileLauncher.setActionCommand(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.actionCommand")); //$NON-NLS-1$
+		mntmSqlFileLauncher.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
+		mnData.add(mntmSqlFileLauncher);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text"));
 		menuBar.add(mnConfiguration);
@@ -574,12 +586,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		mntmEditPreferences.addActionListener(this);
 		mntmExit.addActionListener(this);
 		
-		mntmSoftware.addActionListener(this);
-		
 		mntmExampleEpanet.addActionListener(this);
 		mntmExampleEpaswmm.addActionListener(this);
+		mntmExampleEpaswmm.addActionListener(this);
 		mntmExampleHecras.addActionListener(this);	
+		
 		mntmDatabaseAdministrator.addActionListener(this);		
+		mntmSqlFileLauncher.addActionListener(this);		
+		
+		mntmSoftware.addActionListener(this);
 		
 		mntmWelcome.addActionListener(this);
 		mntmLicense.addActionListener(this);		

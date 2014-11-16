@@ -23,6 +23,7 @@ package org.giswater.task;
 import java.awt.Cursor;
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.MenuController;
@@ -66,10 +67,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		// Check if DTM table already exists
 		if (MainDao.checkTableHasData(schemaName, "mdt")) {
 			String msg = "DTM table already loaded. Do you want to overwrite it?";
-			int res = Utils.confirmDialog(msg);
-			if (res != 0) {
-				return false;
-			}			
+			int res = Utils.showYesNoDialog(msg);
+			if (res != JOptionPane.YES_OPTION) return false;	
 		}
 		
 		// Set content of .bat file
@@ -105,8 +104,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
 			String msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
-			int res = Utils.confirmDialog(mainFrame, msg, "Create example project");
-			if (res != 0) return null; 
+			int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
+			if (res != JOptionPane.YES_OPTION) return null; 
 			MainDao.deleteSchema(schemaName);
 		}
 		

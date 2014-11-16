@@ -87,10 +87,8 @@ public class ExportToInp extends Model {
                 String owInp = PropertiesDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
 	            if (owInp.equals("false")) {
 	                String msg = "Selected file already exists:\n"+fileInp.getAbsolutePath()+"\nDo you want to overwrite it?";
-	            	int res = Utils.confirmDialog(msg);             
-	            	if (res == JOptionPane.NO_OPTION) {
-	                   	return false;
-	                }   
+	            	int res = Utils.showYesNoDialog(msg);             
+	            	if (res == JOptionPane.NO_OPTION) return false;
 	            }  
             }
             
@@ -148,7 +146,7 @@ public class ExportToInp extends Model {
             }
             else if (openInp.equals("ask")) {
                 String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
-            	int res = Utils.confirmDialog(msg);             
+            	int res = Utils.showYesNoDialog(msg);             
             	if (res == JOptionPane.YES_OPTION) {
                    	Utils.openFile(fileInp.getAbsolutePath());
                 }   

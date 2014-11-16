@@ -22,6 +22,7 @@ package org.giswater.task;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.dao.ExecuteDao;
@@ -54,10 +55,8 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 		// Check if DTM table already exists
 		if (MainDao.checkTableHasData(schemaName, "mdt")) {
 			String msg = "DTM table already loaded. Do you want to overwrite it?";
-			int res = Utils.confirmDialog(msg);
-			if (res != 0) {
-				return false;
-			}			
+			int res = Utils.showYesNoDialog(msg);
+			if (res != JOptionPane.YES_OPTION) return false;		
 		}
 		
 		// Set content of .bat file

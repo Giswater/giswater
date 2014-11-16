@@ -348,7 +348,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				// Update properties file
 				gswProp.put("GIS_FOLDER", folder);
 				gswProp.put("GIS_NAME", name);
-				int answer = Utils.confirmDialog(this, "gis_creation");
+				int answer = Utils.showYesNoDialog(this, "gis_creation");
 				if (answer == JOptionPane.YES_OPTION) {
 					gisProjectDatabase(GIS_EXTENSION, folder + File.separator, name, software, schema, schemaSrid);
 				}
@@ -424,7 +424,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			String destPath = folderPath+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()) {
-	            int answer = Utils.confirmDialog(this, "overwrite_file");
+	            int answer = Utils.showYesNoDialog(this, "overwrite_file");
 	            if (answer == JOptionPane.NO_OPTION) {
 	            	return;
 	            }
@@ -472,7 +472,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			Utils.getLogger().info("GIS file completed");			
             String msg = Utils.getBundleString("gis_end") + "\n" + destPath + "\n" + 
             	Utils.getBundleString("view_file");
-    		int res = Utils.confirmDialog(msg);             
+    		int res = Utils.showYesNoDialog(msg);             
             if (res == JOptionPane.YES_OPTION) {
                	Utils.openFile(destPath);
             }  	        

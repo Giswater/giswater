@@ -506,7 +506,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		String schemaName = view.getSelectedSchema();
 		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(view, msg);        
+		int res = Utils.showYesNoDialog(view, msg);        
         if (res == 0) {     
     		// Execute task: DeleteSchema
     		DeleteSchemaTask task = new DeleteSchemaTask(waterSoftware, schemaName);
