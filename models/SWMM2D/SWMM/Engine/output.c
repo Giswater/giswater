@@ -8,6 +8,15 @@
 //
 //   Binary output file access functions.
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <stdlib.h>
@@ -561,7 +570,7 @@ void output_saveSubcatchResults(double reportTime, FILE* file)
 
 	// --- create new field name
 	n=sprintf (fieldName, "h_%07.0f", (reportTime / 1000.f));
-	if( DBFAddField( hDBF, fieldName, FTDouble, 12, 3 ) == -1 )
+	if( DBFAddField( hDBF, fieldName, FTDouble, 12, 6 ) == -1 )
     {
 		//TODO
 		//printf( "DBFAddField(%s,FTDouble,%d,%d) failed.\n", fieldName, 12, 3 );
@@ -569,7 +578,7 @@ void output_saveSubcatchResults(double reportTime, FILE* file)
     }
 
 	n=sprintf (fieldName, "V_%07.0f", (reportTime / 1000.f));
-	if( DBFAddField( hDBF, fieldName, FTDouble, 12, 3 ) == -1 )
+	if( DBFAddField( hDBF, fieldName, FTDouble, 12, 6 ) == -1 )
     {
 		//TODO
 		//printf( "DBFAddField(%s,FTDouble,%d,%d) failed.\n", fieldName, 12, 3 );

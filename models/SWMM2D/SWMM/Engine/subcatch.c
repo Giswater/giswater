@@ -8,6 +8,15 @@
 //
 //   Subcatchment runoff & quality functions.
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <math.h>
@@ -61,6 +70,9 @@ extern  double*    WashoffLoad;   // washoff pollutant mass from landuses
 //  subcatch_readLanduseParams (called from parseLine in input.c)
 //  subcatch_readInitBuildup   (called from parseLine in input.c)
 
+//  polygon_readVertex         (called from parseLine in input.c)
+//  polygon_flush              (called from parseLine in input.c)
+
 //  subcatch_validate          (called from project_validate)
 //  subcatch_initState         (called from project_init)
 
@@ -89,12 +101,17 @@ static void   getSubareaRunoff(int subcatch, int subarea, double rainfall,
               double evap, double tStep);
 static double getSubareaInfil(int j, TSubarea* subarea, double precip,
               double tStep);
-static void   findSubareaRunoff(TSubarea* subarea, double tRunoff);
+static void   findSubareaRunoff(TSubarea* subarea, double tRunoff, int isStreet);
 static void   updatePondedDepth(TSubarea* subarea, double* tx);
 static void   getDdDt(double t, double* d, double* dddt);
 static void   updatePondedQual(int j, double wUp[], double pondedQual[],
 	          double tStep);
 static double IntBilinear(double X, double Y);
+static void   exportToShapefile(int sub_catch);
+static int    computePolygonProps(int sub_catch);
+static void   create2DFaces(int sub_catch);
+void subcatch_setDepth(int j, double newDepth);
+
 
 //=============================================================================
 
@@ -127,16 +144,26 @@ int  subcatch_readParams(int j, char* tok[], int ntoks)
     x[0] = k;
 
     // --- check that outlet node or subcatch exists
-    m = project_findObject(NODE, tok[2]);
-    x[1] = m;
-    m = project_findObject(SUBCATCH, tok[2]);
-    x[2] = m;
+	if (strcmp(tok[2], "-1"))
+	{
+		m = project_findObject(NODE, tok[2]);
+		x[1] = m;
+		m = project_findObject(SUBCATCH, tok[2]);
+		x[2] = m;
 
-	//TODO
-    //if ( x[1] < 0.0 && x[2] < 0.0 )
-      //  return error_setInpError(ERR_NAME, tok[2]);
-    if ( x[1] < 0.0 )
-        return error_setInpError(ERR_NAME, tok[2]);
+		//TODO
+		//if ( x[1] < 0.0 && x[2] < 0.0 )
+		//  return error_setInpError(ERR_NAME, tok[2]);
+		if (x[1] < 0.0)
+			return error_setInpError(ERR_NAME, tok[2]);
+
+	}
+	else
+	{
+		x[1] = -1;
+		x[2] = -1;
+	}
+
 
     // --- read area, %imperv, width, slope, & curb length
     for ( i = 3; i < 8; i++)
@@ -175,9 +202,6 @@ int  subcatch_readParams(int j, char* tok[], int ntoks)
 }
 
 
-
-
-
 //=============================================================================
 
 int  polygon_readVertex(char* tok[], int ntoks)
@@ -191,30 +215,20 @@ int  polygon_readVertex(char* tok[], int ntoks)
 //    Subcatchment  X  Y  
 //
 {
-    int    i, j;
+    int    i;
     char*  id;
     double x[3];
-	TXYZ   v1, v2;  
 	int    sub_catch;
-	int    node;
-	double vnx, vny;
-
-	//Local variable for creating shape
-	SHPHandle	hSHP;
-	int		    nShapeType, nParts, panParts, nVMax;
-	double	    *padfX, *padfY, *padfZ = NULL, *padfM = NULL;
-	SHPObject	*psObject;
-	DBFHandle	hDBF;
-	int         iRecord;
-
-	double      checkLength;
+	int    res;
 
     // --- check for enough tokens
     if ( ntoks < 3 ) return error_setInpError(ERR_ITEMS, "");
 
     // --- check that named subcatch exists
     id = project_findID(SUBCATCH, tok[0]);
-    if ( id == NULL ) return error_setInpError(ERR_NAME, tok[0]);
+	if (id == NULL) {
+		return error_setInpError(ERR_NAME, tok[0]);
+	}
 
 	// --- read X, Y
     for ( i = 0; i < 2; i++)
@@ -261,201 +275,21 @@ int  polygon_readVertex(char* tok[], int ntoks)
 
 		//Export polygon to shapefile
 		sub_catch = project_findObject(SUBCATCH, Polygon2D.ID);
-		Subcatch[sub_catch].dbf_record = M2DControl.numElements;
 		Subcatch[sub_catch].isStreet = ( (Polygon2D.ID[0] == 'S') || (Polygon2D.ID[0] == 's') ); 
 
 		//Export only street polygons
 		if (Subcatch[sub_catch].isStreet)
 		{
-			//Add area to node
-			node = Subcatch[sub_catch].outNode;
-			Node[node].M2DArea += Subcatch[sub_catch].area;
-
-			//Open shapefile
-			hSHP = SHPOpen(F2Dmesh.name, "r+b");
-			if( hSHP == NULL )
-			{
-				//TODO
-				//printf( "Unable to open:%s\n", filename );
-				//exit( 1 );
-			}
-
-		    SHPGetInfo( hSHP, NULL, &nShapeType, NULL, NULL );
-
-			//Allocate memory
-			nVMax = 1024;
-			padfX = (double *) malloc(sizeof(double) * nVMax);
-			padfY = (double *) malloc(sizeof(double) * nVMax);
-			padfZ = (double *) malloc(sizeof(double) * nVMax);
-			
-			nParts = 1;
-			panParts = 0;
-
-			//Loop for all vertex
-			for ( i = 0; i < Polygon2D.numVertex; i++)
-			{
-				v1 = Polygon2D.vertex[i];
-
-				padfX[i] = v1.x;
-				padfY[i] = v1.y;
-				padfZ[i] = v1.z;
-
-			}
-
-			//Create and write object
-			psObject = SHPCreateObject( nShapeType, -1, nParts, &panParts, NULL, Polygon2D.numVertex, padfX, padfY, padfZ, padfM );
-			SHPWriteObject( hSHP, -1, psObject );
-			SHPDestroyObject( psObject );
-    
-			//Close shape
-		    SHPClose( hSHP );
-
-			//Free memory
-			free( padfX );
-			free( padfY );
-			free( padfZ );
-
-			//Add ID value to dbf database
-			hDBF = DBFOpen(F2Dmesh.name, "r+b");
-			if( hDBF == NULL )
-			{
-				//TODO
-				//printf( "DBFOpen(%s,\"rb+\") failed.\n", argv[1] );
-				//exit( 2 );
-			}
-
-			//Last record in table
-			iRecord = DBFGetRecordCount( hDBF );
-
-			//Write value
-			DBFWriteStringAttribute(hDBF, iRecord, 0, Polygon2D.ID);
-
-			//CLose
-			DBFClose( hDBF );
-
-			//Increase num of elements
-			M2DControl.numElements++;
-
+			Subcatch[sub_catch].dbf_record = M2DControl.numElements;
+			exportToShapefile(sub_catch);
 		}
 
-
-		//Compute clockwise/counterclockwise 
-        Polygon2D.clockwise = ClockWise(Polygon2D);
-
-		//Compute polygon plane
-        if ( getBestFitPlane(&Polygon2D) == 1 )
-            return error_setInpError(ERR_PLANEFITTING, "");
-
-		//Subcatchment centroid
-		Subcatch[sub_catch].centroid.x = Polygon2D.centroid.x;
-		Subcatch[sub_catch].centroid.y = Polygon2D.centroid.y;
-		Subcatch[sub_catch].centroid.z = Polygon2D.centroid.z;
-
-		//Assign Manning to the 2D mesh
-		Subcatch[sub_catch].N = MAX(Subcatch[sub_catch].subArea[IMPERV0].N, Subcatch[sub_catch].subArea[PERV].N);
-
-		//Compute polygon slopes
-		if (Polygon2D.plane.C != 0.0) 
-		{
-			Subcatch[sub_catch].Sx = -Polygon2D.plane.A / Polygon2D.plane.C;
-			Subcatch[sub_catch].Sy = -Polygon2D.plane.B / Polygon2D.plane.C;
-		} else {
-			Subcatch[sub_catch].Sx = 0.0;
-			Subcatch[sub_catch].Sy = 0.0;
-		}
+		//Compute polygon properties
+		res = computePolygonProps(sub_catch);
+		if (res != 0) return res; //Error
 
 		//Create 2D faces
-		for ( i = 0; i < Polygon2D.numVertex; i++)
-		{
-			v1 = Polygon2D.vertex[i];
-
-			//Close polygon
-			if (i == (Polygon2D.numVertex-1)) 
-			{
-				v2 = Polygon2D.vertex[0];
-			} else {
-				v2 = Polygon2D.vertex[i+1];
-			}
-
-			//Check length
-			checkLength = sqrt((v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y)) / UCF(LENGTH);
-			if (checkLength < 0.1e-10)
-			{
-				continue;
-			}
-
-			//Check existing edge
-			j = find_existing_edge(v1, v2);
-
-			if(j >= 0)
-			{
-    		    if (M2DFace[j].rightType == POL_NONE)
-				{
-					M2DFace[j].polygonRightID = Polygon2D.ID;
-				
-					//Define polygon type
-					if (Subcatch[sub_catch].isStreet)
-					{
-						M2DFace[j].rightType = POL_STREET;
-					} else {
-						M2DFace[j].rightType = POL_ROOF;
-					}
-
-				} else {
-					
-					M2DFace[j].polygonLeftID = Polygon2D.ID;
-				
-					//Define polygon type
-					if (Subcatch[sub_catch].isStreet)
-					{
-						M2DFace[j].leftType = POL_STREET;
-					} else {
-						M2DFace[j].leftType = POL_ROOF;
-					}
-
-				}
-
-			} else {
-
-                j = M2DControl.numFaces;
-
-				if (Subcatch[sub_catch].isStreet)
-				{
-					M2DFace[j].polygonLeftID = Polygon2D.ID;
-					M2DFace[j].leftType = POL_STREET;
-				} else {
-					M2DFace[j].polygonRightID = Polygon2D.ID;
-					M2DFace[j].rightType = POL_ROOF;
-				}
-
-				//Nodes coordinates
-				M2DFace[j].X1 = v1.x;
-				M2DFace[j].Y1 = v1.y;
-				M2DFace[j].X2 = v2.x;
-				M2DFace[j].Y2 = v2.y;
-				M2DFace[j].Z = 0.5f * (v1.z + v2.z) / UCF(LENGTH);
-
-				//Measure length
-				M2DFace[j].length = sqrt((v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y)) / UCF(LENGTH);
-
-				//Face normal vector (local axes)
-				if (Polygon2D.clockwise == CLOCKWISE)
-				{
-					vnx = -(v2.y - v1.y);
-					vny =  (v2.x - v1.x);
-
-				} else {
-					vnx =  (v2.y - v1.y);
-					vny = -(v2.x - v1.x);
-				}
-				M2DFace[j].vnx = vnx / (M2DFace[j].length * UCF(LENGTH));
-				M2DFace[j].vny = vny / (M2DFace[j].length * UCF(LENGTH));
-
-				//Increase counter
-				M2DControl.numFaces++;
-
-			}
-		}
+		create2DFaces(sub_catch);
 
 		//Update polygon to new subcatchment
         Polygon2D.numVertex = 0;
@@ -790,6 +624,8 @@ void subcatch_setOldHydState(int j)
 //  Purpose: replaces hydrodynamic old state of subcatchment with new state.
 //
 {
+	// --- update 2D depth
+	Subcatch[j].oldGlobalDepth = Subcatch[j].newGlobalDepth;
 
 	// --- update 2D vel
 	Subcatch[j].oldVx = Subcatch[j].newVx;
@@ -1026,7 +862,16 @@ double subcatch_getRunoff(int j, double tStep)
     outflowVol = Voutflow;
     if ( Subcatch[j].outNode == -1 && Subcatch[j].outSubcatch != j )
     {
-        outflowVol = 0.0;
+		//Check if it is street polygon
+		if (Subcatch[j].isStreet)
+		{
+			Subcatch[j].newGlobalDepth += outflowVol / Subcatch[j].area;
+		}
+		else
+		{
+			outflowVol = 0.0;
+		}
+
     }
     massbal_updateRunoffTotals(rainVol, evapVol, infilVol, outflowVol);
 
@@ -1458,6 +1303,7 @@ void getSubareaRunoff(int j, int i, double precip, double evap, double tStep)
     double    surfEvap;                // evap. used for surface water (ft/sec)
     double    infil;                   // infiltration rate (ft/sec)
     TSubarea* subarea;                 // pointer to subarea being analyzed
+	int       is2dRouted;              // if there is no outlet the outflow goes to 2D polygon
 
     // --- assign pointer to current subarea
     subarea = &Subcatch[j].subArea[i];
@@ -1505,8 +1351,13 @@ void getSubareaRunoff(int j, int i, double precip, double evap, double tStep)
     //     and time over which runoff occurs
     else updatePondedDepth(subarea, &tRunoff);
 
-    // --- compute runoff based on updated ponded depth
-    findSubareaRunoff(subarea, tRunoff);
+	// --- check outlet or 2D
+	is2dRouted = 0;
+	if (Subcatch[j].isStreet && Subcatch[j].outNode == -1)
+		is2dRouted = 1;
+
+	// --- compute runoff based on updated ponded depth
+	findSubareaRunoff(subarea, tRunoff, is2dRouted);
 
     // --- compute runoff volume leaving subcatchment for mass balance purposes
     //     (fOutlet is the fraction of this subarea's runoff that goes to the
@@ -1548,7 +1399,7 @@ double getSubareaInfil(int j, TSubarea* subarea, double precip, double tStep)
 
 //=============================================================================
 
-void findSubareaRunoff(TSubarea* subarea, double tRunoff)
+void findSubareaRunoff(TSubarea* subarea, double tRunoff, int isStreet)
 //
 //  Purpose: computes runoff (ft/s) from subarea after current time step.
 //  Input:   subarea = ptr. to a subarea
@@ -1561,7 +1412,7 @@ void findSubareaRunoff(TSubarea* subarea, double tRunoff)
     if ( xDepth > ZERO )
     {
         // --- case where nonlinear routing is used
-        if ( subarea->N > 0.0 )
+		if (subarea->N > 0.0 && !isStreet)
         {
             subarea->runoff = subarea->alpha * pow(xDepth, MEXP);
         }
@@ -1637,7 +1488,7 @@ void updatePondedDepth(TSubarea* subarea, double* dt)
 
 //=============================================================================
 
-void  getDdDt(double t, double* d, double* dddt)
+void getDdDt(double t, double* d, double* dddt)
 //
 //  Input:   t = current time (not used)
 //           d = stored depth (ft)
@@ -1659,9 +1510,12 @@ void  getDdDt(double t, double* d, double* dddt)
     *dddt = ix - rx;
 }
 
+
+//=============================================================================
+//                              2D METHODS
 //=============================================================================
 
-int      find_existing_edge(TXYZ v1, TXYZ v2)
+int find_existing_edge(TXYZ v1, TXYZ v2)
 //
 //  Input:   v1 = first vertex of the face 
 //           v2 = second vertex of the face
@@ -1702,7 +1556,6 @@ int      find_existing_edge(TXYZ v1, TXYZ v2)
 
 	return -1;
 }
-
 
 //=============================================================================
 
@@ -1746,3 +1599,325 @@ double IntBilinear(double X, double Y)
 
 	}
 }
+
+//=============================================================================
+
+void exportToShapefile(int sub_catch)
+//
+//  Input:    
+//           sub_catch = index of the subcatchment in the objects array
+//  Output:
+//  Purpose: export polygon to shapefile.
+//
+{
+	//Variables
+	int i;
+	int    node;
+	TXYZ   v1;
+
+	//Local variable for creating shape
+	int		    nShapeType, nParts, panParts, nVMax;
+	double	    *padfX, *padfY, *padfZ = NULL, *padfM = NULL;
+	SHPObject	*psObject;
+	DBFHandle	hDBF;
+	int         iRecord;
+	SHPHandle	hSHP;
+
+
+	//Add area to node
+	node = Subcatch[sub_catch].outNode;
+	if (node > 0) Node[node].M2DArea += Subcatch[sub_catch].area;
+
+	//Open shapefile
+	hSHP = SHPOpen(F2Dmesh.name, "r+b");
+	if (hSHP == NULL)
+	{
+		//TODO
+		//printf( "Unable to open:%s\n", filename );
+		//exit( 1 );
+	}
+
+	SHPGetInfo(hSHP, NULL, &nShapeType, NULL, NULL);
+
+	//Allocate memory
+	nVMax = 1024;
+	padfX = (double *)malloc(sizeof(double) * nVMax);
+	padfY = (double *)malloc(sizeof(double) * nVMax);
+	padfZ = (double *)malloc(sizeof(double) * nVMax);
+
+	nParts = 1;
+	panParts = 0;
+
+	//Loop for all vertex
+	for (i = 0; i < Polygon2D.numVertex; i++)
+	{
+		v1 = Polygon2D.vertex[i];
+
+		padfX[i] = v1.x;
+		padfY[i] = v1.y;
+		padfZ[i] = v1.z;
+
+	}
+
+	//Create and write object
+	psObject = SHPCreateObject(nShapeType, -1, nParts, &panParts, NULL, Polygon2D.numVertex, padfX, padfY, padfZ, padfM);
+	SHPWriteObject(hSHP, -1, psObject);
+	SHPDestroyObject(psObject);
+
+	//Close shape
+	SHPClose(hSHP);
+
+	//Free memory
+	free(padfX);
+	free(padfY);
+	free(padfZ);
+
+	//Add ID value to dbf database
+	hDBF = DBFOpen(F2Dmesh.name, "r+b");
+	if (hDBF == NULL)
+	{
+		//TODO
+		//printf( "DBFOpen(%s,\"rb+\") failed.\n", argv[1] );
+		//exit( 2 );
+	}
+
+	//Last record in table
+	iRecord = DBFGetRecordCount(hDBF);
+
+	//Write value
+	DBFWriteStringAttribute(hDBF, iRecord, 0, Polygon2D.ID);
+
+	//CLose
+	DBFClose(hDBF);
+
+	//Increase num of elements
+	M2DControl.numElements++;
+
+}
+
+//=============================================================================
+
+int computePolygonProps(int sub_catch)
+//
+//  Input:    
+//           sub_catch = index of the subcatchment in the objects array
+//  Output:
+//  Purpose: comupute geometric properties of the polygon.
+//
+{
+	//Compute clockwise/counterclockwise 
+	Polygon2D.clockwise = ClockWise(Polygon2D);
+
+	//Compute polygon plane
+	if (getBestFitPlane(&Polygon2D) == 1)
+		return error_setInpError(ERR_PLANEFITTING, "");
+
+	//Subcatchment centroid
+	Subcatch[sub_catch].centroid.x = Polygon2D.centroid.x;
+	Subcatch[sub_catch].centroid.y = Polygon2D.centroid.y;
+	Subcatch[sub_catch].centroid.z = Polygon2D.centroid.z;
+
+	//Assign Manning to the 2D mesh
+	Subcatch[sub_catch].N = MAX(Subcatch[sub_catch].subArea[IMPERV0].N, Subcatch[sub_catch].subArea[PERV].N);
+
+	//Compute polygon slopes
+	if (Polygon2D.plane.C != 0.0)
+	{
+		Subcatch[sub_catch].Sx = -Polygon2D.plane.A / Polygon2D.plane.C;
+		Subcatch[sub_catch].Sy = -Polygon2D.plane.B / Polygon2D.plane.C;
+	}
+	else {
+		Subcatch[sub_catch].Sx = 0.0;
+		Subcatch[sub_catch].Sy = 0.0;
+	}
+
+	return 0;
+}
+
+//=============================================================================
+
+void create2DFaces(int sub_catch)
+//
+//  Input:    
+//           
+//  Output:
+//  Purpose: Create computational 2D faces to compute fluxes.
+//
+{
+	//Variables
+	int		i, j;
+	TXYZ	v1, v2;
+	double	checkLength;
+	double vnx, vny;
+
+
+	//Loop for vertices
+	for (i = 0; i < Polygon2D.numVertex; i++)
+	{
+		v1 = Polygon2D.vertex[i];
+
+		//Close polygon
+		if (i == (Polygon2D.numVertex - 1))
+		{
+			v2 = Polygon2D.vertex[0];
+		}
+		else {
+			v2 = Polygon2D.vertex[i + 1];
+		}
+
+		//Check length
+		checkLength = sqrt((v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y)) / UCF(LENGTH);
+		if (checkLength < 0.1e-10)
+		{
+			continue;
+		}
+
+		//Check existing edge
+		j = find_existing_edge(v1, v2);
+
+		if (j >= 0)
+		{
+			if (M2DFace[j].rightType == POL_NONE)
+			{
+				M2DFace[j].polygonRightID = Polygon2D.ID;
+
+				//Define polygon type
+				if (Subcatch[sub_catch].isStreet)
+				{
+					M2DFace[j].rightType = POL_STREET;
+				}
+				else {
+					M2DFace[j].rightType = POL_ROOF;
+				}
+
+			}
+			else {
+
+				M2DFace[j].polygonLeftID = Polygon2D.ID;
+
+				//Define polygon type
+				if (Subcatch[sub_catch].isStreet)
+				{
+					M2DFace[j].leftType = POL_STREET;
+				}
+				else {
+					M2DFace[j].leftType = POL_ROOF;
+				}
+
+			}
+
+		}
+		else {
+
+			j = M2DControl.numFaces;
+
+			if (Subcatch[sub_catch].isStreet)
+			{
+				M2DFace[j].polygonLeftID = Polygon2D.ID;
+				M2DFace[j].leftType = POL_STREET;
+			}
+			else {
+				M2DFace[j].polygonRightID = Polygon2D.ID;
+				M2DFace[j].rightType = POL_ROOF;
+			}
+
+			//Nodes coordinates
+			M2DFace[j].X1 = v1.x;
+			M2DFace[j].Y1 = v1.y;
+			M2DFace[j].X2 = v2.x;
+			M2DFace[j].Y2 = v2.y;
+			M2DFace[j].Z = 0.5f * (v1.z + v2.z) / UCF(LENGTH);
+
+			//Measure length
+			M2DFace[j].length = sqrt((v2.x - v1.x)*(v2.x - v1.x) + (v2.y - v1.y)*(v2.y - v1.y)) / UCF(LENGTH);
+
+			//Face normal vector (local axes)
+			if (Polygon2D.clockwise == CLOCKWISE)
+			{
+				vnx = -(v2.y - v1.y);
+				vny = (v2.x - v1.x);
+
+			}
+			else {
+				vnx = (v2.y - v1.y);
+				vny = -(v2.x - v1.x);
+			}
+			M2DFace[j].vnx = vnx / (M2DFace[j].length * UCF(LENGTH));
+			M2DFace[j].vny = vny / (M2DFace[j].length * UCF(LENGTH));
+
+			//Increase counter
+			M2DControl.numFaces++;
+
+		}
+	}
+
+}
+
+//=============================================================================
+
+int polygon_flush()
+//
+//  Input:    
+//           
+//  Output:  Error code (>0)
+//  Purpose: Dump last ridden polygon.
+//
+{
+	//Variables
+	int sub_catch;
+	int res;
+
+	//Export polygon to shapefile
+	sub_catch = project_findObject(SUBCATCH, Polygon2D.ID);
+	Subcatch[sub_catch].isStreet = ((Polygon2D.ID[0] == 'S') || (Polygon2D.ID[0] == 's'));
+
+	//Export only street polygons
+	if (Subcatch[sub_catch].isStreet)
+	{
+		Subcatch[sub_catch].dbf_record = M2DControl.numElements;
+		exportToShapefile(sub_catch);
+	}
+
+	//Compute polygon properties
+	res = computePolygonProps(sub_catch);
+	if (res != 0) return res; //Error
+
+	//Create 2D faces
+	create2DFaces(sub_catch);
+
+	return 0;
+
+}
+
+//=============================================================================
+
+void subcatch_setDepth(int j, double newDepth)
+//
+//  Input:   j = subcatchment index
+//           newDepth = new depth after 2D (ft)
+//  Output:  
+//  Purpose: updates the subcatchment depth after 2D routing
+//
+{
+	int    i;
+	double fArea;
+	double depth = 0.0;
+	double subAreaDepth = 0.0;
+
+	//Get previous depth
+	depth = subcatch_getDepth(j);
+
+	for (i = IMPERV0; i <= PERV; i++)
+	{
+		fArea = Subcatch[j].subArea[i].fArea;
+		if (fArea > 0.0)
+		{
+			subAreaDepth = Subcatch[j].subArea[i].depth;
+			Subcatch[j].subArea[i].depth = subAreaDepth * (newDepth / depth);
+		}
+	}
+
+}
+
+//=============================================================================
+

@@ -8,6 +8,15 @@
 //
 //   Input data processing functions.
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <stdlib.h>
@@ -140,7 +149,7 @@ int input_readData()
     int   i;
     long  lineCount = 0;
 
-	int		node, subcatchLeft, subcatchRight;
+	int   subcatchLeft, subcatchRight;
 
     // --- initialize working item count arrays
     //     (final counts in Mobjects, Mnodes & Mlinks should
@@ -227,6 +236,17 @@ int input_readData()
         // --- stop if reach end of file or max. error count
         if (errsum > MAXERRS) break;
     }   /* End of while */
+
+	//Flush last polygon
+	sprintf(line, "2D: Flushing last polygon...");
+	inperr = polygon_flush();
+	if (inperr > 0)
+	{
+		errsum++;
+		if (errsum > MAXERRS) report_writeLine(FMT19);
+		else report_writeInputErrorMsg(inperr, sect, line, lineCount);
+	}
+
 
 	// --- correct the node areas to be consistent with 2D model
 	for (i = 0; i < Nobjects[NODE]; i++)

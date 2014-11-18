@@ -20,6 +20,14 @@
 //         input properties from the set of computed output properties.
 //-----------------------------------------------------------------------------
 
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #include "mathexpr.h"
 #include "infil.h"
 
@@ -941,8 +949,9 @@ typedef struct
 	double       maxDepth;
 	double       maxVel;
 	double       max_vh;
-
-	double        timeCourantCritical;
+	double       maxVx;
+	double       maxVy;
+	double       timeCourantCritical;
 }  TSubcatchStats;
 
 

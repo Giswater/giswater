@@ -9,6 +9,15 @@
 //
 //   Simulation statistics functions.
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <stdlib.h>
@@ -103,7 +112,9 @@ int  stats_open()
 			SubcatchStats[j].maxDepth= 0.0;
 			SubcatchStats[j].maxVel  = 0.0;
 			SubcatchStats[j].max_vh  = 0.0;
-        }
+			SubcatchStats[j].maxVx   = 0.0;
+			SubcatchStats[j].maxVy   = 0.0;
+		}
     }
 
     // --- allocate memory for node & link stats
@@ -320,6 +331,8 @@ void   stats_updateSubcatchStats(int j, double rainVol, double runonVol,
 	SubcatchStats[j].maxDepth = MAX(SubcatchStats[j].maxDepth, Subcatch[j].newGlobalDepth);
 	SubcatchStats[j].maxVel   = MAX(SubcatchStats[j].maxVel, Subcatch[j].newVel);
 	SubcatchStats[j].max_vh   = MAX(SubcatchStats[j].max_vh, Subcatch[j].new_vh);
+	SubcatchStats[j].maxVx    = MAX(SubcatchStats[j].maxVx, Subcatch[j].newVx);
+	SubcatchStats[j].maxVy    = MAX(SubcatchStats[j].maxVy, Subcatch[j].newVy);
 
 
 }
@@ -720,21 +733,21 @@ void M2D_maximums_print(void)
 	}
 
 	// --- create new field name
-	if( DBFAddField( hDBF, "max_h", FTDouble, 12, 3 ) == -1 )
+	if( DBFAddField( hDBF, "max_h", FTDouble, 12, 6 ) == -1 )
     {
 		//TODO
 		//printf( "DBFAddField(%s,FTDouble,%d,%d) failed.\n", fieldName, 12, 3 );
 		//exit( 4 );
     }
 
-	if( DBFAddField( hDBF, "max_v", FTDouble, 12, 3 ) == -1 )
+	if( DBFAddField( hDBF, "max_v", FTDouble, 12, 6 ) == -1 )
     {
 		//TODO
 		//printf( "DBFAddField(%s,FTDouble,%d,%d) failed.\n", fieldName, 12, 3 );
 		//exit( 4 );
     }
 
-	if( DBFAddField( hDBF, "max_vh", FTDouble, 12, 3 ) == -1 )
+	if( DBFAddField( hDBF, "max_vh", FTDouble, 12, 6 ) == -1 )
     {
 		//TODO
 		//printf( "DBFAddField(%s,FTDouble,%d,%d) failed.\n", fieldName, 12, 3 );

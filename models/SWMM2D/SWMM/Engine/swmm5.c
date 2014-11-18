@@ -15,6 +15,16 @@
 //   in a dynamic link library.
 //
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 //**********************************************************
@@ -356,7 +366,7 @@ int DLLEXPORT swmm_start(int saveResults)
         // --- see if runoff & routing needs to be computed
         if ( Nobjects[SUBCATCH] > 0 ) DoRunoff = TRUE;
         else DoRunoff = FALSE;
-        if ( Nobjects[NODE] > 0 && !IgnoreRouting ) DoRouting = TRUE;
+		if ( (Nobjects[NODE] > 0 || Nobjects[SUBCATCH] > 0) && !IgnoreRouting) DoRouting = TRUE;
         else DoRouting = FALSE;
 
         // --- open all computing systems (order is important!)

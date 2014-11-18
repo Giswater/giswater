@@ -10,6 +10,15 @@
 //   Conveyance system routing functions.
 //
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <stdio.h>
@@ -234,32 +243,27 @@ void routing_execute(int routingModel, double routingStep)
 	for (j = 0; j < Nobjects[SUBCATCH]; j++)
 	{
 
-		//***************************
-		if (j == 1134) {
-			j = j;
-		}
-
-
-
-
-
-
-
 		node = Subcatch[j].outNode;
-		Node[node].M2DDepth = 0.0;
 
-		// --- new node depth
-		auxDepth = MAX(Node[node].newDepth - Node[node].fullDepth, 0.0);
-
-		// --- in case of drying reduce momentum
-		if (auxDepth < Subcatch[j].oldGlobalDepth)
+		//Check if connected to drainage system
+		if (Subcatch[j].outNode != -1)
 		{
-			Subcatch[j].oldqx = Subcatch[j].oldVx * auxDepth;
-			Subcatch[j].oldqy = Subcatch[j].oldVy * auxDepth;
-		}
+			Node[node].M2DDepth = 0.0;
 
-		// --- update depth
-		Subcatch[j].oldGlobalDepth = auxDepth;
+			// --- new node depth
+			auxDepth = MAX(Node[node].newDepth - Node[node].fullDepth, 0.0);
+
+			// --- in case of drying reduce momentum
+			if (auxDepth < Subcatch[j].oldGlobalDepth)
+			{
+				Subcatch[j].oldqx = Subcatch[j].oldVx * auxDepth;
+				Subcatch[j].oldqy = Subcatch[j].oldVy * auxDepth;
+			}
+
+			// --- update depth
+			Subcatch[j].oldGlobalDepth = auxDepth;
+
+		}
 
 		// --- reset fluxes
         Subcatch[j].fluxDepth = 0.0;
@@ -274,8 +278,10 @@ void routing_execute(int routingModel, double routingStep)
 
 	for (j = 0; j < Nobjects[M2DFACE]; j++)
     {
-		subcatchLeft  = NULL;
-		subcatchRight = NULL;
+
+		// --- initial subcatchment ID 
+		subcatchLeft  = -1;
+		subcatchRight = -1;
 
 		if (M2DFace[j].leftType == POL_STREET || M2DFace[j].rightType == POL_STREET)
 		{
@@ -360,20 +366,14 @@ void routing_execute(int routingModel, double routingStep)
 			}
 
 
-
-
-
-
-
-
 			// --- update polygon fluxes
-			if (subcatchLeft != NULL) {
+			if (subcatchLeft >= 0) {
 				Subcatch[subcatchLeft].fluxDepth -= M2DFace[j].length * f[0];
 				Subcatch[subcatchLeft].fluxHUx   -= M2DFace[j].length * (M2DFace[j].vnx * f[1] - M2DFace[j].vny * f[2]);
 				Subcatch[subcatchLeft].fluxHUy   -= M2DFace[j].length * (M2DFace[j].vny * f[1] + M2DFace[j].vnx * f[2]);
 			}
 
-			if (subcatchRight != NULL) {
+			if (subcatchRight >= 0) {
 				Subcatch[subcatchRight].fluxDepth += M2DFace[j].length * f[0];
 				Subcatch[subcatchRight].fluxHUx   += M2DFace[j].length * (M2DFace[j].vnx * f[1] - M2DFace[j].vny * f[2]);
 				Subcatch[subcatchRight].fluxHUy   += M2DFace[j].length * (M2DFace[j].vny * f[1] + M2DFace[j].vnx * f[2]);
@@ -527,7 +527,9 @@ void routing_execute(int routingModel, double routingStep)
 			if ( (Subcatch[j].newGlobalDepth > 0.0) || (Subcatch[j].oldGlobalDepth > 0.0) )
 			{
 				node = Subcatch[j].outNode;
-				Node[node].M2DDepth += Subcatch[j].newGlobalDepth * (Subcatch[j].area / Node[node].M2DArea);
+				
+				if (Subcatch[j].outNode != -1)
+					Node[node].M2DDepth += Subcatch[j].newGlobalDepth * (Subcatch[j].area / Node[node].M2DArea);
 			}
 
 		}

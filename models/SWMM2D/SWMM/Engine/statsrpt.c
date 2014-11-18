@@ -8,6 +8,16 @@
 //
 //   Report writing functions for summary statistics.
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <malloc.h>
@@ -115,17 +125,17 @@ void writeSubcatchRunoff()
     WRITE("");
     fprintf(Frpt.file,
 
-"\n  --------------------------------------------------------------------------------------------------------"
-"\n                            Total      Total      Total      Total      Total       Total     Peak  Runoff"
-"\n                           Precip      Runon       Evap      Infil     Runoff      Runoff   Runoff   Coeff");
+"\n  -----------------------------------------------------------------------------------------------------------------------------------------------------"
+"\n                            Total      Total      Total      Total      Total       Total     Peak  Runoff  Maximum  Maximum  Maximum  Maximum  Maximum"
+"\n                           Precip      Runon       Evap      Infil     Runoff      Runoff   Runoff   Coeff      V_x      V_y    depth  |Veloc|       vh");
     if ( UnitSystem == US ) fprintf(Frpt.file,
-"\n  Subcatchment                 in         in         in         in         in    %8s      %3s",
-        VolUnitsWords[UnitSystem], FlowUnitWords[FlowUnits]);
+"\n  Subcatchment                 in         in         in         in         in    %8s      %3s           ft/sec   ft/sec %8s   ft/sec ft^2/sec",
+VolUnitsWords[UnitSystem], FlowUnitWords[FlowUnits], PondingUnitsWords[UnitSystem]);
     else fprintf(Frpt.file,
-"\n  Subcatchment                 mm         mm         mm         mm         mm    %8s      %3s",
-        VolUnitsWords[UnitSystem], FlowUnitWords[FlowUnits]);
+"\n  Subcatchment                 mm         mm         mm         mm         mm    %8s      %3s            m/sec    m/sec %8s    m/sec  m^2/sec",
+VolUnitsWords[UnitSystem], FlowUnitWords[FlowUnits], PondingUnitsWords[UnitSystem]);
     fprintf(Frpt.file,
-"\n  --------------------------------------------------------------------------------------------------------");
+"\n  -----------------------------------------------------------------------------------------------------------------------------------------------------");
 
     for ( j = 0; j < Nobjects[SUBCATCH]; j++ )
     {
@@ -149,6 +159,17 @@ void writeSubcatchRunoff()
         r = SubcatchStats[j].precip + SubcatchStats[j].runon;
         if ( r > 0.0 ) r = SubcatchStats[j].runoff / r;
         fprintf(Frpt.file, "%8.3f", r);
+		x = SubcatchStats[j].maxVx * UCF(LENGTH);
+		fprintf(Frpt.file, " %8.4f", x);
+		x = SubcatchStats[j].maxVy * UCF(LENGTH);
+		fprintf(Frpt.file, " %8.4f", x);
+		x = SubcatchStats[j].maxDepth * UCF(LENGTH);
+		fprintf(Frpt.file, " %8.4f", x);
+		x = SubcatchStats[j].maxVel * UCF(LENGTH);
+		fprintf(Frpt.file, " %8.4f", x);
+		x = SubcatchStats[j].max_vh * UCF(LENGTH) * UCF(LENGTH);
+		fprintf(Frpt.file, " %8.6f", x);
+
     }
     WRITE("");
 }

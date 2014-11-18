@@ -16,6 +16,15 @@
 //   o initializing the internal state of all objects
 //   o managing hash tables for identifying objects by ID name
 //-----------------------------------------------------------------------------
+
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <stdlib.h>
@@ -897,28 +906,29 @@ void createObjects()
 
     // --- allocate memory for each category of object
     if ( ErrorCode ) return;
-    Gage     = (TGage *)     calloc(Nobjects[GAGE],     sizeof(TGage));
-    Subcatch = (TSubcatch *) calloc(Nobjects[SUBCATCH], sizeof(TSubcatch));
-    M2DFace   = (T2DFace *)   calloc(Nobjects[M2DFACE],   sizeof(T2DFace));
-	Node     = (TNode *)     calloc(Nobjects[NODE],     sizeof(TNode));
-    Outfall  = (TOutfall *)  calloc(Nnodes[OUTFALL],    sizeof(TOutfall));
-    Divider  = (TDivider *)  calloc(Nnodes[DIVIDER],    sizeof(TDivider));
-    Storage  = (TStorage *)  calloc(Nnodes[STORAGE],    sizeof(TStorage));
-    Link     = (TLink *)     calloc(Nobjects[LINK],     sizeof(TLink));
-    Conduit  = (TConduit *)  calloc(Nlinks[CONDUIT],    sizeof(TConduit));
-    Pump     = (TPump *)     calloc(Nlinks[PUMP],       sizeof(TPump));
-    Orifice  = (TOrifice *)  calloc(Nlinks[ORIFICE],    sizeof(TOrifice));
-    Weir     = (TWeir *)     calloc(Nlinks[WEIR],       sizeof(TWeir));
-    Outlet   = (TOutlet *)   calloc(Nlinks[OUTLET],     sizeof(TOutlet));
-    Pollut   = (TPollut *)   calloc(Nobjects[POLLUT],   sizeof(TPollut));
-    Landuse  = (TLanduse *)  calloc(Nobjects[LANDUSE],  sizeof(TLanduse));
-    Pattern  = (TPattern *)  calloc(Nobjects[TIMEPATTERN],  sizeof(TPattern));
-    Curve    = (TTable *)    calloc(Nobjects[CURVE],    sizeof(TTable));
-    Tseries  = (TTable *)    calloc(Nobjects[TSERIES],  sizeof(TTable));
-    Aquifer  = (TAquifer *)  calloc(Nobjects[AQUIFER],  sizeof(TAquifer));
-    UnitHyd  = (TUnitHyd *)  calloc(Nobjects[UNITHYD],  sizeof(TUnitHyd));
-    Snowmelt = (TSnowmelt *) calloc(Nobjects[SNOWMELT], sizeof(TSnowmelt));
-    Shape    = (TShape *)    calloc(Nobjects[SHAPE],    sizeof(TShape));
+
+	if (Nobjects[GAGE] > 0)        Gage = (TGage *)calloc(Nobjects[GAGE], sizeof(TGage));
+	if (Nobjects[SUBCATCH] > 0)    Subcatch = (TSubcatch *)calloc(Nobjects[SUBCATCH], sizeof(TSubcatch));
+	if (Nobjects[M2DFACE] > 0)     M2DFace = (T2DFace *)calloc(Nobjects[M2DFACE], sizeof(T2DFace));
+	if (Nobjects[NODE] > 0)        Node = (TNode *)calloc(Nobjects[NODE], sizeof(TNode));
+	if (Nobjects[OUTFALL] > 0)     Outfall = (TOutfall *)calloc(Nnodes[OUTFALL], sizeof(TOutfall));
+	if (Nobjects[DIVIDER] > 0)     Divider = (TDivider *)calloc(Nnodes[DIVIDER], sizeof(TDivider));
+	if (Nobjects[STORAGE] > 0)     Storage = (TStorage *)calloc(Nnodes[STORAGE], sizeof(TStorage));
+	if (Nobjects[LINK] > 0)        Link = (TLink *)calloc(Nobjects[LINK], sizeof(TLink));
+	if (Nobjects[CONDUIT] > 0)     Conduit = (TConduit *)calloc(Nlinks[CONDUIT], sizeof(TConduit));
+	if (Nobjects[PUMP] > 0)        Pump = (TPump *)calloc(Nlinks[PUMP], sizeof(TPump));
+	if (Nobjects[ORIFICE] > 0)     Orifice = (TOrifice *)calloc(Nlinks[ORIFICE], sizeof(TOrifice));
+	if (Nobjects[WEIR] > 0)        Weir = (TWeir *)calloc(Nlinks[WEIR], sizeof(TWeir));
+	if (Nobjects[OUTLET] > 0)      Outlet = (TOutlet *)calloc(Nlinks[OUTLET], sizeof(TOutlet));
+	if (Nobjects[POLLUT] > 0)      Pollut = (TPollut *)calloc(Nobjects[POLLUT], sizeof(TPollut));
+	if (Nobjects[LANDUSE] > 0)     Landuse = (TLanduse *)calloc(Nobjects[LANDUSE], sizeof(TLanduse));
+	if (Nobjects[TIMEPATTERN] > 0) Pattern = (TPattern *)calloc(Nobjects[TIMEPATTERN], sizeof(TPattern));
+	if (Nobjects[CURVE] > 0)       Curve = (TTable *)calloc(Nobjects[CURVE], sizeof(TTable));
+	if (Nobjects[TSERIES] > 0)     Tseries = (TTable *)calloc(Nobjects[TSERIES], sizeof(TTable));
+	if (Nobjects[AQUIFER] > 0)     Aquifer = (TAquifer *)calloc(Nobjects[AQUIFER], sizeof(TAquifer));
+	if (Nobjects[UNITHYD] > 0)     UnitHyd = (TUnitHyd *)calloc(Nobjects[UNITHYD], sizeof(TUnitHyd));
+	if (Nobjects[SNOWMELT] > 0)    Snowmelt = (TSnowmelt *)calloc(Nobjects[SNOWMELT], sizeof(TSnowmelt));
+	if (Nobjects[SHAPE] > 0)       Shape = (TShape *)calloc(Nobjects[SHAPE], sizeof(TShape));
 
     // --- create LID objects
     lid_create(Nobjects[LID], Nobjects[SUBCATCH]);
@@ -1016,6 +1026,7 @@ void createObjects()
         }
 
 		Subcatch[j].isIsolated  = 1;
+		Subcatch[j].dbf_record = -1;
     }
 
     // --- initialize RDII unit hydrograph properties
@@ -1154,7 +1165,7 @@ void deleteObjects()
     // --- now free each major category of object
     FREE(Gage);
     FREE(Subcatch);
-    FREE(Node);
+	FREE(Node);
     FREE(Outfall);
     FREE(Divider);
     FREE(Storage);

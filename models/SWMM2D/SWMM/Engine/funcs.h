@@ -10,6 +10,14 @@
 //   Global interfacing functions.
 //-----------------------------------------------------------------------------
 
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+//this file has been modified from the original EPA version to the GISWATER version
+
 //-----------------------------------------------------------------------------
 //   Project Manager Methods
 //-----------------------------------------------------------------------------
@@ -444,7 +452,8 @@ void     getElapsedTime(DateTime aDate,       // convert elapsed date
 //   2D Methods
 //-----------------------------------------------------------------------------
 int      polygon_readVertex(char* tok[], int ntoks);
+int      polygon_flush();
 int      find_existing_edge(TXYZ v1, TXYZ v2);
 void     M2D_maximums_print(void);
 void     input_readTopo(void);
-void riemann_hllc (const double *uL, const double *uR, double *f, double g);
+void     riemann_hllc (const double *uL, const double *uR, double *f, double g);
