@@ -442,6 +442,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	public void enableProjectManagement(boolean enable) {
 		Utils.setPanelEnabled(panelManagement, enable);
+		disableProjectDataInfo();
+	}	
+	
+	public void disableProjectDataInfo() {
 		txtDescription.setEnabled(false);
 		txtAuthor.setEnabled(false);
 		txtDate.setEnabled(false);
@@ -634,6 +638,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtDescription.setText(title);
 		txtAuthor.setText(author);
 		txtDate.setText(date);
+		disableProjectDataInfo();
 	}
 		
 }
