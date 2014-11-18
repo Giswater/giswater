@@ -130,7 +130,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 				try {			
 					String folderRoot = new File(".").getCanonicalPath() + File.separator;				
 					// From sample .sql file					
-					String filePath = folderRoot+"samples/sample_"+waterSoftware+".sql";	 
+					String filePath = folderRoot+"samples"+File.separator+schemaName+".sql";	 
 			    	Utils.getLogger().info("Reading file: "+filePath); 				
 			    	String content = Utils.readFile(filePath);
 					Utils.logSql(content);		
@@ -143,7 +143,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					if (waterSoftware.equals("hecras")) {				
 						// Trough Load Raster
 						String rasterName = "sample_mdt.asc";	 						
-						String rasterPath = folderRoot+"samples/"+rasterName;	 						
+						String rasterPath = folderRoot+"samples"+File.separator+rasterName;	 						
 						if (loadRaster(schemaName, rasterPath, rasterName)) {
 							String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
 							MainClass.mdi.showMessage(msg);

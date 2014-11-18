@@ -588,7 +588,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		mntmExampleEpanet.addActionListener(this);
 		mntmExampleEpaswmm.addActionListener(this);
-		mntmExampleEpaswmm.addActionListener(this);
+		mntmExampleEpaswmm2D.addActionListener(this);
 		mntmExampleHecras.addActionListener(this);	
 		
 		mntmDatabaseAdministrator.addActionListener(this);		

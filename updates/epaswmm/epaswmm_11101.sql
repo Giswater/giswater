@@ -372,9 +372,12 @@ SELECT rpt_arcpolload_sum.id, rpt_arcpolload_sum.result_id, rpt_arcpolload_sum.a
 -- ----------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_subcathrunoff_sum"
-ADD COLUMN "hmax" numeric(12,4),
 ADD COLUMN "vxmax" numeric(12,4),
-ADD COLUMN "vymax" numeric(12,4);
+ADD COLUMN "vymax" numeric(12,4),
+ADD COLUMN "depth" numeric(12,4),
+ADD COLUMN "vel" numeric(12,4),
+ADD COLUMN "hmax" numeric(12,4)
+;
 
 -- ----------------------------
 -- View structure for v_rpt_subcatchrunoff_sum

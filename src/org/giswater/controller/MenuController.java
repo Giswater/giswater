@@ -433,7 +433,7 @@ public class MenuController extends AbstractController {
 	
 	public void exampleEpaswmm2D() {
 		MainDao.setWaterSoftware("EPASWMM");
-		createExampleSchema("epaswmm2D");
+		createExampleSchema("epaswmm", "_2d");
 	}
 
 	public void exampleHecras() {
@@ -443,6 +443,10 @@ public class MenuController extends AbstractController {
 	
 	
 	private void createExampleSchema(String waterSoftware) {
+		createExampleSchema(waterSoftware, "");
+	}
+	
+	private void createExampleSchema(String waterSoftware, String suffix) {
         
 		// Get SRID
 		String sridValue = "25831";		
@@ -451,7 +455,7 @@ public class MenuController extends AbstractController {
 		}
 		
 		// Ask confirmation
-		String schemaName = "sample_"+waterSoftware;
+		String schemaName = "sample_"+waterSoftware+suffix;
 		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
 		int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
 		if (res != JOptionPane.YES_OPTION) return; 
@@ -528,7 +532,6 @@ public class MenuController extends AbstractController {
 	
 	
 	// Menu About 
-	// TODO: i18n
 	public void showWelcome() {
 		
 		String title = "Welcome";
