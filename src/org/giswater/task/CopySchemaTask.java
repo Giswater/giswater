@@ -76,7 +76,7 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
 				content = content.replace("SCHEMA_NAME", newSchemaName);
 				Utils.logSql(content);
 				if (MainDao.executeSql(content, true)){
-					controller.selectSourceType();
+					controller.selectSourceType(false);
 				}
 			} catch (IOException e) {
 				Utils.logError(e);

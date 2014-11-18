@@ -426,8 +426,8 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		optDbf.setSelected(isSelected);
 	}	
 	
-	public void selectSourceType() {
-		controller.selectSourceType();
+	public void selectSourceType(boolean loadVersionSoftwareModel) {
+		controller.selectSourceType(loadVersionSoftwareModel);
 	}
 	
 	public void enableDbfStorage(boolean enable) {

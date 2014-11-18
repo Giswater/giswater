@@ -620,8 +620,8 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 
-	public void updateEpaFrames(){
-		ppFrame.getPanel().selectSourceType();
+	public void updateEpaFrames() {
+		ppFrame.getPanel().selectSourceType(false);
 	}
 	
 	public void enableMenuDatabase(boolean enable) {

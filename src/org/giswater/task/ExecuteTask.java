@@ -71,7 +71,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         boolean execSelected = view.isExecSelected();
         boolean importSelected = view.isImportSelected();          
         
-        if (!exportSelected && !execSelected && !importSelected){
+        if (!exportSelected && !execSelected && !importSelected) {
             MainClass.mdi.showError("select_option");
             return null;
         }
@@ -166,7 +166,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
             else {
            		continueExec = ImportRpt.process(fileRpt, projectName);
             	Model.closeFile();
-            	if (!continueExec){
+            	if (!continueExec) {
 					MainDao.rollback();
             	}
             }

@@ -88,7 +88,7 @@ public class MenuController extends AbstractController {
 		ExecuteDao.executeRestore(filePath);
 		
 		// Refresh schemas
-		mainFrame.ppFrame.getPanel().selectSourceType();
+		mainFrame.ppFrame.getPanel().selectSourceType(true);
 		
 	}
 	
@@ -386,14 +386,14 @@ public class MenuController extends AbstractController {
 			else {
 				ppPanel.setDatabaseSelected(true);
 			}
-			ppPanel.selectSourceType(); 
+			ppPanel.selectSourceType(true); 
 			ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
 			return true;
 		}
 		// If error open configuration file
 		else {
 			ppPanel.setDatabaseSelected(true);
-			ppPanel.selectSourceType();
+			ppPanel.selectSourceType(true);
 			openFrame(mainFrame.configFrame);
 			return false;
 		}

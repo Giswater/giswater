@@ -258,7 +258,7 @@ public class ProjectPreferencesController extends AbstractController {
 				view.enableConnectionParameters(false);
 			}
 		}
-		selectSourceType();
+		selectSourceType(false);
 		
 		// Update Status Bar
 		mainFrame.updateConnectionInfo();
@@ -348,6 +348,10 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	
 	public void selectSourceType() {
+		selectSourceType(true);
+	}
+	
+	public void selectSourceType(boolean loadVersionSoftwareModel) {
 
 		// Database selected
 		if (view.getOptDatabaseSelected()) {
@@ -358,7 +362,9 @@ public class ProjectPreferencesController extends AbstractController {
 			if (MainDao.isConnected()) {
 				mainFrame.enableMenuDatabase(true);
 				view.enableProjectManagement(true);
-				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
+				if (loadVersionSoftwareModel) {
+					view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
+				}
 				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
 				if (schemaList != null && schemaList.size() > 0) {
 					setSchema(schemaList.get(0));
@@ -390,7 +396,9 @@ public class ProjectPreferencesController extends AbstractController {
 			view.enableAccept(true);
 			epaSoftPanel.enableRunAndImport(false);
 			mainFrame.enableMenuDatabase(false);
-			view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
+			if (loadVersionSoftwareModel) {
+				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
+			}
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(true);
 			hecRasPanel.enableControls(false);
@@ -535,7 +543,7 @@ public class ProjectPreferencesController extends AbstractController {
 		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
 		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true)){
-			selectSourceType();
+			selectSourceType(false);
         	mainFrame.showMessage("Project renamed successfuly");
 		}
 		

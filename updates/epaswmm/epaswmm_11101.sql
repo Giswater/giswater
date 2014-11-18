@@ -376,7 +376,7 @@ ADD COLUMN "vxmax" numeric(12,4),
 ADD COLUMN "vymax" numeric(12,4),
 ADD COLUMN "depth" numeric(12,4),
 ADD COLUMN "vel" numeric(12,4),
-ADD COLUMN "hmax" numeric(12,4)
+ADD COLUMN "vhmax" numeric(12,4)
 ;
 
 -- ----------------------------
@@ -385,7 +385,7 @@ ADD COLUMN "hmax" numeric(12,4)
 
 DROP VIEW "SCHEMA_NAME"."v_rpt_subcatchrunoff_sum";
 CREATE VIEW "SCHEMA_NAME"."v_rpt_subcatchrunoff_sum" AS 
-SELECT rpt_subcathrunoff_sum.id, rpt_subcathrunoff_sum.result_id, rpt_subcathrunoff_sum.subc_id, rpt_subcathrunoff_sum.tot_precip, rpt_subcathrunoff_sum.tot_runon, rpt_subcathrunoff_sum.tot_evap, rpt_subcathrunoff_sum.tot_infil, rpt_subcathrunoff_sum.tot_runoff, rpt_subcathrunoff_sum.tot_runofl, rpt_subcathrunoff_sum.peak_runof, rpt_subcathrunoff_sum.runoff_coe,  rpt_subcathrunoff_sum.hmax,  rpt_subcathrunoff_sum.vxmax,  rpt_subcathrunoff_sum.vymax, subcatchment.sector_id, subcatchment.the_geom FROM (("SCHEMA_NAME".result_selection JOIN "SCHEMA_NAME".rpt_subcathrunoff_sum ON (((result_selection.result_id)::text = (rpt_subcathrunoff_sum.result_id)::text))) JOIN "SCHEMA_NAME".subcatchment ON (((rpt_subcathrunoff_sum.subc_id)::text = (subcatchment.subc_id)::text)));
+SELECT rpt_subcathrunoff_sum.id, rpt_subcathrunoff_sum.result_id, rpt_subcathrunoff_sum.subc_id, rpt_subcathrunoff_sum.tot_precip, rpt_subcathrunoff_sum.tot_runon, rpt_subcathrunoff_sum.tot_evap, rpt_subcathrunoff_sum.tot_infil, rpt_subcathrunoff_sum.tot_runoff, rpt_subcathrunoff_sum.tot_runofl, rpt_subcathrunoff_sum.peak_runof, rpt_subcathrunoff_sum.runoff_coe, rpt_subcathrunoff_sum.vxmax, rpt_subcathrunoff_sum.vymax, rpt_subcathrunoff_sum.depth, rpt_subcathrunoff_sum.vel, rpt_subcathrunoff_sum.vhmax, subcatchment.sector_id, subcatchment.the_geom FROM ((SCHEMA_NAME.result_selection JOIN SCHEMA_NAME.rpt_subcathrunoff_sum ON (((result_selection.result_id)::text = (rpt_subcathrunoff_sum.result_id)::text))) JOIN SCHEMA_NAME.subcatchment ON (((rpt_subcathrunoff_sum.subc_id)::text = (subcatchment.subc_id)::text)));
 
 
 -- ------------------------------------------------------------
