@@ -485,6 +485,21 @@ public class MainDao {
 		
 	}		
 	
+	public static Exception executeSql(String sql, boolean commit, String dummy) {
+		
+		try {
+			Statement stmt = connectionPostgis.createStatement();
+	        stmt.execute(sql);
+			if (commit && !connectionPostgis.getAutoCommit()) {
+	        	connectionPostgis.commit();
+	        }			
+			return null;
+		} catch (SQLException e) {
+			return e;
+		}
+		
+	}	
+	
 	
     // Check if the column exists in ResultSet	
 	public static boolean checkColumn(ResultSet rs, String columnName) {

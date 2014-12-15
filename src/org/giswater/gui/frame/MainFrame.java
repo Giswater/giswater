@@ -162,6 +162,11 @@ public class MainFrame extends JFrame implements ActionListener{
 	}	
 	
 	
+	public MenuController getController() {
+		return menuController;
+	}
+	
+	
 	private void initConfig(){
 
 		ImageIcon image = new ImageIcon("images/imago.png");

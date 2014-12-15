@@ -321,7 +321,7 @@ SELECT rpt_flowrouting_cont.id, rpt_flowrouting_cont.result_id, rpt_flowrouting_
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_nodeinflow_sum"
-ADD COLUMN "flow_balance_error" numeric(6,4);
+ADD COLUMN "flow_balance_error" numeric(16,4);
 
 
 -- ----------------------------
@@ -393,8 +393,7 @@ SELECT rpt_subcathrunoff_sum.id, rpt_subcathrunoff_sum.result_id, rpt_subcathrun
 -- schema
 -- ------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void AS
-$$
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void LANGUAGE plpgsql AS $$
  
 DECLARE
 	rec_view record;
@@ -479,5 +478,4 @@ BEGIN
 	END LOOP;
  
 END;
- 
-$$ LANGUAGE plpgsql VOLATILE;
+$$;

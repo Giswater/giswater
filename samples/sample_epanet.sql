@@ -222,92 +222,15 @@ INSERT INTO "sample_epanet"."arc" VALUES ('2090', '', '', '200.0000', 'FD', 'PIP
 -- Records of inp_curve
 -- ----------------------------
  
- 
 
 -- ----------------------------
 -- Records of inp_demand
 -- ----------------------------
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('1', '1077', '0.238400', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('2', '1076', '0.228100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('3', '1075', '0.249500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('4', '1074', '0.229200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('5', '1073', '0.107100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('6', '1072', '0.382700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('7', '1071', '0.121800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('8', '1070', '0.277000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('9', '1069', '0.273000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('10', '1068', '0.519500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('11', '1067', '0.485700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('12', '1066', '0.081300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('13', '1065', '0.264700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('14', '1064', '0.245800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('15', '1063', '0.072100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('16', '1062', '0.776200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('17', '1061', '0.262100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('18', '1060', '0.406000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('19', '1059', '0.298000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('20', '1058', '0.349000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('21', '1057', '0.272900', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('22', '1056', '0.443800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('23', '1055', '0.360000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('24', '1054', '0.485200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('25', '1053', '0.311300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('26', '1052', '0.458800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('27', '1051', '0.767500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('28', '1050', '0.304100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('29', '1049', '0.597600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('30', '1048', '0.611300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('31', '1047', '0.347800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('32', '1046', '0.350800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('33', '1045', '0.547100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('34', '1044', '0.168600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('35', '1043', '0.326000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('36', '1042', '0.237400', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('37', '1041', '0.103400', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('38', '1040', '0.494800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('39', '1039', '0.503000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('40', '1038', '0.522100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('41', '1037', '0.401800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('42', '1036', '0.279700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('43', '1035', '0.787700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('44', '1034', '0.407700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('45', '1033', '0.368700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('46', '1032', '0.224100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('47', '1031', '0.249200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('48', '1030', '0.403900', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('49', '1029', '0.330200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('50', '1028', '0.102600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('51', '1027', '0.139000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('52', '1026', '0.220600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('53', '1025', '0.308700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('54', '1024', '0.378300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('55', '1023', '0.591600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('56', '1022', '0.196200', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('57', '1021', '0.251100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('58', '1020', '0.384700', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('59', '1019', '0.201800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('60', '1018', '0.350000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('61', '1017', '0.351600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('62', '1016', '0.280300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('63', '1015', '0.351000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('64', '1014', '0.253300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('65', '1013', '0.362600', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('66', '1012', '0.522100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('67', '1011', '0.388000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('68', '1010', '0.117800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('69', '1009', '0.332500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('70', '1008', '0.154800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('71', '1007', '0.441500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('72', '1006', '0.287000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('73', '1005', '0.507300', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('74', '1004', '0.461100', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('75', '1003', '0.838500', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('76', '1002', '0.308800', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('77', '1001', '0.580000', 'pattern_01', 'Residential');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('78', '1007', '16.670000', 'pattern_01', 'Hydrant');
-INSERT INTO "sample_epanet"."inp_demand" VALUES ('79', '1058', '16.670000', 'pattern_01', 'Hydrant');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('20', '1058', '0.349000',' ', ';Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('71', '1007', '0.441500',' ', ';Residential');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('78', '1007', '16.670000', 'pattern_01', ';Hydrant');
+INSERT INTO "sample_epanet"."inp_demand" VALUES ('79', '1058', '16.670000', 'pattern_01', ';Hydrant');
 
- 
 
 -- ----------------------------
 -- Records of inp_emitter
@@ -479,6 +402,7 @@ INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2044', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2045', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2046', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2047', '0', 'OPEN');
+
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2048', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2049', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2050', '0', 'OPEN');

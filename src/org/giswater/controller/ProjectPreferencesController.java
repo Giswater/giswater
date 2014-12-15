@@ -113,6 +113,11 @@ public class ProjectPreferencesController extends AbstractController {
 				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
 					epaSoftPanel.setSubcatchmentSelected(true);
 					epaSoftPanel.setSubcatchmentEnabled(false);
+					// Show warning message when 2D is selected
+					if (!mainFrame.getController().getOpeningApp()) {
+						String msg = "Warning: This development is in the test phase.\nResults obtained for this model are experimental until the tool is validated. Not recommended to apply in real cases";
+						Utils.showMessage(msg);
+					}
 				}
 				else {
 					epaSoftPanel.setSubcatchmentSelected(false);
@@ -153,8 +158,14 @@ public class ProjectPreferencesController extends AbstractController {
 	private boolean checkPreferences() {
 		
 		view.setInfo("");
+		// Check if we have selected a water software
 		if (waterSoftware.equals("")) {
 			mainFrame.showError("You have to select Water Software");
+			return false;
+		}
+		// Check if we have an schema selected
+		if (view.getOptDatabaseSelected() && view.getSelectedSchema().equals("")) {
+			mainFrame.showError("You have to select a project");
 			return false;
 		}
 		return true;
@@ -174,7 +185,6 @@ public class ProjectPreferencesController extends AbstractController {
 			
 		// Update Project preferences parameters
 		mainFrame.putProjectPreferencecsParams();		
-		//MainDao.saveGswPropertiesFile();
 		
 		// Customize buttons and title
 		customizePanel();
@@ -365,17 +375,7 @@ public class ProjectPreferencesController extends AbstractController {
 				if (loadVersionSoftwareModel) {
 					view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 				}
-				Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
-				if (schemaList != null && schemaList.size() > 0) {
-					setSchema(schemaList.get(0));
-				} else {
-					setSchema("");
-				}
-				boolean enabled = view.setSchemaModel(schemaList);
-				view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
-				epaSoftPanel.enablePreprocess(enabled);
-				epaSoftPanel.enableAccept(enabled);
-				hecRasPanel.enableControls(enabled);
+				enableWaterSoftwareControls();
 			} 
 			else {
 				mainFrame.enableMenuDatabase(false);
@@ -405,6 +405,28 @@ public class ProjectPreferencesController extends AbstractController {
 			mainFrame.resetConnectionInfo();
 		}
 		
+	}
+	
+	
+	public void enableWaterSoftwareControls() {
+		
+		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
+		if (schemaList != null && schemaList.size() > 0) {
+			setSchema(schemaList.get(0));
+		} else {
+			setSchema("");
+		}
+		boolean enabled = view.setSchemaModel(schemaList);
+		view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
+		epaSoftPanel.enablePreprocess(enabled);
+		epaSoftPanel.enableAccept(enabled);
+		hecRasPanel.enableControls(enabled);
+		
+	}
+	
+	
+	public void enableHecras(boolean enabled) {
+		hecRasPanel.enableControls(!view.getSelectedSchema().equals(""));		
 	}
 	
 	
@@ -583,6 +605,6 @@ public class ProjectPreferencesController extends AbstractController {
         gisDialog.setVisible(true);
         
 	}
-    
+ 
 		
 }

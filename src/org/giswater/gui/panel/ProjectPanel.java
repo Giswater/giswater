@@ -207,10 +207,10 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (controller != null){
+		if (controller != null) {
 			controller.action(e.getActionCommand());
 		}
-		else{
+		else {
 			hecRasController.action(e.getActionCommand());
 		}
 	}

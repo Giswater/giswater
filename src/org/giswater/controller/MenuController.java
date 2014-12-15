@@ -23,7 +23,6 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JDialog;
@@ -59,6 +58,7 @@ public class MenuController extends AbstractController {
 	private String versionCode;
 	private UtilsFTP ftp;
 	private String action;
+	private boolean openingApp;   // True when opening application. False otherwise
 	
 	private final String URL_MANUAL = "http://www.giswater.org/Documentation";	
 	private final String URL_REFERENCE = "https://vimeo.com/giswater";
@@ -72,6 +72,11 @@ public class MenuController extends AbstractController {
 		this.versionCode = versionCode;
 		this.ftp = ftp;
 		mainFrame.setControl(this);	
+	}
+	
+	
+	public boolean getOpeningApp() {
+		return openingApp;
 	}
 	
 
@@ -192,13 +197,14 @@ public class MenuController extends AbstractController {
     
     
 	public void gswOpen() {
-    	action = "open";
 		gswOpen(true, true);
 	}
 	
 	public void gswOpen(boolean chooseFile) {
     	action = "open";
+    	openingApp = !chooseFile;    	
 		gswOpen(chooseFile, true);
+		openingApp = false;    	
 	}
 	
 	
@@ -448,7 +454,7 @@ public class MenuController extends AbstractController {
 	
 	private void createExampleSchema(String waterSoftware, String suffix) {
         
-		// Get SRID
+		// TODO: Get SRID
 		String sridValue = "25831";		
 		if (waterSoftware.equals("hecras")) {
 			sridValue = "23031";		
@@ -512,9 +518,13 @@ public class MenuController extends AbstractController {
 			content = content.replace("SCHEMA_NAME", schema);
 			//content = content.replace("SRID_VALUE", srid);
 			Utils.logSql(content);
-			status = MainDao.executeSql(content);
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
+			Exception e = MainDao.executeSql(content, false, "");
+			if (e == null) {
+				Utils.showMessage("File executed successfully");
+			}
+			else {
+				Utils.showError("One or more errors have been found:", e.getMessage());
+			}
         } catch (IOException e) {
             Utils.showError(e, filePath);
         }

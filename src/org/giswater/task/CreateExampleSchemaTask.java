@@ -60,7 +60,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 	
 	private boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
 		
-		String srid = MainDao.getTableSrid(schemaName, "mdt").toString();
+		String srid = MainDao.getTableSrid(schemaName, "banks").toString();
 		String logFolder = Utils.getLogFolder();
 		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		

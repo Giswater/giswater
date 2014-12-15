@@ -82,8 +82,7 @@ END;
 -- schema
 -- ------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void AS
-$$
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void LANGUAGE plpgsql AS $$
  
 DECLARE
 	rec_view record;
@@ -168,5 +167,4 @@ BEGIN
 	END LOOP;
  
 END;
- 
-$$ LANGUAGE plpgsql VOLATILE;
+$$;

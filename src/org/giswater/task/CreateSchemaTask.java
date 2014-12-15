@@ -206,6 +206,9 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage("schema_creation_completed");
+    		if (waterSoftware.equals("HECRAS")) {
+    			parentPanel.getController().enableHecras(true);
+    		}
     	}
     	else {
     		MainClass.mdi.showError("Schema could not be created");

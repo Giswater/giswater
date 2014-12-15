@@ -47,7 +47,6 @@ import org.giswater.util.Utils;
 
 public class HecRasPanel extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 
