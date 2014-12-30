@@ -630,6 +630,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		lblInfo.setText(text);
 	}
 
+	public void enableRename(boolean enabled) {
+		btnRename.setEnabled(enabled);
+	}
+
 	public void enableAccept(boolean enabled) {
 		btnAccept.setEnabled(enabled);
 	}
@@ -640,5 +644,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtDate.setText(date);
 		disableProjectDataInfo();
 	}
+
 		
 }

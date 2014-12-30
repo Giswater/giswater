@@ -50,6 +50,7 @@ public class ProjectPreferencesController extends AbstractController {
 	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
 	private static final Integer GIS_DIALOG_WIDTH = 420; 
 	private static final Integer GIS_DIALOG_HEIGHT = 245; 
+	private static final Integer FIRST_VERSION_RENAME_AVAILABLE = 11146; 
 	
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
@@ -82,7 +83,9 @@ public class ProjectPreferencesController extends AbstractController {
 		// Get schemas from selected water software
 		selectSourceType();
 		
+		// Get related data
 		getProjectData();
+		view.enableRename(MainDao.getSchemaVersion() >= FIRST_VERSION_RENAME_AVAILABLE);
 
 	}
 	
@@ -458,6 +461,7 @@ public class ProjectPreferencesController extends AbstractController {
 			setSchema(view.getSelectedSchema());
 			mainFrame.updateConnectionInfo();
 			getProjectData();
+			view.enableRename(MainDao.getSchemaVersion() >= FIRST_VERSION_RENAME_AVAILABLE);
 		}
 		
 	}

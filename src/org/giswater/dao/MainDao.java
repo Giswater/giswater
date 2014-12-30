@@ -881,13 +881,13 @@ public class MainDao {
 	}
 	
 	
-	private static Integer getSchemaVersion() {
+	public static Integer getSchemaVersion() {
 		
 		Integer schemaVersion;
 		if (schemaMap.containsKey(schema)) {
 			schemaVersion = schemaMap.get(schema);
 		} 
-		else{
+		else {
 			String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
 			if (checkTable(schema, "version")) {
 				String aux = queryToString(sql);
