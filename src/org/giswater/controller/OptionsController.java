@@ -110,7 +110,7 @@ public class OptionsController extends AbstractController{
 				}
 				view.setTextField(component, value);
 			}	
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");			
 			HashMap<String, JDateChooser> dateMap = view.dateMap; 
 			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
 			    String key = entry.getKey();
@@ -250,7 +250,7 @@ public class OptionsController extends AbstractController{
 			ResultSetMetaData metadata = rs.getMetaData();		
 			HashMap<String, JDateChooser> dateMap = view.dateMap; 			
 			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");				
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");				
 				key = entry.getKey();
 				JDateChooser date = entry.getValue();
 				auxDate = date.getDate();

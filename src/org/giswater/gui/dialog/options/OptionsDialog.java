@@ -166,7 +166,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 
 		JDateChooser dateStart = new JDateChooser();		
 		dateStart.setName("start_date");
-        dateStart.setDateFormatString("dd/MM/yyyy");
+        dateStart.setDateFormatString("MM/dd/yyyy");
         dateStart.setFocusTraversalPolicyProvider(true);
         dateStart.setMinSelectableDate(new java.util.Date(978307286000L));
 		panelSteps.add(dateStart, "cell 1 0,growx");        
@@ -203,7 +203,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JDateChooser dateEnd = new JDateChooser();
 		dateEnd.setName("end_date");
 		dateEnd.setFocusTraversalPolicyProvider(true);
-		dateEnd.setDateFormatString("dd/MM/yyyy");
+		dateEnd.setDateFormatString("MM/dd/yyyy");
 		panelSteps.add(dateEnd, "cell 1 2,grow");
 		
 		JLabel lblRoutingSteps = new JLabel("Routing step:");
@@ -229,7 +229,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		JDateChooser dateReportStart = new JDateChooser();
 		dateReportStart.setName("report_start_date");
 		dateReportStart.setFocusTraversalPolicyProvider(true);
-		dateReportStart.setDateFormatString("dd/MM/yyyy");
+		dateReportStart.setDateFormatString("MM/dd/yyyy");
 		panelSteps.add(dateReportStart, "cell 1 4,grow");
 		
 		JLabel lblSweepstart = new JLabel("Sweep start:");
