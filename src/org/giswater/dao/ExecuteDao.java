@@ -117,7 +117,8 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
+		String aux = "chcp 1252>NUL\n";
+		aux+= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
