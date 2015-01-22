@@ -60,8 +60,6 @@ import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.dao.MainDao;
-
 import com.toedter.calendar.JDateChooser;
 
 
@@ -132,7 +130,7 @@ public class Utils {
     public static String getAppPath() {
     	
     	if (appPath == null) {
-	    	CodeSource codeSource = MainDao.class.getProtectionDomain().getCodeSource();
+	    	CodeSource codeSource = Utils.class.getProtectionDomain().getCodeSource();
 	    	File jarFile;
 	    	try {
 	    		jarFile = new File(codeSource.getLocation().toURI().getPath());

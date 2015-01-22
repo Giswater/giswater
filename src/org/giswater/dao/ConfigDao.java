@@ -194,7 +194,6 @@ public class ConfigDao {
 		return aux;
 		
 	}	
-	
-	
+		
 	
 }

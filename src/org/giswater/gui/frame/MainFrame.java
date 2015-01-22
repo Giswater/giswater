@@ -70,16 +70,15 @@ import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class MainFrame extends JFrame implements ActionListener{
+public class MainFrame extends JFrame implements ActionListener {
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
-	private static final long serialVersionUID = -6630818426483107558L;
 	private MenuController menuController;
 	private PropertiesMap prop;
 	private String versionCode;
 	
-    public JDesktopPane desktopPane;
+	private JDesktopPane desktopPane;
     
     private JMenu mnProject;
 	private JMenuItem mntmNewPreferences;
@@ -167,7 +166,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 
 		ImageIcon image = new ImageIcon("images/imago.png");
 		setIconImage(image.getImage());
@@ -641,12 +640,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	
     private void manageFrames(JInternalFrame frame) {
+    	
 		try {
 			frame.setMaximum(true);
 			frame.setVisible(true);        
 		} catch (PropertyVetoException e) {
 			Utils.logError(e);
 		}
+		
     }
 
 
@@ -789,4 +790,6 @@ public class MainFrame extends JFrame implements ActionListener{
 		timer.start();
 		
 	}
+	
+	
 }
