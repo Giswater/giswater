@@ -84,7 +84,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JPanel panelPostprocess;
 	private JButton btnResultCatalog;
 	private JButton btnResultSelector;
-	private JButton btnClose;
 	
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	private JLabel lblFileRpt;
@@ -286,12 +285,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnEditProjectPreferences.setActionCommand("gswEdit");
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		add(btnEditProjectPreferences, "flowx,cell 0 8,alignx right");
-		
-		btnClose = new JButton();
-		btnClose.setText("Close");
-		btnClose.setMinimumSize(new Dimension(65, 23));
-		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 0 8,alignx right");
 
 		setupListeners();
 
@@ -328,7 +321,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnResultSelector.addActionListener(this);
 		
 		btnEditProjectPreferences.addActionListener(this);
-		btnClose.addActionListener(this);
 		
 	}
 	

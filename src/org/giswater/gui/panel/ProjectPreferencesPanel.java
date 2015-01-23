@@ -95,7 +95,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JLabel lblInfo;
 	private JButton btnCreateGisProject;
 	private JButton btnAccept;
-	private JButton btnClose;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
@@ -313,20 +312,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		lblInfo = new JLabel(""); 
 		add(lblInfo, "flowx,cell 1 4 2 1");
-		
-		btnAccept = new JButton();
-		btnAccept.setMnemonic(KeyEvent.VK_A);
-		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
-		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
-		btnAccept.setActionCommand("acceptPreferences");
-		add(btnAccept, "cell 6 4,alignx right");
-		
-		btnClose = new JButton();
-		btnClose.setMnemonic(KeyEvent.VK_C);
-		btnClose.setText("Close");
-		btnClose.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
-		btnClose.setActionCommand("closePreferences");
-		add(btnClose, "cell 7 4,growx");
 			
 		btnCreateGisProject = new JButton();
 		btnCreateGisProject.setText(BUNDLE.getString("ProjectPreferencesPanel.btnCreateGisProject.text_1")); //$NON-NLS-1$
@@ -336,6 +321,13 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		cboVersionSoftware = new JComboBox<String>();
 		add(cboVersionSoftware, "cell 6 0 2 1,growx");
+		
+		btnAccept = new JButton();
+		btnAccept.setMnemonic(KeyEvent.VK_A);
+		btnAccept.setText(BUNDLE.getString("ProjectPreferencesPanel.btnAccept.text")); 
+		btnAccept.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
+		btnAccept.setActionCommand("acceptPreferences");
+		add(btnAccept, "cell 7 4,alignx right");
 		
 		setupListeners();
 	    
@@ -360,7 +352,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		// Panel Database connection
 		btnTest.addActionListener(this);
 		btnAccept.addActionListener(this);
-		btnClose.addActionListener(this);
 		
 		// Panel Project management
 		cboSchema.addActionListener(this);

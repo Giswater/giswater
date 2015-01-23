@@ -72,7 +72,6 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnExportDtm;
 	
 	private JButton btnEditProjectPreferences;
-	private JButton btnClose;
 	private JPanel panelExportSdf;
 	private JScrollPane scrollPane;
 	
@@ -281,12 +280,6 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		btnEditProjectPreferences.setActionCommand("gswEdit");
 		add(btnEditProjectPreferences, "flowx,cell 0 5,alignx right");
-		
-		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 0 5,alignx right");
-		btnClose.setMinimumSize(new Dimension(65, 23));
-		btnClose.setMaximumSize(new Dimension(105, 23));
-		btnClose.setActionCommand("closePanel");
 
 		setupListeners();
 
@@ -304,8 +297,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		// Data Manager
 		btnShowProjectData.addActionListener(this);
 		
-		btnEditProjectPreferences.addActionListener(this);		
-		btnClose.addActionListener(this);		
+		btnEditProjectPreferences.addActionListener(this);
 
 	}
 	
