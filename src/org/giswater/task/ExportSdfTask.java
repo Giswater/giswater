@@ -25,7 +25,6 @@ import java.io.File;
 import javax.swing.SwingWorker;
 
 import org.giswater.dao.MainDao;
-import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
@@ -34,7 +33,6 @@ public class ExportSdfTask extends SwingWorker<Void, Void> {
 	
 	private String schemaName;
 	private File fileSdf;
-	private String fileName;
 	private boolean MA;
 	private boolean IA;
 	private boolean Levees;
@@ -43,12 +41,9 @@ public class ExportSdfTask extends SwingWorker<Void, Void> {
 	private Integer result;
 	
 	
-	public ExportSdfTask(String schemaName, File fileSdf, String fileName,
-		boolean maSelected, boolean iaSelected, boolean leveesSelected,
-		boolean boSelected, boolean manningSelected) {
+	public ExportSdfTask(String schemaName, File fileSdf, boolean maSelected, boolean iaSelected, boolean leveesSelected, boolean boSelected, boolean manningSelected) {
 		this.schemaName = schemaName;
 		this.fileSdf = fileSdf;
-		this.fileName = fileName;
 		this.MA = maSelected;
 		this.IA = iaSelected;
 		this.Levees = leveesSelected;
@@ -59,10 +54,10 @@ public class ExportSdfTask extends SwingWorker<Void, Void> {
 
 	private Integer createSdfFile() {
 			
-		String sql = "SELECT "+schemaName+".gr_export_geo('"+fileName+"', "+MA+", "+IA+", "+Levees+", "+BO+", "+Manning+");";
+		String pathSdf = fileSdf.getAbsolutePath();
+		String sql = "SELECT "+schemaName+".gr_export_geo('"+pathSdf+"', "+MA+", "+IA+", "+Levees+", "+BO+", "+Manning+");";
 		Utils.logSql(sql);
-		Integer value = Integer.parseInt(MainDao.queryToString(sql));
-        return value;	
+		return Integer.parseInt(MainDao.queryToString(sql));
 	        
 	}
 	
@@ -80,18 +75,7 @@ public class ExportSdfTask extends SwingWorker<Void, Void> {
     public void done() {
     	
 		if (result == 0) {
-			// Copy file from Postgis Data Directory to folder specified by the user
-			String auxIn, auxOut;
-			String folderIn = PropertiesDao.getGswProperties().get("POSTGIS_DATA");
-			auxIn = folderIn + File.separator + fileName;
-			auxOut = fileSdf.getAbsolutePath();
-			boolean ok = Utils.copyFile(auxIn, auxOut);
-			if (!ok) {
-				MainClass.mdi.showError("sdf_error");
-			}
-			else {
-				MainClass.mdi.showMessage("sdf_ok");
-			}
+			MainClass.mdi.showMessage("sdf_ok");
 		}
 		else {
 			// TODO: Get error from table and show to the user

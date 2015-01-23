@@ -184,11 +184,7 @@ public class HecRasController extends AbstractController {
 		}
 
 		String schemaName = MainDao.getSchema();
-		String fileName = fileSdf.getName();
-//		Integer result = HecRasDao.createSdfFile(schemaName, fileName, 
-//			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
-		ExportSdfTask task = new ExportSdfTask(schemaName, fileSdf, fileName,
-			view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
+		ExportSdfTask task = new ExportSdfTask(schemaName, fileSdf, view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
         task.addPropertyChangeListener(this);
         task.execute();
 		
