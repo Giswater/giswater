@@ -33,6 +33,48 @@ CREATE VIEW "SCHEMA_NAME"."v_inp_lidusage" AS SELECT inp_lidusage_subc_x_lidco.s
 ALTER TABLE "SCHEMA_NAME"."rpt_runoff_quant"
 ADD COLUMN "initlid_sto" numeric(12,4);
 
+
+-------------------------------
+-- Bug on inp_outfall definition of stage
+-------------------------------
+
+DROP VIEW "SCHEMA_NAME"."v_inp_edit_outfall";
+DROP VIEW "SCHEMA_NAME"."v_inp_outfall_fi";
+DROP VIEW "SCHEMA_NAME"."v_inp_outfall_fr";
+DROP VIEW "SCHEMA_NAME"."v_inp_outfall_nm";
+DROP VIEW "SCHEMA_NAME"."v_inp_outfall_ti";
+DROP VIEW "SCHEMA_NAME"."v_inp_outfall_ts";
+
+ALTER TABLE "SCHEMA_NAME"."inp_outfall"
+DROP COLUMN "stage";
+ALTER TABLE "SCHEMA_NAME"."inp_outfall"
+ADD COLUMN "stage" numeric(12,4);
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_edit_outfall" AS 
+SELECT node.node_id, node.top_elev, node.ymax, inp_outfall.outfall_type, inp_outfall.stage, inp_outfall.curve_id, inp_outfall.timser_id, inp_outfall.gate, node.sector_id, node.the_geom FROM (SCHEMA_NAME.node JOIN SCHEMA_NAME.inp_outfall ON (((node.node_id)::text = (inp_outfall.node_id)::text)));
+
+CREATE TRIGGER "update_v_inp_edit_outfall" INSTEAD OF INSERT OR UPDATE OR DELETE ON "SCHEMA_NAME"."v_inp_edit_outfall"
+FOR EACH ROW EXECUTE PROCEDURE "SCHEMA_NAME"."update_v_inp_edit_outfall"();
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_outfall_fi" AS 
+SELECT node.node_id, (node.top_elev - node.ymax) AS elev, inp_outfall.outfall_type AS type_otlfi, inp_outfall.stage, inp_outfall.gate, (st_x(node.the_geom))::numeric(16,3) AS xcoord, (st_y(node.the_geom))::numeric(16,3) AS ycoord, sector_selection.sector_id FROM ((SCHEMA_NAME.node JOIN SCHEMA_NAME.sector_selection ON (((node.sector_id)::text = (sector_selection.sector_id)::text))) JOIN SCHEMA_NAME.inp_outfall ON (((inp_outfall.node_id)::text = (node.node_id)::text))) WHERE ((inp_outfall.outfall_type)::text = 'FIXED'::text);
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_outfall_fr" AS 
+SELECT node.node_id, (node.top_elev - node.ymax) AS elev, inp_outfall.outfall_type AS type_otlfr, inp_outfall.gate, (st_x(node.the_geom))::numeric(16,3) AS xcoord, (st_y(node.the_geom))::numeric(16,3) AS ycoord, sector_selection.sector_id FROM ((SCHEMA_NAME.node JOIN SCHEMA_NAME.inp_outfall ON (((node.node_id)::text = (inp_outfall.node_id)::text))) JOIN SCHEMA_NAME.sector_selection ON (((node.sector_id)::text = (sector_selection.sector_id)::text))) WHERE ((inp_outfall.outfall_type)::text = 'FREE'::text);
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_outfall_nm" AS 
+SELECT node.node_id, (node.top_elev - node.ymax) AS elev, inp_outfall.outfall_type AS type_otlnm, inp_outfall.gate, (st_x(node.the_geom))::numeric(16,3) AS xcoord, (st_y(node.the_geom))::numeric(16,3) AS ycoord, sector_selection.sector_id FROM ((SCHEMA_NAME.node JOIN SCHEMA_NAME.sector_selection ON (((node.sector_id)::text = (sector_selection.sector_id)::text))) JOIN SCHEMA_NAME.inp_outfall ON (((node.node_id)::text = (inp_outfall.node_id)::text))) WHERE ((inp_outfall.outfall_type)::text = 'NORMAL'::text);
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_outfall_ti" AS 
+SELECT node.node_id, (node.top_elev - node.ymax) AS elev, inp_outfall.outfall_type AS type_otlti, inp_outfall.curve_id, inp_outfall.gate, (st_x(node.the_geom))::numeric(16,3) AS xcoord, (st_y(node.the_geom))::numeric(16,3) AS ycoord, sector_selection.sector_id FROM ((SCHEMA_NAME.node JOIN SCHEMA_NAME.sector_selection ON (((node.sector_id)::text = (sector_selection.sector_id)::text))) JOIN SCHEMA_NAME.inp_outfall ON (((node.node_id)::text = (inp_outfall.node_id)::text))) WHERE ((inp_outfall.outfall_type)::text = 'TIDAL'::text);
+
+CREATE VIEW "SCHEMA_NAME"."v_inp_outfall_ts" AS 
+SELECT node.node_id, (node.top_elev - node.ymax) AS elev, inp_outfall.outfall_type AS type_otlts, inp_outfall.timser_id, inp_outfall.gate, (st_x(node.the_geom))::numeric(16,3) AS xcoord, (st_y(node.the_geom))::numeric(16,3) AS ycoord, sector_selection.sector_id FROM ((SCHEMA_NAME.node JOIN SCHEMA_NAME.sector_selection ON (((node.sector_id)::text = (sector_selection.sector_id)::text))) JOIN SCHEMA_NAME.inp_outfall ON (((node.node_id)::text = (inp_outfall.node_id)::text))) WHERE ((inp_outfall.outfall_type)::text = 'TIMESERIES'::text);
+
+
+
+
+
 -- ------------------------------------------------------------
 -- Incorporation of hydrology catalog
 -- Views, tables & fields needed
@@ -196,20 +238,20 @@ ALTER TABLE "SCHEMA_NAME"."inp_options" DROP COLUMN "infiltration";
 -- ------------------------------------------------------------
 
 -- ------------------------------------------------------------
--- Incorporation of 4 new columns on inp_options table 
+-- Structure modification of inp_options table 
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."inp_options"
-ADD COLUMN "max_trials" numeric(12,4);
+ADD COLUMN "max_trials" int4;
 ALTER TABLE "SCHEMA_NAME"."inp_options"
 ADD COLUMN "head_tolerance" numeric(12,4);
 ALTER TABLE "SCHEMA_NAME"."inp_options"
-ADD COLUMN "sys_flow_tol" numeric(12,4);
+ADD COLUMN "sys_flow_tol" int4;
 ALTER TABLE "SCHEMA_NAME"."inp_options"
-ADD COLUMN "lat_flow_tol" numeric(12,4);
+ADD COLUMN "lat_flow_tol" int4;
 
 DELETE FROM "SCHEMA_NAME"."inp_options";
-INSERT INTO "SCHEMA_NAME"."inp_options" VALUES ('CMS', 'DYNWAVE', 'DEPTH', 'H-W', 'NO', 'NO', 'NO', 'NO', 'NO', 'NO', '01/01/2001', '00:00:00', '01/01/2001', '05:00:00', '01/01/2001', '00:00:00', '01/01', '12/31', '10', '00:15:00', '00:05:00', '01:00:00', '00:00:02', null, null, 'NONE', 'BOTH', '0', '0', 'YES', null, '0','0','5','5');
+INSERT INTO "SCHEMA_NAME"."inp_options" VALUES ('CMS', 'DYNWAVE', 'DEPTH', 'H-W', 'NO', 'NO', 'NO', 'NO', 'NO', 'NO', '01/01/2001', '00:00:00', '01/01/2001', '05:00:00', '01/01/2001', '00:00:00', '01/01', '12/31', '10', '00:15:00', '00:05:00', '01:00:00', '00:00:02', null, null, 'NONE', 'BOTH', '0', '0', 'YES', null, '8','0','5','5');
 
 
 -- ----------------------------
@@ -261,7 +303,7 @@ CREATE VIEW "SCHEMA_NAME"."v_inp_options" AS
 
 
 -- ------------------------------------------------------------
--- Incorporation of 3 new columns on rpt_result_cat
+-- Structure modification of rpt_result_cat
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_result_cat"
@@ -274,11 +316,15 @@ ADD COLUMN "head_tolerance" varchar(12);
 
 
 -- ------------------------------------------------------------
--- Incorporation of 6 new columns on rpt_arcflow_sum table 
+-- Structure modification of rpt_arcflow_sum table 
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_arcflow_sum"
 ADD COLUMN "max_shear" numeric(12,4);
+ALTER TABLE "SCHEMA_NAME"."rpt_arcflow_sum"
+ADD COLUMN "max_hr" numeric(12,4);
+ALTER TABLE "SCHEMA_NAME"."rpt_arcflow_sum"
+ADD COLUMN "max_slope" numeric(12,4);
 ALTER TABLE "SCHEMA_NAME"."rpt_arcflow_sum"
 ADD COLUMN "day_max" varchar(10);
 ALTER TABLE "SCHEMA_NAME"."rpt_arcflow_sum"
@@ -296,11 +342,11 @@ ADD COLUMN "time_min" varchar(10);
 -- ----------------------------
 DROP VIEW "SCHEMA_NAME"."v_rpt_arcflow_sum";
 CREATE VIEW "SCHEMA_NAME"."v_rpt_arcflow_sum" AS 
-SELECT rpt_arcflow_sum.id, result_selection.result_id, rpt_arcflow_sum.arc_id, rpt_arcflow_sum.arc_type, rpt_arcflow_sum.max_flow, rpt_arcflow_sum.time_days, rpt_arcflow_sum.time_hour, rpt_arcflow_sum.max_veloc, rpt_arcflow_sum.mfull_flow, rpt_arcflow_sum.mfull_dept, rpt_arcflow_sum.max_shear, rpt_arcflow_sum.day_max, rpt_arcflow_sum.time_max, rpt_arcflow_sum.min_shear,rpt_arcflow_sum.day_min, rpt_arcflow_sum.time_min, arc.sector_id, arc.the_geom FROM ((SCHEMA_NAME.arc JOIN SCHEMA_NAME.rpt_arcflow_sum ON ((((rpt_arcflow_sum.arc_id)::text = (arc.arc_id)::text) AND ((arc.arc_id)::text = (rpt_arcflow_sum.arc_id)::text)))) JOIN SCHEMA_NAME.result_selection ON (((rpt_arcflow_sum.result_id)::text = (result_selection.result_id)::text)));
+SELECT rpt_arcflow_sum.id, result_selection.result_id, rpt_arcflow_sum.arc_id, rpt_arcflow_sum.arc_type, rpt_arcflow_sum.max_flow, rpt_arcflow_sum.time_days, rpt_arcflow_sum.time_hour, rpt_arcflow_sum.max_veloc, rpt_arcflow_sum.mfull_flow, rpt_arcflow_sum.mfull_dept, rpt_arcflow_sum.max_shear, rpt_arcflow_sum.max_hr, rpt_arcflow_sum.max_slope, rpt_arcflow_sum.day_max, rpt_arcflow_sum.time_max, rpt_arcflow_sum.min_shear,rpt_arcflow_sum.day_min, rpt_arcflow_sum.time_min, arc.sector_id, arc.the_geom FROM ((SCHEMA_NAME.arc JOIN SCHEMA_NAME.rpt_arcflow_sum ON ((((rpt_arcflow_sum.arc_id)::text = (arc.arc_id)::text) AND ((arc.arc_id)::text = (rpt_arcflow_sum.arc_id)::text)))) JOIN SCHEMA_NAME.result_selection ON (((rpt_arcflow_sum.result_id)::text = (result_selection.result_id)::text)));
 
 
 -- ------------------------------------------------------------
--- Incorporation of 2 new columns on rpt_flowrouting_cont
+-- Structure modification of rpt_flowrouting_cont
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_flowrouting_cont"
@@ -317,11 +363,14 @@ SELECT rpt_flowrouting_cont.id, rpt_flowrouting_cont.result_id, rpt_flowrouting_
 
 
 -- ------------------------------------------------------------
--- Incorporation of 1 new column on rpt_nodeinflow_sum
+-- Structure modification of rpt_nodeinflow_sum
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_nodeinflow_sum"
-ADD COLUMN "flow_balance_error" numeric(16,4);
+ADD COLUMN "flow_balance_error" numeric(6,4);
+
+ALTER TABLE "SCHEMA_NAME"."rpt_nodeinflow_sum"
+ADD COLUMN "other_info" varchar (12);
 
 
 -- ----------------------------
@@ -393,7 +442,8 @@ SELECT rpt_subcathrunoff_sum.id, rpt_subcathrunoff_sum.result_id, rpt_subcathrun
 -- schema
 -- ------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void AS
+$$
  
 DECLARE
 	rec_view record;
@@ -478,4 +528,7 @@ BEGIN
 	END LOOP;
  
 END;
-$$;
+ 
+$$ LANGUAGE plpgsql VOLATILE;
+
+
