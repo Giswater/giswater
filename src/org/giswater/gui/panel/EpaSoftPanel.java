@@ -46,7 +46,6 @@ import org.giswater.util.Utils;
 
 public class EpaSoftPanel extends JPanel implements ActionListener {
 
-	private static final long serialVersionUID = -2576460232916596200L;
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private EpaSoftController controller;
@@ -146,13 +145,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnControls = new JButton(BUNDLE.getString("EpaSoftPanel.btnControls.text")); //$NON-NLS-1$
 		btnControls.setPreferredSize(new Dimension(110, 23));
 		btnControls.setEnabled(false);
-		btnControls.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnControls.actionCommand")); //$NON-NLS-1$
+		btnControls.setActionCommand("showControls");
 		panelDataManager.add(btnControls, "cell 2 1,growx");
 		
 		btnProjectData = new JButton(BUNDLE.getString("EpaSoftPanel.btnProjectData.text")); //$NON-NLS-1$
 		btnProjectData.setPreferredSize(new Dimension(110, 23));
 		btnProjectData.setEnabled(false);
-		btnProjectData.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnProjectData.actionCommand")); //$NON-NLS-1$
+		btnProjectData.setActionCommand("showProjectData");
 		panelDataManager.add(btnProjectData, "cell 3 1,growx");
 		
 		panelPreprocess = new JPanel();
@@ -186,7 +185,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
-		chkExport.setActionCommand(BUNDLE.getString("EpaSoftPanel.chkExport.actionCommand")); //$NON-NLS-1$
+		chkExport.setActionCommand("exportSelected");
 		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); 
 		panelFileManager.add(chkExport, "cell 0 0 2 1,aligny bottom");
 		

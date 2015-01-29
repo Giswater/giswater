@@ -255,7 +255,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); //$NON-NLS-1$
 		mntmExampleEpaswmm2D.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
-		mntmExampleEpaswmm2D.setActionCommand(BUNDLE.getString("MainFrame.mntmExampleEpaswmm2D.actionCommand")); //$NON-NLS-1$
+		mntmExampleEpaswmm2D.setActionCommand("exampleEpaswmm2D");
 		mnProjectExample.add(mntmExampleEpaswmm2D);
 		
 		mntmExampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));

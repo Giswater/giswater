@@ -23,6 +23,7 @@ package org.giswater.controller;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -226,6 +227,54 @@ public class HecRasController extends AbstractController {
 		dialog.setVisible(true);		
 		
 	}	
-    
+	
+	
+	public void createLogFile() {
+		createFile("log", "\"Process\", message");
+	}
+	
+	public void createErrorFile() {
+		createFile("error", "\"Process\", \"error\", \"time\"");
+	}
+	
+	private void createFile(String tableName, String fields) {
+		
+		// Create text file inside 'log' folder
+		String filePath = Utils.getLogFolder() + MainDao.getSchema() + "_"+tableName+".txt";
+		File file = new File(filePath);
+		String aux = "Content of the table "+MainDao.getSchema()+"."+tableName+"\n";
+		Utils.getLogger().info("Copying content of table "+MainDao.getSchema()+"."+tableName+" into file: "+filePath);
+		
+		// Get content of log table
+		//String sql = "SELECT \"Process\", message FROM "+MainDao.getSchema()+"."+tableName;
+		String sql = "SELECT "+fields+" FROM "+MainDao.getSchema()+"."+tableName;
+		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
+		if (vector_container.size() > 0) {
+			for (int i = 0; i < vector_container.size(); i++) {
+				Vector<String> vector = vector_container.get(i);
+				aux+= "\n";
+				for (int j = 0; j < vector.size(); j++) {
+					aux+= vector.get(j) + " - ";
+				}
+				aux = aux.substring(0,  aux.length() - 3);
+			}	
+			if (!Utils.fillFile(file, aux)) {
+				return;    		
+			}
+			Utils.openFile(file.getAbsolutePath());	
+		}
+		else {
+			MainClass.mdi.showMessage("Table "+MainDao.getSchema()+"."+tableName+" is empty");
+		}
+		
+	}
+	    
+	
+	// TODO
+	public void exportDtm() {
+		
+		
+	}
+	
 	
 }

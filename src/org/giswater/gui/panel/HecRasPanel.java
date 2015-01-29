@@ -52,7 +52,6 @@ public class HecRasPanel extends JPanel implements ActionListener {
 
 	private HecRasController controller;	
 	private HecRasFrame hecRasFrame;
-	private JPanel panelLoadDtm;
 	private JButton btnFileAsc;
 	private JButton btnLoadRaster;
 	private JButton btnExportSdf;
@@ -64,16 +63,12 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JCheckBox chkExportManning;
 	private JTextArea txtFileSdf;
 	private JButton btnFileSdf;
-
-	private JPanel panelDataManager;
 	private JButton btnLogFile;
 	private JButton btnErrorFile;
 	private JButton btnShowProjectData;
 	private JButton btnExportDtm;
 	
 	private JButton btnEditProjectPreferences;
-	private JPanel panelExportSdf;
-	private JScrollPane scrollPane;
 	
 	
 	public HecRasPanel() {
@@ -181,7 +176,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 
 		setLayout(new MigLayout("", "[555.00px][::8px]", "[5px:n][96.00][128.00px:n][::59.00px][10px:n][]"));
 		
-		panelLoadDtm = new JPanel();
+		JPanel panelLoadDtm = new JPanel();
 		panelLoadDtm.setBorder(new TitledBorder(null, "Load DTM", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelLoadDtm, "cell 0 1 2 1,grow");
 		panelLoadDtm.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[34px:n][5px:n][]"));
@@ -210,7 +205,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnLoadRaster.setMaximumSize(new Dimension(105, 23));
 		btnLoadRaster.setActionCommand("loadRaster");
 		
-		panelExportSdf = new JPanel();
+		JPanel panelExportSdf = new JPanel();
 		panelExportSdf.setBorder(new TitledBorder(null, "Export SDF", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelExportSdf, "cell 0 2 2 1,grow");
 		panelExportSdf.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[::20px][34px:n][5px:n][]"));
@@ -222,7 +217,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		panelExportSdf.add(lblAscFile, "cell 0 1,alignx right");
 		lblAscFile.setText(BUNDLE.getString("HecRasPanel.lblAscFile.text"));
 		
-		scrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane();
 		panelExportSdf.add(scrollPane, "cell 2 1,grow");
 		
 		txtFileSdf = new JTextArea();
@@ -254,25 +249,28 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportSdf.setMaximumSize(new Dimension(105, 23));
 		btnExportSdf.setActionCommand("exportSdf");
 		
-		panelDataManager = new JPanel();
+		JPanel panelDataManager = new JPanel();
 		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panelDataManager, "cell 0 3 2 1,grow");
 		panelDataManager.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][115px:n]", "[]"));
 		
 		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
+		btnLogFile.setActionCommand("createLogFile");
 		btnLogFile.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnLogFile, "cell 0 0,growx");
 		
 		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
+		btnErrorFile.setActionCommand("createErrorFile");
 		btnErrorFile.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnErrorFile, "cell 1 0,growx");
 		
 		btnShowProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
-		btnShowProjectData.setActionCommand(BUNDLE.getString("HecRasPanel.btnProjectData.actionCommand")); //$NON-NLS-1$
+		btnShowProjectData.setActionCommand("showProjectData");
 		btnShowProjectData.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnShowProjectData, "cell 2 0,growx");
 		
 		btnExportDtm = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
+		btnExportDtm.setActionCommand("exportDtm");
 		btnExportDtm.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnExportDtm, "cell 3 0,growx");
 		
@@ -296,6 +294,9 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		
 		// Data Manager
 		btnShowProjectData.addActionListener(this);
+		btnLogFile.addActionListener(this);		
+		btnErrorFile.addActionListener(this);		
+		btnExportDtm.addActionListener(this);		
 		
 		btnEditProjectPreferences.addActionListener(this);
 
