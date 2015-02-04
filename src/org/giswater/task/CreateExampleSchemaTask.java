@@ -137,6 +137,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					// Last SQL script. So commit all process
 					boolean result = MainDao.executeSql(content, true);		
 					if (!result) {
+						status = false;
 						MainDao.deleteSchema(schemaName);
 						return null;
 					}
@@ -154,18 +155,21 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 						MainClass.mdi.showMessage(msg);
 					}
 				} catch (Exception e) {
+					status = false;					
 					MainDao.deleteSchema(schemaName);
 		            Utils.showError(e);
 				}
 			}
 			else {
+				status = false;
 				MainDao.deleteSchema(schemaName);
-				Utils.logError("Error updateSchema. Schema could not be created");
+				MainClass.mdi.showError("Error updateSchema. Schema could not be created");
 			}		
 		}
 		else {
+			status = false;
 			MainDao.deleteSchema(schemaName);
-			Utils.logError("Error createSchema. Schema could not be created");
+			MainClass.mdi.showError("Error createSchema. Schema could not be created");
 		}
 
 		// Refresh view

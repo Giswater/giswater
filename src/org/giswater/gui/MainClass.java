@@ -35,7 +35,7 @@ import org.giswater.util.UtilsFTP;
 public class MainClass {
 
 	public static MainFrame mdi;
-	private final static String CURRENT_VERSION = "1.1.147";
+	private final static String CURRENT_VERSION = "1.1.155";
 
 
 	public static void main(String[] args) {
