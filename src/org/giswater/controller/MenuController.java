@@ -456,13 +456,14 @@ public class MenuController extends AbstractController {
         
 		// TODO: Get SRID
 		String sridValue = "25831";		
+		String sridText = sridValue;		
 		if (waterSoftware.equals("hecras")) {
 			sridValue = "23031";		
 		}
 		
 		// Ask confirmation
 		String schemaName = "sample_"+waterSoftware+suffix;
-		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
+		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridText+".\nDo you wish to continue?";
 		int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
 		if (res != JOptionPane.YES_OPTION) return; 
 		
