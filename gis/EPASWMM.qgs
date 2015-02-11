@@ -23,9 +23,9 @@
             </spatialrefsys>
         </destinationsrs>
     </mapcanvas>
-    <legend updateDrawingOrder="true" activeLayer="inp_washoff_land_x_pol20130502003948384">
+	<legend updateDrawingOrder="true" activeLayer="inp_washoff_land_x_pol20130502003948384">
         <legendgroup open="false" checked="Qt::Unchecked" name="GIS FEATURES">
-            <legendlayer drawingOrder="1" open="true" checked="Qt::Unchecked" name="Node" showFeatureCount="0">
+		    <legendlayer drawingOrder="1" open="true" checked="Qt::Unchecked" name="Node" showFeatureCount="0">
                 <filegroup open="true" hidden="false">
                     <legendlayerfile isInOverview="0" layerid="node20130601163030434" visible="0"/>
                 </filegroup>
@@ -68,6 +68,11 @@
                         <legendlayerfile isInOverview="0" layerid="inp_evaporation20130502001943808" visible="0"/>
                     </filegroup>
                 </legendlayer>
+				<legendlayer drawingOrder="-98" open="true" checked="Qt::Unchecked" name="inp_adjustments" showFeatureCount="0">
+					<filegroup open="true" hidden="false">
+						<legendlayerfile isInOverview="0" layerid="inp_adjustments20150210203811027" visible="0"/>
+					</filegroup>
+				</legendlayer>
             </legendgroup>
             <legendgroup open="false" checked="Qt::Unchecked" name="Hydrology">
                 <legendlayer drawingOrder="10" open="false" checked="Qt::Unchecked" name="Raingage" showFeatureCount="0">
@@ -251,153 +256,6 @@
                     </filegroup>
                 </legendlayer>
             </legendgroup>
-            <legendgroup open="false" checked="Qt::Unchecked" name="Value domain">
-                <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_type_node" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_type_node20131203172354178" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_type_arc" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_type_arc20131203172354136" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="46" open="true" checked="Qt::Unchecked" name="Inp_typevalue_divider" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_divider20130510201056083" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="47" open="true" checked="Qt::Unchecked" name="Inp_typevalue_evap" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_evap20130510201056192" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="48" open="true" checked="Qt::Unchecked" name="Inp_typevalue_outfall" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_outfall20130510201056223" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="49" open="true" checked="Qt::Unchecked" name="Inp_typevalue_outlet" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_outlet20130510201056239" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="50" open="true" checked="Qt::Unchecked" name="Inp_typevalue_pattern" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_pattern20130510201056255" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="51" open="true" checked="Qt::Unchecked" name="Inp_typevalue_raingage" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_raingage20130510201056286" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="52" open="true" checked="Qt::Unchecked" name="Inp_typevalue_storage" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_storage20130510201056301" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="53" open="true" checked="Qt::Unchecked" name="Inp_typevalue_temp" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_temp20130510201056333" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="54" open="true" checked="Qt::Unchecked" name="Inp_typevalue_windsp" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_windsp20130510201056348" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="55" open="true" checked="Qt::Unchecked" name="Inp_typevalue_timeseries" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_timeseries20130510201056379" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="56" open="true" checked="Qt::Unchecked" name="Inp_typevalue_orifice" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_typevalue_orifice20130820181522603" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_value_catarc" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_catarc20131203194117147" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="45" open="true" checked="Qt::Unchecked" name="Inp_value_pollutants" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_pollutants20130820183952332" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="57" open="true" checked="Qt::Unchecked" name="Inp_value_orifice" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_orifice20130820181504380" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="58" open="true" checked="Qt::Unchecked" name="Inp_value_yesno" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_yesno20130510201056177" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="59" open="true" checked="Qt::Unchecked" name="Inp_value_allnone" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_allnone20130510201056395" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="60" open="true" checked="Qt::Unchecked" name="Inp_value_buildup" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_buildup20130510201056411" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="61" open="true" checked="Qt::Unchecked" name="Inp_value_curve" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_curve20130510201056442" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="62" open="true" checked="Qt::Unchecked" name="Inp_value_files_actio" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_files_actio20130510201056457" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="63" open="true" checked="Qt::Unchecked" name="Inp_value_files_type" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_files_type20130510201056489" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="64" open="true" checked="Qt::Unchecked" name="Inp_value_lidcontrol" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_lidcontrol20130510201056535" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="65" open="true" checked="Qt::Unchecked" name="Inp_value_raingage" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_raingage20130510201056613" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-				<legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_value_routeto" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_routeto20131203183008942" visible="1"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="inp_value_status" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_status20131203183008942" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="66" open="true" checked="Qt::Unchecked" name="Inp_value_timserid" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_timserid20130510201056629" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="67" open="true" checked="Qt::Unchecked" name="Inp_value_washoff" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_washoff20130510201056645" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-                <legendlayer drawingOrder="68" open="true" checked="Qt::Unchecked" name="Inp_value_weirs" showFeatureCount="0">
-                    <filegroup open="true" hidden="false">
-                        <legendlayerfile isInOverview="0" layerid="inp_value_weirs20130510201056691" visible="0"/>
-                    </filegroup>
-                </legendlayer>
-            </legendgroup>
             <legendlayer drawingOrder="69" open="true" checked="Qt::Unchecked" name="Material catalog" showFeatureCount="0">
                 <filegroup open="true" hidden="false">
                     <legendlayerfile isInOverview="0" layerid="cat_mat20131118220914333" visible="0"/>
@@ -440,7 +298,12 @@
                     <legendlayerfile isInOverview="0" layerid="v_rpt_flowclass_sum20131029124948412" visible="0"/>
                 </filegroup>
             </legendlayer>
-            <legendlayer drawingOrder="78" open="false" checked="Qt::Unchecked" name="Node flooding" showFeatureCount="0">
+            <legendlayer drawingOrder="-99" open="false" checked="Qt::Unchecked" name="Arc pollutant load" showFeatureCount="0">
+            <filegroup open="false" hidden="false">
+                <legendlayerfile isInOverview="0" layerid="v_rpt_arcpolload_sum20150210203840730" visible="0"/>
+				</filegroup>
+			</legendlayer>
+			<legendlayer drawingOrder="78" open="false" checked="Qt::Unchecked" name="Node flooding" showFeatureCount="0">
                 <filegroup open="false" hidden="false">
                     <legendlayerfile isInOverview="0" layerid="v_rpt_nodeflooding_sum20131029124948498" visible="0"/>
                 </filegroup>
@@ -557,8 +420,123 @@
             </legendlayer>
         </legendgroup>
     </legend>
-    <projectlayers layercount="109">
-        <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
+    <projectlayers layercount="111">
+		<maplayer minimumScale="0" maximumScale="1e+08" geometry="No geometry" type="vector" hasScaleBasedVisibilityFlag="0">
+		<id>inp_adjustments20150210203811027</id>
+		<datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ table="SCHEMA_NAME"."inp_adjustments" sql=</datasource>
+            <title></title>
+            <abstract></abstract>
+            <keywordList>
+                <value></value>
+            </keywordList>
+            <layername>Adjustments</layername>
+            <srs>
+                <spatialrefsys>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
+                </spatialrefsys>
+            </srs>
+	        <customproperties/>
+            <provider encoding="System">postgres</provider>
+            <previewExpression></previewExpression>
+            <vectorjoins/>
+            <editform></editform>
+            <editforminit></editforminit>
+            <featformsuppress>0</featformsuppress>
+            <annotationform></annotationform>
+            <editorlayout>generatedlayout</editorlayout>
+            <excludeAttributesWMS/>
+            <excludeAttributesWFS/>
+            <attributeactions/>
+        </maplayer>
+        <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+            <id>v_rpt_arcpolload_sum20150210203840730</id>
+			<datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ table="SCHEMA_NAME"."v_rpt_arcpolload_sum" (the_geom) sql=</datasource>
+            <title></title>
+            <abstract></abstract>
+            <keywordList>
+                <value></value>
+            </keywordList>
+            <layername>Arc pollutant load</layername>
+            <srs>
+                <spatialrefsys>
+                    <proj4>__PROJ4__</proj4>
+                    <srsid>__SRSID__</srsid>
+                    <srid>__SRID__</srid>
+                    <authid>__AUTHID__</authid>
+                    <description>__DESCRIPTION__</description>
+                    <projectionacronym>__PROJECTIONACRONYM__</projectionacronym>
+                    <ellipsoidacronym>__ELLIPSOIDACRONYM__</ellipsoidacronym>
+                    <geographicflag>__GEOGRAPHICFLAG__</geographicflag>
+                </spatialrefsys>
+            </srs>
+			<provider encoding="System">postgres</provider>
+            <previewExpression></previewExpression>
+            <vectorjoins/>
+            <renderer-v2 symbollevels="0" type="singleSymbol">
+                <symbols>
+                    <symbol alpha="1" type="line" name="0">
+                        <layer pass="0" class="SimpleLine" locked="0">
+                            <prop k="capstyle" v="square"/>
+                            <prop k="color" v="182,109,194,255"/>
+                            <prop k="customdash" v="5;2"/>
+                            <prop k="customdash_unit" v="MM"/>
+                            <prop k="draw_inside_polygon" v="0"/>
+                            <prop k="joinstyle" v="bevel"/>
+                            <prop k="offset" v="0"/>
+                            <prop k="offset_unit" v="MM"/>
+                            <prop k="penstyle" v="solid"/>
+                            <prop k="use_custom_dash" v="0"/>
+                            <prop k="width" v="0.26"/>
+                            <prop k="width_unit" v="MM"/>
+                        </layer>
+                    </symbol>
+                </symbols>
+                <rotation/>
+                <sizescale scalemethod="area"/>
+            </renderer-v2>
+            <customproperties/>
+            <blendMode>0</blendMode>
+            <featureBlendMode>0</featureBlendMode>
+            <layerTransparency>0</layerTransparency>
+            <displayfield>id</displayfield>
+            <label>0</label>
+            <labelattributes>
+                <label fieldname="" text="Label"/>
+                <family fieldname="" name="MS Shell Dlg 2"/>
+                <size fieldname="" units="pt" value="12"/>
+                <bold fieldname="" on="0"/>
+                <italic fieldname="" on="0"/>
+                <underline fieldname="" on="0"/>
+                <strikeout fieldname="" on="0"/>
+                <color fieldname="" red="0" blue="0" green="0"/>
+                <x fieldname=""/>
+                <y fieldname=""/>
+                <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
+                <angle fieldname="" value="0" auto="0"/>
+                <alignment fieldname="" value="center"/>
+                <buffercolor fieldname="" red="255" blue="255" green="255"/>
+                <buffersize fieldname="" units="pt" value="1"/>
+                <bufferenabled fieldname="" on=""/>
+                <multilineenabled fieldname="" on=""/>
+                <selectedonly on=""/>
+            </labelattributes>
+            <editform></editform>
+            <editforminit></editforminit>
+            <featformsuppress>0</featformsuppress>
+            <annotationform></annotationform>
+            <editorlayout>generatedlayout</editorlayout>
+            <excludeAttributesWMS/>
+            <excludeAttributesWFS/>
+            <attributeactions/>
+        </maplayer>
+	    <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Line" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">
             <id>arc20130601163030372</id>
             <datasource>dbname='__DBNAME__' host=__HOST__ port=__PORT__ user='__USER__' password='__PASSWORD__' sslmode=disable key='arc_id' srid=__SRID__ table="SCHEMA_NAME"."arc" (the_geom) sql=</datasource>
             <title></title>

@@ -402,7 +402,6 @@ INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2044', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2045', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2046', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2047', '0', 'OPEN');
-
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2048', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2049', '0', 'OPEN');
 INSERT INTO "sample_epanet"."inp_pipe" VALUES ('2050', '0', 'OPEN');

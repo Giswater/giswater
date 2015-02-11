@@ -329,7 +329,7 @@ SELECT rpt_flowrouting_cont.id, rpt_flowrouting_cont.result_id, rpt_flowrouting_
 -- ------------------------------------------------------------
 
 ALTER TABLE "SCHEMA_NAME"."rpt_nodeinflow_sum"
-ADD COLUMN "flow_balance_error" numeric(6,4);
+ADD COLUMN "flow_balance_error" numeric(12,2);
 
 ALTER TABLE "SCHEMA_NAME"."rpt_nodeinflow_sum"
 ADD COLUMN "other_info" varchar (12);
