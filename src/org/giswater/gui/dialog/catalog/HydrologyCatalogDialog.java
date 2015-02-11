@@ -37,12 +37,8 @@ import org.giswater.util.MaxLengthTextDocument;
 import net.miginfocom.swing.MigLayout;
 
 
-public class HydrologyCatalogDialog extends AbstractCatalogDialog{
+public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtId;
-	private JTextField txtDescription;
-	private JComboBox<String> cboInfiltration;
 	protected JButton btnPrevious;
 	protected JButton btnNext;
 	protected JButton btnCreate;
@@ -54,19 +50,19 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		createComponentMap();
 	}	
 
-	public void enablePrevious(boolean enable){
-		if (btnPrevious != null){
+	public void enablePrevious(boolean enable) {
+		if (btnPrevious != null) {
 			btnPrevious.setEnabled(enable);
 		}
 	}
 	
-	public void enableNext(boolean enable){
-		if (btnNext != null){
+	public void enableNext(boolean enable) {
+		if (btnNext != null) {
 			btnNext.setEnabled(enable);
 		}
 	}		
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table cat_hydrology");
 		setBounds(100, 100, 502, 170);
@@ -81,7 +77,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		txtId = new JTextField();
+		JTextField txtId = new JTextField();
 		txtId.setName("id");
 		txtId.setDocument(new MaxLengthTextDocument(20));
 		panelGeneral.add(txtId, "cell 1 0,growx");
@@ -89,7 +85,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		JLabel lblFlowUnits = new JLabel("Infiltration:");
 		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
 
-		cboInfiltration = new JComboBox<String>();
+		JComboBox<String> cboInfiltration = new JComboBox<String>();
 		cboInfiltration.setActionCommand("shapeChanged");
 		panelGeneral.add(cboInfiltration, "cell 4 0,growx");
 		cboInfiltration.setName("infiltration");
@@ -97,7 +93,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog{
 		JLabel lblIgnoreSnowmelt = new JLabel("Description:");
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
 		
-		txtDescription = new JTextField();
+		JTextField txtDescription = new JTextField();
 		txtDescription.setName("descript");
 		txtDescription.setDocument(new MaxLengthTextDocument(254));
 		panelGeneral.add(txtDescription, "cell 1 1 4 1,growx");

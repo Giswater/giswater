@@ -31,8 +31,6 @@ import org.giswater.dao.MainDao;
 
 public class TableModelTimeseries extends TableModelSuper {
 
-	private static final long serialVersionUID = -3793339630551246161L;
-	
 	
 	public TableModelTimeseries(ResultSet results) {
 		setMetadata(results);
@@ -41,7 +39,7 @@ public class TableModelTimeseries extends TableModelSuper {
 	}
 
 	
-	public void setCombos(){
+	public void setCombos() {
 
 		Vector<String> vector;
 		TableColumnModel tcm = table.getColumnModel();		

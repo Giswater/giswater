@@ -35,7 +35,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-public class PatternsDialog extends AbstractCatalogDialog{
+public class PatternsDialog extends AbstractCatalogDialog {
 
 	private JComboBox<String> cboType;
 
@@ -46,12 +46,12 @@ public class PatternsDialog extends AbstractCatalogDialog{
 	}	
 
 	
-	public void enableType(boolean enable){
+	public void enableType(boolean enable) {
 		cboType.setEnabled(enable);
 	}
 
 	
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table inp_patterns");
 		setBounds(100, 100, 506, 446);

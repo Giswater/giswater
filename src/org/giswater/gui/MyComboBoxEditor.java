@@ -28,8 +28,6 @@ import javax.swing.JComboBox;
 
 public class MyComboBoxEditor extends DefaultCellEditor {
 
-	private static final long serialVersionUID = 5953824239737638592L;
-
 
 	public MyComboBoxEditor(Vector<String> items) {
 		super(new JComboBox<String>(items));

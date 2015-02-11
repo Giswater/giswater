@@ -48,7 +48,6 @@ import org.giswater.util.Utils;
 
 public class WelcomeDialog extends JDialog {
 
-	private static final long serialVersionUID = 2829254148112384387L;
 	public URI urlWeb = null;
 	public URI urlGithub = null;	
 	private final String URL_WEB = "http://www.giswater.org";
@@ -95,8 +94,7 @@ public class WelcomeDialog extends JDialog {
 		}			
 
         JPanel panelLogo = new JPanel(new BorderLayout()) {
-			private static final long serialVersionUID = 3096090575648819722L;
-
+        	
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -110,7 +108,7 @@ public class WelcomeDialog extends JDialog {
                 size.height = Math.max(backgroundImage.getIconHeight(), size.height);
                 return size;
             }
-            
+        
         };
         
         getContentPane().add(panelLogo, "cell 0 1,alignx center");

@@ -33,7 +33,6 @@ import org.giswater.util.Utils;
 
 public class TableModelSrid extends DefaultTableModel {
 
-	private static final long serialVersionUID = -3793339630551246161L;
 	protected String[] columnNames = new String[0];
 	protected Vector<String[]> rows_data = new Vector<String[]>();
 	protected ResultSetMetaData metadata;
@@ -45,10 +44,10 @@ public class TableModelSrid extends DefaultTableModel {
 	protected Object value;
 	
 	
-	public TableModelSrid(){ }
+	public TableModelSrid() { }
 	
 	
-	protected void setMetadata(ResultSet results){
+	protected void setMetadata(ResultSet results) {
 
 		try {
 			metadata = results.getMetaData();
@@ -64,7 +63,7 @@ public class TableModelSrid extends DefaultTableModel {
 	}
 
 	
-	public void setRs(ResultSet rs){
+	public void setRs(ResultSet rs) {
 		setMetadata(rs);
 		setResultSet(rs, false);		
 	}
@@ -86,7 +85,7 @@ public class TableModelSrid extends DefaultTableModel {
 			}
 			while (results.next()) {
 				rowData = new String[columns];
-				for (int i=0; i<columns; i++){
+				for (int i=0; i<columns; i++) {
 					rowData[i] = results.getString(i + 1);
 				}
 				rows_data.addElement(rowData);
@@ -106,7 +105,7 @@ public class TableModelSrid extends DefaultTableModel {
 	
 	public void insertEmptyRow() {
 		String[] rowData = new String[columnNames.length];
-		for (int i = 0; i < columnNames.length; i++){
+		for (int i = 0; i < columnNames.length; i++) {
 			rowData[i] = "";
 		}
 		rows_data.addElement(rowData);

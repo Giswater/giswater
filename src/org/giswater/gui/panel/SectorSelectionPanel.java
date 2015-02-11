@@ -44,11 +44,6 @@ import org.giswater.util.Utils;
 
 public class SectorSelectionPanel extends JPanel {
 	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private static final long serialVersionUID = 7046850563517014315L;
-	private final String TABLE_SECTOR = "sector";
-	private final String TABLE_SECTOR_SELECTION = "sector_selection";
-		
 	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
@@ -57,6 +52,10 @@ public class SectorSelectionPanel extends JPanel {
 	private JButton btnClose;
 	private JDialog dialog;
 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private final String TABLE_SECTOR = "sector";
+	private final String TABLE_SECTOR_SELECTION = "sector_selection";
+	
 	
 	public SectorSelectionPanel() {
 		initConfig();

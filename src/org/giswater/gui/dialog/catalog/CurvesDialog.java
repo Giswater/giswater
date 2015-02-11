@@ -47,13 +47,11 @@ import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
 
 
-public class CurvesDialog extends AbstractCatalogDialog{
+public class CurvesDialog extends AbstractCatalogDialog {
 
 	private JTable table;
 	private JTextField txtId;
-	private JPanel panelGeneral;
 	private JScrollPane panelTable;
-	private JComboBox<String> comboBox;
 	private JButton btnDetailDelete;
 	private JButton btnDetailCreate;
 	
@@ -64,7 +62,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	}	
 
 	
-	public JTable getTable(){
+	public JTable getTable() {
 		return table;
 	}
 	
@@ -91,12 +89,12 @@ public class CurvesDialog extends AbstractCatalogDialog{
 	}
 	
 	
-	public void setModel(TableModelCurves model){
+	public void setModel(TableModelCurves model) {
 		table.setModel(model);
 	}
 
 	
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table curves");
 		setBounds(100, 100, 574, 437);
@@ -104,7 +102,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
-		panelGeneral = new JPanel();
+		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
@@ -121,7 +119,7 @@ public class CurvesDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Type:");
 		panelGeneral.add(lblTsectid, "cell 2 0,alignx trailing");
 		
-		comboBox = new JComboBox<String>();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setName("curve_type");
 		panelGeneral.add(comboBox, "cell 3 0,growx");
 		

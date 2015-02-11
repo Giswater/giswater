@@ -46,16 +46,10 @@ import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class TimeseriesDialog extends AbstractCatalogDialog{
+public class TimeseriesDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JPanel panelGeneral;
 	private JTextField txtId;
-	private JLabel lblOther;
-	private JLabel lblTimesType;
-	private JComboBox<String> cboTimserType;
 	private JComboBox<String> cboTimesType;
-	
 	private JTable table;
 	private JScrollPane panelTable;
 	private JButton btnDetailCreate;
@@ -103,12 +97,12 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 	}
 	
 	
-	public void setModel(TableModelTimeseries model){
+	public void setModel(TableModelTimeseries model) {
 		table.setModel(model);
 	}
 
 	
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table timeseries");
 		setBounds(100, 100, 574, 437);
@@ -116,7 +110,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
-		panelGeneral = new JPanel();
+		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
@@ -139,18 +133,18 @@ public class TimeseriesDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Timser type:");
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		cboTimserType = new JComboBox<String>();
+		JComboBox<String> cboTimserType = new JComboBox<String>();
 		cboTimserType.setName("timser_type");
 		panelGeneral.add(cboTimserType, "cell 1 1,growx");
 		
-		lblTimesType = new JLabel("Times type:");
+		JLabel lblTimesType = new JLabel("Times type:");
 		panelGeneral.add(lblTimesType, "cell 0 2,alignx trailing");
 		
 		cboTimesType = new JComboBox<String>();
 		cboTimesType.setName("times_type");
 		panelGeneral.add(cboTimesType, "cell 1 2,growx");
 		
-		lblOther = new JLabel("Timeseries:");
+		JLabel lblOther = new JLabel("Timeseries:");
 		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelGeneral.add(lblOther, "cell 0 4 2 1,alignx left");
 		

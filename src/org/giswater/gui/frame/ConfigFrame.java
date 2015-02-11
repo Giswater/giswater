@@ -31,7 +31,6 @@ import org.giswater.util.Utils;
 
 public class ConfigFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
 	private ConfigPanel panel;
 	
 	

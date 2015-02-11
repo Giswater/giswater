@@ -50,7 +50,7 @@ import org.giswater.util.Utils;
 import com.toedter.calendar.JDateChooser;
 
 
-public class OptionsController extends AbstractController{
+public class OptionsController extends AbstractController {
 
 	private AbstractOptionsDialog view;
     private ResultSet rs;
@@ -85,7 +85,7 @@ public class OptionsController extends AbstractController{
 			    JComboBox combo = entry.getValue();
 				view.setComboModel(combo, getComboValues(key));
 				String value = "";
-				if (fillData){
+				if (fillData) {
 					// Process hydrology field
 					if (key.equals("hydrology")) {
 						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
@@ -119,7 +119,7 @@ public class OptionsController extends AbstractController{
 			    Date value = null;
 				if (fillData) {
 					aux = rs.getString(key);
-					if (aux != null){
+					if (aux != null) {
 						try {
 							value = sdf.parse(aux);
 						} catch (ParseException e) {
@@ -459,7 +459,7 @@ public class OptionsController extends AbstractController{
 		
 		boolean isVisible = false;
 		if (comboName.equals("hydraulics")) {
-			if (value.toUpperCase().equals("USE") || value.toUpperCase().equals("SAVE")){
+			if (value.toUpperCase().equals("USE") || value.toUpperCase().equals("SAVE")) {
 				isVisible = true;
 			}
 		}
@@ -498,8 +498,6 @@ public class OptionsController extends AbstractController{
     public void chooseFileFname() {
 
         JFileChooser chooser = new JFileChooser();
-//        FileFilter filter = new FileNameExtensionFilter("RPT extension file", "rpt");
-//        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_fname"));
         File file = new File(System.getProperty("user.home"));	
@@ -507,7 +505,7 @@ public class OptionsController extends AbstractController{
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileFname = chooser.getSelectedFile();
-    		if (view instanceof RaingageDialog){
+    		if (view instanceof RaingageDialog) {
     			RaingageDialog child = (RaingageDialog) view;
     			child.setFileFname(fileFname.getAbsolutePath());
     		}
@@ -519,7 +517,7 @@ public class OptionsController extends AbstractController{
     // Raingage
     public void changeRaingageType() {
     	
-		if (view instanceof RaingageDialog){
+		if (view instanceof RaingageDialog) {
 			RaingageDialog child = (RaingageDialog) view;
 			String value = child.getRaingageType();
 			if (value.equals("FILE")) {

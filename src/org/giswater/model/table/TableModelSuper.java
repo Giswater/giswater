@@ -38,16 +38,15 @@ import org.giswater.util.Utils;
 
 public class TableModelSuper extends DefaultTableModel {
 
-	private static final long serialVersionUID = -3793339630551246161L;
 	protected String[] columnNames = new String[0];
 	protected Vector<String[]> rows_data = new Vector<String[]>();
 	protected ResultSet rs;
-	protected ResultSetMetaData metadata; // Additional information about the results
+	protected ResultSetMetaData metadata;
 	protected int columns;
 	protected JTable table;
 
 	
-	public TableModelSuper(){ }
+	public TableModelSuper() { }
 	
 	public TableModelSuper(ResultSet results) {
 		setMetadata(results);
@@ -56,7 +55,7 @@ public class TableModelSuper extends DefaultTableModel {
 	}
 
 	
-	protected void setMetadata(ResultSet results){
+	protected void setMetadata(ResultSet results) {
 
 		try {
 			metadata = results.getMetaData();
@@ -80,7 +79,7 @@ public class TableModelSuper extends DefaultTableModel {
 			results.absolute(0);
 			while (results.next()) {
 				rowData = new String[columns];
-				for (int i=0; i<columns; i++){
+				for (int i=0; i<columns; i++) {
 					rowData[i] = results.getString(i + 1);
 				}
 				rows_data.addElement(rowData);
@@ -101,7 +100,7 @@ public class TableModelSuper extends DefaultTableModel {
 	
 	public void insertEmptyRow() {
 		String[] rowData = new String[columnNames.length];
-		for (int i = 0; i < columnNames.length; i++){
+		for (int i = 0; i < columnNames.length; i++) {
 			rowData[i] = "";
 		}
 		rows_data.addElement(rowData);
@@ -109,7 +108,7 @@ public class TableModelSuper extends DefaultTableModel {
 	}
 	
 	
-	protected void setColumnRendering(TableColumn column, Vector<String> vector){
+	protected void setColumnRendering(TableColumn column, Vector<String> vector) {
 	    column.setCellEditor(new MyComboBoxEditor(vector));
 	    column.setCellRenderer(new MyComboBoxRenderer(vector));	
 	}
@@ -132,14 +131,14 @@ public class TableModelSuper extends DefaultTableModel {
 		try {
 			
 			// Si no tenim cap registre previ
-			if (!rs.isAfterLast()){
+			if (!rs.isAfterLast()) {
 				isInsert = true;				
 				rs.moveToInsertRow();
 			}
 			// Si ja teniem algun registre previ comprovem si és el darrer o no
 			else{			
 				rs.absolute(row + 1);
-				if (rs.isAfterLast()){
+				if (rs.isAfterLast()) {
 					isInsert = true;				
 					rs.moveToInsertRow();
 				}
@@ -162,7 +161,7 @@ public class TableModelSuper extends DefaultTableModel {
 				rs.updateTimestamp(col+1, (Timestamp) value);
 			}
 			
-			if (isInsert){			
+			if (isInsert) {			
 				rs.insertRow();
 			}
 			else{

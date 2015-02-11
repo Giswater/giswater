@@ -36,11 +36,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
+import org.giswater.gui.dialog.catalog.HydrologyCatalogDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
@@ -78,11 +81,21 @@ public class CatalogController extends AbstractController {
 			if (map == null) return;
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
+			    Vector vector = getComboValues(key);
+			    // Cat Hidrology: Remove last element if we have selected epaswmm 50022
+			    if (view instanceof HydrologyCatalogDialog && key.equals("infiltration")) {
+			    	ProjectPreferencesPanel ppPanel = MainClass.mdi.ppFrame.getPanel();
+			    	String version = ppPanel.getVersionSoftware();
+					if (version.equals("EPASWMM_50022")) {
+						vector.remove(vector.size() - 1);
+					}		
+			    } 
+			    
 			    JComboBox combo = entry.getValue();
-				view.setComboModel(combo, getComboValues(key));
+				view.setComboModel(combo, vector);
 				String value = "";
-				if (fillData && MainDao.checkColumn(rs, key)){
-					if (rs.getRow() != 0){
+				if (fillData && MainDao.checkColumn(rs, key)) {
+					if (rs.getRow() != 0) {
 						value = rs.getString(key);
 					}
 				}
@@ -94,8 +107,8 @@ public class CatalogController extends AbstractController {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
 			    Object value = "";
-				if (fillData && MainDao.checkColumn(rs, key)){
-					if (rs.getRow() != 0){					
+				if (fillData && MainDao.checkColumn(rs, key)) {
+					if (rs.getRow() != 0) {					
 						value = rs.getObject(key);
 					}
 				}
@@ -103,9 +116,9 @@ public class CatalogController extends AbstractController {
 			}
 
 			// Update also detail table content
-			if (view instanceof TimeseriesDialog){
+			if (view instanceof TimeseriesDialog) {
 				String id = "-1";
-				if (!action.equals("create")){
+				if (!action.equals("create")) {
 					if (rs.getRow() != 0){	
 						id = rs.getString("id");
 					}
@@ -113,9 +126,9 @@ public class CatalogController extends AbstractController {
 				String fields = "id, date, hour, time, value, fname";
 				updateDetailTable("inp_timeseries", fields, "timser_id", id);
 			}
-			else if (view instanceof CurvesDialog){
+			else if (view instanceof CurvesDialog) {
 				String id = "-1";
-				if (!action.equals("create")){
+				if (!action.equals("create")) {
 					if (rs.getRow() != 0){	
 						id = rs.getString("id");
 					}					
@@ -258,7 +271,7 @@ public class CatalogController extends AbstractController {
 	}
 	
 	
-	private void manageNavigationButtons(){
+	private void manageNavigationButtons() {
 		
 		if (action.equals("create")) {
 			Utils.getLogger().info("Editing new record...");

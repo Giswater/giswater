@@ -44,7 +44,6 @@ import java.awt.event.MouseEvent;
 
 public class LicenseDialog extends JDialog {
 
-	private static final long serialVersionUID = 2829254148112384387L;
 	public URI uri = null;
 	public File file = null;
 	private JButton btnLicense;

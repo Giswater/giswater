@@ -31,15 +31,14 @@ import org.giswater.util.Utils;
 
 public class ProjectPreferencesFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = -8028876402273265808L;
 	private ProjectPreferencesPanel panel;
 	
 	
-	public ProjectPreferencesFrame(){
+	public ProjectPreferencesFrame() {
 		initComponents();
 	}
 	
-	public ProjectPreferencesPanel getPanel(){
+	public ProjectPreferencesPanel getPanel() {
 		return panel;
 	}
 	

@@ -31,16 +31,15 @@ import org.giswater.util.Utils;
 
 public class EpaSoftFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
 	private EpaSoftPanel panel;
 	
 	
-	public EpaSoftFrame(){
+	public EpaSoftFrame() {
 		initComponents();
 	}
 	
 
-	public EpaSoftPanel getPanel(){
+	public EpaSoftPanel getPanel() {
 		return panel;
 	}
 	

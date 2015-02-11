@@ -31,7 +31,6 @@ import org.giswater.dao.MainDao;
 
 public class TableModelSectorSelection extends TableModelSuper {
 
-	private static final long serialVersionUID = -3793339630551246161L;
 	private String tableLookup;
 	
 	

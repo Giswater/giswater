@@ -34,16 +34,15 @@ import javax.swing.ImageIcon;
 
 public class HecRasFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
 	private HecRasPanel panel;
 	
 	
-	public HecRasFrame(){
+	public HecRasFrame() {
 		initComponents();
 	}
 	
 
-	public HecRasPanel getPanel(){
+	public HecRasPanel getPanel() {
 		return panel;
 	}
 	

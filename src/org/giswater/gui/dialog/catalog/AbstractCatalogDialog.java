@@ -42,7 +42,6 @@ import org.giswater.controller.CatalogController;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractCatalogDialog extends JDialog implements ActionListener {
 	
-	private static final long serialVersionUID = -7319857198967955753L;
 	protected CatalogController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;

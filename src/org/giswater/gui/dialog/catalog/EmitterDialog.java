@@ -35,12 +35,8 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
 
 
-public class EmitterDialog extends AbstractCatalogDialog{
+public class EmitterDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtDescript;
-	private JComboBox<String> cboNode;
-	
 	
 	public EmitterDialog() {
 		initConfig();
@@ -48,7 +44,7 @@ public class EmitterDialog extends AbstractCatalogDialog{
 	}	
 	
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table inp_emmiter");
 		setBounds(100, 100, 398, 190);
@@ -63,7 +59,7 @@ public class EmitterDialog extends AbstractCatalogDialog{
 		JLabel lblInfiltration = new JLabel("Node Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		cboNode = new JComboBox<String>();
+		JComboBox<String> cboNode = new JComboBox<String>();
 		cboNode.setName("node_id");
 		cboNode.setActionCommand("");
 		panelGeneral.add(cboNode, "cell 1 0,growx");
@@ -71,7 +67,7 @@ public class EmitterDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("Coeficient:");
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		txtDescript = new JTextField();
+		JTextField txtDescript = new JTextField();
 		txtDescript.setName("coef");
 		txtDescript.setColumns(10);
 		panelGeneral.add(txtDescript, "cell 1 1,growx");

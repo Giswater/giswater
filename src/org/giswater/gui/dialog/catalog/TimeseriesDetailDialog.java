@@ -38,9 +38,8 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-public class TimeseriesDetailDialog extends AbstractCatalogDialog{
+public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private String timesType;
 	private JTextField txtId;
 	private JTextField txtTimserId;
@@ -62,7 +61,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	}
 
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table inp_timeseries");
 		setBounds(100, 100, 502, 196);
@@ -157,8 +156,8 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		});
 		
 		// Event to update detail table contents with new data
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 				dispose();
 				parent.getController().closeDetailDialog();
 			}
@@ -174,23 +173,23 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	}
 	
 	
-	public void setTimesType(){
+	public void setTimesType() {
 
 		txtDate.setEnabled(false);
 		txtHour.setEnabled(false);
 		txtTime.setEnabled(false);
 		txtValue.setEnabled(false);
 		txtFname.setEnabled(false);
-		if (timesType.equals("ABSOLUTE")){
+		if (timesType.equals("ABSOLUTE")) {
 			txtDate.setEnabled(true);
 			txtHour.setEnabled(true);
 			txtValue.setEnabled(true);
 		}
-		else if (timesType.equals("RELATIVE")){
+		else if (timesType.equals("RELATIVE")) {
 			txtTime.setEnabled(true);
 			txtValue.setEnabled(true);
 		}
-		if (timesType.equals("FILE")){
+		if (timesType.equals("FILE")) {
 			txtFname.setEnabled(true);
 		}
 		

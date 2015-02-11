@@ -36,13 +36,10 @@ import org.giswater.util.MaxLengthTextDocument;
 import net.miginfocom.swing.MigLayout;
 
 
-public class MaterialsDialog extends AbstractCatalogDialog{
+public class MaterialsDialog extends AbstractCatalogDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtId;
-	private JTextField txtOther;
-	private JTextField txtDescript;
 	private JLabel lblOther;
+	private JTextField txtOther;
 	
 	
 	public MaterialsDialog() {
@@ -50,14 +47,14 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 	}	
 
 	
-	public void setName(String name){
+	public void setName(String name) {
 		lblOther.setText(name + ":");
 		txtOther.setName(name);
 		createComponentMap();
 	}
 	
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table cat_mat");
 		setBounds(100, 100, 454, 190);
@@ -72,7 +69,7 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		txtId = new JTextField();
+		JTextField txtId = new JTextField();
 		txtId.setName("id");
 		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
@@ -88,7 +85,7 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 		JLabel lblTsectid = new JLabel("descript:");
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		txtDescript = new JTextField();
+		JTextField txtDescript = new JTextField();
 		txtDescript.setName("descript");
 		txtDescript.setDocument(new MaxLengthTextDocument(100));
 		panelGeneral.add(txtDescript, "cell 1 1,growx");

@@ -37,7 +37,7 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.util.MaxLengthTextDocument;
 
 
-public class DemandDialog extends AbstractCatalogDialog{
+public class DemandDialog extends AbstractCatalogDialog {
 
 	
 	public DemandDialog() {
@@ -46,7 +46,7 @@ public class DemandDialog extends AbstractCatalogDialog{
 	}	
 	
 
-	private void initConfig(){
+	private void initConfig() {
 
 		setTitle("Table inp_demand");
 		setBounds(100, 100, 398, 225);
