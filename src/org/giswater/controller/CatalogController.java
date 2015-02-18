@@ -111,6 +111,10 @@ public class CatalogController extends AbstractController {
 					if (rs.getRow() != 0) {					
 						value = rs.getObject(key);
 					}
+				} 
+				// Set default values of fields geom2, geom3 and geom4
+				if (view instanceof ArcCatalogDialog && !fillData && (key.equals("geom2") || key.equals("geom3") || key.equals("geom4"))) {
+					value = 0.0;
 				}
 				view.setTextField(component, value);
 			}
@@ -201,7 +205,7 @@ public class CatalogController extends AbstractController {
 					if (value == null || ((String)value).trim().equals("")) {
 						rs.updateNull(key);						
 					} 
-					else{
+					else {
 						rs.updateString(key, (String) value);
 					}	
 				}
@@ -219,7 +223,7 @@ public class CatalogController extends AbstractController {
 						if (value == null || ((String)value).trim().equals("")) {
 							rs.updateNull(col);						
 						} 
-						else{
+						else {
 							rs.updateString(col, (String) value);
 						}
 					}
@@ -229,7 +233,7 @@ public class CatalogController extends AbstractController {
 								rs.updateNull(col);
 							}
 						} 
-						else{					
+						else {					
 							Integer aux = Integer.parseInt(value.toString());
 							rs.updateInt(col, aux);						
 						}
@@ -239,7 +243,7 @@ public class CatalogController extends AbstractController {
 						if (((String)value).trim().equals("")) {
 							rs.updateNull(col);
 						} 
-						else{					
+						else {					
 							Double aux = Double.parseDouble(value.toString().replace(",", "."));
 							rs.updateDouble(col, aux);						
 						}
@@ -280,7 +284,7 @@ public class CatalogController extends AbstractController {
 			view.enableNext(false);		
 			view.enableSave(true);
 		}
-		else{
+		else {
 			Utils.getLogger().info("Record: " + current + " of " + total);
 			view.enableDelete(total > 0);
 			view.enablePrevious(current > 1);

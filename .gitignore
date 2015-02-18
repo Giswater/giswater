@@ -6,7 +6,7 @@ log
 portable
 config/giswater_*
 build_runnable.xml
-samples/*.asc
+samples/sample_mdt.asc
 samples/sample_mdt.sql
 models/swmm2d/2D/[Bb]in/
 models/swmm_custom/swmm51006_engine_0/src/vc/[Bb]in/
