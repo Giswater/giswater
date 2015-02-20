@@ -7,7 +7,6 @@
 -- Started on 2015-01-26 09:57:34
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -149,15 +148,6 @@ SELECT pg_catalog.setval('river3d_gid_seq', 6, true);
 --
 
 SELECT pg_catalog.setval('river_gid_seq', 1, true);
-
-
---
--- TOC entry 3916 (class 0 OID 70811)
--- Dependencies: 333
--- Data for Name: version; Type: TABLE DATA; Schema: sample_hecras; Owner: postgres
---
-
-INSERT INTO version VALUES (1, '1.1.145', 'HECRAS', 'null', 'null', '2015-01-20 14:04:56.359');
 
 
 --

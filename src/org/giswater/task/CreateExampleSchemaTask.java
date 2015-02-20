@@ -62,7 +62,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		
 		String srid = MainDao.getTableSrid(schemaName, "banks").toString();
 		String logFolder = Utils.getLogFolder();
-		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
+		String fileSql = logFolder + rasterName.replace(".tif", ".sql");
 		
 		// Check if DTM table already exists
 		if (MainDao.checkTableHasData(schemaName, "mdt")) {
