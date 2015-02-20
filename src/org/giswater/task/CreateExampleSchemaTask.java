@@ -143,7 +143,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					}
 					if (waterSoftware.equals("hecras")) {				
 						// Trough Load Raster
-						String rasterName = "sample_mdt.asc";	 						
+						String rasterName = "sample_dtm.tif";	 						
 						String rasterPath = folderRoot+"samples"+File.separator+rasterName;	 						
 						if (loadRaster(schemaName, rasterPath, rasterName)) {
 							String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
