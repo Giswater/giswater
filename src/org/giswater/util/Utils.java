@@ -34,12 +34,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -77,6 +79,7 @@ public class Utils {
 	private static String gisFolder;
 	private static String appPath;
 	private static boolean isSqlLogged;	
+	private static boolean isQgis;		
     
     
 	public static Logger getLogger() {
@@ -104,6 +107,7 @@ public class Utils {
                 fh.setFormatter(lf);
                 loggerSql = Logger.getLogger(logFile);
                 loggerSql.addHandler(fh);
+                isQgis = checkFileExtensionQgis();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
             } catch (SecurityException e) {
@@ -114,6 +118,33 @@ public class Utils {
 
     }
 	   
+	
+	// Returns true if .qgs file extension is associated
+	public static boolean checkFileExtensionQgis() {
+			
+		final String regKey = "SOFTWARE\\Classes";
+		//final String regKey2 = "Shell\\open\\command";
+	
+		List<String> listValues = null;
+		try {
+			listValues = WinRegistry.readStringSubKeys(WinRegistry.HKEY_LOCAL_MACHINE, regKey);
+			if (listValues != null) {
+				return listValues.contains(".qgs");
+			}
+			else {
+				return false;
+			}
+		} catch (IllegalArgumentException e) {
+			logError(e);
+		} catch (IllegalAccessException e) {
+			logError(e);
+		} catch (InvocationTargetException e) {
+			logError(e);
+		}
+		return false;
+			
+	}
+	
 	
 	public static void setSqlLog(String string) {
 		isSqlLogged = Boolean.parseBoolean(string);
@@ -154,6 +185,10 @@ public class Utils {
     
     public static String getGisFolder() {
     	return gisFolder;
+    }       
+    
+    public static boolean isQgisAssociated() {
+    	return isQgis;
     }       
 
 	public static String getBundleString(String key) {

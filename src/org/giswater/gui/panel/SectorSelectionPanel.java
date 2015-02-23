@@ -182,7 +182,7 @@ public class SectorSelectionPanel extends JPanel {
 	private void deleteAll() {
 		
         int res = Utils.showYesNoDialog("question_delete");
-        if (res == 0) {
+        if (res == JOptionPane.YES_OPTION) {
         	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
         	MainDao.executeUpdateSql(sql);
     		setData();

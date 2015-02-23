@@ -421,14 +421,21 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (!folder.exists()) {
 				folder.mkdir();
 			}
-			// TODO: Check if QGIS is installed
+			
+			// Check if QGIS file extension is associated
+			if (!Utils.isQgisAssociated()) {
+				String msg = "WARNING:\nYou are about to generate a QGIS project, but it seems that you have not installed QGIS software." + 
+					"\nIf that is true, please visit http://www.qgis.org and download it." +
+					"\nDo you want to continue?";
+				int answer = Utils.showYesNoDialog(this, msg);
+		        if (answer == JOptionPane.NO_OPTION) return;	        	
+			}
+			
 			String destPath = folderPath+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()) {
 	            int answer = Utils.showYesNoDialog(this, "overwrite_file");
-	            if (answer == JOptionPane.NO_OPTION) {
-	            	return;
-	            }
+	            if (answer == JOptionPane.NO_OPTION) return;
 			}
 			
 			this.requestFocusInWindow();
