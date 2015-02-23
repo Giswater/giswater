@@ -1025,7 +1025,6 @@ public class MainDao {
 	}
 	
 	
-	// TODO: Hardcoded
 	public static String replaceExtentParameters(String software, String schemaName, String content) {
 		
 		String aux = content;
@@ -1059,12 +1058,6 @@ public class MainDao {
 		return aux;
 		
 	}		
-		
-
-	public static String getErrorMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

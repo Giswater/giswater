@@ -126,6 +126,8 @@ public class ExportToInp extends Model {
             
             // Subcatchment function
             if (isSubcatchmentSelected) {
+            	sql = "SET search_path TO '"+MainDao.getSchema()+"', public";
+            	MainDao.executeSql(sql);
             	Utils.getLogger().info("Process subcatchments");    	
                 // Get content of target table
             	sql = "SELECT "+MainDao.getSchema()+".gw_dump_subcatchments();";            

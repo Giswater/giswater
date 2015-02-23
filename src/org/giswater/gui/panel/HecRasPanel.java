@@ -211,6 +211,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		panelExportSdf.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[::20px][34px:n][5px:n][]"));
 		
 		chkExportSA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportSa.text"));
+		chkExportSA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportSA.toolTipText")); //$NON-NLS-1$
 		panelExportSdf.add(chkExportSA, "flowx,cell 2 0");
 		
 		JLabel lblAscFile = new JLabel();
@@ -226,15 +227,19 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		chkExportIA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportIa.text"));
+		chkExportIA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportIA.toolTipText")); //$NON-NLS-1$
 		panelExportSdf.add(chkExportIA, "cell 2 0");
 		
 		chkExportLevees = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportLevees.text"));
+		chkExportLevees.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportLevees.toolTipText")); //$NON-NLS-1$
 		panelExportSdf.add(chkExportLevees, "cell 2 0");
 		
 		chkExportBO = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxBo.text"));
+		chkExportBO.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportBO.toolTipText")); //$NON-NLS-1$
 		panelExportSdf.add(chkExportBO, "cell 2 0");
 		
 		chkExportManning = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxManning.text"));
+		chkExportManning.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportManning.toolTipText")); //$NON-NLS-1$
 		panelExportSdf.add(chkExportManning, "cell 2 0");
 		
 		btnFileSdf = new JButton();
@@ -270,6 +275,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		panelDataManager.add(btnShowProjectData, "cell 2 0,growx");
 		
 		btnExportDtm = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
+		btnExportDtm.setEnabled(false);
 		btnExportDtm.setActionCommand("exportDtm");
 		btnExportDtm.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnExportDtm, "cell 3 0,growx");

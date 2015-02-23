@@ -421,6 +421,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (!folder.exists()) {
 				folder.mkdir();
 			}
+			// TODO: Check if QGIS is installed
 			String destPath = folderPath+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()) {

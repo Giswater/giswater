@@ -186,7 +186,8 @@ public class HecRasController extends AbstractController {
 
 		String schemaName = MainDao.getSchema();
 		ExportSdfTask task = new ExportSdfTask(schemaName, fileSdf, view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
-        task.addPropertyChangeListener(this);
+        task.setController(this);
+		task.addPropertyChangeListener(this);
         task.execute();
 		
 	}
@@ -270,7 +271,7 @@ public class HecRasController extends AbstractController {
 	}
 	    
 	
-	// TODO
+	// TODO: exportDtm
 	public void exportDtm() {
 		
 		
