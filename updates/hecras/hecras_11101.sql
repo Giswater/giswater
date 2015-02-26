@@ -84,7 +84,7 @@ $$;
 -- schema
 -- ------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME"."clone_schema"(source_schema text, dest_schema text) RETURNS "pg_catalog"."void" AS $$
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".clone_schema(source_schema text, dest_schema text) RETURNS void LANGUAGE plpgsql AS $$
  
 DECLARE
 	rec_view record;
@@ -112,8 +112,8 @@ BEGIN
 	LOOP
 	  
 	  	-- Create table in destination schema
-		tablename := dest_schema||'."'||rec_table||'"';
-		EXECUTE 'CREATE TABLE ' || tablename || ' (LIKE '||source_schema||'."'||rec_table||'" INCLUDING CONSTRAINTS INCLUDING INDEXES INCLUDING DEFAULTS)';
+		tablename := dest_schema || '.' || rec_table;
+		EXECUTE 'CREATE TABLE ' || tablename || ' (LIKE ' || source_schema || '.' || rec_table || ' INCLUDING CONSTRAINTS INCLUDING INDEXES INCLUDING DEFAULTS)';
 		
 		-- Set contraints
 		FOR column_, default_ IN
@@ -121,11 +121,11 @@ BEGIN
 			FROM information_schema.COLUMNS 
 			WHERE table_schema = dest_schema AND table_name = rec_table AND column_default LIKE 'nextval(%' || source_schema || '%::regclass)'
 		LOOP
-			EXECUTE 'ALTER TABLE '||tablename||' ALTER COLUMN '||column_||' SET DEFAULT '||default_;
+			EXECUTE 'ALTER TABLE ' || tablename || ' ALTER COLUMN ' || column_ || ' SET DEFAULT ' || default_;
 		END LOOP;
 		
 		-- Copy table contents to destination schema
-		EXECUTE 'INSERT INTO '||tablename||' SELECT * FROM '||source_schema||'."'||rec_table||'"'; 	
+		EXECUTE 'INSERT INTO ' || tablename || ' SELECT * FROM ' || source_schema || '.' || rec_table; 	
 		
 	END LOOP;
 	  
@@ -134,7 +134,7 @@ BEGIN
 		SELECT table_name FROM information_schema.TABLES WHERE table_schema = source_schema AND table_type = 'BASE TABLE' ORDER BY table_name
 	LOOP	  
 	  
-		tablename := dest_schema||'."'||rec_table||'"';	  
+		tablename := dest_schema || '.' || rec_table;	  
 		FOR rec_fk IN
 			SELECT tc.constraint_name, tc.constraint_schema, tc.table_name, kcu.column_name,
 			ccu.table_name AS parent_table, ccu.column_name AS parent_column,
@@ -165,8 +165,17 @@ BEGIN
 	FOR rec_view IN
 		SELECT table_name, REPLACE(view_definition, source_schema, dest_schema) as definition FROM information_schema.VIEWS WHERE table_schema = source_schema
 	LOOP
-		EXECUTE 'CREATE VIEW '||dest_schema||'.'||rec_view.table_name||' AS '||rec_view.definition;
+		EXECUTE 'CREATE VIEW ' || dest_schema || '.' || rec_view.table_name || ' AS ' || rec_view.definition;
 	END LOOP;
  
 END;
 $$;
+
+
+SET search_path = public, pg_catalog;
+
+-- Completed on 2013-12-17 23:15:03
+
+--
+-- PostgreSQL database dump complete
+--
