@@ -387,7 +387,7 @@ ADD COLUMN "vxmax" numeric(12,4),
 ADD COLUMN "vymax" numeric(12,4),
 ADD COLUMN "depth" numeric(12,4),
 ADD COLUMN "vel" numeric(12,4),
-ADD COLUMN "vhmax" numeric(12,4)
+ADD COLUMN "vhmax" numeric(12,6)
 ;
 
 -- ----------------------------

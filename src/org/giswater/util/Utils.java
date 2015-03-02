@@ -524,10 +524,19 @@ public class Utils {
 	
 	
 	public static String readFile(String filePath) throws IOException {
+		return readFile(filePath, true);
+	}
+	
+	public static String readFile(String filePath, boolean showError) throws IOException {
 		
 		File fileName = new File(filePath);			
 		if (!fileName.exists()) {
-			showError("inp_error_notfound", filePath);
+			if (showError) {
+				showError("inp_error_notfound", filePath);
+			}
+			else {
+				logError("inp_error_notfound", filePath);
+			}
 			return "";
 		}
 		RandomAccessFile rat = new RandomAccessFile(fileName, "r");

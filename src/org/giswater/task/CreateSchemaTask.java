@@ -73,11 +73,6 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	public static boolean createSchema(String softwareName, String schemaName, String srid) {
 		
 		boolean status = false;
-		String sql = "CREATE schema "+schemaName;
-		if (!MainDao.executeUpdateSql(sql, false, true)){
-			MainDao.rollback();
-			return status;	
-		}
 		String filePath = "";
 		String content = "";
     	
@@ -86,12 +81,15 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	    	String folderRoot = new File(".").getCanonicalPath()+File.separator;			
 			filePath = folderRoot+"sql"+File.separator+softwareName+".sql";
 	    	content = Utils.readFile(filePath);
+			if (content.equals("")) return false;	    	
 			
-	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
+	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
 			content = content.replace("SCHEMA_NAME", schemaName);
 			content = content.replace("SRID_VALUE", srid);
+			content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
 			Utils.logSql(content);
 
+			// Execute scripts to create schema
 			if (MainDao.executeSql(content, false)) {
 				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
 		    	content = Utils.readFile(filePath);
@@ -99,7 +97,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 				Utils.logSql(content);
 				if (MainDao.executeSql(content, false)) {
 					filePath = folderRoot+"sql"+File.separator+softwareName+"_value_default.sql";
-			    	content = Utils.readFile(filePath);
+			    	content = Utils.readFile(filePath, false);
 					content = content.replace("SCHEMA_NAME", schemaName);
 					Utils.logSql(content);
 					if (MainDao.executeSql(content, false)) {
@@ -122,48 +120,6 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
-	public static boolean createSchemaHecRas(String softwareName, String schemaName, String srid) {
-		
-		boolean status = false;
-		String filePath = "";
-		try {		
-			
-	    	String folderRoot = new File(".").getCanonicalPath()+File.separator;	
-			filePath = folderRoot+"sql"+File.separator+softwareName+".sql";
-			String content = Utils.readFile(filePath);
-			if (content.equals("")) return false;
-			
-	    	// Replace SCHEMA_NAME for schemaName parameter. __USER__ for user
-			content = content.replace("SCHEMA_NAME", schemaName);
-			content = content.replace("SRID_VALUE", srid);			
-			content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));		
-			Utils.logSql(content);
-						
-			//Execute scripts to create schema
-			if (MainDao.executeUpdateSql(content, false, true)) {
-				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
-		    	content = Utils.readFile(filePath);
-				content = content.replace("SCHEMA_NAME", schemaName);		   
-				Utils.logSql(content);
-				if (MainDao.executeSql(content, false)) {
-					filePath = folderRoot+"sql"+File.separator+softwareName+"_functrigger.sql";
-				    content = Utils.readFile(filePath);
-			    	content = content.replace("SCHEMA_NAME", schemaName);
-					Utils.logSql(content);
-					status = MainDao.executeSql(content, false);
-				}
-			}
-			
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-		}
-		return status;
-		
-	}
-	
-	
     @Override
     public Void doInBackground() { 
 		
@@ -181,12 +137,8 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		controller.closeProject();
     	Utils.setPanelEnabled(parentPanel, false);
     	
-		if (waterSoftware.equals("HECRAS")) {
-			status = createSchemaHecRas(waterSoftware, schemaName, sridValue);	
-		}
-		else {
-			status = createSchema(waterSoftware, schemaName, sridValue);	
-		}
+    	// Create schema
+		status = createSchema(waterSoftware, schemaName, sridValue);	
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {

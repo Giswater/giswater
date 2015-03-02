@@ -113,12 +113,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		mainFrame.ppFrame.getPanel().enableControlsText(false);
 		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
 		
-		if (waterSoftware.equals("hecras")) {
-			status = CreateSchemaTask.createSchemaHecRas(waterSoftware, schemaName, sridValue);
-		}
-		else {
-			status = CreateSchemaTask.createSchema(waterSoftware, schemaName, sridValue);
-		}
+    	// Create schema
+		status = CreateSchemaTask.createSchema(waterSoftware, schemaName, sridValue);
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {
