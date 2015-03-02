@@ -123,8 +123,8 @@ public class MenuController extends AbstractController {
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_sql"));
-        File file = new File(PropertiesDao.getGswProperties().get("FILE_SQL", usersFolder));	
-        chooser.setCurrentDirectory(file);
+        File file = new File(PropertiesDao.getLastSqlPath());
+        chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileSql = chooser.getSelectedFile();
@@ -133,6 +133,7 @@ public class MenuController extends AbstractController {
                 path += ".sql";
                 fileSql = new File(path);
             }        
+            PropertiesDao.setLastSqlPath(path);
         }
         return path;
 
@@ -493,31 +494,29 @@ public class MenuController extends AbstractController {
 	}
 	
 	
-	public boolean executeSqlFile() {
+	public void executeSqlFile() {
 		
-		boolean status = false;
 		// Get selected schema
 		String schema = MainDao.getSchema();
 		if (schema == null) {
 			String msg = "Any schema selected. You need to select one";
 			MainClass.mdi.showMessage(msg);
-			return false;
+			return;
 		}
 		// Get SQL file to execute
 		String filePath = chooseSqlFile();
 		if (filePath.equals("")) {
-			return false;
+			return;
 		}
 		
 		try {
 			// Get contents of the file. Replace SCHEMA_NAME for the current one selected
 	    	String content = Utils.readFile(filePath);
 			content = content.replace("SCHEMA_NAME", schema);
-			//content = content.replace("SRID_VALUE", srid);
 			Utils.logSql(content);
 			Exception e = MainDao.executeSql(content, false, "");
 			if (e == null) {
-				Utils.showMessage("File executed successfully");
+				MainClass.mdi.showMessage("File executed successfully");
 			}
 			else {
 				Utils.showError("One or more errors have been found:", e.getMessage());
@@ -525,7 +524,6 @@ public class MenuController extends AbstractController {
         } catch (IOException e) {
             Utils.showError(e, filePath);
         }
-		return status;
 		
 	}
 	

@@ -412,7 +412,7 @@ public class MainFrame extends JFrame implements ActionListener {
         new EpaSoftController(epaSoftFrame.getPanel(), this);
         
         // Set frame sizes accordin desktop size
-        getMainParams("MAIN");
+        getMainParams();
         setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
         epaSoftFrame.setSize(desktopSize);
@@ -447,21 +447,22 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 	
 	
-	private void getFrameParams (JInternalFrame frame, String prefix) {
+	private void getFrameParams(JInternalFrame frame, String prefix) {
         boolean visible = Boolean.parseBoolean(PropertiesDao.getGswProperties().get(prefix + "_VISIBLE", "false"));
         frame.setVisible(visible);
 	}
 	
 	
-	private void putFrameParams (JInternalFrame frame, String prefix) {
+	private void putFrameParams(JInternalFrame frame, String prefix) {
 		PropertiesDao.getGswProperties().put(prefix + "_VISIBLE", frame.isVisible());
 	}
 	
 	
-	private void getMainParams (String prefix) {
+	private void getMainParams() {
 
         int x, y, width, height;
         boolean maximized;
+        String prefix = "MAIN";
         x = Integer.parseInt(prop.get(prefix + "_X", "200"));
         y = Integer.parseInt(prop.get(prefix + "_Y", "100"));
         width = Integer.parseInt(prop.get(prefix + "_WIDTH", "665"));
@@ -477,9 +478,10 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 	
 	
-	private void putMainParams (String prefix) {
+	private void putMainParams() {
 		
 		boolean maximized = (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0;
+		String prefix  = "MAIN";
 		prop.put(prefix + "_MAXIMIZED", maximized);		
 		prop.put(prefix + "_X", this.getX());
 		prop.put(prefix + "_Y", this.getY());
@@ -572,8 +574,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		putFrameParams(hecRasFrame, "HECRAS");
 		putFrameParams(ppFrame, "PP");        
 		putFrameParams(configFrame, "CONFIG");	
-		putMainParams("MAIN");
 		saveGswFile();  
+		putMainParams();
 		Utils.getLogger().info("Application closed");
 		
 	}

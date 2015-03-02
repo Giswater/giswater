@@ -37,6 +37,7 @@ public class PropertiesDao {
 	private static String gswDefaultPath;   // Default gsw Project preferences File
 	private static String gswTemplatePath;   // Template gsw Project preferences File. Used to create new gsw files
 	private static String giswaterUsersFolder;   // C:\Users\<username>\Giswater
+	private static String lastSqlPath;   // Last SQL path (opened in Data - SQL file launcher)
     private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
     
@@ -77,6 +78,14 @@ public class PropertiesDao {
 	
 	public static void setGswPath(String path) {
 		gswPath = path;
+	}
+	
+	public static String getLastSqlPath() {
+		return lastSqlPath;
+	}
+	
+	public static void setLastSqlPath(String path) {
+		lastSqlPath = path;
 	}
 	
 	
@@ -123,6 +132,10 @@ public class PropertiesDao {
         	}
     	}
     	setGswPath(gswPath);
+    	
+    	// Get last SQL file
+    	String lastSqlPath = prop.get("FILE_SQL", "").trim();
+    	setLastSqlPath(lastSqlPath);
     	
     	return true;
 		
