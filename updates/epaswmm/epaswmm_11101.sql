@@ -361,7 +361,8 @@ CREATE TABLE "SCHEMA_NAME"."rpt_arcpolload_sum" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_arcpolload_sum_id_seq'::regclass) NOT NULL,
 "result_id" varchar(16) COLLATE "default",
 "arc_id" varchar(16) COLLATE "default",
-"poll_id" varchar(16) COLLATE "default"
+"poll_id" varchar(16) COLLATE "default",
+CONSTRAINT "rpt_arcpolload_pkey" PRIMARY KEY ("id")
 )
 WITH (OIDS=FALSE);
 

@@ -181,15 +181,18 @@ public class ImportRpt extends Model {
     				if (abortRptProcess) return false;
     	        	if (ok) {
     		    		if (!insertSql.equals("")) {
-		            		firstLine = firstLine.substring(15, 24).trim(); 
-		            		sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable() + 
-		            			" SET time = '"+firstLine+"' WHERE time is null;";
-		            		insertSql+= sql;       	
-    		            	Utils.logSql(insertSql);
-    			    		if (!MainDao.executeUpdateSql(insertSql)) {
-    							return false;
-    						}
+    		    			// Check if time is set and update it
+    		    			if (firstLine.length() > 15) {
+			            		firstLine = firstLine.substring(15, 24).trim(); 
+			            		sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable() + 
+			            			" SET time = '"+firstLine+"' WHERE time is null;";
+			            		insertSql+= sql;       	
+    		    			}
     		    		}
+		            	Utils.logSql(insertSql);
+			    		if (!MainDao.executeUpdateSql(insertSql)) {
+							return false;
+						}    		    		
     	        	}
     				continueTarget = (lineNumber > 0);            	        	
     			}
@@ -524,45 +527,49 @@ public class ImportRpt extends Model {
 	
 	
 	// Parse all lines
-	private static boolean parseLines(RptTarget rpt) {
+	private static boolean parseLines(RptTarget rptTarget) {
 		
 		boolean result = true;
 		rptTokens = new ArrayList<RptToken>();			
 		boolean blankLine = false;		
-		while (!blankLine) {
+		boolean valid = true;
+		while (!blankLine && valid) {
 			lineNumber++;
 			String line = readLine();
 			blankLine = (line.length() == 0);
-			if (!blankLine) {
+			if (softwareName.equals("EPANET") && rptTarget.getId() == 30) {
+				valid = !line.contains("---");
+			}
+			if (!blankLine && valid) {
 				Scanner scanner = new Scanner(line);
-				if (rpt.getType() == 1) {
+				if (rptTarget.getType() == 1) {
 					parseLine1(scanner);
-					result = processTokensCheck(rpt);
+					result = processTokensCheck(rptTarget);
 					if (!result) return false;
 				}		
-				else if (rpt.getType() == 2) {			
-					parseLine2(scanner, rpt, true);
+				else if (rptTarget.getType() == 2) {			
+					parseLine2(scanner, rptTarget, true);
 				}
-				else if (rpt.getType() == 3) {	
+				else if (rptTarget.getType() == 3) {	
 					rptTokens = new ArrayList<RptToken>();	
-					parseLine2(scanner, rpt, false);
+					parseLine2(scanner, rptTarget, false);
 					rptTokensList.add(rptTokens);
 				}					
-				else if (rpt.getType() == 4) {					
+				else if (rptTarget.getType() == 4) {					
 					parseLineType4(scanner);
-					processTokensCheck(rpt);							
+					processTokensCheck(rptTarget);							
 				}	
-				else if (rpt.getType() == 5) {					
+				else if (rptTarget.getType() == 5) {					
 					parseLine1(scanner);
-					processTokens5(rpt);						
+					processTokens5(rptTarget);						
 				}				
-				else if (rpt.getType() == 6) {					
+				else if (rptTarget.getType() == 6) {					
 					parseLine1(scanner);
-					processTokens6(rpt);						
+					processTokens6(rptTarget);						
 				}			
-				else if (rpt.getType() == 7) {					
+				else if (rptTarget.getType() == 7) {					
 					parseLine1(scanner);
-					processTokens6(rpt);						
+					processTokens6(rptTarget);						
 				}							
 			}
 			if (abortRptProcess) {
