@@ -636,6 +636,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmSaveProject.setEnabled(enable);
 		mntmExampleEpanet.setEnabled(enable);
 		mntmExampleEpaswmm.setEnabled(enable);
+		mntmExampleEpaswmm2D.setEnabled(enable);
 		mntmExampleHecras.setEnabled(enable);
 		
 	}

@@ -368,6 +368,6 @@ ALTER TABLE "SCHEMA_NAME"."inp_adjustments" ADD PRIMARY KEY ("adj_type");
 DROP VIEW IF EXISTS "SCHEMA_NAME"."v_inp_curve";
 CREATE OR REPLACE VIEW "SCHEMA_NAME"."v_inp_curve" AS 
 SELECT inp_curve.id, inp_curve.curve_id, inp_curve.x_value, inp_curve.y_value,
-(CASE WHEN x_value = (SELECT MIN(x_value) FROM inp_curve AS sub WHERE sub.curve_id = inp_curve.curve_id) THEN inp_curve_id.curve_type ELSE null END) AS curve_type
-FROM (sample_epaswmm.inp_curve JOIN sample_epaswmm.inp_curve_id ON (((inp_curve_id.id)::text = (inp_curve.curve_id)::text))) 
+(CASE WHEN x_value = (SELECT MIN(x_value) FROM SCHEMA_NAME.inp_curve AS sub WHERE sub.curve_id = inp_curve.curve_id) THEN inp_curve_id.curve_type ELSE null END) AS curve_type
+FROM (SCHEMA_NAME.inp_curve JOIN SCHEMA_NAME.inp_curve_id ON (((inp_curve_id.id)::text = (inp_curve.curve_id)::text))) 
 ORDER BY inp_curve.id;

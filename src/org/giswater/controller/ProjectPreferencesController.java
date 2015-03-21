@@ -51,6 +51,7 @@ public class ProjectPreferencesController extends AbstractController {
 	private static final Integer GIS_DIALOG_WIDTH = 420; 
 	private static final Integer GIS_DIALOG_HEIGHT = 245; 
 	private static final Integer FIRST_VERSION_RENAME_AVAILABLE = 11146; 
+	private static final Integer FIRST_VERSION_COPY_AVAILABLE = 11101; 
 	
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
@@ -85,7 +86,9 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Get related data
 		getProjectData();
-		view.enableRename(MainDao.getSchemaVersion() >= FIRST_VERSION_RENAME_AVAILABLE);
+		Integer schemaVersion = MainDao.getSchemaVersion();
+		view.enableRename(schemaVersion >= FIRST_VERSION_RENAME_AVAILABLE);
+		view.enableCopy(schemaVersion >= FIRST_VERSION_COPY_AVAILABLE);
 
 	}
 	
@@ -194,6 +197,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Check schema version
 		MainDao.checkSchemaVersion();
+		schemaChanged();
 		
 		return true;
 		
@@ -461,7 +465,9 @@ public class ProjectPreferencesController extends AbstractController {
 			setSchema(view.getSelectedSchema());
 			mainFrame.updateConnectionInfo();
 			getProjectData();
-			view.enableRename(MainDao.getSchemaVersion() >= FIRST_VERSION_RENAME_AVAILABLE);
+			Integer schemaVersion = MainDao.getSchemaVersion();
+			view.enableRename(schemaVersion >= FIRST_VERSION_RENAME_AVAILABLE);
+			view.enableCopy(schemaVersion >= FIRST_VERSION_COPY_AVAILABLE);	
 		}
 		
 	}

@@ -893,7 +893,7 @@ public class MainDao {
 				String aux = queryToString(sql);
 				schemaVersion = Utils.parseInt(aux.replace(".", ""));
 			}
-			else{
+			else {
 				schemaVersion = -1;
 			}
 			schemaMap.put(schema, schemaVersion);
@@ -929,6 +929,7 @@ public class MainDao {
 					Utils.getLogger().info(sql);
 					executeSql(sql, true);
 					MainClass.mdi.showMessage("Project successfully updated.");
+					schemaMap.remove(schema);
 				}
 				else {
 					MainClass.mdi.showError("Project could not be updated to the current version. Open .log file for more details");

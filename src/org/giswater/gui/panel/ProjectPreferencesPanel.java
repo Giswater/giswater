@@ -624,6 +624,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	public void enableRename(boolean enabled) {
 		btnRename.setEnabled(enabled);
 	}
+	
+	public void enableCopy(boolean enabled) {
+		btnCopy.setEnabled(enabled);
+	}
 
 	public void enableAccept(boolean enabled) {
 		btnAccept.setEnabled(enabled);
