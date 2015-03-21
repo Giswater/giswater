@@ -574,8 +574,9 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
 		Utils.logSql(sql);
-		if (MainDao.executeUpdateSql(sql, true)){
+		if (MainDao.executeUpdateSql(sql, true)) {
 			selectSourceType(false);
+	    	view.setSelectedSchema(newSchemaName);
         	mainFrame.showMessage("Project renamed successfuly");
 		}
 		
