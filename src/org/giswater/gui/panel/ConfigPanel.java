@@ -28,11 +28,15 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
@@ -41,8 +45,6 @@ import org.giswater.controller.ConfigController;
 import org.giswater.gui.frame.ConfigFrame;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 
 
 public class ConfigPanel extends JPanel implements ActionListener {
@@ -81,6 +83,9 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JRadioButton optImportDisabled;
 	private JTextArea txtFileDbAdmin;
 	private JScrollPane scrollPane;
+	private JLabel lblChooseLanguage;
+	private JComboBox<String> cboLocale;
+	private JLabel lblRequiresRestart;
 	
 	
 	public ConfigPanel() {
@@ -300,6 +305,27 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		return value;
 	}	
 	
+	public void setLanguage(String language) {
+		if (language.equals("en")) {
+			cboLocale.setSelectedItem("English");
+		}
+		else if (language.equals("es")) {
+			cboLocale.setSelectedItem("Spanish");
+		}
+	}
+
+	public String getLanguage() {
+		String locale = "en";
+		String language = cboLocale.getSelectedItem().toString();
+		if (language.equals("English")) {
+			locale = "en";
+		}
+		else if (language.equals("Spanish")) {
+			locale = "es";
+		}
+		return locale;
+	}	
+	
 	public void setLogFolderSize(Integer size) {
 		txtLogFolderSize.setText(size.toString());
 	}
@@ -319,7 +345,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n][80px:n][65px][72px:110px][75px:n]", "[8px:n][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
+		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n,grow][80px:n][65px][72px:110px][75px:n]", "[8px:n][][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -458,30 +484,40 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(optUpdatesDisabled, "cell 4 9");
 	    optUpdatesDisabled.setName("false");
 	    group9.add(optUpdatesDisabled);
+	    
+	    lblChooseLanguage = new JLabel(BUNDLE.getString("ConfigPanel.lblChooseLanguage.text")); //$NON-NLS-1$
+	    add(lblChooseLanguage, "cell 1 10,alignx right");
+	    
+	    cboLocale = new JComboBox<String>();
+	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Spanish"}));
+	    add(cboLocale, "cell 3 10,growx");
+	    
+	    lblRequiresRestart = new JLabel(BUNDLE.getString("ConfigPanel.lblrequieresRestart.text")); //$NON-NLS-1$
+	    add(lblRequiresRestart, "cell 4 10 2 1");
 		
 	    JLabel lblLogFolderSize = new JLabel(BUNDLE.getString("ConfigPanel.lblLogFolderSize.text"));
-	    add(lblLogFolderSize, "cell 1 10,alignx right");
+	    add(lblLogFolderSize, "cell 1 11,alignx right");
 		
 		JLabel lblMb = new JLabel(BUNDLE.getString("ConfigPanel.lblMb.text"));
-		add(lblMb, "cell 5 10,alignx left");
+		add(lblMb, "cell 5 11,alignx left");
 		
 		btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text")); 
-		add(btnOpenLogFolder, "cell 6 10,alignx right");
+		add(btnOpenLogFolder, "cell 6 11,alignx right");
 		btnOpenLogFolder.setActionCommand("openLogFolder");
 		
 		chkAutostart = new JCheckBox(BUNDLE.getString("ConfigPanel.chkAutostart.text")); 
-		add(chkAutostart, "cell 3 12 3 1");
+		add(chkAutostart, "cell 3 13 3 1");
 		chkAutostart.setSelected(true);
 		
 		chkAutoconnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); 
-		add(chkAutoconnect, "cell 3 13 3 1");
+		add(chkAutoconnect, "cell 3 14 3 1");
 		chkAutoconnect.setSelected(true);
 		
 		JLabel lblDbAdmin = new JLabel(BUNDLE.getString("ConfigPanel.lblDbAdmin.text"));
-		add(lblDbAdmin, "cell 1 14,alignx right");
+		add(lblDbAdmin, "cell 1 15,alignx right");
 		
 		scrollPane = new JScrollPane();
-		add(scrollPane, "cell 3 14 4 1,grow");
+		add(scrollPane, "cell 3 15 4 1,grow");
 		
 		txtFileDbAdmin = new JTextArea();
 		txtFileDbAdmin.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -489,32 +525,32 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtFileDbAdmin.setText("");
 		
 		btnFileDbAdmin = new JButton();
-		add(btnFileDbAdmin, "cell 7 14,alignx right");
+		add(btnFileDbAdmin, "cell 7 15,alignx right");
 		btnFileDbAdmin.setMinimumSize(new Dimension(72, 9));
 		btnFileDbAdmin.setText("...");
 		btnFileDbAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
 		
 		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text"));
-		add(lblNotepad, "cell 3 16 4 1");
+		add(lblNotepad, "cell 3 17 4 1");
 		
 		JLabel lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text"));
-		add(lblNotepad2, "cell 3 17 5 1");
+		add(lblNotepad2, "cell 3 18 5 1");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(4);		
 		
 		txtLogFolderSize = new JTextField();
-		add(txtLogFolderSize, "cell 3 10 2 1,growx");
+		add(txtLogFolderSize, "cell 3 11 2 1,growx");
 		txtLogFolderSize.setText("");
 		txtLogFolderSize.setColumns(8);
 		txtLogFolderSize.setDocument(maxLength);	
 		
 		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
-		add(btnAccept, "cell 6 19,alignx right");
+		add(btnAccept, "cell 6 20,alignx right");
 		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("configAccept");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 7 19,alignx right");
+		add(btnClose, "cell 7 20,alignx right");
 		btnClose.setMinimumSize(new Dimension(72, 23));
 		btnClose.setActionCommand("closePanel");
 
@@ -525,7 +561,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	// Setup component's listener
 	private void setupListeners() {
-		
+			
 		btnFileDbAdmin.addActionListener(this);
 		btnOpenLogFolder.addActionListener(this);
 		btnAccept.addActionListener(this);

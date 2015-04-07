@@ -678,7 +678,7 @@ public class MainDao {
 	            	String schemaName = rs.getString(1);
 	            	if (!software.equals("")) {
 	            		// Add current schema only if "belongs" to software we're working on
-	            		if (checkSoftwareSchema(software, schemaName)){
+	            		if (checkSoftwareSchema(software, schemaName)) {
 	            			vector.add(schemaName);
 	            		}
 	            	}

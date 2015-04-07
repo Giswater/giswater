@@ -111,7 +111,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		setLayout(new MigLayout("", "[8px:n][78.00px:n][75px:n:75px][65px:n:65px][][10px:n][154.00px:n][][]", "[][][61.00][][]"));
 		
-		JLabel lblWaterSoftware = new JLabel("Water software:");
+		JLabel lblWaterSoftware = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblWaterSoftware.text")); //$NON-NLS-1$
 		add(lblWaterSoftware, "cell 0 0 2 1,alignx right");
 		
 		optEpaSwmm = new JRadioButton("EPASWMM");

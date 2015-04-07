@@ -20,8 +20,6 @@
  */
 package org.giswater.gui;
 
-import java.util.Locale;
-
 import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
@@ -44,12 +42,7 @@ public class MainClass {
 			@Override
 			public void run() {		
 
-				// Set locale
-				final Locale english = new Locale("en", "EN");
-				Locale.setDefault(english);
-
 				// Look&Feel
-				//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
 				String className = UIManager.getSystemLookAndFeelClassName();
 				try {
 					UIManager.setLookAndFeel(className);

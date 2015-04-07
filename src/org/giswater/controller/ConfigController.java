@@ -32,7 +32,7 @@ import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class ConfigController extends AbstractController{
+public class ConfigController extends AbstractController {
 
 	private ConfigPanel view;
     private PropertiesMap prop;
@@ -46,7 +46,7 @@ public class ConfigController extends AbstractController{
 	}
 	
 	
-    private void setDefaultValues(){
+    private void setDefaultValues() {
     	
 		view.setDbAdminFile(prop.get("FILE_DBADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
@@ -60,12 +60,13 @@ public class ConfigController extends AbstractController{
 		view.setSridQuestion(prop.get("SRID_QUESTION"));
 		view.setLoadRaster(prop.get("LOAD_RASTER"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
+		view.setLanguage(prop.get("LANGUAGE", "en"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
         Integer size = 10;
         try{
 	        size = Integer.parseInt(aux);
         }
-        catch (NumberFormatException e){
+        catch (NumberFormatException e) {
         	String msg = "Value of parameter LOG_FOLDER_SIZE is not valid. It must be a number";
         	Utils.logError(msg);
         }        
@@ -74,7 +75,7 @@ public class ConfigController extends AbstractController{
     }
 	
 	
-	public void configAccept(){
+	public void configAccept() {
 		
 		// Update properties file getting parameteres from view	 
 		prop.put("FILE_DBADMIN", view.getDgAdminFile());
@@ -90,12 +91,12 @@ public class ConfigController extends AbstractController{
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
 		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());		
 		prop.put("AUTO_IMPORT_RPT", view.getAutoImportRpt());		
+		prop.put("LANGUAGE", view.getLanguage());		
 
 		// Close frame
 		view.getFrame().setVisible(false);
 		
 	}	
-	
 	
 
     public void chooseFileDbAdmin() {

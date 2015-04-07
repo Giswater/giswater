@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -113,6 +114,11 @@ public class PropertiesDao {
     		Utils.showError("Error loading Properties file. Application could not start");	  
     		return false;
     	}
+    	
+    	// Set Locale
+    	String language = prop.get("LANGUAGE", "en");
+		Locale locale = new Locale(language, language.toUpperCase());
+		Locale.setDefault(locale);    	
     	
     	// Get default and template gsw files
     	gswDefaultPath = giswaterUsersFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
