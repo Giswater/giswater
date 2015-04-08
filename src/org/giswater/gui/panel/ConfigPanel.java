@@ -312,6 +312,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		else if (language.equals("es")) {
 			cboLocale.setSelectedItem("Spanish");
 		}
+		else if (language.equals("pt")) {
+			cboLocale.setSelectedItem("Portuguese");
+		}
+		else if (language.equals("pt_BR")) {
+			cboLocale.setSelectedItem("Brazilian Portuguese");
+		}		
 	}
 
 	public String getLanguage() {
@@ -323,6 +329,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		else if (language.equals("Spanish")) {
 			locale = "es";
 		}
+		else if (language.equals("Portuguese")) {
+			locale = "pt";
+		}
+		else if (language.equals("Brazilian Portuguese")) {
+			locale = "pt_BR";
+		}		
 		return locale;
 	}	
 	
@@ -345,7 +357,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n,grow][80px:n][65px][72px:110px][75px:n]", "[8px:n][][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
+		setLayout(new MigLayout("", "[8px:n][127.00][8px:n][80px:n][80px:n][65px][72px:110px][75px:n]", "[8px:n][][][][][][][][][][][][8px:n][][][34px:n][8px:n][18px:n][18px:n][10px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -489,11 +501,11 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(lblChooseLanguage, "cell 1 10,alignx right");
 	    
 	    cboLocale = new JComboBox<String>();
-	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Spanish"}));
-	    add(cboLocale, "cell 3 10,growx");
+	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Spanish", "Brazilian Portuguese", "Portuguese"}));
+	    add(cboLocale, "cell 3 10 2 1,growx");
 	    
 	    lblRequiresRestart = new JLabel(BUNDLE.getString("ConfigPanel.lblrequieresRestart.text")); //$NON-NLS-1$
-	    add(lblRequiresRestart, "cell 4 10 2 1");
+	    add(lblRequiresRestart, "cell 5 10 2 1");
 		
 	    JLabel lblLogFolderSize = new JLabel(BUNDLE.getString("ConfigPanel.lblLogFolderSize.text"));
 	    add(lblLogFolderSize, "cell 1 11,alignx right");
