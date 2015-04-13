@@ -141,13 +141,24 @@ public class MenuController extends AbstractController {
     
     
     public void exit() {
+    	exit(true);
+    }
+    
+    public void exit(Boolean askQuestion) {
     	
-    	String msg = "Do you want to save your project preferences before exiting?";
-    	int answer = Utils.showYesNoCancelDialog(mainFrame, msg);
-    	if (answer == JOptionPane.CANCEL_OPTION) return;
-    	if (answer == JOptionPane.YES_OPTION) {
+    	if (askQuestion) {
+	    	String msg = "Do you want to save your project preferences before exiting?";
+	    	int answer = Utils.showYesNoCancelDialog(mainFrame, msg);
+	    	if (answer == JOptionPane.CANCEL_OPTION) return;
+	    	if (answer == JOptionPane.YES_OPTION) {
+	        	Utils.getLogger().info("Project preferences saved");	    		
+	    		gswSave();
+	    	}
+    	}
+    	else {
     		gswSave();
     	}
+    	Utils.getLogger().info("Application closed");
     	System.exit(0);
     	
     }
@@ -670,6 +681,6 @@ public class MenuController extends AbstractController {
         return path;
 
     }
-        
+       
 
 }

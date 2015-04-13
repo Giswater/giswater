@@ -377,14 +377,7 @@ public class MainFrame extends JFrame implements ActionListener {
         );
 
 		setupListeners();
-		
-		this.addWindowListener(new WindowAdapter() {
-			 @Override
-			 public void windowClosing(WindowEvent e) {
-			     closeApp();
-			 }
-		 });	
-		
+			
 	}
 	
 	
@@ -561,23 +554,27 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		// Get Project preferences parameters
 		putProjectPreferencecsParams();		
-    	
+		
     	// Save .gsw file
 		PropertiesDao.saveGswPropertiesFile();
         
+		// Save data related to forms position and visibility
+		saveFormParams();
+		
 	}	
 	
 	
-	public void closeApp() {
-	
-        putFrameParams(epaSoftFrame, "EPASOFT");
+	public void saveFormParams() {
+		putFrameParams(epaSoftFrame, "EPASOFT");
 		putFrameParams(hecRasFrame, "HECRAS");
 		putFrameParams(ppFrame, "PP");        
 		putFrameParams(configFrame, "CONFIG");	
-		saveGswFile();  
-		putMainParams();
-		Utils.getLogger().info("Application closed");
-		
+		putMainParams();		
+	}
+	
+	
+	public void closeApp() {
+		menuController.exit(false);
 	}
 	
 	
@@ -611,6 +608,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmCheckUpdates.addActionListener(this);
 		
 		mntmDownload.addActionListener(this);
+		
+		this.addWindowListener(new WindowAdapter() {
+		 @Override
+		 public void windowClosing(WindowEvent e) {
+		     closeApp();
+		 }
+	 });			
 		
 	}
 	

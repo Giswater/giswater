@@ -49,7 +49,7 @@ public class ProjectPreferencesFrame extends JInternalFrame {
 
     	panel.setFrame(this);
     	setClosable(true);    
-    	setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+    	setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));

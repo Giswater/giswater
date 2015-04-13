@@ -34,11 +34,11 @@ public class ConfigFrame extends JInternalFrame {
 	private ConfigPanel panel;
 	
 	
-	public ConfigFrame(){
+	public ConfigFrame() {
 		initComponents();
 	}
 	
-	public ConfigPanel getPanel(){
+	public ConfigPanel getPanel() {
 		return panel;
 	}
 	
@@ -50,7 +50,7 @@ public class ConfigFrame extends JInternalFrame {
     	panel.setFrame(this);
         setTitle(Utils.getBundleString("software_panel"));
     	setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setFrameIcon(new ImageIcon(Utils.getIconPath()));    
         setVisible(false);
         
