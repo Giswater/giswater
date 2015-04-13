@@ -166,7 +166,8 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setInfo("");
 		// Check if we have selected a water software
 		if (waterSoftware.equals("")) {
-			mainFrame.showError("You have to select Water Software");
+			view.setWaterSoftware("EPASWMM");
+			changeSoftware();			
 			return false;
 		}
 		// Check if we have an schema selected
