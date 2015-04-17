@@ -151,7 +151,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	public void setNewVersionVisible(boolean newVersion, String ftpVersion) {
 		mnNewVersionAvailable.setVisible(newVersion);
-		String msg = "Download version "+ftpVersion;
+		String msg = Utils.getBundleString("download_version")+ftpVersion;
 		mntmDownload.setText(msg);
 	}
 

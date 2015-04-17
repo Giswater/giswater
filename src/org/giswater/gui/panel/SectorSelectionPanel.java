@@ -117,7 +117,7 @@ public class SectorSelectionPanel extends JPanel {
 		btnDeleteAll.setMinimumSize(new Dimension(79, 23));
 		add(btnDeleteAll, "cell 0 4");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(79, 23));
 		btnClose.setMaximumSize(new Dimension(79, 23));
 		btnClose.setActionCommand("closePanel");

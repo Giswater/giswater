@@ -31,9 +31,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
+import java.util.ResourceBundle;
 
 
 public class ResultSelectionDialog extends AbstractOptionsDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JComboBox<String> cboResultSelection;
 	
@@ -50,7 +52,7 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 	
 	private void initConfig(){
 
-		setTitle("Table result_selection");
+		setTitle(BUNDLE.getString("ResultSelectionDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 375, 176);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[40px:n][66.00][5px][30.00]"));
 		
@@ -61,11 +63,11 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultSelectionDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 1 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[75.00][115.00:159.00][40.00px]", "[25px:n][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel("Result id:");
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ResultSelectionDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
 		cboResultSelection = new JComboBox<String>();

@@ -34,9 +34,11 @@ import javax.swing.border.TitledBorder;
 import org.giswater.util.MaxLengthTextDocument;
 
 import net.miginfocom.swing.MigLayout;
+import java.util.ResourceBundle;
 
 
 public class ControlsDialog extends AbstractCatalogDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public ControlsDialog() {
@@ -47,13 +49,13 @@ public class ControlsDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle("Table inp_controls");
+		setTitle(BUNDLE.getString("ControlsDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 344, 187);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[88.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ControlsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
@@ -66,7 +68,7 @@ public class ControlsDialog extends AbstractCatalogDialog {
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		txtId.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel("Text:");
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ControlsDialog.lblAuthor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
 		JTextField txtText = new JTextField();
@@ -99,12 +101,12 @@ public class ControlsDialog extends AbstractCatalogDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		

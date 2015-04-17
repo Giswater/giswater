@@ -34,9 +34,11 @@ import javax.swing.border.TitledBorder;
 import org.giswater.util.MaxLengthTextDocument;
 
 import net.miginfocom.swing.MigLayout;
+import java.util.ResourceBundle;
 
 
 public class MaterialsDialog extends AbstractCatalogDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JLabel lblOther;
 	private JTextField txtOther;
@@ -56,13 +58,13 @@ public class MaterialsDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle("Table cat_mat");
+		setTitle(BUNDLE.getString("MaterialsDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 454, 190);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[89.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("MaterialsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][]"));
 		
@@ -74,7 +76,7 @@ public class MaterialsDialog extends AbstractCatalogDialog {
 		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
-		lblOther = new JLabel("n:");
+		lblOther = new JLabel(BUNDLE.getString("MaterialsDialog.lblOther.text")); //$NON-NLS-1$
 		panelGeneral.add(lblOther, "cell 3 0,alignx trailing");
 		
 		txtOther = new JTextField();
@@ -82,7 +84,7 @@ public class MaterialsDialog extends AbstractCatalogDialog {
 		txtOther.setDocument(new MaxLengthTextDocument(14));
 		panelGeneral.add(txtOther, "cell 4 0,growx");
 		
-		JLabel lblTsectid = new JLabel("descript:");
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("MaterialsDialog.lblTsectid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
 		JTextField txtDescript = new JTextField();
@@ -115,12 +117,12 @@ public class MaterialsDialog extends AbstractCatalogDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");			

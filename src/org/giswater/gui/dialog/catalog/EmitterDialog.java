@@ -33,9 +33,11 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
+import java.util.ResourceBundle;
 
 
 public class EmitterDialog extends AbstractCatalogDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public EmitterDialog() {
@@ -46,17 +48,17 @@ public class EmitterDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle("Table inp_emmiter");
+		setTitle(BUNDLE.getString("EmitterDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 398, 190);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[87.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("EmitterDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[50][231.00,grow][150]", "[][][][][]"));
 		
-		JLabel lblInfiltration = new JLabel("Node Id:");
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("EmitterDialog.lblInfiltration.text")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
 		JComboBox<String> cboNode = new JComboBox<String>();
@@ -64,7 +66,7 @@ public class EmitterDialog extends AbstractCatalogDialog {
 		cboNode.setActionCommand("");
 		panelGeneral.add(cboNode, "cell 1 0,growx");
 		
-		JLabel lblTsectid = new JLabel("Coeficient:");
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("EmitterDialog.lblTsectid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
 		JTextField txtDescript = new JTextField();
@@ -97,12 +99,12 @@ public class EmitterDialog extends AbstractCatalogDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));;
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");			

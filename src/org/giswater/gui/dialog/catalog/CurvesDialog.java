@@ -45,9 +45,11 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
+import java.util.ResourceBundle;
 
 
 public class CurvesDialog extends AbstractCatalogDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JTable table;
 	private JTextField txtId;
@@ -96,15 +98,15 @@ public class CurvesDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle("Table curves");
+		setTitle(BUNDLE.getString("CurvesDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 574, 437);
-		getContentPane().setLayout(new MigLayout("", "[401.00][200px]", "[341.00][5px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[401.00][260px]", "[341.00][5px][36.00]"));
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("CurvesDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[20][80][50][120][185,grow]", "[][10px][][grow][][][]"));
 		
@@ -116,7 +118,7 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
-		JLabel lblTsectid = new JLabel("Type:");
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("CurvesDialog.lblTsectid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTsectid, "cell 2 0,alignx trailing");
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -129,7 +131,7 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		
-		JLabel lblOther = new JLabel("Curves detail:");
+		JLabel lblOther = new JLabel(BUNDLE.getString("CurvesDialog.lblOther.text")); //$NON-NLS-1$
 		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelGeneral.add(lblOther, "cell 0 2 2 1,alignx left");
 		
@@ -152,23 +154,23 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		btnNext.setToolTipText("Next record");
 		btnNext.setActionCommand("moveNext");
 		
-		btnDetailCreate = new JButton("Add row");
+		btnDetailCreate = new JButton(BUNDLE.getString("CurvesDialog.btnDetailCreate.text")); //$NON-NLS-1$
 		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
-		btnDetailCreate.setToolTipText("Insert new row");
+		btnDetailCreate.setToolTipText(BUNDLE.getString("CurvesDialog.btnDetailCreate.toolTipText")); //$NON-NLS-1$
 		btnDetailCreate.setActionCommand("detailCreateCurves");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");
 		
-		btnDetailDelete = new JButton("Delete row");
-		btnDetailDelete.setToolTipText("Delete selected rows");
+		btnDetailDelete = new JButton(BUNDLE.getString("CurvesDialog.btnDetailDelete.text")); //$NON-NLS-1$
+		btnDetailDelete.setToolTipText(BUNDLE.getString("CurvesDialog.btnDetailDelete.toolTipText")); //$NON-NLS-1$
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");			
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		

@@ -373,22 +373,22 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblOpenInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenInpFiles.text"));
 		add(lblOpenInpFiles, "cell 1 1,alignx trailing");
 		
-		optInpAlways = new JRadioButton(BUNDLE.getString("ConfigPanel.always")); 
+		optInpAlways = new JRadioButton(BUNDLE.getString("ConfigPanel.optInpAlways.text"));  //$NON-NLS-1$
 		add(optInpAlways, "cell 3 1");
 		optInpAlways.setName("always");
 		group.add(optInpAlways);	    
 		
-		optInpAsk = new JRadioButton(BUNDLE.getString("ConfigPanel.askme")); 
+		optInpAsk = new JRadioButton(BUNDLE.getString("ConfigPanel.optInpAsk.text"));  //$NON-NLS-1$
 		add(optInpAsk, "cell 4 1");
 		optInpAsk.setName("ask");
 		group.add(optInpAsk);		    
 		
-		optInpNever = new JRadioButton(BUNDLE.getString("ConfigPanel.never")); 
+		optInpNever = new JRadioButton(BUNDLE.getString("ConfigPanel.optInpNever.text"));  //$NON-NLS-1$
 		add(optInpNever, "cell 5 1");
 		optInpNever.setName("never");
 		group.add(optInpNever);			 
 		
-		JLabel lblOpenRptFiles = new JLabel("Open RPT files:");
+		JLabel lblOpenRptFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenRptFiles.text")); //$NON-NLS-1$
 		add(lblOpenRptFiles, "cell 1 2,alignx trailing");
 		
 		optRptAlways = new JRadioButton(BUNDLE.getString("ConfigPanel.always")); 
@@ -422,12 +422,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblOverwriteInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteInpFiles.text"));
 		add(lblOverwriteInpFiles, "cell 1 4,alignx right");
 		
-		optInpOwEnabled = new JRadioButton("Enabled");
+		optInpOwEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optInpOwEnabled.text")); //$NON-NLS-1$
 		add(optInpOwEnabled, "cell 3 4");
 		optInpOwEnabled.setName("true");
 		group7.add(optInpOwEnabled);
 		
-		optInpOwDisabled = new JRadioButton("Disabled");
+		optInpOwDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optInpOwDisabled.text")); //$NON-NLS-1$
 		add(optInpOwDisabled, "cell 4 4");
 		optInpOwDisabled.setName("false");
 		group7.add(optInpOwDisabled);
@@ -435,12 +435,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblOverwriteRptFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteRptFiles.text"));
 		add(lblOverwriteRptFiles, "cell 1 5,alignx right");
 		
-		optRptOwEnabled = new JRadioButton("Enabled");
+		optRptOwEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optRptOwEnabled.text")); //$NON-NLS-1$
 		add(optRptOwEnabled, "cell 3 5");
 		optRptOwEnabled.setName("true");
 		group8.add(optRptOwEnabled);
 		
-		optRptOwDisabled = new JRadioButton("Disabled");
+		optRptOwDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optRptOwDisabled.text")); //$NON-NLS-1$
 		add(optRptOwDisabled, "cell 4 5");
 		optRptOwDisabled.setName("false");
 		group8.add(optRptOwDisabled);
@@ -448,12 +448,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblCreateSqlLog = new JLabel(BUNDLE.getString("ConfigPanel.lblCreateSqlLog.text"));
 		add(lblCreateSqlLog, "cell 1 6,alignx right");
 			    
-	    optSQLEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
+	    optSQLEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSQLEnabled.text"));  //$NON-NLS-1$
 	    add(optSQLEnabled, "cell 3 6");
 	    optSQLEnabled.setName("true");
 	    group3.add(optSQLEnabled);
 	    
-	    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); 
+	    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSQLDisabled.text"));  //$NON-NLS-1$
 	    add(optSQLDisabled, "cell 4 6");
 	    optSQLDisabled.setName("false");
 	    group3.add(optSQLDisabled);
@@ -461,12 +461,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    JLabel lblSrid = new JLabel(BUNDLE.getString("ConfigPanel.lblSrid.text"));
 	    add(lblSrid, "cell 1 7,alignx right");
 		
-		optSridEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.enabled")); 
+		optSridEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSridEnabled.text"));  //$NON-NLS-1$
 		add(optSridEnabled, "cell 3 7");
 		optSridEnabled.setName("true");
 		group5.add(optSridEnabled);
 		
-		optSridDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.disabled")); 
+		optSridDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSridDisabled.text"));  //$NON-NLS-1$
 		add(optSridDisabled, "cell 4 7");
 		optSridDisabled.setName("false");
 		group5.add(optSridDisabled);
@@ -487,12 +487,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblCheckUpdates = new JLabel(BUNDLE.getString("ConfigPanel.lblCheckUpdates.text"));
 		add(lblCheckUpdates, "cell 1 9,alignx right");
 	    
-	    optUpdatesEnabled = new JRadioButton("Enabled");
+	    optUpdatesEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optUpdatesEnabled.text")); //$NON-NLS-1$
 	    add(optUpdatesEnabled, "cell 3 9");
 	    optUpdatesEnabled.setName("true");
 	    group9.add(optUpdatesEnabled);
 	    
-	    optUpdatesDisabled = new JRadioButton("Disabled");
+	    optUpdatesDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optUpdatesDisabled.text")); //$NON-NLS-1$
 	    add(optUpdatesDisabled, "cell 4 9");
 	    optUpdatesDisabled.setName("false");
 	    group9.add(optUpdatesDisabled);
@@ -501,7 +501,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(lblChooseLanguage, "cell 1 10,alignx right");
 	    
 	    cboLocale = new JComboBox<String>();
-	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Spanish", "Brazilian Portuguese", "Portuguese"}));
+	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Brazilian Portuguese", "Portuguese"}));
 	    add(cboLocale, "cell 3 10 2 1,growx");
 	    
 	    lblRequiresRestart = new JLabel(BUNDLE.getString("ConfigPanel.lblrequieresRestart.text")); //$NON-NLS-1$
@@ -543,7 +543,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnFileDbAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
 		
-		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text"));
+		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
 		add(lblNotepad, "cell 3 17 4 1");
 		
 		JLabel lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text"));

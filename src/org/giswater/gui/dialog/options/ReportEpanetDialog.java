@@ -36,9 +36,11 @@ import javax.swing.border.TitledBorder;
 import org.giswater.util.MaxLengthTextDocument;
 
 import net.miginfocom.swing.MigLayout;
+import java.util.ResourceBundle;
 
 
 public class ReportEpanetDialog extends AbstractOptionsDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	
 	
 	public ReportEpanetDialog() {
@@ -50,17 +52,17 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
-		setTitle("Report Table");
+		setTitle(BUNDLE.getString("ReportEpanetDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 437, 405);
 		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[:292.00:320px][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ReportEpanetDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[70:70][115.00px:115.00px][10px][70:70][115.00px:115.00px,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
 		
-		JLabel lblPatternTimestep = new JLabel("Status:");
+		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblPatternTimestep.text")); //$NON-NLS-1$
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 0,alignx trailing");
 		
@@ -68,7 +70,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_2.setName("status");
 		panelGeneral.add(comboBox_2, "cell 1 0,growx");
 		
-		JLabel lblLinks = new JLabel("Links:");
+		JLabel lblLinks = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblLinks.text")); //$NON-NLS-1$
 		lblLinks.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblLinks, "cell 3 0,alignx trailing");
 		
@@ -77,7 +79,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		txtLinks.setDocument(new MaxLengthTextDocument(254));	
 		panelGeneral.add(txtLinks, "cell 4 0,growx");
 		
-		JLabel lblReportTimestep = new JLabel("Summary:");
+		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblReportTimestep.text")); //$NON-NLS-1$
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 1,alignx trailing");
 		
@@ -85,7 +87,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_3.setName("summary");
 		panelGeneral.add(comboBox_3, "cell 1 1,growx");
 		
-		JLabel lblPatternStep = new JLabel("Length:");
+		JLabel lblPatternStep = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblPatternStep.text")); //$NON-NLS-1$
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternStep, "cell 3 1,alignx trailing");
 		
@@ -93,7 +95,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_14.setName("length");
 		panelGeneral.add(comboBox_14, "cell 4 1,growx");
 		
-		JLabel lblStartClocktime = new JLabel("Energy:");
+		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblStartClocktime.text")); //$NON-NLS-1$
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 0 2,alignx trailing");
 		
@@ -101,7 +103,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_4.setName("energy");
 		panelGeneral.add(comboBox_4, "cell 1 2,growx");
 		
-		JLabel lblReportStart = new JLabel("Diameter:");
+		JLabel lblReportStart = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblReportStart.text")); //$NON-NLS-1$
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 2,alignx trailing");
 		
@@ -109,7 +111,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_15.setName("diameter");
 		panelGeneral.add(comboBox_15, "cell 4 2,growx");
 		
-		JLabel lblNodes = new JLabel("Nodes:");
+		JLabel lblNodes = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblNodes.text")); //$NON-NLS-1$
 		lblNodes.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblNodes, "cell 0 3,alignx trailing");
 		
@@ -118,14 +120,14 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		txtNodes.setDocument(new MaxLengthTextDocument(254));	
 		panelGeneral.add(txtNodes, "cell 1 3,growx");
 		
-		JLabel lblStatistic = new JLabel("Flow:");
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 3 3,alignx trailing");
 		
 		JComboBox comboBox_11 = new JComboBox();
 		comboBox_11.setName("flow");
 		panelGeneral.add(comboBox_11, "cell 4 3,growx");
 		
-		JLabel lblElevation = new JLabel("Elevation:");
+		JLabel lblElevation = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblElevation.text")); //$NON-NLS-1$
 		lblElevation.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblElevation, "cell 0 4,alignx right");
 		
@@ -133,14 +135,14 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox.setName("elevation");
 		panelGeneral.add(comboBox, "cell 1 4,growx");
 		
-		JLabel lblVelocity = new JLabel("Velocity:");
+		JLabel lblVelocity = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblVelocity.text")); //$NON-NLS-1$
 		panelGeneral.add(lblVelocity, "cell 3 4,alignx trailing");
 		
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setName("velocity");
 		panelGeneral.add(comboBox_1, "cell 4 4,growx");
 		
-		JLabel lblDemand = new JLabel("Demand:");
+		JLabel lblDemand = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblDemand.text")); //$NON-NLS-1$
 		lblDemand.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblDemand, "cell 0 5,alignx trailing");
 		
@@ -148,14 +150,14 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_5.setName("demand");
 		panelGeneral.add(comboBox_5, "cell 1 5,growx");
 		
-		JLabel lblHeadloss = new JLabel("Headloss:");
+		JLabel lblHeadloss = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblHeadloss.text")); //$NON-NLS-1$
 		panelGeneral.add(lblHeadloss, "cell 3 5,alignx trailing");
 		
 		JComboBox comboBox_7 = new JComboBox();
 		comboBox_7.setName("headloss");
 		panelGeneral.add(comboBox_7, "cell 4 5,growx");
 		
-		JLabel lblHead = new JLabel("Head:");
+		JLabel lblHead = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblHead.text")); //$NON-NLS-1$
 		lblHead.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblHead, "cell 0 6,alignx trailing");
 		
@@ -163,14 +165,14 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_6.setName("head");
 		panelGeneral.add(comboBox_6, "cell 1 6,growx");
 		
-		JLabel lblSetting = new JLabel("Setting:");
+		JLabel lblSetting = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblSetting.text")); //$NON-NLS-1$
 		panelGeneral.add(lblSetting, "cell 3 6,alignx trailing");
 		
 		JComboBox comboBox_8 = new JComboBox();
 		comboBox_8.setName("setting");
 		panelGeneral.add(comboBox_8, "cell 4 6,growx");
 		
-		JLabel lblInfiltration = new JLabel("Pressure:");
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblInfiltration.text")); //$NON-NLS-1$
 		lblInfiltration.setName("");
 		panelGeneral.add(lblInfiltration, "cell 0 7,alignx trailing");
 		
@@ -178,14 +180,14 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_12.setName("pressure");
 		panelGeneral.add(comboBox_12, "cell 1 7,growx");
 		
-		JLabel lblReaction = new JLabel("Reaction:");
+		JLabel lblReaction = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblReaction.text")); //$NON-NLS-1$
 		panelGeneral.add(lblReaction, "cell 3 7,alignx trailing");
 		
 		JComboBox comboBox_9 = new JComboBox();
 		comboBox_9.setName("reaction");
 		panelGeneral.add(comboBox_9, "cell 4 7,growx");
 		
-		JLabel lblRuleTimestep = new JLabel("Quality:");
+		JLabel lblRuleTimestep = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblRuleTimestep.text")); //$NON-NLS-1$
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRuleTimestep, "cell 0 8,alignx trailing");
 		
@@ -193,7 +195,7 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		comboBox_13.setName("quality");
 		panelGeneral.add(comboBox_13, "cell 1 8,growx");
 		
-		JLabel lblFFactor = new JLabel("F factor:");
+		JLabel lblFFactor = new JLabel(BUNDLE.getString("ReportEpanetDialog.lblFFactor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFFactor, "cell 3 8,alignx trailing");
 		
 		JComboBox comboBox_10 = new JComboBox();
@@ -203,10 +205,10 @@ public class ReportEpanetDialog extends AbstractOptionsDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();

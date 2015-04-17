@@ -18,9 +18,11 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.task.DownloadTask;
 import org.giswater.util.UtilsFTP;
+import java.util.ResourceBundle;
 
 
 public class DownloadPanel extends JPanel implements PropertyChangeListener {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	
 	private JProgressBar progressBar;
 	private JLabel lblInfo;
@@ -47,7 +49,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 		progressBar.setMinimumSize(new Dimension(10, 25));
 		add(progressBar, "cell 1 1,growx,aligny center");
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton(BUNDLE.getString("DownloadPanel.btnCancelar.text")); //$NON-NLS-1$
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cancelDownload();

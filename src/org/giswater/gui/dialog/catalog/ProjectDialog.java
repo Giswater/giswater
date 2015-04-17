@@ -34,9 +34,11 @@ import javax.swing.border.TitledBorder;
 import org.giswater.util.MaxLengthTextDocument;
 
 import net.miginfocom.swing.MigLayout;
+import java.util.ResourceBundle;
 
 
 public class ProjectDialog extends AbstractCatalogDialog {
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public ProjectDialog() {
@@ -47,17 +49,17 @@ public class ProjectDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle("Table inp_project_id");
+		setTitle(BUNDLE.getString("ProjectDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 344, 206);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[113.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ProjectDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel("Title:");
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ProjectDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
 		JTextField txtTitle = new JTextField();
@@ -66,7 +68,7 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		panelGeneral.add(txtTitle, "cell 1 0,growx");
 		txtTitle.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel("Author:");
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectDialog.lblAuthor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
 		JTextField txtAuthor = new JTextField();
@@ -74,7 +76,7 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		txtAuthor.setDocument(new MaxLengthTextDocument(50));
 		panelGeneral.add(txtAuthor, "cell 1 1,growx");
 		
-		JLabel lblDate = new JLabel("Date:");
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectDialog.lblDate.text")); //$NON-NLS-1$
 		panelGeneral.add(lblDate, "cell 0 2,alignx trailing");
 		
 		JTextField txtDate = new JTextField();
@@ -85,12 +87,12 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
 		btnSave.setToolTipText("Save record");
 		btnSave.setActionCommand("saveData");		
 		getContentPane().add(btnSave, "cell 1 2,alignx right");		
 
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
