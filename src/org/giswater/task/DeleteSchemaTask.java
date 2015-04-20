@@ -86,7 +86,7 @@ public class DeleteSchemaTask extends SwingWorker<Void, Void> {
     		MainClass.mdi.showMessage("schema_deleted");
     	}
     	else {
-    		MainClass.mdi.showError("Schema could not be deleted");
+    		MainClass.mdi.showError("project_not_deleted");
     	}
 		
     }

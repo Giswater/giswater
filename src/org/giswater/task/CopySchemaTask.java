@@ -46,11 +46,11 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
 		this.newSchemaName = newSchemaName;
 	}
 	
-	public void setParentPanel(ProjectPreferencesPanel parentPanel){
+	public void setParentPanel(ProjectPreferencesPanel parentPanel) {
 		this.parentPanel = parentPanel;
 	}
 	
-	public void setController(ProjectPreferencesController controller){
+	public void setController(ProjectPreferencesController controller) {
 		this.controller = controller;
 	}
 	
@@ -65,7 +65,7 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
 
 		String sql = "SELECT "+schemaName+".clone_schema('"+schemaName+"', '"+newSchemaName+"')";
 		Utils.logSql(sql);
-		MainClass.mdi.showMessage("Be patient, copy process can last several minutes...", true);
+		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
 		status = MainDao.executeSql(sql, true);
 		if (status){
 			// Now we have to execute functrigger.sql
@@ -97,10 +97,10 @@ public class CopySchemaTask extends SwingWorker<Void, Void> {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage("Project copied successfuly");
+    		MainClass.mdi.showMessage(Utils.getBundleString("project_copied_successfuly"));    		
     	}
     	else {
-    		MainClass.mdi.showError("Schema could not be copied");
+    		MainClass.mdi.showError(Utils.getBundleString("project_not_copied"));
     	}
 		
     }

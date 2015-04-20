@@ -112,8 +112,8 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
             String rasterPath = fileInp.getParentFile().getAbsolutePath() + File.separator + "topo.asc";
             File rasterFile = new File(rasterPath);
             if (!rasterFile.exists()) {
-            	String msg = "You cannot execute EPA software in 2D mode.\n" +
-            		"Raster file named 'topo.asc' not found inside INP folder:\n" + rasterPath;
+            	String msg = Utils.getBundleString("ExecuteTask.cannot_2d_mode") + //$NON-NLS-1$
+            		Utils.getBundleString("ExecuteTask.raster_not_found") + rasterPath; //$NON-NLS-1$
             	Utils.showError(view, msg);
             	return null;
             }
@@ -183,7 +183,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 		String pathFolderShp = ppPanel.getFolderShp();
 		File folderShp = new File(pathFolderShp);
 		if (!folderShp.exists()){
-			MainClass.mdi.showError("Selected data folder not exists. Please set a valid one");
+			MainClass.mdi.showError(Utils.getBundleString("ExecuteTask.data_folder_invalid")); //$NON-NLS-1$
 			return null;
 		}
         
