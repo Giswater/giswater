@@ -53,11 +53,11 @@ public class MainClass {
 
 				// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
-				String msg = "Application started";
+				String msg = Utils.getBundleString("MainClass.application_started"); //$NON-NLS-1$
 				if (versionCode == null) {
 					versionCode = CURRENT_VERSION;
 				}
-				msg+= "\nVersion: " + versionCode;
+				msg+= Utils.getBundleString("MainClass.version") + versionCode; //$NON-NLS-1$
 				Utils.getLogger().info(msg);				
 				if (!MainDao.configIni(versionCode)) return;
 

@@ -111,7 +111,7 @@ public class PropertiesDao {
 		
     	// Load Properties files
     	if (!loadPropertiesFile()) {
-    		Utils.showError("Error loading Properties file. Application could not start");	  
+    		Utils.showError(Utils.getBundleString("PropertiesDao.error_properties"));	   //$NON-NLS-1$
     		return false;
     	}
     	

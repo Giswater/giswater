@@ -102,7 +102,7 @@ public class MenuController extends AbstractController {
 		
 		String schema = MainDao.getSchema();
 		if (schema == null) {
-			String msg = "Any schema selected. You need to select one to backup";
+			String msg = Utils.getBundleString("MenuController.project_not_selected_backup"); //$NON-NLS-1$
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
@@ -142,7 +142,7 @@ public class MenuController extends AbstractController {
     
     public void exit() {
     	
-    	String msg = "Do you want to save your project preferences before exiting?";
+    	String msg = Utils.getBundleString("MenuController.save_project_preferences"); //$NON-NLS-1$
     	int answer = Utils.showYesNoCancelDialog(mainFrame, msg);
     	if (answer == JOptionPane.CANCEL_OPTION) return;
     	if (answer == JOptionPane.YES_OPTION) {
@@ -460,8 +460,8 @@ public class MenuController extends AbstractController {
 		
 		// Ask confirmation
 		String schemaName = "sample_"+waterSoftware+suffix;
-		String msg = "Project called '"+schemaName+"' will be created with SRID "+sridValue+".\nDo you wish to continue?";
-		int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
+		String msg = Utils.getBundleString("MenuController.project_name")+schemaName+Utils.getBundleString("MenuController.created_srid")+sridValue+Utils.getBundleString("MenuController.wish_continue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("MenuController.create_example_project")); //$NON-NLS-1$
 		if (res != JOptionPane.YES_OPTION) return; 
 		
 		// Execute task: CreateSchema
@@ -485,7 +485,7 @@ public class MenuController extends AbstractController {
 			path = MainDao.getGiswaterUsersFolder() + path;
 			file = new File(path);
 			if (!file.exists()) {
-				Utils.showMessage(mainFrame, "File not found: \n" + file.getAbsolutePath());
+				Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.file_not_found") + file.getAbsolutePath()); //$NON-NLS-1$
 				return;
 			}
 		}
@@ -499,7 +499,7 @@ public class MenuController extends AbstractController {
 		// Get selected schema
 		String schema = MainDao.getSchema();
 		if (schema == null) {
-			String msg = "Any schema selected. You need to select one";
+			String msg = Utils.getBundleString("MenuController.project_not_selected_backup2"); //$NON-NLS-1$
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
@@ -516,10 +516,10 @@ public class MenuController extends AbstractController {
 			Utils.logSql(content);
 			Exception e = MainDao.executeSql(content, false, "");
 			if (e == null) {
-				MainClass.mdi.showMessage("File executed successfully");
+				MainClass.mdi.showMessage(Utils.getBundleString("MenuController.file_executed_successfully")); //$NON-NLS-1$
 			}
 			else {
-				Utils.showError("One or more errors have been found:", e.getMessage());
+				Utils.showError(Utils.getBundleString("MenuController.errors_found"), e.getMessage()); //$NON-NLS-1$
 			}
         } catch (IOException e) {
             Utils.showError(e, filePath);
@@ -539,9 +539,9 @@ public class MenuController extends AbstractController {
 	// Menu About 
 	public void showWelcome() {
 		
-		String title = "Welcome";
-		String info = "Welcome to Giswater, the EPANET, EPA SWMM and HEC-RAS communication tool";
-		String info2 = "Please read the documentation and enjoy using the software";
+		String title = Utils.getBundleString("MenuController.welcome"); //$NON-NLS-1$
+		String info = Utils.getBundleString("MenuController.welcome_giswater"); //$NON-NLS-1$
+		String info2 = Utils.getBundleString("MenuController.read_documentation"); //$NON-NLS-1$
 		WelcomeDialog about = new WelcomeDialog(title, info, info2, versionCode);
 		about.setModal(true);
 		about.setLocationRelativeTo(mainFrame);

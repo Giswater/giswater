@@ -238,9 +238,9 @@ public class ImportRpt extends Model {
     			Utils.logSql(insertSql);	            	
 	    		boolean status = MainDao.executeUpdateSql(insertSql, true);
 	    		if (!status) {
-	    			String msg = "Import aborted. Some data values are not valid in current target: ";
+	    			String msg = Utils.getBundleString("ImportRpt.import_aborted"); //$NON-NLS-1$
 	    			msg+= "\n" + rptTarget.getDescription();
-	    			msg+= "\nOpen current .log file for more details";
+	    			msg+= Utils.getBundleString("ImportRpt.open_log"); //$NON-NLS-1$
 	    			Utils.showError(msg);
 	    			return false;
 	    		}
@@ -896,9 +896,9 @@ public class ImportRpt extends Model {
 		if (dbType != 0) {
 			boolean ok = Utils.isNumeric(rptValue);
 			if (!ok) {
-				String msg = "An error ocurred in line number: "+lineNumber;
-				msg+= "\nField "+fieldName+ " does not contain a valid numeric value: "+rptValue;
-				msg+= "\nImport process will be aborted";
+				String msg = Utils.getBundleString("ImportRpt.error_line_number")+lineNumber; //$NON-NLS-1$
+				msg+= "\nField "+fieldName+ Utils.getBundleString("ImportRpt.invalid_numeric_value")+rptValue; //$NON-NLS-2$
+				msg+= Utils.getBundleString("ImportRpt.import_process"); //$NON-NLS-1$
 				Utils.showError(msg);
 				result = "-1";
 			}

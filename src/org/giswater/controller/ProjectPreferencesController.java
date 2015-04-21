@@ -121,7 +121,7 @@ public class ProjectPreferencesController extends AbstractController {
 					epaSoftPanel.setSubcatchmentEnabled(false);
 					// Show warning message when 2D is selected
 					if (!mainFrame.getController().getOpeningApp()) {
-						String msg = "Warning: This development is in the test phase.\nResults obtained for this model are experimental until the tool is validated. Not recommended to apply in real cases";
+						String msg = Utils.getBundleString("ProjectPreferencesController.warning_2d"); //$NON-NLS-1$
 						Utils.showMessage(msg);
 					}
 				}
@@ -166,12 +166,13 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setInfo("");
 		// Check if we have selected a water software
 		if (waterSoftware.equals("")) {
-			mainFrame.showError("You have to select Water Software");
+			mainFrame.showError(Utils.getBundleString("ProjectPreferencesController.select_water_software")); //$NON-NLS-1$
+			//mainFrame.showError("You have to select Water Software");
 			return false;
 		}
 		// Check if we have an schema selected
 		if (view.getOptDatabaseSelected() && view.getSelectedSchema().equals("")) {
-			mainFrame.showError("You have to select a project");
+			mainFrame.showError(Utils.getBundleString("ProjectPreferencesController.select_project")); //$NON-NLS-1$
 			return false;
 		}
 		return true;
@@ -305,7 +306,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Check parameters
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
-			Utils.showError("Connection not possible. Check parameters");
+			Utils.showError(Utils.getBundleString("ProjectPreferencesController.connection_not_possible")); //$NON-NLS-1$
 			return false;
 		}
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
@@ -313,7 +314,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Check if Internet is available
 		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
 			if (!UtilsFTP.isInternetReachable()) {
-				Utils.showError("Connection not possible. Internet is not available");	
+				Utils.showError(Utils.getBundleString("ProjectPreferencesController.internet_unavailable"));	 //$NON-NLS-1$
 				return false;
 			}
 		}
@@ -534,7 +535,7 @@ public class ProjectPreferencesController extends AbstractController {
 		npController.enableImportData();
 		
 		// Open New Project dialog
-        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, "Create Project", PROJECT_DIALOG_WIDTH, PROJECT_DIALOG_HEIGHT);
+        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, Utils.getBundleString("ProjectPreferencesController.create_project"), PROJECT_DIALOG_WIDTH, PROJECT_DIALOG_HEIGHT); //$NON-NLS-1$
         projectPanel.setParent(projectDialog);
         projectDialog.setVisible(true);
 		
@@ -577,7 +578,7 @@ public class ProjectPreferencesController extends AbstractController {
 		if (MainDao.executeUpdateSql(sql, true)) {
 			selectSourceType(false);
 	    	view.setSelectedSchema(newSchemaName);
-        	mainFrame.showMessage("Project renamed successfuly");
+	    	mainFrame.showMessage(Utils.getBundleString("project_renamed_ok"));
 		}
 		
 	}
@@ -611,7 +612,7 @@ public class ProjectPreferencesController extends AbstractController {
 	public void createGisProject() {
 		
 		GisPanel gisPanel = new GisPanel(view);
-		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, "Create GIS Project", GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT);
+		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, Utils.getBundleString("ProjectPreferencesController.create_gis"), GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT); //$NON-NLS-1$
 		gisPanel.setParent(gisDialog);
         gisDialog.setVisible(true);
         

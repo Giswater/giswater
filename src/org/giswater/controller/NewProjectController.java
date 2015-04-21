@@ -79,7 +79,7 @@ public class NewProjectController extends AbstractController {
 		Boolean isGeo = view.isGeoSelected();
 		Boolean isProj = view.isProjSelected();
 		if (!isGeo && !isProj) {
-			Utils.showMessage("You have to select at least one Type: GEOGCS or PROJCS");
+			Utils.showMessage(Utils.getBundleString("NewProjectController.select_one_type")); //$NON-NLS-1$
 			return;
 		}
 		if (isGeo) {
@@ -153,7 +153,7 @@ public class NewProjectController extends AbstractController {
 			return;
 		}
 		if (Utils.isInteger(schemaName.substring(0, 1))) {
-			Utils.showError(view, "Name cannot start with a number");
+			Utils.showError(view, Utils.getBundleString("NewProjectController.invalid_project")); //$NON-NLS-1$
 			return;
 		}
 		schemaName = validateName(schemaName);
