@@ -73,7 +73,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultCatEpanetDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
-		panelGeneral.setLayout(new MigLayout("", "[110.00px:n][100:n,grow][10:10px][110px:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n]"));
+		panelGeneral.setLayout(new MigLayout("", "[115:n][90:120,grow][10:10px][115:n][80:120]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px:n]"));
 
 		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ResultCatEpanetDialog.lblFlowUnits.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
@@ -170,7 +170,7 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		textField.setName("n_pump");
 		panelGeneral.add(textField, "cell 1 6,growx");
 		
-		JLabel lblInfiltration = new JLabel("Spec grav:");
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ResultCatEpanetDialog.lblInfiltration.text_1")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 3 6,alignx trailing");
 		
 		JTextField textField_5 = new JTextField();
@@ -275,12 +275,12 @@ public class ResultCatEpanetDialog extends AbstractOptionsDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2,alignx right");
 		
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText("Generic.btnSave.toolTipText");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText("Generic.btnClose.toolTipText");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
 		setupListeners();

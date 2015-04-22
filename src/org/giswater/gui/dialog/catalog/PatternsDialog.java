@@ -278,35 +278,35 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("PatternsDialog.btnInsert.toolTipText"));
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("PatternsDialog.btnDelete.toolTipText"));
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
 		btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("PatternsDialog.btnPrevious.toolTipText"));
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
 		btnNext.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("PatternsDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");				
 		

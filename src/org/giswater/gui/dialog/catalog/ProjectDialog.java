@@ -87,13 +87,13 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");		
 		getContentPane().add(btnSave, "cell 1 2,alignx right");		
 
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		

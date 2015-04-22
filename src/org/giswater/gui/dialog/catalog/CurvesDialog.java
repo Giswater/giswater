@@ -127,7 +127,7 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		panelGeneral.add(btnCreate, "flowx,cell 4 0");
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("CurvesDialog.btnInsert.toolTipText"));
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		
@@ -140,18 +140,18 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		
 		btnDelete = new JButton("-");
 		panelGeneral.add(btnDelete, "cell 4 0");
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("CurvesDialog.btnDelete.toolTipText"));
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnDelete.setActionCommand("delete");
 		
 		btnPrevious = new JButton("<");
 		panelGeneral.add(btnPrevious, "cell 4 0");
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("CurvesDialog.btnPrevious.toolTipText"));
 		btnPrevious.setActionCommand("movePrevious");
 		
 		btnNext = new JButton(">");
 		panelGeneral.add(btnNext, "cell 4 0");
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("CurvesDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
 		
 		btnDetailCreate = new JButton(BUNDLE.getString("CurvesDialog.btnDetailCreate.text")); //$NON-NLS-1$
@@ -165,13 +165,13 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");			
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
