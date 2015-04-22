@@ -122,10 +122,10 @@ public class ReportDialog extends AbstractOptionsDialog {
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		getContentPane().add(btnClose, "cell 1 2,alignx right");				
 		
 		setupListeners();

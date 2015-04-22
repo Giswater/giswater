@@ -106,7 +106,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("RaingageDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[85px:85px][150.00:150.00][10px][80px][150]", "[][][][10]"));
+		panelGeneral.setLayout(new MigLayout("", "[85px:85px][130.00:150.00][10px][80px][150]", "[][][][10]"));
 
 		JLabel lblid = new JLabel(BUNDLE.getString("RaingageDialog.lblid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblid, "cell 0 0,alignx trailing");
@@ -139,7 +139,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		textField_1.setDocument(new MaxLengthTextDocument(50));
 		panelGeneral.add(textField_1, "cell 1 2,growx");
 
-		JLabel lblInfiltration = new JLabel("Scf:");
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("RaingageDialog.lblInfiltration.text")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 3 2,alignx trailing");
 		
 		textField_2 = new JTextField();
@@ -158,11 +158,11 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 4,alignx right");
 
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 4,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		getContentPane().add(btnClose, "cell 1 4,alignx right");				
 
 		panelTimeseries = new JPanel();

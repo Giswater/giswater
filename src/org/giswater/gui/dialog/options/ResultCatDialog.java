@@ -73,7 +73,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultCatDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[100.00:n][100:n][10px:10px][90:n][95,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px][25px][25px][25px:n]"));
+		panelGeneral.setLayout(new MigLayout("", "[100.00:n][100:n][10px:10px][90:n][90,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px][25px][25px][25px:n]"));
 
 		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowUnits.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
@@ -266,11 +266,11 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2,alignx right");
 		
-		btnSave = new JButton(BUNDLE.getString("TableWindowPanel.btnSave.text"));
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
 		btnSave.setToolTipText("Save record");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setToolTipText("Close window");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");			
 		
