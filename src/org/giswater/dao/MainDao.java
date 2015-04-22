@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -165,6 +166,9 @@ public class MainDao {
         	return false;
         }
          	
+        // Set Locale
+        setLocale();       
+        
     	// Log SQL?
     	Utils.setSqlLog(PropertiesDao.getPropertiesFile().get("SQL_LOG", "false"));
     	
@@ -210,6 +214,25 @@ public class MainDao {
     }
        
     
+	private static void setLocale() {
+		
+		Locale locale = new Locale("en", "EN");
+        String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
+		if (language.equals("es")) {
+			locale = new Locale("es", "ES");
+		}
+		else if (language.equals("pt")) {
+			locale = new Locale("pt", "PT");
+		}
+		else if (language.equals("pt_BR")) {
+			locale = new Locale("pt_BR", "PT_BR");
+		}	
+		Locale.setDefault(locale);		
+		Utils.setBundleText();
+		
+	}
+
+	
 	public static boolean setBinFolder() {
 
 		boolean result = false;

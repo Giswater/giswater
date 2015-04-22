@@ -67,7 +67,6 @@ import com.toedter.calendar.JDateChooser;
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); 
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
@@ -80,6 +79,7 @@ public class Utils {
 	private static String appPath;
 	private static boolean isSqlLogged;	
 	private static boolean isQgis;		
+	private static ResourceBundle bundleText;
     
     
 	public static Logger getLogger() {
@@ -118,6 +118,11 @@ public class Utils {
 
     }
 	   
+	
+	public static void setBundleText() {
+		bundleText = ResourceBundle.getBundle("text");		
+	}	
+	
 	
 	// Returns true if .qgs file extension is associated
 	public static boolean checkFileExtensionQgis() {
@@ -192,12 +197,12 @@ public class Utils {
     }       
 
 	public static String getBundleString(String key) {
-		return getBundleString(BUNDLE_TEXT, key);
+		return getBundleString(bundleText, key);
 	}
 	
 	public static String getBundleString(ResourceBundle bundle, String key) {
 		try {
-			return bundle.getString(key.toLowerCase());
+			return bundle.getString(key);
 		} catch (Exception e) {
 			return key;	
 		}
@@ -672,7 +677,7 @@ public class Utils {
 	        }		        
 	    }		
 		
-	}	
-	
+	}
+
 	
 }
