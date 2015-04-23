@@ -17,7 +17,9 @@ import javax.swing.SwingUtilities;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.task.DownloadTask;
+import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
+
 import java.util.ResourceBundle;
 
 
@@ -96,7 +98,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 		double aux = (bytesRead / 1048576);
     	DecimalFormat df = new DecimalFormat("#,##0.##");
     	String readSize = df.format(aux);
-		String msg = "Downloading file: "+readSize+" Mb of "+totalSize+" Mb";
+		String msg = Utils.getBundleString("DownloadPanel.downloading_file")+readSize+Utils.getBundleString("DownloadPanel.mb")+totalSize+" Mb"; //$NON-NLS-1$ //$NON-NLS-2$
 		lblInfo.setText(msg);
 	}
 

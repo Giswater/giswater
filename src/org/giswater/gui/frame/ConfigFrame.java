@@ -48,6 +48,7 @@ public class ConfigFrame extends JInternalFrame {
     	panel = new ConfigPanel();
 
     	panel.setFrame(this);
+    	// TODO: Check this
         setTitle(Utils.getBundleString("software_panel"));
     	setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);

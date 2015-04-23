@@ -30,7 +30,10 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.giswater.util.Utils;
+
 import net.miginfocom.swing.MigLayout;
+
 import java.util.ResourceBundle;
 
 
@@ -56,7 +59,7 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 		setBounds(0, 0, 375, 176);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[40px:n][66.00][5px][30.00]"));
 		
-		String msg = "<HTML>By selecting on result you analyze the result values on the GIS project<br> (TOC group: Simulation Analysis)</HTML>";
+		String msg = Utils.getBundleString("ResultSelectionDialog.result_selection_message"); //$NON-NLS-1$
 		JLabel lblNewLabel = new JLabel(msg);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		getContentPane().add(lblNewLabel, "cell 0 0 2 1,alignx center,aligny center");

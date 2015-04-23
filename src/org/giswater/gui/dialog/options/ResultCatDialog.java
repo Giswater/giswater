@@ -267,11 +267,11 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		getContentPane().add(btnNext, "cell 1 2,alignx right");
 		
 		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
-		btnSave.setToolTipText("Save record");
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
-		btnClose.setToolTipText("Close window");
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		getContentPane().add(btnClose, "cell 1 2,alignx right");			
 		
 		setupListeners();

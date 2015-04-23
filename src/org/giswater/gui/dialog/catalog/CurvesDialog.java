@@ -21,7 +21,6 @@
 package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -100,7 +99,7 @@ public class CurvesDialog extends AbstractCatalogDialog {
 
 		setTitle(BUNDLE.getString("CurvesDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 574, 437);
-		getContentPane().setLayout(new MigLayout("", "[401.00][260px]", "[341.00][5px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[401][260px]", "[341.00][5px][36.00]"));
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
@@ -154,8 +153,7 @@ public class CurvesDialog extends AbstractCatalogDialog {
 		btnNext.setToolTipText(BUNDLE.getString("CurvesDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
 		
-		btnDetailCreate = new JButton(BUNDLE.getString("CurvesDialog.btnDetailCreate.text")); //$NON-NLS-1$
-		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
+		btnDetailCreate = new JButton(BUNDLE.getString("CurvesDialog.btnDetailCreate.text"));
 		btnDetailCreate.setToolTipText(BUNDLE.getString("CurvesDialog.btnDetailCreate.toolTipText")); //$NON-NLS-1$
 		btnDetailCreate.setActionCommand("detailCreateCurves");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");

@@ -245,7 +245,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
 		panelManagement.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelManagement.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
-		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59.00px][][][][]", "[23px][][]"));
+		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59px][][][][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
 		panelManagement.add(lblProject, "cell 0 0,alignx right");
@@ -275,7 +275,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text"));
 		btnRename.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
-		btnRename.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setEnabled(false);
 		btnRename.setActionCommand("renameSchema");
 		panelManagement.add(btnRename, "cell 5 0,alignx right");

@@ -61,6 +61,9 @@ public class ProjectPreferencesController extends AbstractController {
 	private String waterSoftware;
 
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
 		
 		this.view = ppPanel;	
@@ -109,12 +112,12 @@ public class ProjectPreferencesController extends AbstractController {
 		// EPASWMM or EPANET
 		else {
 			if (waterSoftware.equals("EPASWMM")) {
-				epaSoftPanel.setButton4("Timeseries", "showTimeseries");
-				epaSoftPanel.setButton5("Arc Catalog", "showArcCatalog");
-				epaSoftPanel.setButton6("Hydrologic catalog", "showHydrologyCatalog");
-				epaSoftPanel.setDesignButton("Raingage", "showRaingage");
-				epaSoftPanel.setOptionsButton("Options", "showInpOptions");
-				epaSoftPanel.setReportButton("Report options", "showReport");
+				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
+				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
+				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
+				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
+				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReport"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(true);
 				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
 					epaSoftPanel.setSubcatchmentSelected(true);
@@ -131,13 +134,13 @@ public class ProjectPreferencesController extends AbstractController {
 				}
 				epaSoftPanel.exportSelected();
 			}
-			else if (waterSoftware.equals("EPANET")) {
-				epaSoftPanel.setButton4("Emitters", "showEmitter");
-				epaSoftPanel.setButton5("Demands", "showDemands");
-				epaSoftPanel.setButton6("Rules", "showRules");
-				epaSoftPanel.setDesignButton("Times values", "showTimesValues");
-				epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
-				epaSoftPanel.setReportButton("Report options", "showReportEpanet");
+				else if (waterSoftware.equals("EPANET")) {
+				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
+				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
+				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
+				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
+				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReportEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(false);
 				epaSoftPanel.setSubcatchmentSelected(false);
 			}
@@ -614,9 +617,5 @@ public class ProjectPreferencesController extends AbstractController {
 		GisPanel gisPanel = new GisPanel(view);
 		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, Utils.getBundleString("ProjectPreferencesController.create_gis"), GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT); //$NON-NLS-1$
 		gisPanel.setParent(gisDialog);
-        gisDialog.setVisible(true);
-        
-	}
- 
-		
-}
+        gisDialog.setVisible(true);}
+        }

@@ -158,7 +158,7 @@ public class NewProjectController extends AbstractController {
 		}
 		schemaName = validateName(schemaName);
 		if (schemaName.equals("")) {
-			Utils.showError(view, "schema_valid_name");
+			Utils.showError(view, Utils.getBundleString("NewProjectController.invalid_name"));
 			return;
 		}
 		
@@ -196,7 +196,7 @@ public class NewProjectController extends AbstractController {
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("Select file"));
+        chooser.setDialogTitle(Utils.getBundleString("NewProjectController.select_file"));
         File file = new File(PropertiesDao.getGswProperties().get("FILE_INP", MainDao.getGiswaterUsersFolder()));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);

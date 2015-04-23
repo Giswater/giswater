@@ -122,7 +122,7 @@ public class MenuController extends AbstractController {
         FileFilter filter = new FileNameExtensionFilter("SQL extension file", "sql");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("file_sql"));
+        chooser.setDialogTitle(Utils.getBundleString("MenuController.file_sql"));
         File file = new File(PropertiesDao.getLastSqlPath());
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(mainFrame);
@@ -289,7 +289,7 @@ public class MenuController extends AbstractController {
         FileFilter filter = new FileNameExtensionFilter("GSW extension file", "gsw");
         chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("GSW file"));
+        chooser.setDialogTitle(Utils.getBundleString("MenuController.gsw_file"));
         if (save) {
         	chooser.setApproveButtonText("Save");        
         }
@@ -552,7 +552,7 @@ public class MenuController extends AbstractController {
 	
 	public void showLicense() {
 		
-		String title = "License";
+		String title = Utils.getBundleString("MenuController.license");
 		String info = "This product as a whole is distributed under the GNU General Public License version 3";
 		String info1 = "<html><p align=\"justify\">\"This product is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; " + 
 				"without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. " +
@@ -579,11 +579,11 @@ public class MenuController extends AbstractController {
 	
 	public void showAcknowledgment() {
 		
-		String title = "Acknowledgment";
-		String info = "Developers, project collaborators, testers and people entrusted are part of Giswater Team";
-		String info2 = "<HTML>Thanks to <i>Gemma Garcia, Andreu Rodríguez, Josep Lluís Sala, Roger Erill, Sergi Muñoz,<br>" +
-			" Joan Cervan, David Escala, Abel García, Carlos López, Jordi Yetor, Allen Bateman," +
-			" Vicente de Medina, Xavier Torret</i> and <i>David Erill</i></HTML>";
+		String title = Utils.getBundleString("MenuController.acknowledgments"); //$NON-NLS-1$
+		String info = Utils.getBundleString("MenuController.giswater_team"); //$NON-NLS-1$
+		String info2 = Utils.getBundleString("MenuController.team_names") + //$NON-NLS-1$
+			Utils.getBundleString("MenuController.team_names1") + //$NON-NLS-1$
+			Utils.getBundleString("MenuController.team_names2"); //$NON-NLS-1$
 		AcknowledgmentDialog about = new AcknowledgmentDialog(title, info, info2);
 		about.setModal(true);
 		about.setLocationRelativeTo(mainFrame);
@@ -617,7 +617,7 @@ public class MenuController extends AbstractController {
 		String ftpVersion = ftp.getFtpVersion();
 		mainFrame.setNewVersionVisible(newVersion, ftpVersion);
 		if (!newVersion) {
-			Utils.showMessage(mainFrame, "This version is up to date.\nAny new version has been found in the repository.");
+			Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.update")); //$NON-NLS-1$
 		}
 		
 	}
@@ -638,7 +638,7 @@ public class MenuController extends AbstractController {
 		String localePath = chooseFileSetup(remoteName);
 		if (!localePath.equals("")) {
 			DownloadPanel panel = new DownloadPanel(remoteName, localePath, ftp);
-	        JDialog downloadDialog = Utils.openDialogForm(panel, mainFrame, "Download Process", 290, 135);
+	        JDialog downloadDialog = Utils.openDialogForm(panel, mainFrame, Utils.getBundleString("MenuController.download_process"), 290, 135); //$NON-NLS-1$
 	        downloadDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); 
 	        downloadDialog.setVisible(true);
 			mainFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
