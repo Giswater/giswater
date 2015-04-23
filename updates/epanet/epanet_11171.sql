@@ -1,3 +1,18 @@
+/*
+This file is part of Giswater
+The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This version of Giswater is provided by Giswater Association
+*/
+
+--------------------------------------------------------------------------------------------------
+-- The purpose of this file is to be a storage of scripts in order to allow the possibility of update epanet schemas created in older version from this version to newest version
+-- Changes incorporated in version 1.1.171 - 03/03/2015 
+--------------------------------------------------------------------------------------------------
+
+-- BUG FIX on v_rpt_energy_usage
+--------------------------------------------------------------------------------------------------
+
+
 DROP VIEW IF EXISTS "SCHEMA_NAME"."v_rpt_energy_usage";
 
 DROP TABLE IF EXISTS "SCHEMA_NAME"."rpt_energy_usage";

@@ -6,9 +6,8 @@ This version of Giswater is provided by Giswater Association
 
 --------------------------------------------------------------------------------------------------
 -- The purpose of this file is to be a storage of scripts in order to allow the possibility of update epaswmm schemas created in older version from this version to newest version
--- Changes incorporated in version 1.1.102 - 02/02/2015 
+-- Changes incorporated in version 1.1.175 - 21/03/2015 
 --------------------------------------------------------------------------------------------------
-
 
 -- ------------------------------------------------------------
 -- MODIFICATIONS OF EPA SWMM 5.1007
