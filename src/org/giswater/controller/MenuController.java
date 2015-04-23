@@ -506,7 +506,7 @@ public class MenuController extends AbstractController {
 	
 	
 	public void executeSqlFile() {
-		
+
 		// Get selected schema
 		String schema = MainDao.getSchema();
 		if (schema == null) {
@@ -514,27 +514,44 @@ public class MenuController extends AbstractController {
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
+		
 		// Get SQL file to execute
 		String filePath = chooseSqlFile();
-		if (filePath.equals("")) {
-			return;
-		}
+		if (filePath.equals("")) return;
+		
+		// Show warning to the user
+		String msg = "WARNING:\nYou are about to execute a SQL file as admin user."
+				+ "\nThis file can produce irreversible changes in your project."
+				+ "\nDo you want to continue?";
+		int answer = Utils.showYesNoDialog(mainFrame, msg);
+		if (answer == JOptionPane.NO_OPTION) return;
 		
 		try {
-			// Get contents of the file. Replace SCHEMA_NAME for the current one selected
-	    	String content = Utils.readFile(filePath);
+			
+			// Get SRID from selected Water Software
+			String table = "arc";
+			if (MainDao.getWaterSoftware().equals("HECRAS")) {
+				table = "banks";
+			}
+			String schemaSrid = MainDao.getTableSrid(schema, table).toString();
+			
+			// Get contents of the file. Replace SCHEMA_NAME for the current one selected. SRID_VALUE for srid parameter
+			String content = Utils.readFile(filePath);
 			content = content.replace("SCHEMA_NAME", schema);
+			content = content.replace("SRID_VALUE", schemaSrid);			
 			Utils.logSql(content);
+			
+			// Execute SQL file
 			Exception e = MainDao.executeSql(content, false, "");
 			if (e == null) {
 				MainClass.mdi.showMessage("File executed successfully");
-			}
-			else {
+			} else {
 				Utils.showError("One or more errors have been found:", e.getMessage());
 			}
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-        }
+			
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+		}
 		
 	}
 	
