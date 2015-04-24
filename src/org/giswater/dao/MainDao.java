@@ -197,7 +197,7 @@ public class MainDao {
 	        double sizeMb = Math.round((size / 1048576) * 100.0) / 100.0;
 	        if (sizeMb > warningSize) {
 	            Utils.getLogger().info("Log folder size is: " + sizeMb + " Mb");         	
-	        	String msg = Utils.getBundleString("MainDao.log_size") + sizeMb + Utils.getBundleString("MainDao.perform_maintenance"); //$NON-NLS-1$ //$NON-NLS-2$
+	        	String msg = Utils.getBundleString("MainDao.log_size") + sizeMb + Utils.getBundleString("MainDao.perform_maintenance");  
 	        	int answer = Utils.showYesNoDialog(msg);
 		        if (answer == JOptionPane.YES_OPTION) {
 		        	Utils.openFile(Utils.getLogFolder());
@@ -205,7 +205,7 @@ public class MainDao {
 	        }
         }
         catch (NumberFormatException e) {
-        	String msg = Utils.getBundleString("MainDao.log_size_invalid"); //$NON-NLS-1$
+        	String msg = Utils.getBundleString("MainDao.log_size_invalid"); 
         	Utils.logError(msg);
         }
        
@@ -268,7 +268,7 @@ public class MainDao {
 
 		// Set bin folder
 		if (!setBinFolder()) {
-			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+binFolder+Utils.getBundleString("MainDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$
+			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+binFolder+Utils.getBundleString("MainDao.admin_location"));  
 			return false;
 		}
 		
@@ -304,7 +304,7 @@ public class MainDao {
 		// Check if Internet is available
 		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
 			if (!UtilsFTP.isInternetReachable()) {
-				Utils.showError(Utils.getBundleString("MainDao.internet_unavailable"));	 //$NON-NLS-1$
+				Utils.showError(Utils.getBundleString("MainDao.internet_unavailable"));	 
 				return false;
 			}		
 		}
@@ -936,9 +936,9 @@ public class MainDao {
 		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
 		if (updateVersion == null || updateVersion == -1) return;
 		if (updateVersion > schemaVersion && updateSchemaVersion) {
-			String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version") + //$NON-NLS-1$ //$NON-NLS-2$
-				Utils.getBundleString("MainDao.advisable_backup"); //$NON-NLS-1$
-			int answer = Utils.showYesNoDialog(msg, Utils.getBundleString("MainDao.update_project")); //$NON-NLS-1$
+			String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version") +  
+				Utils.getBundleString("MainDao.advisable_backup"); 
+			int answer = Utils.showYesNoDialog(msg, Utils.getBundleString("MainDao.update_project")); 
 			if (answer == JOptionPane.YES_OPTION) {
 				if (schemaVersion == -1) {
 					String sql = "CREATE TABLE IF NOT EXISTS "+schema+".version (" +
@@ -951,11 +951,11 @@ public class MainDao {
 						" VALUES ('"+getGiswaterVersion()+"', '"+waterSoftware+"', '"+getPostgreVersion()+"', '"+getPostgisVersion()+"', now())";
 					Utils.getLogger().info(sql);
 					executeSql(sql, true);
-					MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); //$NON-NLS-1$
+					MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); 
 					schemaMap.remove(schema);
 				}
 				else {
-					MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated")); //$NON-NLS-1$
+					MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated")); 
 				}
 			}
 		}

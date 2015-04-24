@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 
 
 public class PatternsDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private JComboBox<String> cboType;
 
@@ -55,13 +55,13 @@ public class PatternsDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("PatternsDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("PatternsDialog.this.title")); 
 		setBounds(100, 100, 506, 446);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[361.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("PatternsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("PatternsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[60.00][150][10px][80px][150,grow]", "[][][][][][][][][][][][][]"));
 		
@@ -73,7 +73,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 		
-		JLabel lblType = new JLabel(BUNDLE.getString("PatternsDialog.lblType.text")); //$NON-NLS-1$
+		JLabel lblType = new JLabel(BUNDLE.getString("PatternsDialog.lblType.text")); 
 		panelGeneral.add(lblType, "cell 3 0,alignx trailing");
 		
 		cboType = new JComboBox<String>();
@@ -81,7 +81,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		cboType.setName("pattern_type");
 		panelGeneral.add(cboType, "cell 4 0,growx");
 		
-		JLabel lblGeom = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom.text")); //$NON-NLS-1$
+		JLabel lblGeom = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom.text")); 
 		panelGeneral.add(lblGeom, "cell 0 1,alignx trailing");
 		
 		JTextField textField = new JTextField();
@@ -89,7 +89,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField.setColumns(10);
 		panelGeneral.add(textField, "cell 1 1,growx");
 		
-		JLabel lblFactor_8 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_8.text")); //$NON-NLS-1$
+		JLabel lblFactor_8 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_8.text")); 
 		panelGeneral.add(lblFactor_8, "cell 3 1,alignx trailing");
 		
 		JTextField textField_4 = new JTextField();
@@ -97,7 +97,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_4.setColumns(10);
 		panelGeneral.add(textField_4, "cell 4 1,growx");
 		
-		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_1.text")); //$NON-NLS-1$
+		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_1.text")); 
 		panelGeneral.add(lblGeom_1, "cell 0 2,alignx trailing");
 		
 		JTextField textField_3 = new JTextField();
@@ -105,7 +105,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_3.setColumns(10);
 		panelGeneral.add(textField_3, "cell 1 2,growx");
 		
-		JLabel lblFactor_9 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_9.text")); //$NON-NLS-1$
+		JLabel lblFactor_9 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_9.text")); 
 		panelGeneral.add(lblFactor_9, "cell 3 2,alignx trailing");
 		
 		JTextField textField_8 = new JTextField();
@@ -113,7 +113,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_8.setColumns(10);
 		panelGeneral.add(textField_8, "cell 4 2,growx");
 		
-		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_2.text")); //$NON-NLS-1$
+		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_2.text")); 
 		panelGeneral.add(lblGeom_2, "cell 0 3,alignx trailing");
 		
 		JTextField textField_5 = new JTextField();
@@ -121,7 +121,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 1 3,growx");
 		
-		JLabel lblFactor_10 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_10.text")); //$NON-NLS-1$
+		JLabel lblFactor_10 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_10.text")); 
 		panelGeneral.add(lblFactor_10, "cell 3 3,alignx trailing");
 		
 		JTextField textField_9 = new JTextField();
@@ -129,7 +129,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_9.setColumns(10);
 		panelGeneral.add(textField_9, "cell 4 3,growx");
 		
-		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_3.text")); //$NON-NLS-1$
+		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_3.text")); 
 		panelGeneral.add(lblGeom_3, "cell 0 4,alignx trailing");
 		
 		JTextField textField_6 = new JTextField();
@@ -137,7 +137,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_6.setColumns(10);
 		panelGeneral.add(textField_6, "cell 1 4,growx");
 		
-		JLabel lblFactor_11 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_11.text")); //$NON-NLS-1$
+		JLabel lblFactor_11 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_11.text")); 
 		panelGeneral.add(lblFactor_11, "cell 3 4,alignx trailing");
 		
 		JTextField textField_17 = new JTextField();
@@ -145,7 +145,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_17.setColumns(10);
 		panelGeneral.add(textField_17, "cell 4 4,growx");
 		
-		JLabel lblFactor = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor.text")); //$NON-NLS-1$
+		JLabel lblFactor = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor.text")); 
 		panelGeneral.add(lblFactor, "cell 0 5,alignx trailing");
 		
 		JTextField textField_10 = new JTextField();
@@ -153,7 +153,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_10.setColumns(10);
 		panelGeneral.add(textField_10, "cell 1 5,growx");
 		
-		JLabel lblFactor_12 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_12.text")); //$NON-NLS-1$
+		JLabel lblFactor_12 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_12.text")); 
 		panelGeneral.add(lblFactor_12, "cell 3 5,alignx trailing");
 		
 		JTextField textField_18 = new JTextField();
@@ -161,7 +161,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_18.setColumns(10);
 		panelGeneral.add(textField_18, "cell 4 5,growx");
 		
-		JLabel lblFactor_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_1.text")); //$NON-NLS-1$
+		JLabel lblFactor_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_1.text")); 
 		panelGeneral.add(lblFactor_1, "cell 0 6,alignx trailing");
 		
 		JTextField textField_7 = new JTextField();
@@ -169,7 +169,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_7.setColumns(10);
 		panelGeneral.add(textField_7, "cell 1 6,growx");
 		
-		JLabel lblFactor_13 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_13.text")); //$NON-NLS-1$
+		JLabel lblFactor_13 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_13.text")); 
 		panelGeneral.add(lblFactor_13, "cell 3 6,alignx trailing");
 		
 		JTextField textField_19 = new JTextField();
@@ -177,7 +177,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_19.setColumns(10);
 		panelGeneral.add(textField_19, "cell 4 6,growx");
 		
-		JLabel lblFactor_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_2.text")); //$NON-NLS-1$
+		JLabel lblFactor_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_2.text")); 
 		panelGeneral.add(lblFactor_2, "cell 0 7,alignx trailing");
 		
 		JTextField textField_11 = new JTextField();
@@ -185,7 +185,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_11.setColumns(10);
 		panelGeneral.add(textField_11, "cell 1 7,growx");
 		
-		JLabel lblFactor_14 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_14.text")); //$NON-NLS-1$
+		JLabel lblFactor_14 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_14.text")); 
 		panelGeneral.add(lblFactor_14, "cell 3 7,alignx trailing");
 		
 		JTextField textField_20 = new JTextField();
@@ -193,7 +193,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_20.setColumns(10);
 		panelGeneral.add(textField_20, "cell 4 7,growx");
 		
-		JLabel lblFactor_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_3.text")); //$NON-NLS-1$
+		JLabel lblFactor_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_3.text")); 
 		panelGeneral.add(lblFactor_3, "cell 0 8,alignx trailing");
 		
 		JTextField textField_12 = new JTextField();
@@ -201,7 +201,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_12.setColumns(10);
 		panelGeneral.add(textField_12, "cell 1 8,growx");
 		
-		JLabel lblFactor_15 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_15.text")); //$NON-NLS-1$
+		JLabel lblFactor_15 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_15.text")); 
 		panelGeneral.add(lblFactor_15, "cell 3 8,alignx trailing");
 		
 		JTextField textField_21 = new JTextField();
@@ -209,7 +209,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_21.setColumns(10);
 		panelGeneral.add(textField_21, "cell 4 8,growx");
 		
-		JLabel lblFactor_4 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_4.text")); //$NON-NLS-1$
+		JLabel lblFactor_4 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_4.text")); 
 		panelGeneral.add(lblFactor_4, "cell 0 9,alignx trailing");
 		
 		JTextField textField_13 = new JTextField();
@@ -217,7 +217,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_13.setColumns(10);
 		panelGeneral.add(textField_13, "cell 1 9,growx");
 		
-		JLabel lblFactor_16 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_16.text")); //$NON-NLS-1$
+		JLabel lblFactor_16 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_16.text")); 
 		panelGeneral.add(lblFactor_16, "cell 3 9,alignx trailing");
 		
 		JTextField textField_22 = new JTextField();
@@ -225,7 +225,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_22.setColumns(10);
 		panelGeneral.add(textField_22, "cell 4 9,growx");
 		
-		JLabel lblFactor_5 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_5.text")); //$NON-NLS-1$
+		JLabel lblFactor_5 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_5.text")); 
 		panelGeneral.add(lblFactor_5, "cell 0 10,alignx trailing");
 		
 		JTextField textField_14 = new JTextField();
@@ -233,7 +233,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_14.setColumns(10);
 		panelGeneral.add(textField_14, "cell 1 10,growx");
 		
-		JLabel lblFactor_17 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_17.text")); //$NON-NLS-1$
+		JLabel lblFactor_17 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_17.text")); 
 		panelGeneral.add(lblFactor_17, "cell 3 10,alignx trailing");
 		
 		JTextField textField_23 = new JTextField();
@@ -241,7 +241,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_23.setColumns(10);
 		panelGeneral.add(textField_23, "cell 4 10,growx");
 		
-		JLabel lblFactor_6 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_6.text")); //$NON-NLS-1$
+		JLabel lblFactor_6 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_6.text")); 
 		panelGeneral.add(lblFactor_6, "cell 0 11,alignx trailing");
 		
 		JTextField textField_15 = new JTextField();
@@ -249,7 +249,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_15.setColumns(10);
 		panelGeneral.add(textField_15, "cell 1 11,growx");
 		
-		JLabel lblFactor_18 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_18.text")); //$NON-NLS-1$
+		JLabel lblFactor_18 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_18.text")); 
 		panelGeneral.add(lblFactor_18, "cell 3 11,alignx trailing");
 		
 		JTextField textField_24 = new JTextField();
@@ -257,7 +257,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_24.setColumns(10);
 		panelGeneral.add(textField_24, "cell 4 11,growx");
 		
-		JLabel lblFactor_7 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_7.text")); //$NON-NLS-1$
+		JLabel lblFactor_7 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_7.text")); 
 		panelGeneral.add(lblFactor_7, "cell 0 12,alignx trailing");
 		
 		JTextField textField_16 = new JTextField();
@@ -265,7 +265,7 @@ public class PatternsDialog extends AbstractCatalogDialog {
 		textField_16.setColumns(10);
 		panelGeneral.add(textField_16, "cell 1 12,growx");
 		
-		JLabel lblFactor_19 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_19.text")); //$NON-NLS-1$
+		JLabel lblFactor_19 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_19.text")); 
 		panelGeneral.add(lblFactor_19, "cell 3 12,alignx trailing");
 		
 		JTextField textField_1 = new JTextField();

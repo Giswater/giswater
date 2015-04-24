@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 
 public class ArcCatalogDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
 	private JTextField txtTsect;
 	private JComboBox<String> cboShape;
@@ -71,17 +71,17 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("ArcCatalogDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("ArcCatalogDialog.this.title")); 
 		setBounds(100, 100, 502, 278);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[178.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ArcCatalogDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ArcCatalogDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[65.00][150][10px][80px][150]", "[][][][][][]"));
 		
-		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblInfiltration.text")); //$NON-NLS-1$
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblInfiltration.text")); 
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
 		JTextField textField_2 = new JTextField();
@@ -89,7 +89,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_2.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 				
-		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblFlowUnits.text")); 
 		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
 
 		cboShape = new JComboBox<String>();
@@ -97,7 +97,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		panelGeneral.add(cboShape, "cell 4 0,growx");
 		cboShape.setName("shape");
 		
-		JLabel lblShortDesc = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblShortDesc.text")); //$NON-NLS-1$
+		JLabel lblShortDesc = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblShortDesc.text")); 
 		panelGeneral.add(lblShortDesc, "cell 0 1,alignx trailing");
 		
 		JTextField textField_9 = new JTextField();
@@ -105,7 +105,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_9.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_9, "cell 1 1,growx");
 		
-		JLabel lblCurveid = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblCurveid.text")); //$NON-NLS-1$
+		JLabel lblCurveid = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblCurveid.text")); 
 		panelGeneral.add(lblCurveid, "cell 3 1,alignx trailing");
 		
 		txtCurve = new JTextField();
@@ -114,7 +114,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		txtCurve.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtCurve, "cell 4 1,growx");
 		
-		JLabel lblGeomr = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeomr.text")); //$NON-NLS-1$
+		JLabel lblGeomr = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeomr.text")); 
 		panelGeneral.add(lblGeomr, "cell 0 2,alignx trailing");
 		
 		JTextField textField_7 = new JTextField();
@@ -122,7 +122,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_7.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_7, "cell 1 2,growx");
 		
-		JLabel lblTsectid = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblTsectid.text")); //$NON-NLS-1$
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblTsectid.text")); 
 		panelGeneral.add(lblTsectid, "cell 3 2,alignx trailing");
 		
 		txtTsect = new JTextField();
@@ -131,7 +131,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		txtTsect.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtTsect, "cell 4 2,growx");
 		
-		JLabel lblGeom = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom.text")); //$NON-NLS-1$
+		JLabel lblGeom = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom.text")); 
 		panelGeneral.add(lblGeom, "cell 0 3,alignx trailing");
 		
 		JTextField textField = new JTextField();
@@ -139,7 +139,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField, "cell 1 3,growx");
 		
-		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_2.text")); //$NON-NLS-1$
+		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_2.text")); 
 		panelGeneral.add(lblGeom_2, "cell 3 3,alignx trailing");
 		
 		JTextField textField_5 = new JTextField();
@@ -147,7 +147,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_5.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_5, "cell 4 3,growx");
 		
-		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_1.text")); //$NON-NLS-1$
+		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_1.text")); 
 		panelGeneral.add(lblGeom_1, "cell 0 4,alignx trailing");
 		
 		JTextField textField_3 = new JTextField();
@@ -155,7 +155,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_3.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_3, "cell 1 4,growx");
 		
-		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_3.text")); //$NON-NLS-1$
+		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblGeom_3.text")); 
 		panelGeneral.add(lblGeom_3, "cell 3 4,alignx trailing");
 		
 		JTextField textField_6 = new JTextField();
@@ -163,7 +163,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		textField_6.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_6, "cell 4 4,growx");
 		
-		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblIgnoreSnowmelt.text")); //$NON-NLS-1$
+		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("ArcCatalogDialog.lblIgnoreSnowmelt.text")); 
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 5,alignx trailing");
 		
 		JTextField textField_4 = new JTextField();
@@ -176,25 +176,25 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCreate.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnCreate.toolTipText")); //$NON-NLS-1$
+		btnCreate.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnCreate.toolTipText")); 
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnDelete.toolTipText")); //$NON-NLS-1$
+		btnDelete.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnDelete.toolTipText")); 
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
 		btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnPrevious.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnPrevious.toolTipText")); //$NON-NLS-1$
+		btnPrevious.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnPrevious.toolTipText")); 
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
 		btnNext.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNext.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnNext.toolTipText")); //$NON-NLS-1$
+		btnNext.setToolTipText(BUNDLE.getString("ArcCatalogDialog.btnNext.toolTipText")); 
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		

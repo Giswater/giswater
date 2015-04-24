@@ -431,7 +431,7 @@ public class OptionsController extends AbstractController {
 		
 		action = "other";
 		try {
-			int res = Utils.showYesNoDialog(Utils.getBundleString("OptionsController.delete_record")); //$NON-NLS-1$
+			int res = Utils.showYesNoDialog(Utils.getBundleString("OptionsController.delete_record")); 
 	        if (res == JOptionPane.YES_OPTION){
 				rs.deleteRow();				
 				rs.first();

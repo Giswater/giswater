@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 
 
 public class HydrologyCatalogDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	protected JButton btnPrevious;
 	protected JButton btnNext;
@@ -66,13 +66,13 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("HydrologyCatalogDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("HydrologyCatalogDialog.this.title")); 
 		setBounds(100, 100, 502, 170);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[78.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("HydrologyCatalogDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("HydrologyCatalogDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[65.00][150][10px][80px][150]", "[][]"));
 		
@@ -84,7 +84,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		txtId.setDocument(new MaxLengthTextDocument(20));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 				
-		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblFlowUnits.text")); 
 		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
 
 		JComboBox<String> cboInfiltration = new JComboBox<String>();
@@ -92,7 +92,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		panelGeneral.add(cboInfiltration, "cell 4 0,growx");
 		cboInfiltration.setName("infiltration");
 		
-		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblIgnoreSnowmelt.text")); //$NON-NLS-1$
+		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblIgnoreSnowmelt.text")); 
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
 		
 		JTextField txtDescription = new JTextField();
@@ -105,25 +105,25 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCreate.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnCreate.toolTipText")); //$NON-NLS-1$
+		btnCreate.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnCreate.toolTipText")); 
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnDelete.toolTipText")); //$NON-NLS-1$
+		btnDelete.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnDelete.toolTipText")); 
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
 		btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnPrevious.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnPrevious.toolTipText")); //$NON-NLS-1$
+		btnPrevious.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnPrevious.toolTipText")); 
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
 		btnNext.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNext.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnNext.toolTipText")); //$NON-NLS-1$
+		btnNext.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnNext.toolTipText")); 
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		

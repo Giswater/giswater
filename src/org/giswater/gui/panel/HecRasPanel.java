@@ -211,7 +211,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		panelExportSdf.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[::20px][34px:n][5px:n][]"));
 		
 		chkExportSA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportSa.text"));
-		chkExportSA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportSA.toolTipText")); //$NON-NLS-1$
+		chkExportSA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportSA.toolTipText")); 
 		panelExportSdf.add(chkExportSA, "flowx,cell 2 0");
 		
 		JLabel lblAscFile = new JLabel();
@@ -227,19 +227,19 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		txtFileSdf.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		chkExportIA = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportIa.text"));
-		chkExportIA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportIA.toolTipText")); //$NON-NLS-1$
+		chkExportIA.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportIA.toolTipText")); 
 		panelExportSdf.add(chkExportIA, "cell 2 0");
 		
 		chkExportLevees = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxExportLevees.text"));
-		chkExportLevees.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportLevees.toolTipText")); //$NON-NLS-1$
+		chkExportLevees.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportLevees.toolTipText")); 
 		panelExportSdf.add(chkExportLevees, "cell 2 0");
 		
 		chkExportBO = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxBo.text"));
-		chkExportBO.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportBO.toolTipText")); //$NON-NLS-1$
+		chkExportBO.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportBO.toolTipText")); 
 		panelExportSdf.add(chkExportBO, "cell 2 0");
 		
 		chkExportManning = new JCheckBox(BUNDLE.getString("HecRasPanel.chckbxManning.text"));
-		chkExportManning.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportManning.toolTipText")); //$NON-NLS-1$
+		chkExportManning.setToolTipText(BUNDLE.getString("HecRasPanel.chkExportManning.toolTipText")); 
 		panelExportSdf.add(chkExportManning, "cell 2 0");
 		
 		btnFileSdf = new JButton();
@@ -259,28 +259,28 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		add(panelDataManager, "cell 0 3 2 1,grow");
 		panelDataManager.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][115px:n]", "[]"));
 		
-		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); //$NON-NLS-1$
+		btnLogFile = new JButton(BUNDLE.getString("HecRasPanel.btnNewButton.text")); 
 		btnLogFile.setActionCommand("createLogFile");
 		btnLogFile.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnLogFile, "cell 0 0,growx");
 		
-		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); //$NON-NLS-1$
+		btnErrorFile = new JButton(BUNDLE.getString("HecRasPanel.btnErrorFile.text")); 
 		btnErrorFile.setActionCommand("createErrorFile");
 		btnErrorFile.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnErrorFile, "cell 1 0,growx");
 		
-		btnShowProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); //$NON-NLS-1$
+		btnShowProjectData = new JButton(BUNDLE.getString("HecRasPanel.btnProjectData.text")); 
 		btnShowProjectData.setActionCommand("showProjectData");
 		btnShowProjectData.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnShowProjectData, "cell 2 0,growx");
 		
-		btnExportDtm = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); //$NON-NLS-1$
+		btnExportDtm = new JButton(BUNDLE.getString("HecRasPanel.btnExportMdt.text")); 
 		btnExportDtm.setEnabled(false);
 		btnExportDtm.setActionCommand("exportDtm");
 		btnExportDtm.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnExportDtm, "cell 3 0,growx");
 		
-		btnEditProjectPreferences = new JButton(BUNDLE.getString("HecRasPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
+		btnEditProjectPreferences = new JButton(BUNDLE.getString("HecRasPanel.btnEditProjectPreferences.text")); 
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		btnEditProjectPreferences.setActionCommand("gswEdit");
 		add(btnEditProjectPreferences, "flowx,cell 0 5,alignx right");

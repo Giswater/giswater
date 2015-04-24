@@ -102,7 +102,7 @@ public class MenuController extends AbstractController {
 		
 		String schema = MainDao.getSchema();
 		if (schema == null) {
-			String msg = Utils.getBundleString("MenuController.project_not_selected_backup"); //$NON-NLS-1$
+			String msg = Utils.getBundleString("MenuController.project_not_selected_backup"); 
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
@@ -142,7 +142,7 @@ public class MenuController extends AbstractController {
     
     public void exit() {
     	
-    	String msg = Utils.getBundleString("MenuController.save_project_preferences"); //$NON-NLS-1$
+    	String msg = Utils.getBundleString("MenuController.save_project_preferences"); 
     	int answer = Utils.showYesNoCancelDialog(mainFrame, msg);
     	if (answer == JOptionPane.CANCEL_OPTION) return;
     	if (answer == JOptionPane.YES_OPTION) {
@@ -460,8 +460,8 @@ public class MenuController extends AbstractController {
 		
 		// Ask confirmation
 		String schemaName = "sample_"+waterSoftware+suffix;
-		String msg = Utils.getBundleString("MenuController.project_name")+schemaName+Utils.getBundleString("MenuController.created_srid")+sridValue+Utils.getBundleString("MenuController.wish_continue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("MenuController.create_example_project")); //$NON-NLS-1$
+		String msg = Utils.getBundleString("MenuController.project_name")+schemaName+Utils.getBundleString("MenuController.created_srid")+sridValue+Utils.getBundleString("MenuController.wish_continue");   
+		int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("MenuController.create_example_project")); 
 		if (res != JOptionPane.YES_OPTION) return; 
 		
 		// Execute task: CreateSchema
@@ -485,7 +485,7 @@ public class MenuController extends AbstractController {
 			path = MainDao.getGiswaterUsersFolder() + path;
 			file = new File(path);
 			if (!file.exists()) {
-				Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.file_not_found") + file.getAbsolutePath()); //$NON-NLS-1$
+				Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.file_not_found") + file.getAbsolutePath()); 
 				return;
 			}
 		}
@@ -499,7 +499,7 @@ public class MenuController extends AbstractController {
 		// Get selected schema
 		String schema = MainDao.getSchema();
 		if (schema == null) {
-			String msg = Utils.getBundleString("MenuController.project_not_selected_backup2"); //$NON-NLS-1$
+			String msg = Utils.getBundleString("MenuController.project_not_selected_backup2"); 
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
@@ -516,10 +516,10 @@ public class MenuController extends AbstractController {
 			Utils.logSql(content);
 			Exception e = MainDao.executeSql(content, false, "");
 			if (e == null) {
-				MainClass.mdi.showMessage(Utils.getBundleString("MenuController.file_executed_successfully")); //$NON-NLS-1$
+				MainClass.mdi.showMessage(Utils.getBundleString("MenuController.file_executed_successfully")); 
 			}
 			else {
-				Utils.showError(Utils.getBundleString("MenuController.errors_found"), e.getMessage()); //$NON-NLS-1$
+				Utils.showError(Utils.getBundleString("MenuController.errors_found"), e.getMessage()); 
 			}
         } catch (IOException e) {
             Utils.showError(e, filePath);
@@ -539,9 +539,9 @@ public class MenuController extends AbstractController {
 	// Menu About 
 	public void showWelcome() {
 		
-		String title = Utils.getBundleString("MenuController.welcome"); //$NON-NLS-1$
-		String info = Utils.getBundleString("MenuController.welcome_giswater"); //$NON-NLS-1$
-		String info2 = Utils.getBundleString("MenuController.read_documentation"); //$NON-NLS-1$
+		String title = Utils.getBundleString("MenuController.welcome"); 
+		String info = Utils.getBundleString("MenuController.welcome_giswater"); 
+		String info2 = Utils.getBundleString("MenuController.read_documentation"); 
 		WelcomeDialog about = new WelcomeDialog(title, info, info2, versionCode);
 		about.setModal(true);
 		about.setLocationRelativeTo(mainFrame);
@@ -579,11 +579,11 @@ public class MenuController extends AbstractController {
 	
 	public void showAcknowledgment() {
 		
-		String title = Utils.getBundleString("MenuController.acknowledgments"); //$NON-NLS-1$
-		String info = Utils.getBundleString("MenuController.giswater_team"); //$NON-NLS-1$
-		String info2 = Utils.getBundleString("MenuController.team_names") + //$NON-NLS-1$
-			Utils.getBundleString("MenuController.team_names1") + //$NON-NLS-1$
-			Utils.getBundleString("MenuController.team_names2"); //$NON-NLS-1$
+		String title = Utils.getBundleString("MenuController.acknowledgments"); 
+		String info = Utils.getBundleString("MenuController.giswater_team"); 
+		String info2 = Utils.getBundleString("MenuController.team_names") + 
+			Utils.getBundleString("MenuController.team_names1") + 
+			Utils.getBundleString("MenuController.team_names2"); 
 		AcknowledgmentDialog about = new AcknowledgmentDialog(title, info, info2);
 		about.setModal(true);
 		about.setLocationRelativeTo(mainFrame);
@@ -617,7 +617,7 @@ public class MenuController extends AbstractController {
 		String ftpVersion = ftp.getFtpVersion();
 		mainFrame.setNewVersionVisible(newVersion, ftpVersion);
 		if (!newVersion) {
-			Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.update")); //$NON-NLS-1$
+			Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.update")); 
 		}
 		
 	}
@@ -638,7 +638,7 @@ public class MenuController extends AbstractController {
 		String localePath = chooseFileSetup(remoteName);
 		if (!localePath.equals("")) {
 			DownloadPanel panel = new DownloadPanel(remoteName, localePath, ftp);
-	        JDialog downloadDialog = Utils.openDialogForm(panel, mainFrame, Utils.getBundleString("MenuController.download_process"), 290, 135); //$NON-NLS-1$
+	        JDialog downloadDialog = Utils.openDialogForm(panel, mainFrame, Utils.getBundleString("MenuController.download_process"), 290, 135); 
 	        downloadDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE); 
 	        downloadDialog.setVisible(true);
 			mainFrame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

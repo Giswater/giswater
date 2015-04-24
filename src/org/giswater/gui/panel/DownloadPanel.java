@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 
 public class DownloadPanel extends JPanel implements PropertyChangeListener {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
 	private JProgressBar progressBar;
 	private JLabel lblInfo;
@@ -51,7 +51,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 		progressBar.setMinimumSize(new Dimension(10, 25));
 		add(progressBar, "cell 1 1,growx,aligny center");
 		
-		JButton btnCancelar = new JButton(BUNDLE.getString("DownloadPanel.btnCancelar.text")); //$NON-NLS-1$
+		JButton btnCancelar = new JButton(BUNDLE.getString("DownloadPanel.btnCancelar.text")); 
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cancelDownload();
@@ -98,7 +98,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 		double aux = (bytesRead / 1048576);
     	DecimalFormat df = new DecimalFormat("#,##0.##");
     	String readSize = df.format(aux);
-		String msg = Utils.getBundleString("DownloadPanel.downloading_file")+readSize+Utils.getBundleString("DownloadPanel.mb")+totalSize+" Mb"; //$NON-NLS-1$ //$NON-NLS-2$
+		String msg = Utils.getBundleString("DownloadPanel.downloading_file")+readSize+Utils.getBundleString("DownloadPanel.mb")+totalSize+" Mb";  
 		lblInfo.setText(msg);
 	}
 

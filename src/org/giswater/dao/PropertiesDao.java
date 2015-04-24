@@ -111,7 +111,7 @@ public class PropertiesDao {
 		
     	// Load Properties files
     	if (!loadPropertiesFile()) {
-    		Utils.showError(Utils.getBundleString("PropertiesDao.error_properties"));	   //$NON-NLS-1$
+    		Utils.showError(Utils.getBundleString("PropertiesDao.error_properties"));	   
     		return false;
     	}
     	

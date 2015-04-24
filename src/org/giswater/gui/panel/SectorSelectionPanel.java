@@ -87,7 +87,7 @@ public class SectorSelectionPanel extends JPanel {
 		
 		setLayout(new MigLayout("", "[100px:200px:400px,grow]", "[25.00][5px][:130px:200px][5px][]"));
 		
-		JLabel lblTable = new JLabel(BUNDLE.getString("EpaSoft.lblTableSectorSelection")); //$NON-NLS-1$
+		JLabel lblTable = new JLabel(BUNDLE.getString("EpaSoft.lblTableSectorSelection")); 
 		lblTable.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTable, "cell 0 0,alignx center");
 		

@@ -86,7 +86,7 @@ public class ExportToInp extends Model {
             if (fileInp.exists()) {
                 String owInp = PropertiesDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
 	            if (owInp.equals("false")) {
-	                String msg = Utils.getBundleString("ExportToInp.file_already_exists")+fileInp.getAbsolutePath()+Utils.getBundleString("ExportToInp.overwrite"); //$NON-NLS-1$ //$NON-NLS-2$
+	                String msg = Utils.getBundleString("ExportToInp.file_already_exists")+fileInp.getAbsolutePath()+Utils.getBundleString("ExportToInp.overwrite");  
 	            	int res = Utils.showYesNoDialog(msg);             
 	            	if (res == JOptionPane.NO_OPTION) return false;
 	            }  

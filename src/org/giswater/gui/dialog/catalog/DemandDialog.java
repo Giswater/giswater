@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 
 
 public class DemandDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	
 	public DemandDialog() {
@@ -50,17 +50,17 @@ public class DemandDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("DemandDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("DemandDialog.this.title")); 
 		setBounds(100, 100, 398, 225);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[123.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("DemandDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("DemandDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[50][231.00,grow][150]", "[][][][]"));
 		
-		JLabel lblInfiltration = new JLabel(BUNDLE.getString("DemandDialog.lblInfiltration.text")); //$NON-NLS-1$
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("DemandDialog.lblInfiltration.text")); 
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
 		JComboBox<String> cboNode = new JComboBox<String>();
@@ -68,7 +68,7 @@ public class DemandDialog extends AbstractCatalogDialog {
 		cboNode.setActionCommand("");
 		panelGeneral.add(cboNode, "cell 1 0,growx");
 		
-		JLabel lblTsectid = new JLabel(BUNDLE.getString("DemandDialog.lblTsectid.text")); //$NON-NLS-1$
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("DemandDialog.lblTsectid.text")); 
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
 		JTextField txtDemand = new JTextField();
@@ -76,7 +76,7 @@ public class DemandDialog extends AbstractCatalogDialog {
 		txtDemand.setDocument(new MaxLengthTextDocument(18));
 		panelGeneral.add(txtDemand, "cell 1 1,growx");
 		
-		JLabel lblPatternId = new JLabel(BUNDLE.getString("DemandDialog.lblPatternId.text")); //$NON-NLS-1$
+		JLabel lblPatternId = new JLabel(BUNDLE.getString("DemandDialog.lblPatternId.text")); 
 		panelGeneral.add(lblPatternId, "cell 0 2,alignx trailing");
 		
 		JComboBox<String> cboPattern = new JComboBox<String>();
@@ -84,7 +84,7 @@ public class DemandDialog extends AbstractCatalogDialog {
 		cboPattern.setActionCommand("");
 		panelGeneral.add(cboPattern, "cell 1 2,growx");
 		
-		JLabel lblDemandType = new JLabel(BUNDLE.getString("DemandDialog.lblDemandType.text")); //$NON-NLS-1$
+		JLabel lblDemandType = new JLabel(BUNDLE.getString("DemandDialog.lblDemandType.text")); 
 		panelGeneral.add(lblDemandType, "cell 0 3,alignx trailing");
 		
 		JTextField txtDemandType = new JTextField();

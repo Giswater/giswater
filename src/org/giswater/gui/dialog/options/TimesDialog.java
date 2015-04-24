@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 
 public class TimesDialog extends AbstractOptionsDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	
 	public TimesDialog() {
@@ -51,17 +51,17 @@ public class TimesDialog extends AbstractOptionsDialog {
 	
 	private void initConfig(){
 
-		setTitle(BUNDLE.getString("TimesDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("TimesDialog.this.title")); 
 		setBounds(0, 0, 480, 283);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[179.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimesDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimesDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[75.00][110.00][10px][80px][110]", "[25px:n][25px:n][25px:n][25px:n][25px:n][10px:n]"));
 
-		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("TimesDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("TimesDialog.lblFlowUnits.text")); 
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 		
 		JTextField txtDuration = new JTextField();
@@ -69,7 +69,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtDuration.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtDuration, "cell 1 0,growx");
 		
-		JLabel lblInfiltration = new JLabel(BUNDLE.getString("TimesDialog.lblInfiltration.text")); //$NON-NLS-1$
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("TimesDialog.lblInfiltration.text")); 
 		panelGeneral.add(lblInfiltration, "cell 3 0,alignx trailing");
 		
 		JTextField txtHydraulic = new JTextField();
@@ -77,7 +77,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtHydraulic.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtHydraulic, "cell 4 0,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("TimesDialog.lblNewLabel_1.text")); //$NON-NLS-1$
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("TimesDialog.lblNewLabel_1.text")); 
 		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
 		
 		JTextField txtQuality = new JTextField();
@@ -85,7 +85,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtQuality.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtQuality, "cell 1 1,growx");
 		
-		JLabel lblRuleTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblRuleTimestep.text")); //$NON-NLS-1$
+		JLabel lblRuleTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblRuleTimestep.text")); 
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRuleTimestep, "cell 3 1,alignx trailing");
 		
@@ -94,7 +94,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtRule.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtRule, "cell 4 1,growx");
 		
-		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblPatternTimestep.text")); //$NON-NLS-1$
+		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblPatternTimestep.text")); 
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 2,alignx trailing");
 		
@@ -103,7 +103,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtPattern.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtPattern, "cell 1 2,growx");
 		
-		JLabel lblPatternStep = new JLabel(BUNDLE.getString("TimesDialog.lblPatternStep.text")); //$NON-NLS-1$
+		JLabel lblPatternStep = new JLabel(BUNDLE.getString("TimesDialog.lblPatternStep.text")); 
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternStep, "cell 3 2,alignx trailing");
 		
@@ -112,7 +112,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtPatternStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtPatternStart, "cell 4 2,growx");
 		
-		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblReportTimestep.text")); //$NON-NLS-1$
+		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("TimesDialog.lblReportTimestep.text")); 
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 3,alignx trailing");
 		
@@ -121,7 +121,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtReport.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtReport, "cell 1 3,growx");
 		
-		JLabel lblReportStart = new JLabel(BUNDLE.getString("TimesDialog.lblReportStart.text")); //$NON-NLS-1$
+		JLabel lblReportStart = new JLabel(BUNDLE.getString("TimesDialog.lblReportStart.text")); 
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 3,alignx trailing");
 		
@@ -130,7 +130,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtReportStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtReportStart, "cell 4 3,growx");
 		
-		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("TimesDialog.lblStartClocktime.text")); //$NON-NLS-1$
+		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("TimesDialog.lblStartClocktime.text")); 
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 0 4,alignx trailing");
 		
@@ -139,7 +139,7 @@ public class TimesDialog extends AbstractOptionsDialog {
 		txtStart.setDocument(new MaxLengthTextDocument(10));
 		panelGeneral.add(txtStart, "cell 1 4,growx");
 		
-		JLabel lblStatistic = new JLabel(BUNDLE.getString("TimesDialog.lblStatistic.text")); //$NON-NLS-1$
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("TimesDialog.lblStatistic.text")); 
 		panelGeneral.add(lblStatistic, "cell 3 4,alignx trailing");
 		
 		JComboBox<String> comboBox = new JComboBox<String>();

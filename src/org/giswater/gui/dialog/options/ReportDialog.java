@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 
 public class ReportDialog extends AbstractOptionsDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	
 	public ReportDialog() {
@@ -52,24 +52,24 @@ public class ReportDialog extends AbstractOptionsDialog {
 	@SuppressWarnings("rawtypes")
 	private void initConfig(){
 
-		setTitle(BUNDLE.getString("ReportDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("ReportDialog.this.title")); 
 		setBounds(0, 0, 454, 239);
 		getContentPane().setLayout(new MigLayout("", "[90.00][435.00]", "[163.00][10px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ReportDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ReportDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[70:70][115.00px:115.00px][10px][75:75][115.00px:115.00px]", "[25px:n][25px:n][25px:n][25px:n][10px:n]"));
 
-		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ReportDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ReportDialog.lblFlowUnits.text")); 
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 		
 		JComboBox comboBox_5 = new JComboBox();
 		comboBox_5.setName("input");
 		panelGeneral.add(comboBox_5, "cell 1 0,growx");
 		
-		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("ReportDialog.lblStartClocktime.text")); //$NON-NLS-1$
+		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("ReportDialog.lblStartClocktime.text")); 
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 3 0,alignx trailing");
 		
@@ -78,14 +78,14 @@ public class ReportDialog extends AbstractOptionsDialog {
 		txtSubcatchments.setDocument(new MaxLengthTextDocument(4));	
 		panelGeneral.add(txtSubcatchments, "cell 4 0,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("ReportDialog.lblNewLabel_1.text")); //$NON-NLS-1$
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("ReportDialog.lblNewLabel_1.text")); 
 		panelGeneral.add(lblNewLabel_1, "cell 0 1,alignx trailing");
 		
 		JComboBox comboBox_6 = new JComboBox();
 		comboBox_6.setName("continuity");
 		panelGeneral.add(comboBox_6, "cell 1 1,growx");
 		
-		JLabel lblNodes = new JLabel(BUNDLE.getString("ReportDialog.lblNodes.text")); //$NON-NLS-1$
+		JLabel lblNodes = new JLabel(BUNDLE.getString("ReportDialog.lblNodes.text")); 
 		lblNodes.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblNodes, "cell 3 1,alignx trailing");
 		
@@ -94,7 +94,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 		txtNodes.setDocument(new MaxLengthTextDocument(4));	
 		panelGeneral.add(txtNodes, "cell 4 1,growx");
 		
-		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("ReportDialog.lblPatternTimestep.text")); //$NON-NLS-1$
+		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("ReportDialog.lblPatternTimestep.text")); 
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 2,alignx trailing");
 		
@@ -102,7 +102,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 		comboBox_2.setName("flowstats");
 		panelGeneral.add(comboBox_2, "cell 1 2,growx");
 		
-		JLabel lblLinks = new JLabel(BUNDLE.getString("ReportDialog.lblLinks.text")); //$NON-NLS-1$
+		JLabel lblLinks = new JLabel(BUNDLE.getString("ReportDialog.lblLinks.text")); 
 		lblLinks.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblLinks, "cell 3 2,alignx trailing");
 		
@@ -111,7 +111,7 @@ public class ReportDialog extends AbstractOptionsDialog {
 		txtLinks.setDocument(new MaxLengthTextDocument(4));	
 		panelGeneral.add(txtLinks, "cell 4 2,growx");
 		
-		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("ReportDialog.lblReportTimestep.text")); //$NON-NLS-1$
+		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("ReportDialog.lblReportTimestep.text")); 
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 3,alignx trailing");
 		

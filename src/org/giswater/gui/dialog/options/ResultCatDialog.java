@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 
 
 public class ResultCatDialog extends AbstractOptionsDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 
 	private JButton btnPrevious;
 	private JButton btnNext;
@@ -65,17 +65,17 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	
 	private void initConfig(){
 
-		setTitle(BUNDLE.getString("ResultCatDialog.this.title")); //$NON-NLS-1$
+		setTitle(BUNDLE.getString("ResultCatDialog.this.title")); 
 		setBounds(0, 0, 500, 420);
 		getContentPane().setLayout(new MigLayout("", "[90.00][380.00,grow]", "[322.00][5px:n][30]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultCatDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultCatDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[100.00:n][100:n][10px:10px][90:n][90,grow]", "[25px:n][25px:n][25px:n][25px:n][25px:n][25px:n][25px][25px][25px][25px:n]"));
 
-		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowUnits.text")); 
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 		
 		JTextField txtResultId = new JTextField();
@@ -83,7 +83,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtResultId.setDocument(new MaxLengthTextDocument(16));	
 		panelGeneral.add(txtResultId, "cell 1 0 3 1,growx");
 		
-		JLabel lblImportDate = new JLabel(BUNDLE.getString("ResultCatDialog.lblImportDate.text")); //$NON-NLS-1$
+		JLabel lblImportDate = new JLabel(BUNDLE.getString("ResultCatDialog.lblImportDate.text")); 
 		panelGeneral.add(lblImportDate, "cell 0 1,alignx trailing");
 		
 		JTextField textField_8 = new JTextField();
@@ -92,7 +92,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_8.setColumns(10);
 		panelGeneral.add(textField_8, "cell 1 1 3 1,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("ResultCatDialog.lblNewLabel_1.text")); //$NON-NLS-1$
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("ResultCatDialog.lblNewLabel_1.text")); 
 		panelGeneral.add(lblNewLabel_1, "cell 0 2,alignx trailing");
 		
 		JTextField txtQuality = new JTextField();
@@ -101,7 +101,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtQuality.setColumns(10);
 		panelGeneral.add(txtQuality, "cell 1 2,growx");
 		
-		JLabel lblFlowRouteM = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowRouteM.text")); //$NON-NLS-1$
+		JLabel lblFlowRouteM = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowRouteM.text")); 
 		panelGeneral.add(lblFlowRouteM, "cell 3 2,alignx trailing");
 		
 		JTextField txtHydraulic = new JTextField();
@@ -110,7 +110,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtHydraulic.setColumns(10);
 		panelGeneral.add(txtHydraulic, "cell 4 2,growx");
 		
-		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblPatternTimestep.text")); //$NON-NLS-1$
+		JLabel lblPatternTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblPatternTimestep.text")); 
 		lblPatternTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternTimestep, "cell 0 3,alignx trailing");
 		
@@ -120,7 +120,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtPattern.setColumns(10);
 		panelGeneral.add(txtPattern, "cell 1 3,growx");
 		
-		JLabel lblStartDate = new JLabel(BUNDLE.getString("ResultCatDialog.lblStartDate.text")); //$NON-NLS-1$
+		JLabel lblStartDate = new JLabel(BUNDLE.getString("ResultCatDialog.lblStartDate.text")); 
 		lblStartDate.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartDate, "cell 3 3,alignx trailing");
 		
@@ -130,7 +130,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtRule.setColumns(10);
 		panelGeneral.add(txtRule, "cell 4 3,growx");
 		
-		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblReportTimestep.text")); //$NON-NLS-1$
+		JLabel lblReportTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblReportTimestep.text")); 
 		lblReportTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportTimestep, "cell 0 4,alignx trailing");
 		
@@ -140,7 +140,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtReport.setColumns(10);
 		panelGeneral.add(txtReport, "cell 1 4,growx");
 		
-		JLabel lblPatternStep = new JLabel(BUNDLE.getString("ResultCatDialog.lblPatternStep.text")); //$NON-NLS-1$
+		JLabel lblPatternStep = new JLabel(BUNDLE.getString("ResultCatDialog.lblPatternStep.text")); 
 		lblPatternStep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPatternStep, "cell 3 4,alignx trailing");
 		
@@ -150,7 +150,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtPatternStart.setColumns(10);
 		panelGeneral.add(txtPatternStart, "cell 4 4,growx");
 		
-		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("ResultCatDialog.lblStartClocktime.text")); //$NON-NLS-1$
+		JLabel lblStartClocktime = new JLabel(BUNDLE.getString("ResultCatDialog.lblStartClocktime.text")); 
 		lblStartClocktime.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblStartClocktime, "cell 0 5,alignx trailing");
 		
@@ -160,7 +160,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtStart.setColumns(10);
 		panelGeneral.add(txtStart, "cell 1 5,growx");
 		
-		JLabel lblReportStart = new JLabel(BUNDLE.getString("ResultCatDialog.lblReportStart.text")); //$NON-NLS-1$
+		JLabel lblReportStart = new JLabel(BUNDLE.getString("ResultCatDialog.lblReportStart.text")); 
 		lblReportStart.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblReportStart, "cell 3 5,alignx trailing");
 		
@@ -170,7 +170,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		txtReportStart.setColumns(10);
 		panelGeneral.add(txtReportStart, "cell 4 5,growx");
 		
-		JLabel lblFlowRouting = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowRouting.text")); //$NON-NLS-1$
+		JLabel lblFlowRouting = new JLabel(BUNDLE.getString("ResultCatDialog.lblFlowRouting.text")); 
 		lblFlowRouting.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblFlowRouting, "cell 0 6,alignx trailing");
 		
@@ -180,7 +180,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField.setColumns(10);
 		panelGeneral.add(textField, "cell 1 6,growx");
 		
-		JLabel lblStatistic = new JLabel(BUNDLE.getString("ResultCatDialog.lblStatistic.text")); //$NON-NLS-1$
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ResultCatDialog.lblStatistic.text")); 
 		panelGeneral.add(lblStatistic, "cell 3 6,alignx trailing");
 		
 		JTextField textField_4 = new JTextField();
@@ -189,7 +189,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_4.setColumns(10);
 		panelGeneral.add(textField_4, "cell 4 6,growx");
 		
-		JLabel lblPondAll = new JLabel(BUNDLE.getString("ResultCatDialog.lblPondAll.text")); //$NON-NLS-1$
+		JLabel lblPondAll = new JLabel(BUNDLE.getString("ResultCatDialog.lblPondAll.text")); 
 		lblPondAll.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblPondAll, "cell 0 7,alignx trailing");
 		
@@ -199,7 +199,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_1.setColumns(10);
 		panelGeneral.add(textField_1, "cell 1 7,growx");
 		
-		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ResultCatDialog.lblInfiltration.text")); //$NON-NLS-1$
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("ResultCatDialog.lblInfiltration.text")); 
 		panelGeneral.add(lblInfiltration, "cell 3 7,alignx trailing");
 		
 		JTextField textField_5 = new JTextField();
@@ -208,7 +208,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 4 7,growx");
 		
-		JLabel lblWaterQ = new JLabel(BUNDLE.getString("ResultCatDialog.lblWaterQ.text")); //$NON-NLS-1$
+		JLabel lblWaterQ = new JLabel(BUNDLE.getString("ResultCatDialog.lblWaterQ.text")); 
 		lblWaterQ.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblWaterQ, "cell 0 8,alignx trailing");
 		
@@ -218,7 +218,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 8,growx");
 		
-		JLabel lblRuleTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblRuleTimestep.text")); //$NON-NLS-1$
+		JLabel lblRuleTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblRuleTimestep.text")); 
 		lblRuleTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRuleTimestep, "cell 3 8,alignx trailing");
 		
@@ -228,7 +228,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_6.setColumns(10);
 		panelGeneral.add(textField_6, "cell 4 8,growx");
 		
-		JLabel lblInfilM = new JLabel(BUNDLE.getString("ResultCatDialog.lblInfilM.text")); //$NON-NLS-1$
+		JLabel lblInfilM = new JLabel(BUNDLE.getString("ResultCatDialog.lblInfilM.text")); 
 		panelGeneral.add(lblInfilM, "cell 0 9,alignx trailing");
 		
 		JTextField textField_3 = new JTextField();
@@ -237,7 +237,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		textField_3.setColumns(10);
 		panelGeneral.add(textField_3, "cell 1 9,growx");
 		
-		JLabel lblRoutTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblRoutTimestep.text")); //$NON-NLS-1$
+		JLabel lblRoutTimestep = new JLabel(BUNDLE.getString("ResultCatDialog.lblRoutTimestep.text")); 
 		lblRoutTimestep.setHorizontalAlignment(SwingConstants.TRAILING);
 		panelGeneral.add(lblRoutTimestep, "cell 3 9,alignx trailing");
 		
@@ -252,17 +252,17 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText(BUNDLE.getString("ResultCatDialog.btnDelete.toolTipText")); //$NON-NLS-1$
+		btnDelete.setToolTipText(BUNDLE.getString("ResultCatDialog.btnDelete.toolTipText")); 
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2,alignx right");
 		
 		btnPrevious = new JButton("<");
-		btnPrevious.setToolTipText(BUNDLE.getString("ResultCatDialog.btnPrevious.toolTipText")); //$NON-NLS-1$
+		btnPrevious.setToolTipText(BUNDLE.getString("ResultCatDialog.btnPrevious.toolTipText")); 
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "flowx,cell 1 2,alignx right");
 		
 		btnNext = new JButton(">");
-		btnNext.setToolTipText(BUNDLE.getString("ResultCatDialog.btnNext.toolTipText")); //$NON-NLS-1$
+		btnNext.setToolTipText(BUNDLE.getString("ResultCatDialog.btnNext.toolTipText")); 
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2,alignx right");
 		
