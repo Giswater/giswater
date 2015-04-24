@@ -27,6 +27,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -51,7 +52,8 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	public HashMap<String, JDateChooser> dateMap;
 	protected JButton btnSave;
 	protected JButton btnClose;
-
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
+	
 	
 	public AbstractOptionsDialog() { }
 	

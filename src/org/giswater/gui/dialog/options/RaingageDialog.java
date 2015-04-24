@@ -32,9 +32,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.util.MaxLengthTextDocument;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.giswater.util.MaxLengthTextDocument;
 
 
 @SuppressWarnings("rawtypes")
@@ -96,17 +96,17 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	
 	private void initConfig() {
 
-		setTitle("Raingage Table");
+		setTitle(BUNDLE.getString("RaingageDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 526, 339);
 		getContentPane().setLayout(new MigLayout("", "[402.00][200px]", "[100:122.00][60.00px][80.00][10px][36.00]"));
 
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("RaingageDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[80px:80px][150.00:150.00][10px][80px][150]", "[][][][10]"));
+		panelGeneral.setLayout(new MigLayout("", "[85px:85px][130.00:150.00][10px][80px][150]", "[][][][10]"));
 
-		JLabel lblid = new JLabel("\u206FId:");
+		JLabel lblid = new JLabel(BUNDLE.getString("RaingageDialog.lblid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblid, "cell 0 0,alignx trailing");
 
 		textField_5 = new JTextField();
@@ -114,7 +114,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		textField_5.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(textField_5, "cell 1 0,growx");
 								
-		JLabel lblIgnoreSnowmelt = new JLabel("Raingage Type:");
+		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("RaingageDialog.lblIgnoreSnowmelt.text")); //$NON-NLS-1$
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
 		
 		cboRaingageType = new JComboBox();
@@ -122,14 +122,14 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelGeneral.add(cboRaingageType, "cell 1 1,growx");
 		cboRaingageType.setName("rgage_type");
 
-		JLabel lblFlowUnits = new JLabel("Form type:");
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("RaingageDialog.lblFlowUnits.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowUnits, "cell 3 1,alignx trailing");
 		
 		JComboBox flow_units = new JComboBox();
 		panelGeneral.add(flow_units, "cell 4 1,growx");
 		flow_units.setName("form_type");
 				
-		JLabel lblNewLabel_1 = new JLabel("Intvl:");
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("RaingageDialog.lblNewLabel_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblNewLabel_1, "cell 0 2,alignx trailing");
 
 		textField_1 = new JTextField();
@@ -137,7 +137,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		textField_1.setDocument(new MaxLengthTextDocument(50));
 		panelGeneral.add(textField_1, "cell 1 2,growx");
 
-		JLabel lblInfiltration = new JLabel("Scf:");
+		JLabel lblInfiltration = new JLabel(BUNDLE.getString("RaingageDialog.lblInfiltration.text")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 3 2,alignx trailing");
 		
 		textField_2 = new JTextField();
@@ -156,20 +156,20 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 4,alignx right");
 
-		btnSave = new JButton("Save");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 4,alignx right");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		getContentPane().add(btnClose, "cell 1 4,alignx right");				
 
 		panelTimeseries = new JPanel();
 		panelTimeseries.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelTimeseries.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "TIMESERIES", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelTimeseries.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("RaingageDialog.panelTimeseries.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelTimeseries, "cell 0 1 2 1,grow");
-		panelTimeseries.setLayout(new MigLayout("", "[80px:80px][150px:150][10.00][80][200]", "[]"));
+		panelTimeseries.setLayout(new MigLayout("", "[85px:85px][150px:150][10.00][80][200]", "[]"));
 
-		JLabel lblFlowRouting = new JLabel("Timeseries id:");
+		JLabel lblFlowRouting = new JLabel(BUNDLE.getString("RaingageDialog.lblFlowRouting.text")); //$NON-NLS-1$
 		panelTimeseries.add(lblFlowRouting, "cell 0 0,alignx right");
 
 		cboTimeseries = new JComboBox();
@@ -178,11 +178,11 @@ public class RaingageDialog extends AbstractOptionsDialog {
 
 		panelFile = new JPanel();
 		panelFile.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "FILE", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelFile.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("RaingageDialog.panelFile.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelFile, "cell 0 2 2 1,grow");
-		panelFile.setLayout(new MigLayout("", "[80px:80px][150.00:150][80px][10px][150]", "[][]"));
+		panelFile.setLayout(new MigLayout("", "[85px:85px][150.00:150][80px][10px][150]", "[][]"));
 				
-		JLabel lblIgnoreRouting = new JLabel("Units:");
+		JLabel lblIgnoreRouting = new JLabel(BUNDLE.getString("RaingageDialog.lblIgnoreRouting.text")); //$NON-NLS-1$
 		panelFile.add(lblIgnoreRouting, "cell 0 0,alignx right");
 
 		txtUnits = new JTextField();
@@ -190,7 +190,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		txtUnits.setName("units");
 		txtUnits.setDocument(new MaxLengthTextDocument(3));
 
-		JLabel lblMinSlope = new JLabel("Sta:");
+		JLabel lblMinSlope = new JLabel(BUNDLE.getString("RaingageDialog.lblMinSlope.text")); //$NON-NLS-1$
 		panelFile.add(lblMinSlope, "cell 2 0 2 1,alignx right");
 		lblMinSlope.setName("");
 
@@ -199,7 +199,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		txtSta.setName("sta");
 		txtSta.setDocument(new MaxLengthTextDocument(12));
 								
-		JLabel lblIgnoreGroundwater = new JLabel("Fname:");
+		JLabel lblIgnoreGroundwater = new JLabel(BUNDLE.getString("RaingageDialog.lblIgnoreGroundwater.text")); //$NON-NLS-1$
 		panelFile.add(lblIgnoreGroundwater, "cell 0 1,alignx right");
 
 		txtFname = new JTextField();

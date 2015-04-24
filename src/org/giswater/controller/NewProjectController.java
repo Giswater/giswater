@@ -79,7 +79,7 @@ public class NewProjectController extends AbstractController {
 		Boolean isGeo = view.isGeoSelected();
 		Boolean isProj = view.isProjSelected();
 		if (!isGeo && !isProj) {
-			Utils.showMessage("You have to select at least one Type: GEOGCS or PROJCS");
+			Utils.showMessage(Utils.getBundleString("NewProjectController.select_one_type")); //$NON-NLS-1$
 			return;
 		}
 		if (isGeo) {
@@ -153,12 +153,12 @@ public class NewProjectController extends AbstractController {
 			return;
 		}
 		if (Utils.isInteger(schemaName.substring(0, 1))) {
-			Utils.showError(view, "Name cannot start with a number");
+			Utils.showError(view, Utils.getBundleString("NewProjectController.invalid_project")); //$NON-NLS-1$
 			return;
 		}
 		schemaName = validateName(schemaName);
 		if (schemaName.equals("")) {
-			Utils.showError(view, "schema_valid_name");
+			Utils.showError(view, Utils.getBundleString("NewProjectController.invalid_name"));
 			return;
 		}
 		
@@ -196,7 +196,7 @@ public class NewProjectController extends AbstractController {
 
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setDialogTitle(Utils.getBundleString("Select file"));
+        chooser.setDialogTitle(Utils.getBundleString("NewProjectController.select_file"));
         File file = new File(PropertiesDao.getGswProperties().get("FILE_INP", MainDao.getGiswaterUsersFolder()));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);

@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -51,7 +52,8 @@ public abstract class AbstractCatalogDialog extends JDialog implements ActionLis
 	protected JButton btnNext;	
 	protected JButton btnSave;	
 	protected JButton btnClose;		
-
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
+	
 	
 	public AbstractCatalogDialog() { }
 	

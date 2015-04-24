@@ -32,13 +32,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.util.MaxLengthTextDocument;
-
 import net.miginfocom.swing.MigLayout;
+
+import org.giswater.util.MaxLengthTextDocument;
 
 
 public class HydrologyCatalogDialog extends AbstractCatalogDialog {
-
+	
 	protected JButton btnPrevious;
 	protected JButton btnNext;
 	protected JButton btnCreate;
@@ -64,13 +64,13 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle("Table cat_hydrology");
+		setTitle(BUNDLE.getString("HydrologyCatalogDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 502, 170);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[78.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("HydrologyCatalogDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[65.00][150][10px][80px][150]", "[][]"));
 		
@@ -82,7 +82,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		txtId.setDocument(new MaxLengthTextDocument(20));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 				
-		JLabel lblFlowUnits = new JLabel("Infiltration:");
+		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblFlowUnits.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowUnits, "cell 3 0,alignx trailing");
 
 		JComboBox<String> cboInfiltration = new JComboBox<String>();
@@ -90,7 +90,7 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		panelGeneral.add(cboInfiltration, "cell 4 0,growx");
 		cboInfiltration.setName("infiltration");
 		
-		JLabel lblIgnoreSnowmelt = new JLabel("Description:");
+		JLabel lblIgnoreSnowmelt = new JLabel(BUNDLE.getString("HydrologyCatalogDialog.lblIgnoreSnowmelt.text")); //$NON-NLS-1$
 		panelGeneral.add(lblIgnoreSnowmelt, "cell 0 1,alignx trailing");
 		
 		JTextField txtDescription = new JTextField();
@@ -103,35 +103,35 @@ public class HydrologyCatalogDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnCreate.toolTipText")); //$NON-NLS-1$
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnDelete.toolTipText")); //$NON-NLS-1$
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
 		btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnPrevious.toolTipText")); //$NON-NLS-1$
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
 		btnNext.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("HydrologyCatalogDialog.btnNext.toolTipText")); //$NON-NLS-1$
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");
 		

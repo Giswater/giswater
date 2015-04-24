@@ -57,7 +57,7 @@ public class ExecuteEpa extends Model {
         if (fileRpt.exists()) {
             String owRpt = PropertiesDao.getPropertiesFile().get("OVERWRITE_RPT", "true").toLowerCase();
             if (owRpt.equals("false")) {
-                String msg = "Selected file already exists:\n"+fileRpt.getAbsolutePath()+"\nDo you want to overwrite it?";
+                String msg = Utils.getBundleString("ExecuteEpa.file_already_exists")+fileRpt.getAbsolutePath()+Utils.getBundleString("ExecuteEpa.overwrite"); //$NON-NLS-1$ //$NON-NLS-2$
             	int res = Utils.showYesNoDialog(msg);             
             	if (res == JOptionPane.NO_OPTION) return false;
             }  

@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -60,6 +61,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -67,7 +69,6 @@ import com.toedter.calendar.JDateChooser;
 
 public class Utils {
 
-	private static final ResourceBundle BUNDLE_TEXT = ResourceBundle.getBundle("text"); 
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
@@ -79,7 +80,8 @@ public class Utils {
 	private static String gisFolder;
 	private static String appPath;
 	private static boolean isSqlLogged;	
-	private static boolean isQgis;		
+	private static boolean isQgis;			
+	private static ResourceBundle bundleText;
     
     
 	public static Logger getLogger() {
@@ -119,11 +121,19 @@ public class Utils {
     }
 	   
 	
+	public static void setLocale(Locale locale) {
+		Locale.setDefault(locale);	
+		bundleText = ResourceBundle.getBundle("text", locale);		
+    	UIManager.put("OptionPane.yesButtonText", getBundleString("yes"));
+    	UIManager.put("OptionPane.noButtonText",  getBundleString("no"));		
+    	UIManager.put("OptionPane.cancelButtonText",  getBundleString("cancel"));		
+	}	
+	
+	
 	// Returns true if .qgs file extension is associated
 	public static boolean checkFileExtensionQgis() {
 			
 		final String regKey = "SOFTWARE\\Classes";
-		//final String regKey2 = "Shell\\open\\command";
 	
 		List<String> listValues = null;
 		try {
@@ -192,12 +202,12 @@ public class Utils {
     }       
 
 	public static String getBundleString(String key) {
-		return getBundleString(BUNDLE_TEXT, key);
+		return getBundleString(bundleText, key);
 	}
 	
 	public static String getBundleString(ResourceBundle bundle, String key) {
 		try {
-			return bundle.getString(key.toLowerCase());
+			return bundle.getString(key);
 		} catch (Exception e) {
 			return key;	
 		}
@@ -672,7 +682,7 @@ public class Utils {
 	        }		        
 	    }		
 		
-	}	
-	
+	}
+
 	
 }

@@ -61,6 +61,9 @@ public class ProjectPreferencesController extends AbstractController {
 	private String waterSoftware;
 
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
 		
 		this.view = ppPanel;	
@@ -109,19 +112,19 @@ public class ProjectPreferencesController extends AbstractController {
 		// EPASWMM or EPANET
 		else {
 			if (waterSoftware.equals("EPASWMM")) {
-				epaSoftPanel.setButton4("Timeseries", "showTimeseries");
-				epaSoftPanel.setButton5("Arc Catalog", "showArcCatalog");
-				epaSoftPanel.setButton6("Hydrologic catalog", "showHydrologyCatalog");
-				epaSoftPanel.setDesignButton("Raingage", "showRaingage");
-				epaSoftPanel.setOptionsButton("Options", "showInpOptions");
-				epaSoftPanel.setReportButton("Report options", "showReport");
+				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
+				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
+				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
+				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
+				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReport"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(true);
 				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
 					epaSoftPanel.setSubcatchmentSelected(true);
 					epaSoftPanel.setSubcatchmentEnabled(false);
 					// Show warning message when 2D is selected
 					if (!mainFrame.getController().getOpeningApp()) {
-						String msg = "Warning: This development is in the test phase.\nResults obtained for this model are experimental until the tool is validated. Not recommended to apply in real cases";
+						String msg = Utils.getBundleString("ProjectPreferencesController.warning_2d"); //$NON-NLS-1$
 						Utils.showMessage(msg);
 					}
 				}
@@ -131,13 +134,13 @@ public class ProjectPreferencesController extends AbstractController {
 				}
 				epaSoftPanel.exportSelected();
 			}
-			else if (waterSoftware.equals("EPANET")) {
-				epaSoftPanel.setButton4("Emitters", "showEmitter");
-				epaSoftPanel.setButton5("Demands", "showDemands");
-				epaSoftPanel.setButton6("Rules", "showRules");
-				epaSoftPanel.setDesignButton("Times values", "showTimesValues");
-				epaSoftPanel.setOptionsButton("Options", "showInpOptionsEpanet");
-				epaSoftPanel.setReportButton("Report options", "showReportEpanet");
+				else if (waterSoftware.equals("EPANET")) {
+				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
+				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
+				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
+				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
+				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReportEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(false);
 				epaSoftPanel.setSubcatchmentSelected(false);
 			}
@@ -167,12 +170,12 @@ public class ProjectPreferencesController extends AbstractController {
 		// Check if we have selected a water software
 		if (waterSoftware.equals("")) {
 			view.setWaterSoftware("EPASWMM");
-			changeSoftware();			
+			changeSoftware();		
 			return false;
 		}
 		// Check if we have an schema selected
 		if (view.getOptDatabaseSelected() && view.getSelectedSchema().equals("")) {
-			mainFrame.showError("You have to select a project");
+			mainFrame.showError(Utils.getBundleString("ProjectPreferencesController.select_project")); //$NON-NLS-1$
 			return false;
 		}
 		return true;
@@ -306,7 +309,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		// Check parameters
 		if (host.equals("") || port.equals("") || db.equals("") || user.equals("")) {
-			Utils.showError("Connection not possible. Check parameters");
+			Utils.showError(Utils.getBundleString("ProjectPreferencesController.connection_not_possible")); //$NON-NLS-1$
 			return false;
 		}
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
@@ -314,7 +317,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Check if Internet is available
 		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
 			if (!UtilsFTP.isInternetReachable()) {
-				Utils.showError("Connection not possible. Internet is not available");	
+				Utils.showError(Utils.getBundleString("ProjectPreferencesController.internet_unavailable"));	 //$NON-NLS-1$
 				return false;
 			}
 		}
@@ -535,7 +538,7 @@ public class ProjectPreferencesController extends AbstractController {
 		npController.enableImportData();
 		
 		// Open New Project dialog
-        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, "Create Project", PROJECT_DIALOG_WIDTH, PROJECT_DIALOG_HEIGHT);
+        JDialog projectDialog = Utils.openDialogForm(projectPanel, view, Utils.getBundleString("ProjectPreferencesController.create_project"), PROJECT_DIALOG_WIDTH, PROJECT_DIALOG_HEIGHT); //$NON-NLS-1$
         projectPanel.setParent(projectDialog);
         projectDialog.setVisible(true);
 		
@@ -578,7 +581,7 @@ public class ProjectPreferencesController extends AbstractController {
 		if (MainDao.executeUpdateSql(sql, true)) {
 			selectSourceType(false);
 	    	view.setSelectedSchema(newSchemaName);
-        	mainFrame.showMessage("Project renamed successfuly");
+	    	mainFrame.showMessage(Utils.getBundleString("project_renamed_ok"));
 		}
 		
 	}
@@ -612,11 +615,7 @@ public class ProjectPreferencesController extends AbstractController {
 	public void createGisProject() {
 		
 		GisPanel gisPanel = new GisPanel(view);
-		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, "Create GIS Project", GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT);
+		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, Utils.getBundleString("ProjectPreferencesController.create_gis"), GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT); //$NON-NLS-1$
 		gisPanel.setParent(gisDialog);
-        gisDialog.setVisible(true);
-        
-	}
- 
-		
-}
+        gisDialog.setVisible(true);}
+        }

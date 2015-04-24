@@ -85,7 +85,7 @@ public class EpaSoftController extends AbstractController {
 	
 	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, view, "Sector Selection", 380, 280);
+        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 380, 280); //$NON-NLS-1$
         panel.setParent(dialog);
         dialog.setVisible(true);
 	}	
@@ -368,7 +368,7 @@ public class EpaSoftController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_rules");
 		if (rs == null) return;		
 		ControlsDialog dialog = new ControlsDialog();
-		dialog.setTitle("Table inp_rules");
+		dialog.setTitle(Utils.getBundleString("EpaSoftController.table_rules"));
 		showCatalog(dialog, rs);
 	}
 	
@@ -376,7 +376,7 @@ public class EpaSoftController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_controls");
 		if (rs == null) return;		
 		ControlsDialog dialog = new ControlsDialog();
-		dialog.setTitle("Table inp_controls");
+		dialog.setTitle(Utils.getBundleString("EpaSoftController.table_controls")); //$NON-NLS-1$
 		showCatalog(dialog, rs);
 	}
 	

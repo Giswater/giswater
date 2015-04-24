@@ -66,7 +66,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Check if DTM table already exists
 		if (MainDao.checkTableHasData(schemaName, "mdt")) {
-			String msg = "DTM table already loaded. Do you want to overwrite it?";
+			String msg = Utils.getBundleString("CreateExampleSchemaTask.dtm_already_loaded"); //$NON-NLS-1$
 			int res = Utils.showYesNoDialog(msg);
 			if (res != JOptionPane.YES_OPTION) return false;	
 		}
@@ -103,8 +103,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
-			String msg = "Project '"+schemaName+"' already exists.\nDo you want to overwrite it?";
-			int res = Utils.showYesNoDialog(mainFrame, msg, "Create example project");
+			String msg = Utils.getBundleString("CreateExampleSchemaTask.project")+schemaName+Utils.getBundleString("CreateExampleSchemaTask.overwrite_it"); //$NON-NLS-1$ //$NON-NLS-2$
+			int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("CreateExampleSchemaTask.create_example")); //$NON-NLS-1$
 			if (res != JOptionPane.YES_OPTION) return null; 
 			MainDao.deleteSchema(schemaName);
 		}
@@ -127,7 +127,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					String folderRoot = new File(".").getCanonicalPath() + File.separator;				
 					// From sample .sql file					
 					String filePath = folderRoot+"samples"+File.separator+schemaName+".sql";	 
-			    	Utils.getLogger().info("Reading file: "+filePath); 				
+			    	Utils.getLogger().info(Utils.getBundleString("CreateExampleSchemaTask.reading_file")+filePath); 				 //$NON-NLS-1$
 			    	String content = Utils.readFile(filePath);
 					Utils.logSql(content);		
 					// Last SQL script. So commit all process
@@ -159,13 +159,13 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 			else {
 				status = false;
 				MainDao.deleteSchema(schemaName);
-				MainClass.mdi.showError("Error updateSchema. Schema could not be created");
+				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_update_project")); //$NON-NLS-1$
 			}		
 		}
 		else {
 			status = false;
 			MainDao.deleteSchema(schemaName);
-			MainClass.mdi.showError("Error createSchema. Schema could not be created");
+			MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$
 		}
 
 		// Refresh view
@@ -187,7 +187,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
     		MainClass.mdi.showMessage("schema_creation_completed");
     	}
     	else {
-    		MainClass.mdi.showError("Schema could not be created");
+    		MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project2")); //$NON-NLS-1$
     	}
 		
     }

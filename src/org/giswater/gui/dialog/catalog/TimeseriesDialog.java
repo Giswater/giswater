@@ -47,7 +47,7 @@ import org.giswater.util.Utils;
 
 
 public class TimeseriesDialog extends AbstractCatalogDialog {
-
+	
 	private JTextField txtId;
 	private JComboBox<String> cboTimesType;
 	private JTable table;
@@ -104,15 +104,15 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle("Table timeseries");
+		setTitle(BUNDLE.getString("TimeseriesDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 574, 437);
-		getContentPane().setLayout(new MigLayout("", "[401.00][200px]", "[363.00][5px][36.00]"));
+		getContentPane().setLayout(new MigLayout("", "[401.00][260px]", "[363.00][5px][36.00]"));
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());			
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimeseriesDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[70][161.00][30][185,grow]", "[][][][5px][][195.00,grow]"));
 		
@@ -126,25 +126,25 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 		
 		btnCreate = new JButton("+");
 		panelGeneral.add(btnCreate, "flowx,cell 3 0");
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnInsert.toolTipText"));
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		
-		JLabel lblTsectid = new JLabel("Timser type:");
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("TimeseriesDialog.lblTsectid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
 		JComboBox<String> cboTimserType = new JComboBox<String>();
 		cboTimserType.setName("timser_type");
 		panelGeneral.add(cboTimserType, "cell 1 1,growx");
 		
-		JLabel lblTimesType = new JLabel("Times type:");
+		JLabel lblTimesType = new JLabel(BUNDLE.getString("TimeseriesDialog.lblTimesType.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTimesType, "cell 0 2,alignx trailing");
 		
 		cboTimesType = new JComboBox<String>();
 		cboTimesType.setName("times_type");
 		panelGeneral.add(cboTimesType, "cell 1 2,growx");
 		
-		JLabel lblOther = new JLabel("Timeseries:");
+		JLabel lblOther = new JLabel(BUNDLE.getString("TimeseriesDialog.lblOther.text")); //$NON-NLS-1$
 		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelGeneral.add(lblOther, "cell 0 4 2 1,alignx left");
 		
@@ -153,39 +153,39 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 		
 		btnDelete = new JButton("-");
 		panelGeneral.add(btnDelete, "cell 3 0");
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnDelete.toolTipText"));
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnDelete.setActionCommand("delete");
 		
 		btnPrevious = new JButton("<");
 		panelGeneral.add(btnPrevious, "cell 3 0");
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnPrevious.toolTipText"));
 		btnPrevious.setActionCommand("movePrevious");
 		
 		btnNext = new JButton(">");
-		panelGeneral.add(btnNext, "cell 3 0");
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
+		panelGeneral.add(btnNext, "cell 3 0");
 		
-		btnDetailCreate = new JButton("Add row");
-		btnDetailCreate.setMaximumSize(new Dimension(87, 23));
+		btnDetailCreate = new JButton(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.text")); //$NON-NLS-1$
+		btnDetailCreate.setMaximumSize(new Dimension(110, 23));
 		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
-		btnDetailCreate.setToolTipText("Insert new row");
+		btnDetailCreate.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.toolTipText")); //$NON-NLS-1$
 		btnDetailCreate.setActionCommand("detailCreate");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");
 		
-		btnDetailDelete = new JButton("Delete row");
-		btnDetailDelete.setToolTipText("Delete selected rows");
+		btnDetailDelete = new JButton(BUNDLE.getString("TimeseriesDialog.btnDetailDelete.text")); //$NON-NLS-1$
+		btnDetailDelete.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnDetailDelete.toolTipText")); //$NON-NLS-1$
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");			
 		
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		

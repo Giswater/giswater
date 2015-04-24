@@ -151,7 +151,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	public void setNewVersionVisible(boolean newVersion, String ftpVersion) {
 		mnNewVersionAvailable.setVisible(newVersion);
-		String msg = "Download version "+ftpVersion;
+		String msg = Utils.getBundleString("download_version")+ftpVersion;
 		mntmDownload.setText(msg);
 	}
 
@@ -395,7 +395,7 @@ public class MainFrame extends JFrame implements ActionListener {
         desktopPane.add(configFrame);
         
         // Set specific configuration
-        ppFrame.setTitle("Project Preferences");
+        ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
         epaSoftFrame.setTitle("Main form");
         
         // Define one controller per panel           

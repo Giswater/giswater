@@ -87,7 +87,7 @@ public class SectorSelectionPanel extends JPanel {
 		
 		setLayout(new MigLayout("", "[100px:200px:400px,grow]", "[25.00][5px][:130px:200px][5px][]"));
 		
-		JLabel lblTable = new JLabel("Table " + TABLE_SECTOR_SELECTION);
+		JLabel lblTable = new JLabel(BUNDLE.getString("EpaSoft.lblTableSectorSelection")); //$NON-NLS-1$
 		lblTable.setFont(new Font("Tahoma", Font.BOLD, 14));
 		add(lblTable, "cell 0 0,alignx center");
 		
@@ -117,7 +117,7 @@ public class SectorSelectionPanel extends JPanel {
 		btnDeleteAll.setMinimumSize(new Dimension(79, 23));
 		add(btnDeleteAll, "cell 0 4");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(79, 23));
 		btnClose.setMaximumSize(new Dimension(79, 23));
 		btnClose.setActionCommand("closePanel");

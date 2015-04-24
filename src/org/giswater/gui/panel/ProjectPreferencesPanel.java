@@ -109,9 +109,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[8px:n][78.00px:n][75px:n:75px][65px:n:65px][][10px:n][154.00px:n][][]", "[][][61.00][][]"));
+		setLayout(new MigLayout("", "[8px:n][78.00px:n][75px:n:170px][65px:n:65px][][10px:n][154.00px:n][][]", "[][][61.00][][]"));
 		
-		JLabel lblWaterSoftware = new JLabel("Water software:");
+		JLabel lblWaterSoftware = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblWaterSoftware.text")); //$NON-NLS-1$
 		add(lblWaterSoftware, "cell 0 0 2 1,alignx right");
 		
 		optEpaSwmm = new JRadioButton("EPASWMM");
@@ -131,29 +131,29 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		groupSoftware.add(optEpanet);
 		groupSoftware.add(optHecras);
 
-		JLabel label = new JLabel("Data storage:");
+		JLabel label = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.label.text")); //$NON-NLS-1$
 		add(label, "cell 1 1,alignx right");
+		
+		ButtonGroup groupStorage = new ButtonGroup();
 		
 		optDatabase = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optDatabase.text")); //$NON-NLS-1$
 		optDatabase.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		optDatabase.setActionCommand("selectSourceType");
 		add(optDatabase, "flowx,cell 2 1");
+		groupStorage.add(optDatabase);
 		
 		optDbf = new JRadioButton("DBF");
 		optDbf.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		optDbf.setActionCommand("selectSourceType");
 		add(optDbf, "cell 3 1");
-		
-		ButtonGroup groupStorage = new ButtonGroup();
-		groupStorage.add(optDatabase);
 		groupStorage.add(optDbf);
 		
 		panelDbf = new JPanel();
-		panelDbf.setBorder(new TitledBorder(null, "DBF Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelDbf.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelDbf.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null)); //$NON-NLS-1$
 		add(panelDbf, "cell 0 2 9 1,grow");
 		panelDbf.setLayout(new MigLayout("", "[75px:n][300.00px:n,grow][10px:n][][8px:n]", "[34px:n]"));
 		
-		JLabel lblFolderShp = new JLabel("Data folder:");
+		JLabel lblFolderShp = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblFolderShp.text")); //$NON-NLS-1$
 		panelDbf.add(lblFolderShp, "cell 0 0,alignx right");
 		
 		scrollPane_1 = new JScrollPane();
@@ -172,13 +172,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnFolderShp.setActionCommand("chooseFolderShp");
 		
 		panelDB = new JPanel();
-		panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelDB.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelDatastorage.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		//panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelDB, "cell 0 3 9 1,grow");
 		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
 		panelDatabase = new JPanel();
 		panelDB.add(panelDatabase, "cell 0 0,growx");
-		panelDatabase.setBorder(new TitledBorder(null, "Connection Parameters", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
+		panelDatabase.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelDatabase.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
 		panelDatabase.setLayout(new MigLayout("", "[65px:n][100px:n:100px][20px][grow]", "[][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); 
@@ -227,7 +228,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		txtPassword.setText("");
 		panelDatabase.add(txtPassword, "cell 1 5 3 1,growx");
 		
-		chkRemember = new JCheckBox("Remember password");
+		chkRemember = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkRemember.text")); //$NON-NLS-1$
 		chkRemember.setSelected(true);
 		panelDatabase.add(chkRemember, "flowx,cell 3 6,alignx right");
 		
@@ -243,8 +244,8 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
-		panelManagement.setBorder(new TitledBorder(null, "Project Data Management", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
-		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59.00px][][][][]", "[23px][][]"));
+		panelManagement.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelManagement.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
+		panelManagement.setLayout(new MigLayout("", "[65px:n][100px,grow][59px][][][][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
 		panelManagement.add(lblProject, "cell 0 0,alignx right");
@@ -274,7 +275,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		btnRename = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnRename.text"));
 		btnRename.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
-		btnRename.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setEnabled(false);
 		btnRename.setActionCommand("renameSchema");
 		panelManagement.add(btnRename, "cell 5 0,alignx right");

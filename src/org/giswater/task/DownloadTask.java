@@ -105,12 +105,12 @@ public class DownloadTask extends SwingWorker<Void, Void> {
 		 
 		 if (!isCancelled()) {
 			 gui.close();
-			 Utils.showMessage("File downloaded successfully in:\n"+localePath+"\nPlease, close Giswater before executing this file.");
+			 Utils.showMessage(Utils.getBundleString("DownloadTask.download_successfull")+localePath+Utils.getBundleString("DownloadTask.close_giswater")); //$NON-NLS-1$ //$NON-NLS-2$
 		 } 
 		 else{
 			 gui.close();
 			 isCancelled = true;
-			 Utils.showMessage("Downloaded aborted");
+			 Utils.showMessage(Utils.getBundleString("DownloadTask.download_aborted")); //$NON-NLS-1$
 		 }
 		 
 	 }

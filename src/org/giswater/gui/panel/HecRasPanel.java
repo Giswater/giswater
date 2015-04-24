@@ -47,9 +47,6 @@ import org.giswater.util.Utils;
 
 public class HecRasPanel extends JPanel implements ActionListener {
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
-
 	private HecRasController controller;	
 	private HecRasFrame hecRasFrame;
 	private JButton btnFileAsc;
@@ -67,8 +64,10 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnErrorFile;
 	private JButton btnShowProjectData;
 	private JButton btnExportDtm;
-	
 	private JButton btnEditProjectPreferences;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	
 	
 	public HecRasPanel() {
@@ -177,7 +176,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		setLayout(new MigLayout("", "[555.00px][::8px]", "[5px:n][96.00][128.00px:n][::59.00px][10px:n][]"));
 		
 		JPanel panelLoadDtm = new JPanel();
-		panelLoadDtm.setBorder(new TitledBorder(null, "Load DTM", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelLoadDtm.setBorder(new TitledBorder(null, BUNDLE.getString("HecRasPanel.panelLoadDtm.text"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelLoadDtm, "cell 0 1 2 1,grow");
 		panelLoadDtm.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[34px:n][5px:n][]"));
 		
@@ -206,7 +205,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnLoadRaster.setActionCommand("loadRaster");
 		
 		JPanel panelExportSdf = new JPanel();
-		panelExportSdf.setBorder(new TitledBorder(null, "Export SDF", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelExportSdf.setBorder(new TitledBorder(null, BUNDLE.getString("HecRasPanel.panelExportSdf.text"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelExportSdf, "cell 0 2 2 1,grow");
 		panelExportSdf.setLayout(new MigLayout("", "[100px:n][5px:n][358px:n][]", "[::20px][34px:n][5px:n][]"));
 		
@@ -255,7 +254,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportSdf.setActionCommand("exportSdf");
 		
 		JPanel panelDataManager = new JPanel();
-		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelDataManager.setBorder(new TitledBorder(null, BUNDLE.getString("HecRasPanel.panelDataManager.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panelDataManager, "cell 0 3 2 1,grow");
 		panelDataManager.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][115px:n]", "[]"));
 		
@@ -280,7 +279,7 @@ public class HecRasPanel extends JPanel implements ActionListener {
 		btnExportDtm.setMinimumSize(new Dimension(0, 23));
 		panelDataManager.add(btnExportDtm, "cell 3 0,growx");
 		
-		btnEditProjectPreferences = new JButton("Edit Project Preferences");
+		btnEditProjectPreferences = new JButton(BUNDLE.getString("HecRasPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
 		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		btnEditProjectPreferences.setActionCommand("gswEdit");
 		add(btnEditProjectPreferences, "flowx,cell 0 5,alignx right");

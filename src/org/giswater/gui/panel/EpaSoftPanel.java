@@ -46,8 +46,6 @@ import org.giswater.util.Utils;
 
 public class EpaSoftPanel extends JPanel implements ActionListener {
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-
 	private EpaSoftController controller;
 	private EpaSoftFrame epaSoftFrame;	
 
@@ -83,12 +81,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JPanel panelPostprocess;
 	private JButton btnResultCatalog;
 	private JButton btnResultSelector;
-	
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
 	private JCheckBox chkSubcatchments;
 	private JButton btnEditProjectPreferences;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 
 	
 	public EpaSoftPanel() {
@@ -106,9 +105,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		setLayout(new MigLayout("", "[575.00px][::8px]", "[5px:n][87.00][3px:n][][3px:n][][3px:n][][]"));
 		
 		panelDataManager = new JPanel();
-		panelDataManager.setBorder(new TitledBorder(null, "Data Manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelDataManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelDataManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelDataManager, "cell 0 1 2 1,grow");
-		panelDataManager.setLayout(new MigLayout("", "[120px:n][120px:n][120px:n][120px:n][]", "[][]"));
+		panelDataManager.setLayout(new MigLayout("", "[150px][150][150][150px][]", "[][]"));
 		
 		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text"));
 		btnMaterialCatalog.setEnabled(false);
@@ -155,32 +154,32 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelDataManager.add(btnProjectData, "cell 3 1,growx");
 		
 		panelPreprocess = new JPanel();
-		panelPreprocess.setBorder(new TitledBorder(null, "Preprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelPreprocess, "cell 0 3 2 1,grow");
 		panelPreprocess.setLayout(new MigLayout("", "[120px:n][120px:n][120px:n][121px:n]", "[]"));
 		
-		btnSectorSelection = new JButton("Sector selection");
+		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection"); 
 		panelPreprocess.add(btnSectorSelection, "cell 0 0,alignx center");
 		
-		btnOptions = new JButton("Options");
+		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
 		btnOptions.setEnabled(false);
 		btnOptions.setActionCommand("showInpOptions");
 		panelPreprocess.add(btnOptions, "cell 1 0,growx");
 		
-		btnDesign = new JButton("Design values");
+		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
 		btnDesign.setEnabled(false);
 		btnDesign.setActionCommand("showRaingage"); 
 		panelPreprocess.add(btnDesign, "cell 2 0,growx");
 		
-		btnReport = new JButton("Report options");
+		btnReport = new JButton(BUNDLE.getString("EpaSoftPanel.btnReport.text")); //$NON-NLS-1$
 		btnReport.setEnabled(false);
 		btnReport.setActionCommand("showReport");
 		panelPreprocess.add(btnReport, "cell 3 0,growx");
 		
 		panelFileManager = new JPanel();
-		panelFileManager.setBorder(new TitledBorder(null, "File manager", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 5 2 1,grow");
 		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
@@ -214,7 +213,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.add(btnFileInp, "cell 4 1,growx");
 
 		chkExec = new JCheckBox();
-		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text")); 
+		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text"));  //$NON-NLS-1$
 		chkExec.setName("chk_exec");
 		chkExec.setActionCommand("Exportaci\u00F3n a INP");
 		panelFileManager.add(chkExec, "cell 0 2 3 1,alignx left,aligny bottom");
@@ -264,7 +263,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.add(btnAccept, "flowx,cell 4 6,alignx right");
 		
 		panelPostprocess = new JPanel();
-		panelPostprocess.setBorder(new TitledBorder(null, "Postprocess options", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
+		panelPostprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPostprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelPostprocess, "cell 0 7 2 1,grow");
 		panelPostprocess.setLayout(new MigLayout("", "[120px:n][120px:n]", "[]"));
 		
