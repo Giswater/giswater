@@ -31,15 +31,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.util.MaxLengthTextDocument;
-
 import net.miginfocom.swing.MigLayout;
-import java.util.ResourceBundle;
+
+import org.giswater.util.MaxLengthTextDocument;
 
 
 public class ProjectDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
-
+	
 	
 	public ProjectDialog() {
 		initConfig();

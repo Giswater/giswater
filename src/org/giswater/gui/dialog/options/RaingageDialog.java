@@ -32,15 +32,13 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.util.MaxLengthTextDocument;
-
 import net.miginfocom.swing.MigLayout;
-import java.util.ResourceBundle;
+
+import org.giswater.util.MaxLengthTextDocument;
 
 
 @SuppressWarnings("rawtypes")
 public class RaingageDialog extends AbstractOptionsDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JTextField txtSta;
 	private JTextField textField_1;

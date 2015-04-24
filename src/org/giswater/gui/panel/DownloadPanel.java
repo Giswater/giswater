@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
 
 
 public class DownloadPanel extends JPanel implements PropertyChangeListener {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	
 	private JProgressBar progressBar;
 	private JLabel lblInfo;
@@ -33,8 +32,9 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 	private UtilsFTP ftp;
 	private String totalSize;
 	private DownloadTask task;
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
-
+	
 	public DownloadPanel(String remote, String local, UtilsFTP ftp) {
 		
         this.remote = remote;

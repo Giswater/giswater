@@ -33,12 +33,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import java.util.ResourceBundle;
 
 
 public class PatternsDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
-
+	
 	private JComboBox<String> cboType;
 
 

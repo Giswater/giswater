@@ -46,8 +46,6 @@ import org.giswater.util.Utils;
 
 public class EpaSoftPanel extends JPanel implements ActionListener {
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-
 	private EpaSoftController controller;
 	private EpaSoftFrame epaSoftFrame;	
 
@@ -83,12 +81,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JPanel panelPostprocess;
 	private JButton btnResultCatalog;
 	private JButton btnResultSelector;
-	
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
 	private JCheckBox chkSubcatchments;
 	private JButton btnEditProjectPreferences;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 
 	
 	public EpaSoftPanel() {

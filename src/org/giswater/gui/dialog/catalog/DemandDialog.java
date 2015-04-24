@@ -35,11 +35,9 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.util.MaxLengthTextDocument;
-import java.util.ResourceBundle;
 
 
 public class DemandDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public DemandDialog() {

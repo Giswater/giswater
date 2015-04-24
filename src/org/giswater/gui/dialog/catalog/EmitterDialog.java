@@ -25,6 +25,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,12 +33,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JComboBox;
-import java.util.ResourceBundle;
 
 
 public class EmitterDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public EmitterDialog() {

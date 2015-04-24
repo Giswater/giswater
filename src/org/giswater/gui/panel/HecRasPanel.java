@@ -47,9 +47,6 @@ import org.giswater.util.Utils;
 
 public class HecRasPanel extends JPanel implements ActionListener {
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
-
 	private HecRasController controller;	
 	private HecRasFrame hecRasFrame;
 	private JButton btnFileAsc;
@@ -67,8 +64,10 @@ public class HecRasPanel extends JPanel implements ActionListener {
 	private JButton btnErrorFile;
 	private JButton btnShowProjectData;
 	private JButton btnExportDtm;
-	
 	private JButton btnEditProjectPreferences;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
 	
 	
 	public HecRasPanel() {

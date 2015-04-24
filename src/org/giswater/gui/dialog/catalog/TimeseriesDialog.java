@@ -44,12 +44,10 @@ import net.miginfocom.swing.MigLayout;
 
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
-import java.util.ResourceBundle;
 
 
 public class TimeseriesDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
-
+	
 	private JTextField txtId;
 	private JComboBox<String> cboTimesType;
 	private JTable table;
@@ -165,9 +163,9 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 		btnPrevious.setActionCommand("movePrevious");
 		
 		btnNext = new JButton(">");
-		panelGeneral.add(btnNext, "cell 3 0");
 		btnNext.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
+		panelGeneral.add(btnNext, "cell 3 0");
 		
 		btnDetailCreate = new JButton(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.text")); //$NON-NLS-1$
 		btnDetailCreate.setMaximumSize(new Dimension(110, 23));
@@ -240,6 +238,4 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
     }
     
 
-	public void actionPerformed(ActionEvent arg0) {
-	}
 }

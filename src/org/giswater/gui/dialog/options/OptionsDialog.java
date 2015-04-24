@@ -22,7 +22,6 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,9 +32,9 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import com.toedter.calendar.JDateChooser;
-
 import net.miginfocom.swing.MigLayout;
+
+import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("rawtypes")
@@ -49,8 +48,6 @@ public class OptionsDialog extends AbstractOptionsDialog {
 	private JLabel lblHeadTol;
 	private JLabel lblSysFlowTol;
 	private JLabel lblLatFlowTol;
-	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
 	
 	public OptionsDialog() {

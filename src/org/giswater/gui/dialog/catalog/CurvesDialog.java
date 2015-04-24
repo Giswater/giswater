@@ -44,11 +44,9 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.util.MaxLengthTextDocument;
 import org.giswater.util.Utils;
-import java.util.ResourceBundle;
 
 
 public class CurvesDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JTable table;
 	private JTextField txtId;

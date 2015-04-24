@@ -49,8 +49,6 @@ import org.giswater.util.Utils;
 
 public class ConfigPanel extends JPanel implements ActionListener {
 
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-
 	private ConfigController controller;	
 	private ConfigFrame configFrame;	
 	private JCheckBox chkAutoconnect;
@@ -86,6 +84,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JLabel lblChooseLanguage;
 	private JComboBox<String> cboLocale;
 	private JLabel lblRequiresRestart;
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	
 	
 	public ConfigPanel() {

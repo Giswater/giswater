@@ -30,15 +30,12 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import org.giswater.util.Utils;
-
 import net.miginfocom.swing.MigLayout;
 
-import java.util.ResourceBundle;
+import org.giswater.util.Utils;
 
 
 public class ResultSelectionDialog extends AbstractOptionsDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private JComboBox<String> cboResultSelection;
 	

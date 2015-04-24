@@ -30,8 +30,7 @@ import java.awt.Dimension;
 import java.util.ResourceBundle;
 
 
-public class ProjectPanel extends JPanel implements ActionListener{
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+public class ProjectPanel extends JPanel implements ActionListener {
 	
 	private JDialog parent;
 	private NewProjectController controller;
@@ -53,11 +52,10 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	private JButton btnFile;
 	private JPanel panelSrid;
 	private String defaultSrid;
-	
-	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
 	private JCheckBox chkImportData;
-	private JLabel lbloptional;
-	private JLabel label;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
 	
 	
 	public ProjectPanel(String defaultSrid) {
@@ -97,8 +95,8 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtAuthor.setDocument(maxLength);
 		add(txtAuthor, "cell 1 2,growx");
 		
-		lbloptional = new JLabel(BUNDLE.getString("ProjectPanel.lbloptional.text")); //$NON-NLS-1$
-		add(lbloptional, "cell 2 2");
+		JLabel lblOptional = new JLabel(BUNDLE.getString("ProjectPanel.lbloptional.text")); //$NON-NLS-1$
+		add(lblOptional, "cell 2 2");
 		
 		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectPanel.lblDate.text")); //$NON-NLS-1$
 		add(lblDate, "cell 0 3,alignx trailing");
@@ -112,7 +110,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtDate.setText(dateFormat.format(date));
 		add(txtDate, "cell 1 3,growx");
 		
-		label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); //$NON-NLS-1$
+		JLabel label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); //$NON-NLS-1$
 		add(label, "cell 2 3");
 		
 		panelSrid = new JPanel();

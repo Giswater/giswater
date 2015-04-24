@@ -36,12 +36,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import java.util.ResourceBundle;
 
 
 public class TimeseriesDetailDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
-
+	
 	private String timesType;
 	private JTextField txtId;
 	private JTextField txtTimserId;
