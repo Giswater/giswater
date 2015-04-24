@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -60,6 +61,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -78,7 +80,7 @@ public class Utils {
 	private static String gisFolder;
 	private static String appPath;
 	private static boolean isSqlLogged;	
-	private static boolean isQgis;		
+	private static boolean isQgis;			
 	private static ResourceBundle bundleText;
     
     
@@ -119,8 +121,12 @@ public class Utils {
     }
 	   
 	
-	public static void setBundleText() {
-		bundleText = ResourceBundle.getBundle("text");		
+	public static void setLocale(Locale locale) {
+		Locale.setDefault(locale);	
+		bundleText = ResourceBundle.getBundle("text", locale);		
+    	UIManager.put("OptionPane.yesButtonText", getBundleString("yes"));
+    	UIManager.put("OptionPane.noButtonText",  getBundleString("no"));		
+    	UIManager.put("OptionPane.cancelButtonText",  getBundleString("cancel"));		
 	}	
 	
 	
@@ -128,7 +134,6 @@ public class Utils {
 	public static boolean checkFileExtensionQgis() {
 			
 		final String regKey = "SOFTWARE\\Classes";
-		//final String regKey2 = "Shell\\open\\command";
 	
 		List<String> listValues = null;
 		try {
