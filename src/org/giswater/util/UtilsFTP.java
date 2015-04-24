@@ -216,7 +216,7 @@ public class UtilsFTP {
 	        	size = ftpFile[0].getSize();
 	        }
 	        else{
-	        	Utils.showError(Utils.getBundleString("UtilsFTP.download_aborted")+filePath); 
+	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+filePath);
 	        }
         } catch (IOException e) {
         	Utils.logError("Could not determine size of the file: " + e.getMessage());
@@ -346,7 +346,7 @@ public class UtilsFTP {
 				client.retrieveFile(remoteName, fos);
 	        }
 	        else{
-	        	Utils.showError(Utils.getBundleString("UtilsFTP.download_aborted2")+remoteName); 
+	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+remoteName);
 	        	return false;
 	        }
 		} catch (IOException e) {
@@ -370,11 +370,11 @@ public class UtilsFTP {
     		}
             boolean success = client.setFileType(FTP.BINARY_FILE_TYPE);
             if (!success) {
-            	Utils.showError(Utils.getBundleString("UtilsFTP.binary_file")); 
+            	Utils.showError("Could not set binary file type.");
             }
             inputStream = client.retrieveFileStream(downloadPath);
         } catch (IOException e) {
-        	Utils.showError(Utils.getBundleString("UtilsFTP.error_downloading") + e.getMessage()); 
+        	Utils.showError("Error downloading file: " + e.getMessage());
         }
         
         status = true;

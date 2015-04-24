@@ -67,7 +67,7 @@ public class ConfigController extends AbstractController {
 	        size = Integer.parseInt(aux);
         }
         catch (NumberFormatException e) {
-        	String msg = Utils.getBundleString("ConfigController.log_size_invalid"); 
+        	String msg = Utils.getBundleString("ConfigController.log_size_invalid"); //$NON-NLS-1$
         	Utils.logError(msg);
         }        
 		view.setLogFolderSize(size);

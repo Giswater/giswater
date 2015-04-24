@@ -232,7 +232,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		JSeparator separator_2 = new JSeparator();
 		mnProject.add(separator_2);
 		
-		mntmExit = new JMenuItem(BUNDLE.getString("MainFrame.mntmExit.text")); 
+		mntmExit = new JMenuItem(BUNDLE.getString("MainFrame.mntmExit.text")); //$NON-NLS-1$
 		mntmExit.setMnemonic(KeyEvent.VK_Q);
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mntmExit.setActionCommand("exit");
@@ -253,7 +253,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnProjectExample.add(mntmExampleEpaswmm);
 		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm"); 
 		
-		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); 
+		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); //$NON-NLS-1$
 		mntmExampleEpaswmm2D.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
 		mntmExampleEpaswmm2D.setActionCommand("exampleEpaswmm2D");
 		mnProjectExample.add(mntmExampleEpaswmm2D);
@@ -274,8 +274,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnData.add(mntmDatabaseAdministrator);
 		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");
 		
-		mntmSqlFileLauncher = new JMenuItem(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.text")); 
-		mntmSqlFileLauncher.setActionCommand(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.actionCommand")); 
+		mntmSqlFileLauncher = new JMenuItem(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.text")); //$NON-NLS-1$
+		mntmSqlFileLauncher.setActionCommand(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.actionCommand")); //$NON-NLS-1$
 		mntmSqlFileLauncher.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		mnData.add(mntmSqlFileLauncher);
 		
@@ -402,7 +402,7 @@ public class MainFrame extends JFrame implements ActionListener {
         desktopPane.add(configFrame);
         
         // Set specific configuration
-        ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
+        ppFrame.setTitle("Project Preferences");
         epaSoftFrame.setTitle("Main form");
         
         // Define one controller per panel           

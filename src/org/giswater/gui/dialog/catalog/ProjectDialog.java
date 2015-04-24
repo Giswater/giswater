@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
 
 
 public class ProjectDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public ProjectDialog() {
@@ -49,17 +49,17 @@ public class ProjectDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("ProjectDialog.this.title")); 
+		setTitle(BUNDLE.getString("ProjectDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 344, 206);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[113.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ProjectDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ProjectDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel(BUNDLE.getString("ProjectDialog.lblStatistic.text")); 
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ProjectDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
 		JTextField txtTitle = new JTextField();
@@ -68,7 +68,7 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		panelGeneral.add(txtTitle, "cell 1 0,growx");
 		txtTitle.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectDialog.lblAuthor.text")); 
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectDialog.lblAuthor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
 		JTextField txtAuthor = new JTextField();
@@ -76,7 +76,7 @@ public class ProjectDialog extends AbstractCatalogDialog {
 		txtAuthor.setDocument(new MaxLengthTextDocument(50));
 		panelGeneral.add(txtAuthor, "cell 1 1,growx");
 		
-		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectDialog.lblDate.text")); 
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectDialog.lblDate.text")); //$NON-NLS-1$
 		panelGeneral.add(lblDate, "cell 0 2,alignx trailing");
 		
 		JTextField txtDate = new JTextField();

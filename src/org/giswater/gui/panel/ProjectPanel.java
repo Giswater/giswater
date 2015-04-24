@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 
 
 public class ProjectPanel extends JPanel implements ActionListener{
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	
 	private JDialog parent;
 	private NewProjectController controller;
@@ -70,7 +70,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		
 		setLayout(new MigLayout("", "[][217.00px:n][::65px]", "[][][][][5px:n][240.00,grow][][34px:n][5px:n][]"));
 		
-		JLabel lblProjectName = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectName.text")); 
+		JLabel lblProjectName = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectName.text")); //$NON-NLS-1$
 		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
 		
 		txtName = new JTextField();
@@ -79,7 +79,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtName.setDocument(maxLength);		
 		add(txtName, "cell 1 0,growx,aligny bottom");
 		
-		JLabel lblProjectTitle = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectTitle.text")); 
+		JLabel lblProjectTitle = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectTitle.text")); //$NON-NLS-1$
 		add(lblProjectTitle, "cell 0 1,alignx trailing");
 		
 		txtTitle = new JTextField();
@@ -88,7 +88,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtTitle.setDocument(maxLength);	
 		add(txtTitle, "cell 1 1,growx");
 		
-		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectPanel.lblAuthor.text")); 
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectPanel.lblAuthor.text")); //$NON-NLS-1$
 		add(lblAuthor, "cell 0 2,alignx trailing");
 		
 		txtAuthor = new JTextField();
@@ -97,10 +97,10 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtAuthor.setDocument(maxLength);
 		add(txtAuthor, "cell 1 2,growx");
 		
-		lbloptional = new JLabel(BUNDLE.getString("ProjectPanel.lbloptional.text")); 
+		lbloptional = new JLabel(BUNDLE.getString("ProjectPanel.lbloptional.text")); //$NON-NLS-1$
 		add(lbloptional, "cell 2 2");
 		
-		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectPanel.lblDate.text")); 
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectPanel.lblDate.text")); //$NON-NLS-1$
 		add(lblDate, "cell 0 3,alignx trailing");
 		
 		txtDate = new JTextField();
@@ -112,27 +112,27 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtDate.setText(dateFormat.format(date));
 		add(txtDate, "cell 1 3,growx");
 		
-		label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); 
+		label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); //$NON-NLS-1$
 		add(label, "cell 2 3");
 		
 		panelSrid = new JPanel();
-		panelSrid.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelSrid.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null)); 
+		panelSrid.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelSrid.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null)); //$NON-NLS-1$
 		panelSrid.setLayout(new MigLayout("", "[70px:n][217.00px:n][55px:n][::13.00px]", "[][][::217.00px,grow]"));
 		add(panelSrid, "cell 0 5 3 1,grow");
 
 		
-		JLabel lblFilter = new JLabel(BUNDLE.getString("ProjectPanel.lblFilter.text")); 
+		JLabel lblFilter = new JLabel(BUNDLE.getString("ProjectPanel.lblFilter.text")); //$NON-NLS-1$
 		panelSrid.add(lblFilter, "cell 0 0,alignx right");
 		
 		txtFilter = new JTextField(defaultSrid);
 		panelSrid.add(txtFilter, "cell 1 0,growx");
 		txtFilter.setColumns(10);
 		
-		chkImportData = new JCheckBox(BUNDLE.getString("ProjectPanel.chkImportData.text")); 
+		chkImportData = new JCheckBox(BUNDLE.getString("ProjectPanel.chkImportData.text")); //$NON-NLS-1$
 		chkImportData.setActionCommand("loadData");
 		add(chkImportData, "cell 0 6");
 		
-		lblFile = new JLabel(BUNDLE.getString("ProjectPanel.lblFile.text")); 
+		lblFile = new JLabel(BUNDLE.getString("ProjectPanel.lblFile.text")); //$NON-NLS-1$
 		add(lblFile, "cell 0 7,alignx right");
 		
 		scrollPane = new JScrollPane();
@@ -147,18 +147,18 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		btnFile.setActionCommand("chooseFile");
 		add(btnFile, "cell 2 7");
 		
-		btnAccept = new JButton(BUNDLE.getString("ProjectPanel.btnAccept.text")); 
+		btnAccept = new JButton(BUNDLE.getString("ProjectPanel.btnAccept.text")); //$NON-NLS-1$
 		btnAccept.setActionCommand("acceptProject");
 		add(btnAccept, "flowx,cell 1 9,alignx trailing");
 		
-		btnClose = new JButton(BUNDLE.getString("ProjectPanel.btnClose.text")); 
+		btnClose = new JButton(BUNDLE.getString("ProjectPanel.btnClose.text")); //$NON-NLS-1$
 		btnClose.setMaximumSize(new Dimension(65, 23));
 		btnClose.setMinimumSize(new Dimension(65, 23));
 		btnClose.setPreferredSize(new Dimension(65, 23));
 		btnClose.setActionCommand("closeProject");
 		add(btnClose, "cell 2 9,growx");
 		
-		JLabel lblType = new JLabel(BUNDLE.getString("ProjectPanel.lblType.text")); 
+		JLabel lblType = new JLabel(BUNDLE.getString("ProjectPanel.lblType.text")); //$NON-NLS-1$
 		panelSrid.add(lblType, "cell 0 1,alignx right");
 		
 		chkGeogcs = new JCheckBox("GEOGCS");
@@ -180,7 +180,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		
 		panelTable = new JScrollPane();
 		panelSrid.add(panelTable, "cell 0 2 3 1");
-		panelTable.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelTable.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP)); 
+		panelTable.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelTable.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP)); //$NON-NLS-1$
 		panelTable.setViewportView(tblSrid);
 		
 		setupListeners();

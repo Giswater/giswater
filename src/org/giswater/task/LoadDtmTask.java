@@ -54,7 +54,7 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 		
 		// Check if DTM table already exists
 		if (MainDao.checkTableHasData(schemaName, "mdt")) {
-			String msg = Utils.getBundleString("LoadDtmTask.dtm_already_loaded"); 
+			String msg = Utils.getBundleString("LoadDtmTask.dtm_already_loaded"); //$NON-NLS-1$
 			int res = Utils.showYesNoDialog(msg);
 			if (res != JOptionPane.YES_OPTION) return false;		
 		}
@@ -69,7 +69,7 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
 			String binFolder = MainDao.getBinFolder();
-			Utils.showError(Utils.getBundleString("LoadDtmTask.bin_folder_not_found")+binFolder+Utils.getBundleString("LoadDtmTask.set_admin_db"));  
+			Utils.showError(Utils.getBundleString("LoadDtmTask.bin_folder_not_found")+binFolder+Utils.getBundleString("LoadDtmTask.set_admin_db")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 		
@@ -110,10 +110,10 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
     public void done() {
     	
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("LoadDtmTask.wait_processing_window"), 20000); 
+    		MainClass.mdi.showMessage(Utils.getBundleString("LoadDtmTask.wait_processing_window"), 20000); //$NON-NLS-1$
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("LoadDtmTask.dtm_not_loaded")); 
+    		MainClass.mdi.showError(Utils.getBundleString("LoadDtmTask.dtm_not_loaded")); //$NON-NLS-1$
     	}
 		
     }

@@ -40,7 +40,7 @@ public class ExecuteDao extends MainDao {
 
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
-			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found")+binFolder+Utils.getBundleString("ExecuteDao.admin_location"));  
+			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found")+binFolder+Utils.getBundleString("ExecuteDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 		
@@ -64,7 +64,7 @@ public class ExecuteDao extends MainDao {
 			return false;
 		}
 		
-		MainClass.mdi.showMessage(Utils.getBundleString("ExecuteDao.project_saved")+sqlPath); 
+		MainClass.mdi.showMessage(Utils.getBundleString("ExecuteDao.project_saved")+sqlPath); //$NON-NLS-1$
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {}
@@ -79,7 +79,7 @@ public class ExecuteDao extends MainDao {
 		
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
-			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found2")+binFolder+Utils.getBundleString("ExecuteDao.admin_location2"));  
+			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found2")+binFolder+Utils.getBundleString("ExecuteDao.admin_location2")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 		
@@ -99,9 +99,9 @@ public class ExecuteDao extends MainDao {
 				existsBackup = checkSchema(backupName);
 				i++;
 			} while (existsBackup);
-			String msg = Utils.getBundleString("ExecuteDao.the_project")+schemaName+Utils.getBundleString("ExecuteDao.already_exists") +  
-				Utils.getBundleString("ExecuteDao.rename_automatically")+backupName+Utils.getBundleString("ExecuteDao.before_restoring") +  
-				Utils.getBundleString("ExecuteDao.would_continue"); 
+			String msg = Utils.getBundleString("ExecuteDao.the_project")+schemaName+Utils.getBundleString("ExecuteDao.already_exists") + //$NON-NLS-1$ //$NON-NLS-2$
+				Utils.getBundleString("ExecuteDao.rename_automatically")+backupName+Utils.getBundleString("ExecuteDao.before_restoring") + //$NON-NLS-1$ //$NON-NLS-2$
+				Utils.getBundleString("ExecuteDao.would_continue"); //$NON-NLS-1$
 			int answer = Utils.showYesNoDialog(msg);
 			if (answer != JOptionPane.YES_OPTION) return false;
 			// Rename current schema
@@ -171,7 +171,7 @@ public class ExecuteDao extends MainDao {
 
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
-			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found3")+binFolder+Utils.getBundleString("ExecuteDao.admin_location3"));  
+			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found3")+binFolder+Utils.getBundleString("ExecuteDao.admin_location3")); //$NON-NLS-1$ //$NON-NLS-2$
 			return false;
 		}
 		

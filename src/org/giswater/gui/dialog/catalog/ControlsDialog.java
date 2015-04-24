@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
 
 
 public class ControlsDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	
 	public ControlsDialog() {
@@ -49,13 +49,13 @@ public class ControlsDialog extends AbstractCatalogDialog {
 	
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("ControlsDialog.this.title")); 
+		setTitle(BUNDLE.getString("ControlsDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 344, 187);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[88.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ControlsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ControlsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
@@ -68,7 +68,7 @@ public class ControlsDialog extends AbstractCatalogDialog {
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		txtId.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel(BUNDLE.getString("ControlsDialog.lblAuthor.text")); 
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ControlsDialog.lblAuthor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
 		JTextField txtText = new JTextField();

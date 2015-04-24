@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 
 public class TimeseriesDetailDialog extends AbstractCatalogDialog {
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 
 	private String timesType;
 	private JTextField txtId;
@@ -65,17 +65,17 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 
 	private void initConfig() {
 
-		setTitle(BUNDLE.getString("TimeseriesDetailDialog.this.title")); 
+		setTitle(BUNDLE.getString("TimeseriesDetailDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 502, 196);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[109.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimeseriesDetailDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); 
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimeseriesDetailDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[60.00][150,grow][10px][80px][150]", "[][][]"));
 		
-		JLabel lblGeom = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom.text")); 
+		JLabel lblGeom = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom, "cell 0 0,alignx trailing");
 		
 		txtDate = new JTextField();
@@ -83,7 +83,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 		txtDate.setColumns(10);
 		panelGeneral.add(txtDate, "cell 1 0,growx");
 		
-		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_1.text")); 
+		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_1, "cell 3 0,alignx trailing");
 		
 		txtHour = new JTextField();
@@ -91,7 +91,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 		txtHour.setColumns(10);
 		panelGeneral.add(txtHour, "cell 4 0,growx");
 		
-		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_2.text")); 
+		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_2.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_2, "cell 0 1,alignx trailing");
 		
 		txtTime = new JTextField();
@@ -99,7 +99,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 		txtTime.setColumns(10);
 		panelGeneral.add(txtTime, "cell 1 1,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblNewLabel_1.text")); 
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblNewLabel_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblNewLabel_1, "cell 3 1,alignx trailing");
 		
 		txtValue = new JTextField();
@@ -107,7 +107,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 		txtValue.setColumns(10);
 		panelGeneral.add(txtValue, "cell 4 1,growx");
 		
-		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_3.text")); 
+		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_3.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_3, "cell 0 2,alignx trailing");
 		
 		txtFname = new JTextField();

@@ -377,7 +377,7 @@ public class CatalogController extends AbstractController {
 		
 		action = "other";
 		try {
-			int res = Utils.showYesNoDialog(Utils.getBundleString("CatalogController.delete_record")); 
+			int res = Utils.showYesNoDialog(Utils.getBundleString("CatalogController.delete_record")); //$NON-NLS-1$
 	        if (res == JOptionPane.YES_OPTION) {
 				rs.deleteRow();
 				rs.first();

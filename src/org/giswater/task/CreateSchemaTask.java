@@ -127,8 +127,8 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
-			String msg = Utils.getBundleString("CreateSchemaTask.project")+schemaName+Utils.getBundleString("CreateSchemaTask.overwrite_it");  
-			int res = Utils.showYesNoDialog(parentPanel, msg, Utils.getBundleString("CreateSchemaTask.project_create")); 
+			String msg = Utils.getBundleString("CreateSchemaTask.project")+schemaName+Utils.getBundleString("CreateSchemaTask.overwrite_it"); //$NON-NLS-1$ //$NON-NLS-2$
+			int res = Utils.showYesNoDialog(parentPanel, msg, Utils.getBundleString("CreateSchemaTask.project_create")); //$NON-NLS-1$
 			if (res != JOptionPane.YES_OPTION) return null; 
 			MainDao.deleteSchema(schemaName);
 		}
@@ -181,7 +181,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
     		}
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("CreateSchemaTask.project_not_created")); 
+    		MainClass.mdi.showError(Utils.getBundleString("CreateSchemaTask.project_not_created")); //$NON-NLS-1$
     	}
 		
     }
