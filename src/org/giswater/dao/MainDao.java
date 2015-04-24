@@ -227,8 +227,7 @@ public class MainDao {
 		else if (language.equals("pt_BR")) {
 			locale = new Locale("pt_BR", "PT_BR");
 		}	
-		Locale.setDefault(locale);		
-		Utils.setBundleText();
+		Utils.setLocale(locale);
 		
 	}
 
