@@ -368,7 +368,7 @@ public class EpaSoftController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_rules");
 		if (rs == null) return;		
 		ControlsDialog dialog = new ControlsDialog();
-		dialog.setTitle("Table inp_rules");
+		dialog.setTitle(Utils.getBundleString("EpaSoftController.table_rules"));
 		showCatalog(dialog, rs);
 	}
 	

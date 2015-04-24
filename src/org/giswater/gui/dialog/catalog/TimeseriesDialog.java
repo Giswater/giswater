@@ -181,7 +181,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 		btnDetailDelete.setActionCommand("detailDelete");
 		getContentPane().add(btnDetailDelete, "cell 1 2");
 		
-		btnSave = new JButton(BUNDLE.getString("Generic.Save.text"));
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
 		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");			

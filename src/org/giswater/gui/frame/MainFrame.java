@@ -402,7 +402,7 @@ public class MainFrame extends JFrame implements ActionListener {
         desktopPane.add(configFrame);
         
         // Set specific configuration
-        ppFrame.setTitle("Project Preferences");
+        ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
         epaSoftFrame.setTitle("Main form");
         
         // Define one controller per panel           
