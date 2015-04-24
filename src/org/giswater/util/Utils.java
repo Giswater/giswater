@@ -122,11 +122,20 @@ public class Utils {
 	   
 	
 	public static void setLocale(Locale locale) {
+		
 		Locale.setDefault(locale);	
 		bundleText = ResourceBundle.getBundle("text", locale);		
     	UIManager.put("OptionPane.yesButtonText", getBundleString("yes"));
     	UIManager.put("OptionPane.noButtonText",  getBundleString("no"));		
-    	UIManager.put("OptionPane.cancelButtonText",  getBundleString("cancel"));		
+    	UIManager.put("OptionPane.cancelButtonText",  getBundleString("cancel"));	
+    	UIManager.put("FileChooser.openButtonText",  getBundleString("open"));	
+    	UIManager.put("FileChooser.saveButtonText",  getBundleString("save"));	
+    	UIManager.put("FileChooser.cancelButtonText",  getBundleString("cancel"));	
+    	UIManager.put("FileChooser.lookInLabelText",  getBundleString("look_in"));	
+    	UIManager.put("FileChooser.saveInLabelText",  getBundleString("save_in"));	    	
+    	UIManager.put("FileChooser.fileNameLabelText",  getBundleString("file_name"));	
+    	UIManager.put("FileChooser.filesOfTypeLabelText",  getBundleString("file_of_type"));	
+	
 	}	
 	
 	

@@ -57,7 +57,7 @@ public class MainClass {
 				if (versionCode == null) {
 					versionCode = CURRENT_VERSION;
 				}
-				msg+= "\nVersion"+versionCode;
+				msg+= "\nVersion "+versionCode;
 				Utils.getLogger().info(msg);				
 				if (!MainDao.configIni(versionCode)) return;
 
