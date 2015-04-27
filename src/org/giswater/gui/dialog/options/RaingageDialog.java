@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,6 +54,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	private JPanel panelFile;
 	private JPanel panelTimeseries;
 	private JComboBox cboTimeseries;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	
 	public RaingageDialog() {

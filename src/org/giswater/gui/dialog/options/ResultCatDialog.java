@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,6 +43,7 @@ public class ResultCatDialog extends AbstractOptionsDialog {
 	private JButton btnPrevious;
 	private JButton btnNext;
 	private JButton btnDelete;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 	
 	public ResultCatDialog() {

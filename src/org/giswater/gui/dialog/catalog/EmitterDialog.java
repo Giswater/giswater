@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,6 +37,8 @@ import net.miginfocom.swing.MigLayout;
 
 
 public class EmitterDialog extends AbstractCatalogDialog {
+	
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	
 	public EmitterDialog() {

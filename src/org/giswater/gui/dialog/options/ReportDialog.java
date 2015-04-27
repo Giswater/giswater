@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +41,8 @@ import org.giswater.util.MaxLengthTextDocument;
 
 public class ReportDialog extends AbstractOptionsDialog {
 
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
+	
 	
 	public ReportDialog() {
 		initConfig();

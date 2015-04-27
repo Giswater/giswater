@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,6 +49,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 	private JLabel lblHeadTol;
 	private JLabel lblSysFlowTol;
 	private JLabel lblLatFlowTol;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");	
 	
 	
 	public OptionsDialog() {

@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -46,6 +47,7 @@ public class ArcCatalogDialog extends AbstractCatalogDialog {
 	protected JButton btnNext;
 	protected JButton btnCreate;
 	protected JButton btnDelete;	
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");	
 	
 	
 	public ArcCatalogDialog() {
