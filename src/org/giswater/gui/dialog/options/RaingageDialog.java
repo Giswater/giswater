@@ -140,6 +140,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelGeneral.add(textField_1, "cell 1 2,growx");
 
 		JLabel lblInfiltration = new JLabel(BUNDLE.getString("RaingageDialog.lblInfiltration.text")); //$NON-NLS-1$
+		lblInfiltration.setToolTipText(BUNDLE.getString("RaingageDialog.lblInfiltration.toolTipText")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 3 2,alignx trailing");
 		
 		textField_2 = new JTextField();
