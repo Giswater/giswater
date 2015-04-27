@@ -275,7 +275,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		chooser.setDialogTitle(Utils.getBundleString("gis_folder"));
 		File file = new File(gswProp.get("GIS_FOLDER", System.getProperty("user.home")));
 		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(this);
+		int returnVal = chooser.showSaveDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File folder = chooser.getSelectedFile();
 			setProjectFolder(folder.getAbsolutePath());
