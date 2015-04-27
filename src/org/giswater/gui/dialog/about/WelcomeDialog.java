@@ -84,8 +84,8 @@ public class WelcomeDialog extends JDialog {
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		setIconImage(iconImage.getImage());
 		setTitle(title);		
-		setSize(525, 220);
-		getContentPane().setLayout(new MigLayout("", "[518.00px]", "[8px][45.00][20px][20.00px][::20px][::20px][20px:n:20px]"));
+		setSize(615, 220);
+		getContentPane().setLayout(new MigLayout("", "[587.00px]", "[8px][45.00][20px][20.00px][::20px][::20px][20px:n:20px]"));
 		try {
 			urlWeb = new URI(URL_WEB);
 			urlGithub = new URI(URL_GITHUB);
@@ -98,7 +98,7 @@ public class WelcomeDialog extends JDialog {
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 145, 0, 205, 40, this);
+                g.drawImage(backgroundImage.getImage(), 190, 0, 205, 40, this);
             }
 
             @Override
