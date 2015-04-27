@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +39,8 @@ import org.giswater.util.MaxLengthTextDocument;
 
 public class ControlsDialog extends AbstractCatalogDialog {
 
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
+	
 	
 	public ControlsDialog() {
 		initConfig();

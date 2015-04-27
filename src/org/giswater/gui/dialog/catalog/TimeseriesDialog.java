@@ -21,12 +21,12 @@
 package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -54,6 +54,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 	private JScrollPane panelTable;
 	private JButton btnDetailCreate;
 	private JButton btnDetailDelete;	
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");	
 	
 	
 	public TimeseriesDialog() {
@@ -167,9 +168,7 @@ public class TimeseriesDialog extends AbstractCatalogDialog {
 		btnNext.setActionCommand("moveNext");
 		panelGeneral.add(btnNext, "cell 3 0");
 		
-		btnDetailCreate = new JButton(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.text")); //$NON-NLS-1$
-		btnDetailCreate.setMaximumSize(new Dimension(110, 23));
-		btnDetailCreate.setMinimumSize(new Dimension(87, 23));
+		btnDetailCreate = new JButton(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.text"));
 		btnDetailCreate.setToolTipText(BUNDLE.getString("TimeseriesDialog.btnDetailCreate.toolTipText")); //$NON-NLS-1$
 		btnDetailCreate.setActionCommand("detailCreate");
 		getContentPane().add(btnDetailCreate, "flowx,cell 1 2");

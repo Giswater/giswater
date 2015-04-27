@@ -706,7 +706,7 @@ public class MainFrame extends JFrame implements ActionListener {
 				ppFrame.getPanel().enableAccept(true);
 			}
 			else {
-				info+= "Any project data selected";
+				info+= Utils.getBundleString("MainFrame.project_data_selected");
 				ppFrame.getPanel().enableAccept(false);
 			}
 			lblInfo.setIcon(iconGreen);

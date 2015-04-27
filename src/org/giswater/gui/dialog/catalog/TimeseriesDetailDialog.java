@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -50,6 +51,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog {
 	private JTextField txtValue;
 	private TimeseriesDialog parent;
 	private JButton btnFileFname;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 	
 	public TimeseriesDetailDialog(TimeseriesDialog parentDialog, String timesType) {

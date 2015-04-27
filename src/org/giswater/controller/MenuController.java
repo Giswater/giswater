@@ -85,7 +85,7 @@ public class MenuController extends AbstractController {
 	public void openProject() { 
 		
 		// Select .sql to restore
-		String filePath = chooseSqlFile();
+		String filePath = chooseSqlFile(false);
 		if (filePath.equals("")) {
 			return;
 		}
@@ -107,7 +107,7 @@ public class MenuController extends AbstractController {
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
-		String filePath = chooseSqlFile();
+		String filePath = chooseSqlFile(true);
 		if (filePath.equals("")) {
 			return;
 		}
@@ -116,7 +116,7 @@ public class MenuController extends AbstractController {
 	}
 
 	
-    private String chooseSqlFile() {
+    private String chooseSqlFile(boolean save) {
 
     	String path = "";
         JFileChooser chooser = new JFileChooser();
@@ -126,7 +126,13 @@ public class MenuController extends AbstractController {
         chooser.setDialogTitle(Utils.getBundleString("MenuController.file_sql"));
         File file = new File(PropertiesDao.getLastSqlPath());
         chooser.setCurrentDirectory(file.getParentFile());
-        int returnVal = chooser.showOpenDialog(mainFrame);
+        int returnVal;
+        if (save) { 	
+        	returnVal = chooser.showSaveDialog(mainFrame);
+        }
+        else {
+        	returnVal = chooser.showOpenDialog(mainFrame);
+        }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileSql = chooser.getSelectedFile();
             path = fileSql.getAbsolutePath();
@@ -299,15 +305,18 @@ public class MenuController extends AbstractController {
 		File file = null;
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("GSW extension file", "gsw");
-        chooser.setFileFilter(filter);
+        chooser.setFileFilter(filter);          
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("MenuController.gsw_file"));
-        if (save) {
-        	chooser.setApproveButtonText("Save");        
-        }
         File fileProp = new File(prop.get("FILE_GSW", Utils.getLogFolder()));	
         chooser.setCurrentDirectory(fileProp.getParentFile());
-        int returnVal = chooser.showOpenDialog(mainFrame);
+        int returnVal;
+        if (save) { 	
+        	returnVal = chooser.showSaveDialog(mainFrame);
+        }
+        else {
+        	returnVal = chooser.showOpenDialog(mainFrame);
+        }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             file = chooser.getSelectedFile();
             path = file.getAbsolutePath();
@@ -517,7 +526,7 @@ public class MenuController extends AbstractController {
 		}
 		
 		// Get SQL file to execute
-		String filePath = chooseSqlFile();
+		String filePath = chooseSqlFile(false);
 		if (filePath.equals("")) return;
 		
 		// Get default SRID

@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -38,6 +39,7 @@ import org.giswater.util.Utils;
 public class ResultSelectionDialog extends AbstractOptionsDialog {
 
 	private JComboBox<String> cboResultSelection;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 
 	public ResultSelectionDialog() {

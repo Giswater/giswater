@@ -275,7 +275,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		chooser.setDialogTitle(Utils.getBundleString("gis_folder"));
 		File file = new File(gswProp.get("GIS_FOLDER", System.getProperty("user.home")));
 		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(this);
+		int returnVal = chooser.showSaveDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File folder = chooser.getSelectedFile();
 			setProjectFolder(folder.getAbsolutePath());
@@ -323,12 +323,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String gisType = getDataStorage();
 		
 		if (folder.equals("")) {
-			MainClass.mdi.showMessage("You have to select a Folder");
+			MainClass.mdi.showMessage(Utils.getBundleString("GisPanel.select_folder")); //$NON-NLS-1$
 			return;
 		}
 		
 		if (name.equals("")) {
-			MainClass.mdi.showMessage("You have to select a Name");
+			MainClass.mdi.showMessage(Utils.getBundleString("GisPanel.type_name")); //$NON-NLS-1$
 			return;
 		}
 		
@@ -354,7 +354,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 				}
 			} 
 			else {
-				MainClass.mdi.showMessage("You should connect to a Database");
+				MainClass.mdi.showMessage(Utils.getBundleString("GisPanel.connect_database")); //$NON-NLS-1$
 				this.enableControls(false);				
 				this.setSchemaModel(null);				
 			}			
@@ -424,9 +424,9 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			
 			// Check if QGIS file extension is associated
 			if (!Utils.isQgisAssociated()) {
-				String msg = "WARNING:\nYou are about to generate a QGIS project, but it seems that you have not installed QGIS software." + 
-					"\nIf that is true, please visit http://www.qgis.org and download it." +
-					"\nDo you want to continue?";
+				String msg = Utils.getBundleString("GisPanel.warning_qgis1") +  //$NON-NLS-1$
+					Utils.getBundleString("GisPanel.warning_qgis2") + //$NON-NLS-1$
+					Utils.getBundleString("GisPanel.warning_qgis3"); //$NON-NLS-1$
 				int answer = Utils.showYesNoDialog(this, msg);
 		        if (answer == JOptionPane.NO_OPTION) return;	        	
 			}

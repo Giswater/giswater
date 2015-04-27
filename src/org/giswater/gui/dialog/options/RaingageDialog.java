@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,6 +54,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 	private JPanel panelFile;
 	private JPanel panelTimeseries;
 	private JComboBox cboTimeseries;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
 	
 	public RaingageDialog() {
@@ -138,6 +140,7 @@ public class RaingageDialog extends AbstractOptionsDialog {
 		panelGeneral.add(textField_1, "cell 1 2,growx");
 
 		JLabel lblInfiltration = new JLabel(BUNDLE.getString("RaingageDialog.lblInfiltration.text")); //$NON-NLS-1$
+		lblInfiltration.setToolTipText(BUNDLE.getString("RaingageDialog.lblInfiltration.toolTipText")); //$NON-NLS-1$
 		panelGeneral.add(lblInfiltration, "cell 3 2,alignx trailing");
 		
 		textField_2 = new JTextField();
