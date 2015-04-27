@@ -45,6 +45,7 @@ import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CreateExampleSchemaTask;
+import org.giswater.task.FileLauncherTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -514,24 +515,34 @@ public class MenuController extends AbstractController {
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
+		
 		// Get SQL file to execute
 		String filePath = chooseSqlFile();
-		if (filePath.equals("")) {
-			return;
-		}
+		if (filePath.equals("")) return;
+		
+		// Get default SRID
+		String defaultSrid = PropertiesDao.getPropertiesFile().get("SRID_DEFAULT", "25831");	
 		
 		try {
-			// Get contents of the file. Replace SCHEMA_NAME for the current one selected
-	    	String content = Utils.readFile(filePath);
-			content = content.replace("SCHEMA_NAME", schema);
-			Utils.logSql(content);
-			Exception e = MainDao.executeSql(content, false, "");
-			if (e == null) {
-				MainClass.mdi.showMessage(Utils.getBundleString("MenuController.file_executed_successfully")); //$NON-NLS-1$
-			}
-			else {
-				Utils.showError(Utils.getBundleString("MenuController.errors_found"), e.getMessage()); //$NON-NLS-1$
-			}
+			// Copy file to users folder
+			String tempPath = Utils.getLogFolder()+"temp.sql";
+			Utils.copyFile(filePath, tempPath);
+			
+			// Search if we have _PARAM_ in the file
+			// If found, ask user to input param value. Replace _PARAM_ with this value
+	    	String content = Utils.readFile(tempPath);
+	    	if (content.contains("_PARAM_")) {
+	    		String msg = Utils.getBundleString("MenuController.parameter_found");
+	    		String answer = Utils.showInputDialog(mainFrame, msg);
+	    		if (answer == null) return;
+	    		content = content.replace("_PARAM_", answer);
+	    	}
+	    	
+			// Execute task: FileLauncher
+			FileLauncherTask task = new FileLauncherTask(content, schema, defaultSrid);
+	        task.addPropertyChangeListener(this);
+	        task.execute();
+	        
         } catch (IOException e) {
             Utils.showError(e, filePath);
         }

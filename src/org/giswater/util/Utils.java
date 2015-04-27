@@ -378,6 +378,10 @@ public class Utils {
     	return JOptionPane.showConfirmDialog(comp, getBundleString(msg), getBundleString("inp_descr"), JOptionPane.YES_NO_CANCEL_OPTION);  	
     }       
     
+    public static String showInputDialog(Component comp, String msg) {
+    	return JOptionPane.showInputDialog(comp, getBundleString(msg));  	
+    }       
+    
     
     public static void execService(String process) {
 		
