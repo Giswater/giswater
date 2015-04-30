@@ -167,7 +167,7 @@ public class MainDao {
         }
          	
         // Set Locale
-        setLocale();       
+        setLocale();     
         
     	// Log SQL?
     	Utils.setSqlLog(PropertiesDao.getPropertiesFile().get("SQL_LOG", "false"));
@@ -225,7 +225,7 @@ public class MainDao {
 			locale = new Locale("pt", "PT");
 		}
 		else if (language.equals("pt_BR")) {
-			locale = new Locale("pt_BR", "PT_BR");
+			locale = new Locale("pt", "BR");
 		}	
 		Utils.setLocale(locale);
 		
