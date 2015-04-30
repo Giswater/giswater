@@ -61,7 +61,6 @@ public class MainDao {
 	private static String giswaterVersion;
 	private static String postgreVersion;
 	private static String postgisVersion;
-	private static Boolean updateSchemaVersion = true;   // If true, schemas will be updated to the last version available
 	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
 	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
     
@@ -934,28 +933,35 @@ public class MainDao {
 		Integer updateVersion = updateMap.get(waterSoftware);
 		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
 		if (updateVersion == null || updateVersion == -1) return;
-		if (updateVersion > schemaVersion && updateSchemaVersion) {
-			String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version") + //$NON-NLS-1$ //$NON-NLS-2$
-				Utils.getBundleString("MainDao.advisable_backup"); //$NON-NLS-1$
-			int answer = Utils.showYesNoDialog(msg, Utils.getBundleString("MainDao.update_project")); //$NON-NLS-1$
-			if (answer == JOptionPane.YES_OPTION) {
-				if (schemaVersion == -1) {
-					String sql = "CREATE TABLE IF NOT EXISTS "+schema+".version (" +
-						" id SERIAL, giswater varchar(16), wsoftware varchar(16), postgres varchar(512)," +
-						" postgis varchar(512),	date timestamp(6) DEFAULT now(), CONSTRAINT version_pkey PRIMARY KEY (id))";
-					executeSql(sql, true);
+		
+		// Get project_update value from Properties file
+		String projectUpd = PropertiesDao.getPropertiesFile().get("PROJECT_UPDATE", "ask");
+		if (updateVersion > schemaVersion && !projectUpd.equals("never")) {
+			if (projectUpd.equals("ask")) {
+				String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version") + //$NON-NLS-1$ //$NON-NLS-2$
+					Utils.getBundleString("MainDao.advisable_backup"); //$NON-NLS-1$
+				int answer = Utils.showYesNoDialog(msg, Utils.getBundleString("MainDao.update_project")); //$NON-NLS-1$
+				if (answer == JOptionPane.NO_OPTION) {
+					Utils.getLogger().info("User chose not to update");
+					return;
 				}
-				if (updateSchema(schemaVersion)) {
-					String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
-						" VALUES ('"+getGiswaterVersion()+"', '"+waterSoftware+"', '"+getPostgreVersion()+"', '"+getPostgisVersion()+"', now())";
-					Utils.getLogger().info(sql);
-					executeSql(sql, true);
-					MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); //$NON-NLS-1$
-					schemaMap.remove(schema);
-				}
-				else {
-					MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated")); //$NON-NLS-1$
-				}
+			}
+			if (schemaVersion == -1) {
+				String sql = "CREATE TABLE IF NOT EXISTS "+schema+".version (" +
+					" id SERIAL, giswater varchar(16), wsoftware varchar(16), postgres varchar(512)," +
+					" postgis varchar(512),	date timestamp(6) DEFAULT now(), CONSTRAINT version_pkey PRIMARY KEY (id))";
+				executeSql(sql, true);
+			}
+			if (updateSchema(schemaVersion)) {
+				String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
+					" VALUES ('"+getGiswaterVersion()+"', '"+waterSoftware+"', '"+getPostgreVersion()+"', '"+getPostgisVersion()+"', now())";
+				Utils.getLogger().info(sql);
+				executeSql(sql, true);
+				MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); //$NON-NLS-1$
+				schemaMap.remove(schema);
+			}
+			else {
+				MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated")); //$NON-NLS-1$
 			}
 		}
 		

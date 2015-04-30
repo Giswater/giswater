@@ -299,10 +299,10 @@ public class EpaSoftController extends AbstractController {
 		if (rs == null) return;
 		MaterialsDialog dialog = new MaterialsDialog();
 		if (ppPanel.getWaterSoftware().equals("EPASWMM")){
-			dialog.setName(Utils.getBundleString("EpaSoftController.n"));
+			dialog.setOther(Utils.getBundleString("EpaSoftController.n"), "n");
 		}
 		else{
-			dialog.setName(Utils.getBundleString("EpaSoftController.roughness"));
+			dialog.setOther(Utils.getBundleString("EpaSoftController.roughness"), "roughness");
 		}		
 		showCatalog(dialog, rs);
 		

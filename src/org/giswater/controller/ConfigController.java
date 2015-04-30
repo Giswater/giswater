@@ -53,6 +53,7 @@ public class ConfigController extends AbstractController {
 		view.setAutoStart(prop.get("AUTOSTART_POSTGIS"));
 		view.setOpenInp(prop.get("OPEN_INP"));
 		view.setOpenRpt(prop.get("OPEN_RPT"));
+		view.setProjectUpdate(prop.get("PROJECT_UPDATE"));
 		view.setOverwriteInp(prop.get("OVERWRITE_INP"));
 		view.setOverwriteRpt(prop.get("OVERWRITE_RPT"));
 		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
@@ -83,6 +84,7 @@ public class ConfigController extends AbstractController {
 		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
+		prop.put("PROJECT_UPDATE", view.getProjectUpdate());		
 		prop.put("SQL_LOG", view.getSqlLog());				
 		prop.put("SRID_QUESTION", view.getSridQuestion());		
 		prop.put("LOAD_RASTER", view.getLoadRaster());		

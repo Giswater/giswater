@@ -49,8 +49,8 @@ public class MaterialsDialog extends AbstractCatalogDialog {
 	}	
 
 	
-	public void setName(String name) {
-		lblOther.setText(name + ":");
+	public void setOther(String text, String name) {
+		lblOther.setText(text + ":");
 		txtOther.setName(name);
 		createComponentMap();
 	}
