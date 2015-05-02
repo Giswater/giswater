@@ -24,6 +24,7 @@ import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -519,7 +520,7 @@ public class MenuController extends AbstractController {
 		
 		// Get selected schema
 		String schema = MainDao.getSchema();
-		if (schema == null) {
+		if (schema == null || schema.equals("")) {
 			String msg = Utils.getBundleString("MenuController.project_not_selected_backup2"); //$NON-NLS-1$
 			MainClass.mdi.showMessage(msg);
 			return;
@@ -537,14 +538,31 @@ public class MenuController extends AbstractController {
 			String tempPath = Utils.getLogFolder()+"temp.sql";
 			Utils.copyFile(filePath, tempPath);
 			
-			// Search if we have _PARAM_ in the file
+			// Search if we have _PARAM in the file
 			// If found, ask user to input param value. Replace _PARAM_ with this value
 	    	String content = Utils.readFile(tempPath);
-	    	if (content.contains("_PARAM_")) {
-	    		String msg = Utils.getBundleString("MenuController.parameter_found");
-	    		String answer = Utils.showInputDialog(mainFrame, msg);
-	    		if (answer == null) return;
-	    		content = content.replace("_PARAM_", answer);
+	    	if (content.contains("_PARAM")) {
+	    		// Get parameters list
+	    		HashMap<String, String> mapParams = new HashMap<String, String>();
+	    		int i = 0;
+	    		int offset = 0;
+	    		while (offset > -1) {
+	    			offset = content.indexOf("_PARAM", i);
+	    			if (offset > -1) {
+	    				int aux = content.indexOf("_", offset + 1);
+	    				String paramName = content.substring(offset, aux + 1);
+	    				// If is a new one, ask user for its value
+	    				if (!mapParams.containsKey(paramName)) {
+	    					String msg = Utils.getBundleString("MenuController.parameter_found")+" '"+paramName+"' "+Utils.getBundleString("MenuController.parameter_found2");
+	    					String value = null;
+	    					while (value == null || value.equals("")) {
+	    						value = Utils.showInputDialog(mainFrame, msg);
+	    					}
+	    					content = content.replace(paramName, value);
+	    					mapParams.put(paramName, value);
+	    				}
+	    			}
+	    		}
 	    	}
 	    	
 			// Execute task: FileLauncher

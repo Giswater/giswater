@@ -35,10 +35,14 @@ BEGIN
 
     SELECT * INTO optionsRecord FROM inp_options LIMIT 1;
 
-
---  Control de lineas de longitud 0
+--  Control of length line
     IF (nodeRecord1.node_id IS NOT NULL) AND (nodeRecord2.node_id IS NOT NULL) THEN
-
+		
+--  Control of same node initial and final
+    IF (nodeRecord1.node_id = nodeRecord2.node_id) THEN
+	RAISE EXCEPTION 'One or more features has the same Node as Node1 and Node2. Please check your project and repair it!';
+	ELSE
+	
 --  Update coordinates
     NEW.the_geom := ST_SetPoint(NEW.the_geom, 0, nodeRecord1.the_geom);
     NEW.the_geom := ST_SetPoint(NEW.the_geom, ST_NumPoints(NEW.the_geom) - 1, nodeRecord2.the_geom);
@@ -66,6 +70,7 @@ BEGIN
 			NEW.node_2 := nodeRecord1.node_id;
 		END IF;
         RETURN NEW;
+	END IF;
 	ELSE
     RETURN NULL;
     END IF;

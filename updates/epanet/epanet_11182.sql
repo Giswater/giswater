@@ -28,21 +28,23 @@ DECLARE
 	SELECT * INTO nodeRecord2 FROM node WHERE node.the_geom && ST_Expand(ST_endpoint(NEW.the_geom), 0.5)
 		ORDER BY ST_Distance(node.the_geom, ST_endpoint(NEW.the_geom)) LIMIT 1;
 
-
---	Control de lineas de longitud 0
-	IF (nodeRecord1.node_id IS NOT NULL) AND (nodeRecord2.node_id IS NOT NULL) THEN
-	
+--  Control of length line
+    IF (nodeRecord1.node_id IS NOT NULL) AND (nodeRecord2.node_id IS NOT NULL) THEN
+		
+--  Control of same node initial and final
+    IF (nodeRecord1.node_id = nodeRecord2.node_id) THEN
+	RAISE EXCEPTION 'One or more features has the same Node as Node1 and Node2. Please check your project and repair it!';
+	ELSE
+		
 --  Update coordinates
-    NEW.the_geom := ST_SetPoint(NEW.the_geom, 0, nodeRecord1.the_geom);
-    NEW.the_geom := ST_SetPoint(NEW.the_geom, ST_NumPoints(NEW.the_geom) - 1, nodeRecord2.the_geom);
-
+			NEW.the_geom := ST_SetPoint(NEW.the_geom, 0, nodeRecord1.the_geom);
+			NEW.the_geom := ST_SetPoint(NEW.the_geom, ST_NumPoints(NEW.the_geom) - 1, nodeRecord2.the_geom);
 			NEW.node_1 := nodeRecord1.node_id; 
 			NEW.node_2 := nodeRecord2.node_id;
-
-		RETURN NEW;
-
+			RETURN NEW;
+	END IF;
 	ELSE
-		RETURN NULL;
+	RETURN NULL;
 	END IF;
 
 END; 
