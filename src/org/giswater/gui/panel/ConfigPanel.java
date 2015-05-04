@@ -385,7 +385,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[190px:n:190px][6px:n][75px:n:75px][80px:n:80px][60px:n:60px][100px:n:100px][80px:n:80px]", "[8px:n][][][][][][][][][][][][][5px:n][][][34px:n][5px:n][18px:n][18px:n][8px:n][]"));
+		setLayout(new MigLayout("", "[150px:n:150px][6px:n][75px:n:75px][85px:n:85px][60px:n:60px][110px:n:110px][80px:n:80px]", "[8px:n][][][][][][][][][][][][][5px:n][][][34px:n][5px:n][18px:n][18px:n][8px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -591,10 +591,10 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
 		
 		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
-		add(lblNotepad, "cell 1 18 5 1");
+		add(lblNotepad, "cell 2 18 5 1");
 		
 		JLabel lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text"));
-		add(lblNotepad2, "cell 1 19 6 1");
+		add(lblNotepad2, "cell 2 19 5 1");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(4);		
 		
 		txtLogFolderSize = new JTextField();

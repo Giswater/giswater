@@ -107,7 +107,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelDataManager = new JPanel();
 		panelDataManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelDataManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelDataManager, "cell 0 1 2 1,grow");
-		panelDataManager.setLayout(new MigLayout("", "[150px][150][150][150px][]", "[][]"));
+		panelDataManager.setLayout(new MigLayout("", "[150px][150][150][150px][5px:n]", "[][]"));
 		
 		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text"));
 		btnMaterialCatalog.setEnabled(false);
@@ -156,12 +156,12 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelPreprocess, "cell 0 3 2 1,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[120px:n][120px:n][120px:n][121px:n]", "[]"));
+		panelPreprocess.setLayout(new MigLayout("", "[150px][150px][150px][150px][5px:n]", "[]"));
 		
 		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection"); 
-		panelPreprocess.add(btnSectorSelection, "cell 0 0,alignx center");
+		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
 		
 		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
 		btnOptions.setEnabled(false);
