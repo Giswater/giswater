@@ -131,6 +131,7 @@ public class NewProjectController extends AbstractController {
 		
 		String validate = schemaName.trim().toLowerCase();
 		validate = validate.replace(" ", "_");
+		validate = validate.replace("-", "_");
 		validate = validate.replaceAll("[^\\p{ASCII}]", "");
 		return validate;
 		

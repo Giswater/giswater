@@ -109,7 +109,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[8px:n][115px:n:115px][110px:n:110px][70px:n:70px][70px:n:70px][5px:n:5px][100.00px:n:100px][72px:n:72px][20px:n:20px]", "[][][3px:n][61.00][351.00][]"));
+		setLayout(new MigLayout("", "[8px:n][115px:n:115px][100px:n:100px][75px:n:75px][75px:n:75px][5px:n:5px][90px:n:90px][72px:n:72px][15px:n:20px]", "[][][3px:n][61.00][351.00][]"));
 		
 		JLabel lblWaterSoftware = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblWaterSoftware.text")); //$NON-NLS-1$
 		add(lblWaterSoftware, "cell 0 0 2 1,alignx right");
@@ -166,7 +166,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		btnFolderShp = new JButton();
 		btnFolderShp.setMinimumSize(new Dimension(72, 9));
-		panelDbf.add(btnFolderShp, "cell 3 0,alignx right");
+		panelDbf.add(btnFolderShp, "cell 3 0,growx");
 		btnFolderShp.setText("...");
 		btnFolderShp.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFolderShp.setActionCommand("chooseFolderShp");
@@ -245,7 +245,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelManagement = new JPanel();
 		panelDB.add(panelManagement, "cell 0 1");
 		panelManagement.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelManagement.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
-		panelManagement.setLayout(new MigLayout("", "[80px:n:80px][100px,grow][59px][][][][]", "[23px][][]"));
+		panelManagement.setLayout(new MigLayout("", "[80px:n:80px][100px:n:100px,grow][50px:n:50px][][][72px:n:72px][]", "[23px][][]"));
 		
 		JLabel lblProject = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblProject.text")); 
 		panelManagement.add(lblProject, "cell 0 0,alignx right");
@@ -277,14 +277,14 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnRename.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnRename.setEnabled(false);
 		btnRename.setActionCommand("renameSchema");
-		panelManagement.add(btnRename, "cell 5 0,alignx right");
+		panelManagement.add(btnRename, "cell 5 0,growx");
 		
 		btnCopy = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopy.text"));
 		btnCopy.setPreferredSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setMinimumSize(new Dimension(BUTTON_WIDTH, 23));
 		btnCopy.setEnabled(false);
 		btnCopy.setActionCommand("copySchema"); 
-		panelManagement.add(btnCopy, "cell 6 0,alignx right");
+		panelManagement.add(btnCopy, "cell 6 0,growx");
 		
 		JLabel lblTitle = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblTitle.text")); 
 		panelManagement.add(lblTitle, "cell 0 1,alignx right");
