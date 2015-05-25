@@ -370,17 +370,15 @@ public class MenuController extends AbstractController {
        	if (autoConnect && remember) {
        		MainDao.silenceConnection();
        		ppPanel.setDatabase(MainDao.getDb());
-        }
+       	}
         
         // Update text open/close button
 		if (MainDao.isConnected()) {
-			ppPanel.setConnectionText(Utils.getBundleString("close_connection"));
-			ppPanel.enableConnectionParameters(false);			
+			ppPanel.setConnectionText(Utils.getBundleString("close_connection"));				
 			mainFrame.enableMenuDatabase(true);
 		}
 		else {
-			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));
-			ppPanel.enableConnectionParameters(true);			
+			ppPanel.setConnectionText(Utils.getBundleString("open_connection"));	
 			mainFrame.enableMenuDatabase(false);
 		}
 		ppPanel.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));

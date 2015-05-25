@@ -173,7 +173,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		panelDB = new JPanel();
 		panelDB.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelDatastorage.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		//panelDB.setBorder(new TitledBorder(null, "Database Storage", TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelDB, "cell 0 4 9 1,grow");
 		panelDB.setLayout(new MigLayout("", "[]", "[][]"));
 		
@@ -640,5 +639,16 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		disableProjectDataInfo();
 	}
 
+	public void enableDbControls(boolean enabled) {
+		cboDriver.setEnabled(enabled);
+		txtIP.setEnabled(enabled);
+		txtPort.setEnabled(enabled);
+		txtDatabase.setEnabled(enabled);
+		txtUser.setEnabled(enabled);
+		txtPassword.setEnabled(enabled);
+		chkRemember.setEnabled(enabled);
+		chkSsl.setEnabled(enabled);
+	}
+	
 		
 }

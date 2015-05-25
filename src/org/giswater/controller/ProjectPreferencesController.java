@@ -267,19 +267,18 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	
 	public void testConnection() {
-	
+		
 		if (MainDao.isConnected()) {
 			closeConnection();
-			mainFrame.enableMenuDatabase(false);
-			view.enableConnectionParameters(true);			
+			mainFrame.enableMenuDatabase(false);		
 		}
 		else {
 			if (openConnection()) {
-				mainFrame.enableMenuDatabase(true);
-				view.enableConnectionParameters(false);
+				mainFrame.enableMenuDatabase(true);	
 			}
 		}
 		selectSourceType(false);
+		view.enableDbControls(!MainDao.isConnected());		
 		
 		// Update Status Bar
 		mainFrame.updateConnectionInfo();
@@ -293,6 +292,7 @@ public class ProjectPreferencesController extends AbstractController {
 		mainFrame.hecRasFrame.getPanel().enableControls(false);
 		MainDao.closeConnectionPostgis();
 		mainFrame.showMessage("connection_closed");			
+		view.enableDbControls(true);			
 		
 	}
 	
@@ -363,6 +363,8 @@ public class ProjectPreferencesController extends AbstractController {
 
 		} 
 
+		view.enableDbControls(!isConnected);	
+		
 		return isConnected;
 		
 	}	
@@ -396,6 +398,7 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.enableAccept(false);
 				hecRasPanel.enableControls(false);
 			}
+			view.enableDbControls(!MainDao.isConnected());			
 			mainFrame.updateConnectionInfo();
 		}
 		
