@@ -72,52 +72,25 @@ public class NewProjectController extends AbstractController {
         
 	}
 	
-		
-	public void checkedType() {
-
-		String filterType = "";
-		Boolean isGeo = view.isGeoSelected();
-		Boolean isProj = view.isProjSelected();
-		if (!isGeo && !isProj) {
-			Utils.showMessage(Utils.getBundleString("NewProjectController.select_one_type")); //$NON-NLS-1$
-			return;
-		}
-		if (isGeo) {
-			filterType = "substr(srtext, 1, 6) = 'GEOGCS'";
-		}
-		if (isProj) {
-			if (!filterType.equals("")) {
-				filterType+= " OR ";
-			}
-			filterType+= "substr(srtext, 1, 6) = 'PROJCS'";
-		}
-		updateTableModel(filterType);
-		
-	}
-	
 	
 	public void updateTableModel() {
-		updateTableModel("");
-	}
-	
-	
-	public void updateTableModel(String filterType) {
 		
 		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
 		sql+= " FROM public.spatial_ref_sys";
 		String filter = view.getFilter();
-		if (!filter.equals("")){
+		
+		// SRID: Select only PROJCS
+		if (!filter.equals("")) {
 			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
 		} 
-		if (!filterType.equals("")) {
-			if (filter.equals("")) {
-				sql+= " WHERE ";
-			}
-			else{
-				sql+= " AND ";
-			}
-			sql+= "("+filterType+")";
-		} 
+		String filterType = "substr(srtext, 1, 6) = 'PROJCS'";
+		if (filter.equals("")) {
+			sql+= " WHERE ";
+		}
+		else{
+			sql+= " AND ";
+		}
+		sql+= "("+filterType+")";
 		
 		sql+= " ORDER BY substr(srtext, 1, 6), srid";
 		ResultSet rs = MainDao.getResultset(sql);

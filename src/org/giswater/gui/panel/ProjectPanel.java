@@ -40,8 +40,6 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	private JTextField txtFilter;
 	private JTextField txtAuthor;
 	private JTextField txtDate;
-	private JCheckBox chkGeogcs;
-	private JCheckBox chkProjcs;
 	private JScrollPane panelTable;
 	private JTable tblSrid;
 	private JButton btnAccept;
@@ -56,6 +54,7 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
+	private JLabel lblTypeInfo;
 	
 	
 	public ProjectPanel(String defaultSrid) {
@@ -156,25 +155,15 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		btnClose.setActionCommand("closeProject");
 		add(btnClose, "cell 2 9,growx");
 		
-		JLabel lblType = new JLabel(BUNDLE.getString("ProjectPanel.lblType.text")); //$NON-NLS-1$
-		panelSrid.add(lblType, "cell 0 1,alignx right");
-		
-		chkGeogcs = new JCheckBox("GEOGCS");
-		panelSrid.add(chkGeogcs, "flowx,cell 1 1");
-		chkGeogcs.setActionCommand("checkedType");
-		chkGeogcs.setSelected(true);
-		
-		chkProjcs = new JCheckBox("PROJCS");
-		panelSrid.add(chkProjcs, "cell 1 1");
-		chkProjcs.setActionCommand("checkedType");
-		chkProjcs.setSelected(true);
-		
 		tblSrid = new JTable();
 		tblSrid.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		tblSrid.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblSrid.setAutoCreateRowSorter(true);
 		tblSrid.setRowHeight(20);
 		tblSrid.getTableHeader().setReorderingAllowed(false);	
+		
+		lblTypeInfo = new JLabel(BUNDLE.getString("ProjectPanel.lblTypeInfo.text")); //$NON-NLS-1$
+		panelSrid.add(lblTypeInfo, "cell 1 1");
 		
 		panelTable = new JScrollPane();
 		panelSrid.add(panelTable, "cell 0 2 3 1");
@@ -191,13 +180,11 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		txtFilter.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (controller != null){
+				if (controller != null) {
 					controller.updateTableModel();
 				}
 			}
 		});
-		chkGeogcs.addActionListener(this);
-		chkProjcs.addActionListener(this);
 		chkImportData.addActionListener(this);
 		btnFile.addActionListener(this);
 		btnAccept.addActionListener(this);
@@ -258,14 +245,6 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	public String getDate() {
 		return txtDate.getText().trim();
 	}	
-	
-	public Boolean isGeoSelected(){
-		return chkGeogcs.isSelected();
-	}
-	
-	public Boolean isProjSelected(){
-		return chkProjcs.isSelected();
-	}
 	
 	public String getSrid() {
 		int row = tblSrid.getSelectedRow();
