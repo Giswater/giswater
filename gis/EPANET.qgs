@@ -816,7 +816,7 @@
         <edittype widgetv2type="TextEdit" name="max_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="min_quality">
+        <edittype widgetv2type="Hidden" name="min_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
@@ -1152,7 +1152,7 @@
         <edittype widgetv2type="TextEdit" name="max_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="min_quality">
+        <edittype widgetv2type="Hidden" name="min_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
@@ -6309,7 +6309,7 @@
         <edittype widgetv2type="TextEdit" name="min_pressure">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="max_quality">
+        <edittype widgetv2type="Hidden" name="max_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="min_quality">
@@ -6645,7 +6645,7 @@
         <edittype widgetv2type="TextEdit" name="min_pressure">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="max_quality">
+        <edittype widgetv2type="Hidden" name="max_quality">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="min_quality">
