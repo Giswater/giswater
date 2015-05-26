@@ -119,6 +119,12 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
             }
 		}
 		
+		// Check if we're working with EPASWMM version 5.1
+        boolean isVersion51 = false;
+        if (!ppPanel.getVersionSoftware().equals("EPASWMM_50022")) {
+        	isVersion51 = true;
+        }		
+		
         // Export to INP
         if (exportSelected) {
             if (fileInp == null) {
@@ -133,10 +139,6 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }               
             boolean selected = view.isSubcatchmentsSelected();
-            boolean isVersion51 = false;
-            if (!ppPanel.getVersionSoftware().equals("EPASWMM_50022")) {
-            	isVersion51 = true;
-            }
             continueExec = ExportToInp.process(fileInp, selected, isVersion51);
         }
 

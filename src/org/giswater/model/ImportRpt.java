@@ -58,11 +58,12 @@ public class ImportRpt extends Model {
 	private static String projectName;
 	
 	private static LinkedHashMap<Integer, RptTarget> mapRptTargets = null;
+	private static RptTarget rptTarget;   // Current Target being processed
 	
 	// Each rptElem corresponds to one line of a .rpt file
 	private static RptToken rptToken = null;
 	private static ArrayList<RptToken> rptTokens;	
-	private static ArrayList<ArrayList<RptToken>> rptTokensList;	
+	private static ArrayList<ArrayList<RptToken>> rptTokensList;
 	
 	
 	// Import RPT file into Postgis tables
@@ -72,7 +73,7 @@ public class ImportRpt extends Model {
 
     	abortRptProcess = false; 
     	ImportRpt.fileRpt = fileRpt;
-    	ImportRpt.projectName = projectName;
+    	ImportRpt.projectName = projectName;	
 
     	// Ask confirmation to user
         String importRpt = PropertiesDao.getPropertiesFile().get("AUTO_IMPORT_RPT", "false").toLowerCase();
@@ -129,11 +130,11 @@ public class ImportRpt extends Model {
         while (it.hasNext()) {
         	insertSql = "";
             Map.Entry<Integer, RptTarget> mapEntry = it.next();
-            RptTarget rptTarget = mapEntry.getValue();
-            boolean ok = processRptTarget(rptTarget);
+            rptTarget = mapEntry.getValue();
+            boolean ok = processRptTarget();
 			if (abortRptProcess) return false;
             if (!continueProcess) return false;
-            postProcessTarget(rptTarget, ok, true, overwrite, exists);
+            postProcessTarget(ok, true, overwrite, exists);
         }
 
         // Insert into result_selection commiting transaction
@@ -153,7 +154,7 @@ public class ImportRpt extends Model {
         	
         	insertSql = "";
             Map.Entry<Integer, RptTarget> mapEntry = it.next();
-            RptTarget rptTarget = mapEntry.getValue();
+            rptTarget = mapEntry.getValue();
             boolean ok = false;
             boolean processTarget = true;
             boolean continueTarget;
@@ -177,7 +178,7 @@ public class ImportRpt extends Model {
 	    		}            			
     			while (continueTarget) {
         			insertSql = "";       
-    				ok = processRptTargetEpanet(rptTarget);
+    				ok = processRptTargetEpanet();
     				if (abortRptProcess) return false;
     	        	if (ok) {
     		    		if (!insertSql.equals("")) {
@@ -200,12 +201,12 @@ public class ImportRpt extends Model {
     		
     		// Target different than node or arc
     		else {
-				ok = processRptTargetEpanet(rptTarget);
+				ok = processRptTargetEpanet();
 				if (abortRptProcess) return false;				
     		}
             
             if (!continueProcess) return false;
-            postProcessTarget(rptTarget, ok, processTarget, overwrite, exists);
+            postProcessTarget(ok, processTarget, overwrite, exists);
         	
         } // end iterations over targets (while)
 
@@ -217,7 +218,7 @@ public class ImportRpt extends Model {
 	}
     
     
-	private static boolean postProcessTarget(RptTarget rptTarget, boolean ok, boolean processTarget, boolean overwrite, boolean exists) {
+	private static boolean postProcessTarget(boolean ok, boolean processTarget, boolean overwrite, boolean exists) {
 		
 		String sql;
     	if (ok && processTarget) {
@@ -366,7 +367,7 @@ public class ImportRpt extends Model {
 
 		
 	// Process current RptTarget (EPASWMM)
-	private static boolean processRptTarget(RptTarget rptTarget) {
+	private static boolean processRptTarget() {
 
 		// Read lines until rpt.getDescription() is found		
 		boolean found = false;
@@ -374,10 +375,6 @@ public class ImportRpt extends Model {
 		String aux;
 		
 		Utils.getLogger().info("Target: "+rptTarget.getId()+ " - "+rptTarget.getDescription());
-		
-//		if (rptTarget.getId() == 40) {
-//			System.out.println(rptTarget.getId());
-//		}
 		
 		// Read lines until rpt.getDescription() is found		
 		while (!found) {
@@ -397,7 +394,7 @@ public class ImportRpt extends Model {
 		}
 		
         if (rptTarget.getType() == 3 || rptTarget.getType() == 5 || rptTarget.getType() == 6) {
-        	getPollutants(rptTarget);
+        	getPollutants();
         }
 		
 		// Jump number of lines specified in rpt.getTitleLines()
@@ -431,19 +428,19 @@ public class ImportRpt extends Model {
 		rptTokens = new ArrayList<RptToken>();	
 
 		if (rptTarget.getId() == 10) {
-			parseLinesAnalysis(rptTarget);
-			processTokensAnalysis(rptTarget);
+			parseLinesAnalysis();
+			processTokensAnalysis();
 		}
 		else if (rptTarget.getType() == 2 && rptTarget.getId() != 10) {
-			continueProcess = parseLines(rptTarget);
-			processTokensCheck(rptTarget);
+			continueProcess = parseLines();
+			processTokensCheck();
 		}
 		else if (rptTarget.getType() == 3) {
-			continueProcess = parseLines(rptTarget);
-			processTokens3(rptTarget);
+			continueProcess = parseLines();
+			processTokens3();
 		}
 		else {
-			continueProcess = parseLines(rptTarget);
+			continueProcess = parseLines();
 		}
 		
 		return true;
@@ -451,14 +448,14 @@ public class ImportRpt extends Model {
 	}	
 	
 	
-	private static boolean processTokensCheck(RptTarget rptTarget) {
+	private static boolean processTokensCheck() {
 		
 		boolean result;
 		if (rptTarget.getParametrized() == 0) {
-			result = processTokens(rptTarget);
+			result = processTokens();
 		}
 		else {
-			result = processTokensParametrized(rptTarget);
+			result = processTokensParametrized();
 		}
 		return result;
 		
@@ -466,7 +463,7 @@ public class ImportRpt extends Model {
 	
 	
 	// EPASWMM
-	private static boolean parseLinesAnalysis(RptTarget rptTarget) {
+	private static boolean parseLinesAnalysis() {
 
 		boolean result = true;
 		rptTokens = new ArrayList<RptToken>();			
@@ -477,7 +474,7 @@ public class ImportRpt extends Model {
 			blankLine = (line.length() == 0);
 			if (!blankLine) {
 				Scanner scanner = new Scanner(line);
-				parseLine2(scanner, rptTarget, true);						
+				parseLine2(scanner, true);						
 			}
 			if (abortRptProcess) {
 				return false;
@@ -490,16 +487,16 @@ public class ImportRpt extends Model {
 
 
 	// EPASWMM
-	private static void getPollutants(RptTarget rpt) {
+	private static void getPollutants() {
 		
 		String line = "";
 		int jumpLines;
-		if (rpt.getType() == 3) {			
+		if (rptTarget.getType() == 3) {			
 			lineNumber--;
 			line = readLine();		
 		} 
 		else {
-			jumpLines = (rpt.getType() == 5) ? 4 : 5;
+			jumpLines = (rptTarget.getType() == 5) ? 4 : 5;
 			for (int i = 1; i <= jumpLines; i++) {		
 				lineNumber++;					
 				line = readLine();
@@ -509,8 +506,8 @@ public class ImportRpt extends Model {
 		boolean blankLine = (line.length() == 0);
 		if (!blankLine) {
 			Scanner scanner = new Scanner(line);
-			if (rpt.getType() == 3 || rpt.getType() == 6) {
-				int jumpScanner	= (rpt.getType() == 3) ? 1 : 4;
+			if (rptTarget.getType() == 3 || rptTarget.getType() == 6) {
+				int jumpScanner	= (rptTarget.getType() == 3) ? 1 : 4;
 				for (int i = 0; i < jumpScanner; i++) {
 					scanner.next();						
 				}
@@ -527,7 +524,7 @@ public class ImportRpt extends Model {
 	
 	
 	// Parse all lines
-	private static boolean parseLines(RptTarget rptTarget) {
+	private static boolean parseLines() {
 		
 		boolean result = true;
 		rptTokens = new ArrayList<RptToken>();			
@@ -544,32 +541,32 @@ public class ImportRpt extends Model {
 				Scanner scanner = new Scanner(line);
 				if (rptTarget.getType() == 1) {
 					parseLine1(scanner);
-					result = processTokensCheck(rptTarget);
+					result = processTokensCheck();
 					if (!result) return false;
 				}		
 				else if (rptTarget.getType() == 2) {			
-					parseLine2(scanner, rptTarget, true);
+					parseLine2(scanner, true);
 				}
 				else if (rptTarget.getType() == 3) {	
 					rptTokens = new ArrayList<RptToken>();	
-					parseLine2(scanner, rptTarget, false);
+					parseLine2(scanner, false);
 					rptTokensList.add(rptTokens);
 				}					
 				else if (rptTarget.getType() == 4) {					
 					parseLineType4(scanner);
-					processTokensCheck(rptTarget);							
+					processTokensCheck();							
 				}	
 				else if (rptTarget.getType() == 5) {					
 					parseLine1(scanner);
-					processTokens5(rptTarget);						
+					processTokens5();						
 				}				
 				else if (rptTarget.getType() == 6) {					
 					parseLine1(scanner);
-					processTokens6(rptTarget);						
+					processTokens6();						
 				}			
 				else if (rptTarget.getType() == 7) {					
 					parseLine1(scanner);
-					processTokens6(rptTarget);						
+					processTokens6();						
 				}							
 			}
 			if (abortRptProcess) {
@@ -588,7 +585,7 @@ public class ImportRpt extends Model {
 		rptTokens = new ArrayList<RptToken>();	
 		String rptValue = "";
 		while (scanner.hasNext()) {
-			rptValue = scanner.next();
+			rptValue = scanner.next();			
 			RptToken rptToken = new RptToken("", rptValue);
 			rptTokens.add(rptToken);	
 		}
@@ -610,7 +607,7 @@ public class ImportRpt extends Model {
 	
 	
 	// Parse values of current line that contains ".." in it
-	private static void parseLine2(Scanner scanner, RptTarget rptTarget, boolean together) {
+	private static void parseLine2(Scanner scanner, boolean together) {
 		
 		String rptName = "";
 		String rptValue = "";
@@ -649,10 +646,11 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	private static boolean processTokens(RptTarget rptTarget) {
+	private static boolean processTokens() {
 
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
+		boolean ignoreToken = false;
 		
 		if (softwareName.equals("EPANET")) {
 			if (rptTokens.size() < 2) {
@@ -661,11 +659,24 @@ public class ImportRpt extends Model {
 			}
 		}
 		
-    	for (int i=0; i<rptTokens.size(); i++) {        	
+		// Customization for target Storage Volume Summary
+		// Ignore field number 4 if: target = 110 and number of tokens > 9
+		// Not checking if version = 5.1 to avoid further errors
+		if (rptTarget.getId() == 110 && rptTokens.size() > 9) {
+			// Ignoring value for this target...
+			ignoreToken = true;
+		}
+		
+    	for (int i=0; i<rptTokens.size(); i++) {   
+    		
     		RptToken rptToken = rptTokens.get(i);
 			int j = i+3;
 			String value = rptToken.getRptValue();
 			Integer dbType;
+			
+			if (ignoreToken && i > 4) {
+				j--;
+			}
 			switch (rptTarget.getColumnType(j)) {
 			case Types.NUMERIC:
 			case Types.DOUBLE:
@@ -677,14 +688,19 @@ public class ImportRpt extends Model {
 				break;
 			}
 			
-			String result = processField(rptTarget.getColumnName(j), value, dbType);
-			if (result.equals("-1")) {
-				abortRptProcess = true;
-				return false;
+			if (ignoreToken && i == 4) {
+				// Ignoring value for this target...
 			}
-			values+= result+", ";
+			else {
+				String result = processField(rptTarget.getColumnName(j), value, dbType);
+				if (result.equals("-1")) {
+					abortRptProcess = true;
+					return false;
+				}
+				values+= result+", ";
+				fields+= rptTarget.getColumnName(j) + ", ";
+			}
 			
-			fields+= rptTarget.getColumnName(j) + ", ";
 		}
 	
         // Build SQL Insert sentence
@@ -695,7 +711,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	private static boolean processTokensParametrized(RptTarget rptTarget) {
+	private static boolean processTokensParametrized() {
 
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
@@ -756,7 +772,7 @@ public class ImportRpt extends Model {
 	}
 
 
-	private static void processTokens3(RptTarget rptTarget) {
+	private static void processTokens3() {
 
 		// Iterate over pollutants
 		for (int i=0; i<pollutants.size(); i++) {
@@ -775,7 +791,7 @@ public class ImportRpt extends Model {
 	}		
 		
 	
-	private static void processTokens5(RptTarget rptTarget) {
+	private static void processTokens5() {
 
 		String fields = "result_id, subc_id, poll_id, value";
 		String fixedValues = "'"+projectName+"', '"+rptTokens.get(0).getRptValue()+ "', ";
@@ -801,7 +817,7 @@ public class ImportRpt extends Model {
 
 	
 	// Outfall Loading Summary (only)
-	private static void processTokens6(RptTarget rptTarget) {
+	private static void processTokens6() {
 		
 		String fields = "result_id, node_id, flow_freq, avg_flow, max_flow, total_vol";
 		String fields2 = "result_id, node_id, poll_id, value";		
@@ -836,7 +852,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	private static boolean processTokensAnalysis(RptTarget rptTarget) {
+	private static boolean processTokensAnalysis() {
 
 		String fields = "result_id, ";
 		String values = "'"+projectName+"', ";
@@ -921,7 +937,7 @@ public class ImportRpt extends Model {
 	
 	
 	// EPANET
-	private static boolean processRptTargetEpanet(RptTarget rptTarget) {
+	private static boolean processRptTargetEpanet() {
 
 		boolean found = false;
 		String line = "";
@@ -1046,13 +1062,13 @@ public class ImportRpt extends Model {
 		rptTokensList = new ArrayList<ArrayList<RptToken>>();
 		// Target Hydraulic Status
 		if (rptTarget.getId() == 20) {
-			parseLinesHydraulic(rptTarget);
+			parseLinesHydraulic();
 		}
 		else {
-			parseLines(rptTarget);
+			parseLines();
 			// Target Input Data File
 			if (rptTarget.getId() == 10) {
-				processTokensInputData(rptTarget);
+				processTokensInputData();
 			}
 		}
 		
@@ -1062,7 +1078,7 @@ public class ImportRpt extends Model {
 
 	
 	// EPANET: Parse all lines of Hydraulic Status Target
-	private static void parseLinesHydraulic(RptTarget rptTarget) {
+	private static void parseLinesHydraulic() {
 			
 		rptTokens = new ArrayList<RptToken>();		
 		boolean blankLine = false;		
@@ -1075,7 +1091,7 @@ public class ImportRpt extends Model {
 				if (!blankLine) {
 					Scanner scanner = new Scanner(line);
 					rptTokens = parseLineHydraulic(scanner);
-					processTokensHydraulic(rptTarget);
+					processTokensHydraulic();
 					numBlankLines = 0;					
 				}
 				else {
@@ -1116,7 +1132,7 @@ public class ImportRpt extends Model {
 	
 	
 	// EPANET
-	private static void processTokensHydraulic(RptTarget rptTarget) {
+	private static void processTokensHydraulic() {
 
 		String fields = "result_id, time, text";
 		String values = "'"+projectName+"', ";
@@ -1139,7 +1155,7 @@ public class ImportRpt extends Model {
 	
 	
 	// EPANET
-	private static boolean processTokensInputData(RptTarget rptTarget) {
+	private static boolean processTokensInputData() {
 
 		// Number of fields without water quality parameters
 		final int NORMAL_NUM_FIELDS = 19;
