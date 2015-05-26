@@ -340,11 +340,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 					MainClass.mdi.showMessage("any_schema_selected");
 					return;
 				}
-				String table = "arc";
-				if (software.equals("HECRAS")) {
-					table = "banks";
-				}
-				String schemaSrid = MainDao.getTableSrid(schema, table).toString();
+				String schemaSrid = MainDao.getSrid(schema);
 				// Update properties file
 				gswProp.put("GIS_FOLDER", folder);
 				gswProp.put("GIS_NAME", name);

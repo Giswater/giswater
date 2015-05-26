@@ -48,7 +48,7 @@ public class LoadDtmTask extends SwingWorker<Void, Void> {
 	
 	private boolean loadRaster() {
 		
-		String srid = MainDao.getTableSrid(schemaName, "banks").toString();
+		String srid = MainDao.getSrid(schemaName);
 		String logFolder = Utils.getLogFolder();
 		String fileSql = logFolder + rasterName.replace(".asc", ".sql");
 		

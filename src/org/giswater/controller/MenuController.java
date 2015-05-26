@@ -531,7 +531,12 @@ public class MenuController extends AbstractController {
 		// Get default SRID
 		String defaultSrid = PropertiesDao.getPropertiesFile().get("SRID_DEFAULT", "25831");	
 		
+		// Ask for confirmation
+		int answer = Utils.showYesNoDialog(mainFrame, "MenuController.file_launcher_warning");
+		if (answer == JOptionPane.NO_OPTION) return;
+		
 		try {
+			
 			// Copy file to users folder
 			String tempPath = Utils.getLogFolder()+"temp.sql";
 			Utils.copyFile(filePath, tempPath);

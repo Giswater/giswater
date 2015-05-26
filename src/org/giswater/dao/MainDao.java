@@ -658,12 +658,6 @@ public class MainDao {
     }
     
     
-    // Check if the selected srid exists in spatial_ref_sys
-	public static boolean checkSrid(Integer srid) {
-        String sql = "SELECT srid FROM public.spatial_ref_sys WHERE srid = "+srid;
-        return checkQuery(sql);
-    }    
-    
     private static boolean checkSoftwareSchema(String software, String schemaName) {
     	
     	String tableName = "";
@@ -1019,6 +1013,7 @@ public class MainDao {
 					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
 					content = Utils.readFile(file.getAbsolutePath());
 					content = content.replace("SCHEMA_NAME", schema);
+					content = content.replace("SRID_VALUE", getSrid(schema));					
 					Utils.logSql(content);
 					status = executeSql(content, false);
 					// Abort process if one script fails
@@ -1035,8 +1030,19 @@ public class MainDao {
 	}
 	
 
-	// Gis functions
-	public static Integer getTableSrid(String schema, String table) {
+	public static String getSrid(String schemaName) {
+		
+		String table = "arc";
+		if (waterSoftware.equals("HECRAS")) {
+			table = "banks";
+		}
+		String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();
+		return schemaSrid;
+		
+	}
+	
+	
+	private static Integer getTableSrid(String schema, String table) {
 		
 		Integer srid = 0;
 		String sql = "SELECT srid FROM public.geometry_columns"+
