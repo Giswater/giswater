@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,285 +36,239 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-@SuppressWarnings("rawtypes")
-public class PatternsDialog extends AbstractCatalogDialog{
+public class PatternsDialog extends AbstractCatalogDialog {
+	
+	private JComboBox<String> cboType;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField_2;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_10;
-	private JLabel lblFactor;
-	private JTextField textField_7;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JLabel lblFactor_1;
-	private JLabel lblFactor_2;
-	private JLabel lblFactor_3;
-	private JLabel lblFactor_4;
-	private JLabel lblFactor_5;
-	private JLabel lblFactor_6;
-	private JLabel lblFactor_7;
-	private JComboBox cboType;
-	private JLabel lblFactor_8;
-	private JTextField textField_4;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
-	private JLabel lblFactor_9;
-	private JLabel lblFactor_10;
-	private JLabel lblFactor_11;
-	private JLabel lblFactor_12;
-	private JLabel lblFactor_13;
-	private JLabel lblFactor_14;
-	private JLabel lblFactor_15;
-	private JLabel lblFactor_16;
-	private JLabel lblFactor_17;
-	private JLabel lblFactor_18;
-	private JTextField textField_1;
-	private JLabel lblFactor_19;
-	
-	
+
 	public PatternsDialog() {
 		initConfig();
 		createComponentMap();
 	}	
 
 	
-	public void enableType(boolean enable){
+	public void enableType(boolean enable) {
 		cboType.setEnabled(enable);
 	}
 
 	
-	private void initConfig(){
+	private void initConfig() {
 
-		setTitle("Table inp_patterns");
+		setTitle(BUNDLE.getString("PatternsDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 506, 446);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[361.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("PatternsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[60.00][150][10px][80px][150,grow]", "[][][][][][][][][][][][][]"));
 		
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		textField_2 = new JTextField();
+		JTextField textField_2 = new JTextField();
 		textField_2.setName("pattern_id");
 		textField_2.setColumns(10);
 		panelGeneral.add(textField_2, "cell 1 0,growx");
 		
-		JLabel lblType = new JLabel("type:");
+		JLabel lblType = new JLabel(BUNDLE.getString("PatternsDialog.lblType.text")); //$NON-NLS-1$
 		panelGeneral.add(lblType, "cell 3 0,alignx trailing");
 		
-		cboType = new JComboBox();
+		cboType = new JComboBox<String>();
 		cboType.setActionCommand("");
 		cboType.setName("pattern_type");
 		panelGeneral.add(cboType, "cell 4 0,growx");
 		
-		JLabel lblGeom = new JLabel("factor 1:");
+		JLabel lblGeom = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom, "cell 0 1,alignx trailing");
 		
-		textField = new JTextField();
+		JTextField textField = new JTextField();
 		textField.setName("factor_1");
 		textField.setColumns(10);
 		panelGeneral.add(textField, "cell 1 1,growx");
 		
-		lblFactor_8 = new JLabel("factor 13:");
+		JLabel lblFactor_8 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_8.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_8, "cell 3 1,alignx trailing");
 		
-		textField_4 = new JTextField();
+		JTextField textField_4 = new JTextField();
 		textField_4.setName("factor_13");
 		textField_4.setColumns(10);
 		panelGeneral.add(textField_4, "cell 4 1,growx");
 		
-		JLabel lblGeom_1 = new JLabel("factor 2:");
+		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_1, "cell 0 2,alignx trailing");
 		
-		textField_3 = new JTextField();
+		JTextField textField_3 = new JTextField();
 		textField_3.setName("factor_2");
 		textField_3.setColumns(10);
 		panelGeneral.add(textField_3, "cell 1 2,growx");
 		
-		lblFactor_9 = new JLabel("factor 14:");
+		JLabel lblFactor_9 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_9.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_9, "cell 3 2,alignx trailing");
 		
-		textField_8 = new JTextField();
+		JTextField textField_8 = new JTextField();
 		textField_8.setName("factor_14");
 		textField_8.setColumns(10);
 		panelGeneral.add(textField_8, "cell 4 2,growx");
 		
-		JLabel lblGeom_2 = new JLabel("factor 3:");
+		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_2.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_2, "cell 0 3,alignx trailing");
 		
-		textField_5 = new JTextField();
+		JTextField textField_5 = new JTextField();
 		textField_5.setName("factor_3");
 		textField_5.setColumns(10);
 		panelGeneral.add(textField_5, "cell 1 3,growx");
 		
-		lblFactor_10 = new JLabel("factor 15:");
+		JLabel lblFactor_10 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_10.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_10, "cell 3 3,alignx trailing");
 		
-		textField_9 = new JTextField();
+		JTextField textField_9 = new JTextField();
 		textField_9.setName("factor_15");
 		textField_9.setColumns(10);
 		panelGeneral.add(textField_9, "cell 4 3,growx");
 		
-		JLabel lblGeom_3 = new JLabel("factor 4:");
+		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblGeom_3.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_3, "cell 0 4,alignx trailing");
 		
-		textField_6 = new JTextField();
+		JTextField textField_6 = new JTextField();
 		textField_6.setName("factor_4");
 		textField_6.setColumns(10);
 		panelGeneral.add(textField_6, "cell 1 4,growx");
 		
-		lblFactor_11 = new JLabel("factor 16:");
+		JLabel lblFactor_11 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_11.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_11, "cell 3 4,alignx trailing");
 		
-		textField_17 = new JTextField();
+		JTextField textField_17 = new JTextField();
 		textField_17.setName("factor_16");
 		textField_17.setColumns(10);
 		panelGeneral.add(textField_17, "cell 4 4,growx");
 		
-		lblFactor = new JLabel("factor 5:");
+		JLabel lblFactor = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor, "cell 0 5,alignx trailing");
 		
-		textField_10 = new JTextField();
+		JTextField textField_10 = new JTextField();
 		textField_10.setName("factor_5");
 		textField_10.setColumns(10);
 		panelGeneral.add(textField_10, "cell 1 5,growx");
 		
-		lblFactor_12 = new JLabel("factor 17:");
+		JLabel lblFactor_12 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_12.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_12, "cell 3 5,alignx trailing");
 		
-		textField_18 = new JTextField();
+		JTextField textField_18 = new JTextField();
 		textField_18.setName("factor_17");
 		textField_18.setColumns(10);
 		panelGeneral.add(textField_18, "cell 4 5,growx");
 		
-		lblFactor_1 = new JLabel("factor 6:");
+		JLabel lblFactor_1 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_1, "cell 0 6,alignx trailing");
 		
-		textField_7 = new JTextField();
+		JTextField textField_7 = new JTextField();
 		textField_7.setName("factor_6");
 		textField_7.setColumns(10);
 		panelGeneral.add(textField_7, "cell 1 6,growx");
 		
-		lblFactor_13 = new JLabel("factor 18:");
+		JLabel lblFactor_13 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_13.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_13, "cell 3 6,alignx trailing");
 		
-		textField_19 = new JTextField();
+		JTextField textField_19 = new JTextField();
 		textField_19.setName("factor_18");
 		textField_19.setColumns(10);
 		panelGeneral.add(textField_19, "cell 4 6,growx");
 		
-		lblFactor_2 = new JLabel("factor 7:");
+		JLabel lblFactor_2 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_2.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_2, "cell 0 7,alignx trailing");
 		
-		textField_11 = new JTextField();
+		JTextField textField_11 = new JTextField();
 		textField_11.setName("factor_7");
 		textField_11.setColumns(10);
 		panelGeneral.add(textField_11, "cell 1 7,growx");
 		
-		lblFactor_14 = new JLabel("factor 19:");
+		JLabel lblFactor_14 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_14.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_14, "cell 3 7,alignx trailing");
 		
-		textField_20 = new JTextField();
+		JTextField textField_20 = new JTextField();
 		textField_20.setName("factor_19");
 		textField_20.setColumns(10);
 		panelGeneral.add(textField_20, "cell 4 7,growx");
 		
-		lblFactor_3 = new JLabel("factor 8:");
+		JLabel lblFactor_3 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_3.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_3, "cell 0 8,alignx trailing");
 		
-		textField_12 = new JTextField();
+		JTextField textField_12 = new JTextField();
 		textField_12.setName("factor_8");
 		textField_12.setColumns(10);
 		panelGeneral.add(textField_12, "cell 1 8,growx");
 		
-		lblFactor_15 = new JLabel("factor 20:");
+		JLabel lblFactor_15 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_15.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_15, "cell 3 8,alignx trailing");
 		
-		textField_21 = new JTextField();
+		JTextField textField_21 = new JTextField();
 		textField_21.setName("factor_20");
 		textField_21.setColumns(10);
 		panelGeneral.add(textField_21, "cell 4 8,growx");
 		
-		lblFactor_4 = new JLabel("factor 9:");
+		JLabel lblFactor_4 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_4.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_4, "cell 0 9,alignx trailing");
 		
-		textField_13 = new JTextField();
+		JTextField textField_13 = new JTextField();
 		textField_13.setName("factor_9");
 		textField_13.setColumns(10);
 		panelGeneral.add(textField_13, "cell 1 9,growx");
 		
-		lblFactor_16 = new JLabel("factor 21:");
+		JLabel lblFactor_16 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_16.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_16, "cell 3 9,alignx trailing");
 		
-		textField_22 = new JTextField();
+		JTextField textField_22 = new JTextField();
 		textField_22.setName("factor_21");
 		textField_22.setColumns(10);
 		panelGeneral.add(textField_22, "cell 4 9,growx");
 		
-		lblFactor_5 = new JLabel("factor 10:");
+		JLabel lblFactor_5 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_5.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_5, "cell 0 10,alignx trailing");
 		
-		textField_14 = new JTextField();
+		JTextField textField_14 = new JTextField();
 		textField_14.setName("factor_10");
 		textField_14.setColumns(10);
 		panelGeneral.add(textField_14, "cell 1 10,growx");
 		
-		lblFactor_17 = new JLabel("factor 22:");
+		JLabel lblFactor_17 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_17.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_17, "cell 3 10,alignx trailing");
 		
-		textField_23 = new JTextField();
+		JTextField textField_23 = new JTextField();
 		textField_23.setName("factor_22");
 		textField_23.setColumns(10);
 		panelGeneral.add(textField_23, "cell 4 10,growx");
 		
-		lblFactor_6 = new JLabel("factor 11:");
+		JLabel lblFactor_6 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_6.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_6, "cell 0 11,alignx trailing");
 		
-		textField_15 = new JTextField();
+		JTextField textField_15 = new JTextField();
 		textField_15.setName("factor_11");
 		textField_15.setColumns(10);
 		panelGeneral.add(textField_15, "cell 1 11,growx");
 		
-		lblFactor_18 = new JLabel("factor 23:");
+		JLabel lblFactor_18 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_18.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_18, "cell 3 11,alignx trailing");
 		
-		textField_24 = new JTextField();
+		JTextField textField_24 = new JTextField();
 		textField_24.setName("factor_23");
 		textField_24.setColumns(10);
 		panelGeneral.add(textField_24, "cell 4 11,growx");
 		
-		lblFactor_7 = new JLabel("factor 12:");
+		JLabel lblFactor_7 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_7.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_7, "cell 0 12,alignx trailing");
 		
-		textField_16 = new JTextField();
+		JTextField textField_16 = new JTextField();
 		textField_16.setName("factor_12");
 		textField_16.setColumns(10);
 		panelGeneral.add(textField_16, "cell 1 12,growx");
 		
-		lblFactor_19 = new JLabel("factor 24:");
+		JLabel lblFactor_19 = new JLabel(BUNDLE.getString("PatternsDialog.lblFactor_19.text")); //$NON-NLS-1$
 		panelGeneral.add(lblFactor_19, "cell 3 12,alignx trailing");
 		
-		textField_1 = new JTextField();
+		JTextField textField_1 = new JTextField();
 		textField_1.setName("factor_24");
 		textField_1.setColumns(10);
 		panelGeneral.add(textField_1, "cell 4 12,growx");
@@ -323,35 +278,35 @@ public class PatternsDialog extends AbstractCatalogDialog{
 		
 		btnCreate = new JButton("+");
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("PatternsDialog.btnInsert.toolTipText"));
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("PatternsDialog.btnDelete.toolTipText"));
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
 		btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("PatternsDialog.btnPrevious.toolTipText"));
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
 		btnNext.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("PatternsDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");				
 		

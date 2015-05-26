@@ -20,8 +20,6 @@
  */
 package org.giswater.gui.frame;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
@@ -33,35 +31,29 @@ import org.giswater.util.Utils;
 
 public class ConfigFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
 	private ConfigPanel panel;
 	
 	
-	public ConfigFrame(){
+	public ConfigFrame() {
 		initComponents();
 	}
 	
-	public ConfigPanel getPanel(){
+	public ConfigPanel getPanel() {
 		return panel;
 	}
 	
 	           
     private void initComponents() {
 
-    	panel = new ConfigPanel(this);
+    	panel = new ConfigPanel();
 
+    	panel.setFrame(this);
         setTitle(Utils.getBundleString("software_panel"));
-		setMaximizable(true);
     	setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setFrameIcon(new ImageIcon(Utils.getIconPath()));    
+        setVisible(false);
         
-        setFrameIcon(new ImageIcon(Utils.getIconPath()));
-		try {
-			setIcon(true);
-		} catch (PropertyVetoException e) {
-			Utils.logError(e.getMessage());
-		}        
-
         GroupLayout layout = new GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)

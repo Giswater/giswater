@@ -1,7 +1,5 @@
 package org.giswater.gui.panel;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,53 +11,63 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.HecRasController;
-import org.giswater.controller.MainController;
+import org.giswater.controller.NewProjectController;
 import org.giswater.model.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
+import java.awt.Dimension;
+import java.util.ResourceBundle;
 
 
-public class ProjectPanel extends JPanel implements ActionListener{
+public class ProjectPanel extends JPanel implements ActionListener {
 	
-	private MainController controller;
+	private JDialog parent;
+	private NewProjectController controller;
 	private HecRasController hecRasController;
 	private JTextField txtName;
 	private JTextField txtTitle;
 	private JTextField txtFilter;
 	private JTextField txtAuthor;
 	private JTextField txtDate;
-	private JCheckBox chkGeogcs;
-	private JCheckBox chkProjcs;
 	private JScrollPane panelTable;
 	private JTable tblSrid;
 	private JButton btnAccept;
 	private JButton btnClose;
+	private JLabel lblFile;
+	private JTextArea txtFile;
+	private JScrollPane scrollPane;
+	private JButton btnFile;
+	private JPanel panelSrid;
+	private String defaultSrid;
+	private JCheckBox chkImportData;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
+	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
+	private JLabel lblTypeInfo;
 	
 	
 	public ProjectPanel(String defaultSrid) {
+		this.defaultSrid = defaultSrid;
 		initConfig();
-		txtFilter.setText(defaultSrid);
-		DateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
-		Date date = new Date();
-		txtDate.setText(dateFormat.format(date));
 	}
 		
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[][270.00,grow][grow]", "[][][][][10px:n][][220px:247.00,grow][]"));
+		setLayout(new MigLayout("", "[][217.00px:n][::65px]", "[][][][][5px:n][240.00,grow][][34px:n][5px:n][]"));
 		
-		JLabel lblProjectName = new JLabel("Project name:");
+		JLabel lblProjectName = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectName.text")); //$NON-NLS-1$
 		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
 		
 		txtName = new JTextField();
@@ -68,7 +76,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtName.setDocument(maxLength);		
 		add(txtName, "cell 1 0,growx,aligny bottom");
 		
-		JLabel lblProjectTitle = new JLabel("Project title:");
+		JLabel lblProjectTitle = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectTitle.text")); //$NON-NLS-1$
 		add(lblProjectTitle, "cell 0 1,alignx trailing");
 		
 		txtTitle = new JTextField();
@@ -77,7 +85,7 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtTitle.setDocument(maxLength);	
 		add(txtTitle, "cell 1 1,growx");
 		
-		JLabel lblAuthor = new JLabel("Author:");
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectPanel.lblAuthor.text")); //$NON-NLS-1$
 		add(lblAuthor, "cell 0 2,alignx trailing");
 		
 		txtAuthor = new JTextField();
@@ -86,46 +94,66 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtAuthor.setDocument(maxLength);
 		add(txtAuthor, "cell 1 2,growx");
 		
-		JLabel lblDate = new JLabel("Date:");
+		JLabel lblOptional = new JLabel(BUNDLE.getString("ProjectPanel.lbloptional.text")); //$NON-NLS-1$
+		add(lblOptional, "cell 2 2");
+		
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectPanel.lblDate.text")); //$NON-NLS-1$
 		add(lblDate, "cell 0 3,alignx trailing");
 		
 		txtDate = new JTextField();
 		txtDate.setColumns(10);
 		maxLength = new MaxLengthTextDocument(12);		
 		txtDate.setDocument(maxLength);
+		DateFormat dateFormat = new SimpleDateFormat("MMM-yyyy");
+		Date date = new Date();
+		txtDate.setText(dateFormat.format(date));
 		add(txtDate, "cell 1 3,growx");
 		
-		JSeparator separator = new JSeparator();
-		separator.setPreferredSize(new Dimension(50, 2));
-		separator.setForeground(Color.BLACK);
-		add(separator, "cell 0 4 2 1,growx");
+		JLabel label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); //$NON-NLS-1$
+		add(label, "cell 2 3");
 		
-		JLabel lblSelectSrid = new JLabel("Select SRID:");
-		lblSelectSrid.setFont(new Font("Tahoma", Font.BOLD, 11));
-		add(lblSelectSrid, "cell 0 5 2 1,alignx left");
+		panelSrid = new JPanel();
+		panelSrid.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelSrid.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null)); //$NON-NLS-1$
+		panelSrid.setLayout(new MigLayout("", "[70px:n][217.00px:n][55px:n][::13.00px]", "[][][::217.00px,grow]"));
+		add(panelSrid, "cell 0 5 3 1,grow");
+
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		add(panel, "cell 0 6 3 1,grow");
-		panel.setLayout(new MigLayout("", "[60px:n][270.00][50px,grow]", "[][][24px][159.00,grow]"));
+		JLabel lblFilter = new JLabel(BUNDLE.getString("ProjectPanel.lblFilter.text")); //$NON-NLS-1$
+		panelSrid.add(lblFilter, "cell 0 0,alignx right");
 		
-		JLabel lblNewLabel = new JLabel("Filter:");
-		panel.add(lblNewLabel, "cell 0 0");
-		
-		txtFilter = new JTextField();
-		panel.add(txtFilter, "cell 1 0,growx");
+		txtFilter = new JTextField(defaultSrid);
+		panelSrid.add(txtFilter, "cell 1 0,growx");
 		txtFilter.setColumns(10);
 		
-		JLabel lblType = new JLabel("Type:");
-		panel.add(lblType, "cell 0 1");
+		chkImportData = new JCheckBox(BUNDLE.getString("ProjectPanel.chkImportData.text")); //$NON-NLS-1$
+		chkImportData.setActionCommand("loadData");
+		add(chkImportData, "cell 0 6");
 		
-		chkGeogcs = new JCheckBox("GEOGCS");
-		chkGeogcs.setActionCommand("checkedType");
-		chkGeogcs.setSelected(true);
-		panel.add(chkGeogcs, "flowx,cell 1 1");
+		lblFile = new JLabel(BUNDLE.getString("ProjectPanel.lblFile.text")); //$NON-NLS-1$
+		add(lblFile, "cell 0 7,alignx right");
 		
-		JLabel lblCoordinateReferenceSystems = new JLabel("Coordinate reference systems:");
-		panel.add(lblCoordinateReferenceSystems, "cell 0 2 2 1");
+		scrollPane = new JScrollPane();
+		add(scrollPane, "cell 1 7,grow");
+		
+		txtFile = new JTextArea();
+		txtFile.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		scrollPane.setViewportView(txtFile);
+		
+		btnFile = new JButton("...");
+		btnFile.setMinimumSize(new Dimension(65, 23));
+		btnFile.setActionCommand("chooseFile");
+		add(btnFile, "cell 2 7");
+		
+		btnAccept = new JButton(BUNDLE.getString("ProjectPanel.btnAccept.text")); //$NON-NLS-1$
+		btnAccept.setActionCommand("acceptProject");
+		add(btnAccept, "flowx,cell 1 9,alignx trailing");
+		
+		btnClose = new JButton(BUNDLE.getString("ProjectPanel.btnClose.text")); //$NON-NLS-1$
+		btnClose.setMaximumSize(new Dimension(65, 23));
+		btnClose.setMinimumSize(new Dimension(65, 23));
+		btnClose.setPreferredSize(new Dimension(65, 23));
+		btnClose.setActionCommand("closeProject");
+		add(btnClose, "cell 2 9,growx");
 		
 		tblSrid = new JTable();
 		tblSrid.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -134,22 +162,13 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		tblSrid.setRowHeight(20);
 		tblSrid.getTableHeader().setReorderingAllowed(false);	
 		
+		lblTypeInfo = new JLabel(BUNDLE.getString("ProjectPanel.lblTypeInfo.text")); //$NON-NLS-1$
+		panelSrid.add(lblTypeInfo, "cell 1 1");
+		
 		panelTable = new JScrollPane();
+		panelSrid.add(panelTable, "cell 0 2 3 1");
+		panelTable.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelTable.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP)); //$NON-NLS-1$
 		panelTable.setViewportView(tblSrid);
-		panel.add(panelTable, "cell 0 3 3 1,grow");
-		
-		chkProjcs = new JCheckBox("PROJCS");
-		chkProjcs.setActionCommand("checkedType");
-		chkProjcs.setSelected(true);
-		panel.add(chkProjcs, "cell 1 1");
-		
-		btnAccept = new JButton("Accept");
-		btnAccept.setActionCommand("acceptProject");
-		add(btnAccept, "flowx,cell 1 7,alignx trailing");
-		
-		btnClose = new JButton("Close");
-		btnClose.setActionCommand("closeProject");
-		add(btnClose, "cell 2 7");
 		
 		setupListeners();
 		
@@ -161,16 +180,13 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		txtFilter.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (controller != null){
+				if (controller != null) {
 					controller.updateTableModel();
-				}
-				else{
-					hecRasController.updateTableModel();
 				}
 			}
 		});
-		chkGeogcs.addActionListener(this);
-		chkProjcs.addActionListener(this);
+		chkImportData.addActionListener(this);
+		btnFile.addActionListener(this);
 		btnAccept.addActionListener(this);
 		btnClose.addActionListener(this);
 		
@@ -179,16 +195,16 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (controller != null){
+		if (controller != null) {
 			controller.action(e.getActionCommand());
 		}
-		else{
+		else {
 			hecRasController.action(e.getActionCommand());
 		}
 	}
 	
 
-	public void setController(MainController controller) {
+	public void setController(NewProjectController controller) {
 		this.controller = controller;
 	}
 
@@ -230,14 +246,6 @@ public class ProjectPanel extends JPanel implements ActionListener{
 		return txtDate.getText().trim();
 	}	
 	
-	public Boolean isGeoSelected(){
-		return chkGeogcs.isSelected();
-	}
-	
-	public Boolean isProjSelected(){
-		return chkProjcs.isSelected();
-	}
-	
 	public String getSrid() {
 		int row = tblSrid.getSelectedRow();
 		if (row > -1){
@@ -248,9 +256,27 @@ public class ProjectPanel extends JPanel implements ActionListener{
 	}
 
 
+	public JDialog getDialog() {
+		return parent;
+	}
 
 
+	public void setParent(JDialog projectDialog) {
+		parent = projectDialog;
+	}
 
+
+	public void setFileImport(String path) {
+		txtFile.setText(path);
+	}
+
+
+	public void enableImportData(boolean enabled) {
+		chkImportData.setEnabled(enabled);
+		lblFile.setEnabled(enabled);
+		txtFile.setEnabled(enabled);
+		btnFile.setEnabled(enabled);		
+	}
 
 	
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.4.0-Chugiak">
+<qgis projectname="" version="2.8.1-Wien">
     <title></title>
     <mapcanvas>
         <units>degrees</units>
@@ -87,12 +87,7 @@
                     <legendlayerfile isInOverview="0" layerid="mdt20131216023318429" visible="0"/>
                 </filegroup>
             </legendlayer>
-            <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="linetype" showFeatureCount="0">
-                <filegroup open="true" hidden="false">
-                    <legendlayerfile isInOverview="0" layerid="linetype20131216023643702" visible="1"/>
-                </filegroup>
-            </legendlayer>
-        </legendgroup>
+         </legendgroup>
     </legend>
     <projectlayers layercount="21">
         <maplayer minimumScale="0" maximumScale="1e+08" minLabelScale="1" maxLabelScale="1e+08" geometry="Point" type="vector" hasScaleBasedVisibilityFlag="0" scaleBasedLabelVisibilityFlag="0">

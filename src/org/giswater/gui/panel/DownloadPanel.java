@@ -16,8 +16,11 @@ import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.util.DownloadTask;
+import org.giswater.task.DownloadTask;
+import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
+
+import java.util.ResourceBundle;
 
 
 public class DownloadPanel extends JPanel implements PropertyChangeListener {
@@ -29,31 +32,32 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 	private UtilsFTP ftp;
 	private String totalSize;
 	private DownloadTask task;
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 
-
+	
 	public DownloadPanel(String remote, String local, UtilsFTP ftp) {
 		
         this.remote = remote;
         this.local = local;
         this.ftp = ftp;
         
-		setLayout(new MigLayout("", "[10px:n][250.00][10px:n]", "[10px:n][][25px:n][::20px][]"));
+		setLayout(new MigLayout("", "[5px:n][250.00][5px:n]", "[][25px:n][::20px][]"));
 		
 		lblInfo = new JLabel("");
-		add(lblInfo, "cell 1 1");
+		add(lblInfo, "cell 1 0");
 		
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		progressBar.setMinimumSize(new Dimension(10, 25));
-		add(progressBar, "cell 1 2,growx,aligny center");
+		add(progressBar, "cell 1 1,growx,aligny center");
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton(BUNDLE.getString("DownloadPanel.btnCancelar.text")); //$NON-NLS-1$
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cancelDownload();
 			}
 		});
-		add(btnCancelar, "cell 1 4,alignx trailing");
+		add(btnCancelar, "cell 1 3,alignx trailing");
 		
 		startDownload();
 		
@@ -94,7 +98,7 @@ public class DownloadPanel extends JPanel implements PropertyChangeListener {
 		double aux = (bytesRead / 1048576);
     	DecimalFormat df = new DecimalFormat("#,##0.##");
     	String readSize = df.format(aux);
-		String msg = "Downloading file: "+readSize+" Mb of "+totalSize+" Mb";
+		String msg = Utils.getBundleString("DownloadPanel.downloading_file")+readSize+Utils.getBundleString("DownloadPanel.mb")+totalSize+" Mb"; //$NON-NLS-1$ //$NON-NLS-2$
 		lblInfo.setText(msg);
 	}
 

@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,14 +34,14 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.util.MaxLengthTextDocument;
 
-public class MaterialsDialog extends AbstractCatalogDialog{
 
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField txtId;
-	private JTextField txtOther;
-	private JTextField txtDescript;
+public class MaterialsDialog extends AbstractCatalogDialog {
+
 	private JLabel lblOther;
+	private JTextField txtOther;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");	
 	
 	
 	public MaterialsDialog() {
@@ -48,81 +49,81 @@ public class MaterialsDialog extends AbstractCatalogDialog{
 	}	
 
 	
-	public void setName(String name){
-		lblOther.setText(name + ":");
+	public void setOther(String text, String name) {
+		lblOther.setText(text + ":");
 		txtOther.setName(name);
 		createComponentMap();
 	}
 	
 
-	private void initConfig(){
+	private void initConfig() {
 
-		setTitle("Table cat_mat");
-		setBounds(100, 100, 454, 218);
-		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[126.00][5px][36.00]"));
+		setTitle(BUNDLE.getString("MaterialsDialog.this.title")); //$NON-NLS-1$
+		setBounds(100, 100, 454, 190);
+		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[89.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("MaterialsDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
-		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][][][]"));
+		panelGeneral.setLayout(new MigLayout("", "[50][150][10px][50][150]", "[][][][][]"));
 		
 		JLabel lblInfiltration = new JLabel("Id:");
 		panelGeneral.add(lblInfiltration, "cell 0 0,alignx trailing");
 		
-		txtId = new JTextField();
+		JTextField txtId = new JTextField();
 		txtId.setName("id");
-		txtId.setColumns(10);
+		txtId.setDocument(new MaxLengthTextDocument(16));
 		panelGeneral.add(txtId, "cell 1 0,growx");
 		
-		lblOther = new JLabel("n:");
+		lblOther = new JLabel(BUNDLE.getString("MaterialsDialog.lblOther.text")); //$NON-NLS-1$
 		panelGeneral.add(lblOther, "cell 3 0,alignx trailing");
 		
 		txtOther = new JTextField();
 		txtOther.setName("n");
-		txtOther.setColumns(10);
+		txtOther.setDocument(new MaxLengthTextDocument(14));
 		panelGeneral.add(txtOther, "cell 4 0,growx");
 		
-		JLabel lblTsectid = new JLabel("descript:");
+		JLabel lblTsectid = new JLabel(BUNDLE.getString("MaterialsDialog.lblTsectid.text")); //$NON-NLS-1$
 		panelGeneral.add(lblTsectid, "cell 0 1,alignx trailing");
 		
-		txtDescript = new JTextField();
+		JTextField txtDescript = new JTextField();
 		txtDescript.setName("descript");
-		txtDescript.setColumns(10);
+		txtDescript.setDocument(new MaxLengthTextDocument(100));
 		panelGeneral.add(txtDescript, "cell 1 1,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());		
 		
 		btnCreate = new JButton("+");
-		btnCreate.setToolTipText("Insert record");
+		btnCreate.setToolTipText(BUNDLE.getString("MaterialsDialog.btnInsert.toolTipText"));
 		btnCreate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCreate.setActionCommand("create");
 		getContentPane().add(btnCreate, "flowx,cell 1 2");
 		
 		btnDelete = new JButton("-");
-		btnDelete.setToolTipText("Delete record");
+		btnDelete.setToolTipText(BUNDLE.getString("MaterialsDialog.btnDelete.toolTipText"));
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnDelete.setActionCommand("delete");
 		getContentPane().add(btnDelete, "cell 1 2");
 		
 		btnPrevious = new JButton("<");
-		btnPrevious.setToolTipText("Previous record");
+		btnPrevious.setToolTipText(BUNDLE.getString("MaterialsDialog.btnPrevious.toolTipText"));
 		btnPrevious.setActionCommand("movePrevious");
 		getContentPane().add(btnPrevious, "cell 1 2");
 		
 		btnNext = new JButton(">");
-		btnNext.setToolTipText("Next record");
+		btnNext.setToolTipText(BUNDLE.getString("MaterialsDialog.btnNext.toolTipText"));
 		btnNext.setActionCommand("moveNext");
 		getContentPane().add(btnNext, "cell 1 2");
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");			
 		

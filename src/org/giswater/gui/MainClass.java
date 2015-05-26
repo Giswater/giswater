@@ -20,12 +20,11 @@
  */
 package org.giswater.gui;
 
-import java.util.Locale;
-
 import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
@@ -34,6 +33,7 @@ import org.giswater.util.UtilsFTP;
 public class MainClass {
 
 	public static MainFrame mdi;
+	private final static String CURRENT_VERSION = "1.1.214";
 
 
 	public static void main(String[] args) {
@@ -42,12 +42,7 @@ public class MainClass {
 			@Override
 			public void run() {		
 
-				// Set locale
-				final Locale english = new Locale("en", "EN");
-				Locale.setDefault(english);
-
 				// Look&Feel
-				//String className = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
 				String className = UIManager.getSystemLookAndFeelClassName();
 				try {
 					UIManager.setLookAndFeel(className);
@@ -59,22 +54,20 @@ public class MainClass {
 				// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();
 				String msg = "Application started";
-				if (versionCode == null){
-					versionCode = "1.0.165";
+				if (versionCode == null) {
+					versionCode = CURRENT_VERSION;
 				}
-				msg+= "\nVersion: " + versionCode;
+				msg+= "\nVersion "+versionCode;
 				Utils.getLogger().info(msg);				
-				if (!MainDao.configIni(versionCode)){
-					return;
-				}     
+				if (!MainDao.configIni(versionCode)) return;
 
+				// Check if new version is available
 				boolean newVersion = false;
 				String ftpVersion = "";
 				UtilsFTP ftp = null;
-				String aux = MainDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
+				String aux = PropertiesDao.getPropertiesFile().get("AUTO_CHECK_UPDATES", "false");
 				Boolean autoCheck = Boolean.parseBoolean(aux);
-				if (autoCheck){
-					// Check if new version is available
+				if (autoCheck) {
 					Integer majorVersion = Integer.parseInt(versionCode.substring(0, 1));
 					Integer minorVersion = Integer.parseInt(versionCode.substring(2, 3));
 					Integer buildVersion = Integer.parseInt(versionCode.substring(4));
@@ -86,7 +79,6 @@ public class MainClass {
 				// Create MainFrame and Menu controller
 				mdi = new MainFrame(MainDao.isConnected(), versionCode, newVersion, ftpVersion);            	
 				MenuController menuController = new MenuController(mdi, versionCode, ftp);            	
-				mdi.setVisible(true);
 
 				// By default open last gsw
 				menuController.gswOpen(false);

@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,9 +39,8 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 
-public class TimeseriesDetailDialog extends AbstractCatalogDialog{
-
-	private static final long serialVersionUID = -6349825417550216902L;
+public class TimeseriesDetailDialog extends AbstractCatalogDialog {
+	
 	private String timesType;
 	private JTextField txtId;
 	private JTextField txtTimserId;
@@ -51,6 +51,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	private JTextField txtValue;
 	private TimeseriesDialog parent;
 	private JButton btnFileFname;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 	
 	public TimeseriesDetailDialog(TimeseriesDialog parentDialog, String timesType) {
@@ -62,19 +63,19 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	}
 
 
-	private void initConfig(){
+	private void initConfig() {
 
-		setTitle("Table inp_timeseries");
+		setTitle(BUNDLE.getString("TimeseriesDetailDialog.this.title")); //$NON-NLS-1$
 		setBounds(100, 100, 502, 196);
 		getContentPane().setLayout(new MigLayout("", "[401.00,grow][200px]", "[109.00][5px][36.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("TimeseriesDetailDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[60.00][150,grow][10px][80px][150]", "[][][]"));
 		
-		JLabel lblGeom = new JLabel("Date:");
+		JLabel lblGeom = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom, "cell 0 0,alignx trailing");
 		
 		txtDate = new JTextField();
@@ -82,7 +83,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		txtDate.setColumns(10);
 		panelGeneral.add(txtDate, "cell 1 0,growx");
 		
-		JLabel lblGeom_1 = new JLabel("Hour:");
+		JLabel lblGeom_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_1, "cell 3 0,alignx trailing");
 		
 		txtHour = new JTextField();
@@ -90,7 +91,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		txtHour.setColumns(10);
 		panelGeneral.add(txtHour, "cell 4 0,growx");
 		
-		JLabel lblGeom_2 = new JLabel("Time:");
+		JLabel lblGeom_2 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_2.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_2, "cell 0 1,alignx trailing");
 		
 		txtTime = new JTextField();
@@ -98,7 +99,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		txtTime.setColumns(10);
 		panelGeneral.add(txtTime, "cell 1 1,growx");
 		
-		JLabel lblNewLabel_1 = new JLabel("Value:");
+		JLabel lblNewLabel_1 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblNewLabel_1.text")); //$NON-NLS-1$
 		panelGeneral.add(lblNewLabel_1, "cell 3 1,alignx trailing");
 		
 		txtValue = new JTextField();
@@ -106,7 +107,7 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		txtValue.setColumns(10);
 		panelGeneral.add(txtValue, "cell 4 1,growx");
 		
-		JLabel lblGeom_3 = new JLabel("FName:");
+		JLabel lblGeom_3 = new JLabel(BUNDLE.getString("TimeseriesDetailDialog.lblGeom_3.text")); //$NON-NLS-1$
 		panelGeneral.add(lblGeom_3, "cell 0 2,alignx trailing");
 		
 		txtFname = new JTextField();
@@ -133,13 +134,13 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");
 		getContentPane().add(btnSave, "cell 1 2,alignx right");
 		
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		
@@ -157,8 +158,8 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 		});
 		
 		// Event to update detail table contents with new data
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 				dispose();
 				parent.getController().closeDetailDialog();
 			}
@@ -174,23 +175,23 @@ public class TimeseriesDetailDialog extends AbstractCatalogDialog{
 	}
 	
 	
-	public void setTimesType(){
+	public void setTimesType() {
 
 		txtDate.setEnabled(false);
 		txtHour.setEnabled(false);
 		txtTime.setEnabled(false);
 		txtValue.setEnabled(false);
 		txtFname.setEnabled(false);
-		if (timesType.equals("ABSOLUTE")){
+		if (timesType.equals("ABSOLUTE")) {
 			txtDate.setEnabled(true);
 			txtHour.setEnabled(true);
 			txtValue.setEnabled(true);
 		}
-		else if (timesType.equals("RELATIVE")){
+		else if (timesType.equals("RELATIVE")) {
 			txtTime.setEnabled(true);
 			txtValue.setEnabled(true);
 		}
-		if (timesType.equals("FILE")){
+		if (timesType.equals("FILE")) {
 			txtFname.setEnabled(true);
 		}
 		

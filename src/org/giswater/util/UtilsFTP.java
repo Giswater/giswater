@@ -1,12 +1,34 @@
+/*
+ * This file is part of Giswater
+ * Copyright (C) 2013 Tecnics Associats
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Author:
+ *   David Erill <derill@giswater.org>
+ */
 package org.giswater.util;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -194,10 +216,10 @@ public class UtilsFTP {
 	        	size = ftpFile[0].getSize();
 	        }
 	        else{
-	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+filePath);
+	        	Utils.showError(Utils.getBundleString("UtilsFTP.download_aborted")+filePath);
 	        }
-        } catch (IOException ex) {
-        	Utils.logError("Could not determine size of the file: " + ex.getMessage());
+        } catch (IOException e) {
+        	Utils.logError("Could not determine size of the file: " + e.getMessage());
         }
         return size;
         
@@ -209,14 +231,14 @@ public class UtilsFTP {
 	}
 	
 	
-	public boolean prepareConnection(){
+	public boolean prepareConnection() {
 		
-		if (!isConnected()){
-	        if (!connect()){
+		if (!isConnected()) {
+	        if (!connect()) {
 	        	Utils.logError("FTP host not valid. Check FTP parameters defined in config.properties file");
 	        	return false;
 	        }
-	        if (!login()){
+	        if (!login()) {
 	        	Utils.logError("FTP user or password not valid. Check FTP parameters defined in config.properties file");
 	        	return false;
 	        }
@@ -250,18 +272,16 @@ public class UtilsFTP {
 		try {
 			// Get last minor version available in root folder
 	        client.changeWorkingDirectory(FTP_ROOT_FOLDER);
-	        String currentMinorVersion = "versions_"+majorVersion+"."+minorVersion;
-	        updateMinorVersion = checkMinorVersion(currentMinorVersion);
-	        if (!updateMinorVersion){
+	        String currentMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
+	        updateMinorVersion = checkMinorVersion(currentMinorVersionFolder);
+	        if (!updateMinorVersion) {
 	        	newMinorVersionFolder = "versions_"+majorVersion+"."+minorVersion;
 	        	newMinorVersion = minorVersion;
 	        }
 	        // Get last build version available of the last minor version folders
         	client.changeWorkingDirectory(newMinorVersionFolder);
         	updateBuildVersion = checkBuildVersion(majorVersion, minorVersion, buildVersion);
-		} catch (NumberFormatException e) {
-			Utils.logError(e);
-		} catch (IOException e) {
+		} catch (NumberFormatException | IOException e) {
 			Utils.logError(e);
 		}
 
@@ -275,7 +295,7 @@ public class UtilsFTP {
 	}
 
 	
-	private boolean checkMinorVersion(String currentMinorVersion) {
+	private boolean checkMinorVersion(String currentMinorVersionFolder) {
 		
         boolean updateMinorVersion = false;
         FTPFile[] listFolders = listDirectories();
@@ -283,7 +303,7 @@ public class UtilsFTP {
         newMinorVersionFolder = folder.getName().trim().toLowerCase();
         newMinorVersion = Integer.parseInt(newMinorVersionFolder.substring(newMinorVersionFolder.length() - 1));
         Utils.getLogger().info("FTP last minor version folder name: "+newMinorVersionFolder);
-        if (!currentMinorVersion.equals(newMinorVersionFolder)){
+        if (!currentMinorVersionFolder.equals(newMinorVersionFolder)) {
         	updateMinorVersion = true;
         }
         return updateMinorVersion;
@@ -304,7 +324,7 @@ public class UtilsFTP {
         if (newMinorVersion > minorVersion) {
         	return true;
         }
-        if (version > buildVersion){
+        else if (newMinorVersion == minorVersion && version > buildVersion) {
         	return true;
         }
         return false;
@@ -314,19 +334,19 @@ public class UtilsFTP {
 
 	public boolean downloadLastVersion(String remoteName, String localPath) {
 		
-		if (!prepareConnection()){
+		if (!prepareConnection()) {
 			return false;
 		}
 
 		try {
 			changeDirectory();
 	        FTPFile[] ftpFile = client.listFiles(remoteName);
-	        if (ftpFile.length > 0){
+	        if (ftpFile.length > 0) {
 	            FileOutputStream fos = new FileOutputStream(localPath);		
 				client.retrieveFile(remoteName, fos);
 	        }
 	        else{
-	        	Utils.showError("Downloaded aborted. File not found in FTP server:\n"+remoteName);
+	        	Utils.showError(Utils.getBundleString("UtilsFTP.download_aborted")+remoteName);
 	        	return false;
 	        }
 		} catch (IOException e) {
@@ -345,16 +365,16 @@ public class UtilsFTP {
     	
     	boolean status = false;
         try {
-     		if (!prepareConnection()){
+     		if (!prepareConnection()) {
     			return false;
     		}
             boolean success = client.setFileType(FTP.BINARY_FILE_TYPE);
             if (!success) {
-            	Utils.showError("Could not set binary file type.");
+            	Utils.showError(Utils.getBundleString("UtilsFTP.binary_file"));
             }
             inputStream = client.retrieveFileStream(downloadPath);
-        } catch (IOException ex) {
-        	Utils.showError("Error downloading file: " + ex.getMessage());
+        } catch (IOException e) {
+        	Utils.showError(Utils.getBundleString("UtilsFTP.error_downloading") + e.getMessage());
         }
         
         status = true;
@@ -373,5 +393,24 @@ public class UtilsFTP {
         return inputStream;
     }
     
+    
+    // Checks for connection to the internet through dummy request
+    public static boolean isInternetReachable() {
+    	
+        try {
+        	// Trying to retrieve data from the source. If there is no connection, this line will fail
+            URL url = new URL("http://www.google.com");
+            HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
+            urlConnect.getContent();
+        } catch (UnknownHostException e) {
+            return false;
+        }
+        catch (IOException e) {
+            return false;
+        }
+        return true;
+        
+    }
+        
         
 }

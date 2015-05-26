@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -43,11 +44,6 @@ import org.giswater.util.Utils;
 
 public class SectorSelectionPanel extends JPanel {
 	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
-	private static final long serialVersionUID = 7046850563517014315L;
-	private final String TABLE_SECTOR = "sector";
-	private final String TABLE_SECTOR_SELECTION = "sector_selection";
-		
 	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
@@ -56,6 +52,10 @@ public class SectorSelectionPanel extends JPanel {
 	private JButton btnClose;
 	private JDialog dialog;
 
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private final String TABLE_SECTOR = "sector";
+	private final String TABLE_SECTOR_SELECTION = "sector_selection";
+	
 	
 	public SectorSelectionPanel() {
 		initConfig();
@@ -63,9 +63,9 @@ public class SectorSelectionPanel extends JPanel {
 	}
 
 	
-	private void setData(){
+	private void setData() {
 		
-		if (MainDao.isConnected()){
+		if (MainDao.isConnected()) {
 			ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
 			if (rs == null) return;		
 			tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
@@ -83,16 +83,16 @@ public class SectorSelectionPanel extends JPanel {
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[10px][100px:200px:400px,grow][12]", "[25.00][8px][:130px:200px][8px][]"));
+		setLayout(new MigLayout("", "[100px:200px:400px,grow]", "[25.00][5px][:130px:200px][5px][]"));
 		
-		JLabel lblTable = new JLabel("Table " + TABLE_SECTOR_SELECTION);
+		JLabel lblTable = new JLabel(BUNDLE.getString("EpaSoft.lblTableSectorSelection")); //$NON-NLS-1$
 		lblTable.setFont(new Font("Tahoma", Font.BOLD, 14));
-		add(lblTable, "cell 1 0,alignx center");
+		add(lblTable, "cell 0 0,alignx center");
 		
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 1 2,grow");
+		add(scrollPane, "cell 0 2,grow");
 		
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -102,26 +102,26 @@ public class SectorSelectionPanel extends JPanel {
 		table.setRowSelectionAllowed(true);
 		scrollPane.setViewportView(table);
 		
-		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text"));
+		btnInsert = new JButton(BUNDLE.getString("TableWindowPanel.btnInsert.text")); 
 		btnInsert.setMaximumSize(new Dimension(79, 23));
 		btnInsert.setMinimumSize(new Dimension(79, 23));
-		add(btnInsert, "flowx,cell 1 4,alignx left");
+		add(btnInsert, "flowx,cell 0 4,alignx left");
 		
-		btnDelete = new JButton(BUNDLE.getString("TableWindowPanel.btnDelete.text"));
+		btnDelete = new JButton(BUNDLE.getString("TableWindowPanel.btnDelete.text")); 
 		btnDelete.setMinimumSize(new Dimension(79, 23));
 		btnDelete.setMaximumSize(new Dimension(79, 23));
 		btnDelete.setVisible(false);
-		add(btnDelete, "cell 1 4");
+		add(btnDelete, "cell 0 4");
 		
 		btnDeleteAll = new JButton(BUNDLE.getString("TableWindowPanel.btnDeleteAll.text"));
 		btnDeleteAll.setMinimumSize(new Dimension(79, 23));
-		add(btnDeleteAll, "cell 1 4");
+		add(btnDeleteAll, "cell 0 4");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("TableWindowPanel.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(79, 23));
 		btnClose.setMaximumSize(new Dimension(79, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 1 4");
+		add(btnClose, "cell 0 4");
 
 		setupListeners();
 		
@@ -160,29 +160,29 @@ public class SectorSelectionPanel extends JPanel {
 	}
 	
 	
-	private void delete(){
+	private void delete() {
 		
     	int rowIndex = table.getSelectedRow();
-    	if (rowIndex!=-1){
+    	if (rowIndex!=-1) {
     		String value = (String) table.getModel().getValueAt(rowIndex, 0);
     		String msg = Utils.getBundleString("delete_record?") + "\n" + value;
-            int res = Utils.confirmDialog(msg);
-            if (res == 0){    		
+            int res = Utils.showYesNoDialog(msg);
+            if (res == JOptionPane.YES_OPTION) {    		
             	tableModelSectorSelection.deleteRow(rowIndex);
             	setData();
             }
     	}
-    	else{
+    	else {
     		Utils.showMessage(this, "no_record_selected");
     	}
     	
 	}
 
 	
-	private void deleteAll(){
+	private void deleteAll() {
 		
-        int res = Utils.confirmDialog("question_delete");
-        if (res == 0){
+        int res = Utils.showYesNoDialog("question_delete");
+        if (res == JOptionPane.YES_OPTION) {
         	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
         	MainDao.executeUpdateSql(sql);
     		setData();

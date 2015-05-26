@@ -37,8 +37,6 @@ import net.miginfocom.swing.MigLayout;
 
 public class AcknowledgmentDialog extends JDialog {
 
-	private static final long serialVersionUID = 2829254148112384387L;
-
 
 	public AcknowledgmentDialog(String title, String info, String info2) {
 		
@@ -48,17 +46,14 @@ public class AcknowledgmentDialog extends JDialog {
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		setIconImage(iconImage.getImage());
 		setTitle(title);		
-		//setSize(523, 160);
-		setSize(580, 190);
-		getContentPane().setLayout(new MigLayout("", "[518.00px]", "[8px][45.00][20px][20.00px]"));
+		setSize(730, 190);
+		getContentPane().setLayout(new MigLayout("", "[698.00px]", "[8px][45.00][20px][20.00px]"));
 
         JPanel panelLogo = new JPanel(new BorderLayout()) {
-			private static final long serialVersionUID = 3096090575648819722L;
-
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 145, 0, 205, 40, this);
+                g.drawImage(backgroundImage.getImage(), 230, 0, 205, 40, this);
             }
 
             @Override

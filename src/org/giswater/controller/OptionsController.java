@@ -20,9 +20,7 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -37,6 +35,7 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
@@ -51,7 +50,7 @@ import org.giswater.util.Utils;
 import com.toedter.calendar.JDateChooser;
 
 
-public class OptionsController {
+public class OptionsController extends AbstractController {
 
 	private AbstractOptionsDialog view;
     private ResultSet rs;
@@ -64,41 +63,19 @@ public class OptionsController {
 		this.view = dialog;
         this.rs = rs;
         this.current = 1;
-        this.total = MainDao.getRowCount(rs);
+        this.total = MainDao.getNumberOfRows(rs);
 	    view.setController(this);        
 	}
 	
 	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
-	
-	
-	public boolean setComponents(){
+	public boolean setComponents() {
 		return setComponents(true);
 	}
 	
 	
 	// Update ComboBox items and selected item
 	@SuppressWarnings({"unchecked", "rawtypes"})	
-	public boolean setComponents(boolean fillData){
+	public boolean setComponents(boolean fillData) {
 
 		try {
 			
@@ -108,8 +85,15 @@ public class OptionsController {
 			    JComboBox combo = entry.getValue();
 				view.setComboModel(combo, getComboValues(key));
 				String value = "";
-				if (fillData){
-					value = rs.getString(key);
+				if (fillData) {
+					// Process hydrology field
+					if (key.equals("hydrology")) {
+						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
+						value = MainDao.queryToString(sql);
+					}
+					else {
+						value = rs.getString(key);
+					}
 				}
 				view.setComboSelectedItem(combo, value);
 			}
@@ -118,21 +102,24 @@ public class OptionsController {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
 			    Object value = "";
-				if (fillData){
-					value = rs.getObject(key);
+				if (fillData) {
+					// Check if field exists in the table
+					if (MainDao.checkColumn(rs, key)) {
+						value = rs.getObject(key);
+					}
 				}
 				view.setTextField(component, value);
 			}	
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");			
 			HashMap<String, JDateChooser> dateMap = view.dateMap; 
 			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
 			    String key = entry.getKey();
 			    JDateChooser component = entry.getValue();
 			    String aux = null;
 			    Date value = null;
-				if (fillData){
+				if (fillData) {
 					aux = rs.getString(key);
-					if (aux != null){
+					if (aux != null) {
 						try {
 							value = sdf.parse(aux);
 						} catch (ParseException e) {
@@ -161,64 +148,64 @@ public class OptionsController {
 		String fields = "*";
 		
 		// Raingage
-		if (comboName.equals("form_type")){
+		if (comboName.equals("form_type")) {
 			tableName = "inp_value_raingage";
 		}
-		else if (comboName.equals("timser_id")){
+		else if (comboName.equals("timser_id")) {
 			tableName = "inp_timser_id";
 		}
-		else if (comboName.equals("rgage_type")){
+		else if (comboName.equals("rgage_type")) {
 			tableName = "inp_typevalue_raingage";
 		}		
 		
 		// Options
-		else if (comboName.equals("flow_units")){
+		else if (comboName.equals("flow_units")) {
 			tableName = "inp_value_options_fu";
 		}
-		else if (comboName.equals("infiltration")){
-			tableName = "inp_value_options_in";
+		else if (comboName.equals("hydrology")) {
+			tableName = "cat_hydrology";
 		}
-		else if (comboName.equals("force_main_equation")){
+		else if (comboName.equals("force_main_equation")) {
 			tableName = "inp_value_options_fme";
 		}
-		else if (comboName.equals("flow_routing")){
+		else if (comboName.equals("flow_routing")) {
 			tableName = "inp_value_options_fr";
 		}
-		else if (comboName.equals("inertial_damping")){
+		else if (comboName.equals("inertial_damping")) {
 			tableName = "inp_value_options_id";
 		}
-		else if (comboName.equals("link_offsets")){
+		else if (comboName.equals("link_offsets")) {
 			tableName = "inp_value_options_lo";
 		}
-		else if (comboName.equals("normal_flow_limited")){
+		else if (comboName.equals("normal_flow_limited")) {
 			tableName = "inp_value_options_nfl";
 		}	
 
 		// Options Epanet
-		else if (comboName.equals("units")){
+		else if (comboName.equals("units")) {
 			tableName = "inp_value_opti_units";
 		}
-		else if (comboName.equals("pattern")){
+		else if (comboName.equals("pattern")) {
 			tableName = "inp_pattern";
 		}
-		else if (comboName.equals("hydraulics")){
+		else if (comboName.equals("hydraulics")) {
 			tableName = "inp_value_opti_hyd";
 		}
-		else if (comboName.equals("unbalanced")){
+		else if (comboName.equals("unbalanced")) {
 			tableName = "inp_value_opti_unbal";
 		}	
 		
 		// Options Epanet or Report Epanet
-		else if (comboName.equals("headloss")){
-			if (view instanceof OptionsEpanetDialog){			
+		else if (comboName.equals("headloss")) {
+			if (view instanceof OptionsEpanetDialog) {			
 				tableName = "inp_value_opti_headloss";
 			}
 			else{
 				tableName = "inp_value_yesno";
 			}
 		}			
-		else if (comboName.equals("quality")){
-			if (view instanceof OptionsEpanetDialog){			
+		else if (comboName.equals("quality")) {
+			if (view instanceof OptionsEpanetDialog) {			
 				tableName = "inp_value_opti_qual";
 			}
 			else{
@@ -227,18 +214,18 @@ public class OptionsController {
 		}
 		
 		// Report
-		else if (comboName.equals("status")){
+		else if (comboName.equals("status")) {
 			tableName = "inp_value_yesnofull";
 		}		
 
 		// ResultSelection
-		else if (comboName.equals("result_id")){
+		else if (comboName.equals("result_id")) {
 			tableName = "rpt_result_cat";
 			fields = "result_id";
 		}	
 		
 		// Times
-		else if (comboName.equals("statistic")){
+		else if (comboName.equals("statistic")) {
 			tableName = "inp_value_times";
 		}
 		
@@ -263,14 +250,14 @@ public class OptionsController {
 			ResultSetMetaData metadata = rs.getMetaData();		
 			HashMap<String, JDateChooser> dateMap = view.dateMap; 			
 			for (Map.Entry<String, JDateChooser> entry : dateMap.entrySet()) {
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");				
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");				
 				key = entry.getKey();
 				JDateChooser date = entry.getValue();
 				auxDate = date.getDate();
-				if (auxDate == null){
+				if (auxDate == null) {
 					rs.updateNull(key);						
 				} 
-				else{
+				else {
 					value = sdf.format(auxDate); 					
 					rs.updateString(key, (String) value);
 				}
@@ -281,11 +268,18 @@ public class OptionsController {
 				JComboBox combo = entry.getValue();
 				if (combo.isEnabled()){
 					value = combo.getSelectedItem();
-					if (value == null || ((String)value).trim().equals("")){
+					if (value == null || ((String)value).trim().equals("")) {
 						rs.updateNull(key);						
 					} 
 					else{
-						rs.updateString(key, (String) value);
+						// Save into hydrology_selection
+						if (key.equals("hydrology")) {
+							String sql = "UPDATE "+MainDao.getSchema()+".hydrology_selection SET hydrology_id = '"+value+"'";
+							MainDao.executeUpdateSql(sql, true);
+						}
+						else{
+							rs.updateString(key, (String) value);
+						}
 					}
 				}
 			}
@@ -293,45 +287,48 @@ public class OptionsController {
 			HashMap<String, JTextField> textMap = view.textMap; 			
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
-				JTextField component = entry.getValue();
-				if (component.isEnabled()){
-					value = component.getText();
-					int col = rs.findColumn(key);
-					int columnType = metadata.getColumnType(col);
-					if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
-						if (value == null || ((String)value).trim().equals("")){
-							rs.updateNull(col);						
-						} 
-						else{
-							rs.updateString(col, (String) value);
+				// Check if field exists in the table
+				if (MainDao.checkColumn(rs, key)) {
+					JTextField component = entry.getValue();
+					if (component.isEnabled()){
+						value = component.getText();
+						int col = rs.findColumn(key);
+						int columnType = metadata.getColumnType(col);
+						if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
+							if (value == null || ((String)value).trim().equals("")) {
+								rs.updateNull(col);						
+							} 
+							else {
+								rs.updateString(col, (String) value);
+							}
 						}
+						else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
+							if (((String)value).trim().equals("")){
+								rs.updateNull(col);
+							} 
+							else {					
+								Integer aux = Integer.parseInt(value.toString());
+								rs.updateInt(col, aux);						
+							}
+						}
+						else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
+							columnType == Types.FLOAT || columnType == Types.REAL) {
+							if (((String)value).trim().equals("")){
+								rs.updateNull(col);
+							} 
+							else {					
+								Double aux = Double.parseDouble(value.toString().replace(",", "."));
+								rs.updateDouble(col, aux);						
+							}
+						}	
+						else if (columnType == Types.TIME || columnType == Types.DATE) {
+							rs.updateTimestamp(col, (Timestamp) value);
+						}			
 					}
-					else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
-						if (((String)value).trim().equals("")){
-							rs.updateNull(col);
-						} 
-						else{					
-							Integer aux = Integer.parseInt(value.toString());
-							rs.updateInt(col, aux);						
-						}
-					}
-					else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
-						columnType == Types.FLOAT || columnType == Types.REAL) {
-						if (((String)value).trim().equals("")){
-							rs.updateNull(col);
-						} 
-						else{					
-							Double aux = Double.parseDouble(value.toString().replace(",", "."));
-							rs.updateDouble(col, aux);						
-						}
-					}	
-					else if (columnType == Types.TIME || columnType == Types.DATE) {
-						rs.updateTimestamp(col, (Timestamp) value);
-					}			
-				}
+				}	
 			}
 			
-			if (action.equals("create")){
+			if (action.equals("create")) {
 				rs.insertRow();
 				rs.last();
 				total++;
@@ -339,7 +336,7 @@ public class OptionsController {
 				action = "saved";
 				setComponents();
 			}
-			else if (!action.equals("create_detail")){
+			else if (!action.equals("create_detail")) {
 				rs.updateRow();
 			}
 			
@@ -353,7 +350,7 @@ public class OptionsController {
 	}
 	
 	
-	private void manageNavigationButtons(){
+	private void manageNavigationButtons() {
 		
 		if (action.equals("create")){
 			Utils.getLogger().info("Editing new record...");
@@ -385,11 +382,11 @@ public class OptionsController {
 	}		
 	
 	
-	public void movePrevious(){
+	public void movePrevious() {
 		
 		action = "other";
 		try {
-			if (!rs.isFirst()){
+			if (!rs.isFirst()) {
 				rs.previous();
 				current--;		
 				setComponents();
@@ -401,11 +398,11 @@ public class OptionsController {
 	}
 	
 	
-	public void moveNext(){
+	public void moveNext() {
 		
 		action = "other";
 		try {
-			if (!rs.isLast()){
+			if (!rs.isLast()) {
 				rs.next();
 				current++;
 				setComponents();
@@ -430,12 +427,12 @@ public class OptionsController {
 	}	
 	
 
-	public void delete(){
+	public void delete() {
 		
 		action = "other";
 		try {
-			int res = Utils.confirmDialog("delete_record?");
-	        if (res == 0){
+			int res = Utils.showYesNoDialog(Utils.getBundleString("OptionsController.delete_record")); //$NON-NLS-1$
+	        if (res == JOptionPane.YES_OPTION){
 				rs.deleteRow();				
 				rs.first();
 				current = 1;
@@ -461,22 +458,22 @@ public class OptionsController {
 	public void changeCombo(String comboName, String value) {
 		
 		boolean isVisible = false;
-		if (comboName.equals("hydraulics")){
-			if (value.toUpperCase().equals("USE") || value.toUpperCase().equals("SAVE")){
+		if (comboName.equals("hydraulics")) {
+			if (value.toUpperCase().equals("USE") || value.toUpperCase().equals("SAVE")) {
 				isVisible = true;
 			}
 		}
-		else if (comboName.equals("unbalanced")){
-			if (value.toUpperCase().equals("CONTINUE")){
+		else if (comboName.equals("unbalanced")) {
+			if (value.toUpperCase().equals("CONTINUE")) {
 				isVisible = true;
 			}
 		}		
-		else if (comboName.equals("quality")){
-			if (value.toUpperCase().equals("TRACE")){
+		else if (comboName.equals("quality")) {
+			if (value.toUpperCase().equals("TRACE")) {
 				isVisible = true;
 			}
 		}		
-		if (view instanceof OptionsEpanetDialog){
+		if (view instanceof OptionsEpanetDialog) {
 			OptionsEpanetDialog optionsEpanetDialog = (OptionsEpanetDialog) view;
 			optionsEpanetDialog.setComboEnabled(comboName, isVisible);
 		}		
@@ -485,9 +482,9 @@ public class OptionsController {
 	
 	
 	// ResultSelectionDialog
-	public void changeResultSelection(){
+	public void changeResultSelection() {
 		
-		if (view instanceof ResultSelectionDialog){
+		if (view instanceof ResultSelectionDialog) {
 			ResultSelectionDialog dialog = (ResultSelectionDialog) view;
 			String result = dialog.getResultSelection();
 	        // Update table: result_selection
@@ -501,8 +498,6 @@ public class OptionsController {
     public void chooseFileFname() {
 
         JFileChooser chooser = new JFileChooser();
-//        FileFilter filter = new FileNameExtensionFilter("RPT extension file", "rpt");
-//        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_fname"));
         File file = new File(System.getProperty("user.home"));	
@@ -510,7 +505,7 @@ public class OptionsController {
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileFname = chooser.getSelectedFile();
-    		if (view instanceof RaingageDialog){
+    		if (view instanceof RaingageDialog) {
     			RaingageDialog child = (RaingageDialog) view;
     			child.setFileFname(fileFname.getAbsolutePath());
     		}
@@ -520,15 +515,15 @@ public class OptionsController {
 	
     
     // Raingage
-    public void changeRaingageType(){
+    public void changeRaingageType() {
     	
-		if (view instanceof RaingageDialog){
+		if (view instanceof RaingageDialog) {
 			RaingageDialog child = (RaingageDialog) view;
 			String value = child.getRaingageType();
-			if (value.equals("FILE")){
+			if (value.equals("FILE")) {
 				child.enablePanelFile(true);
 			} 
-			else{
+			else {
 				child.enablePanelFile(false);
 			}
 		}

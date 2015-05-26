@@ -30,9 +30,7 @@ import javax.swing.table.TableCellRenderer;
 
 public class MyComboBoxRenderer extends JComboBox<String> implements TableCellRenderer {
 
-	private static final long serialVersionUID = -8125519578870063775L;
 
-	
 	public MyComboBoxRenderer(Vector<String> items) {
 		super(items);
 	}

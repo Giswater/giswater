@@ -20,141 +20,66 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
+import java.beans.PropertyVetoException;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.util.Vector;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableColumnModel;
 
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
+import org.giswater.gui.MainClass;
+import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
+import org.giswater.gui.dialog.catalog.ProjectDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.HecRasPanel;
-import org.giswater.gui.panel.ProjectPanel;
-import org.giswater.model.TableModelSrid;
+import org.giswater.task.ExportSdfTask;
+import org.giswater.task.LoadDtmTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class HecRasController{
+public class HecRasController extends AbstractController {
 
-	private MainFrame mainFrame;
 	private HecRasPanel view;
-    private PropertiesMap prop;
+	private MainFrame mainFrame;
     private PropertiesMap gswProp;
     private File fileSdf;
     private File fileAsc;    
     private String userHomeFolder;
-	private String software;
-	
-	private TableModelSrid model;
-	private TableColumnModel tcm;
-	private ProjectPanel projectPanel;
-	private JDialog projectDialog;
 
     
-    public HecRasController(HecRasPanel view, MainFrame mf) {
+    public HecRasController(HecRasPanel view, MainFrame mainFrame) {
     	
-    	this.mainFrame = mf;
     	this.view = view;	
-        this.prop = MainDao.getPropertiesFile();
-        this.gswProp = MainDao.getGswProperties();
+    	this.mainFrame = mainFrame;
+        this.gswProp = PropertiesDao.getGswProperties();
     	this.userHomeFolder = System.getProperty("user.home");
-    	this.software = "HECRAS";
 	    view.setControl(this);         	
     	setDefaultValues();
     	    	
 	}
 
     
-    private void setDefaultValues(){
+    private void setDefaultValues() {
     	
-    	fileSdf = new File(gswProp.getProperty("FILE_SDF", userHomeFolder));
+    	fileSdf = new File(gswProp.getProperty("HECRAS_FILE_SDF", userHomeFolder));
     	view.setFileSdf(fileSdf.getAbsolutePath());
-    	fileAsc = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));
+    	fileAsc = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));
 		if (fileAsc.exists()) {
 			view.setFileAsc(fileAsc.getAbsolutePath());
 		}	
-		view.setSchemaModel(MainDao.getSchemas("HECRAS"));
 		
     }
-   
-
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
 	
 	
-	public void closePanel(){
+	public void closePanel() {
 		view.getFrame().setVisible(false);
 	}
-	
-	
-	public void openDatabase(){
-		mainFrame.openDatabase();
-	}
-	
-	
-	public void isConnected(){
-
-		// Check if we already are connected
-		if (MainDao.isConnected()){
-			view.enableButtons(true);
-			view.setSchemaModel(MainDao.getSchemas("HECRAS"));
-	    	view.setSelectedSchema(MainDao.getGswProperties().get("HECRAS_SCHEMA"));			
-		} 
-		else{
-			view.enableButtons(false);
-			view.setSchemaModel(null);				
-		}
-		//mainFrame.enableCatalog(false);
 		
-	}	
-	
-	
-	public void schemaChanged(){
-		
-		if (MainDao.isConnected()){
-			String schemaName = view.getSelectedSchema();
-			MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
-		}
-		
-	}
-	
-	
-	private void checkCatalogTables(String schemaName){
-		mainFrame.enableProjectId(MainDao.checkTable(schemaName, "inp_project_id"));
-		mainFrame.enableConduit(false);
-		mainFrame.enableMaterials(false);
-		mainFrame.enablePatterns(false);
-		mainFrame.enableTimeseries(false);
-		mainFrame.enableCurves(false);		
-	}
-	
 	
     public void chooseFileSdf() {
 
@@ -169,9 +94,12 @@ public class HecRasController{
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             fileSdf = chooser.getSelectedFile();
             String path = fileSdf.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".sdf";
-                fileSdf = new File(path);
+            if (path != null && path.length() >= 4) {  
+                String ext = path.substring(path.length() - 4).toLowerCase();
+                if (!ext.equals(".sdf")) {
+                    path += ".sdf";
+                    fileSdf = new File(path);
+                }
             }
             view.setFileSdf(fileSdf.getAbsolutePath());            
         }
@@ -182,30 +110,23 @@ public class HecRasController{
     public void chooseFileAsc() {
 
         JFileChooser chooser = new JFileChooser();
-        FileFilter filter = new FileNameExtensionFilter("ASC extension file", "asc");
-        chooser.setFileFilter(filter);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.setDialogTitle(Utils.getBundleString("file_asc"));
-        File file = new File(gswProp.getProperty("FILE_ASC", userHomeFolder));	
+        File file = new File(gswProp.getProperty("HECRAS_FILE_ASC", userHomeFolder));	
         chooser.setCurrentDirectory(file.getParentFile());
         int returnVal = chooser.showOpenDialog(view);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
         	fileAsc = chooser.getSelectedFile();
-            String path = fileAsc.getAbsolutePath();
-            if (path.lastIndexOf(".") == -1) {
-                path += ".asc";
-                fileAsc = new File(path);
-            }
             view.setFileAsc(fileAsc.getAbsolutePath());            
         }
 
     }    
     
 
-    private boolean getFileSdf(){
+    private boolean getFileSdf() {
     	
         String path = view.getFileSdf();
-        if (path.equals("")){
+        if (path.equals("")) {
             return false;        	
         }
         if (path.lastIndexOf(".") == -1) {
@@ -213,330 +134,148 @@ public class HecRasController{
         }
         fileSdf = new File(path);        
         gswProp.put("FILE_SDF", fileSdf.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        PropertiesDao.savePropertiesFile();
         return true;    
         
     }
     
     
-    private boolean getFileAsc(){
+    private boolean getFileAsc() {
     	
         String path = view.getFileAsc();
-        if (path.equals("")){
+        if (path.equals("")) {
             return false;        	
         }
         if (path.lastIndexOf(".") == -1) {
-            path += ".asc";
+            path+= ".asc";
         }
         fileAsc = new File(path);        
-        gswProp.put("FILE_ASC", fileAsc.getAbsolutePath());
-        MainDao.savePropertiesFile();
+        gswProp.put("HECRAS_FILE_ASC", fileAsc.getAbsolutePath());
+        PropertiesDao.savePropertiesFile();
         return true;    
         
     }
-    
-    
-    // Clear gisras schema info    
-    public void clearData(){
-    	    	
-		String schemaName = view.getSelectedSchema();    	
-		String msg = Utils.getBundleString("empty_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(msg);  
-        if (res == 0){
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
-        	if (MainDao.clearData(schemaName)){
-        		Utils.showMessage(view, "data_cleared");
-        	}
-        }    	
-    	
-    }
 
     
-	private String getUserSrid(String defaultSrid){
-		
-		String sridValue = "";
-		Boolean sridQuestion = Boolean.parseBoolean(prop.get("SRID_QUESTION"));
-		if (sridQuestion){
-			sridValue = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_srid"), defaultSrid);
-			if (sridValue == null){
-				return "";
-			}
-		}
-		else{
-			sridValue = defaultSrid;
-		}
-		return sridValue.trim();
-		
-	}
-	
-	
-	private String validateName(String schemaName){
-		
-		String validate;
-		validate = schemaName.trim().toLowerCase();
-		validate = validate.replace(" ", "_");
-		validate = validate.replaceAll("[^\\p{ASCII}]", "");
-		return validate;
-		
-	}
-	
-	
-	public void createSchema(){
-		createSchemaAssistant();
-	}	
-	
-	
-	private void createSchemaAssistant() {
-		
-		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
-		ProjectPanel panel = new ProjectPanel(defaultSrid);
-		panel.setHecRasController(this);
-        initModel(panel);
-        updateTableModel();
-        projectDialog = Utils.openDialogForm(panel, view, "Create Project", 420, 480);
-        projectDialog.setVisible(true);
-		
-	}
-	
-    
-	public void createSchema(String defaultSchemaName){
-		
-		String schemaName = defaultSchemaName;
-		if (defaultSchemaName.equals("")){
-			schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), "schema_name");
-			if (schemaName == null){
-				return;
-			}
-			schemaName = schemaName.trim().toLowerCase();
-			if (schemaName.equals("")){
-				Utils.showError("schema_valid_name");
-				return;
-			}
-		}
-		
-		// Ask user to set SRID?
-		String defaultSrid = prop.get("SRID_DEFAULT", "25831");		
-		String sridValue = getUserSrid(defaultSrid);
-
-		if (sridValue.equals("")){
-			return;
-		}
-		Integer srid;
-		try{
-			srid = Integer.parseInt(sridValue);
-		} catch (NumberFormatException e){
-			Utils.showError("error_srid");
-			return;
-		}
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-
-		boolean isSridOk = MainDao.checkSrid(srid);
-		if (!isSridOk && srid != 0){
-			String msg = "SRID "+srid+" " +Utils.getBundleString("srid_not_found")+"\n" +
-				Utils.getBundleString("srid_valid");			
-			Utils.showError(msg);
-			return;
-		}
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));		
-		boolean status = MainDao.createSchemaHecRas("hecras", schemaName, sridValue);
-		if (status && defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_creation_completed");
-		}
-		else if (status && !defaultSchemaName.equals("")){
-			Utils.showMessage(view, "schema_truncate_completed");
-		}
-		view.setSchemaModel(MainDao.getSchemas("HECRAS"));	
-		schemaChanged();
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		
-	}
-    
-	
-	public void deleteSchema(){
-		
-		String schemaName = view.getSelectedSchema();
-		String msg = Utils.getBundleString("delete_schema_name") + "\n" + schemaName;
-		int res = Utils.confirmDialog(msg);        
-        if (res == 0){
-    		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        	
-        	MainDao.deleteSchema(schemaName);
-        	view.setSchemaModel(MainDao.getSchemas("HECRAS"));
-        	schemaName = view.getSelectedSchema();
-        	MainDao.setSchema(schemaName);
-			checkCatalogTables(schemaName);
-    		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    		Utils.showMessage(view, "schema_deleted", "");
-        }
-        
-	}	
-    
-	
-	private void initModel(ProjectPanel panel){
-		
-		this.projectPanel = panel;
-        model = new TableModelSrid();
-        JTable table = projectPanel.getTable();
-        model.setTable(table);   
-        tcm = table.getColumnModel();     
-        
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";		
-		sql+= " FROM public.spatial_ref_sys";
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		Utils.getLogger().info(sql);
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    
-		// Rendering just first time
-		if (tcm.getColumnCount() > 0){
-			tcm.getColumn(0).setMaxWidth(50);   
-			tcm.getColumn(1).setMaxWidth(40);   
-		}
-        
-	}
-	
-	
-	public void updateTableModel() {
-		updateTableModel("");
-	}
-	
-	
-	public void updateTableModel(String filterType) {
-		
-		String sql = "SELECT substr(srtext, 1, 6) as \"Type\", srid as \"SRID\", substr(split_part(srtext, ',', 1), 9) as \"Description\"";			
-		sql+= " FROM public.spatial_ref_sys";
-		String filter = projectPanel.getFilter();
-		if (!filter.equals("")){
-			sql+= " WHERE (cast(srid as varchar) like '%"+filter+"%' OR split_part(srtext, ',', 1) like '%"+filter+"%')";
-		} 
-		if (!filterType.equals("")){
-			if (filter.equals("")){
-				sql+= " WHERE ";
-			}
-			else{
-				sql+= " AND ";
-			}
-			sql+= "("+filterType+")";
-		} 
-		
-		sql+= " ORDER BY substr(srtext, 1, 6), srid";
-		ResultSet rs = MainDao.getResultset(sql);
-		model.setRs(rs);
-		projectPanel.setTableModel(model);    			
-		Utils.getLogger().info(sql);
-		
-	}
-	
-	
-	public void acceptProject(){
-		
-		// SRID
-		String sridValue = projectPanel.getSrid();
-		if (sridValue.equals("-1")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("srid_select"));
-			return;
-		}
-		
-		// Project Name
-		String schemaName = projectPanel.getName();
-		if (schemaName.equals("")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_name"));
-			return;
-		}
-		schemaName = validateName(schemaName);
-		if (schemaName.equals("")){
-			Utils.showError(view, "schema_valid_name");
-			return;
-		}
-		
-		// Project Title, Author and Date
-		String title = projectPanel.getTitle();
-		if (title.equals("")){
-			Utils.showMessage(projectPanel, Utils.getBundleString("enter_schema_title"));
-			return;
-		}
-		String author = projectPanel.getAuthor();
-		String date = projectPanel.getDate();
-		
-		// Save properties
-		MainDao.getGswProperties().put("SRID_USER", sridValue);
-		MainDao.savePropertiesFile();
-		
-    	view.enableControlsText(false);
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	  
-		
-		boolean status = MainDao.createSchemaHecRas(software, schemaName, sridValue);	
-		if (status){
-			MainDao.setSchema(schemaName);
-			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-				" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+software+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-			Utils.getLogger().info(sql);
-			MainDao.executeSql(sql, true);
-			Utils.showMessage(view, "schema_creation_completed");
-		}
-		
-		// Update view
-		view.setSchemaModel(MainDao.getSchemas(software));	
-		schemaChanged();
-		view.enableControlsText(true);
-		view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
-		closeProject();
-		
-	}
-	
-	
-	public void closeProject(){
-		projectDialog.dispose();
-	}	
-	
-    
-    public void loadRaster(){
+    public void loadRaster() {
     	
 		// Check ASC file is set
 		if (!getFileAsc()) {
-			Utils.showError("file_asc_not_selected");
+			MainClass.mdi.showError("file_asc_not_selected");
 			return;
 		}
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	
-		String schemaName = view.getSelectedSchema();
+    	
+		// Execute task
+		String schemaName = MainDao.getSchema();
 		String filePath = fileAsc.getAbsolutePath();
 		String fileName = fileAsc.getName();
-    	MainDao.loadRaster(schemaName, filePath, fileName);  	
+		LoadDtmTask task = new LoadDtmTask(schemaName, filePath, fileName);
+        task.addPropertyChangeListener(this);
+        task.execute();
         	
     }
     
     
-    // Create HEC-RAS file    
 	public void exportSdf() {
    	
 		// Check SDF file is set
 		if (!getFileSdf()) {
-			Utils.showError("file_sdf_not_selected");
+			MainClass.mdi.showError("file_sdf_not_selected");
 			return;
 		}
 
-		view.setCursor(new Cursor(Cursor.WAIT_CURSOR));	        
-		String schemaName = view.getSelectedSchema();
-		String fileName = fileSdf.getName();
-		MainDao.createSdfFile(schemaName, fileName);
+		String schemaName = MainDao.getSchema();
+		ExportSdfTask task = new ExportSdfTask(schemaName, fileSdf, view.isMASelected(), view.isIASelected(), view.isLeveesSelected(), view.isBOSelected(), view.isManningSelected());
+        task.setController(this);
+		task.addPropertyChangeListener(this);
+        task.execute();
 		
-		// Copy file from Postgis Data Directory to folder specified by the user
-		String auxIn, auxOut;
-		String folderIn = gswProp.getProperty("POSTGIS_DATA");
-		auxIn = folderIn + File.separator + fileName;
-		auxOut = fileSdf.getAbsolutePath();
-		boolean ok = Utils.copyFile(auxIn, auxOut);
-		if (!ok){
-			Utils.showError("sdf_error");
+	}
+	
+	
+    public void gswEdit() {
+
+        try {
+        	mainFrame.ppFrame.setVisible(true);
+        	mainFrame.ppFrame.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
 		}
-		else{
-			Utils.showMessage(view, "sdf_ok", fileSdf.getAbsolutePath());
+        
+    }
+    
+    
+	// Data Manager
+	public void showProjectData() {
+		ResultSet rs = MainDao.getTableResultset("inp_project_id");
+		if (rs == null) return;		
+		ProjectDialog dialog = new ProjectDialog();
+		showCatalog(dialog, rs);
+	}	
+	
+	
+	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
+		
+		CatalogController controller = new CatalogController(dialog, rs);
+        if (MainDao.getNumberOfRows(rs) == 0) {
+            controller.create();
+        }
+        else {
+            controller.moveFirst();
+        }		
+		dialog.setModal(true);
+		dialog.setLocationRelativeTo(null);   
+		dialog.setVisible(true);		
+		
+	}	
+	
+	
+	public void createLogFile() {
+		createFile("log", "\"Process\", message");
+	}
+	
+	public void createErrorFile() {
+		createFile("error", "\"Process\", \"error\", \"time\"");
+	}
+	
+	private void createFile(String tableName, String fields) {
+		
+		// Create text file inside 'log' folder
+		String filePath = Utils.getLogFolder() + MainDao.getSchema() + "_"+tableName+".txt";
+		File file = new File(filePath);
+		String aux = "Content of the table "+MainDao.getSchema()+"."+tableName+"\n";
+		Utils.getLogger().info("Copying content of table "+MainDao.getSchema()+"."+tableName+" into file: "+filePath);
+		
+		// Get content of log table
+		//String sql = "SELECT \"Process\", message FROM "+MainDao.getSchema()+"."+tableName;
+		String sql = "SELECT "+fields+" FROM "+MainDao.getSchema()+"."+tableName;
+		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
+		if (vector_container.size() > 0) {
+			for (int i = 0; i < vector_container.size(); i++) {
+				Vector<String> vector = vector_container.get(i);
+				aux+= "\n";
+				for (int j = 0; j < vector.size(); j++) {
+					aux+= vector.get(j) + " - ";
+				}
+				aux = aux.substring(0,  aux.length() - 3);
+			}	
+			if (!Utils.fillFile(file, aux)) {
+				return;    		
+			}
+			Utils.openFile(file.getAbsolutePath());	
+		}
+		else {
+			MainClass.mdi.showMessage("Table "+MainDao.getSchema()+"."+tableName+" is empty");
 		}
 		
 	}
-    
+	    
+	
+	// TODO: exportDtm
+	public void exportDtm() {
+		
+		
+	}
+	
 	
 }

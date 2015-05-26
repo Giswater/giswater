@@ -21,19 +21,18 @@
 package org.giswater.controller;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ConfigPanel;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
-public class ConfigController {
+public class ConfigController extends AbstractController {
 
 	private ConfigPanel view;
     private PropertiesMap prop;
@@ -41,60 +40,43 @@ public class ConfigController {
 	
 	public ConfigController(ConfigPanel dbPanel) {
 		this.view = dbPanel;	
-        this.prop = MainDao.getPropertiesFile();
+        this.prop = PropertiesDao.getPropertiesFile();
 	    view.setController(this);        
     	setDefaultValues();    	
 	}
 	
 	
-    private void setDefaultValues(){
+    private void setDefaultValues() {
     	
 		view.setDbAdminFile(prop.get("FILE_DBADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
 		view.setAutoStart(prop.get("AUTOSTART_POSTGIS"));
 		view.setOpenInp(prop.get("OPEN_INP"));
 		view.setOpenRpt(prop.get("OPEN_RPT"));
+		view.setProjectUpdate(prop.get("PROJECT_UPDATE", "ask"));
 		view.setOverwriteInp(prop.get("OVERWRITE_INP"));
 		view.setOverwriteRpt(prop.get("OVERWRITE_RPT"));
+		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
 		view.setSqlLog(prop.get("SQL_LOG"));
 		view.setSridQuestion(prop.get("SRID_QUESTION"));
 		view.setLoadRaster(prop.get("LOAD_RASTER"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
+		view.setLanguage(prop.get("LANGUAGE", "en"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
         Integer size = 10;
         try{
 	        size = Integer.parseInt(aux);
         }
-        catch (NumberFormatException e){
-        	String msg = "Value of parameter LOG_FOLDER_SIZE is not valid. It must be a number";
+        catch (NumberFormatException e) {
+        	String msg = Utils.getBundleString("ConfigController.log_size_invalid"); //$NON-NLS-1$
         	Utils.logError(msg);
         }        
 		view.setLogFolderSize(size);
 		
     }
-       
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-		} catch (Exception e) {
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
 	
 	
-	public void configAccept(){
+	public void configAccept() {
 		
 		// Update properties file getting parameteres from view	 
 		prop.put("FILE_DBADMIN", view.getDgAdminFile());
@@ -102,6 +84,7 @@ public class ConfigController {
 		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
+		prop.put("PROJECT_UPDATE", view.getProjectUpdate());		
 		prop.put("SQL_LOG", view.getSqlLog());				
 		prop.put("SRID_QUESTION", view.getSridQuestion());		
 		prop.put("LOAD_RASTER", view.getLoadRaster());		
@@ -109,12 +92,13 @@ public class ConfigController {
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
 		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());		
+		prop.put("AUTO_IMPORT_RPT", view.getAutoImportRpt());		
+		prop.put("LANGUAGE", view.getLanguage());		
 
 		// Close frame
 		view.getFrame().setVisible(false);
 		
 	}	
-	
 	
 
     public void chooseFileDbAdmin() {

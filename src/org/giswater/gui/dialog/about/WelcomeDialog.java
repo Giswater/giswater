@@ -48,7 +48,6 @@ import org.giswater.util.Utils;
 
 public class WelcomeDialog extends JDialog {
 
-	private static final long serialVersionUID = 2829254148112384387L;
 	public URI urlWeb = null;
 	public URI urlGithub = null;	
 	private final String URL_WEB = "http://www.giswater.org";
@@ -85,8 +84,8 @@ public class WelcomeDialog extends JDialog {
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 8));
 		setIconImage(iconImage.getImage());
 		setTitle(title);		
-		setSize(525, 220);
-		getContentPane().setLayout(new MigLayout("", "[518.00px]", "[8px][45.00][20px][20.00px][::20px][::20px][20px:n:20px]"));
+		setSize(615, 220);
+		getContentPane().setLayout(new MigLayout("", "[587.00px]", "[8px][45.00][20px][20.00px][::20px][::20px][20px:n:20px]"));
 		try {
 			urlWeb = new URI(URL_WEB);
 			urlGithub = new URI(URL_GITHUB);
@@ -95,12 +94,11 @@ public class WelcomeDialog extends JDialog {
 		}			
 
         JPanel panelLogo = new JPanel(new BorderLayout()) {
-			private static final long serialVersionUID = 3096090575648819722L;
-
+        	
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundImage.getImage(), 145, 0, 205, 40, this);
+                g.drawImage(backgroundImage.getImage(), 190, 0, 205, 40, this);
             }
 
             @Override
@@ -110,7 +108,7 @@ public class WelcomeDialog extends JDialog {
                 size.height = Math.max(backgroundImage.getIconHeight(), size.height);
                 return size;
             }
-            
+        
         };
         
         getContentPane().add(panelLogo, "cell 0 1,alignx center");

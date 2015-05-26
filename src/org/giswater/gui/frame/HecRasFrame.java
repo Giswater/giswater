@@ -34,17 +34,15 @@ import javax.swing.ImageIcon;
 
 public class HecRasFrame extends JInternalFrame {
 
-	private static final long serialVersionUID = 5510726193938743935L;
 	private HecRasPanel panel;
 	
 	
-	public HecRasFrame(){
-		setResizable(true);
+	public HecRasFrame() {
 		initComponents();
 	}
 	
 
-	public HecRasPanel getPanel(){
+	public HecRasPanel getPanel() {
 		return panel;
 	}
 	
@@ -56,8 +54,8 @@ public class HecRasFrame extends JInternalFrame {
     	panel.setFrame(this);    	
         setTitle("HEC-RAS");
         setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-		setMaximizable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+		setVisible(false);
 
         setFrameIcon(new ImageIcon(Utils.getIconPath()));
 		try {
@@ -76,8 +74,8 @@ public class HecRasFrame extends JInternalFrame {
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
         );
         getContentPane().setLayout(layout);
 

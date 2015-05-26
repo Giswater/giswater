@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.options;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -32,11 +33,13 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.util.Utils;
+
 
 public class ResultSelectionDialog extends AbstractOptionsDialog {
 
-	private static final long serialVersionUID = -6349825417550216902L;
 	private JComboBox<String> cboResultSelection;
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 
 	public ResultSelectionDialog() {
@@ -51,22 +54,22 @@ public class ResultSelectionDialog extends AbstractOptionsDialog {
 	
 	private void initConfig(){
 
-		setTitle("Table result_selection");
+		setTitle(BUNDLE.getString("ResultSelectionDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 375, 176);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[40px:n][66.00][5px][30.00]"));
 		
-		String msg = "<HTML>By selecting on result you analyze the result values on the GIS project<br> (TOC group: Simulation Analysis)</HTML>";
+		String msg = Utils.getBundleString("ResultSelectionDialog.result_selection_message"); //$NON-NLS-1$
 		JLabel lblNewLabel = new JLabel(msg);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		getContentPane().add(lblNewLabel, "cell 0 0 2 1,alignx center,aligny center");
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ResultSelectionDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 1 2 1,grow");
 		panelGeneral.setLayout(new MigLayout("", "[75.00][115.00:159.00][40.00px]", "[25px:n][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel("Result id:");
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ResultSelectionDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
 		cboResultSelection = new JComboBox<String>();

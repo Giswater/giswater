@@ -43,21 +43,20 @@ import com.toedter.calendar.JDateChooser;
 
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractOptionsDialog extends JDialog implements ActionListener{
+public abstract class AbstractOptionsDialog extends JDialog implements ActionListener {
 
-	private static final long serialVersionUID = -7319857198967955753L;
 	protected OptionsController controller;
 	public HashMap<String, JComboBox> comboMap;
 	public HashMap<String, JTextField> textMap;
 	public HashMap<String, JDateChooser> dateMap;
 	protected JButton btnSave;
 	protected JButton btnClose;
-
+	
 	
 	public AbstractOptionsDialog() { }
 	
 	
-	public OptionsController getController(){
+	public OptionsController getController() {
 		return controller;
 	}
 	
@@ -75,22 +74,22 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	}	
 	
 	
-	public void setComboSelectedItem(JComboBox combo, String item){
+	public void setComboSelectedItem(JComboBox combo, String item) {
 		combo.setSelectedItem(item);
 	}	
 	
 	
 	public void setTextField(JTextField textField, Object value) {
-		if (value!=null){
+		if (value != null) {
 			textField.setText(value.toString());
 		}
-		else{
+		else {
 			textField.setText("");
 		}
 	}	
 	
 	public void setDate(JDateChooser dateField, Date value) {
-		if (value!=null){
+		if (value!=null) {
 			dateField.setDate(value);
 		}
 		else{
@@ -98,12 +97,12 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 		}
 	}	
 	
-	public void enablePrevious(boolean enable){ }
+	public void enablePrevious(boolean enable) { }
 	
-	public void enableNext(boolean enable){	}	
+	public void enableNext(boolean enable) {	}	
 	
-	public void enableSave(boolean enable){
-		if (btnSave != null){
+	public void enableSave(boolean enable) {
+		if (btnSave != null) {
 			btnSave.setEnabled(enable);
 		}
 	}	
@@ -169,9 +168,6 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 			dispose();
 		}
 	}
-
-
-
 
 	
 }

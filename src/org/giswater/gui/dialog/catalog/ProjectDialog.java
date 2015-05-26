@@ -22,6 +22,7 @@ package org.giswater.gui.dialog.catalog;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,13 +34,12 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
+import org.giswater.util.MaxLengthTextDocument;
+
 
 public class ProjectDialog extends AbstractCatalogDialog {
-
-	private static final long serialVersionUID = -6349825417550216902L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	
+	protected static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form");
 	
 	
 	public ProjectDialog() {
@@ -48,52 +48,53 @@ public class ProjectDialog extends AbstractCatalogDialog {
 	}
 	
 	
-	private void initConfig(){
+	private void initConfig() {
 
-		setTitle("Table inp_project_id");
+		setTitle(BUNDLE.getString("ProjectDialog.this.title")); //$NON-NLS-1$
 		setBounds(0, 0, 344, 206);
 		getContentPane().setLayout(new MigLayout("", "[90.00][392.00]", "[113.00][5px][30.00]"));
 		
 		JPanel panelGeneral = new JPanel();
 		panelGeneral.setFont(new Font("Tahoma", Font.BOLD, 14));
-		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "GENERAL", TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		panelGeneral.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), BUNDLE.getString("ProjectDialog.panelGeneral.borderTitle"), TitledBorder.CENTER, TitledBorder.TOP, null, null)); //$NON-NLS-1$
 		getContentPane().add(panelGeneral, "cell 0 0 2 1,growy");
 		panelGeneral.setLayout(new MigLayout("", "[60][115.00:237.00,grow]", "[25px:n][][10px:n]"));
 		
-		JLabel lblStatistic = new JLabel("Title:");
+		JLabel lblStatistic = new JLabel(BUNDLE.getString("ProjectDialog.lblStatistic.text")); //$NON-NLS-1$
 		panelGeneral.add(lblStatistic, "cell 0 0,alignx trailing");
 		
-		textField = new JTextField();
-		textField.setName("title");
-		panelGeneral.add(textField, "cell 1 0,growx");
-		textField.setColumns(10);
+		JTextField txtTitle = new JTextField();
+		txtTitle.setName("title");
+		txtTitle.setDocument(new MaxLengthTextDocument(254));	
+		panelGeneral.add(txtTitle, "cell 1 0,growx");
+		txtTitle.setColumns(10);
 		
-		JLabel lblAuthor = new JLabel("Author:");
+		JLabel lblAuthor = new JLabel(BUNDLE.getString("ProjectDialog.lblAuthor.text")); //$NON-NLS-1$
 		panelGeneral.add(lblAuthor, "cell 0 1,alignx trailing");
 		
-		textField_1 = new JTextField();
-		textField_1.setName("author");
-		textField_1.setColumns(10);
-		panelGeneral.add(textField_1, "cell 1 1,growx");
+		JTextField txtAuthor = new JTextField();
+		txtAuthor.setName("author");
+		txtAuthor.setDocument(new MaxLengthTextDocument(50));
+		panelGeneral.add(txtAuthor, "cell 1 1,growx");
 		
-		JLabel lblDate = new JLabel("Date:");
+		JLabel lblDate = new JLabel(BUNDLE.getString("ProjectDialog.lblDate.text")); //$NON-NLS-1$
 		panelGeneral.add(lblDate, "cell 0 2,alignx trailing");
 		
-		textField_2 = new JTextField();
-		textField_2.setName("date");
-		textField_2.setColumns(10);
-		panelGeneral.add(textField_2, "cell 1 2,growx");
+		JTextField txtDate = new JTextField();
+		txtDate.setName("date");
+		txtDate.setDocument(new MaxLengthTextDocument(12));
+		panelGeneral.add(txtDate, "cell 1 2,growx");
 		
 		ImageIcon image = new ImageIcon("images/imago.png");        
 		super.setIconImage(image.getImage());
 		
-		btnSave = new JButton("Save");
-		btnSave.setToolTipText("Save record");
+		btnSave = new JButton(BUNDLE.getString("Generic.btnSave.text"));
+		btnSave.setToolTipText(BUNDLE.getString("Generic.btnSave.toolTipText"));
 		btnSave.setActionCommand("saveData");		
 		getContentPane().add(btnSave, "cell 1 2,alignx right");		
 
-		btnClose = new JButton("Close");
-		btnClose.setToolTipText("Close window");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
+		btnClose.setToolTipText(BUNDLE.getString("Generic.btnClose.toolTipText"));
 		btnClose.setActionCommand("closeWindow");
 		getContentPane().add(btnClose, "cell 1 2,alignx right");		
 		

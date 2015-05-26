@@ -20,9 +20,7 @@
  */
 package org.giswater.controller;
 
-import java.awt.Cursor;
 import java.io.File;
-import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,20 +32,24 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
+import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
+import org.giswater.gui.dialog.catalog.HydrologyCatalogDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
+import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
 
 
-public class CatalogController {
+public class CatalogController extends AbstractController {
 
 	private AbstractCatalogDialog view;
     private ResultSet rs;
@@ -60,40 +62,18 @@ public class CatalogController {
 		this.view = dialog;
         this.rs = rs;
         this.current = 1;
-        this.total = MainDao.getRowCount(rs);
+        this.total = MainDao.getNumberOfRows(rs);
 	    view.setController(this);        
 	}
+
 	
-	
-	public void action(String actionCommand) {
-		
-		Method method;
-		try {
-			if (Utils.getLogger() != null){
-				Utils.getLogger().info(actionCommand);
-			}
-			method = this.getClass().getMethod(actionCommand);
-			method.invoke(this);	
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));			
-		} catch (Exception e) {
-			view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			if (Utils.getLogger() != null){			
-				Utils.logError(e);
-			} else{
-				Utils.showError(e);
-			}
-		}
-		
-	}	
-	
-	
-	public void setComponents(){
+	public void setComponents() {
 		setComponents(true);
 	}
 	
 	
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void setComponents(boolean fillData){
+	public void setComponents(boolean fillData) {
 
 		try {
 			// Update ComboBox items and selected item with values from current ResultSet row			
@@ -101,11 +81,21 @@ public class CatalogController {
 			if (map == null) return;
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
+			    Vector vector = getComboValues(key);
+			    // Cat Hidrology: Remove last element if we have selected epaswmm 50022
+			    if (view instanceof HydrologyCatalogDialog && key.equals("infiltration")) {
+			    	ProjectPreferencesPanel ppPanel = MainClass.mdi.ppFrame.getPanel();
+			    	String version = ppPanel.getVersionSoftware();
+					if (version.equals("EPASWMM_50022")) {
+						vector.remove(vector.size() - 1);
+					}		
+			    } 
+			    
 			    JComboBox combo = entry.getValue();
-				view.setComboModel(combo, getComboValues(key));
+				view.setComboModel(combo, vector);
 				String value = "";
-				if (fillData && MainDao.checkColumn(rs, key)){
-					if (rs.getRow() != 0){
+				if (fillData && MainDao.checkColumn(rs, key)) {
+					if (rs.getRow() != 0) {
 						value = rs.getString(key);
 					}
 				}
@@ -117,18 +107,22 @@ public class CatalogController {
 			    String key = entry.getKey();
 			    JTextField component = entry.getValue();
 			    Object value = "";
-				if (fillData && MainDao.checkColumn(rs, key)){
-					if (rs.getRow() != 0){					
+				if (fillData && MainDao.checkColumn(rs, key)) {
+					if (rs.getRow() != 0) {					
 						value = rs.getObject(key);
 					}
+				} 
+				// Set default values of fields geom2, geom3 and geom4
+				if (view instanceof ArcCatalogDialog && !fillData && (key.equals("geom2") || key.equals("geom3") || key.equals("geom4"))) {
+					value = 0.0;
 				}
 				view.setTextField(component, value);
 			}
 
 			// Update also detail table content
-			if (view instanceof TimeseriesDialog){
+			if (view instanceof TimeseriesDialog) {
 				String id = "-1";
-				if (!action.equals("create")){
+				if (!action.equals("create")) {
 					if (rs.getRow() != 0){	
 						id = rs.getString("id");
 					}
@@ -136,9 +130,9 @@ public class CatalogController {
 				String fields = "id, date, hour, time, value, fname";
 				updateDetailTable("inp_timeseries", fields, "timser_id", id);
 			}
-			else if (view instanceof CurvesDialog){
+			else if (view instanceof CurvesDialog) {
 				String id = "-1";
-				if (!action.equals("create")){
+				if (!action.equals("create")) {
 					if (rs.getRow() != 0){	
 						id = rs.getString("id");
 					}					
@@ -159,24 +153,33 @@ public class CatalogController {
 
 		Vector<String> values = null;
 		String tableName = "";
-		if (comboName.equals("shape")){
+		if (comboName.equals("shape")) {
 			tableName = "inp_value_catarc";
 		}
-		else if (comboName.equals("pattern_type")){
+		else if (comboName.equals("pattern_type")) {
 			tableName = "inp_typevalue_pattern";
 		}
-		else if (comboName.equals("timser_type")){
+		else if (comboName.equals("timser_type")) {
 			tableName = "inp_value_timserid";
 		}	
-		else if (comboName.equals("times_type")){
+		else if (comboName.equals("times_type")) {
 			tableName = "inp_typevalue_timeseries";
 		}		
-		else if (comboName.equals("timser_id")){
+		else if (comboName.equals("timser_id")) {
 			tableName = "inp_timser_id";
 		}		
-		else if (comboName.equals("curve_type")){
+		else if (comboName.equals("curve_type")) {
 			tableName = "inp_value_curve";
-		}				
+		}		
+		else if (comboName.equals("infiltration")) {
+			tableName = "inp_value_options_in";
+		}
+		else if (comboName.equals("node_id")) {
+			tableName = "node";
+		}		
+		else if (comboName.equals("pattern_id")) {
+			tableName = "inp_pattern";
+		}		
 		values = MainDao.getTable(tableName, null);
 		
 		return values;
@@ -199,10 +202,10 @@ public class CatalogController {
 				JComboBox combo = entry.getValue();
 				if (combo.isEnabled()){
 					value = combo.getSelectedItem();
-					if (value == null || ((String)value).trim().equals("")){
+					if (value == null || ((String)value).trim().equals("")) {
 						rs.updateNull(key);						
 					} 
-					else{
+					else {
 						rs.updateString(key, (String) value);
 					}	
 				}
@@ -212,35 +215,35 @@ public class CatalogController {
 			for (Map.Entry<String, JTextField> entry : textMap.entrySet()) {
 				key = entry.getKey();
 				JTextField component = entry.getValue();
-				if (component.isEnabled()){
+				if (component.isEnabled()) {
 					value = component.getText();
 					int col = rs.findColumn(key);
 					int columnType = metadata.getColumnType(col);
 					if (columnType == Types.CHAR || columnType == Types.VARCHAR || columnType == Types.LONGVARCHAR) {
-						if (value == null || ((String)value).trim().equals("")){
+						if (value == null || ((String)value).trim().equals("")) {
 							rs.updateNull(col);						
 						} 
-						else{
+						else {
 							rs.updateString(col, (String) value);
 						}
 					}
 					else if (columnType == Types.SMALLINT || columnType == Types.INTEGER || columnType == Types.BIGINT) {
-						if (((String)value).trim().equals("")){
-							if (!key.equals("id")){
+						if (((String)value).trim().equals("")) {
+							if (!key.equals("id")) {
 								rs.updateNull(col);
 							}
 						} 
-						else{					
+						else {					
 							Integer aux = Integer.parseInt(value.toString());
 							rs.updateInt(col, aux);						
 						}
 					}
 					else if (columnType == Types.NUMERIC || columnType == Types.DECIMAL || columnType == Types.DOUBLE || 
 						columnType == Types.FLOAT || columnType == Types.REAL) {
-						if (((String)value).trim().equals("")){
+						if (((String)value).trim().equals("")) {
 							rs.updateNull(col);
 						} 
-						else{					
+						else {					
 							Double aux = Double.parseDouble(value.toString().replace(",", "."));
 							rs.updateDouble(col, aux);						
 						}
@@ -251,7 +254,7 @@ public class CatalogController {
 				}
 			}
 			
-			if (action.equals("create")){
+			if (action.equals("create")) {
 				rs.insertRow();
 				rs.last();
 				total++;
@@ -259,7 +262,7 @@ public class CatalogController {
 				action = "saved";
 				setComponents();
 			}
-			else if (!action.equals("create_detail")){
+			else if (!action.equals("create_detail")) {
 				rs.updateRow();
 			}
 			
@@ -272,16 +275,16 @@ public class CatalogController {
 	}
 	
 	
-	private void manageNavigationButtons(){
+	private void manageNavigationButtons() {
 		
-		if (action.equals("create")){
+		if (action.equals("create")) {
 			Utils.getLogger().info("Editing new record...");
 			view.enableDelete(false);
 			view.enablePrevious(false);
 			view.enableNext(false);		
 			view.enableSave(true);
 		}
-		else{
+		else {
 			Utils.getLogger().info("Record: " + current + " of " + total);
 			view.enableDelete(total > 0);
 			view.enablePrevious(current > 1);
@@ -308,11 +311,11 @@ public class CatalogController {
 	}		
 	
 	
-	public void movePrevious(){
+	public void movePrevious() {
 		
 		action = "other";
 		try {
-			if (!rs.isFirst()){
+			if (!rs.isFirst()) {
 				rs.previous();
 				current--;				
 				setComponents();
@@ -324,11 +327,11 @@ public class CatalogController {
 	}
 	
 	
-	public void moveNext(){
+	public void moveNext() {
 		
 		action = "other";
 		try {
-			if (!rs.isLast()){
+			if (!rs.isLast()) {
 				rs.next();
 				current++;				
 				setComponents();
@@ -344,7 +347,7 @@ public class CatalogController {
 		create("create");
 	}		
 	
-	public void create(String action){
+	public void create(String action) {
 		
 		this.action = action;
 		try {
@@ -357,7 +360,7 @@ public class CatalogController {
 	}
 
 	
-	public void createCurve(ResultSet rs, String curveId){
+	public void createCurve(ResultSet rs, String curveId) {
 		
 		this.action = "create_curve";
 		try {
@@ -370,12 +373,12 @@ public class CatalogController {
 	}
 
 	
-	public void delete(){
+	public void delete() {
 		
 		action = "other";
 		try {
-			int res = Utils.confirmDialog("delete_record?");
-	        if (res == 0){
+			int res = Utils.showYesNoDialog(Utils.getBundleString("CatalogController.delete_record")); //$NON-NLS-1$
+	        if (res == JOptionPane.YES_OPTION) {
 				rs.deleteRow();
 				rs.first();
 				current = 1;
@@ -390,33 +393,33 @@ public class CatalogController {
 	}
 	
 	
-	public void closeWindow(){
+	public void closeWindow() {
 		view.dispose();
 	}
 
 	
 	// Only for ConduitDialog
-	public void shapeChanged(){
-		if (view instanceof ArcCatalogDialog){
+	public void shapeChanged() {
+		if (view instanceof ArcCatalogDialog) {
 			ArcCatalogDialog conduitDialog = (ArcCatalogDialog) view;
 			conduitDialog.shapeChanged();
 		}
 	}
 	
 	
-	public void updateDetailTable(String table, String fields, String fieldId, String valueId) throws SQLException{
+	public void updateDetailTable(String table, String fields, String fieldId, String valueId) throws SQLException {
 		
 		String sql = "SELECT "+fields+" FROM "+MainDao.getSchema()+"."+table+
 			" WHERE "+fieldId+" = '"+valueId+"'";
-		if (table.equals("inp_timeseries")){
+		if (table.equals("inp_timeseries")) {
 			sql+= " ORDER BY time";
 			ResultSet rsRelated = MainDao.getResultset(sql);			
 			TableModelTimeseries model = new TableModelTimeseries(rsRelated);
 			TimeseriesDialog dialog = (TimeseriesDialog) view;
 			dialog.setModel(model);
 		}
-		else if (table.equals("inp_curve")){
-			if (action.equals("create_curve")){
+		else if (table.equals("inp_curve")) {
+			if (action.equals("create_curve")) {
 				String sql2 = "INSERT INTO "+MainDao.getSchema()+"."+table+" ("+fieldId+") VALUES ('"+valueId+"')";
 				MainDao.executeSql(sql2);
 			}
@@ -430,9 +433,9 @@ public class CatalogController {
 	
 	
 	// Only for TimeseriesDialog
-	public void detailCreateTimeseries(String timesType, String timserId){
+	public void detailCreateTimeseries(String timesType, String timserId) {
 		
-		if (view instanceof TimeseriesDialog){
+		if (view instanceof TimeseriesDialog) {
         	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_timeseries";
         	ResultSet rs = MainDao.getResultset(sql);
     		if (rs == null) return;
@@ -451,9 +454,9 @@ public class CatalogController {
 	
 	
 	// Only for CurvesDialog
-	public void detailCreateCurves(String curveId){
+	public void detailCreateCurves(String curveId) {
 		
-		if (view instanceof CurvesDialog){		
+		if (view instanceof CurvesDialog) {		
         	String sql = "SELECT * FROM "+MainDao.getSchema()+".inp_curve";
         	sql+= " WHERE curve_id = '"+curveId+"'";
         	ResultSet rs = MainDao.getResultset(sql);
@@ -465,19 +468,19 @@ public class CatalogController {
 	
 	
 	// For TimeseriesDialog and CurvesDialog
-	public void detailDelete(){
+	public void detailDelete() {
 		
-		if (view instanceof TimeseriesDialog){
+		if (view instanceof TimeseriesDialog) {
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
 			String listId = tsDialog.detailDelete();
-			if (!listId.equals("")){
+			if (!listId.equals("")) {
             	String sql = "DELETE FROM "+MainDao.getSchema()+".inp_timeseries WHERE id IN ("+listId+")";
             	Utils.getLogger().info(sql);
             	MainDao.executeSql(sql);       
             	setComponents();
 			}
 		}
-		else if (view instanceof CurvesDialog){		
+		else if (view instanceof CurvesDialog) {		
 			CurvesDialog curvesDialog = (CurvesDialog) view;
 			String listId = curvesDialog.detailDelete();
 			if (!listId.equals("")){
@@ -494,7 +497,7 @@ public class CatalogController {
 	// Only for TimeseriesDialog	
 	public void editRecord(String action, String timesType) {
     	
-		if (view instanceof TimeseriesDialog){
+		if (view instanceof TimeseriesDialog) {
 			TimeseriesDialog tsDialog = (TimeseriesDialog) view;
 	    	int row = tsDialog.getTable().getSelectedRow();
 	        if (row != -1) {
@@ -517,8 +520,8 @@ public class CatalogController {
     
 	
 	// Only for TimeseriesDetailDialog
-	public void timesTypeChanged(){
-		if (view instanceof TimeseriesDetailDialog){
+	public void timesTypeChanged() {
+		if (view instanceof TimeseriesDetailDialog) {
 			TimeseriesDetailDialog tsDialog = (TimeseriesDetailDialog) view;
 			tsDialog.setTimesType();
 		}
@@ -526,7 +529,7 @@ public class CatalogController {
 	
 
 	// Only for TimeseriesDetailDialog	
-	public void closeDetailDialog(){
+	public void closeDetailDialog() {
 		action = "other";
 		setComponents();
 	}

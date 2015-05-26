@@ -4,492 +4,502 @@ The program is free software: you can redistribute it and/or modify it under the
 This version of Giswater is provided by Giswater Association
 */
 
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 10 (class 2615 OID 151924)
+-- Name: SCHEMA_NAME; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA "SCHEMA_NAME";
+SET search_path = "SCHEMA_NAME", public, pg_catalog;
+
+
+-- ----------------------------
+-- Sequence structure for inp_node_id_seq
+-- --------------------------
+
+CREATE SEQUENCE "SCHEMA_NAME".inp_node_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
+	
+	
+-- ----------------------------
+-- Sequence structure for inp_arc_id_seq
+-- --------------------------
+
+CREATE SEQUENCE "SCHEMA_NAME".inp_arc_id_seq
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
+
 
 -- ----------------------------
 -- Sequence structure for version_seq
 -- ---------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."version_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_aquifer_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_aquifer_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_backdrop_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_backdrop_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-
--- ----------------------------
--- Sequence structure for inp_conduit_arc_id_seq
--- ----------------------------
-CREATE SEQUENCE "SCHEMA_NAME"."inp_conduit_arc_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_controls_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_controls_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_curve_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_curve_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_files_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_files_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-
--- ----------------------------
--- Sequence structure for inp_global_id_seq
--- ----------------------------
-CREATE SEQUENCE "SCHEMA_NAME"."inp_global_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_global_id_seq"', 1, true);
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_hydrograph_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_hydrograph_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 7
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_inflows_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_inflows_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 -- ----------------------------
 -- Sequence structure for inp_lid_control_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_lid_control_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 9
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_mapdim_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_mapdim_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_mapunits_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_mapunits_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_options_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_options_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_project_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_project_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_report_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_report_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_sector_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_sector_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_sector_id_seq"', 23, true);
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_timeseries_rel_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_timeseries_rel_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_transects_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_transects_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_vertice_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_vertice_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_arcflow_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_arcflow_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."rpt_arcflow_sum_id_seq"', 832, true);
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_condsurcharge_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_condsurcharge_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_continuity_errors_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_continuity_errors_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_critical_elements_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_critical_elements_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_flowclass_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_flowclass_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_flowrouting_cont_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_flowrouting_cont_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_groundwater_cont_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_groundwater_cont_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_high_conterrors_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_high_conterrors_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_high_flowinest_ind_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_high_flowinest_ind_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_instability_index_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_instability_index_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_lidperformance_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_lidperformance_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_nodedepth_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_nodedepth_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_nodeflooding_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_nodeflooding_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."rpt_nodeflooding_sum_id_seq"', 1, true);
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_nodeinflow_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_nodeinflow_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_nodesurcharge_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_nodesurcharge_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 -- ----------------------------
 -- Sequence structure for rpt_outfallflow_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_outfallflow_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_outfallload_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_outfallload_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_pumping_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_pumping_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_qualrouting_cont_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_qualrouting_cont_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_rainfall_dep_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_rainfall_dep_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_result_cat_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_result_cat_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."rpt_result_cat_id_seq"', 8, true);
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_routing_timestep_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_routing_timestep_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_runoff_qual_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_runoff_qual_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_runoff_quant_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_runoff_quant_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_storagevol_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_storagevol_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_subcatchwashoff_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_subcatchwashoff_sum_id_seq"
-
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_subcathrunoff_sum_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_subcathrunoff_sum_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_timestep_critelem_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_timestep_critelem_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+  START WITH 1
+  INCREMENT BY 1
+  NO MINVALUE
+  NO MAXVALUE
+  CACHE 1;
  
   -- ----------------------------
 -- Table structure for version
@@ -518,7 +528,7 @@ CREATE TABLE "SCHEMA_NAME"."arc" (
 "matcat_id" varchar(16) COLLATE "default",
 "swmm_type" varchar(18) COLLATE "default",
 "sector_id" varchar(30) COLLATE "default",
-"the_geom" geometry (LINESTRING, SRID_VALUE)
+"the_geom" public.geometry (LINESTRING, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -980,12 +990,12 @@ CREATE TABLE "SCHEMA_NAME"."inp_options" (
 "wet_step" varchar(12) COLLATE "default",
 "dry_step" varchar(12) COLLATE "default",
 "routing_step" varchar(12) COLLATE "default",
-"lengthening_step" numeric,
-"variable_step" numeric,
+"lengthening_step" numeric(12,6),
+"variable_step" numeric(12,6),
 "inertial_damping" varchar(12) COLLATE "default",
 "normal_flow_limited" varchar(12) COLLATE "default",
-"min_surfarea" numeric,
-"min_slope" numeric,
+"min_surfarea" numeric(12,6),
+"min_slope" numeric(12,6),
 "allow_ponding" varchar(3) COLLATE "default",
 "tempdir" varchar(254) COLLATE "default"
 )
@@ -1019,7 +1029,7 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."inp_outfall" (
 "node_id" varchar(16) COLLATE "default" NOT NULL,
 "outfall_type" varchar(16) COLLATE "default",
-"stage" numeric(6,4),
+"stage" numeric(12,4),
 "curve_id" varchar(16) COLLATE "default",
 "timser_id" varchar(16) COLLATE "default",
 "gate" varchar(3) COLLATE "default"
@@ -1794,7 +1804,7 @@ CREATE TABLE "SCHEMA_NAME"."node" (
 "ymax" numeric(12,4) DEFAULT 0.00,
 "swmm_type" varchar(18) COLLATE "default",
 "sector_id" varchar(30) COLLATE "default",
-"the_geom" geometry (POINT, SRID_VALUE)
+"the_geom" public.geometry (POINT, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -1813,7 +1823,7 @@ CREATE TABLE "SCHEMA_NAME"."raingage" (
 "fname" varchar(254) COLLATE "default",
 "sta" varchar(12) COLLATE "default",
 "units" varchar(3) COLLATE "default",
-"the_geom" geometry (POINT, SRID_VALUE)
+"the_geom" public.geometry (POINT, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -2319,7 +2329,7 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."sector" (
 "sector_id" varchar(30) COLLATE "default" NOT NULL,
 "descript" varchar(100) COLLATE "default",
-"the_geom" geometry (MULTIPOLYGON, SRID_VALUE)
+"the_geom" public.geometry (MULTIPOLYGON, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -2367,7 +2377,7 @@ CREATE TABLE "SCHEMA_NAME"."subcatchment" (
 "conduct_2" numeric(12,4),
 "drytime_2" numeric(12,4),
 "sector_id" varchar(30) COLLATE "default",
-"the_geom" geometry (MULTIPOLYGON, SRID_VALUE)
+"the_geom" public.geometry (MULTIPOLYGON, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 

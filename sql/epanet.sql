@@ -4,149 +4,184 @@ The program is free software: you can redistribute it and/or modify it under the
 This version of Giswater is provided by Giswater Association
 */
 
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 10 (class 2615 OID 151924)
+-- Name: SCHEMA_NAME; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA "SCHEMA_NAME";
+SET search_path = "SCHEMA_NAME", public, pg_catalog;
+
+
+-- ----------------------------
+-- Sequence structure for inp_node_id_seq
+-- --------------------------
+
+CREATE SEQUENCE "SCHEMA_NAME"."inp_node_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+	
+	
+-- ----------------------------
+-- Sequence structure for inp_arc_id_seq
+-- --------------------------
+
+CREATE SEQUENCE "SCHEMA_NAME"."inp_arc_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 -- ----------------------------
 -- Sequence structure for version_seq
 -- --------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."version_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_backdrop_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_backdrop_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_controls_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_controls_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_curve_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_curve_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_curve_id_seq"', 1, true);
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
--- Sequence structure for inp_global_id_seq
+-- Sequence structure for inp_demand_id_seq
 -- ----------------------------
-CREATE SEQUENCE "SCHEMA_NAME"."inp_global_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+CREATE SEQUENCE "SCHEMA_NAME"."inp_demand_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 
 -- ----------------------------
 -- Sequence structure for inp_labels_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_labels_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_labels_id_seq"', 1, true);
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_rules_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_rules_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_rules_id_seq"', 1, true);
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_sector_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_sector_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
-SELECT setval('"SCHEMA_NAME"."inp_sector_id_seq"', 1, true);
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for inp_vertice_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."inp_vertice_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_arc_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_arc_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_energy_usage_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_energy_usage_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_hydraulic_status_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_hydraulic_status_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_node_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_node_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Sequence structure for rpt_result_cat_id_seq
 -- ----------------------------
 CREATE SEQUENCE "SCHEMA_NAME"."rpt_result_cat_id_seq"
- INCREMENT 1
- MINVALUE 1
- MAXVALUE 9223372036854775807
- START 1
- CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 -- ----------------------------
 -- Table structure for version
@@ -173,7 +208,7 @@ CREATE TABLE "SCHEMA_NAME"."arc" (
 "matcat_id" varchar(16) COLLATE "default",
 "enet_type" varchar(18) COLLATE "default",
 "sector_id" varchar(30) COLLATE "default",
-"the_geom" geometry (LINESTRING, SRID_VALUE)
+"the_geom" public.geometry (LINESTRING, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -219,8 +254,8 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."inp_curve" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".inp_curve_id_seq'::regclass) NOT NULL,
 "curve_id" varchar(16) COLLATE "default" NOT NULL,
-"x_value" numeric,
-"y_value" numeric
+"x_value" numeric(12,4),
+"y_value" numeric(12,4)
 )
 WITH (OIDS=FALSE)
 
@@ -241,8 +276,9 @@ WITH (OIDS=FALSE)
 -- Table structure for inp_demand
 -- ----------------------------
 CREATE TABLE "SCHEMA_NAME"."inp_demand" (
+"id" int4 DEFAULT nextval('"SCHEMA_NAME".inp_demand_id_seq'::regclass) NOT NULL,
 "node_id" varchar(16) COLLATE "default" NOT NULL,
-"demand" numeric,
+"demand" numeric(12,6),
 "pattern_id" varchar(16) COLLATE "default",
 "deman_type" varchar(18) COLLATE "default"
 )
@@ -290,7 +326,7 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 CREATE TABLE "SCHEMA_NAME"."inp_junction" (
 "node_id" varchar(16) COLLATE "default" NOT NULL,
-"demand" numeric,
+"demand" numeric(12,6),
 "pattern_id" varchar(16) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -330,22 +366,22 @@ CREATE TABLE "SCHEMA_NAME"."inp_options" (
 "units" varchar(20) COLLATE "default" NOT NULL,
 "headloss" varchar(20) COLLATE "default",
 "hydraulics" varchar(12) COLLATE "default",
-"specific_gravity" numeric,
-"viscosity" numeric,
-"trials" numeric,
-"accuracy" numeric,
+"specific_gravity" numeric(12,6),
+"viscosity" numeric(12,6),
+"trials" numeric(12,6),
+"accuracy" numeric(12,6),
 "unbalanced" varchar(12) COLLATE "default",
-"checkfreq" numeric,
-"maxcheck" numeric,
-"damplimit" numeric,
+"checkfreq" numeric(12,6),
+"maxcheck" numeric(12,6),
+"damplimit" numeric(12,6),
 "pattern" varchar(16) COLLATE "default",
-"demand_multiplier" numeric,
-"emitter_exponent" numeric,
+"demand_multiplier" numeric(12,6),
+"emitter_exponent" numeric(12,6),
 "quality" varchar(18) COLLATE "default",
-"diffusivity" numeric,
-"tolerance" numeric,
+"diffusivity" numeric(12,6),
+"tolerance" numeric(12,6),
 "hydraulics_fname" varchar(254) COLLATE "default",
-"unbalanced_n" numeric,
+"unbalanced_n" numeric(12,6),
 "node_id" varchar(16) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -391,7 +427,7 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 CREATE TABLE "SCHEMA_NAME"."inp_pipe" (
 "arc_id" varchar(16) COLLATE "default" NOT NULL,
-"minorloss" numeric,
+"minorloss" numeric(12,6),
 "status" varchar(12) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -417,7 +453,7 @@ CREATE TABLE "SCHEMA_NAME"."inp_pump" (
 "arc_id" varchar(16) COLLATE "default" NOT NULL,
 "power" varchar COLLATE "default",
 "curve_id" varchar COLLATE "default",
-"speed" numeric,
+"speed" numeric(12,6),
 "pattern" varchar COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -493,7 +529,7 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 CREATE TABLE "SCHEMA_NAME"."inp_reservoir" (
 "node_id" varchar(16) COLLATE "default" NOT NULL,
-"head" numeric,
+"head" numeric(12,4),
 "pattern_id" varchar(16) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -517,7 +553,7 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."inp_source" (
 "node_id" varchar(16) COLLATE "default" NOT NULL,
 "sourc_type" varchar(18) COLLATE "default",
-"quality" numeric,
+"quality" numeric(12,6),
 "pattern_id" varchar(16) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -541,11 +577,11 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 CREATE TABLE "SCHEMA_NAME"."inp_tank" (
 "node_id" varchar(16) COLLATE "default" NOT NULL,
-"initlevel" numeric,
-"minlevel" numeric,
-"maxlevel" numeric,
-"diameter" numeric,
-"minvol" numeric,
+"initlevel" numeric(12,4),
+"minlevel" numeric(12,4),
+"maxlevel" numeric(12,4),
+"diameter" numeric(12,4),
+"minvol" numeric(12,4),
 "curve_id" int4
 )
 WITH (OIDS=FALSE)
@@ -833,11 +869,11 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."inp_valve" (
 "arc_id" varchar(16) COLLATE "default" NOT NULL,
 "valv_type" varchar(18) COLLATE "default",
-"pressure" numeric,
-"flow" numeric,
-"coef_loss" numeric,
+"pressure" numeric(12,4),
+"flow" numeric(12,4),
+"coef_loss" numeric(12,4),
 "curve_id" int4,
-"minorloss" numeric,
+"minorloss" numeric(12,4),
 "status" varchar(12) COLLATE "default"
 )
 WITH (OIDS=FALSE)
@@ -852,7 +888,7 @@ CREATE TABLE "SCHEMA_NAME"."node" (
 "elevation" numeric(12,4),
 "enet_type" varchar(18) COLLATE "default",
 "sector_id" varchar(30) COLLATE "default",
-"the_geom" geometry (POINT, SRID_VALUE)
+"the_geom" public.geometry (POINT, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -976,7 +1012,7 @@ WITH (OIDS=FALSE)
 CREATE TABLE "SCHEMA_NAME"."sector" (
 "sector_id" varchar(30) COLLATE "default" NOT NULL,
 "descript" varchar(100) COLLATE "default",
-"the_geom" geometry (MULTIPOLYGON, SRID_VALUE)
+"the_geom" public.geometry (MULTIPOLYGON, SRID_VALUE)
 )
 WITH (OIDS=FALSE)
 
@@ -1076,7 +1112,7 @@ SELECT inp_mixing.node_id, inp_mixing.mix_type, inp_mixing.value, sector_selecti
 -- View structure for v_inp_options
 -- ----------------------------
 CREATE VIEW "SCHEMA_NAME"."v_inp_options" AS 
-SELECT inp_options.units, inp_options.headloss, (((inp_options.hydraulics)::text || ' '::text) || (inp_options.hydraulics_fname)::text) AS hydraulics, inp_options.specific_gravity AS "specific gravity", inp_options.viscosity, inp_options.trials, inp_options.accuracy, (((inp_options.unbalanced)::text || ' '::text) || (inp_options.unbalanced_n)::text) AS unbalanced, inp_options.checkfreq, inp_options.maxcheck, inp_options.damplimit, inp_options.pattern, inp_options.demand_multiplier AS "demand multiplier", inp_options.emitter_exponent AS "emitter exponent", (((inp_options.quality) :: TEXT || ' ' :: TEXT) || (inp_options.node_id) :: TEXT) AS quality, inp_options.diffusivity, inp_options.tolerance FROM SCHEMA_NAME.inp_options;
+SELECT inp_options.units, inp_options.headloss, (((inp_options.hydraulics)::text || ' '::text) || (inp_options.hydraulics_fname)::text) AS hydraulics, inp_options.specific_gravity AS "specific gravity", inp_options.viscosity, inp_options.trials, inp_options.accuracy, (((inp_options.unbalanced)::text || ' '::text) || (inp_options.unbalanced_n)::text) AS unbalanced, inp_options.checkfreq, inp_options.maxcheck, inp_options.damplimit, inp_options.pattern, inp_options.demand_multiplier AS "demand multiplier", inp_options.emitter_exponent AS "emitter exponent", CASE WHEN inp_options.quality::text = 'TRACE'::text THEN ((inp_options.quality::text || ' '::text) || inp_options.node_id::text)::character varying ELSE inp_options.quality END AS quality, inp_options.diffusivity, inp_options.tolerance FROM SCHEMA_NAME.inp_options;
 
 -- ----------------------------
 -- View structure for v_inp_pipe
@@ -1223,7 +1259,7 @@ ALTER TABLE "SCHEMA_NAME"."inp_curve_id" ADD PRIMARY KEY ("id");
 -- ----------------------------
 -- Primary Key structure for table inp_demand
 -- ----------------------------
-ALTER TABLE "SCHEMA_NAME"."inp_demand" ADD PRIMARY KEY ("node_id");
+ALTER TABLE "SCHEMA_NAME"."inp_demand" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table inp_emitter

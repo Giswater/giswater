@@ -23,6 +23,8 @@ package org.giswater.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class RptTarget {
 
@@ -32,20 +34,27 @@ public class RptTarget {
 	private Integer type;
 	private Integer titleLines;
 	private Integer tokens;
+	private Integer parametrized;
+	private HashMap<String, RptTargetField> mapRptTargetFields;
 	private ArrayList<String> columnNames;
 	private ArrayList<Integer> columnTypes;
 	
 	
-	public RptTarget(ResultSet rs) throws SQLException{
+	public RptTarget(ResultSet rs) throws SQLException {
+		
 		this.id = rs.getInt(1);
 		this.table = rs.getString(2);
 		this.description = rs.getString(3);
 		this.type = rs.getInt(4);
 		this.titleLines = rs.getInt(5);
 		this.tokens = rs.getInt(6);
+		this.parametrized = rs.getInt(7);
+		this.mapRptTargetFields = new HashMap<String, RptTargetField>();
 		this.columnNames = new ArrayList<String>();
 		this.columnTypes = new ArrayList<Integer>();
+		
 	}
+	
 	
 	public Integer getId() {
 		return id;
@@ -70,7 +79,16 @@ public class RptTarget {
 	public Integer getTokens() {
 		return tokens;
 	}	
+	
+	public Integer getParametrized() {
+		return parametrized;
+	}	
 
+	public void addRptTargetField(RptTargetField rptTargetField) {
+		mapRptTargetFields.put(rptTargetField.getId(), rptTargetField);
+	}
+	
+	
 	public void addColumnName(String columnName){
 		columnNames.add(columnName);
 	}
@@ -94,9 +112,10 @@ public class RptTarget {
 		}
 		return -1;
 	}
-
+	
 	public int getColumnCount() {
 		return columnNames.size();
 	}
+	
 	
 }

@@ -24,8 +24,6 @@ import java.sql.ResultSet;
 
 
 public class TableModelCurves extends TableModelSuper {
-
-	private static final long serialVersionUID = -3793339630551246161L;
 	
 	
 	public TableModelCurves(ResultSet results) {
