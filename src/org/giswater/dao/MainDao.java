@@ -71,7 +71,7 @@ public class MainDao {
 	private static final String TABLE_EPANET = "inp_demand";		
 	private static final String TABLE_EPASWMM = "inp_divider";	
 	private static final String TABLE_HECRAS = "banks";		
-	private static final Integer NUMBER_OF_ATTEMPTS = 3;		
+	private static final Integer NUMBER_OF_ATTEMPTS = 2;		
 	
 	
 	public static String getDb() {

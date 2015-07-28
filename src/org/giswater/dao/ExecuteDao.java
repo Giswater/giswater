@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
 
@@ -34,10 +33,13 @@ public class ExecuteDao extends MainDao {
 	
 	private static final String PORTABLE_FOLDER = "portable" + File.separator;
 	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
+	private static File batFile = null;
 	
 
 	public static boolean executeDump(String schema, String sqlPath) {
 
+		batFile = null; 
+		
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
 			Utils.showError(Utils.getBundleString("ExecuteDao.bin_not_found")+binFolder+Utils.getBundleString("ExecuteDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -50,32 +52,29 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux= "\""+binFolder+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -F plain --inserts -v -f \""+sqlPath+"\" "+db;
+		String aux= "\""+binFolder+"pg_dump.exe\" -U "+user+" -h "+host+" -p "+port+" -w -n "+schema+" -O -F plain --inserts -v -f \""+sqlPath+"\" "+db;
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
         // Fill and execute .bat File
 		String batPath = sqlPath.replace(".sql", ".bat");
-		File batFile = new File(batPath);        
+		batFile = new File(batPath);        
 		if (!Utils.fillFile(batFile, aux)) {
 			return false;    		
 		}
-		if (!Utils.openFile(batFile.getAbsolutePath())) {
-			return false;
-		}
-		
-		MainClass.mdi.showMessage(Utils.getBundleString("ExecuteDao.project_saved")+sqlPath); //$NON-NLS-1$
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {}
-		batFile.delete();
 		
 		return true;
 			
 	}	
 	
 	
+	public static File getBatFile() {
+		return batFile;
+	}
+	
 	public static boolean executeRestore(String sqlPath) {
+		
+		batFile = null; 
 		
 		// Set bin folder
 		if (!MainDao.setBinFolder()) {
@@ -117,25 +116,18 @@ public class ExecuteDao extends MainDao {
 		checkPgPass(param);
 		
 		// Set content of .bat file
-		String aux = "chcp 1252>NUL\n";
+		String aux= "chcp 1252>NUL\n";
 		aux+= "\""+binFolder+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+sqlPath+"\" > \""+Utils.getLogFolder()+"restore.log\"";
 		aux+= "\nexit";			
 		Utils.getLogger().info(aux);
 
         // Fill and execute .bat File
 		String batPath = sqlPath.replace(".sql", ".bat");
-		File batFile = new File(batPath);        
-		if (!Utils.fillFile(batFile, aux)){
+		batFile = new File(batPath);        
+		if (!Utils.fillFile(batFile, aux)) {
+			batFile = null;
 			return false;    		
 		}
-		if (!Utils.openFile(batFile.getAbsolutePath())){
-			return false;
-		}
-//		Utils.showMessage("Restoring project data...");
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {}
-		batFile.delete();
 		
 		return true;
 			
