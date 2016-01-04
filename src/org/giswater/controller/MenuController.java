@@ -45,8 +45,10 @@ import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.task.BackupProjectTask;
 import org.giswater.task.CreateExampleSchemaTask;
 import org.giswater.task.FileLauncherTask;
+import org.giswater.task.RestoreProjectTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -86,16 +88,22 @@ public class MenuController extends AbstractController {
 	public void openProject() { 
 		
 		// Select .sql to restore
-		String filePath = chooseSqlFile(false);
-		if (filePath.equals("")) {
+		String sqlPath = chooseSqlFile(false);
+		if (sqlPath.equals("")) {
 			return;
 		}
 		
 		// Restore contents of .sql file into current Database
-		ExecuteDao.executeRestore(filePath);
+		boolean ok = ExecuteDao.executeRestore(sqlPath);		
 		
-		// Refresh schemas
-		mainFrame.ppFrame.getPanel().selectSourceType(true);
+		if (ok) {
+			// Execute task RestoreProject
+			File batFile = ExecuteDao.getBatFile();
+			RestoreProjectTask task = new RestoreProjectTask(batFile);
+	        task.setParentPanel(mainFrame);
+	        task.addPropertyChangeListener(this);
+	        task.execute();			
+		}		
 		
 	}
 	
@@ -108,11 +116,22 @@ public class MenuController extends AbstractController {
 			MainClass.mdi.showMessage(msg);
 			return;
 		}
-		String filePath = chooseSqlFile(true);
-		if (filePath.equals("")) {
+		String sqlPath = chooseSqlFile(true);
+		if (sqlPath.equals("")) {
 			return;
 		}
-		ExecuteDao.executeDump(schema, filePath);
+		
+		// Backup current schema into selected file
+		boolean ok = ExecuteDao.executeDump(schema, sqlPath);
+		
+		if (ok) {
+			// Execute task BackupProject
+			File batFile = ExecuteDao.getBatFile();
+			BackupProjectTask task = new BackupProjectTask(batFile);
+	        task.setParentPanel(mainFrame);
+	        task.addPropertyChangeListener(this);
+	        task.execute();			
+		}			
 		
 	}
 

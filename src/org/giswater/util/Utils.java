@@ -417,15 +417,16 @@ public class Utils {
     
 	public static boolean execProcess(String process) {
 		
-		try{    
-			Process p = Runtime.getRuntime().exec("cmd /c start " + process);				
+		try {   
+			String command = "cmd /C start /wait " + process;
+			Process p = Runtime.getRuntime().exec(command);				
 			p.waitFor();
 		} catch (IOException | InterruptedException e) {
 			logError(e);
 			return false;
 		}	
 		return true;
-		
+
 	}
 	
 	
