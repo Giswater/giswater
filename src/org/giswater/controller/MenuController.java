@@ -547,8 +547,8 @@ public class MenuController extends AbstractController {
 		String filePath = chooseSqlFile(false);
 		if (filePath.equals("")) return;
 		
-		// Get default SRID
-		String defaultSrid = PropertiesDao.getPropertiesFile().get("SRID_DEFAULT", "25831");	
+		// Get schema SRID
+		String srid = MainDao.getSrid(schema);
 		
 		// Ask for confirmation
 		int answer = Utils.showYesNoDialog(mainFrame, "MenuController.file_launcher_warning");
@@ -562,6 +562,7 @@ public class MenuController extends AbstractController {
 			
 			// Search if we have _PARAM in the file
 			// If found, ask user to input param value. Replace _PARAM_ with this value
+			String msgAbort = Utils.getBundleString("MenuController.abort_process");				
 	    	String content = Utils.readFile(tempPath);
 	    	if (content.contains("_PARAM")) {
 	    		// Get parameters list
@@ -579,6 +580,10 @@ public class MenuController extends AbstractController {
 	    					String value = null;
 	    					while (value == null || value.equals("")) {
 	    						value = Utils.showInputDialog(mainFrame, msg);
+		    					if (value == null) {
+		    						answer = Utils.showYesNoDialog(mainFrame, msgAbort);	  
+		    						if (answer == JOptionPane.YES_OPTION) return;	    						
+		    					}
 	    					}
 	    					content = content.replace(paramName, value);
 	    					mapParams.put(paramName, value);
@@ -588,7 +593,7 @@ public class MenuController extends AbstractController {
 	    	}
 	    	
 			// Execute task: FileLauncher
-			FileLauncherTask task = new FileLauncherTask(content, schema, defaultSrid);
+			FileLauncherTask task = new FileLauncherTask(content, schema, srid);
 	        task.addPropertyChangeListener(this);
 	        task.execute();
 	        
