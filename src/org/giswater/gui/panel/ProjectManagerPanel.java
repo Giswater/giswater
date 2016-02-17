@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <derill@giswater.org>
  */
-package org.giswater.gui.panel_2;
+package org.giswater.gui.panel;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -35,15 +35,15 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.controller.EpaSoftController;
-import org.giswater.gui.frame.EpaSoftFrame;
+import org.giswater.controller.ProjectManagerController;
+import org.giswater.gui.frame.ProjectManagerFrame;
 import org.giswater.util.Utils;
 
 
 public class ProjectManagerPanel extends JPanel implements ActionListener {
 
-	private EpaSoftController controller;
-	private EpaSoftFrame epaSoftFrame;	
+	private ProjectManagerController controller;
+	private ProjectManagerFrame projectManagerFrame;	
 	
 	private JPanel panelConfiguration;
 	
@@ -176,22 +176,22 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		btnNodeFlowTrace = new JButton(BUNDLE.getString("ProjectManager.btnNodeFlowTrace.text")); //$NON-NLS-1$
 		btnNodeFlowTrace.setPreferredSize(new Dimension(121, 23));
 		btnNodeFlowTrace.setEnabled(false);
-		btnNodeFlowTrace.setActionCommand(BUNDLE.getString("ProjectManager.btnNodeFlowTrace.actionCommand")); //$NON-NLS-1$
+		btnNodeFlowTrace.setActionCommand("nodeFlowTrace");
 		panelAnalysis.add(btnNodeFlowTrace, "cell 0 1");
 		
 		btnArcFlowTrace = new JButton(BUNDLE.getString("ProjectManager.btnArcFlowTrace.text")); //$NON-NLS-1$
 		btnArcFlowTrace.setPreferredSize(new Dimension(121, 23));
 		btnArcFlowTrace.setEnabled(false);
-		btnArcFlowTrace.setActionCommand(BUNDLE.getString("ProjectManager.btnArcFlowTrace.actionCommand")); //$NON-NLS-1$
+		btnArcFlowTrace.setActionCommand("arcFlowTrace");
 		panelAnalysis.add(btnArcFlowTrace, "cell 1 1");
 		
 		btnProjectPreferences = new JButton("Project Preferences");
 		btnProjectPreferences.setMinimumSize(new Dimension(110, 23));
-		btnProjectPreferences.setActionCommand(BUNDLE.getString("ProjectManager.btnProjectPreferences.actionCommand")); //$NON-NLS-1$
+		btnProjectPreferences.setActionCommand("gswEdit");
 		add(btnProjectPreferences, "flowx,cell 1 7,alignx right");
 		
 		btnGoToEpa = new JButton("Go 2 Epa");
-		btnGoToEpa.setActionCommand(BUNDLE.getString("ProjectManager.btnProjectManager.actionCommand")); //$NON-NLS-1$
+		btnGoToEpa.setActionCommand("goToEpa");
 		btnGoToEpa.setMinimumSize(new Dimension(120, 23));
 		add(btnGoToEpa, "cell 2 7,alignx right");
 
@@ -207,6 +207,7 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		btnResultCatalog.addActionListener(this);
 		btnResultSelector.addActionListener(this);
 		
+		btnCreateGisProject.addActionListener(this);		
 		btnGoToEpa.addActionListener(this);
 		
 	}
@@ -218,19 +219,19 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 	}
 
 	
-	public void setFrame(EpaSoftFrame epaSoftFrame) {
-		this.epaSoftFrame = epaSoftFrame;
+	public void setFrame(ProjectManagerFrame projectManagerFrame) {
+		this.projectManagerFrame = projectManagerFrame;
 	}	
 	
-	public EpaSoftFrame getFrame(){
-		return epaSoftFrame;
+	public ProjectManagerFrame getFrame(){
+		return projectManagerFrame;
 	}	
 
-	public void setController(EpaSoftController controller) {
+	public void setController(ProjectManagerController controller) {
 		this.controller = controller;
 	}
 
-	public EpaSoftController getController() {
+	public ProjectManagerController getController() {
 		return controller;
 	}
     
@@ -250,11 +251,6 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 	public void setTitle(String title) {
 		getFrame().setTitle(title);		
 	}
-	
-	public void exportSelected() {
-		controller.exportSelected();
-	}
 
-	
 	
 }

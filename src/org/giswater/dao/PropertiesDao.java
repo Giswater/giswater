@@ -39,8 +39,11 @@ public class PropertiesDao {
 	private static String gswTemplatePath;   // Template gsw Project preferences File. Used to create new gsw files
 	private static String giswaterUsersFolder;   // C:\Users\<username>\Giswater
 	private static String lastSqlPath;   // Last SQL path (opened in Data - SQL file launcher)
-    private static PropertiesMap prop = new PropertiesMap();
+	private static String waterSoftware;   // Water software selected
+
+	private static PropertiesMap prop = new PropertiesMap();
     private static PropertiesMap gswProp = new PropertiesMap();
+	private static String selectedSchema;
     
 	private static final String MINOR_VERSION = "1.1";
 	private static final String CONFIG_FILE = "giswater";
@@ -104,6 +107,26 @@ public class PropertiesDao {
     	PropertiesDao.gswProp = gswProp;
     }    
 
+    
+    public static String getWaterSoftware() {
+		return waterSoftware;
+	}
+
+	public static void setWaterSoftware(String waterSoftware) {
+		PropertiesDao.waterSoftware = waterSoftware;
+	}
+	
+	public static String getStorage() {
+		return "database";
+	}
+
+	public static String getSelectedSchema() {
+		return selectedSchema;
+	}	
+	
+	public static void setSelectedSchema(String selectedSchema) {
+		PropertiesDao.selectedSchema = selectedSchema;
+	}	
     
 	public static boolean configIni(String folder) {
 		
@@ -228,6 +251,11 @@ public class PropertiesDao {
         return (gswProp != null);
 
     }
+
+
+    
+    
+    
 
 	
 }

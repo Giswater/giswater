@@ -48,22 +48,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private EpaSoftController controller;
 	private EpaSoftFrame epaSoftFrame;	
-
-	private JPanel panelDataManager;
-	private JButton btnMaterialCatalog;
-	private JButton btnCurves;
-	private JButton btnPatterns;
-	private JButton btnTimeseries;
-	private JButton btnArcCatalog;
-	private JButton btnHydrologyCatalog;
-	private JButton btnControls;
-	private JButton btnProjectData;
 	
 	private JPanel panelPreprocess;
-	private JButton btnSectorSelection;
-	private JButton btnOptions;
-	private JButton btnDesign;
+	private JButton btnRaingage;
 	private JButton btnReport;
+	private JButton btnOptions;
 	
 	private JPanel panelFileManager;
 	private JTextField txtResultName;
@@ -84,10 +73,14 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
 	private JCheckBox chkSubcatchments;
-	private JButton btnEditProjectPreferences;
+	private JButton btnProjectManager;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	private JButton button;
+	private JButton btnPatternSelection;
+	private JButton btnSectorSelection;
+	private JButton btnPlanSelection;
 
 	
 	public EpaSoftPanel() {
@@ -102,85 +95,46 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[575.00px][::8px]", "[5px:n][87.00][3px:n][][3px:n][][3px:n][][]"));
-		
-		panelDataManager = new JPanel();
-		panelDataManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelDataManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelDataManager, "cell 0 1 2 1,grow");
-		panelDataManager.setLayout(new MigLayout("", "[150px][150][150][150px][5px:n]", "[][]"));
-		
-		btnMaterialCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnMaterialCatalog.text"));
-		btnMaterialCatalog.setEnabled(false);
-		btnMaterialCatalog.setActionCommand("showMaterialCatalog");
-		panelDataManager.add(btnMaterialCatalog, "cell 0 0,growx");
-		
-		btnCurves = new JButton(BUNDLE.getString("EpaSoftPanel.btnCurves.text")); 
-		btnCurves.setEnabled(false);
-		btnCurves.setActionCommand("showCurves");
-		panelDataManager.add(btnCurves, "cell 1 0,growx");
-		
-		btnPatterns = new JButton(BUNDLE.getString("EpaSoftPanel.btnPatterns.text")); 
-		btnPatterns.setEnabled(false);
-		btnPatterns.setActionCommand("showPatterns");
-		panelDataManager.add(btnPatterns, "cell 2 0,growx");
-		
-		btnTimeseries = new JButton(BUNDLE.getString("EpaSoftPanel.btnTimeseries.text")); 
-		btnTimeseries.setEnabled(false);
-		btnTimeseries.setActionCommand("showTimeseries");
-		panelDataManager.add(btnTimeseries, "cell 3 0,growx");
-		
-		btnArcCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnArcCatalog.text")); 
-		btnArcCatalog.setEnabled(false);
-		btnArcCatalog.setActionCommand("showArcCatalog");
-		panelDataManager.add(btnArcCatalog, "cell 0 1,growx");
-		
-		btnHydrologyCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnSimulationCatalog.text"));
-		btnHydrologyCatalog.setMinimumSize(new Dimension(120, 23));
-		btnHydrologyCatalog.setPreferredSize(new Dimension(110, 23));
-		btnHydrologyCatalog.setEnabled(false);
-		btnHydrologyCatalog.setActionCommand("showHydrologyCatalog");
-		panelDataManager.add(btnHydrologyCatalog, "cell 1 1,growx");
-		
-		btnControls = new JButton(BUNDLE.getString("EpaSoftPanel.btnControls.text")); //$NON-NLS-1$
-		btnControls.setPreferredSize(new Dimension(110, 23));
-		btnControls.setEnabled(false);
-		btnControls.setActionCommand("showControls");
-		panelDataManager.add(btnControls, "cell 2 1,growx");
-		
-		btnProjectData = new JButton(BUNDLE.getString("EpaSoftPanel.btnProjectData.text")); //$NON-NLS-1$
-		btnProjectData.setPreferredSize(new Dimension(110, 23));
-		btnProjectData.setEnabled(false);
-		btnProjectData.setActionCommand("showProjectData");
-		panelDataManager.add(btnProjectData, "cell 3 1,growx");
+		setLayout(new MigLayout("", "[575.00px][::8px]", "[][3px:n][][3px:n][][]"));
 		
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelPreprocess, "cell 0 3 2 1,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[150px][150px][150px][150px][5px:n]", "[]"));
+		add(panelPreprocess, "cell 0 0 2 1,grow");
+		panelPreprocess.setLayout(new MigLayout("", "[150px][150px][150px][5px:n]", "[][]"));
 		
-		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
-		btnSectorSelection.setEnabled(false);
-		btnSectorSelection.setActionCommand("showSectorSelection"); 
-		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
-		
-		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
+		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
 		btnOptions.setEnabled(false);
-		btnOptions.setActionCommand("showInpOptions");
-		panelPreprocess.add(btnOptions, "cell 1 0,growx");
+		btnOptions.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnOptions.actionCommand"));  //$NON-NLS-1$
+		panelPreprocess.add(btnOptions, "flowx,cell 0 0,growx");
 		
-		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
-		btnDesign.setEnabled(false);
-		btnDesign.setActionCommand("showRaingage"); 
-		panelPreprocess.add(btnDesign, "cell 2 0,growx");
+		btnRaingage = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
+		btnRaingage.setEnabled(false);
+		btnRaingage.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnRaingage.actionCommand"));  //$NON-NLS-1$
+		panelPreprocess.add(btnRaingage, "cell 1 0,growx");
 		
-		btnReport = new JButton(BUNDLE.getString("EpaSoftPanel.btnReport.text")); //$NON-NLS-1$
+		btnReport = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
 		btnReport.setEnabled(false);
-		btnReport.setActionCommand("showReport");
-		panelPreprocess.add(btnReport, "cell 3 0,growx");
+		btnReport.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnReport.actionCommand")); //$NON-NLS-1$
+		panelPreprocess.add(btnReport, "cell 2 0,growx");
+		
+		btnPatternSelection = new JButton("Pattern selection");
+		btnPatternSelection.setEnabled(false);
+		btnPatternSelection.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnPatternSelection.actionCommand")); //$NON-NLS-1$
+		panelPreprocess.add(btnPatternSelection, "cell 0 1,growx");
+		
+		btnSectorSelection = new JButton("Sector selection");
+		btnSectorSelection.setEnabled(false);
+		btnSectorSelection.setActionCommand("showSectorSelection");
+		panelPreprocess.add(btnSectorSelection, "cell 1 1,growx");
+		
+		btnPlanSelection = new JButton("Plan selection");
+		btnPlanSelection.setEnabled(false);
+		btnPlanSelection.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnPlanSelection.actionCommand")); //$NON-NLS-1$
+		panelPreprocess.add(btnPlanSelection, "cell 2 1,growx");
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelFileManager, "cell 0 5 2 1,grow");
+		add(panelFileManager, "cell 0 2 2 1,grow");
 		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
@@ -264,7 +218,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		
 		panelPostprocess = new JPanel();
 		panelPostprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPostprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelPostprocess, "cell 0 7 2 1,grow");
+		add(panelPostprocess, "cell 0 4 2 1,grow");
 		panelPostprocess.setLayout(new MigLayout("", "[120px:n][120px:n]", "[]"));
 		
 		btnResultCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultCatalog.text")); 
@@ -279,10 +233,15 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnResultSelector.setActionCommand("scenarioManagement");
 		panelPostprocess.add(btnResultSelector, "cell 1 0");
 		
-		btnEditProjectPreferences = new JButton(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
-		btnEditProjectPreferences.setActionCommand("gswEdit");
-		btnEditProjectPreferences.setMinimumSize(new Dimension(120, 23));
-		add(btnEditProjectPreferences, "flowx,cell 0 8,alignx right");
+		button = new JButton("Project Preferences");
+		button.setMinimumSize(new Dimension(120, 23));
+		button.setActionCommand(BUNDLE.getString("EpaSoftPanel.button.actionCommand")); //$NON-NLS-1$
+		add(button, "flowx,cell 0 5,alignx right");
+		
+		btnProjectManager = new JButton(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
+		btnProjectManager.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnProjectManager.actionCommand")); //$NON-NLS-1$
+		btnProjectManager.setMinimumSize(new Dimension(120, 23));
+		add(btnProjectManager, "cell 0 5,alignx right");
 
 		setupListeners();
 
@@ -292,21 +251,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 		
-		// Data Manager
-		btnMaterialCatalog.addActionListener(this);
-		btnCurves.addActionListener(this);
-		btnPatterns.addActionListener(this);
-		btnTimeseries.addActionListener(this);
-		btnArcCatalog.addActionListener(this);
-		btnHydrologyCatalog.addActionListener(this);
-		btnControls.addActionListener(this);
-		btnProjectData.addActionListener(this);
-		
 		// Preprocess options
-		btnSectorSelection.addActionListener(this);
-		btnOptions.addActionListener(this);
-		btnDesign.addActionListener(this);
+		btnRaingage.addActionListener(this);
 		btnReport.addActionListener(this);
+		btnOptions.addActionListener(this);
 		
 		// File manager
 		btnFileInp.addActionListener(this);
@@ -318,7 +266,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnResultCatalog.addActionListener(this);
 		btnResultSelector.addActionListener(this);
 		
-		btnEditProjectPreferences.addActionListener(this);
+		btnProjectManager.addActionListener(this);
 		
 	}
 	
@@ -402,13 +350,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	}	
 	
 	public void setDesignButton(String text, String actionCommand) {
-		btnDesign.setText(text);
-		btnDesign.setActionCommand(actionCommand);
+		btnOptions.setText(text);
+		btnOptions.setActionCommand(actionCommand);
 	}
 	
 	public void setOptionsButton(String text, String actionCommand) {
-		btnOptions.setText(text);
-		btnOptions.setActionCommand(actionCommand);
+		btnReport.setText(text);
+		btnReport.setActionCommand(actionCommand);
 	}	
 	
 	public void setReportButton(String text, String actionCommand) {
@@ -417,75 +365,17 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	}	
 	
     
-    public void enableArcCat(boolean enable) {
-    	btnArcCatalog.setEnabled(enable);
-    }
-
-    public void enableCurves(boolean enable) {
-    	btnCurves.setEnabled(enable);
-    }
-
-    public void enableMaterials(boolean enable) {
-    	btnMaterialCatalog.setEnabled(enable);
-    }
-
-    public void enablePatterns(boolean enable) {
-    	btnPatterns.setEnabled(enable);
-    }
-    
-	public void enableTimeseries(boolean enable) {
-    	btnTimeseries.setEnabled(enable);
-    }
-    
-    public void enableHydrologyCat(boolean enable) {
-    	btnHydrologyCatalog.setEnabled(enable);
-    }
-    
-    public void enableControls(boolean enable) {
-    	btnControls.setEnabled(enable);
-    }
-    
-    public void enableProjectData(boolean enable) {
-    	btnProjectData.setEnabled(enable);
-    }
-    
-	public void setButton4(String text, String actionCommand) {
-		btnTimeseries.setText(text);
-		btnTimeseries.setActionCommand(actionCommand);
-	}	
-	
-	public void setButton5(String text, String actionCommand) {
-		btnArcCatalog.setText(text);
-		btnArcCatalog.setActionCommand(actionCommand);
-	}	
-	
-	public void setButton6(String text, String actionCommand) {
-		btnHydrologyCatalog.setText(text);
-		btnHydrologyCatalog.setActionCommand(actionCommand);
-	}	
-	
-    
 	public void enableDatabaseButtons(boolean enable) {
-		
     	enablePreprocess(enable);
-    	enableMaterials(enable);
-    	enableCurves(enable);
-    	enablePatterns(enable);
-    	enableTimeseries(enable);
-    	enableArcCat(enable);
-    	enableHydrologyCat(enable);
-    	enableControls(enable);
-    	enableProjectData(enable);
     	enableResultCatalog(enable);
     	enableResultSelector(enable);
-    	
 	}
 	
 	
 	public void enablePreprocess(boolean enabled){
-		btnSectorSelection.setEnabled(enabled);
+		btnRaingage.setEnabled(enabled);
+		btnReport.setEnabled(enabled);
 		btnOptions.setEnabled(enabled);
-		btnDesign.setEnabled(enabled);
 		btnReport.setEnabled(enabled);
 	}
     

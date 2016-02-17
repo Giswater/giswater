@@ -21,11 +21,9 @@
 package org.giswater.controller;
 
 import java.beans.PropertyVetoException;
-import java.io.File;
 import java.util.Vector;
 
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.giswater.dao.ConfigDao;
@@ -33,7 +31,6 @@ import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
-import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
@@ -48,8 +45,6 @@ public class ProjectPreferencesController extends AbstractController {
 
 	private static final Integer PROJECT_DIALOG_WIDTH = 420; 
 	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
-	private static final Integer GIS_DIALOG_WIDTH = 420; 
-	private static final Integer GIS_DIALOG_HEIGHT = 245; 
 	private static final Integer FIRST_VERSION_RENAME_AVAILABLE = 11146; 
 	private static final Integer FIRST_VERSION_COPY_AVAILABLE = 11101; 
 	
@@ -57,7 +52,6 @@ public class ProjectPreferencesController extends AbstractController {
 	private MainFrame mainFrame;
 	private EpaSoftPanel epaSoftPanel;
 	private HecRasPanel hecRasPanel;
-    private String usersFolder;
 	private String waterSoftware;
 
 
@@ -70,7 +64,6 @@ public class ProjectPreferencesController extends AbstractController {
 		this.mainFrame = mf;
 		this.epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
 		this.hecRasPanel = mainFrame.hecRasFrame.getPanel();
-    	this.usersFolder = MainDao.getGiswaterUsersFolder(); 
 	    view.setController(this);    
 	    
 	}
@@ -112,9 +105,9 @@ public class ProjectPreferencesController extends AbstractController {
 		// EPASWMM or EPANET
 		else {
 			if (waterSoftware.equals("EPASWMM")) {
-				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
-				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
-				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
+//				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
+//				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
+//				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
 				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
 				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReport"); //$NON-NLS-1$
@@ -134,10 +127,10 @@ public class ProjectPreferencesController extends AbstractController {
 				}
 				epaSoftPanel.exportSelected();
 			}
-				else if (waterSoftware.equals("EPANET")) {
-				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
-				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
-				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
+			else if (waterSoftware.equals("EPANET")) {
+//				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
+//				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
+//				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
 				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReportEpanet"); //$NON-NLS-1$
@@ -154,12 +147,7 @@ public class ProjectPreferencesController extends AbstractController {
 			}
 		}
 		
-		if (view.getOptDatabaseSelected()) {
-			mainFrame.updateConnectionInfo();
-		}
-		else {
-			mainFrame.resetConnectionInfo();
-		}
+		mainFrame.updateConnectionInfo();
 		
 	}
 	
@@ -174,7 +162,7 @@ public class ProjectPreferencesController extends AbstractController {
 			return false;
 		}
 		// Check if we have an schema selected
-		if (view.getOptDatabaseSelected() && view.getSelectedSchema().equals("")) {
+		if (view.getSelectedSchema().equals("")) {
 			mainFrame.showError(Utils.getBundleString("ProjectPreferencesController.select_project")); //$NON-NLS-1$
 			return false;
 		}
@@ -194,7 +182,7 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 			
 		// Update Project preferences parameters
-		mainFrame.putProjectPreferencecsParams();		
+		mainFrame.putProjectPreferencesParams();		
 		
 		// Customize buttons and title
 		customizePanel();
@@ -218,46 +206,29 @@ public class ProjectPreferencesController extends AbstractController {
 	public void closePreferences() {
 		view.getFrame().setVisible(false);	
 	}
-
-
-	// DBF configuration
-	public void chooseFolderShp() {
-
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(Utils.getBundleString("folder_shp"));
-		File file = new File(PropertiesDao.getGswProperties().get("FOLDER_SHP", usersFolder));
-		chooser.setCurrentDirectory(file);
-		int returnVal = chooser.showOpenDialog(view);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File dirShp = chooser.getSelectedFile();
-			view.setFolderShp(dirShp.getAbsolutePath());
-		}
-
-	}
 	
 	
 	// Database configuration
-	private void checkDataManagerTables(String schemaName) {
-		
-		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
-		epaSoftPanel.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));	
-		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-		epaSoftPanel.enableControls(MainDao.checkTable(schemaName, "inp_controls"));	
-		epaSoftPanel.enableProjectData(MainDao.checkTable(schemaName, "inp_project_id"));	
-		
-		if (waterSoftware.equals("EPASWMM")) {
-			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
-			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "cat_arc"));
-			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
-		}
-		else if (waterSoftware.equals("EPANET")) {
-			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_emitter"));
-			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "inp_demand"));
-			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "inp_rules"));	
-		}
-		
-	}
+//	private void checkDataManagerTables(String schemaName) {
+//		
+//		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
+//		epaSoftPanel.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));	
+//		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
+//		epaSoftPanel.enableControls(MainDao.checkTable(schemaName, "inp_controls"));	
+//		epaSoftPanel.enableProjectData(MainDao.checkTable(schemaName, "inp_project_id"));	
+//		
+//		if (waterSoftware.equals("EPASWMM")) {
+//			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
+//			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "cat_arc"));
+//			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
+//		}
+//		else if (waterSoftware.equals("EPANET")) {
+//			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_emitter"));
+//			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "inp_demand"));
+//			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "inp_rules"));	
+//		}
+//		
+//	}
 	
 	
 	private void checkPostprocessTables(String schemaName) {
@@ -376,49 +347,28 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void selectSourceType(boolean loadVersionSoftwareModel) {
 
-		// Database selected
-		if (view.getOptDatabaseSelected()) {
-			view.enableConnectionParameters(true);
-			view.enableDbfStorage(false);
-			epaSoftPanel.enableRunAndImport(true);
-			// Check if we already are connected
-			if (MainDao.isConnected()) {
-				mainFrame.enableMenuDatabase(true);
-				view.enableProjectManagement(true);
-				if (loadVersionSoftwareModel) {
-					view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
-				}
-				enableWaterSoftwareControls();
-			} 
-			else {
-				mainFrame.enableMenuDatabase(false);
-				view.enableProjectManagement(false);
-				view.setSchemaModel(null);	
-				epaSoftPanel.enableDatabaseButtons(false);
-				epaSoftPanel.enableAccept(false);
-				hecRasPanel.enableControls(false);
-			}
-			view.enableDbControls(!MainDao.isConnected());			
-			mainFrame.updateConnectionInfo();
-		}
-		
-		// DBF selected
-		else {
-			view.enableConnectionParameters(false);
-			view.enableProjectManagement(false);
-			view.enableDbfStorage(true);	
-			view.enableAccept(true);
-			epaSoftPanel.enableRunAndImport(false);
-			mainFrame.enableMenuDatabase(false);
+		view.enableConnectionParameters(true);
+		epaSoftPanel.enableRunAndImport(true);
+		// Check if we already are connected
+		if (MainDao.isConnected()) {
+			mainFrame.enableMenuDatabase(true);
+			view.enableProjectManagement(true);
 			if (loadVersionSoftwareModel) {
-				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("dbf", waterSoftware));
+				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
 			}
+			enableWaterSoftwareControls();
+		} 
+		else {
+			mainFrame.enableMenuDatabase(false);
+			view.enableProjectManagement(false);
+			view.setSchemaModel(null);	
 			epaSoftPanel.enableDatabaseButtons(false);
-			epaSoftPanel.enableAccept(true);
+			epaSoftPanel.enableAccept(false);
 			hecRasPanel.enableControls(false);
-			mainFrame.resetConnectionInfo();
 		}
-		
+		view.enableDbControls(!MainDao.isConnected());			
+		mainFrame.updateConnectionInfo();
+				
 	}
 	
 	
@@ -496,7 +446,7 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void setSchema(String schemaName) {
 		MainDao.setSchema(schemaName);
-		checkDataManagerTables(schemaName);
+		//checkDataManagerTables(schemaName);
 		checkPostprocessTables(schemaName);
 	}
 	
@@ -614,11 +564,5 @@ public class ProjectPreferencesController extends AbstractController {
         		
 	}
 		
-
-	public void createGisProject() {
-		
-		GisPanel gisPanel = new GisPanel(view);
-		JDialog gisDialog = Utils.openDialogForm(gisPanel, view, Utils.getBundleString("ProjectPreferencesController.create_gis"), GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT); //$NON-NLS-1$
-		gisPanel.setParent(gisDialog);
-        gisDialog.setVisible(true);}
-        }
+	
+}

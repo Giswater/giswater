@@ -64,7 +64,9 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 	private PropertiesMap gswProp;
 	private JDialog parent;
-	private ProjectPreferencesPanel ppPanel;
+	
+	//private String waterSoftware;
+	private String selectedSchema;
 	
 	private JTextArea txtProjectFolder;
 	private JButton btnProjectFolder;
@@ -80,9 +82,8 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	private static final String GIS_EXTENSION = "qgs";
 	
 
-	public GisPanel(ProjectPreferencesPanel ppPanel) {
+	public GisPanel() {
         this.gswProp = PropertiesDao.getGswProperties();     
-        this.ppPanel = ppPanel;
 		initConfig();
 		setDefaultValues();
 	}
@@ -93,10 +94,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	public void setParent(JDialog gisDialog) {
 		parent = gisDialog;		
-	}
-	
-	public void setPpPanel(ProjectPreferencesPanel ppPanel) {
-		this.ppPanel = ppPanel;		
 	}
 	
 	public void setProjectFolder(String path) {
@@ -175,9 +172,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
     private void setDefaultValues() {
 		setProjectFolder(gswProp.get("GIS_FOLDER"));
 		setProjectName(gswProp.get("GIS_NAME"));
-		setProjectSoftware(ppPanel.getWaterSoftware());
-		setDataStorage(ppPanel.getStorage());
-		setSelectedSchema(ppPanel.getSelectedSchema());
+		setProjectSoftware(PropertiesDao.getWaterSoftware());
+		setDataStorage(PropertiesDao.getStorage());
+		selectedSchema = PropertiesDao.getSelectedSchema();
+		setSelectedSchema(selectedSchema);
     }	
 	
 	
@@ -293,7 +291,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()) {
 				enableControls(true);
 				setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-				setSelectedSchema(ppPanel.getSelectedSchema());
+				setSelectedSchema(selectedSchema);
 			} 
 			else {
 				enableControls(false);				
@@ -497,7 +495,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			if (MainDao.isConnected()) {
 				enableControls(true);
 				setSchemaModel(MainDao.getSchemas(getProjectSoftware()));
-				setSelectedSchema(ppPanel.getSelectedSchema());	
+				setSelectedSchema(selectedSchema);	
 			} 
 			else {
 				enableControls(false);				

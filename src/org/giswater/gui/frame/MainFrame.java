@@ -57,6 +57,7 @@ import org.giswater.controller.ConfigController;
 import org.giswater.controller.EpaSoftController;
 import org.giswater.controller.HecRasController;
 import org.giswater.controller.MenuController;
+import org.giswater.controller.ProjectManagerController;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
@@ -116,6 +117,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	public EpaSoftFrame epaSoftFrame;
 	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
+	public ProjectManagerFrame pmFrame;
 	public ConfigFrame configFrame;
 	
 	private JPanel statusPanel;
@@ -387,11 +389,13 @@ public class MainFrame extends JFrame implements ActionListener {
         epaSoftFrame = new EpaSoftFrame();
         hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
+        pmFrame = new ProjectManagerFrame();
         configFrame = new ConfigFrame();
               
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
         desktopPane.add(ppFrame);            
+        desktopPane.add(pmFrame);            
         desktopPane.add(configFrame);
         
         // Set specific configuration
@@ -401,6 +405,7 @@ public class MainFrame extends JFrame implements ActionListener {
         // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
+		new ProjectManagerController(pmFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         new EpaSoftController(epaSoftFrame.getPanel(), this);
         
@@ -414,6 +419,8 @@ public class MainFrame extends JFrame implements ActionListener {
         hecRasFrame.setPreferredSize(desktopSize);
         ppFrame.setSize(desktopSize);
         ppFrame.setPreferredSize(desktopSize);
+        pmFrame.setSize(desktopSize);
+        pmFrame.setPreferredSize(desktopSize);
         configFrame.setSize(desktopSize);
         configFrame.setPreferredSize(desktopSize);
 		
@@ -431,12 +438,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 	
-	
 	public void updateFrames() {
 		getFrameParams(configFrame, "CONFIG");			
 		getFrameParams(epaSoftFrame, "EPASOFT");
 		getFrameParams(hecRasFrame, "HECRAS");
 		getFrameParams(ppFrame, "PP");           
+		getFrameParams(pmFrame, "PM");           
 	}
 	
 	
@@ -504,7 +511,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	}	
     
     
-    public void putProjectPreferencecsParams() {
+    public void putProjectPreferencesParams() {
     	
     	ProjectPreferencesPanel ppPanel = ppFrame.getPanel();
     	
@@ -513,16 +520,8 @@ public class MainFrame extends JFrame implements ActionListener {
     	String exeName = ConfigDao.getExeName(versionId);
     	PropertiesDao.getGswProperties().put("VERSION", versionId);  
     	PropertiesDao.getGswProperties().put("EXE_NAME", exeName);  
-    	if (ppPanel.getOptDatabaseSelected()){
-    		PropertiesDao.getGswProperties().put("STORAGE", "DATABASE");
-    	}
-    	else if (ppPanel.getOptDbfSelected()) {
-    		PropertiesDao.getGswProperties().put("STORAGE", "DBF");
-    	}
-    	else {
-    		PropertiesDao.getGswProperties().put("STORAGE", "");
-    	}	
-    	PropertiesDao.getGswProperties().put("FOLDER_SHP", ppPanel.getFolderShp());    	
+    	PropertiesDao.getGswProperties().put("STORAGE", "DATABASE");
+    	PropertiesDao.getGswProperties().put("FOLDER_SHP", "");    	
     	PropertiesDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
     	PropertiesDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
     	PropertiesDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
@@ -535,10 +534,14 @@ public class MainFrame extends JFrame implements ActionListener {
 	}	   
     
     
+    public void putProjectManagerParams() {
+    	// TODO
+	}	
+    
     public void putGisParams(GisPanel gisPanel) {
     	PropertiesDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
     	PropertiesDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());    	
-	}	
+    }	
     
 	
 	public void saveGswFile() {
@@ -553,7 +556,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		putHecrasParams();		
 		
 		// Get Project preferences parameters
-		putProjectPreferencecsParams();		
+		putProjectPreferencesParams();		
 		
     	// Save .gsw file
 		PropertiesDao.saveGswPropertiesFile();
@@ -568,6 +571,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		putFrameParams(epaSoftFrame, "EPASOFT");
 		putFrameParams(hecRasFrame, "HECRAS");
 		putFrameParams(ppFrame, "PP");        
+		putFrameParams(pmFrame, "PM");        
 		putFrameParams(configFrame, "CONFIG");	
 		putMainParams();		
 	}
