@@ -351,14 +351,6 @@ public class MenuController extends AbstractController {
 	}
 
 	
-	private void updateDbfParams(ProjectPreferencesPanel ppPanel) {
-		
-		// Panel DBF
-		ppPanel.setFolderShp(PropertiesDao.getGswProperties().get("FOLDER_SHP"));
-		
-	}
-	
-	
 	private boolean updateDatabaseParams(ProjectPreferencesPanel ppPanel) {
 		
 		// Panel Database
@@ -419,26 +411,14 @@ public class MenuController extends AbstractController {
     	ppPanel.setWaterSoftware(waterSoftware);
     	MainDao.setWaterSoftware(waterSoftware);
 		
-		// Panel DBF
-		updateDbfParams(ppPanel);
-		
 		// Panel Database
 		if (updateDatabaseParams(ppPanel)) {
-			String storage = PropertiesDao.getGswProperties().get("STORAGE").toUpperCase();
-			if (storage.equals("DBF")) {
-				ppPanel.setDbfSelected(true);
-				ppPanel.enableAccept(true);
-			} 
-			else {
-				ppPanel.setDatabaseSelected(true);
-			}
 			ppPanel.selectSourceType(true); 
 			ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));
 			return true;
 		}
 		// If error open configuration file
 		else {
-			ppPanel.setDatabaseSelected(true);
 			ppPanel.selectSourceType(true);
 			openFrame(mainFrame.configFrame);
 			return false;

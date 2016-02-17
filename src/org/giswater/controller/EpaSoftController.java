@@ -259,7 +259,6 @@ public class EpaSoftController extends AbstractController {
         task.setController(this);
         task.setParentPanel(view);
         task.setProjectPreferencesPanel(ppPanel);
-        task.setDbSelected(ppPanel.getOptDatabaseSelected());
         task.addPropertyChangeListener(this);
         task.execute();
         
@@ -380,7 +379,6 @@ public class EpaSoftController extends AbstractController {
 		showCatalog(dialog, rs);
 	}
 	
-
 	
 	private void showCatalog(AbstractCatalogDialog dialog, ResultSet rs) {
 		
@@ -452,6 +450,18 @@ public class EpaSoftController extends AbstractController {
 			Utils.logError(e);
 		}
         
+    }
+    
+    
+    public void showProjectManager() {
+    	
+    	try {
+    		mainFrame.ppFrame.setVisible(true);
+    		mainFrame.ppFrame.setMaximum(true);
+    	} catch (PropertyVetoException e) {
+    		Utils.logError(e);
+    	}
+    	
     }
     
     

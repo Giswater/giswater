@@ -33,7 +33,6 @@ import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.ExecuteEpa;
 import org.giswater.model.ExportToInp;
-import org.giswater.model.ExportToInpDbf;
 import org.giswater.model.ImportRpt;
 import org.giswater.model.Model;
 import org.giswater.util.Utils;
@@ -45,17 +44,11 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 	private ProjectPreferencesPanel ppPanel;
 	private EpaSoftPanel view;
 	private EpaSoftController controller;
-	private boolean dbSelected;
 	
 	
     @Override
     public Void doInBackground() {
-    	
-    	if (dbSelected) {
-    		return executePostgis();
-    	}
-		return executeDbf();
-        
+    	return executePostgis();       
     }
 
     
@@ -178,72 +171,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         return null;
     	
     }
-    
-    
-    private Void executeDbf() {
-    	
-		String pathFolderShp = ppPanel.getFolderShp();
-		File folderShp = new File(pathFolderShp);
-		if (!folderShp.exists()){
-			MainClass.mdi.showError(Utils.getBundleString("ExecuteTask.data_folder_invalid")); //$NON-NLS-1$
-			return null;
-		}
         
-        // Which checks are selected?
-        boolean exportSelected = view.isExportSelected();
-        boolean execSelected = view.isExecSelected();
-        boolean importSelected = view.isImportSelected();        
-        
-        if (!exportSelected && !execSelected && !importSelected){
-        	MainClass.mdi.showError("select_option");
-            return null;
-        }
-        
-        // Get software version from Project Preferences view
-		String id = ppPanel.getVersionSoftware();
-        if (id.equals("")){
-        	MainClass.mdi.showError("any_software_selected");
-            return null;
-        }
-        String version = ConfigDao.getSoftwareVersion("dbf", id);
-        Model.setSoftwareVersion(version);
-		
-		// Get Sqlite Database			
-		String sqlitePath = version + ".sqlite";
-		if (!Model.setConnectionDrivers(sqlitePath)){
-			return null;
-		}
-		
-		// Check if all necessary files exist
-		if (!ExportToInpDbf.checkFiles(pathFolderShp)) {
-			return null;
-		}
-		
-		// Get INP template file
-		String templatePath = ConfigDao.getInpFolder()+version+".inp";
-		File fileTemplate = new File(templatePath);
-		if (!fileTemplate.exists()) {
-			MainClass.mdi.showError("inp_error_notfound", templatePath);				
-			return null;
-		}
-
-		// Process all shapes and output to INP file
-		File fileInp = controller.getFileInp();
-
-        // Export to INP
-        if (exportSelected) {
-            if (fileInp == null) {
-            	MainClass.mdi.showError("file_inp_not_selected");
-                return null;
-            }   
-            ExportToInpDbf.process(fileInp);
-        }
-        
-    	status = true;
-    	return null;
-    	
-    }
-    
     
     public void done() {
     	
@@ -266,11 +194,6 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 	public void setProjectPreferencesPanel(ProjectPreferencesPanel ppPanel) {
 		this.ppPanel = ppPanel;		
 	}
-
-
-	public void setDbSelected(boolean optDatabaseSelected) {
-		this.dbSelected = optDatabaseSelected;		
-	}
-    
+   
     
 }
