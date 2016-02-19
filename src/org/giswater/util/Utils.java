@@ -374,6 +374,19 @@ public class Utils {
         
     }         
     
+    public static void logInfo(String msg) {
+    	logInfo(msg, "");
+    }  
+    
+    public static void logInfo(String msg, String param) {
+    	if (logger != null) {
+    		String infoMsg = getBundleString(msg);
+    		if (!param.equals("")) {
+    			infoMsg += "\nParameter: " + param;
+    		}    	
+    		logger.info(infoMsg);
+    	}
+    }     
     
     public static int showYesNoDialog(String msg) {
     	return showYesNoDialog(msg, getBundleString("inp_descr"));

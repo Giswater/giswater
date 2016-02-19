@@ -103,8 +103,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
-			String msg = Utils.getBundleString("CreateExampleSchemaTask.project")+schemaName+Utils.getBundleString("CreateExampleSchemaTask.overwrite_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("CreateExampleSchemaTask.create_example")); //$NON-NLS-1$
+			String msg = Utils.getBundleString("CreateExampleSchemaTask.project")+schemaName+Utils.getBundleString("CreateExampleSchemaTask.overwrite_it");
+			int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("CreateExampleSchemaTask.create_example"));
 			if (res != JOptionPane.YES_OPTION) return null; 
 			MainDao.deleteSchema(schemaName);
 		}
@@ -113,10 +113,19 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		mainFrame.ppFrame.getPanel().enableControlsText(false);
 		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
 		
-    	// Create schema
-		status = CreateSchemaTask.createSchema(waterSoftware, schemaName, sridValue);
+    	// Create schema of selected software
+    	String softwareAcronym = null;
+    	if (waterSoftware.equals("EPANET")) {
+    		softwareAcronym = "ws_";
+    	}
+    	else if (waterSoftware.equals("EPASWMM")) {
+    		softwareAcronym = "ud_";
+    	}
+    	CreateSchemaTask cst = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
+		status = cst.createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
+			MainDao.setSoftwareAcronym(softwareAcronym);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
@@ -127,7 +136,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					String folderRoot = new File(".").getCanonicalPath() + File.separator;				
 					// From sample .sql file					
 					String filePath = folderRoot+"samples"+File.separator+schemaName+".sql";	 
-			    	Utils.getLogger().info(Utils.getBundleString("CreateExampleSchemaTask.reading_file")+filePath); 				 //$NON-NLS-1$
+			    	Utils.getLogger().info(Utils.getBundleString("CreateExampleSchemaTask.reading_file")+filePath);
 			    	String content = Utils.readFile(filePath);
 					Utils.logSql(content);		
 					// Last SQL script. So commit all process

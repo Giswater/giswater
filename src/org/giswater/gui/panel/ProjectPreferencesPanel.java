@@ -56,6 +56,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private ProjectPreferencesFrame frame;
 	
 	private ButtonGroup groupSoftware;
+	private JLabel lblWaterSoftware;
 	private JRadioButton optEpaSwmm;
 	private JRadioButton optEpanet;
 	private JRadioButton optHecras;
@@ -82,13 +83,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private JTextField txtDescription;
 	
 	private JLabel lblInfo;
+	private JButton btnProjectManager;
+	private JButton btnGoToEpa;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final Font FONT_PANEL_TITLE2 = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Integer BUTTON_WIDTH = 72;
-	private JButton btnManager;
-	private JButton btnGoToEpa;
-	private JLabel lblWaterSoftware;
 
 	
 	public ProjectPreferencesPanel() {
@@ -257,18 +257,18 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		cboVersionSoftware = new JComboBox<String>();
 		add(cboVersionSoftware, "cell 4 0 2 1,growx");
 		
-		btnManager = new JButton();
-		btnManager.setText(BUNDLE.getString("ProjectPreferencesPanel.btnManager.text")); //$NON-NLS-1$
-		btnManager.setMnemonic(KeyEvent.VK_A);
-		btnManager.setMinimumSize(new Dimension(72, 23));
-		btnManager.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnManager.actionCommand")); //$NON-NLS-1$
-		add(btnManager, "cell 3 5 2 1,alignx right");
+		btnProjectManager = new JButton();
+		btnProjectManager.setText(BUNDLE.getString("ProjectPreferencesPanel.btnManager.text")); //$NON-NLS-1$
+		btnProjectManager.setMnemonic(KeyEvent.VK_A);
+		btnProjectManager.setMinimumSize(new Dimension(72, 23));
+		btnProjectManager.setActionCommand("openProjectManager");
+		add(btnProjectManager, "cell 3 5 2 1,alignx right");
 		
 		btnGoToEpa = new JButton();
 		btnGoToEpa.setText(BUNDLE.getString("ProjectPreferencesPanel.btnEpa.text")); //$NON-NLS-1$
 		btnGoToEpa.setMnemonic(KeyEvent.VK_A);
 		btnGoToEpa.setMinimumSize(new Dimension(72, 23));
-		btnGoToEpa.setActionCommand("acceptPreferences");
+		btnGoToEpa.setActionCommand("openEpaSoft");
 		add(btnGoToEpa, "cell 5 5,growx");
 		
 		setupListeners();
@@ -293,6 +293,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnDelete.addActionListener(this);
 		btnRename.addActionListener(this);
 		btnCopy.addActionListener(this);
+		
+		btnProjectManager.addActionListener(this);
+		btnGoToEpa.addActionListener(this);
 
 	}
 	

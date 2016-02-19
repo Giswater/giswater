@@ -287,7 +287,9 @@ public class MenuController extends AbstractController {
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			if (acceptPreferences) {
-				mainFrame.ppFrame.getPanel().getController().acceptPreferences();
+				// TODO: 
+				ProjectPreferencesController ppController = mainFrame.ppFrame.getPanel().getController();
+				ppController.openEpaSoft();
 			}
 		}
     	

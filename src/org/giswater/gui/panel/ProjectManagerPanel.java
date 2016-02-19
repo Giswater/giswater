@@ -46,19 +46,11 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 	private ProjectManagerFrame projectManagerFrame;	
 	
 	private JPanel panelConfiguration;
-	
-	private JPanel panelAnalysis;
-	private JButton btnResultCatalog;
-	private JButton btnResultSelector;
-	private JButton btnGoToEpa;
-	
-	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
-	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
-	private JButton btnProjectPreferences;
 	private JLabel lblSnappingTolerance;
 	private JTextField txtSnappingTolerance;
 	private JLabel lblNodeTolerance;
 	private JTextField txtNodeTolerance;
+	
 	private JPanel panelDataManager;
 	private JButton btnMaterialCatalog;
 	private JButton btnNodeCatalog;
@@ -66,10 +58,20 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 	private JButton btnTableWizard;
 	private JButton btnUndoWizard;
 	private JButton btnSyncWizard;
+	
+	private JPanel panelAnalysis;
+	private JButton btnResultCatalog;
+	private JButton btnResultSelector;
 	private JButton btnNodeFlowTrace;
-	private JButton btnArcFlowTrace;
+	private JButton btnArcFlowTrace;	
+	
 	private JButton btnCreateGisProject;
-
+	private JButton btnProjectPreferences;
+	private JButton btnGoToEpa;
+	
+	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
+	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	
 	
 	public ProjectManagerPanel() {
 		try {
@@ -85,11 +87,10 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 
 		setLayout(new MigLayout("", "[130px:n][120px:n][120px:n][::8px]", "[][3px][][3px][88.00][3px:n][][]"));
 		
-		btnCreateGisProject = new JButton(BUNDLE.getString("ProjectManagerPanel.btnCrea.text")); //$NON-NLS-1$
+		btnCreateGisProject = new JButton(BUNDLE.getString("ProjectManagerPanel.btnCrea.text"));
 		add(btnCreateGisProject, "cell 0 0");
 		btnCreateGisProject.setPreferredSize(new Dimension(121, 23));
-		btnCreateGisProject.setEnabled(false);
-		btnCreateGisProject.setActionCommand((String) null);
+		btnCreateGisProject.setActionCommand("gisProject");
 		
 		panelConfiguration = new JPanel();
 		panelConfiguration.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectManager.panelConfiguration.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
@@ -97,20 +98,24 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		panelConfiguration.setLayout(new MigLayout("", "[120px:n][60.00px:n][][5px:n]", "[][]"));
 		
 		lblSnappingTolerance = new JLabel();
+		lblSnappingTolerance.setEnabled(false);
 		lblSnappingTolerance.setText(BUNDLE.getString("ProjectManager.lblSnappingTolerance.text")); //$NON-NLS-1$
 		lblSnappingTolerance.setName("lbl_project");
 		panelConfiguration.add(lblSnappingTolerance, "cell 0 0,alignx trailing");
 		
 		txtSnappingTolerance = new JTextField();
+		txtSnappingTolerance.setEnabled(false);
 		txtSnappingTolerance.setName("txt_project");
 		panelConfiguration.add(txtSnappingTolerance, "cell 1 0,growx");
 		
 		lblNodeTolerance = new JLabel();
+		lblNodeTolerance.setEnabled(false);
 		lblNodeTolerance.setText(BUNDLE.getString("ProjectManager.lblNodeTolerance.text")); //$NON-NLS-1$
 		lblNodeTolerance.setName("lbl_project");
 		panelConfiguration.add(lblNodeTolerance, "cell 0 1,alignx trailing");
 		
 		txtNodeTolerance = new JTextField();
+		txtNodeTolerance.setEnabled(false);
 		txtNodeTolerance.setName("txt_project");
 		panelConfiguration.add(txtNodeTolerance, "cell 1 1,growx");
 //		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);
@@ -123,37 +128,37 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		btnMaterialCatalog = new JButton(BUNDLE.getString("ProjectManager.btnMaterialCatalog.text")); //$NON-NLS-1$
 		btnMaterialCatalog.setPreferredSize(new Dimension(121, 23));
 		btnMaterialCatalog.setEnabled(false);
-		btnMaterialCatalog.setActionCommand(BUNDLE.getString("ProjectManager.button_1.actionCommand")); //$NON-NLS-1$
+		btnMaterialCatalog.setActionCommand("materialCatalog");
 		panelDataManager.add(btnMaterialCatalog, "cell 0 0");
 		
 		btnNodeCatalog = new JButton(BUNDLE.getString("ProjectManager.btnNodeCatalog.text")); //$NON-NLS-1$
 		btnNodeCatalog.setPreferredSize(new Dimension(121, 23));
 		btnNodeCatalog.setEnabled(false);
-		btnNodeCatalog.setActionCommand(BUNDLE.getString("ProjectManager.btnNodeCatalog.actionCommand")); //$NON-NLS-1$
+		btnNodeCatalog.setActionCommand("nodeCatalog"); //$NON-NLS-1$
 		panelDataManager.add(btnNodeCatalog, "cell 1 0");
 		
 		btnArcCatalog = new JButton(BUNDLE.getString("ProjectManager.btnArcCatalog.text")); //$NON-NLS-1$
 		btnArcCatalog.setPreferredSize(new Dimension(121, 23));
 		btnArcCatalog.setEnabled(false);
-		btnArcCatalog.setActionCommand(BUNDLE.getString("ProjectManager.btnArcCatalog.actionCommand")); //$NON-NLS-1$
+		btnArcCatalog.setActionCommand("arcCatalog");
 		panelDataManager.add(btnArcCatalog, "cell 2 0");
 		
 		btnTableWizard = new JButton(BUNDLE.getString("ProjectManager.btnTableWizard.text")); //$NON-NLS-1$
 		btnTableWizard.setPreferredSize(new Dimension(121, 23));
 		btnTableWizard.setEnabled(false);
-		btnTableWizard.setActionCommand("scenarioCatalog");
+		btnTableWizard.setActionCommand("tableWizard");
 		panelDataManager.add(btnTableWizard, "cell 0 1");
 		
 		btnUndoWizard = new JButton(BUNDLE.getString("ProjectManager.btnUndoWizard.text")); //$NON-NLS-1$
 		btnUndoWizard.setPreferredSize(new Dimension(121, 23));
 		btnUndoWizard.setEnabled(false);
-		btnUndoWizard.setActionCommand("scenarioCatalog");
+		btnUndoWizard.setActionCommand("undoWizard");
 		panelDataManager.add(btnUndoWizard, "cell 1 1");
 		
 		btnSyncWizard = new JButton(BUNDLE.getString("ProjectManager.btnSyncWizard.text")); //$NON-NLS-1$
 		btnSyncWizard.setPreferredSize(new Dimension(121, 23));
 		btnSyncWizard.setEnabled(false);
-		btnSyncWizard.setActionCommand("scenarioCatalog");
+		btnSyncWizard.setActionCommand("syncWizard");
 		panelDataManager.add(btnSyncWizard, "cell 2 1");
 		
 		panelAnalysis = new JPanel();
@@ -187,11 +192,11 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		
 		btnProjectPreferences = new JButton("Project Preferences");
 		btnProjectPreferences.setMinimumSize(new Dimension(110, 23));
-		btnProjectPreferences.setActionCommand("gswEdit");
+		btnProjectPreferences.setActionCommand("openProjectPreferences");
 		add(btnProjectPreferences, "flowx,cell 1 7,alignx right");
 		
 		btnGoToEpa = new JButton("Go 2 Epa");
-		btnGoToEpa.setActionCommand("goToEpa");
+		btnGoToEpa.setActionCommand("openEpaSoft");
 		btnGoToEpa.setMinimumSize(new Dimension(120, 23));
 		add(btnGoToEpa, "cell 2 7,alignx right");
 
@@ -208,6 +213,7 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		btnResultSelector.addActionListener(this);
 		
 		btnCreateGisProject.addActionListener(this);		
+		btnProjectPreferences.addActionListener(this);
 		btnGoToEpa.addActionListener(this);
 		
 	}

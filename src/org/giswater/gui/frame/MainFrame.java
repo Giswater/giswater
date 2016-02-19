@@ -241,6 +241,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnProject.add(mntmExit);
 		
 		mnProjectExample = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
+		mnProjectExample.setEnabled(false);
 		mnProjectExample.setMnemonic(KeyEvent.VK_P);
 		menuBar.add(mnProjectExample);
 		
@@ -277,7 +278,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmDatabaseAdministrator.setActionCommand("openDatabaseAdmin");
 		
 		mntmSqlFileLauncher = new JMenuItem(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.text")); //$NON-NLS-1$
-		mntmSqlFileLauncher.setActionCommand(BUNDLE.getString("MainFrame.mntmSqlFileLauncher.actionCommand")); //$NON-NLS-1$
+		mntmSqlFileLauncher.setActionCommand("executeSqlFile");
 		mntmSqlFileLauncher.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		mnData.add(mntmSqlFileLauncher);
 		
@@ -398,9 +399,9 @@ public class MainFrame extends JFrame implements ActionListener {
         desktopPane.add(pmFrame);            
         desktopPane.add(configFrame);
         
-        // Set specific configuration
+        // Set titles
         ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
-        epaSoftFrame.setTitle("Main form");
+        pmFrame.setTitle(Utils.getBundleString("MainFrame.project_manager"));
         
         // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel(), this);
@@ -628,10 +629,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		menuController.action(e.getActionCommand());
 	}
 
-
-	public void openSoftware() {
-		manageFrames(configFrame);
-	}
 	
 
 	public void updateEpaFrames() {
@@ -649,6 +646,22 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 	
+	
+	public void openSoftware() {
+		manageFrames(configFrame);
+	}
+	
+	public void openEpaSoft() {
+		manageFrames(epaSoftFrame);
+	}
+	
+	public void openProjectPreferences() {
+		manageFrames(ppFrame);
+	}
+	
+	public void openProjectManager() {
+		manageFrames(pmFrame);
+	}
 	
     private void manageFrames(JInternalFrame frame) {
     	

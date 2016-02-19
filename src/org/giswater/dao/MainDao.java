@@ -57,6 +57,7 @@ public class MainDao {
 	
     private static Connection connectionPostgis;
 	private static String waterSoftware;   // EPASWMM or EPANET or HECRAS
+	private static String softwareAcronym;   // ud_ or ws_ or
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "updates"
@@ -118,6 +119,10 @@ public class MainDao {
 	
 	public static void setWaterSoftware(String param) {
 		waterSoftware = param;
+	}
+	
+	public static void setSoftwareAcronym(String param) {
+		softwareAcronym = param;
 	}
 	
 	public static boolean isConnected() {
@@ -982,7 +987,7 @@ public class MainDao {
 		
 		String folder = updatesFolder + softwareName + File.separator;
 		File[] files = new File(folder).listFiles();
-		if (files.length > 0) {
+		if (files != null && files.length > 0) {
 			Arrays.sort(files);
 			String fileName = files[files.length-1].getName();
 			fileName = fileName.replace(softwareName+"_", "").replace(".sql", "");
@@ -1007,29 +1012,29 @@ public class MainDao {
 		// Iterate over all files inside updates/<softwareName> folder
 		String folder = updatesFolder + waterSoftware + File.separator;
 		File[] files = new File(folder).listFiles();
-		Arrays.sort(files);
-		for (File file : files) {
-			String fileName = file.getName();
-			fileName = fileName.replace(waterSoftware.toLowerCase()+"_", "").replace(".sql", "");
-			Integer fileVersion = Utils.parseInt(fileName);			
-			if (fileVersion > schemaVersion) {
-		    	String content;
-				try {
-					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
-					content = Utils.readFile(file.getAbsolutePath());
-					content = content.replace("SCHEMA_NAME", schema);
-					content = content.replace("SRID_VALUE", getSrid(schema));					
-					Utils.logSql(content);
-					status = executeSql(content, false);
-					// Abort process if one script fails
-					if (!status) {
-						return false;
+		if (files != null) {
+			Arrays.sort(files);
+			for (File file : files) {
+				String fileName = file.getName().replace(waterSoftware.toLowerCase()+"_", "").replace(".sql", "");
+				Integer fileVersion = Utils.parseInt(fileName);			
+				if (fileVersion > schemaVersion) {
+			    	String content;
+					try {
+						Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+						content = Utils.readFile(file.getAbsolutePath());
+						content = content.replace("SCHEMA_NAME", schema);
+						content = content.replace("SRID_VALUE", getSrid(schema));					
+						Utils.logSql(content);
+						status = executeSql(content, false);
+						// Abort process if one script fails
+						if (!status) return false;
+					} catch (IOException e) {
+						Utils.logError(e);
 					}
-				} catch (IOException e) {
-					Utils.logError(e);
 				}
 			}
 		}
+		
 		return status;
 		
 	}

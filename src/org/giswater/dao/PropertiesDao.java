@@ -45,7 +45,7 @@ public class PropertiesDao {
     private static PropertiesMap gswProp = new PropertiesMap();
 	private static String selectedSchema;
     
-	private static final String MINOR_VERSION = "1.1";
+	private static final String MINOR_VERSION = "1.2";
 	private static final String CONFIG_FILE = "giswater";
 	private static final String GSW_DEFAULT_FILE = "default_"+MINOR_VERSION+".gsw";
 	private static final String GSW_TEMPLATE_FILE = "template_"+MINOR_VERSION+".gsw";
@@ -251,11 +251,6 @@ public class PropertiesDao {
         return (gswProp != null);
 
     }
-
-
-    
-    
-    
 
 	
 }

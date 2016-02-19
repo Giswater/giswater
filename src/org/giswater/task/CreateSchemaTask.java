@@ -23,6 +23,7 @@ package org.giswater.task;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -69,52 +70,46 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
-	
-	public static boolean createSchema(String softwareName, String schemaName, String srid) {
+	public boolean processFile(String filePath) throws IOException {
 		
-		boolean status = false;
+		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
+		String content = Utils.readFile(filePath);
+		if (content.equals("")) return false;	    
+		content = content.replace("SCHEMA_NAME", schemaName);
+		content = content.replace("SRID_VALUE", sridValue);
+		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
+		Utils.logSql(content);
+		return MainDao.executeSql(content, false);		
+		
+	}
+	
+	
+	public boolean createSchema(String softwareAcronym) {
+		
+		boolean status = true;
 		String filePath = "";
-		String content = "";
-    	
+		
 		try {
-
-	    	String folderRoot = new File(".").getCanonicalPath()+File.separator;			
-			filePath = folderRoot+"sql"+File.separator+softwareName+".sql";
-	    	content = Utils.readFile(filePath);
-			if (content.equals("")) return false;	    	
-			
-	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
-			content = content.replace("SCHEMA_NAME", schemaName);
-			content = content.replace("SRID_VALUE", srid);
-			content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
-			Utils.logSql(content);
-
-			// Execute scripts to create schema
-			if (MainDao.executeSql(content, false)) {
-				filePath = folderRoot+"sql"+File.separator+softwareName+"_value_domain.sql";
-		    	content = Utils.readFile(filePath);
-				content = content.replace("SCHEMA_NAME", schemaName);		   
-				Utils.logSql(content);
-				if (MainDao.executeSql(content, false)) {
-					filePath = folderRoot+"sql"+File.separator+softwareName+"_value_default.sql";
-			    	content = Utils.readFile(filePath, false);
-					content = content.replace("SCHEMA_NAME", schemaName);
-					Utils.logSql(content);
-					if (MainDao.executeSql(content, false)) {
-						filePath = folderRoot+"sql"+File.separator+softwareName+"_functrigger.sql";
-				    	content = Utils.readFile(filePath);
-						content = content.replace("SCHEMA_NAME", schemaName);
-						Utils.logSql(content);
-						status = MainDao.executeSql(content, false);
-					}					
+			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+			File folderRoot = new File(folderRootPath);
+			File[] files = folderRoot.listFiles();
+			Arrays.sort(files);
+			for (File file : files) {			
+				// Process only files that belongs to selected software
+				if (file.getName().startsWith(softwareAcronym)) {
+					filePath = file.getPath();
+					Utils.logInfo("Processing file: "+filePath);
+					status = processFile(filePath);
+					if (!status) return false;
 				}
 			}
-			
-        } catch (FileNotFoundException e) {
-            Utils.showError("inp_error_notfound", filePath);
-        } catch (IOException e) {
-            Utils.showError(e, filePath);
-        }
+		} catch (FileNotFoundException e) {
+			Utils.showError("inp_error_notfound", filePath);
+			status = false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;			
+		}
 		return status;
 		
 	}
@@ -137,17 +132,25 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		controller.closeProject();
     	Utils.setPanelEnabled(parentPanel, false);
     	
-    	// Create schema
-		status = createSchema(waterSoftware, schemaName, sridValue);	
+    	// Create schema of selected software
+    	String softwareAcronym = null;
+    	if (waterSoftware.equals("EPANET")) {
+    		softwareAcronym = "ws_";
+    	}
+    	else if (waterSoftware.equals("EPASWMM")) {
+    		softwareAcronym = "ud_";
+    	}
+		status = createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
+			MainDao.setSoftwareAcronym(softwareAcronym);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-				Utils.getLogger().info(sql);
+				Utils.logInfo(sql);
 				MainDao.executeSql(sql, false);
 				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.getLogger().info(sql);
+				Utils.logInfo(sql);
 				// Last SQL script. So commit all process
 				MainDao.executeSql(sql, true);
 			}

@@ -55,9 +55,6 @@ public class ProjectPreferencesController extends AbstractController {
 	private String waterSoftware;
 
 
-	/**
-	 * @wbp.parser.entryPoint
-	 */
 	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
 		
 		this.view = ppPanel;	
@@ -196,7 +193,8 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	public void acceptPreferences() {
+	// TODO: Older acceptPreferences. Now has to open EpaSoftPanel
+	public void openEpaSoft() {
 		if (applyPreferences()) {
 			closePreferences();	
 		}
@@ -206,6 +204,11 @@ public class ProjectPreferencesController extends AbstractController {
 	public void closePreferences() {
 		view.getFrame().setVisible(false);	
 	}
+	
+	
+	public void openProjectManager() {
+		mainFrame.openProjectManager();
+	}	
 	
 	
 	// Database configuration
