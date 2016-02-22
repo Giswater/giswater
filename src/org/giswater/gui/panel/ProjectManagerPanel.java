@@ -90,7 +90,7 @@ public class ProjectManagerPanel extends JPanel implements ActionListener {
 		btnCreateGisProject = new JButton(BUNDLE.getString("ProjectManagerPanel.btnCrea.text"));
 		add(btnCreateGisProject, "cell 0 0");
 		btnCreateGisProject.setPreferredSize(new Dimension(121, 23));
-		btnCreateGisProject.setActionCommand("gisProject");
+		btnCreateGisProject.setActionCommand("createGisProject");
 		
 		panelConfiguration = new JPanel();
 		panelConfiguration.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectManager.panelConfiguration.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));

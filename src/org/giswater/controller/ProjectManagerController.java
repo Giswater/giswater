@@ -25,7 +25,6 @@ import java.sql.ResultSet;
 import javax.swing.JDialog;
 
 import org.giswater.dao.MainDao;
-import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
 import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.ControlsDialog;
@@ -114,7 +113,7 @@ public class ProjectManagerController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("cat_mat");
 		if (rs == null) return;
 		MaterialsDialog dialog = new MaterialsDialog();
-		if (PropertiesDao.getWaterSoftware().equals("EPASWMM")){
+		if (MainDao.getWaterSoftware().equals("EPASWMM")){
 			dialog.setOther(Utils.getBundleString("EpaSoftController.n"), "n");
 		}
 		else{
@@ -130,7 +129,7 @@ public class ProjectManagerController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_pattern");
 		if (rs == null) return;		
 		PatternsDialog dialog = new PatternsDialog();
-		if (PropertiesDao.getWaterSoftware().equals("EPASWMM")) {
+		if (MainDao.getWaterSoftware().equals("EPASWMM")) {
 			dialog.enableType(true);
 		} else {
 			dialog.enableType(false);
