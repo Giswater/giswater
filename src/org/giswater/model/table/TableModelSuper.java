@@ -30,7 +30,9 @@ import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
+import org.giswater.dao.MainDao;
 import org.giswater.gui.MyComboBoxEditor;
 import org.giswater.gui.MyComboBoxRenderer;
 import org.giswater.util.Utils;
@@ -44,7 +46,9 @@ public class TableModelSuper extends DefaultTableModel {
 	protected ResultSetMetaData metadata;
 	protected int columns;
 	protected JTable table;
-
+	protected String tableLookup;
+	protected String fields;
+	
 	
 	public TableModelSuper() { }
 	
@@ -52,6 +56,22 @@ public class TableModelSuper extends DefaultTableModel {
 		setMetadata(results);
 		setResultSet(results);
 		this.rs = results;
+	}
+	
+	public TableModelSuper(ResultSet results, String tableLookup) {
+		setMetadata(results);
+		setResultSet(results);
+		this.rs = results;
+		this.tableLookup = tableLookup;		
+		this.fields = "*";			
+	}
+	
+	public TableModelSuper(ResultSet results, String tableLookup, String fields) {
+		setMetadata(results);
+		setResultSet(results);
+		this.rs = results;
+		this.tableLookup = tableLookup;		
+		this.fields = fields;		
 	}
 
 	
@@ -121,6 +141,14 @@ public class TableModelSuper extends DefaultTableModel {
 		} catch (SQLException e) {
 			Utils.showError(e);
 		}
+	}
+	
+	
+	public void setCombos() {
+		TableColumnModel tcm = table.getColumnModel();		
+		TableColumn column = tcm.getColumn(0);
+		Vector<String> vector = MainDao.getTable(tableLookup, null, true, fields);
+		setColumnRendering(column, vector);
 	}
 	
 	

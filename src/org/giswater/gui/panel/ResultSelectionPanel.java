@@ -37,13 +37,13 @@ import javax.swing.JTable;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.dao.MainDao;
-import org.giswater.model.table.TableModelSectorSelection;
+import org.giswater.model.table.TableModelResultSelection;
 import org.giswater.util.Utils;
 
 
-public class SectorSelectionPanel extends JPanel {
+public class ResultSelectionPanel extends JPanel {
 	
-	private TableModelSectorSelection tableModelSectorSelection;
+	private TableModelResultSelection tableModel;
 	private JTable table;
 	private JButton btnInsert;
 	private JButton btnDelete;
@@ -52,11 +52,11 @@ public class SectorSelectionPanel extends JPanel {
 	private JDialog dialog;
 
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private final String TABLE_SECTOR = "sector";
-	private final String TABLE_SECTOR_SELECTION = "sector_selection";
+	private final String TABLE_RELATED = "rpt_result_cat";
+	private final String TABLE_MAIN = "result_selection";
 	
 	
-	public SectorSelectionPanel() {
+	public ResultSelectionPanel() {
 		initConfig();
 		setData();
 	}
@@ -65,12 +65,12 @@ public class SectorSelectionPanel extends JPanel {
 	private void setData() {
 		
 		if (MainDao.isConnected()) {
-			ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
+			ResultSet rs = MainDao.getTableResultset(TABLE_MAIN);		
 			if (rs == null) return;		
-			tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
-			tableModelSectorSelection.setTable(table);
-			table.setModel(tableModelSectorSelection);
-			tableModelSectorSelection.setCombos();
+			tableModel = new TableModelResultSelection(rs, TABLE_RELATED);
+			tableModel.setTable(table);
+			table.setModel(tableModel);
+			tableModel.setCombos();
 			btnInsert.setVisible(true);
 			btnDelete.setVisible(true);			
 		}
@@ -150,8 +150,8 @@ public class SectorSelectionPanel extends JPanel {
 
 
 	private void insert() {
-		tableModelSectorSelection.insertEmptyRow();	
-		tableModelSectorSelection.setCombos();
+		tableModel.insertEmptyRow();	
+		tableModel.setCombos();
 	}
 	
 	
@@ -163,7 +163,7 @@ public class SectorSelectionPanel extends JPanel {
     		String msg = Utils.getBundleString("delete_record?") + "\n" + value;
             int res = Utils.showYesNoDialog(msg);
             if (res == JOptionPane.YES_OPTION) {    		
-            	tableModelSectorSelection.deleteRow(rowIndex);
+            	tableModel.deleteRow(rowIndex);
             	setData();
             }
     	}
@@ -178,7 +178,7 @@ public class SectorSelectionPanel extends JPanel {
 		
         int res = Utils.showYesNoDialog("question_delete");
         if (res == JOptionPane.YES_OPTION) {
-        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
+        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_MAIN;
         	MainDao.executeUpdateSql(sql);
     		setData();
         }

@@ -50,7 +50,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private EpaSoftFrame epaSoftFrame;	
 	
 	private JPanel panelPreprocess;
-	private JButton btnRaingage;
+	private JButton btnDesign;
 	private JButton btnReport;
 	private JButton btnOptions;
 	private JButton btnPatternSelection;
@@ -108,10 +108,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnOptions.setActionCommand("showOptions");
 		panelPreprocess.add(btnOptions, "flowx,cell 0 0,growx");
 		
-		btnRaingage = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
-		btnRaingage.setEnabled(false);
-		btnRaingage.setActionCommand("showRaingage");
-		panelPreprocess.add(btnRaingage, "cell 1 0,growx");
+		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnRaingage.text")); //$NON-NLS-1$
+		btnDesign.setEnabled(false);
+		btnDesign.setActionCommand("showRaingage");
+		panelPreprocess.add(btnDesign, "cell 1 0,growx");
 		
 		btnReport = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
 		btnReport.setEnabled(false);
@@ -123,7 +123,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnPatternSelection.setActionCommand("showPatternSelection");
 		panelPreprocess.add(btnPatternSelection, "cell 0 1,growx");
 		
-		btnSectorSelection = new JButton("Sector selection");
+		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection");
 		panelPreprocess.add(btnSectorSelection, "cell 1 1,growx");
@@ -252,10 +252,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	// Setup component's listener
 	private void setupListeners() {
 		
-		// Preprocess options
-		btnRaingage.addActionListener(this);
+		// Preprocess options		
+		btnDesign.addActionListener(this);
 		btnReport.addActionListener(this);
 		btnOptions.addActionListener(this);
+		btnSectorSelection.addActionListener(this);		
 		
 		// File manager
 		btnFileInp.addActionListener(this);
@@ -351,15 +352,16 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept.setEnabled(enable);
 	}	
 	
-	public void setDesignButton(String text, String actionCommand) {
-		btnOptions.setText(text);
-		btnOptions.setActionCommand(actionCommand);
-	}
 	
 	public void setOptionsButton(String text, String actionCommand) {
-		btnReport.setText(text);
-		btnReport.setActionCommand(actionCommand);
+		btnOptions.setText(text);
+		btnOptions.setActionCommand(actionCommand);
 	}	
+	
+	public void setDesignButton(String text, String actionCommand) {
+		btnDesign.setText(text);
+		btnDesign.setActionCommand(actionCommand);
+	}
 	
 	public void setReportButton(String text, String actionCommand) {
 		btnReport.setText(text);
@@ -375,10 +377,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	
 	
 	public void enablePreprocess(boolean enabled){
-		btnRaingage.setEnabled(enabled);
-		btnReport.setEnabled(enabled);
 		btnOptions.setEnabled(enabled);
+		btnDesign.setEnabled(enabled);
 		btnReport.setEnabled(enabled);
+		btnSectorSelection.setEnabled(enabled);
 	}
     
     public void enableResultCatalog(boolean enable) {

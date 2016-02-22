@@ -1,5 +1,5 @@
 /*
- This file is part of Giswater
+ * This file is part of Giswater
  * Copyright (C) 2013 Tecnics Associats
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -23,17 +23,19 @@ package org.giswater.model.table;
 import java.sql.ResultSet;
 
 
-public class TableModelCurves extends TableModelSuper {
-	
-	
-	public TableModelCurves(ResultSet results) {
-		super(results);
-	}
-	
-	
-    public boolean isCellEditable(int row, int column) {
-        return true;
-    }	
+public class TableModelResultSelection extends TableModelSuper {
 
-    
+	
+	public TableModelResultSelection(ResultSet results, String tableLookup) {
+		super(results, tableLookup, "result_id");		
+		columnNames[0] = "Result Id";
+	}
+
+	
+	public void setValueAt(Object value, int row, int col) {
+		super.setValueAt(value, row, col);
+		setCombos();
+	}
+
+	
 }

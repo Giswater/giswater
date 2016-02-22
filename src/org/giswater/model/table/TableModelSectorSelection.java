@@ -21,33 +21,14 @@
 package org.giswater.model.table;
 
 import java.sql.ResultSet;
-import java.util.Vector;
-
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-
-import org.giswater.dao.MainDao;
 
 
 public class TableModelSectorSelection extends TableModelSuper {
 
-	private String tableLookup;
-	
 	
 	public TableModelSectorSelection(ResultSet results, String tableLookup) {
-		setMetadata(results);
-		setResultSet(results);
-		this.rs = results;
-		this.tableLookup = tableLookup;
+		super(results, tableLookup);
 		columnNames[0] = "Sector";
-	}
-
-	
-	public void setCombos() {
-		TableColumnModel tcm = table.getColumnModel();		
-		TableColumn column = tcm.getColumn(0);
-		Vector<String> vector = MainDao.getTable(tableLookup, null, true, "*");
-		setColumnRendering(column, vector);
 	}
 	
 	

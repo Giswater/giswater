@@ -105,8 +105,8 @@ public class ProjectPreferencesController extends AbstractController {
 //				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
 //				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
 //				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
-				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
 				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReport"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(true);
 				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
@@ -128,8 +128,8 @@ public class ProjectPreferencesController extends AbstractController {
 //				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
 //				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
 //				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
-				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
+				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReportEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(false);
 				epaSoftPanel.setSubcatchmentSelected(false);

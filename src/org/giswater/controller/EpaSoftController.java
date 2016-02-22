@@ -40,11 +40,11 @@ import org.giswater.gui.dialog.options.ReportDialog;
 import org.giswater.gui.dialog.options.ReportEpanetDialog;
 import org.giswater.gui.dialog.options.ResultCatDialog;
 import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
-import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.gui.panel.ResultSelectionPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.task.ExecuteTask;
 import org.giswater.util.PropertiesMap;
@@ -72,7 +72,7 @@ public class EpaSoftController extends AbstractController {
 	
 	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 380, 280); //$NON-NLS-1$
+        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 190, 260); //$NON-NLS-1$
         panel.setParent(dialog);
         dialog.setVisible(true);
 	}	
@@ -273,13 +273,11 @@ public class EpaSoftController extends AbstractController {
 	
 	
 	public void scenarioManagement() {
-		
-		ResultSet rs = MainDao.getTableResultset("result_selection");
-		if (rs == null) return;		
-		ResultSelectionDialog dialog = new ResultSelectionDialog();
-		showOptions(dialog, rs, "result_selection_empty");
-        
-	}	
+		ResultSelectionPanel panel = new ResultSelectionPanel();
+        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.result_selection"), 190, 260); //$NON-NLS-1$
+        panel.setParent(dialog);
+        dialog.setVisible(true);
+	}		
 	
 	
 	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg) {
