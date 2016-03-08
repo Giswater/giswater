@@ -139,11 +139,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
+		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
 		chkExport.setActionCommand("exportSelected");
-		chkExport.setText(BUNDLE.getString("EpaPanel.chkExport.text")); 
+		chkExport.setText(BUNDLE.getString("EpaSoftPanel.chkExport.text")); 
 		panelFileManager.add(chkExport, "cell 0 0 2 1,aligny bottom");
 		
 		chkSubcatchments = new JCheckBox();
+		chkSubcatchments.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkSubcatchments.toolTipText")); //$NON-NLS-1$
 		chkSubcatchments.setVisible(false);
 		chkSubcatchments.setText(BUNDLE.getString("EpaSoftPanel.chkSubcatchments.text")); //$NON-NLS-1$
 		panelFileManager.add(chkSubcatchments, "cell 3 0");
@@ -168,9 +170,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.add(btnFileInp, "cell 4 1,growx");
 
 		chkExec = new JCheckBox();
-		chkExec.setText(BUNDLE.getString("Form.checkBox_1.text"));  //$NON-NLS-1$
+		chkExec.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExec.toolTipText")); //$NON-NLS-1$
+		chkExec.setText(BUNDLE.getString("EpaSoftPanel.chkExec.text"));  //$NON-NLS-1$
 		chkExec.setName("chk_exec");
-		chkExec.setActionCommand("Exportaci\u00F3n a INP");
 		panelFileManager.add(chkExec, "cell 0 2 3 1,alignx left,aligny bottom");
 
 		lblFileRpt = new JLabel();
@@ -193,9 +195,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.add(btnFileRpt, "cell 4 3,growx");
 
 		chkImport = new JCheckBox();
-		chkImport.setText(BUNDLE.getString("Form.chkImport.text")); 
+		chkImport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkImport.toolTipText")); //$NON-NLS-1$
+		chkImport.setText(BUNDLE.getString("EpaSoftPanel.chkImport.text")); 
 		chkImport.setName("chk_import");
-		chkImport.setActionCommand("Exportaci\u00F3n a INP");
 		panelFileManager.add(chkImport, "cell 0 4 2 1,aligny bottom");
 
 		lblResultName = new JLabel();
@@ -212,7 +214,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept = new JButton();
 		btnAccept.setMinimumSize(new Dimension(65, 23));
 		btnAccept.setEnabled(false);
-		btnAccept.setText(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept.setText(BUNDLE.getString("Generic.btnAccept.text")); 
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
 		panelFileManager.add(btnAccept, "flowx,cell 4 6,alignx right");

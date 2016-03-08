@@ -603,7 +603,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtLogFolderSize.setColumns(8);
 		txtLogFolderSize.setDocument(maxLength);	
 		
-		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept = new JButton(BUNDLE.getString("Generic.btnAccept.text")); 
 		add(btnAccept, "cell 5 21,alignx right");
 		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("configAccept");

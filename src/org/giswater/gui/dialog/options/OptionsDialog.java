@@ -71,6 +71,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		panelGeneral.setLayout(new MigLayout("", "[110.00][150.00][10px][150px][145px]", "[][][][][][]"));
 
 		JLabel lblFlowUnits = new JLabel(BUNDLE.getString("OptionsDialog.lblFlowUnits.text")); //$NON-NLS-1$
+		lblFlowUnits.setToolTipText(BUNDLE.getString("OptionsDialog.lblFlowUnits.toolTipText")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowUnits, "cell 0 0,alignx trailing");
 
 		JComboBox flow_units = new JComboBox();
@@ -85,6 +86,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		comboBox_2.setName("ignore_rainfall");
 
 		JLabel lblHydrology = new JLabel(BUNDLE.getString("OptionsDialog.lblHydrology.text")); //$NON-NLS-1$
+		lblHydrology.setToolTipText(BUNDLE.getString("OptionsDialog.lblHydrology.toolTipText")); //$NON-NLS-1$
 		lblHydrology.setName("");
 		panelGeneral.add(lblHydrology, "cell 0 1,alignx trailing");
 
@@ -100,6 +102,7 @@ public class OptionsDialog extends AbstractOptionsDialog {
 		comboBox_3.setName("ignore_snowmelt");
 
 		JLabel lblFlowRouting = new JLabel(BUNDLE.getString("OptionsDialog.lblFlowRouting.text")); //$NON-NLS-1$
+		lblFlowRouting.setToolTipText(BUNDLE.getString("OptionsDialog.lblFlowRouting.toolTipText")); //$NON-NLS-1$
 		panelGeneral.add(lblFlowRouting, "cell 0 2,alignx trailing");
 
 		JComboBox flow_routing = new JComboBox();
