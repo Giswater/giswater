@@ -90,7 +90,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		String filePath = "";
 		
 		try {
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+File.separator;
 			File folderRoot = new File(folderRootPath);
 			File[] files = folderRoot.listFiles();
 			Arrays.sort(files);
@@ -98,7 +98,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 				// Process only files that belongs to selected software
 				if (file.getName().startsWith(softwareAcronym)) {
 					filePath = file.getPath();
-					Utils.logInfo("Processing file: "+filePath);
+					Utils.getLogger().info("Processing file: "+filePath);
 					status = processFile(filePath);
 					if (!status) return false;
 				}
@@ -135,10 +135,10 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
     	// Create schema of selected software
     	String softwareAcronym = null;
     	if (waterSoftware.equals("EPANET")) {
-    		softwareAcronym = "ws_";
+    		softwareAcronym = "ws";
     	}
     	else if (waterSoftware.equals("EPASWMM")) {
-    		softwareAcronym = "ud_";
+    		softwareAcronym = "ud";
     	}
 		status = createSchema(softwareAcronym);	
 		if (status) {
