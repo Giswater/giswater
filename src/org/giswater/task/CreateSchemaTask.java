@@ -84,25 +84,45 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
+	public boolean processFolder(String folderPath) {
+		
+		boolean status = true;
+		String filePath = "";
+		
+		try {		
+			File folderRoot = new File(folderPath);
+			File[] files = folderRoot.listFiles();
+			Arrays.sort(files);
+			for (File file : files) {			
+				filePath = file.getPath();
+				Utils.getLogger().info("Processing file: "+filePath);
+				status = processFile(filePath);
+				if (!status) return false;
+			}
+		} catch (FileNotFoundException e) {
+			Utils.showError("inp_error_notfound", filePath);
+			status = false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;			
+		}		
+		return status;
+		
+	}
+	
+	
 	public boolean createSchema(String softwareAcronym) {
 		
 		boolean status = true;
 		String filePath = "";
 		
 		try {
+			// Process selected software folder
 			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+File.separator;
-			File folderRoot = new File(folderRootPath);
-			File[] files = folderRoot.listFiles();
-			Arrays.sort(files);
-			for (File file : files) {			
-				// Process only files that belongs to selected software
-				if (file.getName().startsWith(softwareAcronym)) {
-					filePath = file.getPath();
-					Utils.getLogger().info("Processing file: "+filePath);
-					status = processFile(filePath);
-					if (!status) return false;
-				}
-			}
+			if (!processFolder(folderRootPath)) return false;
+			// Process 'utils' folder
+			String folderUtilsPath = new File(".").getCanonicalPath()+File.separator+"sql/utils/";
+			if (!processFolder(folderUtilsPath)) return false;
 		} catch (FileNotFoundException e) {
 			Utils.showError("inp_error_notfound", filePath);
 			status = false;
@@ -143,7 +163,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		status = createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
-			MainDao.setSoftwareAcronym(softwareAcronym);
+//			MainDao.setSoftwareAcronym(softwareAcronym);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
 				Utils.logInfo(sql);

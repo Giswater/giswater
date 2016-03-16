@@ -125,7 +125,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		status = cst.createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
-			MainDao.setSoftwareAcronym(softwareAcronym);
+//			MainDao.setSoftwareAcronym(softwareAcronym);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";

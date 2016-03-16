@@ -57,7 +57,7 @@ public class MainDao {
 	
     private static Connection connectionPostgis;
 	private static String waterSoftware;   // EPASWMM or EPANET or HECRAS
-	private static String softwareAcronym;   // ud_ or ws_ or
+//	private static String softwareAcronym;   // ud_ or ws_ or
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "updates"
@@ -121,9 +121,9 @@ public class MainDao {
 		waterSoftware = param;
 	}
 	
-	public static void setSoftwareAcronym(String param) {
-		softwareAcronym = param;
-	}
+//	public static void setSoftwareAcronym(String param) {
+//		softwareAcronym = param;
+//	}
 	
 	public static boolean isConnected() {
 		return isConnected;
