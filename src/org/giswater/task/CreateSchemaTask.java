@@ -92,6 +92,10 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		try {		
 			File folderRoot = new File(folderPath);
 			File[] files = folderRoot.listFiles();
+			if (files == null) {
+				Utils.logError("Folder not found or without files: "+folderPath);				
+				return false;
+			}
 			Arrays.sort(files);
 			for (File file : files) {			
 				filePath = file.getPath();
@@ -121,7 +125,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+File.separator;
 			if (!processFolder(folderRootPath)) return false;
 			// Process 'utils' folder
-			String folderUtilsPath = new File(".").getCanonicalPath()+File.separator+"sql/utils/";
+			String folderUtilsPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+"utils"+File.separator;
 			if (!processFolder(folderUtilsPath)) return false;
 		} catch (FileNotFoundException e) {
 			Utils.showError("inp_error_notfound", filePath);
@@ -163,7 +167,6 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		status = createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
-//			MainDao.setSoftwareAcronym(softwareAcronym);
 			if (MainDao.updateSchema()) {
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
 				Utils.logInfo(sql);
