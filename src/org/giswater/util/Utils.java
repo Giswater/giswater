@@ -335,6 +335,19 @@ public class Utils {
 		JOptionPane.showMessageDialog(null, e.getMessage(), getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);		
     }     
     
+    public static void showSQLError(Exception e, String context) {
+    	logError(e);
+		String msg = "";
+		final int MAX_SIZE = 500;
+		if (context != "") {
+			msg = "Error found at '"+context+"':\n";
+		}
+		int size = e.getMessage().length();
+		if (size > MAX_SIZE) size = MAX_SIZE;
+		msg+= e.getMessage().substring(0, size);    	
+    	JOptionPane.showMessageDialog(null, msg, getBundleString("inp_descr"), JOptionPane.WARNING_MESSAGE);		
+    }     
+    
     
     public static void logError(String msg) {
     	logError(msg, "");
@@ -368,7 +381,9 @@ public class Utils {
 	        for (int i = 0; i < NUM_LEVELS; i++) {
 	        	shortStack+= lines[i] + "\n";
 	        }
-	        shortStack+= "Parameter: " + param;
+	        if (param != "") {
+	        	shortStack+= "Parameter: " + param;
+	        }
 	        logger.warning(shortStack);
     	}
         

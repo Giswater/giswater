@@ -492,10 +492,14 @@ public class MainDao {
 	
 	
 	public static boolean executeSql(String sql) {
-		return executeSql(sql, false);
+		return executeSql(sql, false, "");
 	}	
 	
 	public static boolean executeSql(String sql, boolean commit) {
+		return executeSql(sql, commit, "");
+	}	
+	
+	public static boolean executeSql(String sql, boolean commit, String context) {
 		
 		try {
 			Statement stmt = connectionPostgis.createStatement();
@@ -505,13 +509,13 @@ public class MainDao {
 	        }			
 			return true;
 		} catch (SQLException e) {
-			Utils.showError(e, sql);
+			Utils.showSQLError(e, context);
 			return false;
 		}
 		
 	}		
 	
-	public static Exception executeSql(String sql, boolean commit, String dummy) {
+	public static Exception executeSql(String sql, boolean commit, Integer dummy) {
 		
 		try {
 			Statement stmt = connectionPostgis.createStatement();

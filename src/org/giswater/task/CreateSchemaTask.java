@@ -79,7 +79,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		content = content.replace("SRID_VALUE", sridValue);
 		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
 		Utils.logSql(content);
-		return MainDao.executeSql(content, false);		
+		return MainDao.executeSql(content, false, filePath);		
 		
 	}
 	
@@ -99,9 +99,11 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 			Arrays.sort(files);
 			for (File file : files) {			
 				filePath = file.getPath();
-				Utils.getLogger().info("Processing file: "+filePath);
-				status = processFile(filePath);
-				if (!status) return false;
+				if (!filePath.contains("\\_")) {
+					Utils.getLogger().info("Processing file: "+filePath);
+					status = processFile(filePath);
+					if (!status) return false;
+				}
 			}
 		} catch (FileNotFoundException e) {
 			Utils.showError("inp_error_notfound", filePath);

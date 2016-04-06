@@ -12,6 +12,7 @@ models/swmm2d/2D/[Bb]in/
 models/swmm_custom/swmm51006_engine_0/src/vc/[Bb]in/
 sign_*.bat
 test
+_*
 
 
 #################

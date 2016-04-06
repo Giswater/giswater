@@ -52,7 +52,7 @@ public class FileLauncherTask extends SwingWorker<Void, Void> {
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
 		Utils.logSql(content);
-		Exception e = MainDao.executeSql(content, false, "");
+		Exception e = MainDao.executeSql(content, false, 0);
 		if (e != null) {
 			status = false;
 			Utils.showError(Utils.getBundleString("MenuController.errors_found"), e.getMessage()); //$NON-NLS-1$
