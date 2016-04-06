@@ -857,6 +857,8 @@ public class MainDao {
 	public static void deleteSchema(String schemaName) {
 		String sql = "DROP schema IF EXISTS "+schemaName+" CASCADE;";
 		executeUpdateSql(sql, true);		
+		sql = "DROP schema IF EXISTS "+schemaName+"_audit CASCADE;";
+		executeUpdateSql(sql, true);		
 		sql = "DELETE FROM public.geometry_columns WHERE f_table_schema = '"+schemaName+"'";
 		executeUpdateSql(sql, true);			
 	}
