@@ -1,5 +1,5 @@
 /*
-This file is part of Giswater
+This file is part of Giswater 2.0
 The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 This version of Giswater is provided by Giswater Association
 */
@@ -39,36 +39,36 @@ CREATE SEQUENCE "SCHEMA_NAME".doc_x_connec_seq
 
 
 CREATE TABLE "SCHEMA_NAME"."doc_type" (
-"id" varchar(30) COLLATE "default" NOT NULL,
-"comment" varchar(512) COLLATE "default",
+"id" varchar(30)   NOT NULL,
+"comment" varchar(512)  ,
 CONSTRAINT doc_type_pkey PRIMARY KEY (id)
 );
   
   
 CREATE TABLE "SCHEMA_NAME"."cat_doc" (
-"id" varchar(30) COLLATE "default" NOT NULL,
-"type" varchar(30) COLLATE "default",
-"descript" varchar(50) COLLATE "default",
-"comment" varchar(512) COLLATE "default",
+"id" varchar(30)   NOT NULL,
+"type" varchar(30)  ,
+"descript" varchar(50)  ,
+"comment" varchar(512)  ,
 CONSTRAINT cat_doc_pkey PRIMARY KEY (id)
 );
 
 
 CREATE TABLE "SCHEMA_NAME"."cat_tag" (
-"id" varchar(16) COLLATE "default" NOT NULL,
-"comment" varchar(512) COLLATE "default",
+"id" varchar(16)   NOT NULL,
+"comment" varchar(512)  ,
 CONSTRAINT cat_tag_pkey PRIMARY KEY (id)
 );
 
 
 CREATE TABLE "SCHEMA_NAME"."doc" (
 "id" int8 DEFAULT nextval('"SCHEMA_NAME".doc_seq'::regclass) NOT NULL,
-"doccat_id" varchar(30) COLLATE "default",
-"path" varchar(512) COLLATE "default",
-"observ" varchar(512) COLLATE "default",
-"tagcat_id" varchar(16) COLLATE "default",
+"doccat_id" varchar(30)  ,
+"path" varchar(512)  ,
+"observ" varchar(512)  ,
+"tagcat_id" varchar(16)  ,
 "date" timestamp(6) DEFAULT now(),
-"user" varchar(16) COLLATE "default",
+"user" varchar(16)  ,
 CONSTRAINT doc_pkey PRIMARY KEY (id)
 );
 
@@ -76,7 +76,7 @@ CONSTRAINT doc_pkey PRIMARY KEY (id)
 CREATE TABLE "SCHEMA_NAME"."doc_x_node" (
 "id" int8 DEFAULT nextval('"SCHEMA_NAME".doc_x_node'::regclass) NOT NULL,
 "doc_id" int8,
-"node_id" varchar(16) COLLATE "default",
+"node_id" varchar(16)  ,
 CONSTRAINT doc_x_node_pkey PRIMARY KEY (id)
 );
 
@@ -84,7 +84,7 @@ CONSTRAINT doc_x_node_pkey PRIMARY KEY (id)
 CREATE TABLE "SCHEMA_NAME"."doc_x_arc" (
 "id" int8 DEFAULT nextval('"SCHEMA_NAME".doc_x_arc'::regclass) NOT NULL,
 "doc_id" int8,
-"arc_id" varchar(16) COLLATE "default",
+"arc_id" varchar(16)  ,
 CONSTRAINT doc_x_arc_pkey PRIMARY KEY (id)
 );
 
@@ -92,7 +92,7 @@ CONSTRAINT doc_x_arc_pkey PRIMARY KEY (id)
 CREATE TABLE "SCHEMA_NAME"."doc_x_connec" (
 "id" int8 DEFAULT nextval('"SCHEMA_NAME".doc_x_connec'::regclass) NOT NULL,
 "doc_id" int8,
-"connec_id" varchar(16) COLLATE "default",
+"connec_id" varchar(16)  ,
 CONSTRAINT doc_x_connec_pkey PRIMARY KEY (id)
 );
 

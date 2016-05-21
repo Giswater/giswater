@@ -67,28 +67,41 @@ CREATE INDEX log_actions_action_idx ON SCHEMA_NAME_audit.log_actions(action);
 CREATE OR REPLACE VIEW SCHEMA_NAME_audit.v_audit AS 
 SELECT log_actions.tstamp_tx, table_name, action, query, row_data, changed_fields
 FROM SCHEMA_NAME_audit.log_actions
-ORDER BY log_actions.tstamp_tx DESC;
+ORDER BY log_actions.tstamp_tx DESC;  
   
-
-CREATE TABLE SCHEMA_NAME_audit.log_functions (
-  id bigserial NOT NULL, -- Unique identifier for each auditable event
-  tstamp_tx timestamp with time zone NOT NULL, -- Transaction start timestamp for tx in which audited event occurred      
-  schema_name text NOT NULL, -- Database schema audited table for this event is in
-  function_name text NOT NULL, -- Function name 
-  log_code_id integer, -- Log code values
-  log_type text, -- [INFO | WARNING | ERROR]
-  user_name text, -- Login / session user whose statement caused the audited event
-  addr inet, -- IP address of client that issued query. Null for unix domain socket.
-  CONSTRAINT logged_actions_pkey PRIMARY KEY (id),
-  CONSTRAINT logged_actions_action_check CHECK (log_type = ANY (ARRAY['INFO'::text, 'WARNING'::text, 'ERROR'::text]))
-);
-
 
 CREATE TABLE SCHEMA_NAME_audit.log_code (
     id integer PRIMARY KEY,
-    message text, -- Message already localized
-    context text  -- Function or context name (null if is a generic one)
+    message text,
+    context text
 );
+
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_code.id IS 'Error code';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_code.message IS 'Message to search in i18n file';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_code.context IS 'Context name to search in i18n file';
+
+
+CREATE TABLE IF NOT EXISTS SCHEMA_NAME_audit.log_functions (
+  id bigserial NOT NULL,
+  tstamp_tx timestamp with time zone NOT NULL, 
+  schema_name text NOT NULL,
+  function_name text NOT NULL,
+  log_code_id integer,
+  log_type text,
+  user_name text,
+  addr inet,
+  CONSTRAINT log_functions_pkey PRIMARY KEY (id),
+  CONSTRAINT log_functions_log_type_check CHECK (log_type = ANY (ARRAY['INFO'::text, 'WARNING'::text, 'ERROR'::text]))
+);
+
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.id IS 'Unique identifier for each auditable event';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.tstamp_tx IS 'Transaction start timestamp for tx in which audited event occurred';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.schema_name IS 'Database schema audited table for this event is in';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.function_name IS 'Executed function name';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.log_code_id IS 'Log code values. Check table log_code';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.log_type IS '[INFO | WARNING | ERROR]';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.user_name IS 'Login / session user whose statement caused the audited event';
+COMMENT ON COLUMN SCHEMA_NAME_audit.log_functions.addr IS 'IP address of client that issued query. Null for unix domain socket';
 
 
 ALTER TABLE SCHEMA_NAME_audit.log_functions ADD FOREIGN KEY ("log_code_id") REFERENCES SCHEMA_NAME_audit.log_code ("id") ON DELETE CASCADE ON UPDATE CASCADE;
