@@ -126,6 +126,9 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 			// Process selected software folder
 			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+File.separator;
 			if (!processFolder(folderRootPath)) return false;
+			// Process software folder 'data' folder
+			String folderDataPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+"_data"+File.separator;
+			processFolder(folderDataPath);
 			// Process 'utils' folder
 			String folderUtilsPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+"utils"+File.separator;
 			if (!processFolder(folderUtilsPath)) return false;
