@@ -32,3 +32,6 @@ CREATE TABLE "SCHEMA_NAME"."picture" (
 CONSTRAINT picture_pkey PRIMARY KEY (id)
 );
 
+
+CREATE INDEX picture_index ON "SCHEMA_NAME"."picture" USING gist ("the_geom");
+

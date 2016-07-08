@@ -5,10 +5,6 @@ This version of Giswater is provided by Giswater Association
 */
 
 
--- ----------------------------
--- Structure for event
--- ----------------------------
-
 CREATE SEQUENCE "SCHEMA_NAME".doc_seq
   START WITH 1
   INCREMENT BY 1
@@ -45,14 +41,6 @@ CONSTRAINT doc_type_pkey PRIMARY KEY (id)
 );
   
   
-CREATE TABLE "SCHEMA_NAME"."cat_doc" (
-"id" varchar(30)   NOT NULL,
-"type" varchar(30)  ,
-"descript" varchar(50)  ,
-"comment" varchar(512)  ,
-CONSTRAINT cat_doc_pkey PRIMARY KEY (id)
-);
-
 
 CREATE TABLE "SCHEMA_NAME"."cat_tag" (
 "id" varchar(16)   NOT NULL,
@@ -63,7 +51,7 @@ CONSTRAINT cat_tag_pkey PRIMARY KEY (id)
 
 CREATE TABLE "SCHEMA_NAME"."doc" (
 "id" int8 DEFAULT nextval('"SCHEMA_NAME".doc_seq'::regclass) NOT NULL,
-"doccat_id" varchar(30)  ,
+"doc_type" varchar(30)  ,
 "path" varchar(512)  ,
 "observ" varchar(512)  ,
 "tagcat_id" varchar(16)  ,
@@ -95,7 +83,5 @@ CREATE TABLE "SCHEMA_NAME"."doc_x_connec" (
 "connec_id" varchar(16)  ,
 CONSTRAINT doc_x_connec_pkey PRIMARY KEY (id)
 );
-
-
 
 
