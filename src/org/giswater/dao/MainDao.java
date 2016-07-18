@@ -654,6 +654,13 @@ public class MainDao {
     	return checkQuery(sql);
     } 
     
+    // Check if function exists
+    public static boolean checkFunction(String schemaName, String functionName) {
+    	String sql = "SELECT routine_name FROM information_schema.routines" +
+    		" WHERE lower(routine_schema) = '"+schemaName+"' AND lower(routine_name) = '"+functionName+"'";
+    	return checkQuery(sql);
+    } 
+    
     // Get PostgreSQL version
     public static String checkPostgreVersion() {
         String sql = "SELECT version()";
