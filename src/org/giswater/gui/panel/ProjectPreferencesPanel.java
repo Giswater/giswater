@@ -55,11 +55,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private ProjectPreferencesController controller;
 	private ProjectPreferencesFrame frame;
 	
+	private JPanel panelWaterProject;
 	private ButtonGroup groupSoftware;
-	private JLabel lblWaterSoftware;
 	private JRadioButton optEpaSwmm;
 	private JRadioButton optEpanet;
 	private JRadioButton optHecras;
+	
 	private JPanel panelDatabase;
 	private JComboBox<String> cboDriver;
 	private JTextField txtIP;
@@ -98,27 +99,32 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[90px:n:90px][80px:n][80px:n][80px:n][90px:n:90px][90px:n:90px]", "[][5px:n][124.00][::10px][][]"));
+		setLayout(new MigLayout("", "[90px:n:90px][80px:n][80px:n][80px:n][172.00px:n:90px][76.00]", "[60.00][::10px][124.00][::10px][][]"));
 		
-		lblWaterSoftware = new JLabel(BUNDLE.getString("ProjectPreferencesPanel.lblWaterSoftware.text_1")); //$NON-NLS-1$
-		add(lblWaterSoftware, "cell 0 0,alignx right");
+		panelWaterProject = new JPanel();
+		panelWaterProject.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelWaterProject.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
+		add(panelWaterProject, "cell 0 0 6 1,grow");
+		panelWaterProject.setLayout(new MigLayout("", "[::5px][][5px:n][][5px:n][][5px:n][139.00,grow]", "[]"));
 		
-		optEpaSwmm = new JRadioButton("EPASWMM");
-		optEpaSwmm.setActionCommand("changeSoftware"); 
-		add(optEpaSwmm, "flowx,cell 1 0");
+		optEpaSwmm = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optEpaSwmm.text")); //$NON-NLS-1$
+		panelWaterProject.add(optEpaSwmm, "cell 1 0");
+		optEpaSwmm.setActionCommand("changeSoftware");
 		
-		optEpanet = new JRadioButton("EPANET");
-		optEpanet.setActionCommand("changeSoftware"); 
-		add(optEpanet, "cell 2 0");
+		optEpanet = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optEpanet.text")); //$NON-NLS-1$
+		panelWaterProject.add(optEpanet, "cell 3 0");
+		optEpanet.setActionCommand("changeSoftware");
 		
-		optHecras = new JRadioButton("HEC-RAS");
-		optHecras.setActionCommand("changeSoftware"); 
-		add(optHecras, "cell 3 0");
+		optHecras = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optHecras.text")); //$NON-NLS-1$
+		panelWaterProject.add(optHecras, "cell 5 0");
+		optHecras.setActionCommand("changeSoftware");
 		
 		groupSoftware = new ButtonGroup();
 		groupSoftware.add(optEpaSwmm);	
 		groupSoftware.add(optEpanet);
 		groupSoftware.add(optHecras);
+		
+		cboVersionSoftware = new JComboBox<String>();
+		panelWaterProject.add(cboVersionSoftware, "cell 7 0,growx");
 		
 		panelDatabase = new JPanel();
 		add(panelDatabase, "cell 0 2 6 1,growx");
@@ -128,62 +134,62 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		JLabel lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); 
 		panelDatabase.add(lblNewLabel, "cell 0 0,alignx right");
 		
-				cboDriver = new JComboBox<String>();
-				cboDriver.setPreferredSize(new Dimension(24, 20));
-				cboDriver.setMinimumSize(new Dimension(24, 20));
-				cboDriver.setModel(new DefaultComboBoxModel<String>(new String[] {"PG-9.2 + PostGIS-2.0"}));
-				panelDatabase.add(cboDriver, "cell 1 0 2 1,growx");
-				
-						JLabel lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text")); 
-						panelDatabase.add(lblIp, "cell 0 1,alignx right");
-						
-								txtIP = new JTextField();
-								panelDatabase.add(txtIP, "cell 1 1 2 1,growx");
-								txtIP.setColumns(10);
-								
-										JLabel lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text")); 
-										panelDatabase.add(lblPort, "cell 0 2,alignx right");
-										
-												txtPort = new JTextField();
-												txtPort.setColumns(10);
-												panelDatabase.add(txtPort, "cell 1 2 2 1,growx");
-												
-														JLabel lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text")); 
-														panelDatabase.add(lblDatabase, "cell 0 3,alignx right");
-														
-																txtDatabase = new JTextField();
-																txtDatabase.setText("");
-																txtDatabase.setColumns(10);
-																panelDatabase.add(txtDatabase, "cell 1 3 2 1,growx");
-																
-																		JLabel lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text")); 
-																		panelDatabase.add(lblUser, "cell 0 4,alignx right");
-																		
-																				txtUser = new JTextField();
-																				txtUser.setText("postgres");
-																				txtUser.setColumns(10);
-																				panelDatabase.add(txtUser, "cell 1 4 2 1,growx");
-																				
-																						JLabel lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text")); 
-																						panelDatabase.add(lblPassword, "cell 0 5,alignx right");
-																						
-																								txtPassword = new JPasswordField();
-																								txtPassword.setText("");
-																								panelDatabase.add(txtPassword, "cell 1 5 2 1,growx");
-																								
-																								chkRemember = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkRemember.text")); //$NON-NLS-1$
-																								chkRemember.setSelected(true);
-																								panelDatabase.add(chkRemember, "flowx,cell 2 6,alignx right");
-																								
-																								chkSsl = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkSsl.text")); //$NON-NLS-1$
-																								chkSsl.setSelected(true);
-																								panelDatabase.add(chkSsl, "cell 2 6,alignx right");
-																								
-																								btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); 
-																								btnTest.setMaximumSize(new Dimension(120, 23));
-																								btnTest.setMinimumSize(new Dimension(120, 23));
-																								btnTest.setActionCommand("testConnection");
-																								panelDatabase.add(btnTest, "cell 2 6,alignx right");
+		cboDriver = new JComboBox<String>();
+		cboDriver.setPreferredSize(new Dimension(24, 20));
+		cboDriver.setMinimumSize(new Dimension(24, 20));
+		cboDriver.setModel(new DefaultComboBoxModel<String>(new String[] {"PG-9.2 + PostGIS-2.0"}));
+		panelDatabase.add(cboDriver, "cell 1 0 2 1,growx");
+		
+		JLabel lblIp = new JLabel(BUNDLE.getString("Database.lblIp.text")); 
+		panelDatabase.add(lblIp, "cell 0 1,alignx right");
+		
+		txtIP = new JTextField();
+		panelDatabase.add(txtIP, "cell 1 1 2 1,growx");
+		txtIP.setColumns(10);
+		
+		JLabel lblPort = new JLabel(BUNDLE.getString("Database.lblPort.text")); 
+		panelDatabase.add(lblPort, "cell 0 2,alignx right");
+		
+		txtPort = new JTextField();
+		txtPort.setColumns(10);
+		panelDatabase.add(txtPort, "cell 1 2 2 1,growx");
+		
+		JLabel lblDatabase = new JLabel(BUNDLE.getString("Database.lblDatabase.text")); 
+		panelDatabase.add(lblDatabase, "cell 0 3,alignx right");
+		
+		txtDatabase = new JTextField();
+		txtDatabase.setText("");
+		txtDatabase.setColumns(10);
+		panelDatabase.add(txtDatabase, "cell 1 3 2 1,growx");
+		
+		JLabel lblUser = new JLabel(BUNDLE.getString("Database.lblUser.text")); 
+		panelDatabase.add(lblUser, "cell 0 4,alignx right");
+		
+		txtUser = new JTextField();
+		txtUser.setText("postgres");
+		txtUser.setColumns(10);
+		panelDatabase.add(txtUser, "cell 1 4 2 1,growx");
+		
+		JLabel lblPassword = new JLabel(BUNDLE.getString("Database.lblPassword.text")); 
+		panelDatabase.add(lblPassword, "cell 0 5,alignx right");
+		
+		txtPassword = new JPasswordField();
+		txtPassword.setText("");
+		panelDatabase.add(txtPassword, "cell 1 5 2 1,growx");
+		
+		chkRemember = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkRemember.text")); //$NON-NLS-1$
+		chkRemember.setSelected(true);
+		panelDatabase.add(chkRemember, "flowx,cell 2 6,alignx right");
+		
+		chkSsl = new JCheckBox(BUNDLE.getString("ProjectPreferencesPanel.chkSsl.text")); //$NON-NLS-1$
+		chkSsl.setSelected(true);
+		panelDatabase.add(chkSsl, "cell 2 6,alignx right");
+		
+		btnTest = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnTest.text")); 
+		btnTest.setMaximumSize(new Dimension(120, 23));
+		btnTest.setMinimumSize(new Dimension(120, 23));
+		btnTest.setActionCommand("testConnection");
+		panelDatabase.add(btnTest, "cell 2 6,alignx right");
 		
 		panelManagement = new JPanel();
 		add(panelManagement, "cell 0 4 6 1,growx");
@@ -254,8 +260,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		lblInfo = new JLabel(""); 
 		add(lblInfo, "flowx,cell 0 5 2 1");
 		
-		cboVersionSoftware = new JComboBox<String>();
-		add(cboVersionSoftware, "cell 4 0 2 1,growx");
+		btnCreateGisProject = new JButton("Create Gis Project");
+		btnCreateGisProject.setPreferredSize(new Dimension(121, 23));
+		btnCreateGisProject.setActionCommand("createGisProject");
+		add(btnCreateGisProject, "cell 0 5 2 1");
 		
 		btnGoToEpa = new JButton();
 		btnGoToEpa.setText(BUNDLE.getString("ProjectPreferencesPanel.btnEpa.text")); //$NON-NLS-1$
@@ -263,11 +271,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnGoToEpa.setMinimumSize(new Dimension(72, 23));
 		btnGoToEpa.setActionCommand("openEpaSoft");
 		add(btnGoToEpa, "cell 5 5,growx");
-		
-		btnCreateGisProject = new JButton("Create Gis Project");
-		btnCreateGisProject.setPreferredSize(new Dimension(121, 23));
-		btnCreateGisProject.setActionCommand("createGisProject");
-		add(btnCreateGisProject, "cell 0 5");
 		
 		setupListeners();
 	    
