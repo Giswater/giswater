@@ -476,13 +476,15 @@ public class MenuController extends AbstractController {
 	
 	private void createExampleSchema(String waterSoftware, String suffix) {
         
-		//  Get SRID
+		// Get SRID
 		String sridValue = "25831";		
 		
 		// Ask confirmation
 		String schemaName = "sample_"+waterSoftware+suffix;
-		String msg = Utils.getBundleString("MenuController.project_name")+schemaName+Utils.getBundleString("MenuController.created_srid")+sridValue+Utils.getBundleString("MenuController.wish_continue"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("MenuController.create_example_project")); //$NON-NLS-1$
+		String msg = Utils.getBundleString("MenuController.project_name")+schemaName;
+		msg+= Utils.getBundleString("MenuController.created_srid")+sridValue;
+		msg+= Utils.getBundleString("MenuController.wish_continue")+Utils.getBundleString("MenuController.disclaimer"); 
+		int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("MenuController.create_example_project"));
 		if (res != JOptionPane.YES_OPTION) return; 
 		
 		// Execute task: CreateSchema

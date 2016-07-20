@@ -92,13 +92,13 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmExit;
 	
 	private JMenu mnProjectExample;	
-	
-	private JMenu mnConfiguration;
-	private JMenuItem mntmSoftware;
 	private JMenuItem mntmExampleEpanet;
 	private JMenuItem mntmExampleEpaswmm;
 	private JMenuItem mntmExampleEpaswmm2D;
 	private JMenuItem mntmExampleHecras;
+	
+	private JMenu mnConfiguration;
+	private JMenuItem mntmSoftware;
 	private JMenuItem mntmDatabaseAdministrator;	
 	
 	private JMenu mnAbout;
@@ -239,7 +239,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnProject.add(mntmExit);
 		
 		mnProjectExample = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
-		mnProjectExample.setEnabled(false);
 		mnProjectExample.setMnemonic(KeyEvent.VK_P);
 		menuBar.add(mnProjectExample);
 		
