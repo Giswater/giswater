@@ -31,6 +31,7 @@ import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
+import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
@@ -42,17 +43,19 @@ import org.giswater.util.UtilsFTP;
 
 
 public class ProjectPreferencesController extends AbstractController {
-
-	private static final Integer PROJECT_DIALOG_WIDTH = 420; 
-	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
-	private static final Integer FIRST_VERSION_RENAME_AVAILABLE = 11146; 
-	private static final Integer FIRST_VERSION_COPY_AVAILABLE = 11101; 
 	
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
 	private EpaSoftPanel epaSoftPanel;
 	private HecRasPanel hecRasPanel;
 	private String waterSoftware;
+	
+	private static final Integer PROJECT_DIALOG_WIDTH = 420; 
+	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
+	private static final Integer FIRST_VERSION_RENAME_AVAILABLE = 11146; 
+	private static final Integer FIRST_VERSION_COPY_AVAILABLE = 11101; 
+	private static final Integer GIS_DIALOG_WIDTH = 420; 
+	private static final Integer GIS_DIALOG_HEIGHT = 245; 	
 
 
 	public ProjectPreferencesController(ProjectPreferencesPanel ppPanel, MainFrame mf) {
@@ -204,34 +207,6 @@ public class ProjectPreferencesController extends AbstractController {
 	public void closePreferences() {
 		view.getFrame().setVisible(false);	
 	}
-	
-	
-	public void openProjectManager() {
-		mainFrame.openProjectManager();
-	}	
-	
-	
-	// Database configuration
-//	private void checkDataManagerTables(String schemaName) {
-//		
-//		epaSoftPanel.enableMaterials(MainDao.checkTable(schemaName, "cat_mat"));
-//		epaSoftPanel.enableCurves(MainDao.checkTable(schemaName, "inp_curve_id"));	
-//		epaSoftPanel.enablePatterns(MainDao.checkTable(schemaName, "inp_pattern"));
-//		epaSoftPanel.enableControls(MainDao.checkTable(schemaName, "inp_controls"));	
-//		epaSoftPanel.enableProjectData(MainDao.checkTable(schemaName, "inp_project_id"));	
-//		
-//		if (waterSoftware.equals("EPASWMM")) {
-//			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_timser_id"));
-//			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "cat_arc"));
-//			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "cat_hydrology"));	
-//		}
-//		else if (waterSoftware.equals("EPANET")) {
-//			epaSoftPanel.enableTimeseries(MainDao.checkTable(schemaName, "inp_emitter"));
-//			epaSoftPanel.enableArcCat(MainDao.checkTable(schemaName, "inp_demand"));
-//			epaSoftPanel.enableHydrologyCat(MainDao.checkTable(schemaName, "inp_rules"));	
-//		}
-//		
-//	}
 	
 	
 	private void checkPostprocessTables(String schemaName) {
@@ -577,5 +552,16 @@ public class ProjectPreferencesController extends AbstractController {
         		
 	}
 		
+
+	public void createGisProject() {
+		
+		GisPanel gisPanel = new GisPanel();
+		JDialog gisDialog = 
+			Utils.openDialogForm(gisPanel, view, Utils.getBundleString("ProjectPreferencesController.create_gis"), GIS_DIALOG_WIDTH, GIS_DIALOG_HEIGHT); //$NON-NLS-1$
+		gisPanel.setParent(gisDialog);
+        gisDialog.setVisible(true);
+        
+	}
+	
 	
 }

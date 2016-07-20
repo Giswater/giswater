@@ -57,7 +57,6 @@ import org.giswater.controller.ConfigController;
 import org.giswater.controller.EpaSoftController;
 import org.giswater.controller.HecRasController;
 import org.giswater.controller.MenuController;
-import org.giswater.controller.ProjectManagerController;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
@@ -117,7 +116,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	public EpaSoftFrame epaSoftFrame;
 	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
-	public ProjectManagerFrame pmFrame;
 	public ConfigFrame configFrame;
 	
 	private JPanel statusPanel;
@@ -390,23 +388,19 @@ public class MainFrame extends JFrame implements ActionListener {
         epaSoftFrame = new EpaSoftFrame();
         hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
-        pmFrame = new ProjectManagerFrame();
         configFrame = new ConfigFrame();
               
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
-        desktopPane.add(ppFrame);            
-        desktopPane.add(pmFrame);            
+        desktopPane.add(ppFrame);                      
         desktopPane.add(configFrame);
         
         // Set titles
         ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
-        pmFrame.setTitle(Utils.getBundleString("MainFrame.project_manager"));
         
         // Define one controller per panel           
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
-		new ProjectManagerController(pmFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
         new EpaSoftController(epaSoftFrame.getPanel(), this);
         
@@ -420,8 +414,6 @@ public class MainFrame extends JFrame implements ActionListener {
         hecRasFrame.setPreferredSize(desktopSize);
         ppFrame.setSize(desktopSize);
         ppFrame.setPreferredSize(desktopSize);
-        pmFrame.setSize(desktopSize);
-        pmFrame.setPreferredSize(desktopSize);
         configFrame.setSize(desktopSize);
         configFrame.setPreferredSize(desktopSize);
 		
@@ -443,8 +435,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		getFrameParams(configFrame, "CONFIG");			
 		getFrameParams(epaSoftFrame, "EPASOFT");
 		getFrameParams(hecRasFrame, "HECRAS");
-		getFrameParams(ppFrame, "PP");           
-		getFrameParams(pmFrame, "PM");           
+		getFrameParams(ppFrame, "PP");                    
 	}
 	
 	
@@ -534,11 +525,7 @@ public class MainFrame extends JFrame implements ActionListener {
     	
 	}	   
     
-    
-    public void putProjectManagerParams() {
-    	// TODO
-	}	
-    
+
     public void putGisParams(GisPanel gisPanel) {
     	PropertiesDao.getGswProperties().put("GIS_FOLDER", gisPanel.getProjectFolder());
     	PropertiesDao.getGswProperties().put("GIS_NAME", gisPanel.getProjectName());    	
@@ -571,8 +558,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void saveFormParams() {
 		putFrameParams(epaSoftFrame, "EPASOFT");
 		putFrameParams(hecRasFrame, "HECRAS");
-		putFrameParams(ppFrame, "PP");        
-		putFrameParams(pmFrame, "PM");        
+		putFrameParams(ppFrame, "PP");             
 		putFrameParams(configFrame, "CONFIG");	
 		putMainParams();		
 	}
@@ -659,9 +645,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		manageFrames(ppFrame);
 	}
 	
-	public void openProjectManager() {
-		manageFrames(pmFrame);
-	}
 	
     private void manageFrames(JInternalFrame frame) {
     	

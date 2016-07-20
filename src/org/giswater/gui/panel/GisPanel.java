@@ -212,7 +212,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		cboSchema = new JComboBox<String>();
 		add(cboSchema, "cell 1 4,growx");
 		
-		btnAccept = new JButton(BUNDLE.getString("Form.btnAccept.text")); 
+		btnAccept = new JButton(BUNDLE.getString("Generic.btnAccept.text")); 
 		btnAccept.setMinimumSize(new Dimension(72, 23));
 		btnAccept.setActionCommand("gisAccept");
 		add(btnAccept, "cell 2 6,alignx right");

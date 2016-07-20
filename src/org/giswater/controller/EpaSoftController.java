@@ -309,18 +309,6 @@ public class EpaSoftController extends AbstractController {
     }
     
     
-    public void openProjectManager() {
-    	
-    	try {
-    		mainFrame.pmFrame.setVisible(true);
-    		mainFrame.pmFrame.setMaximum(true);
-    	} catch (PropertyVetoException e) {
-    		Utils.logError(e);
-    	}
-    	
-    }
-    
-    
     public void exportSelected() {
     	if (!ppPanel.getVersionSoftware().equals("EPASWMM_51006_2D")) {
     		view.setSubcatchmentEnabled(view.isExportSelected());

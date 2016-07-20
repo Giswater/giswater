@@ -78,7 +78,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JButton btnResultSelector;
 
 	private JButton btnProjectPreferences;
-	private JButton btnProjectManager;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
@@ -240,11 +239,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnProjectPreferences.setMinimumSize(new Dimension(120, 23));
 		btnProjectPreferences.setActionCommand("openProjectPreferences");
 		add(btnProjectPreferences, "flowx,cell 0 5,alignx right");
-		
-		btnProjectManager = new JButton(BUNDLE.getString("EpaSoftPanel.btnEditProjectPreferences.text")); //$NON-NLS-1$
-		btnProjectManager.setActionCommand("openProjectManager");
-		btnProjectManager.setMinimumSize(new Dimension(120, 23));
-		add(btnProjectManager, "cell 0 5,alignx right");
 
 		setupListeners();
 
@@ -271,7 +265,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnResultSelector.addActionListener(this);
 		
 		btnProjectPreferences.addActionListener(this);
-		btnProjectManager.addActionListener(this);
 		
 	}
 	
