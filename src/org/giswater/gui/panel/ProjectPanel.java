@@ -172,6 +172,9 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		
 		setupListeners();
 		
+		txtName.setText("test_ws");
+		txtTitle.setText("title");
+		
 	}	
 	
 	

@@ -535,6 +535,16 @@ public class ProjectPreferencesController extends AbstractController {
 		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
 		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true)) {
+			if (MainDao.checkSchema(schemaName+"_audit")) {
+				sql = "ALTER SCHEMA "+schemaName+"_audit RENAME TO "+newSchemaName+"_audit";
+				Utils.logSql(sql);
+				MainDao.executeUpdateSql(sql, true);	
+			}
+			// Rename function contents
+			if (MainDao.checkFunction(newSchemaName, "gw_fct_rename_functions_schema")) {			
+				sql = "SELECT "+newSchemaName+".gw_fct_rename_functions_schema('"+schemaName+"', '"+newSchemaName+"');";
+				MainDao.executeSql(sql, true);
+			}		
 			selectSourceType(false);
 	    	view.setSelectedSchema(newSchemaName);
 	    	mainFrame.showMessage(Utils.getBundleString("project_renamed_ok"));
