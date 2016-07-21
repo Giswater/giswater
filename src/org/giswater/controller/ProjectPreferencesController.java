@@ -105,12 +105,8 @@ public class ProjectPreferencesController extends AbstractController {
 		// EPASWMM or EPANET
 		else {
 			if (waterSoftware.equals("EPASWMM")) {
-//				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.timeseries"), "showTimeseries"); //$NON-NLS-1$
-//				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.arc_catalog"), "showArcCatalog"); //$NON-NLS-1$
-//				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.hydrologic_catalog"), "showHydrologyCatalog"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
 				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
-				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReport"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(true);
 				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
 					epaSoftPanel.setSubcatchmentSelected(true);
@@ -128,12 +124,8 @@ public class ProjectPreferencesController extends AbstractController {
 				epaSoftPanel.exportSelected();
 			}
 			else if (waterSoftware.equals("EPANET")) {
-//				epaSoftPanel.setButton4(Utils.getBundleString("ProjectPreferencesController.emitters"), "showEmitter"); //$NON-NLS-1$
-//				epaSoftPanel.setButton5(Utils.getBundleString("ProjectPreferencesController.demands"), "showDemands"); //$NON-NLS-1$
-//				epaSoftPanel.setButton6(Utils.getBundleString("ProjectPreferencesController.rules"), "showRules"); //$NON-NLS-1$
 				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
-				epaSoftPanel.setReportButton(Utils.getBundleString("ProjectPreferencesController.report_options"), "showReportEpanet"); //$NON-NLS-1$
 				epaSoftPanel.setSubcatchmentVisible(false);
 				epaSoftPanel.setSubcatchmentSelected(false);
 			}
@@ -206,12 +198,6 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void closePreferences() {
 		view.getFrame().setVisible(false);	
-	}
-	
-	
-	private void checkPostprocessTables(String schemaName) {
-		epaSoftPanel.enableResultCatalog(MainDao.checkTable(schemaName, "rpt_result_cat"));
-		epaSoftPanel.enableResultSelector(MainDao.checkTable(schemaName, "result_selection"));
 	}
 	
 	
@@ -424,8 +410,6 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void setSchema(String schemaName) {
 		MainDao.setSchema(schemaName);
-		//checkDataManagerTables(schemaName);
-		checkPostprocessTables(schemaName);
 	}
 	
 	
