@@ -53,7 +53,7 @@ public class SectorSelectionPanel extends JPanel {
 
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private final String TABLE_SECTOR = "sector";
-	private final String TABLE_SECTOR_SELECTION = "sector_selection";
+	private final String TABLE_SECTOR_SELECTION = "inp_selector_sector";
 	
 	
 	public SectorSelectionPanel() {

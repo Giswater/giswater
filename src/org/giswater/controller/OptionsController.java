@@ -58,6 +58,8 @@ public class OptionsController extends AbstractController {
 	private Integer current;
 	private Integer total;
 	
+	private final String TABLE_HIDROLOGY = "inp_selector_hydrology";
+	
 	
 	public OptionsController(AbstractOptionsDialog dialog, ResultSet rs) {
 		this.view = dialog;
@@ -88,7 +90,7 @@ public class OptionsController extends AbstractController {
 				if (fillData) {
 					// Process hydrology field
 					if (key.equals("hydrology")) {
-						String sql = "SELECT * FROM "+MainDao.getSchema()+".hydrology_selection";
+						String sql = "SELECT * FROM "+MainDao.getSchema()+"."+TABLE_HIDROLOGY;
 						value = MainDao.queryToString(sql);
 					}
 					else {
@@ -274,7 +276,7 @@ public class OptionsController extends AbstractController {
 					else{
 						// Save into hydrology_selection
 						if (key.equals("hydrology")) {
-							String sql = "UPDATE "+MainDao.getSchema()+".hydrology_selection SET hydrology_id = '"+value+"'";
+							String sql = "UPDATE "+MainDao.getSchema()+"."+TABLE_HIDROLOGY+" SET hydrology_id = '"+value+"'";
 							MainDao.executeUpdateSql(sql, true);
 						}
 						else{
