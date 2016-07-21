@@ -101,11 +101,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnSectorSelection.setActionCommand("showSectorSelection");
 		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
 		
-		btnStateSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnStateSelection.text")); //$NON-NLS-1$
-		btnStateSelection.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnStateSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnStateSelection.text"));
 		btnStateSelection.setEnabled(false);
 		btnStateSelection.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnStateSelection.actionCommand")); //$NON-NLS-1$
 		panelPreprocess.add(btnStateSelection, "cell 1 0,growx");
@@ -221,9 +217,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private void setupListeners() {
 		
 		// Preprocess options		
-		btnDesign.addActionListener(this);
-		btnOptions.addActionListener(this);
 		btnSectorSelection.addActionListener(this);		
+		btnStateSelection.addActionListener(this);		
+		btnOptions.addActionListener(this);
+		btnDesign.addActionListener(this);
 		
 		// File manager
 		btnFileInp.addActionListener(this);
@@ -330,9 +327,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	}
 	
 	public void enablePreprocess(boolean enabled){
+		btnSectorSelection.setEnabled(enabled);
+		btnStateSelection.setEnabled(enabled);
 		btnOptions.setEnabled(enabled);
 		btnDesign.setEnabled(enabled);
-		btnSectorSelection.setEnabled(enabled);
 	}
     
 	public void setTitle(String title) {
@@ -355,6 +353,5 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		controller.exportSelected();
 	}
 
-	
 	
 }

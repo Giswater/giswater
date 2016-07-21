@@ -46,6 +46,7 @@ import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.gui.panel.ResultSelectionPanel;
 import org.giswater.gui.panel.SectorSelectionPanel;
+import org.giswater.gui.panel.StateSelectionPanel;
 import org.giswater.task.ExecuteTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -72,9 +73,17 @@ public class EpaSoftController extends AbstractController {
 	
 	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 190, 260); //$NON-NLS-1$
+        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 190, 260);
         panel.setParent(dialog);
         dialog.setVisible(true);
+	}	
+	
+	
+	public void showStateSelection() {
+		StateSelectionPanel panel = new StateSelectionPanel();
+		JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.state_selection"), 250, 260);
+		panel.setParent(dialog);
+		dialog.setVisible(true);
 	}	
 	
 	
