@@ -130,10 +130,10 @@ public class ExportToInp extends Model {
             	MainDao.executeSql(sql);
             	Utils.getLogger().info("Process subcatchments");    	
                 // Get content of target table
-            	sql = "SELECT "+MainDao.getSchema()+".gw_dump_subcatchments();";            
+            	sql = "SELECT "+MainDao.getSchema()+".gw_fct_dump_subcatchments ();";            
             	rs = MainDao.getResultset(sql);
                 while (rs.next()) {                	
-                	raf.writeBytes(rs.getString("gw_dump_subcatchments"));
+                	raf.writeBytes(rs.getString("gw_fct_dump_subcatchments "));
                 	raf.writeBytes("\r\n");
                 }            	
             }
