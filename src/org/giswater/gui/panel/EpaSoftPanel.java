@@ -51,11 +51,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	
 	private JPanel panelPreprocess;
 	private JButton btnDesign;
-	private JButton btnReport;
 	private JButton btnOptions;
-	private JButton btnPatternSelection;
+	private JButton btnStateSelection;
 	private JButton btnSectorSelection;
-	private JButton btnPlanSelection;	
 	
 	private JPanel panelFileManager;
 	private JLabel lblFileRpt;
@@ -72,10 +70,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private JScrollPane scrollPane_2;
 	private JScrollPane scrollPane_3;
 	private JCheckBox chkExport;
-	
-	private JPanel panelPostprocess;
-	private JButton btnResultCatalog;
-	private JButton btnResultSelector;
 
 	private JButton btnProjectPreferences;
 	
@@ -95,47 +89,41 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[575.00px][::8px]", "[][3px:n][][3px:n][][]"));
+		setLayout(new MigLayout("", "[::523.00px]", "[][5px:n][][5px:n][]"));
 		
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelPreprocess, "cell 0 0 2 1,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[150px][150px][150px][5px:n]", "[][]"));
-		
-		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
-		btnOptions.setEnabled(false);
-		btnOptions.setActionCommand("showOptions");
-		panelPreprocess.add(btnOptions, "flowx,cell 0 0,growx");
-		
-		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnRaingage.text")); //$NON-NLS-1$
-		btnDesign.setEnabled(false);
-		btnDesign.setActionCommand("showRaingage");
-		panelPreprocess.add(btnDesign, "cell 1 0,growx");
-		
-		btnReport = new JButton(BUNDLE.getString("EpaSoftPanel.btnOptions.text")); //$NON-NLS-1$
-		btnReport.setEnabled(false);
-		btnReport.setActionCommand("showReport");
-		panelPreprocess.add(btnReport, "cell 2 0,growx");
-		
-		btnPatternSelection = new JButton("Pattern selection");
-		btnPatternSelection.setEnabled(false);
-		btnPatternSelection.setActionCommand("showPatternSelection");
-		panelPreprocess.add(btnPatternSelection, "cell 0 1,growx");
+		add(panelPreprocess, "cell 0 0,grow");
+		panelPreprocess.setLayout(new MigLayout("", "[118px:n][118px:n][118px:n][118px:n]", "[]"));
 		
 		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
 		btnSectorSelection.setActionCommand("showSectorSelection");
-		panelPreprocess.add(btnSectorSelection, "cell 1 1,growx");
+		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
 		
-		btnPlanSelection = new JButton("Plan selection");
-		btnPlanSelection.setEnabled(false);
-		btnPlanSelection.setActionCommand("showPlanSelection");
-		panelPreprocess.add(btnPlanSelection, "cell 2 1,growx");
+		btnStateSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnStateSelection.text")); //$NON-NLS-1$
+		btnStateSelection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnStateSelection.setEnabled(false);
+		btnStateSelection.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnStateSelection.actionCommand")); //$NON-NLS-1$
+		panelPreprocess.add(btnStateSelection, "cell 1 0,growx");
+		
+		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
+		btnOptions.setEnabled(false);
+		btnOptions.setActionCommand("showOptions");
+		panelPreprocess.add(btnOptions, "flowx,cell 2 0,growx");
+		
+		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnRaingage.text")); //$NON-NLS-1$
+		btnDesign.setEnabled(false);
+		btnDesign.setActionCommand("showRaingage");
+		panelPreprocess.add(btnDesign, "cell 3 0,growx");
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelFileManager, "cell 0 2 2 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][120.00][::5px][:355px:355px][:65px:65px]", "[::20px][34px:n][20][34px:n][20][][]"));
+		add(panelFileManager, "cell 0 2,grow");
+		panelFileManager.setLayout(new MigLayout("", "[][108.00][::3px][:238.00px:250px][::3px][:65px:65px]", "[::22px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
@@ -166,7 +154,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileInp.setActionCommand("chooseFileInp");
 		btnFileInp.setText("...");
 		btnFileInp.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileInp, "cell 4 1,growx");
+		panelFileManager.add(btnFileInp, "cell 5 1,growx");
 
 		chkExec = new JCheckBox();
 		chkExec.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExec.toolTipText")); //$NON-NLS-1$
@@ -191,7 +179,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileRpt.setActionCommand("chooseFileRpt");
 		btnFileRpt.setText("...");
 		btnFileRpt.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileRpt, "cell 4 3,growx");
+		panelFileManager.add(btnFileRpt, "cell 5 3,growx");
 
 		chkImport = new JCheckBox();
 		chkImport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkImport.toolTipText")); //$NON-NLS-1$
@@ -216,29 +204,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept.setText(BUNDLE.getString("Generic.btnAccept.text")); 
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
-		panelFileManager.add(btnAccept, "flowx,cell 4 6,alignx right");
-		
-		panelPostprocess = new JPanel();
-		panelPostprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPostprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelPostprocess, "cell 0 4 2 1,grow");
-		panelPostprocess.setLayout(new MigLayout("", "[120px:n][120px:n]", "[]"));
-		
-		btnResultCatalog = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultCatalog.text")); 
-		btnResultCatalog.setPreferredSize(new Dimension(121, 23));
-		btnResultCatalog.setEnabled(false);
-		btnResultCatalog.setActionCommand("scenarioCatalog");
-		panelPostprocess.add(btnResultCatalog, "cell 0 0");
-		
-		btnResultSelector = new JButton(BUNDLE.getString("EpaSoftPanel.btnResultSelector.text")); 
-		btnResultSelector.setPreferredSize(new Dimension(121, 23));
-		btnResultSelector.setEnabled(false);
-		btnResultSelector.setActionCommand("scenarioManagement");
-		panelPostprocess.add(btnResultSelector, "cell 1 0");
+		panelFileManager.add(btnAccept, "flowx,cell 5 6,alignx right");
 		
 		btnProjectPreferences = new JButton("Project Preferences");
-		btnProjectPreferences.setMinimumSize(new Dimension(120, 23));
+		btnProjectPreferences.setMinimumSize(new Dimension(130, 23));
+		btnProjectPreferences.setPreferredSize(new Dimension(115, 23));
 		btnProjectPreferences.setActionCommand("openProjectPreferences");
-		add(btnProjectPreferences, "flowx,cell 0 5,alignx right");
+		add(btnProjectPreferences, "flowx,cell 0 4,alignx right");
 
 		setupListeners();
 
@@ -250,7 +222,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		
 		// Preprocess options		
 		btnDesign.addActionListener(this);
-		btnReport.addActionListener(this);
 		btnOptions.addActionListener(this);
 		btnSectorSelection.addActionListener(this);		
 		
@@ -259,10 +230,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileRpt.addActionListener(this);
 		chkExport.addActionListener(this);
 		btnAccept.addActionListener(this);
-		
-		// Postprocess options
-		btnResultCatalog.addActionListener(this);
-		btnResultSelector.addActionListener(this);
 		
 		btnProjectPreferences.addActionListener(this);
 		
@@ -357,34 +324,16 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnDesign.setText(text);
 		btnDesign.setActionCommand(actionCommand);
 	}
-	
-	public void setReportButton(String text, String actionCommand) {
-		btnReport.setText(text);
-		btnReport.setActionCommand(actionCommand);
-	}	
-	
     
 	public void enableDatabaseButtons(boolean enable) {
     	enablePreprocess(enable);
-    	enableResultCatalog(enable);
-    	enableResultSelector(enable);
 	}
-	
 	
 	public void enablePreprocess(boolean enabled){
 		btnOptions.setEnabled(enabled);
 		btnDesign.setEnabled(enabled);
-		btnReport.setEnabled(enabled);
 		btnSectorSelection.setEnabled(enabled);
 	}
-    
-    public void enableResultCatalog(boolean enable) {
-    	btnResultCatalog.setEnabled(enable);
-    }
-    
-    public void enableResultSelector(boolean enable) {
-    	btnResultSelector.setEnabled(enable);
-    }    
     
 	public void setTitle(String title) {
 		getFrame().setTitle(title);		

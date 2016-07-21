@@ -99,12 +99,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[90px:n:90px][80px:n][80px:n][80px:n][172.00px:n:90px][76.00]", "[60.00][::10px][124.00][::10px][][]"));
+		setLayout(new MigLayout("", "[90px:n:90px][70px:n][::240px,grow][::88px]", "[60.00][::10px][124.00][::10px][][]"));
 		
 		panelWaterProject = new JPanel();
 		panelWaterProject.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelWaterProject.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
-		add(panelWaterProject, "cell 0 0 6 1,grow");
-		panelWaterProject.setLayout(new MigLayout("", "[::5px][][5px:n][][5px:n][][5px:n][139.00,grow]", "[]"));
+		add(panelWaterProject, "cell 0 0 4 1,grow");
+		panelWaterProject.setLayout(new MigLayout("", "[::5px][][2px:n][][2px:n][][2px:n][127px:n,grow]", "[]"));
 		
 		optEpaSwmm = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optEpaSwmm.text")); //$NON-NLS-1$
 		panelWaterProject.add(optEpaSwmm, "cell 1 0");
@@ -127,9 +127,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelWaterProject.add(cboVersionSoftware, "cell 7 0,growx");
 		
 		panelDatabase = new JPanel();
-		add(panelDatabase, "cell 0 2 6 1,growx");
+		add(panelDatabase, "cell 0 2 4 1,growx");
 		panelDatabase.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelDatabase.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
-		panelDatabase.setLayout(new MigLayout("", "[80px:n:80px][105px:n:105px][grow]", "[][][][][][][]"));
+		panelDatabase.setLayout(new MigLayout("", "[80px:n:80px][80px:n][grow]", "[][][][][][][]"));
 		
 		JLabel lblNewLabel = new JLabel(BUNDLE.getString("Database.lblNewLabel.text_2")); 
 		panelDatabase.add(lblNewLabel, "cell 0 0,alignx right");
@@ -192,9 +192,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelDatabase.add(btnTest, "cell 2 6,alignx right");
 		
 		panelManagement = new JPanel();
-		add(panelManagement, "cell 0 4 6 1,growx");
+		add(panelManagement, "cell 0 4 4 1,growx");
 		panelManagement.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelManagement.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null)); //$NON-NLS-1$
-		panelManagement.setLayout(new MigLayout("", "[10px:n][70px:n][30px:n][100px:n:100px][30px:n][10px:n][40px:n][72px:n:72px][20px:n][]", "[23px][23px][]"));
+		panelManagement.setLayout(new MigLayout("", "[5px:n][60px:n][30px:n][100px:n:100px][30px:n][10px:n][40px:n][72px:n:72px][::15px][]", "[23px][23px][]"));
 		
 		cboSchema = new JComboBox<String>();
 		panelManagement.add(cboSchema, "cell 1 0 4 1,growx,aligny center");
@@ -270,7 +270,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnGoToEpa.setMnemonic(KeyEvent.VK_A);
 		btnGoToEpa.setMinimumSize(new Dimension(72, 23));
 		btnGoToEpa.setActionCommand("openEpaSoft");
-		add(btnGoToEpa, "cell 5 5,growx");
+		add(btnGoToEpa, "cell 3 5,growx");
 		
 		setupListeners();
 	    
