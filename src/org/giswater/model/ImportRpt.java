@@ -65,6 +65,9 @@ public class ImportRpt extends Model {
 	private static ArrayList<RptToken> rptTokens;	
 	private static ArrayList<ArrayList<RptToken>> rptTokensList;
 	
+	private static final String TABLE_CAT_RESULT = "rpt_cat_result";
+	private static final String TABLE_SELECTOR_RESULT = "rpt_selector_result";
+	
 	
 	// Import RPT file into Postgis tables
     public static boolean process(File fileRpt, String projectName) {
@@ -138,7 +141,7 @@ public class ImportRpt extends Model {
         }
 
         // Insert into result_selection commiting transaction
-   		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
+   		MainDao.setResultSelect(MainDao.getSchema(), TABLE_SELECTOR_RESULT, projectName);
    		
    		return true;
 		
@@ -211,7 +214,7 @@ public class ImportRpt extends Model {
         } // end iterations over targets (while)
 
         // Insert into result_selection commiting transaction
-   		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", projectName);
+   		MainDao.setResultSelect(MainDao.getSchema(), TABLE_SELECTOR_RESULT, projectName);
 
 		return true;
 		
@@ -337,7 +340,7 @@ public class ImportRpt extends Model {
     
 	private static boolean existsProjectName() {
 		
-		String sql = "SELECT * FROM "+MainDao.getSchema()+".rpt_result_cat " +
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+TABLE_CAT_RESULT+
 			" WHERE result_id = '"+projectName+"'";
 		try {
 			PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);

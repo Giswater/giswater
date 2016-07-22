@@ -49,6 +49,7 @@ public class ExportToInp extends Model {
 	private static final String REPORTS_TABLE2 = "inp_report";
 	private static final String TIMES_TABLE = "v_inp_times";
 	private static final String PATTERNS_TABLE = "inp_pattern";
+	private static final String SELECTOR_SECTOR_TABLE = "inp_selector_sector";
 	private static final Integer DEFAULT_SPACE = 23;
 
 	private static boolean isVersion51;
@@ -57,7 +58,7 @@ public class ExportToInp extends Model {
     public static boolean checkSectorSelection() {
 		
 		boolean result = false;
-		String sql = "SELECT COUNT(*) FROM "+MainDao.getSchema()+".sector_selection";
+		String sql = "SELECT COUNT(*) FROM "+MainDao.getSchema()+"."+SELECTOR_SECTOR_TABLE;
 		PreparedStatement ps;
 		try {
 			ps = MainDao.getConnectionPostgis().prepareStatement(sql);
@@ -130,10 +131,10 @@ public class ExportToInp extends Model {
             	MainDao.executeSql(sql);
             	Utils.getLogger().info("Process subcatchments");    	
                 // Get content of target table
-            	sql = "SELECT "+MainDao.getSchema()+".gw_dump_subcatchments();";            
+            	sql = "SELECT "+MainDao.getSchema()+".gw_fct_dump_subcatchments();";            
             	rs = MainDao.getResultset(sql);
                 while (rs.next()) {                	
-                	raf.writeBytes(rs.getString("gw_dump_subcatchments"));
+                	raf.writeBytes(rs.getString("gw_fct_dump_subcatchments"));
                 	raf.writeBytes("\r\n");
                 }            	
             }

@@ -385,7 +385,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[150px:n:150px][6px:n][75px:n:75px][85px:n:85px][60px:n:60px][110px:n:110px][80px:n:80px]", "[8px:n][][][][][][][][][][][][][5px:n][][][34px:n][5px:n][18px:n][18px:n][8px:n][]"));
+		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][60px:n:60px][80px:n:80px][75px:n:75px]", "[5px:n][][][][][][][][][][][][][2px:n][::17px][::17px][2px:n][34px:n][6px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -560,7 +560,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		JLabel lblMb = new JLabel(BUNDLE.getString("ConfigPanel.lblMb.text"));
 		add(lblMb, "cell 4 12,alignx left");
 		
-		btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text")); 
+		btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text"));
 		add(btnOpenLogFolder, "cell 5 12,growx");
 		btnOpenLogFolder.setActionCommand("openLogFolder");
 		
@@ -573,10 +573,10 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		chkAutoconnect.setSelected(true);
 		
 		JLabel lblDbAdmin = new JLabel(BUNDLE.getString("ConfigPanel.lblDbAdmin.text"));
-		add(lblDbAdmin, "cell 0 16,alignx right");
+		add(lblDbAdmin, "cell 0 17,alignx right");
 		
 		scrollPane = new JScrollPane();
-		add(scrollPane, "cell 2 16 4 1,grow");
+		add(scrollPane, "cell 2 17 4 1,grow");
 		
 		txtFileDbAdmin = new JTextArea();
 		txtFileDbAdmin.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -584,17 +584,11 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtFileDbAdmin.setText("");
 		
 		btnFileDbAdmin = new JButton();
-		add(btnFileDbAdmin, "cell 6 16,alignx right");
+		add(btnFileDbAdmin, "cell 6 17,growx");
 		btnFileDbAdmin.setMinimumSize(new Dimension(72, 9));
 		btnFileDbAdmin.setText("...");
 		btnFileDbAdmin.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnFileDbAdmin.setActionCommand("chooseFileDbAdmin");
-		
-		JLabel lblNotepad = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad.text")); //$NON-NLS-1$
-		add(lblNotepad, "cell 2 18 5 1");
-		
-		JLabel lblNotepad2 = new JLabel(BUNDLE.getString("ConfigPanel.lblNotepad2.text"));
-		add(lblNotepad2, "cell 2 19 5 1");
 		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(4);		
 		
 		txtLogFolderSize = new JTextField();
@@ -604,13 +598,13 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		txtLogFolderSize.setDocument(maxLength);	
 		
 		btnAccept = new JButton(BUNDLE.getString("Generic.btnAccept.text")); 
-		add(btnAccept, "cell 5 21,alignx right");
-		btnAccept.setMinimumSize(new Dimension(72, 23));
+		add(btnAccept, "cell 5 19,alignx right");
+		btnAccept.setMinimumSize(new Dimension(75, 23));
 		btnAccept.setActionCommand("configAccept");
 		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text")); 
-		add(btnClose, "cell 6 21,alignx right");
-		btnClose.setMinimumSize(new Dimension(72, 23));
+		add(btnClose, "cell 6 19,alignx right");
+		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
 
 		setupListeners();
