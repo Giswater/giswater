@@ -307,13 +307,11 @@ public class MenuController extends AbstractController {
 		File gswFile = new File(gswPath);
 		if (!gswFile.exists()) {
 			mainFrame.showError("File not found:", gswPath, 10000);
-	    	//Utils.getLogger().info("File not found: "+gswPath);
 			return;
 		}
 		String fileExtension = FilenameUtils.getExtension(gswPath);	
-		if (fileExtension != "gsw") {
+		if (!fileExtension.equals("gsw")) {
 			mainFrame.showError("File extension not valid:", gswPath, 10000);
-	    	//Utils.getLogger().info("File extension not valid: "+gswPath);
 			return;			
 		}
 		String gswName = gswFile.getName();
