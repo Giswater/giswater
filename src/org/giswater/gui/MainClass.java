@@ -34,9 +34,15 @@ public class MainClass {
 
 	public static MainFrame mdi;
 	private final static String CURRENT_VERSION = "1.2.101";
-
+	private static String gswFilePath;
+	
 
 	public static void main(String[] args) {
+		
+		// Check if a parameter exists
+		if (args.length > 0) {
+			gswFilePath = args[0];
+		}
 
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -81,7 +87,12 @@ public class MainClass {
 				MenuController menuController = new MenuController(mdi, versionCode, ftp);            	
 
 				// By default open last gsw
-				menuController.gswOpen(false);
+				if (gswFilePath != null) {
+					menuController.gswOpenFile(gswFilePath);
+				}
+				else{
+					menuController.gswOpen(false);					
+				}
 
 			}
 		});

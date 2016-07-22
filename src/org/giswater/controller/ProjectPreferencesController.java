@@ -201,6 +201,13 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
+	public void openPreferences() {
+		view.getFrame().setVisible(true);
+		mainFrame.hecRasFrame.setVisible(false);
+		mainFrame.epaSoftFrame.setVisible(false);	
+	}
+	
+	
 	public void testConnection() {
 		
 		if (MainDao.isConnected()) {
