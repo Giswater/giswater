@@ -352,6 +352,12 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	public void exportSelected() {
 		controller.exportSelected();
 	}
+	
+	public void checkFileManager(boolean selected) {
+		chkExport.setSelected(selected);	
+		chkExec.setSelected(selected);	
+		chkImport.setSelected(selected);		
+	}
 
 	
 }

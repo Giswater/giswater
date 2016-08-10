@@ -84,6 +84,29 @@ public class MenuController extends AbstractController {
 		return openingApp;
 	}
 	
+	
+	// Execute all tasks of 'File manager' panel in background
+	public boolean executeFileManager(String gswFilePath) {
+		
+		if (!gswFilePath.equals("")) {
+			gswOpenFile(gswFilePath);
+		}
+		else {
+			gswOpen(false);	
+		}
+		
+		// Select all checkboxes and execute all processes
+		EpaSoftController epaSoftController = this.mainFrame.epaSoftController;
+		epaSoftController.checkFileManager(true);
+		epaSoftController.execute();
+		
+		// TODO: Make form not visible
+
+		return true;
+		
+	}
+	
+	
 
 	// Menu File
 	public void openProject() { 

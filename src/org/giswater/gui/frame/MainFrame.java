@@ -118,6 +118,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	
+	public EpaSoftController epaSoftController;
+	
 	private JPanel statusPanel;
 	private JLabel lblInfo;
 	private JLabel lblProcessInfo;
@@ -130,6 +132,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmSqlFileLauncher;
 	
 	private final int MESSAGE_TIME = 5000;
+
 
 	
 	/**
@@ -404,7 +407,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
-        new EpaSoftController(epaSoftFrame.getPanel(), this);
+		epaSoftController = new EpaSoftController(epaSoftFrame.getPanel(), this);
         
         // Set frame sizes accordin desktop size
         getMainParams();
