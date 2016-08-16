@@ -3,6 +3,7 @@
 
 	<property name="version" value="1.2" />
 	<property name="dist" location="C:/folder_to_save_jar_file"/> 
+	<!--property name="dist" location="C:/Program Files/Giswater/1.2" /--> 	
 	
     <target name="create_run_jar">
         	
@@ -39,11 +40,8 @@
 			<fileset dir="samples/" includes="*.*" />
 		</copy>	 
     	<copy todir="${dist}/sql">
-			<fileset dir="sql/" includes="*.sql" />
-		</copy>	   
-    	<copy todir="${dist}/updates">
-    	    <fileset dir="updates"/>
-    	</copy>
+			<fileset dir="sql" includes="**" />
+		</copy>
 
     </target>
     

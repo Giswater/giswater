@@ -337,9 +337,29 @@ public class MainDao {
 	    	PropertiesDao.getGswProperties().put("POSTGIS_DATA", dataPath);
 			Utils.getLogger().info("Connection successful");
 	    	Utils.getLogger().info("Postgre data directory: " + dataPath);	
+	    	checkPostgis();
 		}
 		
 		return isConnected;
+		
+	}
+	
+	
+	private static boolean checkPostgis() {
+		
+		// Check Postgre and Postgis versions
+		postgreVersion = MainDao.checkPostgreVersion();	        
+		postgisVersion = MainDao.checkPostgisVersion();	        
+		Utils.getLogger().info("Postgre version: " + postgreVersion);
+		if (postgisVersion.equals("")){
+			// Enable Postgis to current Database
+			String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
+			executeUpdateSql(sql, true, false);			  	
+		}
+		else {
+			Utils.getLogger().info("Postgis version: " + postgisVersion);
+		}
+		return true;
 		
 	}
 	
@@ -351,19 +371,7 @@ public class MainDao {
 		}
 		
 		if (isConnected) {    	
-	    	// Check Postgre and Postgis versions
-	    	postgreVersion = MainDao.checkPostgreVersion();	        
-        	postgisVersion = MainDao.checkPostgisVersion();	        
-        	Utils.getLogger().info("Postgre version: " + postgreVersion);
-        	if (postgisVersion.equals("")){
-				// Enable Postgis to current Database
-				String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
-				executeUpdateSql(sql, true, false);			  	
-        	}
-        	else {
-        		Utils.getLogger().info("Postgis version: " + postgisVersion);
-        	}
-    		return true;
+			return checkPostgis();
 		}
 
 		Utils.getLogger().info("Autoconnection error");		

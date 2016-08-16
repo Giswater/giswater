@@ -183,8 +183,8 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 				MainDao.executeSql(sql, false);
 				// Once schema has been created, load example data 
 				try {			
-					String folderRoot = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
-					String folderPath = folderRoot+"example"+File.separator+softwareAcronym+File.separator;				
+					String folderRoot = new File(".").getCanonicalPath()+File.separator;
+					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;				
 					if (!processFolder(folderPath)) {
 						status = false;
 						MainDao.deleteSchema(schemaName);
