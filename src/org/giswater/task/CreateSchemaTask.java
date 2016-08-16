@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 
 import org.giswater.controller.NewProjectController;
 import org.giswater.dao.MainDao;
-import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
@@ -77,7 +76,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			if (!processFolder(folderPath)) return false;
 			
 			// Process language folders: parameter 'softwareAcronym' and 'utils'
-			String locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
 			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
 			folderPath = folderLocale+softwareAcronym+File.separator;
 			if (!processFolder(folderPath)) return false;

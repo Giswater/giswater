@@ -42,6 +42,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String schemaName;
 	protected String sridValue;	
 	protected String softwareAcronym;
+	protected String locale;
 	protected String currentSchemaName;	
 	protected boolean status;
 	
@@ -53,15 +54,16 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		this.waterSoftware = waterSoftware;
 		this.schemaName = schemaName;
 		this.sridValue = sridValue;
-    	if (waterSoftware.equals("EPANET")) {
+    	if (waterSoftware.toUpperCase().equals("EPANET")) {
     		softwareAcronym = "ws";
     	}
-    	else if (waterSoftware.equals("EPASWMM")) {
+    	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
     		softwareAcronym = "ud";
     	}
     	else {
     		softwareAcronym = "hecras";
     	}
+		locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");    	
     	
 	}
 	
@@ -77,6 +79,10 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	public void setController(ProjectPreferencesController controller) {
 		this.controller = controller;
+	}
+	
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 	
 	public boolean processFile(String filePath) throws IOException {

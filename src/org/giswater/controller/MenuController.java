@@ -550,8 +550,8 @@ public class MenuController extends AbstractController {
 		
 		// Execute task: CreateSchema
 		CreateExampleSchemaTask task = new CreateExampleSchemaTask(waterSoftware, schemaName, sridValue);
-		task.setController(this);
-        task.setParentPanel(mainFrame);
+		task.setMenuController(this);
+        task.setMainFrame(mainFrame);
         task.addPropertyChangeListener(this);
         task.execute();
 				

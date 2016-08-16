@@ -22,45 +22,36 @@ package org.giswater.task;
 
 import java.awt.Cursor;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
-import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
 
 
-public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
+public class CreateExampleSchemaTask extends ParentSchemaTask {
 	
 	private MainFrame mainFrame;
-	private MenuController controller;
-	private String waterSoftware;
-	private String schemaName;
+	private MenuController menuController;
 	private String sridValue;
-	private boolean status;
-	
+
 	
 	public CreateExampleSchemaTask(String waterSoftware, String schemaName, String sridValue) {
-		this.waterSoftware = waterSoftware;
-		this.schemaName = schemaName;
+		super(waterSoftware, schemaName);
 		this.sridValue = sridValue;
 	}
 	
-	public void setParentPanel(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
+	
+	public void setMainFrame(MainFrame mainFrame) {
+		this.mainFrame = mainFrame;		
 	}
 	
-	public void setController(MenuController controller) {
-		this.controller = controller;	
+	public void setMenuController(MenuController menuController) {
+		this.menuController = menuController;		
 	}
-
 	
 	private boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
 		
@@ -100,59 +91,12 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
-	public boolean processFolder(String folderPath) {
-		
-		boolean status = true;
-		String filePath = "";
-		
-		try {		
-			File folderRoot = new File(folderPath);
-			File[] files = folderRoot.listFiles();
-			if (files == null) {
-				Utils.logError("Folder not found or without files: "+folderPath);				
-				return false;
-			}
-			Arrays.sort(files);
-			for (File file : files) {			
-				filePath = file.getPath();
-				if (!filePath.contains("\\_")) {
-					Utils.getLogger().info("Processing file: "+filePath);
-					status = processFile(filePath);
-					if (!status) return false;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", filePath);
-			status = false;
-		} catch (IOException e) {
-			Utils.showError(e, filePath);
-			status = false;			
-		}		
-		return status;
-		
-	}	
-	
-	
-	public boolean processFile(String filePath) throws IOException {
-		
-		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
-		String content = Utils.readFile(filePath);
-		if (content.equals("")) return false;	    
-		content = content.replace("SCHEMA_NAME", schemaName);
-		content = content.replace("SRID_VALUE", sridValue);
-		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
-		Utils.logSql(content);
-		return MainDao.executeSql(content, false, filePath);		
-		
-	}	
-	
-	
     @Override
     public Void doInBackground() { 
 		
 		setProgress(1);
 		
-		// TODO: Check if schema already exists
+		// Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
 			String msg = Utils.getBundleString("CreateExampleSchemaTask.project")+schemaName+Utils.getBundleString("CreateExampleSchemaTask.overwrite_it");
 			int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("CreateExampleSchemaTask.create_example"));
@@ -165,14 +109,9 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		mainFrame.setCursorFrames(new Cursor(Cursor.WAIT_CURSOR));
 		
     	// Create schema of selected software
-    	String softwareAcronym = null;
-    	if (waterSoftware.equals("epanet")) {
-    		softwareAcronym = "ws";
-    	}
-    	else if (waterSoftware.equals("epaswmm")) {
-    		softwareAcronym = "ud";
-    	}
     	CreateSchemaTask cst = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
+    	// Locale must be set to 'EN'
+    	cst.setLocale("EN");
 		status = cst.createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
@@ -224,7 +163,7 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		// Refresh view
 		mainFrame.ppFrame.getPanel().enableControlsText(true);
 		mainFrame.setCursorFrames(new Cursor(Cursor.DEFAULT_CURSOR));
-		controller.gswEdit();
+		menuController.gswEdit();
 		mainFrame.updateEpaFrames();
 		mainFrame.ppFrame.getPanel().setSelectedSchema(schemaName);
 		
