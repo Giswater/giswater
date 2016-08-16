@@ -123,12 +123,26 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 		String filePath = "";
 		
 		try {
+			
+			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+			String folderPath = "";
+			
 			// Process selected software folder
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+softwareAcronym+File.separator;
-			if (!processFolder(folderRootPath)) return false;
+			folderPath = folderRootPath+softwareAcronym+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
 			// Process 'utils' folder
-			String folderUtilsPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+"utils"+File.separator;
-			if (!processFolder(folderUtilsPath)) return false;
+			folderPath = folderRootPath+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process language folders: parameter 'softwareAcronym' and 'utils'
+			String locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
+			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
+			folderPath = folderLocale+softwareAcronym+File.separator;
+			if (!processFolder(folderPath)) return false;
+			folderPath = folderLocale+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
 		} catch (FileNotFoundException e) {
 			Utils.showError("inp_error_notfound", filePath);
 			status = false;
@@ -136,6 +150,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 			Utils.showError(e, filePath);
 			status = false;			
 		}
+		
 		return status;
 		
 	}

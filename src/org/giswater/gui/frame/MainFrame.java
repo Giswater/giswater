@@ -244,7 +244,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnProject.add(mntmExit);
 		
 		mnProjectExample = new JMenu(BUNDLE.getString("MainFrame.mnGisProject.text"));
-		mnProjectExample.setEnabled(false);
 		mnProjectExample.setMnemonic(KeyEvent.VK_P);
 		menuBar.add(mnProjectExample);
 		
