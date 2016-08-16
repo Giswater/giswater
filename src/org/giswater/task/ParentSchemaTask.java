@@ -113,12 +113,19 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 			Arrays.sort(files);
 			for (File file : files) {			
 				filePath = file.getPath();
+				// If parameter 'filePattern' is set:
+				// Process only files that contains that filePattern in its filename
 				if (!filePattern.equals("")) {
 					if (filePath.contains(filePattern)) {
 						Utils.getLogger().info("Processing file: "+filePath);
 						status = processFile(filePath);
 						if (!status) return false;
 					}
+				} 
+				else {
+					Utils.getLogger().info("Processing file: "+filePath);
+					status = processFile(filePath);
+					if (!status) return false;
 				}
 			}
 		} catch (FileNotFoundException e) {
