@@ -181,11 +181,10 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 				Utils.getLogger().info(sql);
 				MainDao.executeSql(sql, false);
-				// Once schema has been created, load data corresponding to its locale
+				// Once schema has been created, load example data 
 				try {			
-					String folderRoot = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;	
-					String locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");					
-					String folderPath = folderRoot+locale+File.separator;
+					String folderRoot = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+					String folderPath = folderRoot+"example"+File.separator+softwareAcronym+File.separator;				
 					if (!processFolder(folderPath)) {
 						status = false;
 						MainDao.deleteSchema(schemaName);
