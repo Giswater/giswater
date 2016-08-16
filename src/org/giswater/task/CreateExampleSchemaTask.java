@@ -22,12 +22,16 @@ package org.giswater.task;
 
 import java.awt.Cursor;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
+import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.util.Utils;
@@ -96,12 +100,59 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 	}
 	
 	
+	public boolean processFolder(String folderPath) {
+		
+		boolean status = true;
+		String filePath = "";
+		
+		try {		
+			File folderRoot = new File(folderPath);
+			File[] files = folderRoot.listFiles();
+			if (files == null) {
+				Utils.logError("Folder not found or without files: "+folderPath);				
+				return false;
+			}
+			Arrays.sort(files);
+			for (File file : files) {			
+				filePath = file.getPath();
+				if (!filePath.contains("\\_")) {
+					Utils.getLogger().info("Processing file: "+filePath);
+					status = processFile(filePath);
+					if (!status) return false;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			Utils.showError("inp_error_notfound", filePath);
+			status = false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;			
+		}		
+		return status;
+		
+	}	
+	
+	
+	public boolean processFile(String filePath) throws IOException {
+		
+		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
+		String content = Utils.readFile(filePath);
+		if (content.equals("")) return false;	    
+		content = content.replace("SCHEMA_NAME", schemaName);
+		content = content.replace("SRID_VALUE", sridValue);
+		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
+		Utils.logSql(content);
+		return MainDao.executeSql(content, false, filePath);		
+		
+	}	
+	
+	
     @Override
     public Void doInBackground() { 
 		
 		setProgress(1);
 		
-		// Check if schema already exists
+		// TODO: Check if schema already exists
 		if (MainDao.checkSchema(schemaName)) {
 			String msg = Utils.getBundleString("CreateExampleSchemaTask.project")+schemaName+Utils.getBundleString("CreateExampleSchemaTask.overwrite_it");
 			int res = Utils.showYesNoDialog(mainFrame, msg, Utils.getBundleString("CreateExampleSchemaTask.create_example"));
@@ -115,11 +166,11 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 		
     	// Create schema of selected software
     	String softwareAcronym = null;
-    	if (waterSoftware.equals("EPANET")) {
-    		softwareAcronym = "ws_";
+    	if (waterSoftware.equals("epanet")) {
+    		softwareAcronym = "ws";
     	}
-    	else if (waterSoftware.equals("EPASWMM")) {
-    		softwareAcronym = "ud_";
+    	else if (waterSoftware.equals("epaswmm")) {
+    		softwareAcronym = "ud";
     	}
     	CreateSchemaTask cst = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
 		status = cst.createSchema(softwareAcronym);	
@@ -130,17 +181,12 @@ public class CreateExampleSchemaTask extends SwingWorker<Void, Void> {
 					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 				Utils.getLogger().info(sql);
 				MainDao.executeSql(sql, false);
-				// Once schema has been created, load data 
+				// Once schema has been created, load data corresponding to its locale
 				try {			
-					String folderRoot = new File(".").getCanonicalPath() + File.separator;				
-					// From sample .sql file					
-					String filePath = folderRoot+"samples"+File.separator+schemaName+".sql";	 
-			    	Utils.getLogger().info(Utils.getBundleString("CreateExampleSchemaTask.reading_file")+filePath);
-			    	String content = Utils.readFile(filePath);
-					Utils.logSql(content);		
-					// Last SQL script. So commit all process
-					boolean result = MainDao.executeSql(content, true);		
-					if (!result) {
+					String folderRoot = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;	
+					String locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");					
+					String folderPath = folderRoot+locale+File.separator;
+					if (!processFolder(folderPath)) {
 						status = false;
 						MainDao.deleteSchema(schemaName);
 						return null;

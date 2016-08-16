@@ -135,7 +135,7 @@ public class CreateSchemaTask extends SwingWorker<Void, Void> {
 			folderPath = folderRootPath+"utils"+File.separator;
 			if (!processFolder(folderPath)) return false;
 			
-			// Process language folders: 'softwareAcronym' and 'utils'
+			// Process language folders: parameter 'softwareAcronym' and 'utils'
 			String locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
 			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
 			folderPath = folderLocale+softwareAcronym+File.separator;
