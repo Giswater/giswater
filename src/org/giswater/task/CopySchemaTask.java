@@ -48,7 +48,7 @@ public class CopySchemaTask extends ParentSchemaTask {
 		status = MainDao.executeSql(sql, true);
 		if (status){
 			// Execute SQL's that its name contains '_fct_' (corresponding to functions)
-			status = renameFunctions(this.softwareAcronym, currentSchemaName);
+			status = renameFunctions(this.softwareAcronym);
 		}
 		
 		// Refresh view
