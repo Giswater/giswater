@@ -8,7 +8,13 @@ This version of Giswater is provided by Giswater Association
 -- ----------------------------
 -- Default values of sector selection
 -- ----------------------------
-INSERT INTO "SCHEMA_NAME"."inp_selector_sector" VALUES ('sector_01');
+INSERT INTO "inp_selector_sector" VALUES ('sector_01');
+
+
+-- ----------------------------
+-- Default values of plan psector
+-- ----------------------------
+--INSERT INTO "plan_selector_psector" VALUES ('psector_01');
 
 
 
