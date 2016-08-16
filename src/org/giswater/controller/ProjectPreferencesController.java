@@ -37,6 +37,7 @@ import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
+import org.giswater.task.RenameSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
@@ -429,7 +430,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	public void setWaterSoftware(String waterSoftware) {
-		this.waterSoftware = waterSoftware;
+		this.waterSoftware = waterSoftware;	
 	}
 	
 	public void setVersionSoftware() {
@@ -486,63 +487,55 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void renameSchema() {
 		
-		String schemaName = view.getSelectedSchema();
-		if (schemaName.equals("")) return;
+		// Get current and new schema names
+		String currentSchemaName = view.getSelectedSchema();
+		if (currentSchemaName.equals("")) return;
 		
-		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
-		if (newSchemaName == null) {
+		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), currentSchemaName);
+		if (schemaName == null) {
 			return;
 		}
-		newSchemaName = validateName(newSchemaName);
-		if (newSchemaName.equals("")) {
+		schemaName = validateName(schemaName);
+		if (schemaName.equals("")) {
         	mainFrame.showError("schema_valid_name");
 			return;
 		}
-		String sql = "ALTER SCHEMA "+schemaName+" RENAME TO "+newSchemaName;
-		Utils.logSql(sql);
-		if (MainDao.executeUpdateSql(sql, true)) {
-			if (MainDao.checkSchema(schemaName+"_audit")) {
-				sql = "ALTER SCHEMA "+schemaName+"_audit RENAME TO "+newSchemaName+"_audit";
-				Utils.logSql(sql);
-				MainDao.executeUpdateSql(sql, true);	
-			}
-			// Rename function contents
-			if (MainDao.checkFunction(newSchemaName, "gw_fct_rename_functions_schema")) {			
-				sql = "SELECT "+newSchemaName+".gw_fct_rename_functions_schema('"+schemaName+"', '"+newSchemaName+"');";
-				MainDao.executeSql(sql, true);
-			}		
-			selectSourceType(false);
-	    	view.setSelectedSchema(newSchemaName);
-	    	mainFrame.showMessage(Utils.getBundleString("project_renamed_ok"));
-		}
+		
+		// Execute task: RenameSchema
+		RenameSchemaTask task = new RenameSchemaTask(waterSoftware, currentSchemaName, schemaName);
+        task.setController(this);
+        task.setParentPanel(view);
+        task.addPropertyChangeListener(this);
+        task.execute();
 		
 	}
 	
 	
 	public void copySchema() {
 		
-		String schemaName = view.getSelectedSchema();
-		if (schemaName.equals("")) return;
+		// Get current and new schema names
+		String currentSchemaName = view.getSelectedSchema();
+		if (currentSchemaName.equals("")) return;
 		
-		String newSchemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), schemaName);
-		if (newSchemaName == null) {
+		String schemaName = JOptionPane.showInputDialog(view, Utils.getBundleString("enter_schema_name"), currentSchemaName);
+		if (schemaName == null) {
 			return;
 		}
-		newSchemaName = validateName(newSchemaName);
-		if (newSchemaName.equals("")) {
+		schemaName = validateName(schemaName);
+		if (schemaName.equals("")) {
 			mainFrame.showError("schema_valid_name");
 			return;
 		}
 
 		// Execute task: CopySchema
-		CopySchemaTask task = new CopySchemaTask(schemaName, newSchemaName);
+		CopySchemaTask task = new CopySchemaTask(waterSoftware, currentSchemaName, schemaName);
         task.setController(this);
         task.setParentPanel(view);
         task.addPropertyChangeListener(this);
         task.execute();
         		
 	}
-		
+	
 
 	public void createGisProject() {
 		

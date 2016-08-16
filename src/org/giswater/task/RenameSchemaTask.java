@@ -25,36 +25,37 @@ import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
 
-public class CopySchemaTask extends ParentSchemaTask {
+public class RenameSchemaTask extends ParentSchemaTask {
 	
 	
-	public CopySchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
+	public RenameSchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
 	}
 	
-	
+		
     @Override
     public Void doInBackground() { 
 		
     	setProgress(1);
     	
-    	// Disable view
-    	Utils.setPanelEnabled(parentPanel, false);
-
-		String sql = "SELECT "+currentSchemaName+".clone_schema('"+currentSchemaName+"', '"+schemaName+"')";
+		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
 		Utils.logSql(sql);
-		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
-		status = MainDao.executeSql(sql, true);
-		if (status){
+		if (MainDao.executeUpdateSql(sql, true)) {
+			// Rename schema 'audit' (if exists)
+			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
+				sql = "ALTER SCHEMA "+currentSchemaName+"_audit RENAME TO "+schemaName+"_audit";
+				Utils.logSql(sql);
+				MainDao.executeUpdateSql(sql, true);	
+			}
 			// Execute SQL's that its name contains '_fct_' (corresponding to functions)
-			status = renameFunctions(this.softwareAcronym, currentSchemaName);
+			status = renameFunctions(this.softwareAcronym, schemaName);
+			
+			// Refresh view
+			controller.selectSourceType(false);
+			Utils.setPanelEnabled(parentPanel, true);	
+			parentPanel.setSelectedSchema(schemaName);
 		}
-		
-		// Refresh view
-		controller.selectSourceType(false);			
-    	Utils.setPanelEnabled(parentPanel, true);
-    	parentPanel.setSelectedSchema(schemaName);
 		
 		return null;
     	
@@ -65,7 +66,7 @@ public class CopySchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("project_copied_successfuly"));    		
+    		MainClass.mdi.showMessage(Utils.getBundleString("project_renamed_ok"));    		
     	}
     	else {
     		MainClass.mdi.showError(Utils.getBundleString("project_not_copied"));

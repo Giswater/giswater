@@ -22,35 +22,16 @@ package org.giswater.task;
 
 import java.util.Vector;
 
-import javax.swing.SwingWorker;
-
-import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
-import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Utils;
 
 
-public class DeleteSchemaTask extends SwingWorker<Void, Void> {
-	
-	private ProjectPreferencesPanel parentPanel;
-	private ProjectPreferencesController controller;
-	private String waterSoftware;
-	private String schemaName;
-	private boolean status;
+public class DeleteSchemaTask extends ParentSchemaTask {	
 	
 	
 	public DeleteSchemaTask(String waterSoftware, String schemaName) {
-		this.waterSoftware = waterSoftware;
-		this.schemaName = schemaName;
-	}
-	
-	public void setParentPanel(ProjectPreferencesPanel parentPanel) {
-		this.parentPanel = parentPanel;
-	}
-	
-	public void setController(ProjectPreferencesController controller) {
-		this.controller = controller;
+		super(waterSoftware, schemaName);
 	}
 	
 	
