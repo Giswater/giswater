@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.giswater.dao.ExecuteDao;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
@@ -82,6 +83,29 @@ public class MenuController extends AbstractController {
 	public boolean getOpeningApp() {
 		return openingApp;
 	}
+	
+	
+	// Execute all tasks of 'File manager' panel in background
+	public boolean executeFileManager(String gswFilePath) {
+		
+		if (!gswFilePath.equals("")) {
+			gswOpenFile(gswFilePath);
+		}
+		else {
+			gswOpen(false);	
+		}
+		
+		// Select all checkboxes and execute all processes
+		EpaSoftController epaSoftController = this.mainFrame.epaSoftController;
+		epaSoftController.checkFileManager(true);
+		epaSoftController.execute();
+		
+		// TODO: Make form not visible
+
+		return true;
+		
+	}
+	
 	
 
 	// Menu File
@@ -287,7 +311,6 @@ public class MenuController extends AbstractController {
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			if (acceptPreferences) {
-				// TODO: 
 				ProjectPreferencesController ppController = mainFrame.ppFrame.getPanel().getController();
 				ppController.openEpaSoft();
 			}
@@ -298,7 +321,45 @@ public class MenuController extends AbstractController {
     	}
 		
 	}
-
+	
+	
+	public void gswOpenFile(String gswPath) {
+		
+		action = "open";
+		if (gswPath == "") return;
+		File gswFile = new File(gswPath);
+		if (!gswFile.exists()) {
+			mainFrame.showError("File not found:", gswPath, 10000);
+			return;
+		}
+		String fileExtension = FilenameUtils.getExtension(gswPath);	
+		if (!fileExtension.equals("gsw")) {
+			mainFrame.showError("File extension not valid:", gswPath, 10000);
+			return;			
+		}
+		String gswName = gswFile.getName();
+		
+		// Set PropertiesDao settings
+		PropertiesDao.setGswPath(gswPath);
+		prop.put("FILE_GSW", gswPath);		
+		
+		// Load .gsw file into memory
+		PropertiesDao.loadGswPropertiesFile();
+		
+		// Update application title
+		mainFrame.updateTitle(gswName);
+		
+		// Update frames position and panels
+		mainFrame.updateFrames();
+		updateHecrasPanel();
+		updateEpaSoftPanel();  		
+		if (updateProjectPreferencesPanel()) {
+			ProjectPreferencesController ppController = mainFrame.ppFrame.getPanel().getController();
+			ppController.openPreferences();
+		}
+		
+	}
+	
 	
 	public void gswSave() {
 		mainFrame.saveGswFile();

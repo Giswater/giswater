@@ -118,6 +118,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	
+	public EpaSoftController epaSoftController;
+	
 	private JPanel statusPanel;
 	private JLabel lblInfo;
 	private JLabel lblProcessInfo;
@@ -128,6 +130,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	private ImageIcon iconGreen;
 	private ImageIcon iconRed;
 	private JMenuItem mntmSqlFileLauncher;
+	
+	private final int MESSAGE_TIME = 5000;
+
 
 	
 	/**
@@ -402,7 +407,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
-        new EpaSoftController(epaSoftFrame.getPanel(), this);
+		epaSoftController = new EpaSoftController(epaSoftFrame.getPanel(), this);
         
         // Set frame sizes accordin desktop size
         getMainParams();
@@ -749,7 +754,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 	
 	public void showMessage(String msg, boolean isFixed) {
-		showMessage(msg, isFixed, 5000);
+		showMessage(msg, isFixed, MESSAGE_TIME);
 	}
 	
 	public void showMessage(String msg, int delay) {
@@ -765,24 +770,25 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 	
 	public void showError(String msg) {
-		lblProcessInfo.setIcon(iconAlert);	
-		lblProcessInfo.setText(Utils.getBundleString(msg));
-		Utils.logError(msg);
-		resetProcessInfo();
+		showError(msg, "", MESSAGE_TIME);
 	}
 	
 	public void showError(String msg, String param) {
+		showError(msg, param, MESSAGE_TIME);
+	}
+	
+	public void showError(String msg, String param, int delay) {
 		lblProcessInfo.setIcon(iconAlert);	
-		lblProcessInfo.setText(Utils.getBundleString(msg) + " "+param);
-		Utils.logError(msg);
-		resetProcessInfo();
+		String aux = Utils.getBundleString(msg);
+		if (param != "") {
+			aux+= " "+param;	
+		}
+		lblProcessInfo.setText(aux);
+		Utils.logError(aux);
+		resetProcessInfo(delay);
 	}
 	
-	// Show info 5 seconds
-	public void resetProcessInfo() {
-		resetProcessInfo(5000);
-	}
-	
+	// Show message during miliseconds specified in 'delay' parameter
 	public void resetProcessInfo(int delay) {
 		
 		ActionListener taskPerformer = new ActionListener() {

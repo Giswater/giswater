@@ -70,7 +70,12 @@ public class EpaSoftController extends AbstractController {
     	
 	}
 	
+    
+    public void checkFileManager(boolean selected) {
+    	view.checkFileManager(selected);
+    }
 	
+    
 	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 190, 260);

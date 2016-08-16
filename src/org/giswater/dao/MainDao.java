@@ -454,8 +454,10 @@ public class MainDao {
     
     public static void closeConnectionPostgis(){
     	try {
-			connectionPostgis.close();
-			isConnected = false;
+    		isConnected = false;
+    		if (connectionPostgis != null) {
+    			connectionPostgis.close();
+    		}
 		} catch (SQLException e) {
             Utils.showError(e);
 		}
