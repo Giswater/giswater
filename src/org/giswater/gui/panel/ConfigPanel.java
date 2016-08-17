@@ -334,21 +334,27 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	}	
 	
 	public void setLanguage(String language) {
+		
 		if (language.equals("en")) {
 			cboLocale.setSelectedItem("English");
 		}
 		else if (language.equals("es")) {
 			cboLocale.setSelectedItem("Spanish");
 		}
+		else if (language.equals("ca")) {
+			cboLocale.setSelectedItem("Catalan");
+		}
 		else if (language.equals("pt")) {
 			cboLocale.setSelectedItem("Portuguese");
 		}
 		else if (language.equals("pt_BR")) {
 			cboLocale.setSelectedItem("Brazilian Portuguese");
-		}		
+		}	
+		
 	}
 
 	public String getLanguage() {
+		
 		String locale = "en";
 		String language = cboLocale.getSelectedItem().toString();
 		if (language.equals("English")) {
@@ -357,6 +363,9 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		else if (language.equals("Spanish")) {
 			locale = "es";
 		}
+		else if (language.equals("Catalan")) {
+			locale = "ca";
+		}
 		else if (language.equals("Portuguese")) {
 			locale = "pt";
 		}
@@ -364,6 +373,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 			locale = "pt_BR";
 		}		
 		return locale;
+		
 	}	
 	
 	public void setLogFolderSize(Integer size) {
@@ -548,7 +558,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	    add(lblChooseLanguage, "cell 0 11,alignx right");
 	    
 	    cboLocale = new JComboBox<String>();
-	    cboLocale.setModel(new DefaultComboBoxModel<String>(new String[] {"English", "Brazilian Portuguese", "Portuguese"}));
+	    cboLocale.setModel(new DefaultComboBoxModel(new String[] {"English", "Brazilian Portuguese", "Portuguese", "Spanish", "Catalan"}));
 	    add(cboLocale, "cell 2 11 2 1,growx");
 	    
 	    lblRequiresRestart = new JLabel(BUNDLE.getString("ConfigPanel.lblrequieresRestart.text")); //$NON-NLS-1$

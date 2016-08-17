@@ -225,6 +225,9 @@ public class MainDao {
 		if (language.equals("es")) {
 			locale = new Locale("es", "ES");
 		}
+		else if (language.equals("ca")) {
+			locale = new Locale("ca", "CA");
+		}
 		else if (language.equals("pt")) {
 			locale = new Locale("pt", "PT");
 		}
