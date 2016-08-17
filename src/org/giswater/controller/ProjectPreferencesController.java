@@ -35,6 +35,7 @@ import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.task.CopyFunctionsSchemaTask;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.task.RenameSchemaTask;
@@ -545,6 +546,22 @@ public class ProjectPreferencesController extends AbstractController {
 		gisPanel.setParent(gisDialog);
         gisDialog.setVisible(true);
         
+	}
+	
+	
+	public void copyFunctions () {
+		
+		// Get current schema names
+		String currentSchemaName = view.getSelectedSchema();
+		if (currentSchemaName.equals("")) return;		
+		
+		// Execute task: CopyFunctionsSchema
+		CopyFunctionsSchemaTask task = new CopyFunctionsSchemaTask(waterSoftware, currentSchemaName, currentSchemaName);
+        task.setController(this);
+        task.setParentPanel(view);
+        task.addPropertyChangeListener(this);
+        task.execute();
+		
 	}
 	
 	

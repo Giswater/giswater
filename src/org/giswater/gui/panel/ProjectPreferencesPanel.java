@@ -90,6 +90,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private static final Font FONT_PANEL_TITLE2 = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Integer BUTTON_WIDTH = 72;
+	private JButton btnCopyFunctions;
 
 	
 	public ProjectPreferencesPanel() {
@@ -99,7 +100,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[90px:n:90px][70px:n][::240px,grow][::88px]", "[60.00][::10px][124.00][::10px][][]"));
+		setLayout(new MigLayout("", "[90px:n:90px][60px:n][::250px,grow][::88px]", "[60.00][::10px][124.00][::10px][][]"));
 		
 		panelWaterProject = new JPanel();
 		panelWaterProject.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelWaterProject.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
@@ -265,6 +266,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCreateGisProject.setActionCommand("createGisProject");
 		add(btnCreateGisProject, "cell 0 5 2 1");
 		
+		btnCopyFunctions = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.text")); //$NON-NLS-1$
+		btnCopyFunctions.setPreferredSize(new Dimension(100, 23));
+		btnCopyFunctions.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.actionCommand")); //$NON-NLS-1$
+		add(btnCopyFunctions, "cell 2 5");
+		
 		btnGoToEpa = new JButton();
 		btnGoToEpa.setText(BUNDLE.getString("ProjectPreferencesPanel.btnEpa.text")); //$NON-NLS-1$
 		btnGoToEpa.setMnemonic(KeyEvent.VK_A);
@@ -296,6 +302,8 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCopy.addActionListener(this);
 		btnCreateGisProject.addActionListener(this);
 		btnGoToEpa.addActionListener(this);
+		
+		btnCopyFunctions.addActionListener(this);		
 
 	}
 	

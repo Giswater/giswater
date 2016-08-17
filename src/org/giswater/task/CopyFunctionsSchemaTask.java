@@ -20,15 +20,14 @@
  */
 package org.giswater.task;
 
-import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
 
-public class CopySchemaTask extends ParentSchemaTask {
+public class CopyFunctionsSchemaTask extends ParentSchemaTask {
 	
 	
-	public CopySchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
+	public CopyFunctionsSchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
 	}
@@ -41,15 +40,12 @@ public class CopySchemaTask extends ParentSchemaTask {
     	
     	// Disable view
     	Utils.setPanelEnabled(parentPanel, false);
-
-		String sql = "SELECT "+currentSchemaName+".clone_schema('"+currentSchemaName+"', '"+schemaName+"')";
-		Utils.logSql(sql);
-		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
-		status = MainDao.executeSql(sql, true);
-		if (status){
-			// Execute SQL's that its name contains '_fct' (corresponding to functions)
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
-		}
+    	
+		// Execute SQL's that its name contains '_fct' (corresponding to functions)
+		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+		
+		// Execute SQL's that its name contains '_trg' (corresponding to functions)
+		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
 		
 		// Refresh view
 		controller.selectSourceType(false);			

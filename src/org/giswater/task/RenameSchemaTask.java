@@ -48,8 +48,8 @@ public class RenameSchemaTask extends ParentSchemaTask {
 				Utils.logSql(sql);
 				MainDao.executeUpdateSql(sql, true);	
 			}
-			// Execute SQL's that its name contains '_fct_' (corresponding to functions)
-			status = renameFunctions(this.softwareAcronym);
+			// Execute SQL's that its name contains '_fct' (corresponding to functions)
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
 			
 			// Refresh view
 			controller.selectSourceType(false);

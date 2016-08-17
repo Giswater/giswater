@@ -46,7 +46,8 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String currentSchemaName;	
 	protected boolean status;
 	
-	protected final String FILE_PATTERN = "_fct";	
+	protected final String FILE_PATTERN_FCT = "_fct";	
+	protected final String FILE_PATTERN_TRG = "_trg";	
 	
 	
 	public ParentSchemaTask() {	}
@@ -148,7 +149,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	}	
 	
 	
-	protected boolean renameFunctions(String softwareAcronym) {
+	protected boolean copyFunctions(String softwareAcronym, String filePattern) {
 		
 		boolean status = true;
 		String filePath = "";
@@ -160,11 +161,11 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 			
 			// Process selected software folder
 			folderPath = folderRootPath+softwareAcronym+File.separator;
-			if (!processFolder(folderPath, FILE_PATTERN)) return false;
+			if (!processFolder(folderPath, filePattern)) return false;
 			
 			// Process 'utils' folder
 			folderPath = folderRootPath+"utils"+File.separator;
-			if (!processFolder(folderPath, FILE_PATTERN)) return false;
+			if (!processFolder(folderPath, filePattern)) return false;
 			
 		} catch (FileNotFoundException e) {
 			Utils.showError("inp_error_notfound", filePath);
