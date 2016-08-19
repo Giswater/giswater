@@ -20,6 +20,7 @@
  */
 package org.giswater.gui;
 
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
@@ -35,7 +36,7 @@ public class MainClass {
 	public static MainFrame mdi;
 	private final static String CURRENT_VERSION = "1.2.124";
 	private static String gswFilePath = null;
-	private static String function = null;   //  ["ed_giswater_jar" | "mg_go2epa_express"]
+	public static String function = null;   //  ["ed_giswater_jar" | "mg_go2epa_express"]
 	
 
 	public static void main(String[] args) {
@@ -103,6 +104,8 @@ public class MainClass {
 						}
 					}
 					else if (function.equals("mg_go2epa_express")) {
+						mdi.setExtendedState(JFrame.ICONIFIED);
+						mdi.setExtendedState(mdi.getExtendedState() | JFrame.ICONIFIED);						
 						menuController.executeFileManager(gswFilePath);					
 					}
 				}

@@ -99,8 +99,6 @@ public class MenuController extends AbstractController {
 		EpaSoftController epaSoftController = this.mainFrame.epaSoftController;
 		epaSoftController.checkFileManager(true);
 		epaSoftController.execute();
-		
-		// TODO: Make form not visible
 
 		return true;
 		

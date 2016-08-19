@@ -179,6 +179,9 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
     	if (status) {
     		MainClass.mdi.showMessage("process_end");
     	}
+    	if (MainClass.function != null) {
+    		System.exit(0);
+    	}
 		
     }
 
