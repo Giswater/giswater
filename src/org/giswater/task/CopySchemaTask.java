@@ -47,8 +47,12 @@ public class CopySchemaTask extends ParentSchemaTask {
 		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
 		status = MainDao.executeSql(sql, true);
 		if (status){
+			// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+			// Execute SQL's that its name contains '_trg' (corresponding to functions)
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);			
 		}
 		
 		// Refresh view

@@ -42,14 +42,19 @@ public class RenameSchemaTask extends ParentSchemaTask {
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
 		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true)) {
+			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
 				sql = "ALTER SCHEMA "+currentSchemaName+"_audit RENAME TO "+schemaName+"_audit";
 				Utils.logSql(sql);
 				MainDao.executeUpdateSql(sql, true);	
 			}
+			
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+			
+			// Execute SQL's that its name contains '_trg' (corresponding to functions)
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);			
 			
 			// Refresh view
 			controller.selectSourceType(false);
