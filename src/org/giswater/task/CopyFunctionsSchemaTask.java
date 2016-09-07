@@ -20,6 +20,7 @@
  */
 package org.giswater.task;
 
+import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
@@ -46,6 +47,14 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
 		
 		// Execute SQL's that its name contains '_trg' (corresponding to functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
+		
+		if (status) {
+			String sql = "UPDATE "+schemaName+".version"+
+				" SET giswater = '"+MainDao.getGiswaterVersion()+"', date = now()";
+			Utils.logInfo(sql);
+			// Last SQL script. So commit all process
+			MainDao.executeSql(sql, true);
+		}		
 		
 		// Refresh view
 		controller.selectSourceType(false);			
