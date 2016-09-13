@@ -48,9 +48,12 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
 		// Execute SQL's that its name contains '_trg' (corresponding to functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
 		
+		// Execute SQL's that its name contains '_view' (corresponding to functions)
+		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+		
 		if (status) {
-			String sql = "UPDATE "+schemaName+".version"+
-				" SET giswater = '"+MainDao.getGiswaterVersion()+"', date = now()";
+			String sql = "INSERT INTO "+schemaName+".version (giswater, date) VALUES ("+
+				"'"+MainDao.getGiswaterVersion()+"', now());";
 			Utils.logInfo(sql);
 			// Last SQL script. So commit all process
 			MainDao.executeSql(sql, true);

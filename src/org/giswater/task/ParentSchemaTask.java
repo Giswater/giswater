@@ -49,6 +49,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected final String FILE_PATTERN_FK = "_fk";	
 	protected final String FILE_PATTERN_FCT = "_fct";	
 	protected final String FILE_PATTERN_TRG = "_trg";	
+	protected final String FILE_PATTERN_VIEW = "_view";	
 	
 	
 	public ParentSchemaTask() {	}
