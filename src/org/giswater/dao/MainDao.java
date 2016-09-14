@@ -56,7 +56,8 @@ public class MainDao {
 	protected static boolean isWindows;
 	
     private static Connection connectionPostgis;
-	private static String waterSoftware;   // EPASWMM or EPANET or HECRAS
+	private static String waterSoftware;   // [EPASWMM | EPANET | HECRAS]
+	private static String softwareAcronym;   // [ud | ws | hecras]
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "updates"
@@ -118,6 +119,15 @@ public class MainDao {
 	
 	public static void setWaterSoftware(String param) {
 		waterSoftware = param;
+    	if (waterSoftware.toUpperCase().equals("EPANET")) {
+    		softwareAcronym = "ws";
+    	}
+    	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
+    		softwareAcronym = "ud";
+    	}
+    	else {
+    		softwareAcronym = "hecras";
+    	}		
 	}
 	
 	public static boolean isConnected() {
@@ -927,9 +937,14 @@ public class MainDao {
 	}
 	
 	
+	public static void resetSchemaVersion() {
+		schemaMap.remove(schema);
+	}
+	
+	
 	public static Integer getSchemaVersion() {
 		
-		Integer schemaVersion;
+		Integer schemaVersion = -1;
 		if (schemaMap.containsKey(schema)) {
 			schemaVersion = schemaMap.get(schema);
 		} 
@@ -937,10 +952,7 @@ public class MainDao {
 			String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
 			if (checkTable(schema, "version")) {
 				String aux = queryToString(sql);
-				schemaVersion = Utils.parseInt(aux.replace(".", ""));
-			}
-			else {
-				schemaVersion = -1;
+				schemaVersion = Utils.parseInt(aux.replace(".", ""));				
 			}
 			schemaMap.put(schema, schemaVersion);
 		}
@@ -950,25 +962,27 @@ public class MainDao {
 	
 	
 	// Called when we apply or accept changes in Project Preferences form
-	public static void checkSchemaVersion() {
+	public static boolean checkSchemaVersion() {
 		
-		if (schema == null || schema.equals("")) return;
+		if (schema == null || schema.equals("")) return false;
 		
 		Integer schemaVersion = getSchemaVersion();
-		Integer updateVersion = updateMap.get(waterSoftware);
-		Utils.getLogger().info("Schema: "+schema+" ("+schemaVersion+")");
-		if (updateVersion == null || updateVersion == -1) return;
+		Integer updateVersion = updateMap.get(softwareAcronym);
+		Utils.getLogger().info("Project '"+schema+"' ("+schemaVersion+")");
+		Utils.getLogger().info("Update version: ("+updateVersion+")");
+		if (updateVersion == null || updateVersion == -1) return false;
 		
 		// Get project_update value from Properties file
 		String projectUpd = PropertiesDao.getPropertiesFile().get("PROJECT_UPDATE", "ask");
 		if (updateVersion > schemaVersion && !projectUpd.equals("never")) {
 			if (projectUpd.equals("ask")) {
-				String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version") + //$NON-NLS-1$ //$NON-NLS-2$
-					Utils.getBundleString("MainDao.advisable_backup"); //$NON-NLS-1$
+				String msg = Utils.getBundleString("MainDao.would_like_update")+schema+Utils.getBundleString("MainDao.current_version"); //$NON-NLS-1$ //$NON-NLS-2$
+				msg+= Utils.getBundleString("MainDao.advisable_backup"); //$NON-NLS-1$
+				msg+= "\nUpdate from project version "+schemaVersion+" to "+updateVersion;
 				int answer = Utils.showYesNoDialog(msg, Utils.getBundleString("MainDao.update_project")); //$NON-NLS-1$
 				if (answer == JOptionPane.NO_OPTION) {
 					Utils.getLogger().info("User chose not to update");
-					return;
+					return false;
 				}
 			}
 			if (schemaVersion == -1) {
@@ -978,17 +992,15 @@ public class MainDao {
 				executeSql(sql, true);
 			}
 			if (updateSchema(schemaVersion)) {
-				String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+getGiswaterVersion()+"', '"+waterSoftware+"', '"+getPostgreVersion()+"', '"+getPostgisVersion()+"', now())";
-				Utils.getLogger().info(sql);
-				executeSql(sql, true);
-				MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); //$NON-NLS-1$
 				schemaMap.remove(schema);
+				return true;
 			}
 			else {
 				MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated")); //$NON-NLS-1$
 			}
 		}
+		
+		return false;
 		
 	}
 	
@@ -997,26 +1009,26 @@ public class MainDao {
 		
 		// Get last update script version from every software
     	updateMap = new HashMap<String, Integer>();
-		getLastUpdateSoftware("epanet");
-		getLastUpdateSoftware("epaswmm");
+		getLastUpdateSoftware("ws");
+		getLastUpdateSoftware("ud");
 		getLastUpdateSoftware("hecras");
 		
 	}
 	
 	
-	private static void getLastUpdateSoftware(String softwareName) {
+	private static void getLastUpdateSoftware(String softwareAcronym) {
 		
-		String folder = updatesFolder + softwareName + File.separator;
+		String folder = updatesFolder + softwareAcronym + File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null && files.length > 0) {
 			Arrays.sort(files);
 			String fileName = files[files.length-1].getName();
-			fileName = fileName.replace(softwareName+"_", "").replace(".sql", "");
+			fileName = fileName.replace(softwareAcronym+"_", "").replace(".sql", "");
 			Integer fileVersion = Utils.parseInt(fileName);
-			updateMap.put(softwareName.toUpperCase(), fileVersion);	
+			updateMap.put(softwareAcronym, fileVersion);	
 		}
 		else {
-			updateMap.put(softwareName.toUpperCase(), -1);	
+			updateMap.put(softwareAcronym, -1);	
 		}
 		
 	}
@@ -1031,7 +1043,7 @@ public class MainDao {
 		boolean status = true;
 		
 		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder + waterSoftware + File.separator;
+		String folder = updatesFolder + softwareAcronym + File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null) {
 			Arrays.sort(files);

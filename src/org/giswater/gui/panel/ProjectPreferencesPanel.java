@@ -267,6 +267,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		add(btnCreateGisProject, "cell 0 5 2 1");
 		
 		btnCopyFunctions = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.text")); //$NON-NLS-1$
+		btnCopyFunctions.setVisible(false);
 		btnCopyFunctions.setPreferredSize(new Dimension(100, 23));
 		btnCopyFunctions.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.actionCommand")); //$NON-NLS-1$
 		add(btnCopyFunctions, "cell 2 5");

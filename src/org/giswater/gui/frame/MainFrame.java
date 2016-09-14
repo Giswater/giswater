@@ -702,15 +702,17 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void updateConnectionInfo() {
 		
 		String schema;
+		Integer schemaVersion;
 		String info = "";
 		if (MainDao.isConnected()) {
 			schema = MainDao.getSchema();
 			if (schema != null && !schema.equals("")) {
-				info+= schema;
+				schemaVersion = MainDao.getSchemaVersion();
+				info = schema+" ("+schemaVersion+")";
 				ppFrame.getPanel().enableAccept(true);
 			}
 			else {
-				info+= Utils.getBundleString("MainFrame.project_data_selected");
+				info = Utils.getBundleString("MainFrame.project_data_selected");
 				ppFrame.getPanel().enableAccept(false);
 			}
 			lblInfo.setIcon(iconGreen);

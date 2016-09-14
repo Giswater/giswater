@@ -52,11 +52,12 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
 		
 		if (status) {
-			String sql = "INSERT INTO "+schemaName+".version (giswater, date) VALUES ("+
-				"'"+MainDao.getGiswaterVersion()+"', now());";
+			String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
+				MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
 			Utils.logInfo(sql);
 			// Last SQL script. So commit all process
 			MainDao.executeSql(sql, true);
+			MainDao.resetSchemaVersion();			
 		}		
 		
 		// Refresh view
@@ -73,10 +74,11 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("project_copied_successfuly"));    		
+    		MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); 
+    		MainClass.mdi.updateConnectionInfo();    		
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("project_not_copied"));
+    		MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated"));
     	}
 		
     }

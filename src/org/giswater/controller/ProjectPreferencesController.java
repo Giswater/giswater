@@ -182,7 +182,11 @@ public class ProjectPreferencesController extends AbstractController {
 		customizePanel();
 		
 		// Check schema version
-		MainDao.checkSchemaVersion();
+		boolean updated = MainDao.checkSchemaVersion();
+		// If project has been updated, execute copy functions
+		if (updated) {
+			copyFunctions();
+		}
 		schemaChanged();
 		
 		return true;
@@ -549,7 +553,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	public void copyFunctions () {
+	public void copyFunctions() {
 		
 		// Get current schema names
 		String currentSchemaName = view.getSelectedSchema();
