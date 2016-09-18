@@ -50,10 +50,13 @@ public class RenameSchemaTask extends ParentSchemaTask {
 				MainDao.executeUpdateSql(sql, true);	
 			}
 			
+			// Execute SQL's that its name contains '_view' (corresponding to views)
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+			
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
 			
-			// Execute SQL's that its name contains '_trg' (corresponding to functions)
+			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);			
 			
 			// Refresh view

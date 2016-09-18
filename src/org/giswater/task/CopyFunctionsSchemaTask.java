@@ -42,14 +42,14 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
     	// Disable view
     	Utils.setPanelEnabled(parentPanel, false);
     	
+    	// Execute SQL's that its name contains '_view' (corresponding to views)
+    	status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+    	
 		// Execute SQL's that its name contains '_fct' (corresponding to functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
 		
-		// Execute SQL's that its name contains '_trg' (corresponding to functions)
+		// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
-		
-		// Execute SQL's that its name contains '_view' (corresponding to functions)
-		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
 		
 		if (status) {
 			String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
