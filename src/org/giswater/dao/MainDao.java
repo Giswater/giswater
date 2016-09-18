@@ -60,7 +60,7 @@ public class MainDao {
 	private static String softwareAcronym;   // [ud | ws | hecras]
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
-    private static String updatesFolder;   // appPath + "updates"
+    private static String updatesFolder;   // appPath + "sql/updates"
 	private static String giswaterVersion;
 	private static String postgreVersion;
 	private static String postgisVersion;
@@ -187,9 +187,9 @@ public class MainDao {
     	Utils.setSqlLog(PropertiesDao.getPropertiesFile().get("SQL_LOG", "false"));
     	
         // Get inp and updates folder
-        String inpFolder = Utils.getAppPath() + "inp" + File.separator;
+        String inpFolder = Utils.getAppPath()+"inp"+File.separator;
         ConfigDao.setInpFolder(inpFolder);
-        updatesFolder = Utils.getAppPath() + "updates" + File.separator;
+        updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
         getLastUpdates();
 
     	// Set Config DB connection
