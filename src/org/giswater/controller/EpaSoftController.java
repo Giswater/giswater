@@ -271,7 +271,7 @@ public class EpaSoftController extends AbstractController {
 	// Analysis
 	public void scenarioCatalog() {
 		
-		ResultSet rs = MainDao.getTableResultset("rpt_result_cat");
+		ResultSet rs = MainDao.getTableResultset("rpt_cat_result");
 		if (rs == null) return;		
 		String softwareName = MainDao.getWaterSoftware();
 		AbstractOptionsDialog dialog = null;

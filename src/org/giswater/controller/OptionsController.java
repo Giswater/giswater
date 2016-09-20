@@ -222,7 +222,7 @@ public class OptionsController extends AbstractController {
 
 		// ResultSelection
 		else if (comboName.equals("result_id")) {
-			tableName = "rpt_result_cat";
+			tableName = "rpt_cat_result";
 			fields = "result_id";
 		}	
 		

@@ -52,7 +52,7 @@ public class ResultSelectionPanel extends JPanel {
 	private JDialog dialog;
 
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private final String TABLE_RELATED = "rpt_result_cat";
+	private final String TABLE_RELATED = "rpt_cat_result";
 	private final String TABLE_MAIN = "result_selection";
 	
 	
