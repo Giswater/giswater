@@ -72,6 +72,17 @@ public class ExportToInp extends Model {
 		return result;
 		
 	}    
+    
+
+    // Execute SQL function gw_fct_node2arc()
+    private static void executeNode2Arc() {
+
+    	Utils.getLogger().info("Execution function 'gw_fct_node2arc()'");
+		String sql = "SELECT "+MainDao.getSchema()+".gw_fct_node2arc();";
+		String result = MainDao.queryToString(sql);		
+		Utils.getLogger().info("Result function 'gw_fct_node2arc()': "+result);
+
+	}
 	
 	
     // Export to INP 
@@ -99,6 +110,11 @@ public class ExportToInp extends Model {
             if (!fileTemplate.exists()) {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
             	return false;
+            }
+            
+            // Execute SQL function gw_fct_node2arc() 
+            if (MainDao.getWaterSoftware().equals("EPANET")) {
+            	executeNode2Arc();
             }
                 
             // Open template and output file
@@ -165,9 +181,9 @@ public class ExportToInp extends Model {
         }
 
     }
-    
 
-    // Process target specified by id parameter
+
+	// Process target specified by id parameter
     private static void processTarget(int id, String tableName, int lines) throws IOException, SQLException {
 
         // Go to the first line of the target
