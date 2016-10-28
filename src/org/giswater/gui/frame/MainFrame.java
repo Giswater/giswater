@@ -132,6 +132,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmSqlFileLauncher;
 	
 	private final int MESSAGE_TIME = 5000;
+	private JMenuItem mntmDevTools;
 
 
 	
@@ -283,6 +284,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmSqlFileLauncher.setActionCommand("executeSqlFile");
 		mntmSqlFileLauncher.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		mnData.add(mntmSqlFileLauncher);
+		
+		mntmDevTools = new JMenuItem(BUNDLE.getString("MainFrame.mntmDevTools.text")); //$NON-NLS-1$
+		mntmDevTools.setActionCommand(BUNDLE.getString("MainFrame.mntmDevTools.actionCommand")); //$NON-NLS-1$
+		mnData.add(mntmDevTools);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text"));
 		menuBar.add(mnConfiguration);

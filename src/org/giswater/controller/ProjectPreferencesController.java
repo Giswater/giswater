@@ -37,6 +37,7 @@ import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopyFunctionsSchemaTask;
 import org.giswater.task.CopySchemaTask;
+import org.giswater.task.DbToFilesTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.task.RenameSchemaTask;
 import org.giswater.util.Encryption;
@@ -567,6 +568,23 @@ public class ProjectPreferencesController extends AbstractController {
         task.execute();
 		
 	}
+	
+	
+	
+	public void dbToFiles() {
+		
+		// Get current schema names
+		String currentSchemaName = view.getSelectedSchema();
+		if (currentSchemaName.equals("")) return;		
+		
+		// Execute task: CopyFunctionsSchema
+		DbToFilesTask task = new DbToFilesTask(waterSoftware, currentSchemaName, currentSchemaName);
+        task.setController(this);
+        task.setParentPanel(view);
+        task.addPropertyChangeListener(this);
+        task.execute();
+		
+	}	
 	
 	
 }

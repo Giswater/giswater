@@ -91,6 +91,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private static final Font FONT_PANEL_TITLE2 = new Font("Tahoma", Font.PLAIN, 11);
 	private static final Integer BUTTON_WIDTH = 72;
 	private JButton btnCopyFunctions;
+	private JButton btnDbToFiles;
 
 	
 	public ProjectPreferencesPanel() {
@@ -266,11 +267,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnCreateGisProject.setActionCommand("createGisProject");
 		add(btnCreateGisProject, "cell 0 5 2 1");
 		
-		btnCopyFunctions = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.text")); //$NON-NLS-1$
-		btnCopyFunctions.setVisible(false);
+		btnCopyFunctions = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.text"));
 		btnCopyFunctions.setPreferredSize(new Dimension(100, 23));
 		btnCopyFunctions.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.actionCommand")); //$NON-NLS-1$
-		add(btnCopyFunctions, "cell 2 5");
+		add(btnCopyFunctions, "flowx,cell 2 5");
 		
 		btnGoToEpa = new JButton();
 		btnGoToEpa.setText(BUNDLE.getString("ProjectPreferencesPanel.btnEpa.text")); //$NON-NLS-1$
@@ -278,6 +278,11 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnGoToEpa.setMinimumSize(new Dimension(72, 23));
 		btnGoToEpa.setActionCommand("openEpaSoft");
 		add(btnGoToEpa, "cell 3 5,growx");
+		
+		btnDbToFiles = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnDbToFiles.text")); //$NON-NLS-1$
+		btnDbToFiles.setPreferredSize(new Dimension(100, 23));
+		btnDbToFiles.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnDbToFiles.actionCommand")); //$NON-NLS-1$
+		add(btnDbToFiles, "cell 2 5");
 		
 		setupListeners();
 	    
@@ -305,6 +310,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		btnGoToEpa.addActionListener(this);
 		
 		btnCopyFunctions.addActionListener(this);		
+		btnDbToFiles.addActionListener(this);		
 
 	}
 	

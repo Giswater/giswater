@@ -20,6 +20,8 @@
  */
 package org.giswater.task;
 
+import java.io.File;
+
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
@@ -27,10 +29,13 @@ import org.giswater.util.Utils;
 
 public class CopyFunctionsSchemaTask extends ParentSchemaTask {
 	
-	
+	private String folderRoot;
+
+
 	public CopyFunctionsSchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
+		this.folderRoot = Utils.getAppPath()+File.separator+"model";				
 	}
 	
 	
@@ -42,23 +47,20 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
     	// Disable view
     	Utils.setPanelEnabled(parentPanel, false);
     	
-    	// Execute SQL's that its name contains '_view' (corresponding to views)
-    	status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
-    	
-		// Execute SQL's that its name contains '_fct' (corresponding to functions)
-		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+    	// Set path
+    	status = true;
+		String folderPath = this.folderRoot+File.separator+"fct";
+		if (!processFolder(folderPath, FILE_PATTERN_FCT)) return null;
 		
-		// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
-		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
+		folderPath = this.folderRoot+File.separator+"trg";
+		if (!processFolder(folderPath, FILE_PATTERN_TRG)) return null;
 		
-		if (status) {
-			String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
-				MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
-			Utils.logInfo(sql);
-			// Last SQL script. So commit all process
-			MainDao.executeSql(sql, true);
-			MainDao.resetSchemaVersion();			
-		}		
+		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
+			MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
+		Utils.logInfo(sql);
+		// Last SQL script. So commit all process
+		MainDao.executeSql(sql, true);
+		MainDao.resetSchemaVersion();			
 		
 		// Refresh view
 		controller.selectSourceType(false);			
