@@ -210,7 +210,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnProjectPreferences.setActionCommand("openProjectPreferences");
 		add(btnProjectPreferences, "flowx,cell 0 4,alignx right");
 		
-		lblDummy = new JLabel("");
+		lblDummy = new JLabel("  ");
 		add(lblDummy, "cell 0 4");
 
 		setupListeners();
