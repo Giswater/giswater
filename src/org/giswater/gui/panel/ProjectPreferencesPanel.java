@@ -100,7 +100,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[90px:n:90px][60px:n][::250px,grow][::88px]", "[60.00][::10px][124.00][::10px][][]"));
+		setLayout(new MigLayout("", "[90px:n:90px][31px:n][::245px,grow][121px:n:121px]", "[60.00][::10px][124.00][::10px][][]"));
 		
 		panelWaterProject = new JPanel();
 		panelWaterProject.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelWaterProject.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));

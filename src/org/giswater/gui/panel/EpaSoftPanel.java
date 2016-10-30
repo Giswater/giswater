@@ -89,12 +89,12 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[::523.00px]", "[][5px:n][][5px:n][]"));
+		setLayout(new MigLayout("", "[::507px,grow]", "[][5px:n][][5px:n][]"));
 		
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelPreprocess, "cell 0 0,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[118px:n][118px:n][118px:n][118px:n]", "[]"));
+		panelPreprocess.setLayout(new MigLayout("", "[118px:n][118px:n][118px:n][127px:n,grow]", "[]"));
 		
 		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
@@ -119,7 +119,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 2,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][108.00][::3px][:238.00px:250px][::3px][:65px:65px]", "[::22px][34px:n][20][34px:n][20][][]"));
+		panelFileManager.setLayout(new MigLayout("", "[][108.00][::3px][233px:n,grow][::3px][65px:n][61px:n]", "[::22px][34px:n][20][34px:n][20][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
@@ -195,12 +195,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager.add(txtResultName, "cell 3 5,growx,aligny top");
 		
 		btnAccept = new JButton();
+		btnAccept.setPreferredSize(new Dimension(115, 9));
 		btnAccept.setMinimumSize(new Dimension(65, 23));
 		btnAccept.setEnabled(false);
 		btnAccept.setText(BUNDLE.getString("Generic.btnAccept.text")); 
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
-		panelFileManager.add(btnAccept, "flowx,cell 5 6,alignx right");
+		panelFileManager.add(btnAccept, "flowx,cell 5 6 2 1,growx");
 		
 		btnProjectPreferences = new JButton("Project Preferences");
 		btnProjectPreferences.setMinimumSize(new Dimension(130, 23));
