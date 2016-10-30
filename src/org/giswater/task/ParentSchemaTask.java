@@ -158,7 +158,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		
 		try {
 			
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+			String folderRootPath = UtilsOS.getExecutionPath()+File.separator+"sql"+File.separator;
 			String folderPath = "";
 			
 			// Process selected software folder

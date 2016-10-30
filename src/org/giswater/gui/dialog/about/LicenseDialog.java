@@ -25,6 +25,8 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -38,8 +40,7 @@ import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.util.Utils;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import org.giswater.util.UtilsOS;
 
 
 public class LicenseDialog extends JDialog {
@@ -69,13 +70,8 @@ public class LicenseDialog extends JDialog {
 		lblInfo2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(lblInfo2, "cell 1 3,alignx center");
 		
-    	String folderRoot;
-		try {
-			folderRoot = new File(".").getCanonicalPath() + File.separator + "legal" + File.separator;
-			file = new File(folderRoot + "licensing.txt");			
-		} catch (IOException e) {
-			Utils.logError(e);
-		}   			
+    	String folderRoot = UtilsOS.getExecutionPath()+File.separator+"legal"+File.separator;
+		file = new File(folderRoot+"licensing.txt");
 		
 		btnLicense = new JButton();
 		btnLicense.setFont(new Font("Tahoma", Font.BOLD, 12));

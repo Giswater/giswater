@@ -21,7 +21,6 @@
 package org.giswater.task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -30,6 +29,7 @@ import org.giswater.controller.NewProjectController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsOS;
 
 
 public class CreateSchemaTask extends ParentSchemaTask {
@@ -60,35 +60,24 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	public boolean createSchema(String softwareAcronym) {
 		
 		boolean status = true;
-		String filePath = "";
 		
-		try {
-			
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
-			String folderPath = "";
-			
-			// Process selected software folder
-			folderPath = folderRootPath+softwareAcronym+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-			// Process 'utils' folder
-			folderPath = folderRootPath+"utils"+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-			// Process language folders: parameter 'softwareAcronym' and 'utils'
-			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
-			folderPath = folderLocale+softwareAcronym+File.separator;
-			if (!processFolder(folderPath)) return false;
-			folderPath = folderLocale+"utils"+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", filePath);
-			status = false;
-		} catch (IOException e) {
-			Utils.showError(e, filePath);
-			status = false;			
-		}
+		// Get execution path
+		String folderRootPath = UtilsOS.getExecutionPath()+File.separator+"sql"+File.separator;	
+		
+		// Process selected software folder
+		String folderPath = folderRootPath+File.separator+softwareAcronym+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process 'utils' folder
+		folderPath = folderRootPath+"utils"+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process language folders: parameter 'softwareAcronym' and 'utils'
+		String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
+		folderPath = folderLocale+softwareAcronym+File.separator;
+		if (!processFolder(folderPath)) return false;
+		folderPath = folderLocale+"utils"+File.separator;
+		if (!processFolder(folderPath)) return false;
 		
 		return status;
 		

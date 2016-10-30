@@ -121,29 +121,29 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 				Utils.getLogger().info(sql);
 				MainDao.executeSql(sql, false);
 				// Once schema has been created, load example data 
-				try {			
-					String folderRoot = new File(".").getCanonicalPath()+File.separator;
-					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;				
+				try {
+					String folderRoot = UtilsOS.getExecutionPath()+File.separator;
+					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;
 					if (!processFolder(folderPath)) {
 						status = false;
 						MainDao.deleteSchema(schemaName);
 						return null;
 					}
-					if (waterSoftware.equals("hecras")) {				
+					if (waterSoftware.equals("hecras")) {
 						// Trough Load Raster
-						String rasterName = "sample_dtm.tif";	 						
-						String rasterPath = folderRoot+"samples"+File.separator+rasterName;	 						
+						String rasterName = "sample_dtm.tif";
+						String rasterPath = folderRoot+"samples"+File.separator+rasterName;
 						if (loadRaster(schemaName, rasterPath, rasterName)) {
-							String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
+							String msg = Utils.getBundleString("schema_creation_completed")+": "+schemaName;
 							MainClass.mdi.showMessage(msg);
-						}						
+						}
 					}	
 					else {
 						String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
 						MainClass.mdi.showMessage(msg);
 					}
 				} catch (Exception e) {
-					status = false;					
+					status = false;
 					MainDao.deleteSchema(schemaName);
 		            Utils.showError(e);
 				}
