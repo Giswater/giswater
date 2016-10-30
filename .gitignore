@@ -5,7 +5,7 @@
 log
 portable
 config/giswater_*
-build_runnable.xml
+build_runnable*.xml
 samples/sample_mdt.asc
 samples/sample_mdt.sql
 models/swmm2d/2D/[Bb]in/
@@ -19,7 +19,7 @@ _*
 ## Eclipse
 #################
 
-build.num
+build*.num
 .project
 .metadata
 bin/**
