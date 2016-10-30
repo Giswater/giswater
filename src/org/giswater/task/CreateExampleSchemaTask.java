@@ -122,7 +122,7 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 				MainDao.executeSql(sql, false);
 				// Once schema has been created, load example data 
 				try {
-					String folderRoot = UtilsOS.getExecutionPath()+File.separator;
+					String folderRoot = Utils.getAppPath();
 					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;
 					if (!processFolder(folderPath)) {
 						status = false;

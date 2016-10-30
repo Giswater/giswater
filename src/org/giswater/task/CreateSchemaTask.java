@@ -21,7 +21,6 @@
 package org.giswater.task;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -29,7 +28,6 @@ import org.giswater.controller.NewProjectController;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
-import org.giswater.util.UtilsOS;
 
 
 public class CreateSchemaTask extends ParentSchemaTask {
@@ -62,7 +60,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		boolean status = true;
 		
 		// Get execution path
-		String folderRootPath = UtilsOS.getExecutionPath()+File.separator+"sql"+File.separator;	
+		String folderRootPath = Utils.getAppPath()+"sql"+File.separator;
 		
 		// Process selected software folder
 		String folderPath = folderRootPath+File.separator+softwareAcronym+File.separator;

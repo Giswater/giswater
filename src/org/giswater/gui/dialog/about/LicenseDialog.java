@@ -40,7 +40,6 @@ import javax.swing.SwingConstants;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.util.Utils;
-import org.giswater.util.UtilsOS;
 
 
 public class LicenseDialog extends JDialog {
@@ -70,7 +69,7 @@ public class LicenseDialog extends JDialog {
 		lblInfo2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		getContentPane().add(lblInfo2, "cell 1 3,alignx center");
 		
-    	String folderRoot = UtilsOS.getExecutionPath()+File.separator+"legal"+File.separator;
+    	String folderRoot = Utils.getAppPath()+File.separator+"legal"+File.separator;
 		file = new File(folderRoot+"licensing.txt");
 		
 		btnLicense = new JButton();
