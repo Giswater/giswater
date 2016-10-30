@@ -75,6 +75,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 	
 	private static final Font FONT_PANEL_TITLE = new Font("Tahoma", Font.PLAIN, 11);
+	private JLabel lblDummy;
 
 	
 	public EpaSoftPanel() {
@@ -89,12 +90,12 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[::507px,grow]", "[][5px:n][][5px:n][]"));
+		setLayout(new MigLayout("", "[::508px,grow]", "[67px:n][10px:n][][10px:n][]"));
 		
 		panelPreprocess = new JPanel();
 		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelPreprocess, "cell 0 0,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[118px:n][118px:n][118px:n][127px:n,grow]", "[]"));
+		panelPreprocess.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][128px:n,grow]", "[]"));
 		
 		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
 		btnSectorSelection.setEnabled(false);
@@ -119,7 +120,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 2,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][108.00][::3px][233px:n,grow][::3px][65px:n][61px:n]", "[::22px][34px:n][20][34px:n][20][][]"));
+		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][34px:n][45px:n][34px:n][45px:n][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
@@ -208,6 +209,9 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnProjectPreferences.setPreferredSize(new Dimension(115, 23));
 		btnProjectPreferences.setActionCommand("openProjectPreferences");
 		add(btnProjectPreferences, "flowx,cell 0 4,alignx right");
+		
+		lblDummy = new JLabel(BUNDLE.getString("EpaSoftPanel.lblLll.text")); //$NON-NLS-1$
+		add(lblDummy, "cell 0 4");
 
 		setupListeners();
 
