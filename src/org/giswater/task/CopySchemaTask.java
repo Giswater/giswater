@@ -50,7 +50,7 @@ public class CopySchemaTask extends ParentSchemaTask {
 			// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);
 			// Execute SQL's that its name contains '_view' (corresponding to views)
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
 			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)

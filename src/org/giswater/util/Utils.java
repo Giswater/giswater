@@ -736,6 +736,24 @@ public class Utils {
 	    }		
 		
 	}
+	
+
+	public static boolean renameFile(String pathFrom, String pathTo) {
+		
+		File fileFrom = new File(pathFrom);			
+		File fileTo = new File(pathTo);		
+		if (!fileFrom.exists()) {
+			Utils.logError("File not found: "+fileFrom);
+			return false;
+		}		
+		if (fileTo.exists()) {
+			fileTo.delete();
+		}
+		boolean result = fileFrom.renameTo(fileTo);
+
+		return result;
+		
+	}	
 
 	
 }

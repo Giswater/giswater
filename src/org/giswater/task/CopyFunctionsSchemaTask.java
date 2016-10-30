@@ -37,6 +37,8 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
     @Override
     public Void doInBackground() { 
 		
+		status = true;
+		
     	setProgress(1);
     	
     	// Disable view
@@ -44,24 +46,27 @@ public class CopyFunctionsSchemaTask extends ParentSchemaTask {
     	
     	// Execute SQL's that its name contains '_view' (corresponding to views)
     	status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+    	if (!status) return null;
     	
 		// Execute SQL's that its name contains '_fct' (corresponding to functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+    	if (!status) return null;		
 		
 		// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
 		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);
+    	if (!status) return null;		
 		
 		if (status) {
 			String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
-				MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
+				MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
 			Utils.logInfo(sql);
 			// Last SQL script. So commit all process
 			MainDao.executeSql(sql, true);
-			MainDao.resetSchemaVersion();			
-		}		
+			MainDao.resetSchemaVersion();
+		}
 		
 		// Refresh view
-		controller.selectSourceType(false);			
+		controller.selectSourceType(false);
     	Utils.setPanelEnabled(parentPanel, true);
     	parentPanel.setSelectedSchema(schemaName);
 		
