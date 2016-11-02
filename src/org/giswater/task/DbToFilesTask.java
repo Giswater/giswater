@@ -197,6 +197,8 @@ public class DbToFilesTask extends ParentSchemaTask {
 		content = "DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\";";
 		content+= "\nCREATE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
 		content+= "\n"+rsView.getString("definition")+"\n\n";
+		content = content.replace("\""+this.currentSchemaName+"\"", "\"SCHEMA_NAME\"");
+		content = content.replace("\t", "    ");		
 		
 		String filePath = folderPath+File.separator+rsView.getString("viewname")+".sql";
 		Utils.logInfo("Generating file: "+filePath);
