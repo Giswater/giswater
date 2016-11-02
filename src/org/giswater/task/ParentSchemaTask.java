@@ -31,6 +31,7 @@ import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
@@ -45,6 +46,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String locale;
 	protected String currentSchemaName;	
 	protected boolean status;
+	protected PropertiesMap prop;		
 	
 	protected String folderFct;
 	protected String folderFctUtils;
@@ -58,7 +60,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected final String FILE_PATTERN_FCT_GW = "fct_gw";	
 	protected final String FILE_PATTERN_FCT_OM = "fct_om";	
 	protected final String FILE_PATTERN_FCT_SMW = "fct_smw";
-	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";		
+	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";
 	
 	
 	public ParentSchemaTask() {	}
@@ -77,7 +79,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
     	else {
     		softwareAcronym = "hecras";
     	}
-		locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");    	
+    	setProperties();
     	
 	}
 	
@@ -86,6 +88,13 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		this(waterSoftware, schemaName, "");
 	}
 	
+	protected void setProperties() {
+		this.prop = PropertiesDao.getPropertiesFile();
+		this.locale = this.prop.get("LANGUAGE", "");
+		this.folderFct = this.prop.get("FOLDER_FCT", "");
+		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", "");
+		this.folderViews = this.prop.get("FOLDER_VIEWS", "");
+	}
 	
 	public void setParentPanel(ProjectPreferencesPanel parentPanel) {
 		this.parentPanel = parentPanel;

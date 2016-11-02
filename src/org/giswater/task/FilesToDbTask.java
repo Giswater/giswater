@@ -31,10 +31,6 @@ public class FilesToDbTask extends ParentSchemaTask {
 	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
-		//this.folderRoot = Utils.getAppPath()+File.separator+"model";
-		this.folderFct = "C:\\workspace\\sewernet_model\\ud\\fct";
-		this.folderFctUtils = "C:\\workspace\\sewernet_model\\utils";
-		this.folderViews = "C:\\workspace\\sewernet_model\\views";		
 	}
 	
 	

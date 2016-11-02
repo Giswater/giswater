@@ -39,10 +39,6 @@ public class DbToFilesTask extends ParentSchemaTask {
 	public DbToFilesTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;	
-		//this.folderRoot = Utils.getAppPath()+"model_from_db";
-		this.folderFct = "C:\\workspace\\sewernet_model\\ud\\fct";
-		this.folderFctUtils = "C:\\workspace\\sewernet_model\\utils";
-		this.folderViews = "C:\\workspace\\sewernet_model\\views";
 	}
 	
 	
@@ -197,8 +193,10 @@ public class DbToFilesTask extends ParentSchemaTask {
     
     private void processView(ResultSet rsView, String folderPath) throws SQLException {    
 
-		String header = "CREATE OR REPLACE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
-		String content = header+"\n"+rsView.getString("definition")+"\n\n";
+    	String content = "";
+		content = "DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\";";
+		content+= "\nCREATE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
+		content+= "\n"+rsView.getString("definition")+"\n\n";
 		
 		String filePath = folderPath+File.separator+rsView.getString("viewname")+".sql";
 		Utils.logInfo("Generating file: "+filePath);
