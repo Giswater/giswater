@@ -46,10 +46,19 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String currentSchemaName;	
 	protected boolean status;
 	
+	protected String folderFct;
+	protected String folderFctUtils;
+	protected String folderViews;	
+	
 	protected final String FILE_PATTERN_FK = "_fk";	
-	protected final String FILE_PATTERN_FCT = "fct";	
+	protected final String FILE_PATTERN_FCT = "fct";
 	protected final String FILE_PATTERN_TRG = "trg";	
-	protected final String FILE_PATTERN_VIEW = "_view";	
+	protected final String FILE_PATTERN_VIEW = "view";	
+	
+	protected final String FILE_PATTERN_FCT_GW = "fct_gw";	
+	protected final String FILE_PATTERN_FCT_OM = "fct_om";	
+	protected final String FILE_PATTERN_FCT_SMW = "fct_smw";
+	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";		
 	
 	
 	public ParentSchemaTask() {	}

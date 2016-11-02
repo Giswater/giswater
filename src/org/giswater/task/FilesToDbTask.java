@@ -20,40 +20,41 @@
  */
 package org.giswater.task;
 
-import java.io.File;
-
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
 
 
-public class CopyFunctionsSchemaTask extends ParentSchemaTask {
-	
-	private String folderRoot;
+public class FilesToDbTask extends ParentSchemaTask {
 
 
-	public CopyFunctionsSchemaTask(String waterSoftware, String currentSchemaName, String schemaName) {
+	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
-		this.folderRoot = Utils.getAppPath()+File.separator+"model";				
+		//this.folderRoot = Utils.getAppPath()+File.separator+"model";
+		this.folderFct = "C:\\workspace\\sewernet_model\\ud\\fct";
+		this.folderFctUtils = "C:\\workspace\\sewernet_model\\utils";
+		this.folderViews = "C:\\workspace\\sewernet_model\\views";		
 	}
 	
 	
     @Override
     public Void doInBackground() { 
 		
+    	status = true;
+    	
     	setProgress(1);
     	
     	// Disable view
     	Utils.setPanelEnabled(parentPanel, false);
     	
-    	// Set path
-    	status = true;
-		String folderPath = this.folderRoot+File.separator+"fct";
-		if (!processFolder(folderPath, FILE_PATTERN_FCT)) return null;
+    	// Process functions
+		status = !processFolder(this.folderFct, FILE_PATTERN_FCT);
+		if (!status) return null;
 		
-		folderPath = this.folderRoot+File.separator+"trg";
-		if (!processFolder(folderPath, FILE_PATTERN_TRG)) return null;
+		// Process triggers
+		status = processFolder(this.folderFct, FILE_PATTERN_TRG);
+		if (!status) return null;
 		
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
 			MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			

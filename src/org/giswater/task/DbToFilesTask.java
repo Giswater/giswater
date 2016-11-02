@@ -35,13 +35,14 @@ import org.giswater.util.Utils;
 
 public class DbToFilesTask extends ParentSchemaTask {
 	
-	private String folderRoot;
-
 
 	public DbToFilesTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;	
-		this.folderRoot = Utils.getAppPath()+File.separator+"model_from_db";			
+		//this.folderRoot = Utils.getAppPath()+"model_from_db";
+		this.folderFct = "C:\\workspace\\sewernet_model\\ud\\fct";
+		this.folderFctUtils = "C:\\workspace\\sewernet_model\\utils";
+		this.folderViews = "C:\\workspace\\sewernet_model\\views";
 	}
 	
 	
@@ -54,7 +55,10 @@ public class DbToFilesTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
     	
     	// Delete files from folder
-    	File folder = new File(this.folderRoot);
+    	File folder = new File(this.folderFct);
+    	if (!folder.exists()) {
+    		folder.mkdir();
+    	}
     	try {
 			FileUtils.cleanDirectory(folder);
 		} catch (IOException e) {
@@ -62,10 +66,18 @@ public class DbToFilesTask extends ParentSchemaTask {
 		}     	
 		
 		// Process functions
-    	status = processPattern(FILE_PATTERN_FCT);
-
+    	status = processFunctionsPattern(FILE_PATTERN_FCT_GW, this.folderFct);
+    	status = processFunctionsPattern(FILE_PATTERN_FCT_OM, this.folderFct);
+    	status = processFunctionsPattern(FILE_PATTERN_FCT_SMW, this.folderFct);
+    	
 		// Process triggers
-    	status = processPattern(FILE_PATTERN_TRG);
+    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
+
+		// Process functions utils
+    	status = processFunctionsPattern(FILE_PATTERN_FCT_UTIL, this.folderFctUtils);    	
+    	
+    	// Process views
+    	status = processViews(this.folderViews);
     	
 		// Refresh view
 		controller.selectSourceType(false);			
@@ -77,7 +89,13 @@ public class DbToFilesTask extends ParentSchemaTask {
     }
 
     
-    private boolean processPattern(String pattern) {
+    private boolean processFunctionsPattern(String pattern, String folderPath) {
+    	
+    	// Check if folder exists
+    	File folder = new File(folderPath);
+    	if (!folder.exists()) {
+    		folder.mkdir();
+    	}
     	
 		String sql;
 		sql = "SELECT routine_name, specific_name, routine_type, type_udt_schema, type_udt_name, routine_definition";
@@ -88,7 +106,7 @@ public class DbToFilesTask extends ParentSchemaTask {
 		ResultSet rs = MainDao.getResultset(sql);
         try {
 			while (rs.next()) {
-				processFunction(rs);
+				processFunction(rs, folderPath);
 			}
 			rs.close();		
 		} catch (SQLException e) {
@@ -100,7 +118,7 @@ public class DbToFilesTask extends ParentSchemaTask {
     }
     
     
-    private void processFunction(ResultSet rsFunction) throws SQLException {
+    private void processFunction(ResultSet rsFunction, String folderPath) throws SQLException {
 
 		String header = "CREATE OR REPLACE FUNCTION \""+this.currentSchemaName+"\".\""+rsFunction.getString("routine_name")+"\"(";
 		String headerEnd = "RETURNS "+rsFunction.getString("type_udt_schema")+"."+rsFunction.getString("type_udt_name")+" AS $BODY$";
@@ -130,10 +148,60 @@ public class DbToFilesTask extends ParentSchemaTask {
 		content = content.replace("\t", "    ");
 		rs.close();	
 		
-		String folderPath = this.folderRoot+File.separator;
-		String filePath = folderPath+rsFunction.getString("routine_name")+".sql";
+		String filePath = folderPath+File.separator+rsFunction.getString("routine_name")+".sql";
 		Utils.logInfo("Generating file: "+filePath);
 		
+		OutputStreamWriter osw;
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(filePath, false);
+			osw = new OutputStreamWriter(fos, "UTF-8");
+			osw.write("\uFEFF");
+			osw.write(content);
+			osw.close();
+			fos.close();		
+		} catch (Exception e) {
+			Utils.logError(e);
+		}
+			
+    }
+    
+    
+    private boolean processViews(String folderPath) {
+    	
+    	// Check if folder exists
+    	File folder = new File(folderPath);
+    	if (!folder.exists()) {
+    		folder.mkdir();
+    	}
+    	
+		String sql;
+		sql = "SELECT viewname, definition";
+		sql+= " FROM pg_views";
+		sql+= " WHERE schemaname = '"+this.currentSchemaName+"'";
+		sql+= " ORDER BY viewname";
+		ResultSet rs = MainDao.getResultset(sql);
+        try {
+			while (rs.next()) {
+				processView(rs, folderPath);
+			}
+			rs.close();		
+		} catch (SQLException e) {
+			Utils.logError(e);
+			return false;
+		}
+    	return true;
+    
+    }
+    
+    
+    private void processView(ResultSet rsView, String folderPath) throws SQLException {    
+
+		String header = "CREATE OR REPLACE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
+		String content = header+"\n"+rsView.getString("definition")+"\n\n";
+		
+		String filePath = folderPath+File.separator+rsView.getString("viewname")+".sql";
+		Utils.logInfo("Generating file: "+filePath);
 		OutputStreamWriter osw;
 		FileOutputStream fos;
 		try {

@@ -35,7 +35,7 @@ import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.task.CopyFunctionsSchemaTask;
+import org.giswater.task.FilesToDbTask;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DbToFilesTask;
 import org.giswater.task.DeleteSchemaTask;
@@ -186,7 +186,7 @@ public class ProjectPreferencesController extends AbstractController {
 		boolean updated = MainDao.checkSchemaVersion();
 		// If project has been updated, execute copy functions
 		if (updated) {
-			copyFunctions();
+			filesToDb();
 		}
 		schemaChanged();
 		
@@ -554,14 +554,14 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	public void copyFunctions() {
+	public void filesToDb() {
 		
 		// Get current schema names
 		String currentSchemaName = view.getSelectedSchema();
 		if (currentSchemaName.equals("")) return;		
 		
 		// Execute task: CopyFunctionsSchema
-		CopyFunctionsSchemaTask task = new CopyFunctionsSchemaTask(waterSoftware, currentSchemaName, currentSchemaName);
+		FilesToDbTask task = new FilesToDbTask(waterSoftware, currentSchemaName, currentSchemaName);
         task.setController(this);
         task.setParentPanel(view);
         task.addPropertyChangeListener(this);
