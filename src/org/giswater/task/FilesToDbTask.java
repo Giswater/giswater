@@ -45,8 +45,14 @@ public class FilesToDbTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
     	
     	// Process functions
-		status = !processFolder(this.folderFct, FILE_PATTERN_FCT);
+		status = processFolder(this.folderFct, FILE_PATTERN_FCT_GW);
 		if (!status) return null;
+		status = processFolder(this.folderFct, FILE_PATTERN_FCT_OM);
+		if (!status) return null;
+		status = processFolder(this.folderFct, FILE_PATTERN_FCT_SMW);
+		if (!status) return null;		
+		status = processFolder(this.folderFct, FILE_PATTERN_FCT_UTIL);
+		if (!status) return null;		
 		
 		// Process triggers
 		status = processFolder(this.folderFct, FILE_PATTERN_TRG);

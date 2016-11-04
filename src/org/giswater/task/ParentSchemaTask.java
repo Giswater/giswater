@@ -62,6 +62,8 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected final String FILE_PATTERN_FCT_SMW = "fct_smw";
 	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";
 	
+	protected final String BYTE_ORDER_MARK = "\uFEFF";	
+	
 	
 	public ParentSchemaTask() {	}
 	
@@ -112,7 +114,8 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
 		String content = Utils.readFile(filePath);
-		if (content.equals("")) return false;	    
+		if (content.equals("")) return false;
+		content = content.replace(BYTE_ORDER_MARK, "");
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
 		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
