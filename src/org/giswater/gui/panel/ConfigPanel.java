@@ -356,6 +356,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	}	
 	
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initConfig() throws MissingResourceException {
 
 		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][::30px][::90px][75px:n:75px]", "[5px:n][][][][][][][][][][][2px:n][::17px][::17px][2px:n][34px:n][6px:n][]"));
