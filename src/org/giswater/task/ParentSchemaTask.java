@@ -31,6 +31,7 @@ import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
 
@@ -45,11 +46,24 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String locale;
 	protected String currentSchemaName;	
 	protected boolean status;
+	protected PropertiesMap prop;		
+	
+	protected String folderRootPath;	
+	protected String folderFct;
+	protected String folderFctUtils;
+	protected String folderViews;	
 	
 	protected final String FILE_PATTERN_FK = "_fk";	
-	protected final String FILE_PATTERN_FCT = "_fct";	
-	protected final String FILE_PATTERN_TRG = "_trg";	
-	protected final String FILE_PATTERN_VIEW = "_view";	
+	protected final String FILE_PATTERN_FCT = "fct";
+	protected final String FILE_PATTERN_TRG = "trg";	
+	protected final String FILE_PATTERN_VIEW = "view";	
+	
+	protected final String FILE_PATTERN_FCT_GW = "fct_gw";	
+	protected final String FILE_PATTERN_FCT_OM = "fct_om";	
+	protected final String FILE_PATTERN_FCT_SMW = "fct_smw";
+	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";
+	
+	protected final String BYTE_ORDER_MARK = "\uFEFF";
 	
 	
 	public ParentSchemaTask() {	}
@@ -68,7 +82,13 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
     	else {
     		softwareAcronym = "hecras";
     	}
-		locale = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");    	
+
+		try {
+			this.folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+		} catch (IOException e) {
+			Utils.showError(e);
+		}    	
+    	setProperties();
     	
 	}
 	
@@ -77,6 +97,15 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		this(waterSoftware, schemaName, "");
 	}
 	
+	protected void setProperties() {
+		this.prop = PropertiesDao.getPropertiesFile();
+		this.locale = this.prop.get("LANGUAGE", "");
+		String folderPath = folderRootPath+softwareAcronym+"_export_fct";
+		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
+		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
+		folderPath = folderRootPath+softwareAcronym+"_export_view";
+		this.folderViews = this.prop.get("FOLDER_VIEWS", folderPath);
+	}
 	
 	public void setParentPanel(ProjectPreferencesPanel parentPanel) {
 		this.parentPanel = parentPanel;
@@ -94,7 +123,8 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		
 		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
 		String content = Utils.readFile(filePath);
-		if (content.equals("")) return false;	    
+		if (content.equals("")) return false;
+		content = content.replace(BYTE_ORDER_MARK, "");
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
 		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					

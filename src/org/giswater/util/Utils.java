@@ -606,7 +606,8 @@ public class Utils {
 		String line;
 		String content = "";
 		while ((line = rat.readLine()) != null) {
-			content += line + "\n";
+		    String utf8 = new String(line.getBytes("ISO-8859-1"), "UTF-8");			
+			content += utf8 + "\n";
 		}
 		rat.close();		
 		

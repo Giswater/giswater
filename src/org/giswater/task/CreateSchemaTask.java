@@ -21,6 +21,8 @@
 package org.giswater.task;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -59,23 +61,33 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		
 		boolean status = true;
 		
-		// Get execution path
-		String folderRootPath = Utils.getAppPath()+"sql"+File.separator;
-		
-		// Process selected software folder
-		String folderPath = folderRootPath+File.separator+softwareAcronym+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process 'utils' folder
-		folderPath = folderRootPath+"utils"+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process language folders: parameter 'softwareAcronym' and 'utils'
-		String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
-		folderPath = folderLocale+softwareAcronym+File.separator;
-		if (!processFolder(folderPath)) return false;
-		folderPath = folderLocale+"utils"+File.separator;
-		if (!processFolder(folderPath)) return false;
+		try {
+			
+			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+			String folderPath = "";
+			
+			// Process selected software folder
+			folderPath = folderRootPath+softwareAcronym+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process 'utils' folder
+			folderPath = folderRootPath+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process language folders: parameter 'softwareAcronym' and 'utils'
+			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
+			folderPath = folderLocale+softwareAcronym+File.separator;
+			if (!processFolder(folderPath)) return false;
+			folderPath = folderLocale+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+		} catch (FileNotFoundException e) {
+			Utils.showError(e);
+			status = false;
+		} catch (IOException e) {
+			Utils.showError(e);
+			status = false;			
+		}
 		
 		return status;
 		
