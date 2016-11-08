@@ -60,7 +60,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	public boolean createSchema(String softwareAcronym) {
 		
 		boolean status = true;
-		String filePath = "";
 		
 		try {
 			
@@ -83,10 +82,10 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			if (!processFolder(folderPath)) return false;
 			
 		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", filePath);
+			Utils.showError(e);
 			status = false;
 		} catch (IOException e) {
-			Utils.showError(e, filePath);
+			Utils.showError(e);
 			status = false;			
 		}
 		
