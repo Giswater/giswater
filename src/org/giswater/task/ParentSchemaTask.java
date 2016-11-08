@@ -48,6 +48,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected boolean status;
 	protected PropertiesMap prop;		
 	
+	protected String folderRootPath;	
 	protected String folderFct;
 	protected String folderFctUtils;
 	protected String folderViews;	
@@ -62,7 +63,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected final String FILE_PATTERN_FCT_SMW = "fct_smw";
 	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";
 	
-	protected final String BYTE_ORDER_MARK = "\uFEFF";	
+	protected final String BYTE_ORDER_MARK = "\uFEFF";
 	
 	
 	public ParentSchemaTask() {	}
@@ -81,6 +82,12 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
     	else {
     		softwareAcronym = "hecras";
     	}
+
+		try {
+			this.folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
+		} catch (IOException e) {
+			Utils.showError(e);
+		}    	
     	setProperties();
     	
 	}
@@ -93,9 +100,11 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected void setProperties() {
 		this.prop = PropertiesDao.getPropertiesFile();
 		this.locale = this.prop.get("LANGUAGE", "");
-		this.folderFct = this.prop.get("FOLDER_FCT", "");
-		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", "");
-		this.folderViews = this.prop.get("FOLDER_VIEWS", "");
+		String folderPath = folderRootPath+softwareAcronym+"_export_fct";
+		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
+		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
+		folderPath = folderRootPath+softwareAcronym+"_export_view";
+		this.folderViews = this.prop.get("FOLDER_VIEWS", folderPath);
 	}
 	
 	public void setParentPanel(ProjectPreferencesPanel parentPanel) {

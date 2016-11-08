@@ -268,8 +268,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		add(btnCreateGisProject, "cell 0 5 2 1");
 		
 		btnCopyFunctions = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.text"));
+		btnCopyFunctions.setVisible(false);
 		btnCopyFunctions.setPreferredSize(new Dimension(100, 23));
-		btnCopyFunctions.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnCopyFunctions.actionCommand")); //$NON-NLS-1$
+		btnCopyFunctions.setActionCommand("filesToDb");
 		add(btnCopyFunctions, "flowx,cell 2 5");
 		
 		btnGoToEpa = new JButton();
@@ -280,8 +281,9 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		add(btnGoToEpa, "cell 3 5,growx");
 		
 		btnDbToFiles = new JButton(BUNDLE.getString("ProjectPreferencesPanel.btnDbToFiles.text")); //$NON-NLS-1$
+		btnDbToFiles.setVisible(false);
 		btnDbToFiles.setPreferredSize(new Dimension(100, 23));
-		btnDbToFiles.setActionCommand(BUNDLE.getString("ProjectPreferencesPanel.btnDbToFiles.actionCommand")); //$NON-NLS-1$
+		btnDbToFiles.setActionCommand("dbToFiles");
 		add(btnDbToFiles, "cell 2 5");
 		
 		setupListeners();

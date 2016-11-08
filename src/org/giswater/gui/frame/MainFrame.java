@@ -54,6 +54,7 @@ import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.ConfigController;
+import org.giswater.controller.DevToolboxController;
 import org.giswater.controller.EpaSoftController;
 import org.giswater.controller.HecRasController;
 import org.giswater.controller.MenuController;
@@ -99,7 +100,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
-	private JMenuItem mntmDatabaseAdministrator;	
+	private JMenuItem mntmDatabaseAdministrator;
+	private JMenuItem mntmDevTools;	
 	
 	private JMenu mnAbout;
 	private JMenuItem mntmWelcome;		
@@ -117,6 +119,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
+	public DevToolboxFrame devToolboxFrame;
 	
 	public EpaSoftController epaSoftController;
 	
@@ -132,8 +135,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmSqlFileLauncher;
 	
 	private final int MESSAGE_TIME = 5000;
-	private JMenuItem mntmDevTools;
-
 
 	
 	/**
@@ -286,7 +287,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		mnData.add(mntmSqlFileLauncher);
 		
 		mntmDevTools = new JMenuItem(BUNDLE.getString("MainFrame.mntmDevTools.text")); //$NON-NLS-1$
-		mntmDevTools.setActionCommand(BUNDLE.getString("MainFrame.mntmDevTools.actionCommand")); //$NON-NLS-1$
+		mntmDevTools.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_MASK));
+		mntmDevTools.setActionCommand("showDevToolbox");
 		mnData.add(mntmDevTools);
 		
 		mnConfiguration = new JMenu(BUNDLE.getString("MainFrame.mnConfiguration.text"));
@@ -398,11 +400,13 @@ public class MainFrame extends JFrame implements ActionListener {
         hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
+        devToolboxFrame = new DevToolboxFrame();
               
         desktopPane.add(epaSoftFrame);
         desktopPane.add(hecRasFrame);     
         desktopPane.add(ppFrame);                      
         desktopPane.add(configFrame);
+        desktopPane.add(devToolboxFrame);
         
         // Set titles
         ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
@@ -411,9 +415,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
+		new DevToolboxController(devToolboxFrame.getPanel());
 		epaSoftController = new EpaSoftController(epaSoftFrame.getPanel(), this);
         
-        // Set frame sizes accordin desktop size
+        // Set frame sizes according desktop size
         getMainParams();
         setVisible(true);
         Dimension desktopSize = desktopPane.getSize();
@@ -425,6 +430,12 @@ public class MainFrame extends JFrame implements ActionListener {
         ppFrame.setPreferredSize(desktopSize);
         configFrame.setSize(desktopSize);
         configFrame.setPreferredSize(desktopSize);
+        devToolboxFrame.setSize(desktopSize);
+        devToolboxFrame.setPreferredSize(desktopSize);
+        
+        // Developer toolbox enabled?
+        Boolean devToolbox = Boolean.parseBoolean(prop.get("DEV_TOOLS", "false"));
+        mntmDevTools.setEnabled(devToolbox);
 		
 	}
 	
@@ -595,7 +606,8 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmExampleHecras.addActionListener(this);	
 		
 		mntmDatabaseAdministrator.addActionListener(this);		
-		mntmSqlFileLauncher.addActionListener(this);		
+		mntmSqlFileLauncher.addActionListener(this);	
+		mntmDevTools.addActionListener(this);		
 		
 		mntmSoftware.addActionListener(this);
 		
@@ -641,6 +653,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 	}
 	
+	
+	public void openDevToolbox() {
+		manageFrames(devToolboxFrame);
+	}
 	
 	public void openSoftware() {
 		manageFrames(configFrame);

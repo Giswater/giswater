@@ -22,15 +22,24 @@ package org.giswater.task;
 
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
+import org.giswater.gui.panel.DevToolboxPanel;
 import org.giswater.util.Utils;
 
 
 public class FilesToDbTask extends ParentSchemaTask {
+	
+	
+	private DevToolboxPanel panel;
 
 
 	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
+	}
+	
+
+	public void setPanel(DevToolboxPanel view) {
+		this.panel = view;		
 	}
 	
 	
@@ -42,33 +51,31 @@ public class FilesToDbTask extends ParentSchemaTask {
     	setProgress(1);
     	
     	// Disable view
-    	Utils.setPanelEnabled(parentPanel, false);
+    	Utils.setPanelEnabled(panel, false);
     	
-    	// Process functions
-		status = processFolder(this.folderFct, FILE_PATTERN_FCT_GW);
-		if (!status) return null;
-		status = processFolder(this.folderFct, FILE_PATTERN_FCT_OM);
-		if (!status) return null;
-		status = processFolder(this.folderFct, FILE_PATTERN_FCT_SMW);
-		if (!status) return null;		
-		status = processFolder(this.folderFct, FILE_PATTERN_FCT_UTIL);
-		if (!status) return null;		
+		// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
+		//status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);
+		//if (!status) return null;	
+		// Execute SQL's that its name contains 'view' (corresponding to views)
+		//status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+		//if (!status) return null;	
+    	
+		// Execute SQL's that its name contains 'fct' (corresponding to functions)
+		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+		if (!status) return null;	
+		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
+		if (!status) return null;	
 		
-		// Process triggers
-		status = processFolder(this.folderFct, FILE_PATTERN_TRG);
-		if (!status) return null;
-		
+		// Last SQL script. So commit all process
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
 			MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
 		Utils.logInfo(sql);
-		// Last SQL script. So commit all process
 		MainDao.executeSql(sql, true);
 		MainDao.resetSchemaVersion();			
 		
-		// Refresh view
-		controller.selectSourceType(false);			
-    	Utils.setPanelEnabled(parentPanel, true);
-    	parentPanel.setSelectedSchema(schemaName);
+		// Refresh view	
+    	Utils.setPanelEnabled(panel, true);
 		
 		return null;
     	
@@ -79,11 +86,11 @@ public class FilesToDbTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); 
+    		MainClass.mdi.showMessage(Utils.getBundleString("DbToFiles.success")); 
     		MainClass.mdi.updateConnectionInfo();    		
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated"));
+    		MainClass.mdi.showError(Utils.getBundleString("DbToFiles.success"));
     	}
 		
     }

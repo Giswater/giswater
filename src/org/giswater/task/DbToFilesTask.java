@@ -22,7 +22,6 @@ package org.giswater.task;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,15 +29,24 @@ import java.sql.SQLException;
 import org.apache.commons.io.FileUtils;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
+import org.giswater.gui.panel.DevToolboxPanel;
 import org.giswater.util.Utils;
 
 
 public class DbToFilesTask extends ParentSchemaTask {
 	
 
+	private DevToolboxPanel panel;
+
+
 	public DbToFilesTask(String waterSoftware, String currentSchemaName, String schemaName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;	
+	}
+	
+	
+	public void setPanel(DevToolboxPanel view) {
+		this.panel = view;		
 	}
 	
 	
@@ -48,7 +56,7 @@ public class DbToFilesTask extends ParentSchemaTask {
     	setProgress(1);
     	
     	// Disable view
-    	Utils.setPanelEnabled(parentPanel, false);
+    	Utils.setPanelEnabled(panel, false);
     	
     	// Delete files from folder
     	File folder = new File(this.folderFct);
@@ -57,28 +65,21 @@ public class DbToFilesTask extends ParentSchemaTask {
     	}
     	try {
 			FileUtils.cleanDirectory(folder);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Utils.logError(e);
 		}     	
 		
 		// Process functions
-    	status = processFunctionsPattern(FILE_PATTERN_FCT_GW, this.folderFct);
-    	status = processFunctionsPattern(FILE_PATTERN_FCT_OM, this.folderFct);
-    	status = processFunctionsPattern(FILE_PATTERN_FCT_SMW, this.folderFct);
+    	status = processFunctionsPattern(FILE_PATTERN_FCT, this.folderFct);
     	
 		// Process triggers
     	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
-
-		// Process functions utils
-    	status = processFunctionsPattern(FILE_PATTERN_FCT_UTIL, this.folderFctUtils);    	
     	
     	// Process views
     	status = processViews(this.folderViews);
     	
-		// Refresh view
-		controller.selectSourceType(false);			
-    	Utils.setPanelEnabled(parentPanel, true);
-    	parentPanel.setSelectedSchema(schemaName);
+		// Refresh view		
+    	Utils.setPanelEnabled(panel, true);
 		
 		return null;
     	
@@ -222,11 +223,11 @@ public class DbToFilesTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("MainDao.project_updated")); 
+    		MainClass.mdi.showMessage(Utils.getBundleString("DbToFiles.success")); 
     		MainClass.mdi.updateConnectionInfo();    		
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("MainDao.project_not_updated"));
+    		MainClass.mdi.showError(Utils.getBundleString("DbToFiles.error"));
     	}
 		
     }

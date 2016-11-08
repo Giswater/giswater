@@ -647,6 +647,11 @@ public class MenuController extends AbstractController {
 	}
 	
 	
+	public void showDevToolbox() {
+		mainFrame.openDevToolbox();
+	}	
+	
+	
 	
 	// Menu Configuration 
 	public void showSoftware() {
