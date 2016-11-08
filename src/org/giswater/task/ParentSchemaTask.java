@@ -184,28 +184,17 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected boolean copyFunctions(String softwareAcronym, String filePattern) {
 		
 		boolean status = true;
-		String filePath = "";
 		
-		try {
-			
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
-			String folderPath = "";
-			
-			// Process selected software folder
-			folderPath = folderRootPath+softwareAcronym+File.separator;
-			if (!processFolder(folderPath, filePattern)) return false;
-			
-			// Process 'utils' folder
-			folderPath = folderRootPath+"utils"+File.separator;
-			if (!processFolder(folderPath, filePattern)) return false;
-			
-		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", filePath);
-			status = false;
-		} catch (IOException e) {
-			Utils.showError(e, filePath);
-			status = false;			
-		}
+		// Get execution path		
+		String folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
+		
+		// Process selected software folder
+		String folderPath = folderRootPath+softwareAcronym+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'utils' folder
+		folderPath = folderRootPath+"utils"+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
 		
 		return status;
 		

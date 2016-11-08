@@ -190,6 +190,7 @@ public class MainDao {
         String inpFolder = Utils.getAppPath()+"inp"+File.separator;
         ConfigDao.setInpFolder(inpFolder);
         updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
+        Utils.logInfo("SQL updates folder:" +updatesFolder);
         getLastUpdates();
 
     	// Set Config DB connection
@@ -456,9 +457,11 @@ public class MainDao {
         }
         try {
             connectionPostgis = DriverManager.getConnection(connectionString);
+			connectionPostgis.setAutoCommit(false);            
         } catch (SQLException e) {
             try {
                 connectionPostgis = DriverManager.getConnection(connectionString);
+				connectionPostgis.setAutoCommit(false);                
             } catch (SQLException e1) {
             	if (showError) {
             		Utils.showError(e1.getMessage());
@@ -1003,8 +1006,7 @@ public class MainDao {
 		return false;
 		
 	}
-	
-	
+		
 	private static void getLastUpdates() {
 		
 		// Get last update script version from every software
@@ -1018,14 +1020,26 @@ public class MainDao {
 	
 	private static void getLastUpdateSoftware(String softwareAcronym) {
 		
-		String folder = updatesFolder + softwareAcronym + File.separator;
+		String folder = updatesFolder+softwareAcronym+File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null && files.length > 0) {
 			Arrays.sort(files);
 			String fileName = files[files.length-1].getName();
-			fileName = fileName.replace(softwareAcronym+"_", "").replace(".sql", "");
-			Integer fileVersion = Utils.parseInt(fileName);
-			updateMap.put(softwareAcronym, fileVersion);	
+			String newFileName = fileName;
+			boolean renameFile = false;
+			// Replace islast.sql to @giswaterVersion.sql
+			if (fileName.equals("islast.sql")) {
+				renameFile = true;
+				newFileName = fileName.replace("islast", giswaterVersion);		
+			}
+			newFileName = newFileName.replace(softwareAcronym+"_", "").replace("sql", "").replace(".", "");
+			Integer fileVersion = Utils.parseInt(newFileName);
+			updateMap.put(softwareAcronym, fileVersion);
+			if (renameFile) {
+				if (!Utils.renameFile(folder+fileName, folder+newFileName+".sql")) {
+					Utils.logError("Rename could not be executed");
+				}
+			}
 		}
 		else {
 			updateMap.put(softwareAcronym, -1);	

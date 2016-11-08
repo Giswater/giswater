@@ -58,8 +58,6 @@ public class ConfigController extends AbstractController {
 		view.setOverwriteRpt(prop.get("OVERWRITE_RPT"));
 		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
 		view.setSqlLog(prop.get("SQL_LOG"));
-		view.setSridQuestion(prop.get("SRID_QUESTION"));
-		view.setLoadRaster(prop.get("LOAD_RASTER"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
 		view.setLanguage(prop.get("LANGUAGE", "en"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
@@ -86,8 +84,6 @@ public class ConfigController extends AbstractController {
 		prop.put("OPEN_RPT", view.getOpenRpt());		
 		prop.put("PROJECT_UPDATE", view.getProjectUpdate());		
 		prop.put("SQL_LOG", view.getSqlLog());				
-		prop.put("SRID_QUESTION", view.getSridQuestion());		
-		prop.put("LOAD_RASTER", view.getLoadRaster());		
 		prop.put("AUTO_CHECK_UPDATES", view.getCheckUpdates());		
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
