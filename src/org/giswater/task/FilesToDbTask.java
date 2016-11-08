@@ -52,20 +52,24 @@ public class FilesToDbTask extends ParentSchemaTask {
     	// Disable view
     	Utils.setPanelEnabled(panel, false);
     	
-		// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
-		//status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);
-		//if (!status) return null;	
-		// Execute SQL's that its name contains 'view' (corresponding to views)
-		//status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
-		//if (!status) return null;	
-    	
 		// Execute SQL's that its name contains 'fct' (corresponding to functions)
-		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
-		if (!status) return null;	
-		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
-		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
-		if (!status) return null;	
+    	if (panel.chkFunctions.isSelected()) {    
+			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+			if (!status) return null;
+    	}
 		
+		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+    	if (panel.chkTriggers.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
+    		if (!status) return null;	
+    	}
+		
+    	// Execute SQL's that its name contains 'view' (corresponding to views)
+    	if (panel.chkViews.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+    		if (!status) return null;	
+    	}
+    	
 		// Last SQL script. So commit all process
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
 			MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			

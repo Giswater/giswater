@@ -41,9 +41,9 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 
 	private DevToolboxController controller;	
 	private DevToolboxFrame frame;	
-	private JCheckBox chkTriggers;
-	private JCheckBox chkFunctions;
-	private JCheckBox chkViews;
+	public JCheckBox chkTriggers;
+	public JCheckBox chkFunctions;
+	public JCheckBox chkViews;
 	private JButton btnFilesToDb;
 	private JButton btnDbToFiles;
 	private JButton btnClose;
@@ -97,17 +97,14 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		setLayout(new MigLayout("", "[57.00px:n][75px:n][80px:n][][80px:n]", "[5px:n][20px:n][20px:n][20px:n][20px:n][]"));
 		
 		chkFunctions = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFunctions.text")); 
-		chkFunctions.setEnabled(false);
 		add(chkFunctions, "cell 1 1 2 1");
 		chkFunctions.setSelected(true);
 		
 		chkTriggers = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkTriggers.text")); 
-		chkTriggers.setEnabled(false);
 		add(chkTriggers, "cell 1 2 2 1");
 		chkTriggers.setSelected(true);
 		
 		chkViews = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkViews.text"));
-		chkViews.setEnabled(false);
 		chkViews.setSelected(true);
 		add(chkViews, "cell 1 3");
 		

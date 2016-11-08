@@ -71,19 +71,22 @@ public class DbToFilesTask extends ParentSchemaTask {
 		}     	
 		
 		// Process functions
-    	status = processFunctionsPattern(FILE_PATTERN_FCT, this.folderFct);
-		if (!status) return null;	
+    	if (panel.chkFunctions.isSelected()) {
+    		status = processFunctionsPattern(FILE_PATTERN_FCT, this.folderFct);
+    		if (!status) return null;	
+    	}
 		
 		// Process triggers
-    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
-		if (!status) return null;	
+    	if (panel.chkTriggers.isSelected()) {    	
+	    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
+			if (!status) return null;	
+    	}
 		
     	// Process views
-    	status = processViews(this.folderViews);
-		if (!status) return null;	    	
-    	
-		// Refresh view		
-    	Utils.setPanelEnabled(panel, true);
+    	if (panel.chkViews.isSelected()) {    	
+    		status = processViews(this.folderViews);
+    		if (!status) return null;	 
+    	}  
 		
 		return null;
     	
