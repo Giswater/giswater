@@ -53,6 +53,7 @@ public class DbToFilesTask extends ParentSchemaTask {
     @Override
     public Void doInBackground() { 
 		
+    	status = false;
     	setProgress(1);
     	
     	// Disable view
@@ -71,12 +72,15 @@ public class DbToFilesTask extends ParentSchemaTask {
 		
 		// Process functions
     	status = processFunctionsPattern(FILE_PATTERN_FCT, this.folderFct);
-    	
+		if (!status) return null;	
+		
 		// Process triggers
     	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
-    	
+		if (!status) return null;	
+		
     	// Process views
     	status = processViews(this.folderViews);
+		if (!status) return null;	    	
     	
 		// Refresh view		
     	Utils.setPanelEnabled(panel, true);
@@ -221,6 +225,7 @@ public class DbToFilesTask extends ParentSchemaTask {
     
     public void done() {
     	
+    	Utils.setPanelEnabled(panel, true);      	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage(Utils.getBundleString("DbToFiles.success")); 

@@ -46,8 +46,7 @@ public class FilesToDbTask extends ParentSchemaTask {
     @Override
     public Void doInBackground() { 
 		
-    	status = true;
-    	
+    	status = false;
     	setProgress(1);
     	
     	// Disable view
@@ -74,9 +73,6 @@ public class FilesToDbTask extends ParentSchemaTask {
 		MainDao.executeSql(sql, true);
 		MainDao.resetSchemaVersion();			
 		
-		// Refresh view	
-    	Utils.setPanelEnabled(panel, true);
-		
 		return null;
     	
     }
@@ -84,13 +80,14 @@ public class FilesToDbTask extends ParentSchemaTask {
     
     public void done() {
     	
+    	Utils.setPanelEnabled(panel, true);    	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
-    		MainClass.mdi.showMessage(Utils.getBundleString("DbToFiles.success")); 
+    		MainClass.mdi.showMessage(Utils.getBundleString("FilesToDb.success")); 
     		MainClass.mdi.updateConnectionInfo();    		
     	}
     	else {
-    		MainClass.mdi.showError(Utils.getBundleString("DbToFiles.success"));
+    		MainClass.mdi.showError(Utils.getBundleString("FilesToDb.error"));
     	}
 		
     }
