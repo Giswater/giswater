@@ -723,14 +723,16 @@ public class MainDao {
     
 	public static Vector<String> getSchemas(String software) {
 
-        String sql = "SELECT schema_name FROM information_schema.schemata " +
-        	"WHERE schema_name <> 'information_schema' AND schema_name !~ E'^pg_' " +
-        	"AND schema_name <> 'drivers' AND schema_name <> 'public' AND schema_name <> 'topology' " +
-        	"ORDER BY schema_name";
+        String sql = "SELECT DISTINCT(table_schema) " +
+        	"FROM information_schema.tables " +
+        	"WHERE table_schema <> 'information_schema' AND table_schema !~ E'^pg_' " +
+        	"AND table_schema <> 'drivers' AND table_schema <> 'public' AND table_schema <> 'topology' " +
+        	"ORDER BY table_schema";      
         Vector<String> vector = new Vector<String>();
         if (isConnected()) {
 	        try {
 	    		ResultSet rs = getResultset(sql);
+	    		if (rs == null) return vector;
 	            while (rs.next()) {
 	            	String schemaName = rs.getString(1);
 	            	if (!software.equals("")) {
@@ -889,11 +891,11 @@ public class MainDao {
 
 	public static void deleteSchema(String schemaName) {
 		String sql = "DROP schema IF EXISTS "+schemaName+" CASCADE;";
-		executeUpdateSql(sql, true);		
+		if (!executeUpdateSql(sql, true, true)) return;
 		sql = "DROP schema IF EXISTS "+schemaName+"_audit CASCADE;";
-		executeUpdateSql(sql, true);		
+		if (!executeUpdateSql(sql, true, true)) return;		
 		sql = "DELETE FROM public.geometry_columns WHERE f_table_schema = '"+schemaName+"'";
-		executeUpdateSql(sql, true);			
+		executeUpdateSql(sql, true, true);		
 	}
 	
 	

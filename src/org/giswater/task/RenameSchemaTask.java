@@ -41,7 +41,7 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
 		Utils.logSql(sql);
-		if (MainDao.executeUpdateSql(sql, true)) {
+		if (MainDao.executeUpdateSql(sql, true, true)) {
 			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
@@ -63,6 +63,7 @@ public class RenameSchemaTask extends ParentSchemaTask {
 			controller.selectSourceType(false);
 			Utils.setPanelEnabled(parentPanel, true);	
 			parentPanel.setSelectedSchema(schemaName);
+			
 		}
 		
 		return null;
