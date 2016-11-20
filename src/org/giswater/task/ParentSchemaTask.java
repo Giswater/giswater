@@ -199,7 +199,18 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		return status;
 		
 	}	
+	
+	
+	protected boolean insertVersion(boolean commit) {
 		
+		String language = prop.get("LANGUAGE", "en");		
+		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '" +
+			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
+		Utils.logInfo(sql);
+		return MainDao.executeSql(sql, commit);	
+		
+	}
 	
 	
     @Override

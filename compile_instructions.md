@@ -27,7 +27,7 @@ In a few seconds you will be running giswater!
 
 If everything is fine, now you can make any changes in the source code and run the application again to test them...
 
-If we wanto to create a new executable version we have to execute an XML file containing an Ant buildfile: create_runnable_jar_2.0.xml. This file is located in the root folder
+If we wanto to create a new executable version we have to execute an XML file containing an Ant buildfile: create_runnable_jar.xml. This file is located in the root folder
 Right button - Run As - Ant build
 
 We can edit that file with any text editor, and make any changes. One of the parameters we have to modify for sure, is the destination folder where application files will be generated (including executable giswater.jar). That parameter is located in line number 12: jar_folder
@@ -37,13 +37,12 @@ y: Minor version
 zzz: Build version
 
 x and y values are defined in the propery version (line 4)
-zzz values will be defined in an external file used by Ant build tool. We have to create that file will this content:
+zzz values will be defined in an external file, called build.num (line 11). We have to create that file will this content:
 [default]
 build.number=100
 
-Every time we run this Ant file, we're generating an executable with a diferent build version number (zzz). 
-Ant tool will manage and autoincrement this number in the file buid_2.0.num. We also can manually modify this file.
-
+Every time we run create_runnable_jar.xml, Ant build tool will generate an executable with a diferent build version number (zzz). 
+Ant build tool will automatically autoincrement parameter build.number in the file build.num. We also can manually modify this file whenever we want...
 
 Once generated, we can update giswater.jar, and maybe other folders if that has been updated also, to Giswater installation folder. Default folder is:
 c:\program files\giswater\x.y

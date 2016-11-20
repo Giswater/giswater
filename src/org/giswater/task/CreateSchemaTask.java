@@ -115,15 +115,12 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		status = createSchema(softwareAcronym);	
 		if (status) {
 			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()) {
+			if (MainDao.updateSchema()) {	
+				// Insert information into table inp_project_id and version				
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
 				Utils.logInfo(sql);
-				MainDao.executeSql(sql, false);
-				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.logInfo(sql);
-				// Last SQL script. So commit all process
-				MainDao.executeSql(sql, true);
+				MainDao.executeSql(sql, false);		
+				insertVersion(true);
 			}
 			else {
 				MainDao.deleteSchema(schemaName);

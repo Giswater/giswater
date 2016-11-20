@@ -116,10 +116,8 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {
-				String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.getLogger().info(sql);
-				MainDao.executeSql(sql, false);
+				// Insert information into table version
+				insertVersion(false);
 				// Once schema has been created, load example data 
 				try {
 					String folderRoot = Utils.getAppPath();

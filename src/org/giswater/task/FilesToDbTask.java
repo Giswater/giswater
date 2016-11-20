@@ -70,11 +70,8 @@ public class FilesToDbTask extends ParentSchemaTask {
     		if (!status) return null;	
     	}
     	
-		// Last SQL script. So commit all process
-		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date) VALUES ('"+
-			MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";			
-		Utils.logInfo(sql);
-		MainDao.executeSql(sql, true);
+		// Insert information into table version
+    	insertVersion(true);
 		MainDao.resetSchemaVersion();			
 		
 		return null;
