@@ -26,7 +26,6 @@ import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.io.FileUtils;
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.panel.DevToolboxPanel;
@@ -60,15 +59,8 @@ public class DbToFilesTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(panel, false);
     	
     	// Delete files from folder
-    	File folder = new File(this.folderFct);
-    	if (!folder.exists()) {
-    		folder.mkdir();
-    	}
-    	try {
-			FileUtils.cleanDirectory(folder);
-		} catch (Exception e) {
-			Utils.logError(e);
-		}     	
+    	emptyFolder(this.folderFct);
+    	emptyFolder(this.folderViews);
 		
 		// Process functions
     	if (panel.chkFunctions.isSelected()) {

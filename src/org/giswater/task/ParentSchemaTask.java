@@ -27,6 +27,7 @@ import java.util.Arrays;
 
 import javax.swing.SwingWorker;
 
+import org.apache.commons.io.FileUtils;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
@@ -209,6 +210,21 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
 		Utils.logInfo(sql);
 		return MainDao.executeSql(sql, commit);	
+
+	}
+	
+	
+	protected void emptyFolder(String folderPath) {
+		
+		File folder = new File(folderPath);
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		try {
+			FileUtils.cleanDirectory(folder);
+		} catch (Exception e) {
+			Utils.logError(e);
+		}     		
 		
 	}
 	
