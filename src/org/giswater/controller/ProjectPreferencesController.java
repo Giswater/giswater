@@ -52,6 +52,7 @@ public class ProjectPreferencesController extends AbstractController {
 	private EpaSoftPanel epaSoftPanel;
 	private HecRasPanel hecRasPanel;
 	private String waterSoftware;
+	private String schemaName = null;
 	
 	private static final Integer PROJECT_DIALOG_WIDTH = 420; 
 	private static final Integer PROJECT_DIALOG_HEIGHT = 480; 
@@ -216,8 +217,9 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	
 	public void testConnection() {
-		
+
 		if (MainDao.isConnected()) {
+			schemaName = MainDao.getSchema();
 			closeConnection();
 			mainFrame.enableMenuDatabase(false);		
 		}
@@ -227,6 +229,9 @@ public class ProjectPreferencesController extends AbstractController {
 			}
 		}
 		selectSourceType(false);
+		if (schemaName != null) {
+			view.setSelectedSchema(schemaName);
+		}
 		view.enableDbControls(!MainDao.isConnected());		
 		
 		// Update Status Bar
