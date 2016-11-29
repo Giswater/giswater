@@ -95,7 +95,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	
 	public ParentSchemaTask(String waterSoftware, String schemaName) {
-		this(waterSoftware, schemaName, "");
+		this(waterSoftware, schemaName, MainDao.getSrid(schemaName));
 	}
 	
 	protected void setProperties() {
