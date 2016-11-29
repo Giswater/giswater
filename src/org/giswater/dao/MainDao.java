@@ -439,6 +439,16 @@ public class MainDao {
 	}
 	
 	
+	
+	public static void commit() {
+		try {
+			connectionPostgis.commit();
+		} catch (SQLException e) {
+            Utils.logError(e);
+		}
+	}	
+	
+	
 	public static void rollback() {
 		try {
 			connectionPostgis.rollback();

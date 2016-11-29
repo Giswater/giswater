@@ -59,6 +59,13 @@ public class RenameSchemaTask extends ParentSchemaTask {
 			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);			
 			
+			if (status) {
+				MainDao.commit();
+			}
+			else{
+				MainDao.rollback();
+			}
+			
 			// Refresh view
 			controller.selectSourceType(false);
 			Utils.setPanelEnabled(parentPanel, true);	
