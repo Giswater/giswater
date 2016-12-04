@@ -80,9 +80,6 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
     	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
     		softwareAcronym = "ud";
     	}
-    	else {
-    		softwareAcronym = "hecras";
-    	}
 
 		try {
 			this.folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;

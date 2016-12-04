@@ -56,8 +56,8 @@ public class MainDao {
 	protected static boolean isWindows;
 	
     private static Connection connectionPostgis;
-	private static String waterSoftware;   // [EPASWMM | EPANET | HECRAS]
-	private static String softwareAcronym;   // [ud | ws | hecras]
+	private static String waterSoftware;   // [EPASWMM | EPANET]
+	private static String softwareAcronym;   // [ud | ws]
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "sql/updates"
@@ -72,8 +72,7 @@ public class MainDao {
 	private static final String DEFAULT_DB = "postgres";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
 	private static final String TABLE_EPANET = "inp_demand";		
-	private static final String TABLE_EPASWMM = "inp_divider";	
-	private static final String TABLE_HECRAS = "banks";		
+	private static final String TABLE_EPASWMM = "inp_divider";		
 	private static final Integer NUMBER_OF_ATTEMPTS = 2;		
 	
 	
@@ -124,10 +123,7 @@ public class MainDao {
     	}
     	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
     		softwareAcronym = "ud";
-    	}
-    	else {
-    		softwareAcronym = "hecras";
-    	}		
+    	}	
 	}
 	
 	public static boolean isConnected() {
@@ -720,9 +716,6 @@ public class MainDao {
         else if (software.equals("EPASWMM") || software.equals("EPA SWMM")) {
         	tableName = TABLE_EPASWMM;
         }
-        else if (software.equals("HECRAS") || software.equals("HEC-RAS")) {
-        	tableName = TABLE_HECRAS;
-        }
         return checkTable(schemaName, tableName);
 
     }
@@ -1025,7 +1018,6 @@ public class MainDao {
     	updateMap = new HashMap<String, Integer>();
 		getLastUpdateSoftware("ws");
 		getLastUpdateSoftware("ud");
-		getLastUpdateSoftware("hecras");
 		
 	}
 	
@@ -1100,14 +1092,9 @@ public class MainDao {
 	
 
 	public static String getSrid(String schemaName) {
-		
 		String table = "arc";
-		if (waterSoftware.equals("HECRAS")) {
-			table = "banks";
-		}
 		String schemaSrid = MainDao.getTableSrid(schemaName, table).toString();
 		return schemaSrid;
-		
 	}
 	
 	
@@ -1134,14 +1121,9 @@ public class MainDao {
 		String aux = content;
 		String tableName;
 		String geomName;
-		if (software.equals("HECRAS")) {
-			tableName = "xscutlines";
-			geomName = "geom";
-		}
-		else {
-			tableName = "node";
-			geomName = "the_geom";
-		}
+
+		tableName = "node";
+		geomName = "the_geom";
 		String sql = "SELECT ST_XMax(gometries) AS xmax, ST_XMin(gometries) AS xmin," +
 			" ST_YMax(gometries) AS ymax, ST_YMin(gometries) AS ymin" +
 			" FROM (SELECT ST_Collect("+geomName+") AS gometries FROM "+schemaName+"."+tableName+") AS foo";

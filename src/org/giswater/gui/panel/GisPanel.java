@@ -114,9 +114,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		if (software.equals("EPASWMM")){
 			software = "EPA SWMM";
 		}
-		else if (software.equals("HECRAS")){
-			software = "HEC-RAS";
-		}		
 		cboSoftware.setSelectedItem(software);
 	}	
 	
@@ -124,9 +121,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String software = cboSoftware.getSelectedItem().toString();
 		if (software.equals("EPA SWMM")) {
 			software = "EPASWMM";
-		}
-		else if (software.equals("HEC-RAS")) {
-			software = "HECRAS";
 		}
 		return software;
 	}		

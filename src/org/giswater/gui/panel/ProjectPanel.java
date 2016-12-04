@@ -1,5 +1,6 @@
 package org.giswater.gui.panel;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,19 +24,15 @@ import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
 
-import org.giswater.controller.HecRasController;
 import org.giswater.controller.NewProjectController;
 import org.giswater.model.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
-import java.awt.Dimension;
-import java.util.ResourceBundle;
 
 
 public class ProjectPanel extends JPanel implements ActionListener {
 	
 	private JDialog parent;
 	private NewProjectController controller;
-	private HecRasController hecRasController;
 	private JTextField txtName;
 	private JTextField txtTitle;
 	private JTextField txtFilter;
@@ -201,9 +199,6 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		if (controller != null) {
 			controller.action(e.getActionCommand());
 		}
-		else {
-			hecRasController.action(e.getActionCommand());
-		}
 	}
 	
 
@@ -211,10 +206,7 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		this.controller = controller;
 	}
 
-	public void setHecRasController(HecRasController hecRasController) {
-		this.hecRasController = hecRasController;
-	}
-
+	
 	public JTable getTable() {
 		return tblSrid;
 	}

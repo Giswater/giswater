@@ -183,14 +183,7 @@ public class NewProjectController extends AbstractController {
 
 
 	public void enableImportData() {
-		
-		if (waterSoftware.equals("HECRAS")) {
-			view.enableImportData(false);	
-		}
-		else {
-			view.enableImportData(true);	
-		}
-		
+		view.enableImportData(true);
 	}
 	
 	
