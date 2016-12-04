@@ -122,39 +122,31 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 				try {
 					String folderRoot = Utils.getAppPath();
 					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;
-					if (!processFolder(folderPath)) {
-						status = false;
-						MainDao.deleteSchema(schemaName);
-						return null;
-					}
-					if (waterSoftware.equals("hecras")) {
-						// Trough Load Raster
-						String rasterName = "sample_dtm.tif";
-						String rasterPath = folderRoot+"samples"+File.separator+rasterName;
-						if (loadRaster(schemaName, rasterPath, rasterName)) {
-							String msg = Utils.getBundleString("schema_creation_completed")+": "+schemaName;
-							MainClass.mdi.showMessage(msg);
-						}
-					}	
-					else {
+					status = processFolder(folderPath);
+					if (status) {
+						MainDao.commit();
 						String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
 						MainClass.mdi.showMessage(msg);
 					}
+					else {
+						MainDao.rollback();
+						MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$						
+					}
 				} catch (Exception e) {
 					status = false;
-					MainDao.deleteSchema(schemaName);
+					MainDao.rollback();
 		            Utils.showError(e);
 				}
 			}
 			else {
 				status = false;
-				MainDao.deleteSchema(schemaName);
+				MainDao.rollback();
 				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_update_project")); //$NON-NLS-1$
 			}		
 		}
 		else {
 			status = false;
-			MainDao.deleteSchema(schemaName);
+			MainDao.rollback();
 			MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$
 		}
 
