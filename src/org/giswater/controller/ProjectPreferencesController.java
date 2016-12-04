@@ -32,13 +32,12 @@ import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
-import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.task.FilesToDbTask;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DbToFilesTask;
 import org.giswater.task.DeleteSchemaTask;
+import org.giswater.task.FilesToDbTask;
 import org.giswater.task.RenameSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
@@ -50,7 +49,6 @@ public class ProjectPreferencesController extends AbstractController {
 	private ProjectPreferencesPanel view;
 	private MainFrame mainFrame;
 	private EpaSoftPanel epaSoftPanel;
-	private HecRasPanel hecRasPanel;
 	private String waterSoftware;
 	private String schemaName = null;
 	
@@ -67,7 +65,6 @@ public class ProjectPreferencesController extends AbstractController {
 		this.view = ppPanel;	
 		this.mainFrame = mf;
 		this.epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
-		this.hecRasPanel = mainFrame.hecRasFrame.getPanel();
 	    view.setController(this);    
 	    
 	}
@@ -95,52 +92,38 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	private void customizePanel() {
 		
-		// HECRAS
-		if (waterSoftware.equals("HECRAS")) {
-			mainFrame.epaSoftFrame.setVisible(false);
-        	try {
-				mainFrame.hecRasFrame.setMaximum(true);
-				mainFrame.hecRasFrame.setVisible(true);
-			} catch (PropertyVetoException e) {
-				Utils.logError(e);
-			}			
+		if (waterSoftware.equals("EPASWMM")) {
+			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
+			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
+			epaSoftPanel.setSubcatchmentVisible(true);
+			if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
+				epaSoftPanel.setSubcatchmentSelected(true);
+				epaSoftPanel.setSubcatchmentEnabled(false);
+				// Show warning message when 2D is selected
+				if (!mainFrame.getController().getOpeningApp()) {
+					String msg = Utils.getBundleString("ProjectPreferencesController.warning_2d"); //$NON-NLS-1$
+					Utils.showMessage(msg);
+				}
+			}
+			else {
+				epaSoftPanel.setSubcatchmentSelected(false);
+				epaSoftPanel.setSubcatchmentEnabled(true);
+			}
+			epaSoftPanel.exportSelected();
+		}
+		else if (waterSoftware.equals("EPANET")) {
+			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
+			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
+			epaSoftPanel.setSubcatchmentVisible(false);
+			epaSoftPanel.setSubcatchmentSelected(false);
 		}
 		
-		// EPASWMM or EPANET
-		else {
-			if (waterSoftware.equals("EPASWMM")) {
-				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
-				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
-				epaSoftPanel.setSubcatchmentVisible(true);
-				if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
-					epaSoftPanel.setSubcatchmentSelected(true);
-					epaSoftPanel.setSubcatchmentEnabled(false);
-					// Show warning message when 2D is selected
-					if (!mainFrame.getController().getOpeningApp()) {
-						String msg = Utils.getBundleString("ProjectPreferencesController.warning_2d"); //$NON-NLS-1$
-						Utils.showMessage(msg);
-					}
-				}
-				else {
-					epaSoftPanel.setSubcatchmentSelected(false);
-					epaSoftPanel.setSubcatchmentEnabled(true);
-				}
-				epaSoftPanel.exportSelected();
-			}
-			else if (waterSoftware.equals("EPANET")) {
-				epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
-				epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
-				epaSoftPanel.setSubcatchmentVisible(false);
-				epaSoftPanel.setSubcatchmentSelected(false);
-			}
-			mainFrame.hecRasFrame.setVisible(false);
-			mainFrame.epaSoftFrame.setTitle(waterSoftware);
-        	try {
-				mainFrame.epaSoftFrame.setMaximum(true);
-				mainFrame.epaSoftFrame.setVisible(true);
-			} catch (PropertyVetoException e) {
-				Utils.logError(e);
-			}
+		mainFrame.epaSoftFrame.setTitle(waterSoftware);
+    	try {
+			mainFrame.epaSoftFrame.setMaximum(true);
+			mainFrame.epaSoftFrame.setVisible(true);
+		} catch (PropertyVetoException e) {
+			Utils.logError(e);
 		}
 		
 		mainFrame.updateConnectionInfo();
@@ -172,7 +155,6 @@ public class ProjectPreferencesController extends AbstractController {
 		// Check if everything is set
 		if (!checkPreferences()) {
 			view.getFrame().setVisible(true);
-			mainFrame.hecRasFrame.setVisible(false);
 			mainFrame.epaSoftFrame.setVisible(false);	
 			return false;
 		}
@@ -211,7 +193,6 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	public void openPreferences() {
 		view.getFrame().setVisible(true);
-		mainFrame.hecRasFrame.setVisible(false);
 		mainFrame.epaSoftFrame.setVisible(false);	
 	}
 	
@@ -243,7 +224,6 @@ public class ProjectPreferencesController extends AbstractController {
 	private void closeConnection() {
 		
 		view.setConnectionText(Utils.getBundleString("open_connection"));
-		mainFrame.hecRasFrame.getPanel().enableControls(false);
 		MainDao.closeConnectionPostgis();
 		mainFrame.showMessage("connection_closed");			
 		view.enableDbControls(true);			
@@ -311,9 +291,6 @@ public class ProjectPreferencesController extends AbstractController {
 	    	
 			view.setConnectionText(Utils.getBundleString("close_connection"));
 			mainFrame.showMessage("connection_opened");
-			
-			// Hecras form
-			mainFrame.hecRasFrame.getPanel().enableControls(true);
 
 		} 
 
@@ -347,7 +324,6 @@ public class ProjectPreferencesController extends AbstractController {
 			view.setSchemaModel(null);	
 			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(false);
-			hecRasPanel.enableControls(false);
 		}
 		view.enableDbControls(!MainDao.isConnected());			
 		mainFrame.updateConnectionInfo();
@@ -367,13 +343,7 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
 		epaSoftPanel.enablePreprocess(enabled);
 		epaSoftPanel.enableAccept(enabled);
-		hecRasPanel.enableControls(enabled);
 		
-	}
-	
-	
-	public void enableHecras(boolean enabled) {
-		hecRasPanel.enableControls(!view.getSelectedSchema().equals(""));		
 	}
 	
 	

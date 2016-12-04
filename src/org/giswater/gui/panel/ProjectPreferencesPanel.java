@@ -59,7 +59,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	private ButtonGroup groupSoftware;
 	private JRadioButton optEpaSwmm;
 	private JRadioButton optEpanet;
-	private JRadioButton optHecras;
 	
 	private JPanel panelDatabase;
 	private JComboBox<String> cboDriver;
@@ -101,12 +100,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[90px:n:90px][31px:n][::245px,grow][121px:n:121px]", "[60.00][::10px][124.00][::10px][][]"));
+		setLayout(new MigLayout("", "[90px:n:90px][31px:n][grow][121px:n:121px]", "[60.00][::10px][124.00][::10px][][]"));
 		
 		panelWaterProject = new JPanel();
 		panelWaterProject.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPreferencesPanel.panelWaterProject.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE2, null));
 		add(panelWaterProject, "cell 0 0 4 1,grow");
-		panelWaterProject.setLayout(new MigLayout("", "[::5px][][2px:n][][2px:n][][2px:n][127px:n,grow]", "[]"));
+		panelWaterProject.setLayout(new MigLayout("", "[30px:n][][20px:n][][30px:n][127px:n,grow]", "[]"));
 		
 		optEpaSwmm = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optEpaSwmm.text")); //$NON-NLS-1$
 		panelWaterProject.add(optEpaSwmm, "cell 1 0");
@@ -116,17 +115,12 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		panelWaterProject.add(optEpanet, "cell 3 0");
 		optEpanet.setActionCommand("changeSoftware");
 		
-		optHecras = new JRadioButton(BUNDLE.getString("ProjectPreferencesPanel.optHecras.text")); //$NON-NLS-1$
-		panelWaterProject.add(optHecras, "cell 5 0");
-		optHecras.setActionCommand("changeSoftware");
-		
 		groupSoftware = new ButtonGroup();
 		groupSoftware.add(optEpaSwmm);	
 		groupSoftware.add(optEpanet);
-		groupSoftware.add(optHecras);
 		
 		cboVersionSoftware = new JComboBox<String>();
-		panelWaterProject.add(cboVersionSoftware, "cell 7 0,growx");
+		panelWaterProject.add(cboVersionSoftware, "cell 5 0,growx");
 		
 		panelDatabase = new JPanel();
 		add(panelDatabase, "cell 0 2 4 1,growx");
@@ -297,7 +291,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		// Water software
 		optEpaSwmm.addActionListener(this);
 		optEpanet.addActionListener(this);
-		optHecras.addActionListener(this);
 		
 		// Panel Database connection
 		btnTest.addActionListener(this);
@@ -374,9 +367,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		else if (waterSoftware.equals("EPASWMM")) {
 			optEpaSwmm.setSelected(true);
 		}	
-		else if (waterSoftware.equals("HECRAS")) {
-			optHecras.setSelected(true);
-		}
 		controller.setWaterSoftware(waterSoftware);
 		
 	}	
@@ -389,10 +379,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		} 
 		else if (optEpaSwmm.isSelected()) {
 			waterSoftware = "EPASWMM";
-		}
-		else if (optHecras.isSelected()) {
-			waterSoftware = "HECRAS";
-		}			
+		}		
 		return waterSoftware;
 		
 	}	

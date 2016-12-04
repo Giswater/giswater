@@ -44,7 +44,6 @@ import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaSoftPanel;
-import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.BackupProjectTask;
 import org.giswater.task.CreateExampleSchemaTask;
@@ -305,7 +304,6 @@ public class MenuController extends AbstractController {
 		
 		// Update frames position and panels
 		mainFrame.updateFrames();
-		updateHecrasPanel();
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			if (acceptPreferences) {
@@ -349,7 +347,6 @@ public class MenuController extends AbstractController {
 		
 		// Update frames position and panels
 		mainFrame.updateFrames();
-		updateHecrasPanel();
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			ProjectPreferencesController ppController = mainFrame.ppFrame.getPanel().getController();
@@ -496,15 +493,6 @@ public class MenuController extends AbstractController {
     	epaSoftPanel.setProjectName(PropertiesDao.getGswProperties().get("PROJECT_NAME"));
 		
 	}   
-    
- 
-    private void updateHecrasPanel() {
-    	
-    	HecRasPanel hecRasPanel = mainFrame.hecRasFrame.getPanel();
-    	hecRasPanel.setFileAsc(PropertiesDao.getGswProperties().get("HECRAS_FILE_ASC"));
-    	hecRasPanel.setFileSdf(PropertiesDao.getGswProperties().get("HECRAS_FILE_SDF"));
-    	
-	}    
      
     
 	// Menu Project example
@@ -521,11 +509,6 @@ public class MenuController extends AbstractController {
 	public void exampleEpaswmm2D() {
 		MainDao.setWaterSoftware("EPASWMM");
 		createExampleSchema("epaswmm", "_2d");
-	}
-
-	public void exampleHecras() {
-		MainDao.setWaterSoftware("HECRAS");
-       	createExampleSchema("hecras");
 	}
 	
 	

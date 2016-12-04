@@ -36,12 +36,10 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 	
 	private MainFrame mainFrame;
 	private MenuController menuController;
-	private String sridValue;
 
 	
 	public CreateExampleSchemaTask(String waterSoftware, String schemaName, String sridValue) {
-		super(waterSoftware, schemaName);
-		this.sridValue = sridValue;
+		super(waterSoftware, schemaName, sridValue);
 	}
 	
 	
@@ -51,43 +49,6 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 	
 	public void setMenuController(MenuController menuController) {
 		this.menuController = menuController;		
-	}
-	
-	private boolean loadRaster(String schemaName, String rasterPath, String rasterName) {
-		
-		String srid = MainDao.getSrid(schemaName);
-		String logFolder = Utils.getLogFolder();
-		String fileSql = logFolder + rasterName.replace(".tif", ".sql");
-		
-		// Check if DTM table already exists
-		if (MainDao.checkTableHasData(schemaName, "mdt")) {
-			String msg = Utils.getBundleString("CreateExampleSchemaTask.dtm_already_loaded"); //$NON-NLS-1$
-			int res = Utils.showYesNoDialog(msg);
-			if (res != JOptionPane.YES_OPTION) return false;	
-		}
-		
-		// Set content of .bat file
-		String bin = MainDao.getBinFolder();
-		String user = MainDao.getUser();
-		String host = MainDao.getHost();
-		String port = MainDao.getPort();
-		String db = MainDao.getDb();
-		String aux = "\""+bin+"raster2pgsql\" -d -s "+srid+" -I -C -M \""+rasterPath+"\" -F -t 100x100 "+schemaName+".mdt > \""+fileSql+"\"";
-		aux+= "\n";
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -c \"drop table if exists "+schemaName+".mdt\";";
-		aux+= "\n";		
-		aux+= "\""+bin+"psql\" -U "+user+" -h "+host+" -p "+port+" -d "+db+" -f \""+fileSql+"\" > \""+logFolder+"raster2pgsql.log\"";
-		aux+= "\ndel " + fileSql;
-		aux+= "\nexit";				
-		Utils.getLogger().info(aux);
-
-        // Fill and execute .bat File	
-		File batFile = new File(logFolder + "raster2pgsql.bat");        
-		Utils.fillFile(batFile, aux);    		
-		Utils.openFile(batFile.getAbsolutePath());
-		
-    	return true;
-    	
 	}
 	
 	
@@ -122,39 +83,31 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 				try {
 					String folderRoot = Utils.getAppPath();
 					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;
-					if (!processFolder(folderPath)) {
-						status = false;
-						MainDao.deleteSchema(schemaName);
-						return null;
-					}
-					if (waterSoftware.equals("hecras")) {
-						// Trough Load Raster
-						String rasterName = "sample_dtm.tif";
-						String rasterPath = folderRoot+"samples"+File.separator+rasterName;
-						if (loadRaster(schemaName, rasterPath, rasterName)) {
-							String msg = Utils.getBundleString("schema_creation_completed")+": "+schemaName;
-							MainClass.mdi.showMessage(msg);
-						}
-					}	
-					else {
+					status = processFolder(folderPath);
+					if (status) {
+						MainDao.commit();
 						String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
 						MainClass.mdi.showMessage(msg);
 					}
+					else {
+						MainDao.rollback();
+						MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$						
+					}
 				} catch (Exception e) {
 					status = false;
-					MainDao.deleteSchema(schemaName);
+					MainDao.rollback();
 		            Utils.showError(e);
 				}
 			}
 			else {
 				status = false;
-				MainDao.deleteSchema(schemaName);
+				MainDao.rollback();
 				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_update_project")); //$NON-NLS-1$
 			}		
 		}
 		else {
 			status = false;
-			MainDao.deleteSchema(schemaName);
+			MainDao.rollback();
 			MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$
 		}
 

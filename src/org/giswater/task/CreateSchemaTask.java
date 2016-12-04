@@ -147,9 +147,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage("schema_creation_completed");
-    		if (waterSoftware.equals("HECRAS")) {
-    			parentPanel.getController().enableHecras(true);
-    		}
     	}
     	else {
     		MainClass.mdi.showError(Utils.getBundleString("CreateSchemaTask.project_not_created")); //$NON-NLS-1$

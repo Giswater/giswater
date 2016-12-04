@@ -56,7 +56,6 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.controller.ConfigController;
 import org.giswater.controller.DevToolboxController;
 import org.giswater.controller.EpaSoftController;
-import org.giswater.controller.HecRasController;
 import org.giswater.controller.MenuController;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.ConfigDao;
@@ -64,7 +63,6 @@ import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
-import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
@@ -96,7 +94,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmExampleEpanet;
 	private JMenuItem mntmExampleEpaswmm;
 	private JMenuItem mntmExampleEpaswmm2D;
-	private JMenuItem mntmExampleHecras;
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
@@ -116,7 +113,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenuItem mntmDownload;
 
 	public EpaSoftFrame epaSoftFrame;
-	public HecRasFrame hecRasFrame;
 	public ProjectPreferencesFrame ppFrame;
 	public ConfigFrame configFrame;
 	public DevToolboxFrame devToolboxFrame;
@@ -265,12 +261,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmExampleEpaswmm2D.setActionCommand("exampleEpaswmm2D");
 		mnProjectExample.add(mntmExampleEpaswmm2D);
 		
-		mntmExampleHecras = new JMenuItem(BUNDLE.getString("MainFrame.mntmCreateHecrasSample.text"));
-		mntmExampleHecras.setMnemonic(KeyEvent.VK_R);
-		mntmExampleHecras.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.CTRL_MASK));
-		mnProjectExample.add(mntmExampleHecras);
-		mntmExampleHecras.setActionCommand("exampleHecras"); 
-		
 		JMenu mnData = new JMenu(BUNDLE.getString("MainFrame.mnData.text")); 
 		mnData.setMnemonic(KeyEvent.VK_D);
 		menuBar.add(mnData);
@@ -397,13 +387,11 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		// Create and Add frames to main Panel
         epaSoftFrame = new EpaSoftFrame();
-        hecRasFrame = new HecRasFrame();
         ppFrame = new ProjectPreferencesFrame();
         configFrame = new ConfigFrame();
         devToolboxFrame = new DevToolboxFrame();
               
-        desktopPane.add(epaSoftFrame);
-        desktopPane.add(hecRasFrame);     
+        desktopPane.add(epaSoftFrame);    
         desktopPane.add(ppFrame);                      
         desktopPane.add(configFrame);
         desktopPane.add(devToolboxFrame);
@@ -412,7 +400,6 @@ public class MainFrame extends JFrame implements ActionListener {
         ppFrame.setTitle(Utils.getBundleString("MainFrame.project_preferences"));
         
         // Define one controller per panel           
-		new HecRasController(hecRasFrame.getPanel(), this);
 		new ProjectPreferencesController(ppFrame.getPanel(), this);
 		new ConfigController(configFrame.getPanel());
 		new DevToolboxController(devToolboxFrame.getPanel());
@@ -424,8 +411,6 @@ public class MainFrame extends JFrame implements ActionListener {
         Dimension desktopSize = desktopPane.getSize();
         epaSoftFrame.setSize(desktopSize);
         epaSoftFrame.setPreferredSize(desktopSize);
-        hecRasFrame.setSize(desktopSize);
-        hecRasFrame.setPreferredSize(desktopSize);
         ppFrame.setSize(desktopSize);
         ppFrame.setPreferredSize(desktopSize);
         configFrame.setSize(desktopSize);
@@ -454,7 +439,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void updateFrames() {
 		getFrameParams(configFrame, "CONFIG");			
 		getFrameParams(epaSoftFrame, "EPASOFT");
-		getFrameParams(hecRasFrame, "HECRAS");
 		getFrameParams(ppFrame, "PP");                    
 	}
 	
@@ -512,15 +496,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		PropertiesDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
     	
 	}    
-	
-    
-    public void putHecrasParams() {
-    	
-    	HecRasPanel hecRasPanel = hecRasFrame.getPanel();
-    	PropertiesDao.getGswProperties().put("HECRAS_FILE_ASC", hecRasPanel.getFileAsc());
-    	PropertiesDao.getGswProperties().put("HECRAS_FILE_SDF", hecRasPanel.getFileSdf());
-    	
-	}	
     
     
     public void putProjectPreferencesParams() {
@@ -559,10 +534,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		// Get EPASOFT (EPANET or SWMM) parameters
 		putEpaSoftParams();
-    	
-		// Get HECRAS parameters
-		putHecrasParams();		
-		
+
 		// Get Project preferences parameters
 		putProjectPreferencesParams();		
 		
@@ -577,7 +549,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	
 	public void saveFormParams() {
 		putFrameParams(epaSoftFrame, "EPASOFT");
-		putFrameParams(hecRasFrame, "HECRAS");
 		putFrameParams(ppFrame, "PP");             
 		putFrameParams(configFrame, "CONFIG");	
 		putMainParams();		
@@ -603,7 +574,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmExampleEpanet.addActionListener(this);
 		mntmExampleEpaswmm.addActionListener(this);
 		mntmExampleEpaswmm2D.addActionListener(this);
-		mntmExampleHecras.addActionListener(this);	
 		
 		mntmDatabaseAdministrator.addActionListener(this);		
 		mntmSqlFileLauncher.addActionListener(this);	
@@ -643,14 +613,11 @@ public class MainFrame extends JFrame implements ActionListener {
 	}
 	
 	public void enableMenuDatabase(boolean enable) {
-		
 		mntmOpenProject.setEnabled(enable);
 		mntmSaveProject.setEnabled(enable);
 		mntmExampleEpanet.setEnabled(enable);
 		mntmExampleEpaswmm.setEnabled(enable);
 		mntmExampleEpaswmm2D.setEnabled(enable);
-		mntmExampleHecras.setEnabled(enable);
-		
 	}
 	
 	
@@ -684,12 +651,9 @@ public class MainFrame extends JFrame implements ActionListener {
 
 
 	public void setCursorFrames(Cursor cursor) {
-		
 		epaSoftFrame.getPanel().setCursor(cursor);
-		hecRasFrame.getPanel().setCursor(cursor);
 		configFrame.getPanel().setCursor(cursor);
 		this.setCursor(cursor);
-		
 	}
 
 	
