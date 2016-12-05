@@ -57,16 +57,16 @@ public class FilesToDbTask extends ParentSchemaTask {
 			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
 			if (!status) return null;
     	}
-		
-		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
-    	if (panel.chkTriggers.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
-    		if (!status) return null;	
-    	}
-		
+    	
     	// Execute SQL's that its name contains 'view' (corresponding to views)
     	if (panel.chkViews.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+    		if (!status) return null;	
+    	}
+		
+		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+    	if (panel.chkTriggers.isSelected() || panel.chkViews.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
     		if (!status) return null;	
     	}
     	
