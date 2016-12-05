@@ -35,6 +35,7 @@ import net.miginfocom.swing.MigLayout;
 import org.giswater.controller.DevToolboxController;
 import org.giswater.gui.frame.DevToolboxFrame;
 import org.giswater.util.Utils;
+import javax.swing.border.TitledBorder;
 
 
 public class DevToolboxPanel extends JPanel implements ActionListener {
@@ -49,6 +50,8 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	private JButton btnClose;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
+	private JPanel panel;
+	private JPanel panelDev;
 	
 	
 	public DevToolboxPanel() {
@@ -94,34 +97,43 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[57.00px:n][75px:n][80px:n][][80px:n]", "[5px:n][20px:n][20px:n][20px:n][20px:n][]"));
+		setLayout(new MigLayout("", "[75px:n,grow][80px:n][80px:n]", "[20px:n][20px:n][]"));
 		
-		chkFunctions = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFunctions.text")); 
-		add(chkFunctions, "cell 1 1 2 1");
+		panelDev = new JPanel();
+		panelDev.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panelDev, "cell 0 0 3 1,grow");
+		panelDev.setLayout(new MigLayout("", "[75px:n,grow][80px:n][]", "[grow]"));
+		
+		panel = new JPanel();
+		panelDev.add(panel, "cell 0 0 3 1,grow");
+		panel.setLayout(new MigLayout("", "[][][]", "[][][][][]"));
+		
+		chkFunctions = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFunctions.text"));
+		panel.add(chkFunctions, "cell 0 0");
 		chkFunctions.setSelected(true);
 		
-		chkTriggers = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkTriggers.text")); 
-		add(chkTriggers, "cell 1 2 2 1");
+		chkTriggers = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkTriggers.text"));
+		panel.add(chkTriggers, "cell 0 1");
 		chkTriggers.setSelected(true);
 		
 		chkViews = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkViews.text"));
+		panel.add(chkViews, "cell 0 2");
 		chkViews.setSelected(true);
-		add(chkViews, "cell 1 3");
 		
 		btnFilesToDb = new JButton("Files to DB");
+		panel.add(btnFilesToDb, "cell 0 4");
 		btnFilesToDb.setPreferredSize(new Dimension(100, 23));
 		btnFilesToDb.setActionCommand("filesToDb");
-		add(btnFilesToDb, "cell 1 5");
 		
 		btnDbToFiles = new JButton("DB to Files");
+		panel.add(btnDbToFiles, "cell 2 4");
 		btnDbToFiles.setPreferredSize(new Dimension(100, 23));
 		btnDbToFiles.setActionCommand("dbToFiles");
-		add(btnDbToFiles, "cell 2 5");
 		
 		btnClose = new JButton("Close");
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 4 5");
+		add(btnClose, "cell 2 2");
 
 		setupListeners();
 
