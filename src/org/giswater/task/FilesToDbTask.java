@@ -70,6 +70,18 @@ public class FilesToDbTask extends ParentSchemaTask {
     		if (!status) return null;	
     	}
     	
+    	// Execute SQL's that its name contains 'fk' (corresponding to foreign keys)
+    	if (panel.chkFk.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);	
+    		if (!status) return null;	
+    	}
+    	
+    	// Execute SQL's that its name contains 'rules' (corresponding to rules
+    	if (panel.chkRules.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_RULES);	
+    		if (!status) return null;	
+    	}
+    	
 		// Insert information into table version
     	insertVersion(true);
 		MainDao.resetSchemaVersion();			

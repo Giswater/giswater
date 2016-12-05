@@ -45,6 +45,8 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	public JCheckBox chkTriggers;
 	public JCheckBox chkFunctions;
 	public JCheckBox chkViews;
+	public JCheckBox chkFk;
+	public JCheckBox chkRules;
 	private JButton btnFilesToDb;
 	private JButton btnDbToFiles;
 	private JButton btnClose;
@@ -97,24 +99,32 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[75px:n,grow][80px:n][80px:n]", "[20px:n][20px:n][]"));
+		setLayout(new MigLayout("", "[75px:n,grow][80px:n][80px:n]", "[10px:n][20px:n][20px:n][]"));
 		
 		panelDev = new JPanel();
 		panelDev.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panelDev, "cell 0 0 3 1,grow");
+		add(panelDev, "cell 0 1 3 1,grow");
 		panelDev.setLayout(new MigLayout("", "[75px:n,grow][80px:n][]", "[grow]"));
 		
 		panel = new JPanel();
 		panelDev.add(panel, "cell 0 0 3 1,grow");
-		panel.setLayout(new MigLayout("", "[][][]", "[][][][][]"));
+		panel.setLayout(new MigLayout("", "[][][]", "[][][][20px:n][]"));
 		
 		chkFunctions = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFunctions.text"));
 		panel.add(chkFunctions, "cell 0 0");
 		chkFunctions.setSelected(true);
 		
+		chkFk = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFk.text")); //$NON-NLS-1$
+		chkFk.setSelected(true);
+		panel.add(chkFk, "cell 2 0");
+		
 		chkTriggers = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkTriggers.text"));
 		panel.add(chkTriggers, "cell 0 1");
 		chkTriggers.setSelected(true);
+		
+		chkRules = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkRules.text")); //$NON-NLS-1$
+		chkRules.setSelected(true);
+		panel.add(chkRules, "cell 2 1");
 		
 		chkViews = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkViews.text"));
 		panel.add(chkViews, "cell 0 2");
@@ -133,7 +143,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		btnClose = new JButton("Close");
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 2 2");
+		add(btnClose, "cell 2 3");
 
 		setupListeners();
 
