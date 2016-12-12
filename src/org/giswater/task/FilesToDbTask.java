@@ -76,9 +76,15 @@ public class FilesToDbTask extends ParentSchemaTask {
     		if (!status) return null;	
     	}
     	
-    	// Execute SQL's that its name contains 'rules' (corresponding to rules
+    	// Execute SQL's that its name contains 'rules' (corresponding to rules)
     	if (panel.chkRules.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_RULES);	
+    		if (!status) return null;	
+    	}
+    	
+    	// Execute SQL's that its name contains 'vdefault' (corresponding to default values)
+    	if (panel.chkValueDefault.isSelected()) {    
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VDEFAULT);	
     		if (!status) return null;	
     	}
     	
