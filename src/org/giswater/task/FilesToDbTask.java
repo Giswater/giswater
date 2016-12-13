@@ -20,6 +20,8 @@
  */
 package org.giswater.task;
 
+import java.io.File;
+
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.gui.panel.DevToolboxPanel;
@@ -30,11 +32,14 @@ public class FilesToDbTask extends ParentSchemaTask {
 	
 	
 	private DevToolboxPanel panel;
+	private String panelName;
+	private String customFolder;
 
 
-	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName) {
+	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName, String panelName) {
 		super(waterSoftware, schemaName);
 		this.currentSchemaName = currentSchemaName;
+		this.panelName = panelName;
 	}
 	
 
@@ -52,50 +57,126 @@ public class FilesToDbTask extends ParentSchemaTask {
     	// Disable view
     	Utils.setPanelEnabled(panel, false);
     	
-		// Execute SQL's that its name contains 'fct' (corresponding to functions)
+    	if (panelName.equals("mainOptions")) {
+    		status = mainOptions();
+    		if (status) {
+    			// Insert information into table version
+    			insertVersion(true);
+    			MainDao.resetSchemaVersion();			
+    		}
+    	}
+    	else if (panelName.equals("customOptions")) {
+    		customFolder = getCustomFolder();
+    		status = customOptions();
+    		if (status) {
+    			// Insert information into table version
+    			insertVersion(true);
+    			MainDao.resetSchemaVersion();			
+    		}
+    	}
+    	
+		return null;
+    	
+    }
+
+    
+    private boolean mainOptions() {
+    	
+		
+    	// Execute SQL's that its name contains 'fct' (corresponding to functions)
     	if (panel.chkFunctions.isSelected()) {    
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
-			if (!status) return null;
+    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+    		if (!status) return false;
     	}
     	
     	// Execute SQL's that its name contains 'view' (corresponding to views)
     	if (panel.chkViews.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
-    		if (!status) return null;	
+    		if (!status) return false;	
     	}
-		
-		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+    	
+    	// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
     	if (panel.chkTriggers.isSelected() || panel.chkViews.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
-    		if (!status) return null;	
+    		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'fk' (corresponding to foreign keys)
     	if (panel.chkFk.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);	
-    		if (!status) return null;	
+    		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'rules' (corresponding to rules)
     	if (panel.chkRules.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_RULES);	
-    		if (!status) return null;	
+    		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'vdefault' (corresponding to default values)
     	if (panel.chkValueDefault.isSelected()) {    
     		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VDEFAULT);	
-    		if (!status) return null;	
+    		if (!status) return false;	
     	}
     	
-		// Insert information into table version
-    	insertVersion(true);
-		MainDao.resetSchemaVersion();			
+    	return true;
 		
-		return null;
+    }
+    
+    
+    private String getCustomFolder() {
+    	
+    	String sql = "SELECT value FROM "+currentSchemaName+".config_param_text WHERE id = 'custom_giswater_folder'";
+    	String customFolder = MainDao.queryToString(sql);
+    	customFolder = Utils.getAppPath()+"sql"+File.separator+customFolder+File.separator;
+
+    	return customFolder;
     	
     }
-
+    
+    
+    private boolean customOptions() {
+    	
+		// Execute SQL's that its name contains 'fct' (corresponding to functions)
+    	if (panel.chkCustomFunctions.isSelected()) {    
+			status = copyCustomFunctions(customFolder, FILE_PATTERN_FCT);
+			if (!status) return false;
+    	}
+    	
+    	// Execute SQL's that its name contains 'view' (corresponding to views)
+    	if (panel.chkCustomViews.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_VIEW);
+    		if (!status) return false;	
+    	}
+		
+		// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+    	if (panel.chkCustomTriggers.isSelected() || panel.chkCustomViews.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_TRG);	
+    		if (!status) return false;	
+    	}
+    	
+    	// Execute SQL's that its name contains 'fk' (corresponding to foreign keys)
+    	if (panel.chkCustomFk.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_FK);	
+    		if (!status) return false;	
+    	}
+    	
+    	// Execute SQL's that its name contains 'rules' (corresponding to rules)
+    	if (panel.chkCustomRules.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_RULES);	
+    		if (!status) return false;	
+    	}
+    	
+    	// Execute SQL's that its name contains 'vdefault' (corresponding to default values)
+    	if (panel.chkCustomValueDefault.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_VDEFAULT);	
+    		if (!status) return false;	
+    	}
+		
+		return true;
+		   	
+    }
+    
     
     public void done() {
     	

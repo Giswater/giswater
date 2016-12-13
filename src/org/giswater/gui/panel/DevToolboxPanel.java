@@ -44,10 +44,10 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	private DevToolboxFrame frame;	
 	private JPanel panelOptions;
 	private JPanel panelOptions_2;
-	public JCheckBox chkTriggers;
 	public JCheckBox chkFunctions;
-	public JCheckBox chkViews;
+	public JCheckBox chkTriggers;
 	public JCheckBox chkFk;
+	public JCheckBox chkViews;
 	public JCheckBox chkRules;
 	public JCheckBox chkValueDefault;
 	private JButton btnFilesToDb;
@@ -190,9 +190,8 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		panelCustomOptions_2.add(chkCustomValueDefault, "cell 4 1");
 		
 		btnCustomFilesToDb = new JButton("Files to DB");
-		btnCustomFilesToDb.setEnabled(false);
 		btnCustomFilesToDb.setPreferredSize(new Dimension(100, 23));
-		btnCustomFilesToDb.setActionCommand("filesToDb");
+		btnCustomFilesToDb.setActionCommand(BUNDLE.getString("DevToolboxPanel.btnCustomFilesToDb.actionCommand")); //$NON-NLS-1$
 		panelCustomOptions_2.add(btnCustomFilesToDb, "cell 0 3");
 		
 		btnCustomDbToFiles = new JButton("DB to Files");
@@ -215,6 +214,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	private void setupListeners() {
 		btnFilesToDb.addActionListener(this);		
 		btnDbToFiles.addActionListener(this);		
+		btnCustomFilesToDb.addActionListener(this);		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getFrame().setVisible(false);

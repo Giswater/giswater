@@ -43,8 +43,8 @@ public class DevToolboxController extends AbstractController {
 		String currentSchemaName = MainDao.getSchema();
 		if (currentSchemaName.equals("")) return;		
 		
-		// Execute task: CopyFunctionsSchema
-		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), currentSchemaName, currentSchemaName);
+		// Execute task: FilesToDbTask
+		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), currentSchemaName, currentSchemaName, "mainOptions");
         task.setPanel(view);		
         task.addPropertyChangeListener(this);
         task.execute();
@@ -65,6 +65,22 @@ public class DevToolboxController extends AbstractController {
         task.execute();
 		
 	}	 
+	
+
+	
+	public void customFilesToDb() {
+		
+		// Get current schema names
+		String currentSchemaName = MainDao.getSchema();
+		if (currentSchemaName.equals("")) return;		
+		
+		// Execute task: FilesToDbTask
+		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), currentSchemaName, currentSchemaName, "customOptions");
+        task.setPanel(view);		
+        task.addPropertyChangeListener(this);
+        task.execute();
+		
+	}	
 	
 	
 	public void closePanel() {

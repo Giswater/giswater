@@ -201,6 +201,13 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	}	
 	
 	
+	protected boolean copyCustomFunctions(String folderPath, String filePattern) {
+		// Process selected software folder
+		if (!processFolder(folderPath, filePattern)) return false;
+		return true;
+	}	
+	
+	
 	protected boolean insertVersion(boolean commit) {
 		
 		String language = prop.get("LANGUAGE", "en");		

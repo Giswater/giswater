@@ -35,7 +35,6 @@ import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
-import org.giswater.task.DbToFilesTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.task.FilesToDbTask;
 import org.giswater.task.RenameSchemaTask;
@@ -535,31 +534,14 @@ public class ProjectPreferencesController extends AbstractController {
 		String currentSchemaName = view.getSelectedSchema();
 		if (currentSchemaName.equals("")) return;		
 		
-		// Execute task: CopyFunctionsSchema
-		FilesToDbTask task = new FilesToDbTask(waterSoftware, currentSchemaName, currentSchemaName);
+		// Execute task FilesToDbTask
+		FilesToDbTask task = new FilesToDbTask(waterSoftware, currentSchemaName, currentSchemaName, "mainOptions");
         task.setController(this);
         task.setParentPanel(view);
         task.addPropertyChangeListener(this);
         task.execute();
 		
 	}
-	
-	
-	
-	public void dbToFiles() {
 		
-		// Get current schema names
-		String currentSchemaName = view.getSelectedSchema();
-		if (currentSchemaName.equals("")) return;		
-		
-		// Execute task: CopyFunctionsSchema
-		DbToFilesTask task = new DbToFilesTask(waterSoftware, currentSchemaName, currentSchemaName);
-        task.setController(this);
-        task.setParentPanel(view);
-        task.addPropertyChangeListener(this);
-        task.execute();
-		
-	}	
-	
 	
 }
