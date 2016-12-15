@@ -66,12 +66,13 @@ public class FilesToDbTask extends ParentSchemaTask {
     		}
     	}
     	else if (panelName.equals("customOptions")) {
-    		customFolder = getCustomFolder();
-    		status = customOptions();
-    		if (status) {
-    			// Insert information into table version
-    			insertVersion(true);
-    			MainDao.resetSchemaVersion();			
+    		if (getCustomFolder()) {
+	    		status = customOptions();
+	    		if (status) {
+	    			// Insert information into table version
+	    			insertVersion(true);
+	    			MainDao.resetSchemaVersion();			
+	    		}
     		}
     	}
     	
@@ -124,13 +125,23 @@ public class FilesToDbTask extends ParentSchemaTask {
     }
     
     
-    private String getCustomFolder() {
+    private boolean getCustomFolder() {
     	
     	String sql = "SELECT value FROM "+currentSchemaName+".config_param_text WHERE id = 'custom_giswater_folder'";
-    	String customFolder = MainDao.queryToString(sql);
+    	customFolder = MainDao.queryToString(sql);
+    	if (customFolder.equals("")) {
+    		String msg = "Parameter 'custom_giswater_folder' not defined in table 'config_param_text'";
+    		Utils.showMessage(msg);
+    		return false;
+    	}
     	customFolder = Utils.getAppPath()+"sql"+File.separator+customFolder+File.separator;
-
-    	return customFolder;
+		File file = new File(customFolder);
+		if (!file.exists()) {
+			String msg = "Custom folder not found: "+customFolder;
+			Utils.showMessage(msg);
+			return false;
+		}
+		return true;
     	
     }
     
@@ -172,7 +183,18 @@ public class FilesToDbTask extends ParentSchemaTask {
     		status = copyCustomFunctions(customFolder, FILE_PATTERN_VDEFAULT);	
     		if (!status) return false;	
     	}
-		
+
+    	// Execute SQL's that its name contains 'other'
+    	if (panel.chkCustomOther.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_OTHER);	
+    		if (!status) return false;	
+    	}
+    	    	
+    	// Execute SQL's that its name contains 'roles'
+    	if (panel.chkCustomRoles.isSelected()) {    
+    		status = copyCustomFunctions(customFolder, FILE_PATTERN_ROLES);	
+    		if (!status) return false;	
+    	}
 		return true;
 		   	
     }

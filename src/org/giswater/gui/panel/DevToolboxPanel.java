@@ -61,6 +61,8 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	public JCheckBox chkCustomViews;
 	public JCheckBox chkCustomRules;
 	public JCheckBox chkCustomValueDefault;
+	public JCheckBox chkCustomOther;
+	public JCheckBox chkCustomRoles;
 	private JButton btnCustomFilesToDb;
 	private JButton btnCustomDbToFiles;
 	private JButton btnClose;
@@ -108,10 +110,9 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	
 	
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[75px:n,grow][80px:n][77px:n]", "[10px:n][20px:n][10px:n][136.00][20px:n][]"));
+		setLayout(new MigLayout("", "[75px:n,grow][80px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
 		
 		panelOptions = new JPanel();
 		panelOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -146,14 +147,14 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		chkValueDefault.setSelected(true);
 		panelOptions_2.add(chkValueDefault, "cell 4 1");
 		
-		btnFilesToDb = new JButton("Files to DB");
+		btnFilesToDb = new JButton(BUNDLE.getString("DevToolboxPanel.btnFilesToDb.text"));
 		panelOptions_2.add(btnFilesToDb, "cell 0 3");
-		btnFilesToDb.setPreferredSize(new Dimension(100, 23));
+		btnFilesToDb.setPreferredSize(new Dimension(90, 23));
 		btnFilesToDb.setActionCommand("filesToDb");
 		
-		btnDbToFiles = new JButton("DB to Files");
+		btnDbToFiles = new JButton(BUNDLE.getString("DevToolboxPanel.btnDbToFiles.text"));
 		panelOptions_2.add(btnDbToFiles, "cell 2 3");
-		btnDbToFiles.setPreferredSize(new Dimension(100, 23));
+		btnDbToFiles.setPreferredSize(new Dimension(90, 23));
 		btnDbToFiles.setActionCommand("dbToFiles");
 		
 		panelCustomOptions = new JPanel();
@@ -163,44 +164,52 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		
 		panelCustomOptions_2 = new JPanel();
 		panelCustomOptions.add(panelCustomOptions_2, "cell 0 0,grow");
-		panelCustomOptions_2.setLayout(new MigLayout("", "[][10px:n][][10px:n][]", "[][][10px:n][]"));
+		panelCustomOptions_2.setLayout(new MigLayout("", "[][10px:n][][10px:n][][10px:n][]", "[][][10px:n][]"));
 		
-		chkCustomFunctions = new JCheckBox("Functions");
+		chkCustomFunctions = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFunctions.text"));
 		chkCustomFunctions.setSelected(true);
 		panelCustomOptions_2.add(chkCustomFunctions, "cell 0 0");
 		
-		chkCustomFk = new JCheckBox("Foreign Keys");
+		chkCustomFk = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkFk.text"));
 		chkCustomFk.setSelected(true);
 		panelCustomOptions_2.add(chkCustomFk, "cell 2 0");
 		
-		chkCustomRules = new JCheckBox("Rules");
+		chkCustomRules = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkRules.text"));
 		chkCustomRules.setSelected(true);
 		panelCustomOptions_2.add(chkCustomRules, "cell 4 0");
 		
-		chkCustomTriggers = new JCheckBox("Triggers");
+		chkCustomOther = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkCustomOther.text")); //$NON-NLS-1$
+		chkCustomOther.setSelected(true);
+		panelCustomOptions_2.add(chkCustomOther, "cell 6 0");
+		
+		chkCustomTriggers = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkTriggers.text"));
 		chkCustomTriggers.setSelected(true);
 		panelCustomOptions_2.add(chkCustomTriggers, "cell 0 1");
 		
-		chkCustomViews = new JCheckBox("Views");
+		chkCustomViews = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkViews.text"));
 		chkCustomViews.setSelected(true);
 		panelCustomOptions_2.add(chkCustomViews, "cell 2 1");
 		
-		chkCustomValueDefault = new JCheckBox("Value Default");
+		chkCustomValueDefault = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkValueDefault.text"));
 		chkCustomValueDefault.setSelected(true);
 		panelCustomOptions_2.add(chkCustomValueDefault, "cell 4 1");
 		
-		btnCustomFilesToDb = new JButton("Files to DB");
-		btnCustomFilesToDb.setPreferredSize(new Dimension(100, 23));
-		btnCustomFilesToDb.setActionCommand(BUNDLE.getString("DevToolboxPanel.btnCustomFilesToDb.actionCommand")); //$NON-NLS-1$
+		chkCustomRoles = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkCustomRoles.text")); //$NON-NLS-1$
+		chkCustomRoles.setSelected(true);
+		panelCustomOptions_2.add(chkCustomRoles, "cell 6 1");
+		
+		btnCustomFilesToDb = new JButton(BUNDLE.getString("DevToolboxPanel.btnFilesToDb.text"));
+		btnCustomFilesToDb.setPreferredSize(new Dimension(90, 23));
+		btnCustomFilesToDb.setActionCommand("customFilesToDb");
 		panelCustomOptions_2.add(btnCustomFilesToDb, "cell 0 3");
 		
-		btnCustomDbToFiles = new JButton("DB to Files");
+		btnCustomDbToFiles = new JButton(BUNDLE.getString("DevToolboxPanel.btnDbToFiles.text"));
 		btnCustomDbToFiles.setVisible(false);
-		btnCustomDbToFiles.setPreferredSize(new Dimension(100, 23));
+		btnCustomDbToFiles.setPreferredSize(new Dimension(90, 23));
 		btnCustomDbToFiles.setActionCommand("dbToFiles");
 		panelCustomOptions_2.add(btnCustomDbToFiles, "cell 2 3");
 		
-		btnClose = new JButton("Close");
+		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
 		add(btnClose, "cell 2 5");
