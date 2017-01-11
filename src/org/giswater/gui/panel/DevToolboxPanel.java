@@ -114,7 +114,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[75px:n,grow][80px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
+		setLayout(new MigLayout("", "[300px:n][40px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
 		
 		panelOptions = new JPanel();
 		panelOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -224,7 +224,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 2 5");
+		add(btnClose, "cell 2 5,alignx right");
 
 		setupListeners();
 
