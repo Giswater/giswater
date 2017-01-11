@@ -86,14 +86,14 @@ public class ImportRpt extends Model {
         }  
 
        	// Check if we want to overwrite previous results
-        Boolean overwrite = Boolean.parseBoolean(PropertiesDao.getPropertiesFile().get("IMPORT_OVERWRITE", "false"));
-        Utils.getLogger().info("IMPORT_OVERWRITE: " + overwrite);
+        Boolean overwriteResult = Boolean.parseBoolean(PropertiesDao.getPropertiesFile().get("OVERWRITE_RESULT", "false"));
+        Utils.getLogger().info("OVERWRITE_RESULT: "+overwriteResult);
         
     	// Check if Project Name exists in rpt_result_id
     	boolean exists = false;
     	if (existsProjectName()) {
     		exists = true;
-            if (!overwrite) {
+            if (!overwriteResult) {
             	int res = Utils.showYesNoDialog("project_exists");    		
             	if (res == JOptionPane.NO_OPTION) return false;
             }
@@ -114,11 +114,11 @@ public class ImportRpt extends Model {
     	
         // EPASWMM
         if (softwareName.equals("SWMM")) {
-        	processEPASWMM(overwrite, exists);
+        	processEPASWMM(overwriteResult, exists);
         } 
         // EPANET
         else {
-        	processEPANET(overwrite, exists);
+        	processEPANET(overwriteResult, exists);
         }
     	       
 		return true;
@@ -253,6 +253,8 @@ public class ImportRpt extends Model {
     	else {
     		Utils.getLogger().info("Target not found: " + rptTarget.getId() + " - " + rptTarget.getDescription());
     		if (softwareName.equals("EPANET") && rptTarget.getId() == 10) {
+    			sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable()+ " WHERE result_id = '"+projectName+"'";
+    			MainDao.executeUpdateSql(sql, true);    			
     			sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+ " (result_id) VALUES ('"+projectName+"')";
     			MainDao.executeUpdateSql(sql, true);
     		}
