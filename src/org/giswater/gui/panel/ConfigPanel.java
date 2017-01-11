@@ -65,12 +65,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JRadioButton optProjectUpdAlways;
 	private JRadioButton optProjectUpdAsk;
 	private JRadioButton optProjectUpdNever;
-	private JRadioButton optSQLEnabled;
-	private JRadioButton optSQLDisabled;
 	private JRadioButton optInpOwEnabled;
 	private JRadioButton optInpOwDisabled;
 	private JRadioButton optRptOwEnabled;
 	private JRadioButton optRptOwDisabled;
+	private JRadioButton optResultOwEnabled;
+	private JRadioButton optResultOwDisabled;	
 	private JRadioButton optUpdatesEnabled;
 	private JRadioButton optUpdatesDisabled;
 	private JTextField txtLogFolderSize;
@@ -261,21 +261,21 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		}	
 	}
 	
-	public void setSqlLog(String status) {
-		if (status.equals("true")) {
-			optSQLEnabled.setSelected(true);
-		}
-		else if (status.equals("false")) {
-			optSQLDisabled.setSelected(true);
-		}
-	}
-	
-	public String getSqlLog() {
+	public String getOverwriteResult() {
 		String value = "false";
-		if (optSQLEnabled.isSelected()) {
+		if (optResultOwEnabled.isSelected()) {
 			value = "true";
 		}
 		return value;
+	}	
+	
+	public void setOverwriteResult(String status) {
+		if (status.equals("true")) {
+			optResultOwEnabled.setSelected(true);
+		}
+		else if (status.equals("false")) {
+			optResultOwDisabled.setSelected(true);
+		}	
 	}	
 	
 	
@@ -364,12 +364,12 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
 	    ButtonGroup group2 = new ButtonGroup();
-	    ButtonGroup group3 = new ButtonGroup();
 	    ButtonGroup group7 = new ButtonGroup();
 	    ButtonGroup group8 = new ButtonGroup();
 	    ButtonGroup group9 = new ButtonGroup();
 	    ButtonGroup group10 = new ButtonGroup();
 	    ButtonGroup group11 = new ButtonGroup();
+	    ButtonGroup group12 = new ButtonGroup();
 	    
 		JLabel lblOpenInpFiles = new JLabel(BUNDLE.getString("ConfigPanel.lblOpenInpFiles.text"));
 		add(lblOpenInpFiles, "cell 0 1,alignx trailing");
@@ -464,18 +464,18 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		optRptOwDisabled.setName("false");
 		group8.add(optRptOwDisabled);
 		
-		JLabel lblCreateSqlLog = new JLabel(BUNDLE.getString("ConfigPanel.lblCreateSqlLog.text"));
-		add(lblCreateSqlLog, "cell 0 7,alignx right");
-			    
-	    optSQLEnabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSQLEnabled.text"));  //$NON-NLS-1$
-	    add(optSQLEnabled, "cell 2 7");
-	    optSQLEnabled.setName("true");
-	    group3.add(optSQLEnabled);
-	    
-	    optSQLDisabled = new JRadioButton(BUNDLE.getString("ConfigPanel.optSQLDisabled.text"));  //$NON-NLS-1$
-	    add(optSQLDisabled, "cell 3 7");
-	    optSQLDisabled.setName("false");
-	    group3.add(optSQLDisabled);
+		JLabel lblOverwriteResult = new JLabel(BUNDLE.getString("ConfigPanel.lblOverwriteResult.text")); //$NON-NLS-1$
+		add(lblOverwriteResult, "cell 0 7,alignx right");
+		
+		optResultOwEnabled = new JRadioButton("Enabled");
+		add(optResultOwEnabled, "cell 2 7");
+		optResultOwEnabled.setName("true");
+		group12.add(optResultOwEnabled);		
+		
+		optResultOwDisabled = new JRadioButton("Disabled");
+		add(optResultOwDisabled, "cell 3 7");
+		optResultOwDisabled.setName("false");
+		group12.add(optResultOwDisabled);
 		
 		JLabel lblCheckUpdates = new JLabel(BUNDLE.getString("ConfigPanel.lblCheckUpdates.text"));
 		add(lblCheckUpdates, "cell 0 8,alignx right");

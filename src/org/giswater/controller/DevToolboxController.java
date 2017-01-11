@@ -84,9 +84,40 @@ public class DevToolboxController extends AbstractController {
 	
 	
 	public void closePanel() {
-		// Close frame
 		view.getFrame().setVisible(false);
 	}	   
+	
+	
+	public void checkAll() {
+		selectChecks(view.chkCheckAll.isSelected());
+	}
+	
+	
+	private void selectChecks(boolean isSelected) {
+		view.chkFk.setSelected(isSelected);
+		view.chkFunctions.setSelected(isSelected);
+		view.chkTriggers.setSelected(isSelected);
+		view.chkViews.setSelected(isSelected);
+		view.chkRules.setSelected(isSelected);
+		view.chkValueDefault.setSelected(isSelected);
+	}
+	
+	
+	public void customCheckAll() {
+		selectCustomChecks(view.chkCustomCheckAll.isSelected());
+	}
+	
+	
+	private void selectCustomChecks(boolean isSelected) {
+		view.chkCustomFk.setSelected(isSelected);
+		view.chkCustomFunctions.setSelected(isSelected);
+		view.chkCustomTriggers.setSelected(isSelected);
+		view.chkCustomViews.setSelected(isSelected);
+		view.chkCustomRules.setSelected(isSelected);
+		view.chkCustomValueDefault.setSelected(isSelected);
+		view.chkCustomOther.setSelected(isSelected);
+		view.chkCustomRoles.setSelected(isSelected);
+	}
 
     
 }

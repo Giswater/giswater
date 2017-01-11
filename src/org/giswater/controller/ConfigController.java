@@ -56,8 +56,8 @@ public class ConfigController extends AbstractController {
 		view.setProjectUpdate(prop.get("PROJECT_UPDATE", "ask"));
 		view.setOverwriteInp(prop.get("OVERWRITE_INP"));
 		view.setOverwriteRpt(prop.get("OVERWRITE_RPT"));
+		view.setOverwriteResult(prop.get("OVERWRITE_RESULT"));
 		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
-		view.setSqlLog(prop.get("SQL_LOG"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
 		view.setLanguage(prop.get("LANGUAGE", "en"));
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
@@ -82,12 +82,12 @@ public class ConfigController extends AbstractController {
 		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
-		prop.put("PROJECT_UPDATE", view.getProjectUpdate());		
-		prop.put("SQL_LOG", view.getSqlLog());				
+		prop.put("PROJECT_UPDATE", view.getProjectUpdate());					
 		prop.put("AUTO_CHECK_UPDATES", view.getCheckUpdates());		
 		prop.put("LOG_FOLDER_SIZE", view.getLogFolderSize());		
 		prop.put("OVERWRITE_INP", view.getOverwriteInp());		
-		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());		
+		prop.put("OVERWRITE_RPT", view.getOverwriteRpt());
+		prop.put("OVERWRITE_RESULT", view.getOverwriteResult());
 		prop.put("AUTO_IMPORT_RPT", view.getAutoImportRpt());		
 		prop.put("LANGUAGE", view.getLanguage());		
 

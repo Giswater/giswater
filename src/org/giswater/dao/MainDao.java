@@ -80,10 +80,6 @@ public class MainDao {
 		return db;
 	}
 	
-	public static String getBinFolder() {
-		return binFolder;
-	}
-	
 	public static String getHost() {
 		return host;
 	}
@@ -253,7 +249,8 @@ public class MainDao {
 		if (!dbAdminPath.equals("")) {
 			File file = new File(dbAdminPath);
 			binFolder = file.getParent();
-			if (!file.exists()) {
+			File folder = new File(binFolder);
+			if (!folder.exists()) {
 				// If path is relative, make it absolute and check it again
 				if (!file.isAbsolute()) {
 					Utils.getLogger().info("dbAdminFile path not exists: "+dbAdminPath);
@@ -278,12 +275,6 @@ public class MainDao {
 	
     
 	protected static boolean getConnectionParameters() {
-
-		// Set bin folder
-		if (!setBinFolder()) {
-			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+binFolder+Utils.getBundleString("MainDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$
-			return false;
-		}
 		
 		// Get connection parameteres from properties file
 		host = PropertiesDao.getGswProperties().get("POSTGIS_HOST", "127.0.0.1");		
@@ -508,7 +499,7 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.executeUpdate(sql);
 	        if (commit && !connectionPostgis.getAutoCommit()){
-	        	connectionPostgis.commit();
+	        	commit();
 	        }
 			return true;
 		} catch (SQLException e) {
@@ -517,6 +508,7 @@ public class MainDao {
 			} else{
 				Utils.logError(e, sql);
 			}
+			rollback();
 			return false;
 		}
 		
@@ -537,11 +529,12 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()) {
-	        	connectionPostgis.commit();
+	        	commit();
 	        }			
 			return true;
 		} catch (SQLException e) {
 			Utils.showSQLError(e, context);
+			rollback();
 			return false;
 		}
 		
@@ -553,10 +546,11 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()) {
-	        	connectionPostgis.commit();
+	        	commit();
 	        }			
 			return null;
 		} catch (SQLException e) {
+			rollback();
 			return e;
 		}
 		
@@ -612,6 +606,7 @@ public class MainDao {
             rs.close();
         } catch (SQLException e) {
         	Utils.showError(e);
+        	rollback();
         }		
         return check;
         
@@ -636,6 +631,7 @@ public class MainDao {
     		}
 		} catch (SQLException e) {
         	Utils.logError(e.getMessage());
+        	rollback();        	
 		}
         return value;
         
@@ -776,6 +772,7 @@ public class MainDao {
 			else {
 				Utils.logError(e, sql);
 			}
+        	rollback();			
         }
         return rs;   
         
@@ -856,6 +853,7 @@ public class MainDao {
 	        }
 		} catch (SQLException e) {
             Utils.showError(e, sql);
+        	rollback();            
 		}            
 		return vector;
 		
@@ -876,6 +874,7 @@ public class MainDao {
 	        }
 		} catch (SQLException e) {
             Utils.showError(e, sql);
+        	rollback();            
 		}            
 		return vector_container;
 		
@@ -921,6 +920,7 @@ public class MainDao {
 	            rs.beforeFirst();
 	        } catch (SQLException e) {
 	            Utils.logError(e);
+	        	rollback();	            
 	        }
 	    }
 	    return 0;

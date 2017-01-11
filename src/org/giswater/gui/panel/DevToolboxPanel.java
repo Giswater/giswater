@@ -50,6 +50,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	public JCheckBox chkViews;
 	public JCheckBox chkRules;
 	public JCheckBox chkValueDefault;
+	public JCheckBox chkCheckAll;
 	private JButton btnFilesToDb;
 	private JButton btnDbToFiles;
 	
@@ -63,6 +64,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	public JCheckBox chkCustomValueDefault;
 	public JCheckBox chkCustomOther;
 	public JCheckBox chkCustomRoles;
+	public JCheckBox chkCustomCheckAll;
 	private JButton btnCustomFilesToDb;
 	private JButton btnCustomDbToFiles;
 	private JButton btnClose;
@@ -112,7 +114,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[75px:n,grow][80px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
+		setLayout(new MigLayout("", "[300px:n][40px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
 		
 		panelOptions = new JPanel();
 		panelOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -156,6 +158,11 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		panelOptions_2.add(btnDbToFiles, "cell 2 3");
 		btnDbToFiles.setPreferredSize(new Dimension(90, 23));
 		btnDbToFiles.setActionCommand("dbToFiles");
+		
+		chkCheckAll = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkCheckAll.text")); //$NON-NLS-1$
+		chkCheckAll.setActionCommand("checkAll");
+		chkCheckAll.setSelected(true);
+		panelOptions_2.add(chkCheckAll, "cell 4 3");
 		
 		panelCustomOptions = new JPanel();
 		panelCustomOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelCustomDev.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -209,10 +216,15 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		btnCustomDbToFiles.setActionCommand("dbToFiles");
 		panelCustomOptions_2.add(btnCustomDbToFiles, "cell 2 3");
 		
+		chkCustomCheckAll = new JCheckBox(BUNDLE.getString("DevToolboxPanel.chkCustomCheckAll.text")); //$NON-NLS-1$
+		chkCustomCheckAll.setSelected(true);
+		chkCustomCheckAll.setActionCommand("customCheckAll");
+		panelCustomOptions_2.add(chkCustomCheckAll, "cell 4 3 3 1");
+		
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 2 5");
+		add(btnClose, "cell 2 5,alignx right");
 
 		setupListeners();
 
@@ -228,7 +240,9 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				getFrame().setVisible(false);
 			}
-		});				
+		});		
+		chkCheckAll.addActionListener(this);		
+		chkCustomCheckAll.addActionListener(this);		
 	}
 	
 	
