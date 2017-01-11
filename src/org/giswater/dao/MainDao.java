@@ -499,7 +499,7 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.executeUpdate(sql);
 	        if (commit && !connectionPostgis.getAutoCommit()){
-	        	connectionPostgis.commit();
+	        	commit();
 	        }
 			return true;
 		} catch (SQLException e) {
@@ -508,6 +508,7 @@ public class MainDao {
 			} else{
 				Utils.logError(e, sql);
 			}
+			rollback();
 			return false;
 		}
 		
@@ -528,11 +529,12 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()) {
-	        	connectionPostgis.commit();
+	        	commit();
 	        }			
 			return true;
 		} catch (SQLException e) {
 			Utils.showSQLError(e, context);
+			rollback();
 			return false;
 		}
 		
@@ -544,10 +546,11 @@ public class MainDao {
 			Statement stmt = connectionPostgis.createStatement();
 	        stmt.execute(sql);
 			if (commit && !connectionPostgis.getAutoCommit()) {
-	        	connectionPostgis.commit();
+	        	commit();
 	        }			
 			return null;
 		} catch (SQLException e) {
+			rollback();
 			return e;
 		}
 		
@@ -603,6 +606,7 @@ public class MainDao {
             rs.close();
         } catch (SQLException e) {
         	Utils.showError(e);
+        	rollback();
         }		
         return check;
         
@@ -627,6 +631,7 @@ public class MainDao {
     		}
 		} catch (SQLException e) {
         	Utils.logError(e.getMessage());
+        	rollback();        	
 		}
         return value;
         
@@ -767,6 +772,7 @@ public class MainDao {
 			else {
 				Utils.logError(e, sql);
 			}
+        	rollback();			
         }
         return rs;   
         
@@ -847,6 +853,7 @@ public class MainDao {
 	        }
 		} catch (SQLException e) {
             Utils.showError(e, sql);
+        	rollback();            
 		}            
 		return vector;
 		
@@ -867,6 +874,7 @@ public class MainDao {
 	        }
 		} catch (SQLException e) {
             Utils.showError(e, sql);
+        	rollback();            
 		}            
 		return vector_container;
 		
@@ -912,6 +920,7 @@ public class MainDao {
 	            rs.beforeFirst();
 	        } catch (SQLException e) {
 	            Utils.logError(e);
+	        	rollback();	            
 	        }
 	    }
 	    return 0;
