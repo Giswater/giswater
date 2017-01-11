@@ -80,10 +80,6 @@ public class MainDao {
 		return db;
 	}
 	
-	public static String getBinFolder() {
-		return binFolder;
-	}
-	
 	public static String getHost() {
 		return host;
 	}
@@ -253,7 +249,8 @@ public class MainDao {
 		if (!dbAdminPath.equals("")) {
 			File file = new File(dbAdminPath);
 			binFolder = file.getParent();
-			if (!file.exists()) {
+			File folder = new File(binFolder);
+			if (!folder.exists()) {
 				// If path is relative, make it absolute and check it again
 				if (!file.isAbsolute()) {
 					Utils.getLogger().info("dbAdminFile path not exists: "+dbAdminPath);
@@ -278,12 +275,6 @@ public class MainDao {
 	
     
 	protected static boolean getConnectionParameters() {
-
-		// Set bin folder
-		if (!setBinFolder()) {
-			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+binFolder+Utils.getBundleString("MainDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$
-			return false;
-		}
 		
 		// Get connection parameteres from properties file
 		host = PropertiesDao.getGswProperties().get("POSTGIS_HOST", "127.0.0.1");		

@@ -546,13 +546,8 @@ public class MenuController extends AbstractController {
 		String path = prop.get("FILE_DBADMIN");
 		File file = new File(path);
 		if (!file.exists()) {
-			// Maybe path is relative, so make it absolute and check it again
-			path = MainDao.getGiswaterUsersFolder() + path;
-			file = new File(path);
-			if (!file.exists()) {
-				Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.file_not_found") + file.getAbsolutePath()); //$NON-NLS-1$
-				return;
-			}
+			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+path+Utils.getBundleString("MainDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$			
+			return;
 		}
 		Utils.openFile(path);
 		
