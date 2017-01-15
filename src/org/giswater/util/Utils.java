@@ -37,6 +37,8 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -602,14 +604,19 @@ public class Utils {
 			}
 			return "";
 		}
-		RandomAccessFile rat = new RandomAccessFile(fileName, "r");
-		String line;
-		String content = "";
-		while ((line = rat.readLine()) != null) {
-		    String utf8 = new String(line.getBytes("ISO-8859-1"), "UTF-8");			
-			content += utf8 + "\n";
+		
+		String content = "";	
+		FileChannel channel = new FileInputStream(fileName).getChannel();
+		MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+		byte[] bytes;
+		if (buffer.hasArray()) {
+		    bytes = buffer.array();
+		} else {
+		    bytes = new byte[buffer.remaining()];
+		    buffer.get(bytes);
 		}
-		rat.close();		
+		content = new String(bytes, "UTF-8");		
+		channel.close();		
 		
 		return content;
 		
