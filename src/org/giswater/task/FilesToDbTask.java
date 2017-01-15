@@ -127,19 +127,26 @@ public class FilesToDbTask extends ParentSchemaTask {
     
     private boolean getCustomFolder() {
     	
-    	String sql = "SELECT value FROM "+currentSchemaName+".config_param_text WHERE id = 'custom_giswater_folder'";
+    	String sql = "SELECT value"+
+    			" FROM "+currentSchemaName+".config_param_text"+
+    			" WHERE id = 'custom_giswater_folder'";
     	customFolder = MainDao.queryToString(sql);
     	if (customFolder.equals("")) {
     		String msg = "Parameter 'custom_giswater_folder' not defined in table 'config_param_text'";
     		Utils.showMessage(msg);
     		return false;
     	}
-    	customFolder = Utils.getAppPath()+"sql"+File.separator+customFolder+File.separator;
-		File file = new File(customFolder);
+    	File file = new File(customFolder);
+    	// If not found, maybe it's because the path is relative to SQL folder...
 		if (!file.exists()) {
-			String msg = "Custom folder not found: "+customFolder;
-			Utils.showMessage(msg);
-			return false;
+			String customFolder2 = customFolder;
+			customFolder = Utils.getAppPath()+"sql"+File.separator+customFolder+File.separator;
+			file = new File(customFolder);
+			if (!file.exists()) {
+				String msg = "Custom folder not found in:\n"+customFolder2+"\nor\n"+customFolder;
+				Utils.showMessage(msg);
+				return false;
+			}
 		}
 		return true;
     	
