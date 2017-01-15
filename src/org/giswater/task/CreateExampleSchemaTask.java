@@ -73,7 +73,7 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	CreateSchemaTask cst = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
     	// Locale must be set to 'EN'
     	cst.setLocale("EN");
-		status = cst.createSchema(softwareAcronym);	
+		status = cst.createSchema(waterSoftware);	
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {
@@ -82,7 +82,7 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 				// Once schema has been created, load example data 
 				try {
 					String folderRoot = Utils.getAppPath();
-					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+softwareAcronym+File.separator;
+					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+waterSoftware+File.separator;
 					status = processFolder(folderPath);
 					if (status) {
 						MainDao.commit();

@@ -112,7 +112,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
     	
     	// Create schema of selected software
-		status = createSchema(softwareAcronym);	
+		status = createSchema(waterSoftware);	
 		if (status) {
 			MainDao.setSchema(schemaName);
 			if (MainDao.updateSchema()) {	

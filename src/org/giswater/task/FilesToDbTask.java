@@ -86,37 +86,37 @@ public class FilesToDbTask extends ParentSchemaTask {
 		
     	// Execute SQL's that its name contains 'fct' (corresponding to functions)
     	if (panel.chkFunctions.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
     		if (!status) return false;
     	}
     	
     	// Execute SQL's that its name contains 'view' (corresponding to views)
     	if (panel.chkViews.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
     		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
     	if (panel.chkTriggers.isSelected() || panel.chkViews.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);	
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);	
     		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'fk' (corresponding to foreign keys)
     	if (panel.chkFk.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FK);	
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_FK);	
     		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'rules' (corresponding to rules)
     	if (panel.chkRules.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_RULES);	
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_RULES);	
     		if (!status) return false;	
     	}
     	
     	// Execute SQL's that its name contains 'vdefault' (corresponding to default values)
     	if (panel.chkValueDefault.isSelected()) {    
-    		status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VDEFAULT);	
+    		status = copyFunctions(this.waterSoftware, FILE_PATTERN_VDEFAULT);	
     		if (!status) return false;	
     	}
     	

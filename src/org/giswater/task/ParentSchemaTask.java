@@ -43,7 +43,6 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String waterSoftware;
 	protected String schemaName;
 	protected String sridValue;	
-	protected String softwareAcronym;
 	protected String locale;
 	protected String currentSchemaName;	
 	protected boolean status;
@@ -76,14 +75,14 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	public ParentSchemaTask(String waterSoftware, String schemaName, String sridValue) {
 		
 		this.waterSoftware = waterSoftware;
+		if (waterSoftware.equals("EPANET")) {
+			this.waterSoftware = "ws";
+		}
+		else if (waterSoftware.equals("EPASWMM")) {
+			this.waterSoftware = "ud";
+		}
 		this.schemaName = schemaName;
 		this.sridValue = sridValue;
-    	if (waterSoftware.toUpperCase().equals("EPANET")) {
-    		softwareAcronym = "ws";
-    	}
-    	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
-    		softwareAcronym = "ud";
-    	}
 
 		try {
 			this.folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
@@ -102,10 +101,10 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected void setProperties() {
 		this.prop = PropertiesDao.getPropertiesFile();
 		this.locale = this.prop.get("LANGUAGE", "");
-		String folderPath = folderRootPath+softwareAcronym+"_export_fct";
+		String folderPath = folderRootPath+waterSoftware+"_export_fct";
 		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
 		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
-		folderPath = folderRootPath+softwareAcronym+"_export_view";
+		folderPath = folderRootPath+waterSoftware+"_export_view";
 		this.folderViews = this.prop.get("FOLDER_VIEWS", folderPath);
 	}
 	
@@ -183,7 +182,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	}	
 	
 	
-	protected boolean copyFunctions(String softwareAcronym, String filePattern) {
+	protected boolean copyFunctions(String waterSoftware, String filePattern) {
 		
 		boolean status = true;
 		
@@ -191,7 +190,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		String folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
 		
 		// Process selected software folder
-		String folderPath = folderRootPath+softwareAcronym+File.separator;
+		String folderPath = folderRootPath+waterSoftware+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
 		
 		// Process 'utils' folder
@@ -214,7 +213,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		
 		String language = prop.get("LANGUAGE", "en");		
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
-			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
 		Utils.logInfo(sql);
 		return MainDao.executeSql(sql, commit);	

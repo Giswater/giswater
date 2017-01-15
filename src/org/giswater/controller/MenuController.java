@@ -498,17 +498,17 @@ public class MenuController extends AbstractController {
 	// Menu Project example
 	public void exampleEpanet() {
 		MainDao.setWaterSoftware("EPANET");
-		createExampleSchema("epanet");
+		createExampleSchema("ws");
 	}
 
 	public void exampleEpaswmm() {
 		MainDao.setWaterSoftware("EPASWMM");
-		createExampleSchema("epaswmm");
+		createExampleSchema("ud");
 	}
 	
 	public void exampleEpaswmm2D() {
 		MainDao.setWaterSoftware("EPASWMM");
-		createExampleSchema("epaswmm", "_2d");
+		createExampleSchema("ud", "_2d");
 	}
 	
 	
@@ -522,7 +522,7 @@ public class MenuController extends AbstractController {
 		String sridValue = "25831";		
 		
 		// Ask confirmation
-		String schemaName = "sample_"+waterSoftware+suffix;
+		String schemaName = waterSoftware+"_sample"+suffix;
 		String msg = Utils.getBundleString("MenuController.project_name")+schemaName;
 		msg+= Utils.getBundleString("MenuController.created_srid")+sridValue;
 		msg+= Utils.getBundleString("MenuController.wish_continue")+Utils.getBundleString("MenuController.disclaimer"); 
