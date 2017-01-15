@@ -706,10 +706,10 @@ public class MainDao {
     	
     	String tableName = "";
     	software = software.toUpperCase().trim();
-        if (software.equals("EPANET")) {
+        if (software.equals("EPANET") || software.equals("WS")) {
         	tableName = TABLE_EPANET;
         }
-        else if (software.equals("EPASWMM") || software.equals("EPA SWMM")) {
+        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.equals("UD")) {
         	tableName = TABLE_EPASWMM;
         }
         return checkTable(schemaName, tableName);
@@ -1116,7 +1116,7 @@ public class MainDao {
 	}
 	
 	
-	public static String replaceExtentParameters(String software, String schemaName, String content) {
+	public static String replaceExtentParameters(String schemaName, String content) {
 		
 		String aux = content;
 		String tableName;

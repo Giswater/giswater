@@ -120,7 +120,10 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	public String getProjectSoftware() {
 		String software = cboSoftware.getSelectedItem().toString();
 		if (software.equals("EPA SWMM")) {
-			software = "EPASWMM";
+			software = "ud";
+		}
+		else {
+			software = "ws";
 		}
 		return software;
 	}		
@@ -197,7 +200,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		
 		cboSoftware = new JComboBox<String>();
 		cboSoftware.setActionCommand("softwareChanged");
-		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
+		cboSoftware.setModel(new DefaultComboBoxModel(new String[] {"EPANET", "EPA SWMM"}));
 		add(cboSoftware, "cell 1 3,growx");
 		
 		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); 
@@ -315,7 +318,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 
 	    	String gisFolder = Utils.getGisFolder();
-	    	templatePath = gisFolder + software+"."+gisExtension;
+	    	templatePath = gisFolder+software+"_template."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()) {
 	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
@@ -362,7 +365,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 			// Replace spatialrefsys and extent parameters
     		content = ConfigDao.replaceSpatialParameters(schemaSrid, content);
-    		content = MainDao.replaceExtentParameters(software, schema, content);
+    		content = MainDao.replaceExtentParameters(schema, content);
     		
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
 			content = content.replace("SCHEMA_NAME", schema);
