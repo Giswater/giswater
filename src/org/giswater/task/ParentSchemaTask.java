@@ -193,9 +193,25 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		String folderPath = folderRootPath+waterSoftware+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
 		
+		// Process 'fct' folder
+		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'trg' folder
+		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;				
+		
 		// Process 'utils' folder
 		folderPath = folderRootPath+"utils"+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'utils/fct' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'utils/trg' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;		
 		
 		return true;
 		

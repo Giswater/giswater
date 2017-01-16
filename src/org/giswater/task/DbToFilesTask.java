@@ -140,7 +140,7 @@ public class DbToFilesTask extends ParentSchemaTask {
 		}
 		params+= ") ";
 		content = header+params+headerEnd+rsFunction.getString("routine_definition")+footer+"\n\n";
-		content = content.replace("\""+this.currentSchemaName+"\"", "\"SCHEMA_NAME\"");
+		content = content.replace(this.currentSchemaName, "SCHEMA_NAME");
 		content = content.replace("\t", "    ");
 		rs.close();	
 		
@@ -197,10 +197,10 @@ public class DbToFilesTask extends ParentSchemaTask {
 		content = "DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\";";
 		content+= "\nCREATE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
 		content+= "\n"+rsView.getString("definition")+"\n\n";
-		content = content.replace("\""+this.currentSchemaName+"\"", "\"SCHEMA_NAME\"");
+		content = content.replace(this.currentSchemaName, "SCHEMA_NAME");
 		content = content.replace("\t", "    ");		
 		
-		String filePath = folderPath+File.separator+rsView.getString("viewname")+".sql";
+		String filePath = folderPath+File.separator+"view_"+rsView.getString("viewname")+".sql";
 		Utils.logInfo("Generating file: "+filePath);
 		OutputStreamWriter osw;
 		FileOutputStream fos;

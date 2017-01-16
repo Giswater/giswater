@@ -82,7 +82,6 @@ public class FilesToDbTask extends ParentSchemaTask {
 
     
     private boolean mainOptions() {
-    	
 		
     	// Execute SQL's that its name contains 'fct' (corresponding to functions)
     	if (panel.chkFunctions.isSelected()) {    
