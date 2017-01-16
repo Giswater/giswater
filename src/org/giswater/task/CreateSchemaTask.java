@@ -69,9 +69,25 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			// Process selected software folder
 			folderPath = folderRootPath+softwareAcronym+File.separator;
 			if (!processFolder(folderPath)) return false;
+
+			// Process 'fct' folder
+			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_FCT+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process 'trg' folder
+			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_TRG+File.separator;
+			if (!processFolder(folderPath)) return false;			
 			
 			// Process 'utils' folder
 			folderPath = folderRootPath+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+
+			// Process 'utils/fct' folder
+			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process 'utils/trg' folder
+			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
 			if (!processFolder(folderPath)) return false;
 			
 			// Process language folders: parameter 'softwareAcronym' and 'utils'

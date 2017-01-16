@@ -157,17 +157,19 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 				filePath = file.getPath();
 				// If parameter 'filePattern' is set:
 				// Process only files that contains that filePattern in its filename
-				if (!filePattern.equals("")) {
-					if (filePath.contains(filePattern)) {
+				if (file.isFile()) {
+					if (!filePattern.equals("")) {
+						if (filePath.contains(filePattern)) {
+							Utils.getLogger().info("Processing file: "+filePath);
+							status = processFile(filePath);
+							if (!status) return false;
+						}
+					} 
+					else {
 						Utils.getLogger().info("Processing file: "+filePath);
 						status = processFile(filePath);
 						if (!status) return false;
 					}
-				} 
-				else {
-					Utils.getLogger().info("Processing file: "+filePath);
-					status = processFile(filePath);
-					if (!status) return false;
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -183,9 +185,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	
 	protected boolean copyFunctions(String waterSoftware, String filePattern) {
-		
-		boolean status = true;
-		
+				
 		// Get execution path		
 		String folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
 		
@@ -197,15 +197,18 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		folderPath = folderRootPath+"utils"+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
 		
-		return status;
+		return true;
 		
 	}	
 	
 	
 	protected boolean copyCustomFunctions(String folderPath, String filePattern) {
+		
 		// Process selected software folder
-		if (!processFolder(folderPath, filePattern)) return false;
+		folderPath = folderPath+File.separator+waterSoftware+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;		
 		return true;
+		
 	}	
 	
 	
