@@ -50,6 +50,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	protected String folderRootPath;	
 	protected String folderFct;
+	protected String folderTrg;
 	protected String folderFctUtils;
 	protected String folderViews;	
 	
@@ -104,6 +105,8 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		String folderPath = folderRootPath+waterSoftware+"_export_fct";
 		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
 		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
+		folderPath = folderRootPath+waterSoftware+"_export_trg";		
+		this.folderTrg = this.prop.get("FOLDER_TRG", folderPath);
 		folderPath = folderRootPath+waterSoftware+"_export_view";
 		this.folderViews = this.prop.get("FOLDER_VIEWS", folderPath);
 	}

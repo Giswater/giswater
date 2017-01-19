@@ -70,7 +70,7 @@ public class DbToFilesTask extends ParentSchemaTask {
 		
 		// Process triggers
     	if (panel.chkTriggers.isSelected()) {    	
-	    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderFct);
+	    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderTrg);
 			if (!status) return null;	
     	}
 		
