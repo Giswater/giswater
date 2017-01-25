@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <derill@giswater.org>
  */
-package org.giswater.gui.panel;
+package org.giswater.gui.dialog.options;
 
 import java.awt.Dimension;
 import java.awt.Font;

@@ -25,7 +25,7 @@ import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
 
 import org.giswater.controller.NewProjectController;
-import org.giswater.model.TableModelSrid;
+import org.giswater.model.table.TableModelSrid;
 import org.giswater.util.MaxLengthTextDocument;
 
 

@@ -104,7 +104,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		
 		btnStateSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnStateSelection.text"));
 		btnStateSelection.setEnabled(false);
-		btnStateSelection.setActionCommand(BUNDLE.getString("EpaSoftPanel.btnStateSelection.actionCommand")); //$NON-NLS-1$
+		btnStateSelection.setActionCommand("showStateSelection");
 		panelPreprocess.add(btnStateSelection, "cell 1 0,growx");
 		
 		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$

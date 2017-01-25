@@ -134,20 +134,20 @@ public class Utils {
 		}
 		
     	UIManager.put("OptionPane.yesButtonText", getBundleString("yes"));
-    	UIManager.put("OptionPane.noButtonText",  getBundleString("no"));		
-    	UIManager.put("OptionPane.cancelButtonText",  getBundleString("cancel"));	
+    	UIManager.put("OptionPane.noButtonText", getBundleString("no"));		
+    	UIManager.put("OptionPane.cancelButtonText", getBundleString("cancel"));	
 		
-    	UIManager.put("FileChooser.openButtonText",  getBundleString("open"));	
-    	UIManager.put("FileChooser.openButtonToolTipText",  getBundleString("open_tooltip"));	
-    	UIManager.put("FileChooser.saveButtonText",  getBundleString("save"));	
-    	UIManager.put("FileChooser.saveButtonToolTipText",  getBundleString("save_tooltip"));	
-    	UIManager.put("FileChooser.cancelButtonText",  getBundleString("cancel"));	
-    	UIManager.put("FileChooser.cancelButtonToolTipText",  getBundleString("cancel_tooltip"));	
-    	UIManager.put("FileChooser.lookInLabelText",  getBundleString("look_in"));	
-    	UIManager.put("FileChooser.saveInLabelText",  getBundleString("save_in"));	    	
-    	UIManager.put("FileChooser.fileNameLabelText",  getBundleString("file_name"));	
-    	UIManager.put("FileChooser.filesOfTypeLabelText",  getBundleString("file_of_type"));	
-    	UIManager.put("FileChooser.folderNameLabelText",  getBundleString("folder_name"));	
+    	UIManager.put("FileChooser.openButtonText", getBundleString("open"));	
+    	UIManager.put("FileChooser.openButtonToolTipText", getBundleString("open_tooltip"));	
+    	UIManager.put("FileChooser.saveButtonText", getBundleString("save"));	
+    	UIManager.put("FileChooser.saveButtonToolTipText", getBundleString("save_tooltip"));	
+    	UIManager.put("FileChooser.cancelButtonText", getBundleString("cancel"));	
+    	UIManager.put("FileChooser.cancelButtonToolTipText", getBundleString("cancel_tooltip"));	
+    	UIManager.put("FileChooser.lookInLabelText", getBundleString("look_in"));	
+    	UIManager.put("FileChooser.saveInLabelText", getBundleString("save_in"));	    	
+    	UIManager.put("FileChooser.fileNameLabelText", getBundleString("file_name"));	
+    	UIManager.put("FileChooser.filesOfTypeLabelText", getBundleString("file_of_type"));	
+    	UIManager.put("FileChooser.folderNameLabelText", getBundleString("folder_name"));	
 	
 	}	
 	
@@ -431,18 +431,6 @@ public class Utils {
     public static String showInputDialog(Component comp, String msg) {
     	return JOptionPane.showInputDialog(comp, getBundleString(msg));  	
     }       
-    
-    
-    public static void execService(String process) {
-		
-		try {
-			getLogger().info(process);
-			Runtime.getRuntime().exec("cmd /c " + process);
-		} catch (IOException e) {
-			logError(e);
-		}		
-		
-	}
 	
     
 	public static boolean execProcess(String process) {

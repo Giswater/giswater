@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <derill@giswater.org>
  */
-package org.giswater.model;
+package org.giswater.model.table;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
