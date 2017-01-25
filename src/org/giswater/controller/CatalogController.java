@@ -36,14 +36,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.giswater.dao.MainDao;
-import org.giswater.gui.MainClass;
 import org.giswater.gui.dialog.catalog.AbstractCatalogDialog;
-import org.giswater.gui.dialog.catalog.ArcCatalogDialog;
 import org.giswater.gui.dialog.catalog.CurvesDialog;
-import org.giswater.gui.dialog.catalog.HydrologyCatalogDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDetailDialog;
 import org.giswater.gui.dialog.catalog.TimeseriesDialog;
-import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.model.table.TableModelCurves;
 import org.giswater.model.table.TableModelTimeseries;
 import org.giswater.util.Utils;
@@ -81,16 +77,7 @@ public class CatalogController extends AbstractController {
 			if (map == null) return;
 			for (Map.Entry<String, JComboBox> entry : map.entrySet()) {
 			    String key = entry.getKey();
-			    Vector vector = getComboValues(key);
-			    // Cat Hidrology: Remove last element if we have selected epaswmm 50022
-			    if (view instanceof HydrologyCatalogDialog && key.equals("infiltration")) {
-			    	ProjectPreferencesPanel ppPanel = MainClass.mdi.ppFrame.getPanel();
-			    	String version = ppPanel.getVersionSoftware();
-					if (version.equals("EPASWMM_50022")) {
-						vector.remove(vector.size() - 1);
-					}		
-			    } 
-			    
+			    Vector vector = getComboValues(key);			    
 			    JComboBox combo = entry.getValue();
 				view.setComboModel(combo, vector);
 				String value = "";
@@ -112,10 +99,6 @@ public class CatalogController extends AbstractController {
 						value = rs.getObject(key);
 					}
 				} 
-				// Set default values of fields geom2, geom3 and geom4
-				if (view instanceof ArcCatalogDialog && !fillData && (key.equals("geom2") || key.equals("geom3") || key.equals("geom4"))) {
-					value = 0.0;
-				}
 				view.setTextField(component, value);
 			}
 
@@ -395,15 +378,6 @@ public class CatalogController extends AbstractController {
 	
 	public void closeWindow() {
 		view.dispose();
-	}
-
-	
-	// Only for ConduitDialog
-	public void shapeChanged() {
-		if (view instanceof ArcCatalogDialog) {
-			ArcCatalogDialog conduitDialog = (ArcCatalogDialog) view;
-			conduitDialog.shapeChanged();
-		}
 	}
 	
 	

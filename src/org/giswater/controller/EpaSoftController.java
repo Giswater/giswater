@@ -36,17 +36,12 @@ import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
 import org.giswater.gui.dialog.options.RaingageDialog;
-import org.giswater.gui.dialog.options.ReportDialog;
-import org.giswater.gui.dialog.options.ReportEpanetDialog;
-import org.giswater.gui.dialog.options.ResultCatDialog;
-import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
 import org.giswater.gui.dialog.options.SectorSelectionPanel;
 import org.giswater.gui.dialog.options.StateSelectionPanel;
 import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.gui.panel.ResultSelectionPanel;
 import org.giswater.task.ExecuteTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -125,22 +120,6 @@ public class EpaSoftController extends AbstractController {
 		ResultSet rs = MainDao.getTableResultset("inp_times");
 		if (rs == null) return;		
 		TimesDialog dialog = new TimesDialog();
-		showOptions(dialog, rs);
-	}	
-	
-	
-	public void showReport() {
-		ResultSet rs = MainDao.getTableResultset("inp_report");
-		if (rs == null) return;		
-		ReportDialog dialog = new ReportDialog();
-		showOptions(dialog, rs);
-	}	
-	
-	
-	public void showReportEpanet() {
-		ResultSet rs = MainDao.getTableResultset("inp_report");
-		if (rs == null) return;		
-		ReportEpanetDialog dialog = new ReportEpanetDialog();
 		showOptions(dialog, rs);
 	}	
 	
@@ -267,50 +246,7 @@ public class EpaSoftController extends AbstractController {
     
     }
 	
-	
-	// Analysis
-	public void scenarioCatalog() {
 		
-		ResultSet rs = MainDao.getTableResultset("rpt_cat_result");
-		if (rs == null) return;		
-		String softwareName = MainDao.getWaterSoftware();
-		AbstractOptionsDialog dialog = null;
-		if (softwareName.equals("EPASWMM")) {
-			dialog = new ResultCatDialog();	
-		}
-		else {
-			dialog = new ResultCatEpanetDialog();
-		}
-		showOptions(dialog, rs, "result_cat_empty");
-		
-	}	
-	
-	
-	public void scenarioManagement() {
-		ResultSelectionPanel panel = new ResultSelectionPanel();
-        JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.result_selection"), 190, 260); //$NON-NLS-1$
-        panel.setParent(dialog);
-        dialog.setVisible(true);
-	}		
-	
-	
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs, String errorMsg) {
-		
-		// Only show form if exists one record
-		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getNumberOfRows(rs) != 0) {
-            controller.moveFirst();
-    	    dialog.setModal(true);
-    	    dialog.setLocationRelativeTo(null);   
-    	    dialog.setVisible(true);	
-        }
-        else {
-        	Utils.showMessage(view, errorMsg);
-        }
-	    
-	}
-	
-	
     public void openProjectPreferences() {
     	
         try {
