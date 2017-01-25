@@ -31,7 +31,7 @@ import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.model.TableModelSrid;
+import org.giswater.model.table.TableModelSrid;
 import org.giswater.task.CreateSchemaTask;
 import org.giswater.util.Utils;
 

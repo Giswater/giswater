@@ -18,7 +18,7 @@
  * Author:
  *   David Erill <derill@giswater.org>
  */
-package org.giswater.gui.panel;
+package org.giswater.gui.dialog.options;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -41,9 +41,9 @@ import org.giswater.model.table.TableModelSectorSelection;
 import org.giswater.util.Utils;
 
 
-public class StateSelectionPanel extends JPanel {
+public class SectorSelectionPanel extends JPanel {
 	
-	private TableModelSectorSelection tableModelStateSelection;
+	private TableModelSectorSelection tableModelSectorSelection;
 	private JTable table;
 	private JButton btnInsert;
 	private JButton btnDelete;
@@ -52,11 +52,11 @@ public class StateSelectionPanel extends JPanel {
 	private JDialog dialog;
 
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
-	private final String TABLE_STATE = "value_state";
-	private final String TABLE_STATE_SELECTION = "inp_selector_state";
+	private final String TABLE_SECTOR = "sector";
+	private final String TABLE_SECTOR_SELECTION = "inp_selector_sector";
 	
 	
-	public StateSelectionPanel() {
+	public SectorSelectionPanel() {
 		initConfig();
 		setData();
 	}
@@ -65,12 +65,12 @@ public class StateSelectionPanel extends JPanel {
 	private void setData() {
 		
 		if (MainDao.isConnected()) {
-			ResultSet rs = MainDao.getTableResultset(TABLE_STATE_SELECTION);		
+			ResultSet rs = MainDao.getTableResultset(TABLE_SECTOR_SELECTION);		
 			if (rs == null) return;		
-			tableModelStateSelection = new TableModelSectorSelection(rs, TABLE_STATE);
-			tableModelStateSelection.setTable(table);
-			table.setModel(tableModelStateSelection);
-			tableModelStateSelection.setCombos();
+			tableModelSectorSelection = new TableModelSectorSelection(rs, TABLE_SECTOR);
+			tableModelSectorSelection.setTable(table);
+			table.setModel(tableModelSectorSelection);
+			tableModelSectorSelection.setCombos();
 			btnInsert.setVisible(true);
 			btnDelete.setVisible(true);			
 		}
@@ -91,7 +91,7 @@ public class StateSelectionPanel extends JPanel {
 		
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setRowSelectionAllowed(true);
@@ -142,7 +142,7 @@ public class StateSelectionPanel extends JPanel {
 		});		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dialog.dispose();
+				close();
 			}
 		});		
 		
@@ -150,8 +150,8 @@ public class StateSelectionPanel extends JPanel {
 
 
 	private void insert() {
-		tableModelStateSelection.insertEmptyRow();	
-		tableModelStateSelection.setCombos();
+		tableModelSectorSelection.insertEmptyRow();	
+		tableModelSectorSelection.setCombos();
 	}
 	
 	
@@ -163,7 +163,7 @@ public class StateSelectionPanel extends JPanel {
     		String msg = Utils.getBundleString("delete_record?") + "\n" + value;
             int res = Utils.showYesNoDialog(msg);
             if (res == JOptionPane.YES_OPTION) {    		
-            	tableModelStateSelection.deleteRow(rowIndex);
+            	tableModelSectorSelection.deleteRow(rowIndex);
             	setData();
             }
     	}
@@ -178,11 +178,17 @@ public class StateSelectionPanel extends JPanel {
 		
         int res = Utils.showYesNoDialog("question_delete");
         if (res == JOptionPane.YES_OPTION) {
-        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_STATE_SELECTION;
+        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_SECTOR_SELECTION;
         	MainDao.executeUpdateSql(sql);
     		setData();
         }
         
+	}
+	
+
+	private void close() {
+		MainDao.commit();
+		dialog.dispose();		
 	}
 
 	
