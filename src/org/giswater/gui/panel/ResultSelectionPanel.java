@@ -142,7 +142,7 @@ public class ResultSelectionPanel extends JPanel {
 		});		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dialog.dispose();
+				close();
 			}
 		});		
 		
@@ -185,5 +185,11 @@ public class ResultSelectionPanel extends JPanel {
         
 	}
 
+	
+	private void close() {
+		MainDao.commit();
+		dialog.dispose();		
+	}
+	
 	
 }

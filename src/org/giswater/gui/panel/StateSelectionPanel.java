@@ -142,7 +142,7 @@ public class StateSelectionPanel extends JPanel {
 		});		
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dialog.dispose();
+				close();
 			}
 		});		
 		
@@ -183,6 +183,12 @@ public class StateSelectionPanel extends JPanel {
     		setData();
         }
         
+	}
+	
+	
+	private void close() {
+		MainDao.commit();
+		dialog.dispose();		
 	}
 
 	
