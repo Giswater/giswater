@@ -20,8 +20,10 @@
  */
 package org.giswater.model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JOptionPane;
 
@@ -76,12 +78,10 @@ public class ExecuteEpa extends Model {
         // Exec process
 		try {
 			Process p = Runtime.getRuntime().exec(exeCmd);
-	        p.waitFor();			
-	        p.destroy();
-		} catch (IOException e) {
-			Utils.showError("inp_error_io", exeCmd);
-			return false;
-		} catch (InterruptedException e) {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((reader.readLine()) != null) {}
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
 			Utils.showError("inp_error_io", exeCmd);
 			return false;
 		}

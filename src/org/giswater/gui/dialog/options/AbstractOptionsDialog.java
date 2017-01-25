@@ -165,6 +165,7 @@ public abstract class AbstractOptionsDialog extends JDialog implements ActionLis
 	public void actionPerformed(ActionEvent e) {
 		controller.action(e.getActionCommand());
 		if (e.getActionCommand().equals("saveData")) {
+			controller.saveData();			
 			dispose();
 		}
 	}

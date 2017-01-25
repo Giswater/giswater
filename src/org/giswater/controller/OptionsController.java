@@ -342,6 +342,8 @@ public class OptionsController extends AbstractController {
 				rs.updateRow();
 			}
 			
+			MainDao.commit();
+			
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {
