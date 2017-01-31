@@ -883,9 +883,10 @@ public class MainDao {
 	
 	public static void setResultSelect(String schema, String table, String result) {
 		String sql = "DELETE FROM "+schema+"."+table;
+		sql+= " WHERE cur_user = current_user";
 		Utils.logSql(sql);
 		executeUpdateSql(sql);
-		sql = "INSERT INTO "+schema+"."+table+" VALUES ('"+result+"')";
+		sql = "INSERT INTO "+schema+"."+table+" (result_id, cur_user) VALUES ('"+result+"', current_user)";
 		executeUpdateSql(sql, true);
 		Utils.logSql(sql);
 	}
