@@ -2388,16 +2388,16 @@
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -2769,16 +2769,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -3150,16 +3150,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -3532,16 +3532,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -3912,16 +3912,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -4335,16 +4335,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Node_minimum_values_copiar20131203150948351',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -4758,16 +4758,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Node_minimum_values_copiar20131203150948351',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -5847,14 +5847,14 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -6115,14 +6115,14 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -6377,14 +6377,14 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -7600,16 +7600,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('arc_type20151120180544344',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -7718,16 +7718,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_arc20151120192002466',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -7798,16 +7798,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_builder20160216122620733',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -7883,16 +7883,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_connec20160216122620764',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -7978,16 +7978,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_element20160224165938446',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8042,16 +8042,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_mat_arc20160224165702501',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8106,16 +8106,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_mat_element20160224165702516',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8173,16 +8173,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_mat_node20160224165702530',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8273,16 +8273,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_node20151105202206790',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -8350,16 +8350,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_owner20160224165938429',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8559,16 +8559,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_soil20151105202206837',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8615,16 +8615,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_tag20160315224815765',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8676,16 +8676,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('cat_work20160216122620842',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -8738,16 +8738,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('connec_type20160403202107384',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9128,16 +9128,16 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('dma20151127113007431',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9201,16 +9201,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('doc20160224202453130',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -9272,16 +9272,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('doc_type20160224202453147',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9372,16 +9372,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('element20160307155209904',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -9443,16 +9443,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('element_type20160224171001597',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9751,14 +9751,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9823,14 +9823,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9889,14 +9889,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -9946,14 +9946,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10015,14 +10015,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10081,14 +10081,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10194,14 +10194,14 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10248,14 +10248,14 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10372,14 +10372,14 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>../.qgis2/python/plugins/giswater</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10422,16 +10422,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_arc_type20160216123450249',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10545,16 +10545,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_controls20130813215614633',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10606,16 +10606,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_curve20130813215614676',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10661,16 +10661,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config OrderByValue="0" AllowNull="0" FilterExpression="" UseCompleter="0" fieldEditable="1" Key="id" Layer="inp_value_curve20131125203728568" Value="id" labelOnTop="0" AllowMulti="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_curve_id20130813215614916',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10716,16 +10716,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_emitter20130813215614777',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10777,16 +10777,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_energy_el20130813215614758',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10838,16 +10838,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_energy_gl20130813215614719',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -10968,16 +10968,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_label20130813215614969',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11026,16 +11026,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_mixing20130813215615038',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11078,16 +11078,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_node_type20160216123450264',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11187,16 +11187,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_options20160311114738171',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11314,16 +11314,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_pattern20130813215615249',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11372,16 +11372,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_project_id20160311114845323',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11427,16 +11427,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_quality20130813215615383',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11488,16 +11488,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_reactions_el20130813215615426',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11549,16 +11549,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_reactions_gl20130813215615454',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11658,16 +11658,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_report20160311114845292',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11713,16 +11713,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_rules20130813215615549',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11766,16 +11766,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_selector_sector20160512064351071',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11822,16 +11822,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_selector_state20160512064351008',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -11886,16 +11886,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config OrderByValue="0" AllowNull="0" FilterExpression="" UseCompleter="0" fieldEditable="1" Key="pattern_id" Layer="inp_pattern20130813215615249" Value="pattern_id" labelOnTop="0" AllowMulti="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_source20130813215615594',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -11960,16 +11960,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_tags20130813215615648',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12039,16 +12039,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_times20160311114845261',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12091,16 +12091,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_typevalue_energy20130820191532221',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12143,16 +12143,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_typevalue_pump20130820191532119',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12195,16 +12195,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_typevalue_reactions_gl20130820191532066',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12247,16 +12247,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_typevalue_source20130820191532007',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12305,16 +12305,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_typevalue_valve20130821012434840',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12357,16 +12357,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_ampm20130820191531964',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12409,16 +12409,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_curve20131125203728568',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12461,16 +12461,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_mixing20130820191531874',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12513,16 +12513,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_noneall20130820191531819',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12565,16 +12565,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_param_energy20130820191531503',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12617,16 +12617,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_reactions_el20130820191531445',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12669,16 +12669,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_reactions_gl20130820191531375',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12722,16 +12722,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_status_pipe20160315232106451',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12775,16 +12775,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_status_pump20160315232106482',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12828,16 +12828,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_status_valve20160315232106513',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12880,16 +12880,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_times20130820191531149',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12932,16 +12932,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_yesno20130820191531037',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -12984,16 +12984,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('inp_value_yesnofull20130820191530965',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -13139,16 +13139,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('man_type_category20160216123701822',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -13194,16 +13194,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('man_type_fluid20160216123701853',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -13249,16 +13249,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('man_type_location20160216123701838',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -13316,16 +13316,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('node_type20151120182614953',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -15450,16 +15450,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('rpt_cat_result20160224175020405',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -15526,16 +15526,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('rpt_energy_usage20160307141641208',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -15641,16 +15641,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('rpt_selector_result20160512064350962',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -15699,16 +15699,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('rtc_hydrometer_x_connec20160216123813609',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -15862,16 +15862,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('rtc_scada_node20160216123813688',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -16507,16 +16507,16 @@ def my_form_open(dialog, layer, feature):
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('sector20131125210050415',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -17079,10 +17079,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_connec.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_connec_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -18577,16 +18577,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_arc20151120180053947',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>../../Users/USUARI/.qgis2/python/plugins/giswater/ui/ws_man_arc.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../Users/USUARI/.qgis2/python/plugins/giswater/ws_man_arc_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -18974,16 +18974,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_inp_pump20160307141348887',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -19307,16 +19307,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_inp_reservoir20160216121834469',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -19643,16 +19643,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_inp_shortpipe20160308160821869',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -19988,16 +19988,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_inp_tank20160216121834484',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -20406,16 +20406,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_inp_valve20160307141348903',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -21121,10 +21121,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -21556,10 +21556,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_connec.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_connec_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -21972,10 +21972,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_connec.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_connec_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -22385,10 +22385,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -22761,10 +22761,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -23151,10 +23151,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -23541,10 +23541,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -23942,16 +23942,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_edit_arc20151120180053947',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_arc.ui</editform>
+      <editform>/ui/ws_man_arc.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_arc_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -24390,10 +24390,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -24785,10 +24785,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -25175,10 +25175,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -25593,10 +25593,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -26023,10 +26023,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_connec.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_connec_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -26476,10 +26476,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -26866,10 +26866,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_node.ui</editform>
+      <editform>/ui/ws_man_node.ui</editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -27313,10 +27313,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ws_man_connec.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ws_man_connec_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -31487,16 +31487,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -31868,16 +31868,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -32249,16 +32249,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -32631,16 +32631,16 @@ def my_form_open(dialog, layer, feature):
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
             <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-            <annotationform>Users/usuario</annotationform>
+            <annotationform></annotationform>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <attributeactions>
               <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
             </attributeactions>
-            <editform>Users/usuario</editform>
+            <editform></editform>
             <editforminit/>
             <editforminitcodesource>0</editforminitcodesource>
-            <editforminitfilepath>Users/usuario</editforminitfilepath>
+            <editforminitfilepath></editforminitfilepath>
             <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -33011,16 +33011,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="2" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Arc_minimum_values_copiar20131203151650523',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -33570,16 +33570,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Node_minimum_values_copiar20131203150948351',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -33993,16 +33993,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('Node_minimum_values_copiar20131203150948351',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -34070,16 +34070,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('v_rpt_hydraulic_status20131203141738132',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -34414,16 +34414,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('value_state20160216123517266',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -34469,16 +34469,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('value_verified20160216164517266',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -34542,16 +34542,16 @@ def my_form_open(dialog, layer, feature):
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
-      <annotationform>Users/usuario</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('version20160224170934197',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/usuario</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/usuario</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -34836,16 +34836,16 @@ def my_form_open(dialog, layer, feature):
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
-      <annotationform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</annotationform>
+      <annotationform></annotationform>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions>
         <actionsetting action="qgis.utils.plugins['postgres91plusauditor'].audit('vnode20160511142313906',[% $id %])" icon="" capture="0" type="1" name="History audit"/>
       </attributeactions>
-      <editform>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>Users/xtorret/.qgis2/python/plugins/giswater_ddb</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -35372,41 +35372,6 @@ LEFT JOIN sample_epanet.connec ON (((connec.connec_id)::text = (link.connec_id):
         <value>svg_path</value>
       </variableNames>
       <variableValues type="QStringList">
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/tasladmin/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/tasladmin/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/tasladmin/.qgis2/python/plugins\giswater\svg</value>
       </variableValues>
     </Variables>
     <Paths>
