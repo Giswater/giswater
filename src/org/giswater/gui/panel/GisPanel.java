@@ -112,14 +112,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	public void setProjectSoftware(String software) {
 		if (software.equals("EPASWMM")){
-			software = "EPA SWMM";
+			software = "UD PROJECT";
 		}
 		cboSoftware.setSelectedItem(software);
 	}	
 	
 	public String getProjectSoftware() {
 		String software = cboSoftware.getSelectedItem().toString();
-		if (software.equals("EPA SWMM")) {
+		if (software.equals("UD PROJECT")) {
 			software = "ud";
 		}
 		else {
@@ -195,12 +195,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectName.setText((String) null);
 		txtProjectName.setColumns(10);
 		
-		JLabel lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); 
+		JLabel lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text"));  //$NON-NLS-1$
 		add(lblSoftware, "cell 0 3,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
 		cboSoftware.setActionCommand("softwareChanged");
-		cboSoftware.setModel(new DefaultComboBoxModel(new String[] {"EPANET", "EPA SWMM"}));
+		cboSoftware.setModel(new DefaultComboBoxModel(new String[] {"WS PROJECT ", "UD PROJECT"}));
 		add(cboSoftware, "cell 1 3,growx");
 		
 		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); 
