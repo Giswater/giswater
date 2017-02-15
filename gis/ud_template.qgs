@@ -3615,10 +3615,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -3977,10 +3977,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -4450,10 +4450,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -5118,10 +5118,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -5484,10 +5484,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -5837,10 +5837,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -6184,10 +6184,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -6546,10 +6546,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -6913,10 +6913,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -7394,10 +7394,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -8069,10 +8069,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -8448,10 +8448,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -8812,10 +8812,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -9284,10 +9284,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -10063,10 +10063,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -10748,10 +10748,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -11123,10 +11123,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>1</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -11473,10 +11473,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -16701,10 +16701,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -17048,10 +17048,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -17427,10 +17427,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -17777,10 +17777,10 @@ def my_form_open(dialog, layer, feature):
               <excludeAttributesWMS/>
               <excludeAttributesWFS/>
               <attributeactions/>
-              <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+              <editform></editform>
               <editforminit>formOpen</editforminit>
               <editforminitcodesource>0</editforminitcodesource>
-              <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+              <editforminitfilepath></editforminitfilepath>
               <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -37183,10 +37183,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -37570,10 +37570,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -38071,7 +38071,7 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
       <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
@@ -41284,10 +41284,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -41675,10 +41675,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -42053,10 +42053,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -42423,10 +42423,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -42810,10 +42810,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -43202,10 +43202,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -44133,7 +44133,7 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
       <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
@@ -44833,10 +44833,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -45237,10 +45237,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -45626,10 +45626,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -46123,7 +46123,7 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
       <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
@@ -46930,10 +46930,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_arc.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_arc_init.py</editforminitfilepath>
+
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -47640,10 +47640,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -48040,10 +48040,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>1</editforminitcodesource>
-      <editforminitfilepath>../../../../../Users/Usuari/.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -48413,10 +48413,10 @@ def my_form_open(dialog, layer, feature):
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions/>
-      <editform>../.qgis2/python/plugins/giswater/ui/ud_man_node.ui</editform>
+      <editform></editform>
       <editforminit>formOpen</editforminit>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>../.qgis2/python/plugins/giswater/ud_man_node_init.py</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
 QGIS forms can have a Python function that is called when the form is
@@ -63879,25 +63879,25 @@ def my_form_open(dialog, layer, feature):
         <value>svg_path</value>
       </variableNames>
       <variableValues type="QStringList">
-        <value>C:/Users/xtorret/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
-        <value>C:/Users/USUARI/.qgis2/python/plugins\giswater\svg</value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
+        <value></value>
       </variableValues>
     </Variables>
     <Paths>
