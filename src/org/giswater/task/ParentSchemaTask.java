@@ -153,7 +153,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 			File[] files = folderRoot.listFiles();
 			if (files == null) {
 				Utils.logError("Folder not found or without files: "+folderPath);				
-				return false;
+				return true;
 			}
 			Arrays.sort(files);
 			for (File file : files) {			
@@ -221,11 +221,38 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	}	
 	
 	
-	protected boolean copyCustomFunctions(String folderPath, String filePattern) {
+	protected boolean copyCustomFunctions(String folderRootPath, String filePattern) {
+		
+		String folderPath = "";
 		
 		// Process selected software folder
-		folderPath = folderPath+File.separator+waterSoftware+File.separator;
+		folderPath = folderRootPath+File.separator+waterSoftware+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;	
+		
+		// Process 'fct' folder
+		folderPath = folderRootPath+File.separator+waterSoftware+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'trg' folder
+		folderPath = folderRootPath+File.separator+waterSoftware+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;				
+
+		// Process 'view' folder
+		folderPath = folderRootPath+File.separator+waterSoftware+File.separator+FILE_PATTERN_VIEW+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;		
+		
+		// Process 'utils' folder
+		folderPath = folderRootPath+File.separator+"utils"+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'utils/fct' folder
+		folderPath = folderRootPath+File.separator+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;
+		
+		// Process 'utils/trg' folder
+		folderPath = folderRootPath+File.separator+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;			
+		
 		return true;
 		
 	}	

@@ -171,6 +171,8 @@ public class DbToFilesTask extends ParentSchemaTask {
     		folder.mkdir();
     	}
     	
+    	String dropFilePath = folderPath+File.separator+"view_drops.sql";
+    	String contentDrop = "";
 		String sql;
 		sql = "SELECT viewname, definition";
 		sql+= " FROM pg_views";
@@ -180,22 +182,51 @@ public class DbToFilesTask extends ParentSchemaTask {
         try {
 			while (rs.next()) {
 				processView(rs, folderPath);
+				contentDrop+= dropView(rs, contentDrop);
 			}
 			rs.close();		
 		} catch (SQLException e) {
 			Utils.logError(e);
 			return false;
 		}
+        
+        // Generate file containing only DROP sentences
+		Utils.logInfo("Generating file: "+dropFilePath);
+		OutputStreamWriter osw;
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(dropFilePath, false);
+			osw = new OutputStreamWriter(fos, "UTF-8");
+			osw.write("\uFEFF");
+			osw.write(contentDrop);
+			osw.close();
+			fos.close();		
+		} catch (Exception e) {
+			Utils.logError(e);
+		}
+        
     	return true;
     
     }
+
+    
+    private String dropView(ResultSet rsView, String contentDrop) throws SQLException {    
+
+    	String content = contentDrop;
+		content = "DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" CASCADE;";
+		content = content.replace(this.currentSchemaName, "SCHEMA_NAME");
+		content+= "\n";
+		return content;
+			
+    }
+
     
     
     private void processView(ResultSet rsView, String folderPath) throws SQLException {    
 
     	String content = "";
-		content = "DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\";";
-		content+= "\nCREATE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
+		content = "--DROP VIEW IF EXISTS \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\";";
+		content+= "\nCREATE OR REPLACE VIEW \""+this.currentSchemaName+"\".\""+rsView.getString("viewname")+"\" AS";
 		content+= "\n"+rsView.getString("definition")+"\n\n";
 		content = content.replace(this.currentSchemaName, "SCHEMA_NAME");
 		content = content.replace("\t", "    ");		
