@@ -57,25 +57,24 @@ public class DbToFilesTask extends ParentSchemaTask {
     	
     	// Disable view
     	Utils.setPanelEnabled(panel, false);
-    	
-    	// Delete files from folder
-    	emptyFolder(this.folderFct);
-    	emptyFolder(this.folderViews);
 		
 		// Process functions
     	if (panel.chkFunctions.isSelected()) {
+    		emptyFolder(this.folderFct);
     		status = processFunctionsPattern(FILE_PATTERN_FCT, this.folderFct);
     		if (!status) return null;	
     	}
 		
 		// Process triggers
-    	if (panel.chkTriggers.isSelected()) {    	
+    	if (panel.chkTriggers.isSelected()) {
+    		emptyFolder(this.folderTrg);
 	    	status = processFunctionsPattern(FILE_PATTERN_TRG, this.folderTrg);
 			if (!status) return null;	
     	}
 		
     	// Process views
     	if (panel.chkViews.isSelected()) {    	
+    		emptyFolder(this.folderViews);
     		status = processViews(this.folderViews);
     		if (!status) return null;	 
     	}  
@@ -220,8 +219,7 @@ public class DbToFilesTask extends ParentSchemaTask {
 			
     }
 
-    
-    
+  
     private void processView(ResultSet rsView, String folderPath) throws SQLException {    
 
     	String content = "";
