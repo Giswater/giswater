@@ -41,7 +41,7 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
 		Utils.logSql(sql);
-		if (MainDao.executeUpdateSql(sql, true)) {
+		if (MainDao.executeUpdateSql(sql, true, true)) {
 			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
@@ -51,18 +51,26 @@ public class RenameSchemaTask extends ParentSchemaTask {
 			}
 			
 			// Execute SQL's that its name contains '_view' (corresponding to views)
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_VIEW);
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
 			
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_FCT);
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
 			
 			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
-			status = copyFunctions(this.softwareAcronym, FILE_PATTERN_TRG);			
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);			
+			
+			if (status) {
+				MainDao.commit();
+			}
+			else{
+				MainDao.rollback();
+			}
 			
 			// Refresh view
 			controller.selectSourceType(false);
 			Utils.setPanelEnabled(parentPanel, true);	
 			parentPanel.setSelectedSchema(schemaName);
+			
 		}
 		
 		return null;

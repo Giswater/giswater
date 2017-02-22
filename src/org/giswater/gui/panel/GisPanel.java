@@ -112,21 +112,18 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	
 	public void setProjectSoftware(String software) {
 		if (software.equals("EPASWMM")){
-			software = "EPA SWMM";
+			software = "UD PROJECT";
 		}
-		else if (software.equals("HECRAS")){
-			software = "HEC-RAS";
-		}		
 		cboSoftware.setSelectedItem(software);
 	}	
 	
 	public String getProjectSoftware() {
 		String software = cboSoftware.getSelectedItem().toString();
-		if (software.equals("EPA SWMM")) {
-			software = "EPASWMM";
+		if (software.equals("UD PROJECT")) {
+			software = "ud";
 		}
-		else if (software.equals("HEC-RAS")) {
-			software = "HECRAS";
+		else {
+			software = "ws";
 		}
 		return software;
 	}		
@@ -198,12 +195,12 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		txtProjectName.setText((String) null);
 		txtProjectName.setColumns(10);
 		
-		JLabel lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text")); 
+		JLabel lblSoftware = new JLabel(BUNDLE.getString("GisPanel.lblSoftware.text"));  //$NON-NLS-1$
 		add(lblSoftware, "cell 0 3,alignx trailing");
 		
 		cboSoftware = new JComboBox<String>();
 		cboSoftware.setActionCommand("softwareChanged");
-		cboSoftware.setModel(new DefaultComboBoxModel<String>(new String[] {"EPANET", "EPA SWMM", "HEC-RAS"}));
+		cboSoftware.setModel(new DefaultComboBoxModel(new String[] {"WS PROJECT ", "UD PROJECT"}));
 		add(cboSoftware, "cell 1 3,growx");
 		
 		lblSchema = new JLabel(BUNDLE.getString("GisPanel.lblSchema.text")); 
@@ -321,7 +318,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		try {
 
 	    	String gisFolder = Utils.getGisFolder();
-	    	templatePath = gisFolder + software+"."+gisExtension;
+	    	templatePath = gisFolder+software+"_template."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()) {
 	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
@@ -368,7 +365,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 
 			// Replace spatialrefsys and extent parameters
     		content = ConfigDao.replaceSpatialParameters(schemaSrid, content);
-    		content = MainDao.replaceExtentParameters(software, schema, content);
+    		content = MainDao.replaceExtentParameters(schema, content);
     		
 	    	// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter
 			content = content.replace("SCHEMA_NAME", schema);

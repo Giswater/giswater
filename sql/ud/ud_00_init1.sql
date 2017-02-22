@@ -22,57 +22,51 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 CREATE EXTENSION IF NOT EXISTS tablefunc;
 
 
-
--- Catalog of tables
+-- Catalog of tables and views
 DROP TABLE IF EXISTS db_cat_table CASCADE; 
 CREATE TABLE db_cat_table (
-    id int4 PRIMARY KEY,
-    name text NOT NULL,
-	project_type text,
+    id text NOT NULL PRIMARY KEY,
     context text,
-	db_cat_clientlayer_id int4,
-	description text
-);
-
-
-
--- Catalog of views
-DROP TABLE IF EXISTS db_cat_view CASCADE; 
-CREATE TABLE db_cat_view (
-    id int4 PRIMARY KEY,
-    name text NOT NULL,
-    project_type text,
-    context text,
-	db_cat_clientlayer_id int4,
-	description text
+    description text
 );
 
 
 -- Catalog of columns
-DROP TABLE IF EXISTS db_cat_columns CASCADE; 
-CREATE TABLE db_cat_columns (
-    id int4 PRIMARY KEY,
-	db_cat_table_id int4 NOT NULL,
-    column_name text NOT NULL,
-	column_type text,
-	description text
+DROP TABLE IF EXISTS db_cat_table_x_column CASCADE; 
+CREATE TABLE db_cat_table_x_column (
+    id text NOT NULL PRIMARY KEY,
+    table_id text,
+    column_id text,
+    column_type text,
+    description text
 );
 
 
 
--- Catalog of client layer
 DROP TABLE IF EXISTS db_cat_clientlayer CASCADE; 
 CREATE TABLE db_cat_clientlayer (
-    id int4 PRIMARY KEY,
-    name text NOT NULL,
-	group_level_1 text,
-	group_level_2 text,
-	group_level_3 text,
-	group_level_4 text,
-	description text
-);
+  qgis_layer_id text NOT NULL,
+  db_cat_table_id text NOT NULL,
+  layer_alias text,
+  client_id text,
+  description text,
+  pre_dependences text,
+  post_dependences text,
+  db_cat_client_layer_agrupation_id varchar(50),
+  styleqml_use_asdefault boolean,
+  styleqml_file text,
+  geometry_field text,
+  project_criticity smallint,
+  automatic_reload_layer boolean,
+  CONSTRAINT db_cat_clientlayer_pkey PRIMARY KEY (qgis_layer_id));
 
 
-
-
-
+DROP TABLE IF EXISTS db_cat_client_agrupation CASCADE; 
+CREATE TABLE db_cat_client_agrupation(
+  id varchar(50) NOT NULL,
+  description text,
+  workflow text,
+  pre_dependences text,
+  post_dependences text,
+  db_cat_client_layer_agrupation_id varchar(50),
+  CONSTRAINT db_cat_client_agrupation_pkey PRIMARY KEY (id));

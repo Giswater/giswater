@@ -10,21 +10,33 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 -- ----------------------------
 -- Default values of state selection
 -- ----------------------------
-INSERT INTO "inp_selector_state" VALUES ('EN_SERVEI');
+INSERT INTO "inp_selector_state" VALUES ('ON_SERVICE');
 
 
 -- ----------------------------
 -- Default values of hydrology selection
 -- ----------------------------
 
-INSERT INTO "inp_selector_hydrology" VALUES ('CH_PER_DEFECTE');
+INSERT INTO "inp_selector_hydrology" VALUES ('HC_DEFAULT');
 
 
 
 -- ----------------------------
--- Records of plan_selector_economic
+-- Records of plan_selector_state
 -- ----------------------------
-INSERT INTO "plan_selector_economic" VALUES ('EN_SERVEI');
-INSERT INTO "plan_selector_economic" VALUES ('RECONSTRUIR');
-INSERT INTO "plan_selector_economic" VALUES ('SUBSTITUIR');
-INSERT INTO "plan_selector_economic" VALUES ('PLANIFICAT');
+INSERT INTO "plan_selector_state" VALUES ('ON_SERVICE');
+INSERT INTO "plan_selector_state" VALUES ('RECONSTRUCT');
+INSERT INTO "plan_selector_state" VALUES ('REPLACE');
+INSERT INTO "plan_selector_state" VALUES ('PLANIFIED');
+
+
+-- ----------------------------
+-- Records of man_selector_state
+-- ----------------------------
+INSERT INTO "man_selector_state" VALUES ('ON_SERVICE');
+
+
+-- ----------------------------
+-- Records of anl_selector_state
+-- ----------------------------
+INSERT INTO "anl_selector_state" VALUES ('ON_SERVICE');

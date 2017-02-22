@@ -5,6 +5,9 @@ This version of Giswater is provided by Giswater Association
 */
 
 
+
+SET search_path = "SCHEMA_NAME", public, pg_catalog;
+
 -- ----------------------------
 -- Records of value_state
 -- ----------------------------
@@ -27,14 +30,6 @@ INSERT INTO "value_verified" VALUES ('VERIFIED');
 -- ----------------------------
 INSERT INTO "value_yesno" VALUES ('NO');
 INSERT INTO "value_yesno" VALUES ('YES');
-
-
--- ----------------------------
--- Records of connec_type
--- ----------------------------
-INSERT INTO connec_type VALUES ('DOMESTIC', NULL);
-INSERT INTO connec_type VALUES ('TRADE', NULL);
-INSERT INTO connec_type VALUES ('INDUSTRIAL', NULL);
 
 
 -- ----------------------------

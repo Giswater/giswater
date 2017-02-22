@@ -15,6 +15,8 @@ CREATE TABLE "version" (
 "postgres" varchar(512)  ,
 "postgis" varchar(512)  ,
 "date" timestamp(6) DEFAULT now(),
+"language" varchar (50),
+"epsg" int4,
 CONSTRAINT version_pkey PRIMARY KEY (id)
 );
 
@@ -38,6 +40,8 @@ CREATE TABLE "config" (
 "connec_duplicated_tolerance" float,
 "audit_function_control" boolean,
 "arc_searchnodes_control" boolean,
+"insert_double_geometry" boolean,
+"buffer_value" double precision,
 CONSTRAINT "config_pkey" PRIMARY KEY ("id"),
 CONSTRAINT "config_check" CHECK(id = '1')
 );
@@ -47,31 +51,6 @@ CREATE TABLE "config_csv_import" (
 "table_name" varchar(50) NOT NULL,
 "gis_client_layer_name" varchar(50),
 CONSTRAINT "config_csv_import_pkey" PRIMARY KEY ("table_name")
-);
-
-
-CREATE TABLE "config_search_plus" (
-"id" varchar(18) NOT NULL,
-"ppoint_layer" varchar (30),
-"ppoint_field_zone" varchar (30),
-"ppoint_field_number" varchar (30),
-"urban_propierties_layer" varchar (30),
-"urban_propierties_field_pzone" varchar (30),
-"urban_propierties_field_block" varchar (30),
-"urban_propierties_field_number" varchar (30),
-"street_layer" varchar (30),
-"street_field_code" varchar (30),
-"street_field_name" varchar (30),
-"portal_layer" varchar (30),
-"portal_field_code" varchar (30),
-"portal_field_number" varchar (30),
-"hydrometer_urban_propierties_layer" varchar (30),
-"hydrometer_urban_propierties_field_code" varchar (30),
-"hydrometer_layer" varchar (30),
-"hydrometer_field_code" varchar (30),
-"hydrometer_field_urban_propierties_code" varchar (30),
-CONSTRAINT "config_search_plus_pkey" PRIMARY KEY ("id"),
-CONSTRAINT "config_search_plus_check" CHECK(id = '1')
 );
 
 
@@ -97,4 +76,57 @@ CREATE TABLE "config_ui_forms" (
 "alias" varchar (50),
 CONSTRAINT "config_ui_forms_pkey" PRIMARY KEY ("id")
 );
+
+CREATE TABLE "config_py_tables" (
+"id" serial NOT NULL,
+"table_name" varchar (50),
+"context" varchar (50),
+"plugin_version" varchar (20), 
+"hidden" boolean,
+"observ" varchar(50),
+"db_schema" boolean,
+"qgis_project" boolean,
+CONSTRAINT "config_py_tables_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "config_param_int" (
+"id" varchar (50) NOT NULL,
+"value" int4 NOT NULL,
+"context" varchar (50),
+"from_version" varchar (50), 
+"to_version" varchar (50), 
+"descript" text,
+CONSTRAINT "config_param_int_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "config_param_text" (
+"id" varchar (50) NOT NULL,
+"value" text NOT NULL,
+"context" varchar (50),
+"from_version" varchar (50), 
+"to_version" varchar (50), 
+"descript" text,
+CONSTRAINT "config_param_text_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "config_param_float" (
+"id" varchar (50) NOT NULL,
+"value" double precision NOT NULL,
+"context" varchar (50),
+"from_version" varchar (50), 
+"to_version" varchar (50), 
+"descript" text,
+CONSTRAINT "config_param_float_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "config_param_bool" (
+"id" varchar (50) NOT NULL,
+"value" boolean NOT NULL,
+"context" varchar (50),
+"from_version" varchar (50), 
+"to_version" varchar (50), 
+"descript" text,
+CONSTRAINT "config_param_bool_pkey" PRIMARY KEY ("id")
+);
+
 

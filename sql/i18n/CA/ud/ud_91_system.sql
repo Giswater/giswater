@@ -35,18 +35,23 @@ INSERT INTO "node_type" VALUES ('DESGUAS','OUTFALL','OUTFALL', 'man_outfall', 'i
 -- Records of arc type system table
 -- ----------------------------
 
-INSERT INTO "arc_type" VALUES ('CONDUCTE','CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'event_x_conduit' );
-INSERT INTO "arc_type" VALUES ('BOMBA','CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'event_x_conduit' );
-INSERT INTO "arc_type" VALUES ('SIFO','CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'event_x_conduit' );
-INSERT INTO "arc_type" VALUES ('RAPID','CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'event_x_conduit' );
-INSERT INTO "arc_type" VALUES ('VIRTUAL','CONDUIT', 'OUTLET', 'man_virtual', 'inp_outlet', 'event_x_virtual' );
+INSERT INTO arc_type VALUES ('CONDUCTE', 'CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'om_visit_x_arc');
+INSERT INTO arc_type VALUES ('IMPULSIO', 'CONDUIT', 'CONDUIT', 'man_conduit', 'inp_conduit', 'om_visit_x_arc');
+INSERT INTO arc_type VALUES ('SIFO', 'SIPHON', 'CONDUIT', 'man_siphon', 'inp_conduit', 'om_visit_x_arc');
+INSERT INTO arc_type VALUES ('RAPID', 'WACCEL', 'CONDUIT', 'man_waccel', 'inp_conduit', 'om_visit_x_arc');
+INSERT INTO arc_type VALUES ('FICTICI', 'VARC', 'OUTLET', 'man_varc', 'inp_outlet', 'om_visit_x_arc');
 
+
+-- ----------------------------
+-- Records of connec_type
+-- ----------------------------
+INSERT INTO connec_type VALUES ('ESCOMESA', 'CONNEC', 'man_connec' ,'om_visit_x_connec');
 
 
 -- ----------------------------
 -- Records of element type system table
 -- ----------------------------
-INSERT INTO "element_type" VALUES ('TAPA', 'event_x_cover');
-INSERT INTO "element_type" VALUES ('PAS', 'event_x_step');
-INSERT INTO "element_type" VALUES ('BOMBA', 'event_x_pump');
-INSERT INTO "element_type" VALUES ('PORTA', 'event_x_gate');
+INSERT INTO "element_type" VALUES ('TAPA', 'COVER');
+INSERT INTO "element_type" VALUES ('PATE', 'STEP');
+INSERT INTO "element_type" VALUES ('BOMBA', 'PUMP');
+INSERT INTO "element_type" VALUES ('COMPORTA', 'GATE');

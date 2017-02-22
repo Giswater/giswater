@@ -5,7 +5,7 @@ This version of Giswater is provided by Giswater Association
 */
 
 
-SET LC_MESSAGES TO 'en_US.UTF-8';
+--SET LC_MESSAGES TO 'en_US.UTF-8';
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
@@ -34,13 +34,6 @@ INSERT INTO value_yesno VALUES ('NO');
 INSERT INTO value_yesno VALUES ('YES');
 
 
-
--- ----------------------------
--- Records of connec_type
--- ----------------------------
-INSERT INTO connec_type VALUES ('DOMESTIC', NULL);
-INSERT INTO connec_type VALUES ('TRADE', NULL);
-INSERT INTO connec_type VALUES ('INDUSTRIAL', NULL);
 
 
 -- ----------------------------

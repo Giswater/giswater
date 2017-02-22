@@ -44,7 +44,6 @@ import org.giswater.gui.dialog.about.WelcomeDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.DownloadPanel;
 import org.giswater.gui.panel.EpaSoftPanel;
-import org.giswater.gui.panel.HecRasPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.BackupProjectTask;
 import org.giswater.task.CreateExampleSchemaTask;
@@ -305,7 +304,6 @@ public class MenuController extends AbstractController {
 		
 		// Update frames position and panels
 		mainFrame.updateFrames();
-		updateHecrasPanel();
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			if (acceptPreferences) {
@@ -349,7 +347,6 @@ public class MenuController extends AbstractController {
 		
 		// Update frames position and panels
 		mainFrame.updateFrames();
-		updateHecrasPanel();
 		updateEpaSoftPanel();  		
 		if (updateProjectPreferencesPanel()) {
 			ProjectPreferencesController ppController = mainFrame.ppFrame.getPanel().getController();
@@ -496,36 +493,22 @@ public class MenuController extends AbstractController {
     	epaSoftPanel.setProjectName(PropertiesDao.getGswProperties().get("PROJECT_NAME"));
 		
 	}   
-    
- 
-    private void updateHecrasPanel() {
-    	
-    	HecRasPanel hecRasPanel = mainFrame.hecRasFrame.getPanel();
-    	hecRasPanel.setFileAsc(PropertiesDao.getGswProperties().get("HECRAS_FILE_ASC"));
-    	hecRasPanel.setFileSdf(PropertiesDao.getGswProperties().get("HECRAS_FILE_SDF"));
-    	
-	}    
      
     
 	// Menu Project example
 	public void exampleEpanet() {
 		MainDao.setWaterSoftware("EPANET");
-		createExampleSchema("epanet");
+		createExampleSchema("ws");
 	}
 
 	public void exampleEpaswmm() {
 		MainDao.setWaterSoftware("EPASWMM");
-		createExampleSchema("epaswmm");
+		createExampleSchema("ud");
 	}
 	
 	public void exampleEpaswmm2D() {
 		MainDao.setWaterSoftware("EPASWMM");
-		createExampleSchema("epaswmm", "_2d");
-	}
-
-	public void exampleHecras() {
-		MainDao.setWaterSoftware("HECRAS");
-       	createExampleSchema("hecras");
+		createExampleSchema("ud", "_2d");
 	}
 	
 	
@@ -539,7 +522,7 @@ public class MenuController extends AbstractController {
 		String sridValue = "25831";		
 		
 		// Ask confirmation
-		String schemaName = "sample_"+waterSoftware+suffix;
+		String schemaName = waterSoftware+"_sample"+suffix;
 		String msg = Utils.getBundleString("MenuController.project_name")+schemaName;
 		msg+= Utils.getBundleString("MenuController.created_srid")+sridValue;
 		msg+= Utils.getBundleString("MenuController.wish_continue")+Utils.getBundleString("MenuController.disclaimer"); 
@@ -563,13 +546,8 @@ public class MenuController extends AbstractController {
 		String path = prop.get("FILE_DBADMIN");
 		File file = new File(path);
 		if (!file.exists()) {
-			// Maybe path is relative, so make it absolute and check it again
-			path = MainDao.getGiswaterUsersFolder() + path;
-			file = new File(path);
-			if (!file.exists()) {
-				Utils.showMessage(mainFrame, Utils.getBundleString("MenuController.file_not_found") + file.getAbsolutePath()); //$NON-NLS-1$
-				return;
-			}
+			Utils.showError(Utils.getBundleString("MainDao.admin_not_found")+path+Utils.getBundleString("MainDao.admin_location")); //$NON-NLS-1$ //$NON-NLS-2$			
+			return;
 		}
 		Utils.openFile(path);
 		
@@ -645,6 +623,11 @@ public class MenuController extends AbstractController {
         }
 		
 	}
+	
+	
+	public void showDevToolbox() {
+		mainFrame.openDevToolbox();
+	}	
 	
 	
 	

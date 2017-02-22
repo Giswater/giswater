@@ -60,7 +60,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	public boolean createSchema(String softwareAcronym) {
 		
 		boolean status = true;
-		String filePath = "";
 		
 		try {
 			
@@ -70,9 +69,25 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			// Process selected software folder
 			folderPath = folderRootPath+softwareAcronym+File.separator;
 			if (!processFolder(folderPath)) return false;
+
+			// Process 'fct' folder
+			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_FCT+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process 'trg' folder
+			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_TRG+File.separator;
+			if (!processFolder(folderPath)) return false;			
 			
 			// Process 'utils' folder
 			folderPath = folderRootPath+"utils"+File.separator;
+			if (!processFolder(folderPath)) return false;
+
+			// Process 'utils/fct' folder
+			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
+			if (!processFolder(folderPath)) return false;
+			
+			// Process 'utils/trg' folder
+			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
 			if (!processFolder(folderPath)) return false;
 			
 			// Process language folders: parameter 'softwareAcronym' and 'utils'
@@ -83,10 +98,10 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			if (!processFolder(folderPath)) return false;
 			
 		} catch (FileNotFoundException e) {
-			Utils.showError("inp_error_notfound", filePath);
+			Utils.showError(e);
 			status = false;
 		} catch (IOException e) {
-			Utils.showError(e, filePath);
+			Utils.showError(e);
 			status = false;			
 		}
 		
@@ -113,18 +128,15 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
     	
     	// Create schema of selected software
-		status = createSchema(softwareAcronym);	
+		status = createSchema(waterSoftware);	
 		if (status) {
 			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()) {
+			if (MainDao.updateSchema()) {	
+				// Insert information into table inp_project_id and version				
 				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
 				Utils.logInfo(sql);
-				MainDao.executeSql(sql, false);
-				sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date)" +
-					" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware+"', '"+MainDao.getPostgreVersion()+"', '"+MainDao.getPostgisVersion()+"', now())";
-				Utils.logInfo(sql);
-				// Last SQL script. So commit all process
-				MainDao.executeSql(sql, true);
+				MainDao.executeSql(sql, false);		
+				insertVersion(true);
 			}
 			else {
 				MainDao.deleteSchema(schemaName);
@@ -151,9 +163,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage("schema_creation_completed");
-    		if (waterSoftware.equals("HECRAS")) {
-    			parentPanel.getController().enableHecras(true);
-    		}
     	}
     	else {
     		MainClass.mdi.showError(Utils.getBundleString("CreateSchemaTask.project_not_created")); //$NON-NLS-1$

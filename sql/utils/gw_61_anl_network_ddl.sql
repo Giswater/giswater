@@ -59,6 +59,12 @@ CONSTRAINT anl_arc_no_startend_node_pkey PRIMARY KEY (arc_id)
 );
 
 
+CREATE TABLE "anl_selector_state" (
+  "id" character varying(16) NOT NULL,
+  CONSTRAINT anl_selector_state_pkey PRIMARY KEY (id)
+);
+
+
 CREATE INDEX anl_node_orphan_index ON anl_node_orphan USING GIST (the_geom);
 CREATE INDEX anl_node_sink_index ON anl_node_sink USING GIST (the_geom);
 CREATE INDEX anl_node_duplicated_index ON anl_node_duplicated USING GIST (the_geom);

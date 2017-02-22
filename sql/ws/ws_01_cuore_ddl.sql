@@ -129,8 +129,17 @@ CONSTRAINT node_type_pkey PRIMARY KEY (id)
 
 CREATE TABLE "element_type" (
 "id" varchar(18)   NOT NULL,
-"event_table" varchar(18)   NOT NULL,
+"type" varchar(18),
 CONSTRAINT element_type_pkey PRIMARY KEY (id)
+);
+
+
+CREATE TABLE "connec_type" (
+"id" varchar(50) NOT NULL,
+"type" character varying(18) NOT NULL,
+"man_table" character varying(18) NOT NULL,
+"event_table" varchar(18)   NOT NULL,
+CONSTRAINT connec_type_pkey PRIMARY KEY (id)
 );
 
 
@@ -148,7 +157,6 @@ CONSTRAINT point_type_pkey PRIMARY KEY (id)
 CREATE TABLE "cat_mat_arc" (
 "id" varchar(30)  ,
 "descript" varchar(512)  ,
-"roughness" numeric(12,4),
 "link" varchar(512)  ,
 "url" varchar(512)  ,
 "picture" varchar(512)  ,
@@ -208,6 +216,7 @@ CREATE TABLE "cat_node" (
 "estimated_depth" numeric (12,2),
 "cost_unit" varchar (3),
 "cost" varchar (16),
+"num_arcs" integer,
 CONSTRAINT cat_node_pkey PRIMARY KEY (id)
 );
 
@@ -345,13 +354,6 @@ CONSTRAINT man_type_location_pkey PRIMARY KEY (id)
 );
 
 
-CREATE TABLE "connec_type" (
-"id" varchar(50) NOT NULL,
-"observ" varchar(50),
-CONSTRAINT connec_type_pkey PRIMARY KEY (id)
-);
-
-
 
 -- ----------------------------
 -- Table: GIS features
@@ -361,6 +363,7 @@ CREATE TABLE "sector" (
 "sector_id" varchar(30) NOT NULL,
 "descript" varchar(100),
 "the_geom" public.geometry (MULTIPOLYGON, SRID_VALUE),
+"undelete" boolean,
 CONSTRAINT sector_pkey PRIMARY KEY (sector_id)
 );
 
@@ -394,6 +397,11 @@ CREATE TABLE "node" (
 "link" character varying(512),
 "verified" varchar(20)  ,
 "the_geom" public.geometry (POINT, SRID_VALUE),
+"undelete" boolean,
+"workcat_id_end" character varying(255),
+"label_x" character varying(30),
+"label_y" character varying(30),
+"label_rotation" numeric(6,3),
 CONSTRAINT node_pkey PRIMARY KEY (node_id)
 );
 
@@ -428,6 +436,11 @@ CREATE TABLE "arc" (
 "link" character varying(512),
 "verified" varchar(20)  ,
 "the_geom" public.geometry (LINESTRING, SRID_VALUE),
+"undelete" boolean,
+"workcat_id_end" character varying(255),
+"label_x" character varying(30),
+"label_y" character varying(30),
+"label_rotation" numeric(6,3),
 CONSTRAINT arc_pkey PRIMARY KEY (arc_id)
 );
 
@@ -439,6 +452,7 @@ CREATE TABLE "dma" (
 "descript" varchar(255),
 "observ" character varying(512),
 "the_geom" public.geometry (MULTIPOLYGON, SRID_VALUE),
+"undelete" boolean,
 CONSTRAINT dma_pkey PRIMARY KEY (dma_id)
 );
 
@@ -476,6 +490,12 @@ CREATE TABLE "connec" (
 "link" character varying(512),
 "verified" varchar(20)  ,
 "the_geom" public.geometry (POINT, SRID_VALUE),
+"undelete" boolean,
+"connec_type" character varying(30),
+"workcat_id_end" character varying(255),
+"label_x" character varying(30),
+"label_y" character varying(30),
+"label_rotation" numeric(6,3),
 CONSTRAINT connec_pkey PRIMARY KEY (connec_id)
 );
 
@@ -509,7 +529,9 @@ CREATE TABLE "point" (
 "point_type" varchar(18),
 "observ" character varying(512),
 "text" text,
+"link" text,
 "the_geom" public.geometry (POINT, SRID_VALUE),
+"undelete" boolean,
 CONSTRAINT point_pkey PRIMARY KEY (point_id)
 );
 
@@ -520,10 +542,48 @@ CREATE TABLE "presszone" (
 "presszonecat_id" varchar(18),
 "sector" character varying(512),
 "text" text,
+"undelete" boolean,
 CONSTRAINT presszone_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE "pond"(
+"pond_id" character varying(16) NOT NULL,
+"connec_id" character varying(16),
+"code_comercial" integer,
+"orto2005" integer,
+"the_geom" geometry(Point,SRID_VALUE),
+  CONSTRAINT man_pond_pkey PRIMARY KEY (pond_id)
+);
 
+
+CREATE TABLE "pool"(
+  "pool_id" character varying(16) NOT NULL,
+  "connec_id" character varying(16),
+  "code_comercial" integer,
+  "orto2005" integer,
+  "the_geom" geometry(Point,SRID_VALUE),
+  CONSTRAINT man_pool_pkey PRIMARY KEY (pool_id)
+  );
+  
+  
+  CREATE TABLE "samplepoint"(
+  "sample_id" character varying(16) NOT NULL,
+  "state" character varying(150),
+  "rotation" numeric(12,3),
+  "code_lab" integer,
+  "element_type" character varying(150),
+  "workcat_id" character varying(255),
+  "workcat_id_end" character varying(255),
+  "street1" character varying(254),
+  "street2" character varying(254),
+  "place" character varying(254),
+  "element_code" integer,
+  "cabinet" character varying(150),
+  "dma_id2" character varying(30),
+  "observations" character varying(254),
+  "the_geom" geometry(Point,SRID_VALUE),
+  CONSTRAINT man_samplepoint_pkey PRIMARY KEY (sample_id)
+);
 
 
 -- -----------------------------------
@@ -541,7 +601,9 @@ CREATE TABLE "man_tank" (
 "node_id" varchar(16)   NOT NULL,
 "vmax" numeric (12,4),
 "area" numeric (12,4),
-"add_info" varchar(255)  ,
+"add_info" varchar(255),
+"chlorination" character varying(255),
+"function" character varying(255),
 CONSTRAINT man_tank_pkey PRIMARY KEY (node_id)
 );
 
@@ -549,6 +611,14 @@ CONSTRAINT man_tank_pkey PRIMARY KEY (node_id)
 CREATE TABLE "man_hydrant" (
 "node_id" varchar(16) NOT NULL,
 "add_info" varchar(255),
+"communication" character varying(254),
+"valve" character varying(100),
+"valve_diam" numeric(12,3),
+"distance_left" numeric(12,3),
+"distance_right" numeric(12,3),
+"distance_perpendicular" numeric(12,3),
+"location" character varying(254),
+"location_sign" character varying(254),
 CONSTRAINT man_hydrant_pkey PRIMARY KEY (node_id)
 );
 
@@ -562,6 +632,21 @@ CREATE TABLE "man_valve" (
 "add_info" varchar(255),
 "mincut_anl" boolean DEFAULT true,
 "hydraulic_anl" boolean DEFAULT true,
+"burried" character varying(16),
+"irrigation_indicator" character varying(16),
+"pression_entry" numeric(12,3),
+"pression_exit" numeric(12,3),
+"depth_valveshaft" numeric(12,3),
+"regulator_situation" character varying(150),
+"regulator_location" character varying(150),
+"regulator_observ" character varying(254),
+"lin_meters" numeric(12,3),
+"exit_type" character varying(100),
+"exit_code" integer,
+"drive_type" character varying(100),
+"location" character varying(254),
+"valve_diam" numeric(12,3),
+"valve" character varying(30),
 CONSTRAINT man_valve_pkey PRIMARY KEY (node_id)
 );
 
@@ -593,8 +678,86 @@ CREATE TABLE "man_pipe" (
 CONSTRAINT man_pipe_pkey PRIMARY KEY (arc_id)
 );
 
+  CREATE TABLE "man_manhole"(
+"node_id" character varying(16) NOT NULL,
+"add_info" character varying(255),
+CONSTRAINT man_manhole_pkey PRIMARY KEY (node_id)
+);
+
+CREATE TABLE "man_reduction"(
+"node_id" character varying(16) NOT NULL,
+"diam_initial" numeric(12,3),
+"diam_final" numeric(12,3),
+"add_info" character varying(255),
+CONSTRAINT man_reduction_pkey PRIMARY KEY (node_id)
+  );
+
+CREATE TABLE "man_source"(
+"node_id" character varying(16) NOT NULL,
+"add_info" character varying(255),
+  CONSTRAINT man_source_pkey PRIMARY KEY (node_id)
+  );
+  
+CREATE TABLE "man_waterwell"(
+"node_id" character varying(16) NOT NULL,
+"add_info" character varying(255),
+CONSTRAINT man_waterwell_pkey PRIMARY KEY (node_id)
+);
 
 
+CREATE TABLE "man_fountain"(
+"connec_id" character varying(16) NOT NULL,
+"vmax" numeric(12,3),
+"vtotal" numeric(12,3),
+"container_number" integer,
+"pump_number" integer,
+"power" numeric(12,3),
+"regulation_tank" character varying(150),
+"name" character varying(254),
+"connection" character varying(100),
+"chlorinator" character varying(100),
+"add_info" character varying(255),
+  CONSTRAINT man_fountain_pkey PRIMARY KEY (connec_id)
+ );
+  
+  
+  CREATE TABLE "man_greentap"(
+"connec_id" character varying(16) NOT NULL,
+"add_info" character varying(255),
+CONSTRAINT man_greentap_pkey PRIMARY KEY (connec_id)
+ );
+  
+  
+CREATE TABLE "man_tap"(
+"connec_id" character varying(16) NOT NULL,
+"type" character varying(100),
+"connection" character varying(100),
+"continous" character varying(100),
+"shutvalve_type" character varying(100),
+"shutvalve_diam" numeric(12,3),
+"shutvalve_number" character varying(100),
+"drain_diam" numeric(12,3),
+"drain_exit" character varying(100),
+"drain_gully" character varying(100),
+"drain_distance" numeric(12,3),
+"arquitect_patrimony" character varying(254),
+"communication" character varying(254),
+"add_info" character varying(255),
+CONSTRAINT man_tap_pkey PRIMARY KEY (connec_id)
+);
+  
+  CREATE TABLE "man_wjoin"(
+"connec_id" character varying(16) NOT NULL,
+"arc_id" character varying(16),
+"zone" integer,
+"length" numeric(12,3),
+"top_floor" integer,
+"lead_verified" date,
+"lead_facade" character varying(254),
+"add_info" character varying(255),
+CONSTRAINT man_wjoin_pkey PRIMARY KEY (connec_id)
+);
+  
 -- ----------------------------------
 -- Table: Element
 -- ----------------------------------
@@ -615,6 +778,7 @@ CREATE TABLE "element" (
 "rotation" numeric (6,3),
 "link" character varying(512),
 "verified" varchar(20)   NOT NULL,
+"workcat_id_end" varchar(255),
 CONSTRAINT element_pkey PRIMARY KEY (element_id)
 );
 
@@ -675,6 +839,42 @@ CREATE TABLE "SCHEMA_NAME"."value_yesno" (
 CREATE TABLE "man_selector_valve" (
 "id" varchar(50) NOT NULL,
  CONSTRAINT man_selector_valve_pkey PRIMARY KEY (id)
+);
+
+
+-- Used to filter features by management issues
+CREATE TABLE "man_selector_state" (
+  "id" character varying(16) NOT NULL,
+  CONSTRAINT man_selector_state_pkey PRIMARY KEY (id)
+);
+
+
+----------------
+-- TABLE: Config Search plus
+----------------
+
+CREATE TABLE "config_search_plus" (
+"id" varchar(18) NOT NULL,
+"ppoint_layer" varchar (30),
+"ppoint_field_zone" varchar (30),
+"ppoint_field_number" varchar (30),
+"urban_propierties_layer" varchar (30),
+"urban_propierties_field_pzone" varchar (30),
+"urban_propierties_field_block" varchar (30),
+"urban_propierties_field_number" varchar (30),
+"street_layer" varchar (30),
+"street_field_code" varchar (30),
+"street_field_name" varchar (30),
+"portal_layer" varchar (30),
+"portal_field_code" varchar (30),
+"portal_field_number" varchar (30),
+"hydrometer_urban_propierties_layer" varchar (30),
+"hydrometer_urban_propierties_field_code" varchar (30),
+"hydrometer_layer" varchar (30),
+"hydrometer_field_code" varchar (30),
+"hydrometer_field_urban_propierties_code" varchar (30),
+CONSTRAINT "config_search_plus_pkey" PRIMARY KEY ("id"),
+CONSTRAINT "config_search_plus_check" CHECK(id = '1')
 );
 
 

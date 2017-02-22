@@ -5,6 +5,21 @@ This version of Giswater is provided by Giswater Association
 */
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
+
+-- ----------------------------
+-- Records of inp_options
+-- ----------------------------
+ 
+INSERT INTO inp_options VALUES ('CMS', 'DYNWAVE', 'DEPTH', 'H-W', 'NO', 'NO', 'NO', 'NO', 'NO', 'NO', '01/01/2017', '00:00:00', '01/02/2017', '00:00:00', '01/01/2001', '00:00:00', '01/01', '12/31', 10, '00:05:00', '00:05:00', '01:00:00', '00:00:02', NULL, NULL, 'NONE', 'BOTH', 0.000000, 0.000000, 'YES', NULL, 0, 0.0000, 5, 5);
+
+
+-- ----------------------------
+-- Records of inp_report
+-- ----------------------------
+ 
+INSERT INTO inp_report VALUES ('YES', 'YES', 'YES', 'YES', 'ALL', 'ALL', 'ALL');
+
+
 -- ----------------------------
 -- Records of inp_arc_type
 -- ----------------------------
@@ -14,10 +29,6 @@ INSERT INTO "inp_arc_type" VALUES ('ORIFICE');
 INSERT INTO "inp_arc_type" VALUES ('OUTLET');
 INSERT INTO "inp_arc_type" VALUES ('PUMP');
 INSERT INTO "inp_arc_type" VALUES ('WEIR');
-INSERT INTO "inp_arc_type" VALUES ('PUMP-CONDUIT');
-INSERT INTO "inp_arc_type" VALUES ('ORIFICE-CONDUIT');
-INSERT INTO "inp_arc_type" VALUES ('OUTLET-CONDUIT');
-INSERT INTO "inp_arc_type" VALUES ('WEIR-CONDUIT');
 INSERT INTO "inp_arc_type" VALUES ('NOT DEFINED');
 
 
@@ -176,8 +187,8 @@ INSERT INTO "inp_value_catarc" VALUES ('SEMICIRCULAR');
 INSERT INTO "inp_value_catarc" VALUES ('IRREGULAR');
 INSERT INTO "inp_value_catarc" VALUES ('CUSTOM');
 INSERT INTO "inp_value_catarc" VALUES ('DUMMY');
- 
-
+INSERT INTO "inp_value_catarc" VALUES ('FORCE_MAIN'); 
+INSERT INTO "inp_value_catarc" VALUES ('VIRTUAL'); 
 
 -- ----------------------------
 -- Records of inp_value_buildup
@@ -414,4 +425,10 @@ INSERT INTO "inp_value_weirs" VALUES ('V-NOTCH', 'TRIANGULAR');
  
 INSERT INTO "inp_value_yesno" VALUES ('NO');
 INSERT INTO "inp_value_yesno" VALUES ('YES');
+
+
+-- ----------------------------
+-- Records of inp_hydrology
+-- ----------------------------
+INSERT INTO "cat_hydrology" VALUES ('HC_DEFAULT', 'CURVE_NUMBER', 'Default value of infiltration');
  

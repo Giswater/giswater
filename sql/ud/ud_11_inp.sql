@@ -415,7 +415,7 @@ CREATE TABLE "raingage" (
 "rg_id" varchar(16)   NOT NULL,
 "form_type" varchar(12)  ,
 "intvl" varchar(10)  ,
-"scf" numeric(12,4),
+"scf" numeric(12,4)  DEFAULT 1.00,
 "rgage_type" varchar(18)  ,
 "timser_id" varchar(16)  ,
 "fname" varchar(254)  ,
@@ -567,7 +567,8 @@ CREATE TABLE "inp_conduit" (
 "flap" varchar(3)  ,
 "q0" numeric(12,4),
 "qmax" numeric(12,4),
-"seepage" numeric (12,4)
+"seepage" numeric (12,4),
+"custom_n" numeric(12,4)
 );
 
 
@@ -1791,12 +1792,15 @@ CREATE TABLE "rpt_timestep_critelem" (
 -- ----------------------------
 
 CREATE TABLE "rpt_selector_result" (
-"result_id" varchar(16)   NOT NULL
+"id" serial NOT NULL, 
+"result_id" varchar(16)   NOT NULL,
+"cur_user" text
 );
 
-
 CREATE TABLE "rpt_selector_compare" (
-"result_id" varchar(16)   NOT NULL
+"id" serial NOT NULL,
+"result_id" varchar(16)   NOT NULL,
+"cur_user" text
 );
 
 
@@ -1905,8 +1909,8 @@ ALTER TABLE "inp_washoff_land_x_pol" ADD PRIMARY KEY ("landus_id", "poll_id");
 ALTER TABLE "inp_weir" ADD PRIMARY KEY ("arc_id");
 ALTER TABLE "inp_windspeed" ADD PRIMARY KEY ("wind_type");
 ALTER TABLE "raingage" ADD PRIMARY KEY ("rg_id");
-ALTER TABLE "rpt_selector_result" ADD PRIMARY KEY ("result_id");
-ALTER TABLE "rpt_selector_compare" ADD PRIMARY KEY ("result_id");
+ALTER TABLE "rpt_selector_result" ADD PRIMARY KEY ("id");
+ALTER TABLE "rpt_selector_compare" ADD PRIMARY KEY ("id");
 ALTER TABLE "rpt_arcflow_sum" ADD PRIMARY KEY ("id");
 ALTER TABLE "rpt_condsurcharge_sum" ADD PRIMARY KEY ("id");
 ALTER TABLE "rpt_continuity_errors" ADD PRIMARY KEY ("id");

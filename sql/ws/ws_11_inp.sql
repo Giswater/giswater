@@ -12,7 +12,7 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 -- Sequence structure
 -- ----------------------------
 
-CREATE SEQUENCE "inp_backdrop_id_seq"
+CREATE SEQUENCE "inp_backdrop_id_seq" 
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -162,7 +162,12 @@ CREATE TABLE temp_node
   rotation numeric(6,3),
   link character varying(512),
   verified character varying(16),
-"the_geom" public.geometry (POINT, SRID_VALUE),
+  the_geom public.geometry (POINT, SRID_VALUE),
+  undelete boolean,
+  workcat_id_end character varying(255),
+  label_x character varying(30),
+  label_y character varying(30),
+  label_rotation numeric(6,3),
   CONSTRAINT temp_node_pkey PRIMARY KEY (node_id)
 )
 ;
@@ -197,15 +202,18 @@ CREATE TABLE temp_arc
   rotation numeric(6,3),
   link character varying(512),
   verified character varying(16),
- "the_geom" public.geometry (LINESTRING, SRID_VALUE),
+  the_geom public.geometry (LINESTRING, SRID_VALUE),
+  undelete boolean,
+  workcat_id_end character varying(255),
+  label_x character varying(30),
+  label_y character varying(30),
+  label_rotation numeric(6,3),
   CONSTRAINT temp_arc_pkey PRIMARY KEY (arc_id));
 
 
 -- ----------------------------
 -- Table structure INP
 -- ----------------------------
-
-
 
 
 CREATE TABLE "inp_arc_type" (
@@ -218,6 +226,19 @@ CREATE TABLE "inp_node_type" (
 "id" varchar(16)   NOT NULL,
 CONSTRAINT inp_node_type_pkey PRIMARY KEY (id)
 );
+
+
+CREATE TABLE "inp_cat_mat_roughness" (
+  id serial NOT NULL,
+  matcat_id character varying(30) NOT NULL,
+  period_id character varying(30),
+  init_age integer,
+  end_age integer,
+  roughness numeric(12,4),
+  descript text,
+  CONSTRAINT inp_cat_mat_roughness_pkey PRIMARY KEY (id)
+);
+
 
 
 CREATE TABLE "inp_giswater_config" (
@@ -372,7 +393,9 @@ CREATE TABLE "inp_pattern" (
 CREATE TABLE "inp_pipe" (
 "arc_id" varchar(16)   NOT NULL,
 "minorloss" numeric(12,6),
-"status" varchar(12)  
+"status" varchar(12),
+"custom_roughness" numeric(12,4),  
+"custom_dint" numeric(12,3)
 );
 
 
@@ -398,7 +421,8 @@ CREATE TABLE "inp_pump" (
 "curve_id" varchar  ,
 "speed" numeric(12,6),
 "pattern" varchar  ,
-"status" varchar(12)  
+"status" varchar(12),
+"to_arc" varchar(16)
 );
 
 
@@ -486,7 +510,7 @@ CREATE TABLE "inp_tank" (
 "maxlevel" numeric(12,4),
 "diameter" numeric(12,4),
 "minvol" numeric(12,4),
-"curve_id" int4
+"curve_id" varchar(16)
 );
 
 
@@ -513,7 +537,8 @@ CREATE TABLE "inp_valve" (
 "coef_loss" numeric(12,4),
 "curve_id" int4,
 "minorloss" numeric(12,4),
-"status" varchar(12)  
+"status" varchar(12),
+"to_arc" varchar(16)
 );
 
 
@@ -671,7 +696,7 @@ CREATE TABLE "rpt_arc" (
 CREATE TABLE "rpt_energy_usage" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_energy_usage_id_seq'::regclass) NOT NULL,
 "result_id" varchar(16)   NOT NULL,
-"node_id" varchar(16),
+"nodarc_id" varchar(16),
 "usage_fact" numeric,
 "avg_effic" numeric,
 "kwhr_mgal" numeric,
@@ -712,8 +737,8 @@ CREATE TABLE "rpt_cat_result" (
 "n_pipe" numeric,
 "n_pump" numeric,
 "n_valve" numeric,
-"head_form" varchar(20)  ,
-"hydra_time" varchar(10)  ,
+"head_form" text ,
+"hydra_time" text  ,
 "hydra_acc" numeric,
 "st_ch_freq" numeric,
 "max_tr_ch" numeric,
@@ -724,7 +749,7 @@ CREATE TABLE "rpt_cat_result" (
 "r_kin_visc" numeric,
 "r_che_diff" numeric,
 "dem_multi" numeric,
-"total_dura" varchar(10)  ,
+"total_dura" text,
 "exec_date" timestamp(6) DEFAULT now(),
 "q_timestep" varchar(16)  ,
 "q_tolerance" varchar(16)  
@@ -737,11 +762,15 @@ CREATE TABLE "rpt_cat_result" (
 -- ----------------------------
 
 CREATE TABLE "rpt_selector_result" (
-"result_id" varchar(16)   NOT NULL
+"id" serial NOT NULL, 
+"result_id" varchar(16)   NOT NULL,
+"cur_user" text
 );
 
 CREATE TABLE "rpt_selector_compare" (
-"result_id" varchar(16)   NOT NULL
+"id" serial NOT NULL,
+"result_id" varchar(16)   NOT NULL,
+"cur_user" text
 );
 
 CREATE TABLE "inp_selector_sector" (
@@ -803,8 +832,8 @@ ALTER TABLE "inp_value_times" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_value_yesno" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_value_yesnofull" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_valve" ADD PRIMARY KEY ("node_id");
-ALTER TABLE "rpt_selector_result" ADD PRIMARY KEY ("result_id");
-ALTER TABLE "rpt_selector_compare" ADD PRIMARY KEY ("result_id");
+ALTER TABLE "rpt_selector_result" ADD PRIMARY KEY ("id");
+ALTER TABLE "rpt_selector_compare" ADD PRIMARY KEY ("id");
 ALTER TABLE "rpt_cat_result" ADD PRIMARY KEY ("result_id");
 ALTER TABLE "rpt_arc" ADD PRIMARY KEY ("id");
 ALTER TABLE "rpt_energy_usage" ADD PRIMARY KEY ("id");

@@ -4,6 +4,7 @@ The program is free software: you can redistribute it and/or modify it under the
 This version of Giswater is provided by Giswater Association
 */
 
+
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 -- ----------------------------
@@ -28,15 +29,23 @@ CREATE TABLE "ext_streetaxis" (
 CONSTRAINT ext_streetaxis_pkey PRIMARY KEY (id)
 );
 
--- Postnumber layer is not needed because connec acts as postnumber
 
+-- Postnumber
+CREATE TABLE "ext_postnumber"(
+  id character varying(16) NOT NULL,
+  streetaxis character varying(16),
+  postnumber character varying(16),
+  urban_properties_id character varying(16),
+  the_geom geometry(Point,SRID_VALUE),
+  CONSTRAINT ext_postnumber_pkey PRIMARY KEY (id)
+  );
 
 
 -- Urban_structure
 
 
 CREATE TABLE "ext_urban_propierties" (
-"id" varchar (16) NOT NULL,
+"id" integer NOT NULL,
 "code" varchar(30),
 "streetaxis" varchar(16),
 "postnumber" varchar(16),
@@ -184,8 +193,12 @@ CREATE SEQUENCE "ext_rtc_hydrometer_x_data_seq"
 CREATE TABLE ext_cat_hydrometer(
 "id" character varying(16) NOT NULL,
 "hydrometer_type" character varying(100),
-"text2" character varying(100),
-"text3" character varying(100),
+"madeby" character varying(100),
+"class" character varying(100),
+"ulmc" character varying(100),
+"voltman_flow" character varying(100),
+"multi_jet_flow" character varying(100),
+"dnom" character varying(100),
 "link" varchar(512),
 "url" varchar(512),
 "picture" varchar(512),
@@ -194,34 +207,30 @@ CONSTRAINT ext_cat_hydrometer_pkey PRIMARY KEY (id)
 );
 
 
+CREATE TABLE ext_hydrometer_category(
+"id" character varying(16) NOT NULL,
+"observ" character varying(100),
+CONSTRAINT ext_hydrometer_category_pkey PRIMARY KEY (id)
+);
+
+
+
 CREATE TABLE ext_rtc_hydrometer(
 "hydrometer_id" character varying(16) NOT NULL,
-"cat_hydrometer_id" character varying(16),
+"code" text,
+"hydrometer_category" text,
 "client_name"  text,
 "adress"	text,
-"adress_number" text,
-"adress_adjunct" text,
-"hydrometer_code" text,
+"house_number" text,
+"id_number" text,
+"cat_hydrometer_id" text,
 "instalation_date" date,
-"flow" text,
-"easel" text,
-"cover" text,
-"diameter" text,
-"kink_date" text,
-"technical_average" text,
 "hydrometer_number" text,
-"hydrometer_flag" text,
-"digits_hydrometer" text,
-"kit_flag_ulmc" text,
-"brand" text,
-"class" text,
-"ulmc" text,
-"voltman_flow" text,
-"multi_jet_flow" text,
-"easel_diameter_pol" text,
-"easel_diameter_mm" text,
+"identif" text,
 CONSTRAINT ext_rtc_hydrometer_id_pkey PRIMARY KEY (hydrometer_id)
 );
+
+
 
 
 CREATE TABLE ext_rtc_hydrometer_x_value (
@@ -241,7 +250,8 @@ CREATE TABLE ext_rtc_hydrometer_x_data (
   "min" float,  -- l/s or mca
   "max" float,  -- l/s or mca
   "avg" float,  -- l/s or mca
-  "sum" float,  
+  "sum" float,
+  "custom_sum" float,
   "cat_period_id" varchar (16),
   CONSTRAINT ext_rtc_hydrometer_x_data_pkey PRIMARY KEY (id)
 );

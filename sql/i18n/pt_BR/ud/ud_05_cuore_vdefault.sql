@@ -14,23 +14,23 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 -- System values  (fields need values. User can customize, but it's forbidden to delete default values from this fields) 
 ALTER VIEW v_edit_node ALTER top_elev SET DEFAULT 0.00;
 ALTER VIEW v_edit_node ALTER ymax SET DEFAULT 0.00;
-ALTER VIEW v_edit_node ALTER state SET DEFAULT 'EN_SERVEI';
-ALTER VIEW v_edit_node ALTER verified SET DEFAULT 'PER REVISAR';
+ALTER VIEW v_edit_node ALTER state SET DEFAULT 'ON_SERVICE';
+ALTER VIEW v_edit_node ALTER verified SET DEFAULT 'TO REVIEW';
 
 ALTER VIEW v_edit_arc ALTER y1 SET DEFAULT 0.00;
 ALTER VIEW v_edit_arc ALTER y2 SET DEFAULT 0.00;
-ALTER VIEW v_edit_arc ALTER state SET DEFAULT 'EN_SERVEI';
+ALTER VIEW v_edit_arc ALTER state SET DEFAULT 'ON_SERVICE';
 ALTER VIEW v_edit_arc ALTER inverted_slope SET DEFAULT false;
-ALTER VIEW v_edit_arc ALTER verified SET DEFAULT 'PER REVISAR';
+ALTER VIEW v_edit_arc ALTER verified SET DEFAULT 'TO REVIEW';
 
 
 ALTER VIEW v_edit_connec ALTER top_elev SET DEFAULT 0.00;
 ALTER VIEW v_edit_connec ALTER ymax SET DEFAULT 0.00;
-ALTER VIEW v_edit_connec ALTER state SET DEFAULT 'EN_SERVEI';
-ALTER VIEW v_edit_connec ALTER verified SET DEFAULT 'PER REVISAR';
+ALTER VIEW v_edit_connec ALTER state SET DEFAULT 'ON_SERVICE';
+ALTER VIEW v_edit_connec ALTER verified SET DEFAULT 'TO REVIEW';
 
-ALTER TABLE element ALTER COLUMN state SET DEFAULT 'EN_SERVEI';
-ALTER TABLE element ALTER COLUMN verified SET DEFAULT 'EN_SERVEI';
+ALTER TABLE element ALTER COLUMN state SET DEFAULT 'ON_SERVICE';
+ALTER TABLE element ALTER COLUMN verified SET DEFAULT 'ON_SERVICE';
 
 
 -- Custom values (User can customize other fields....)

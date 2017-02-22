@@ -90,53 +90,24 @@ arc.sector_id,
 arc.the_geom
 FROM v_arc_x_node1
 JOIN v_arc_x_node2 ON v_arc_x_node1.arc_id::text = v_arc_x_node2.arc_id::text
-JOIN arc ON v_arc_x_node2.arc_id::text = arc.arc_id::text; 
+JOIN arc ON v_arc_x_node2.arc_id::text = arc.arc_id::text;
 
 
-DROP VIEW IF EXISTS v_ui_element_x_node CASCADE;
-CREATE OR REPLACE VIEW v_ui_element_x_node AS 
-SELECT
-element_x_node.id,
-element_x_node.node_id,
-element.elementcat_id,
-element_x_node.element_id,
-element.state,
-element.observ,
-element.comment,
-element.builtdate,
-element.enddate
-FROM element_x_node
-JOIN element ON element.element_id::text = element_x_node.element_id::text;
+
+CREATE OR REPLACE VIEW v_value_cat_node AS 
+ SELECT 
+ cat_node.id,
+ cat_node.nodetype_id,
+ node_type.type
+   FROM cat_node
+     JOIN node_type ON node_type.id = nodetype_id;
 
 
-DROP VIEW IF EXISTS v_ui_element_x_arc CASCADE;
-CREATE OR REPLACE VIEW v_ui_element_x_arc AS
-SELECT
-element_x_arc.id,
-element_x_arc.arc_id,
-element.elementcat_id,
-element_x_arc.element_id,
-element.state,
-element.observ,
-element.comment,
-element.builtdate,
-element.enddate
-FROM element_x_arc
-JOIN element ON element.element_id::text = element_x_arc.element_id::text;
+CREATE OR REPLACE VIEW v_value_cat_connec AS 
+ SELECT cat_connec.id,
+    cat_connec.type as connec_type,
+    connec_type.type
+   FROM cat_connec
+     JOIN connec_type ON connec_type.id::text = cat_connec.type::text;
 
-
-DROP VIEW IF EXISTS v_ui_element_x_connec CASCADE;
-CREATE OR REPLACE VIEW v_ui_element_x_connec AS
-SELECT
-element_x_connec.id,
-element_x_connec.connec_id,
-element.elementcat_id,
-element_x_connec.element_id,
-element.state,
-element.observ,
-element.comment,
-element.builtdate,
-element.enddate
-FROM element_x_connec
-JOIN element ON element.element_id::text = element_x_connec.element_id::text;
 

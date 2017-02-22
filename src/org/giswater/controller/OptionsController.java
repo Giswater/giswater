@@ -42,9 +42,6 @@ import org.giswater.dao.MainDao;
 import org.giswater.gui.dialog.options.AbstractOptionsDialog;
 import org.giswater.gui.dialog.options.OptionsEpanetDialog;
 import org.giswater.gui.dialog.options.RaingageDialog;
-import org.giswater.gui.dialog.options.ResultCatDialog;
-import org.giswater.gui.dialog.options.ResultCatEpanetDialog;
-import org.giswater.gui.dialog.options.ResultSelectionDialog;
 import org.giswater.util.Utils;
 
 import com.toedter.calendar.JDateChooser;
@@ -342,6 +339,8 @@ public class OptionsController extends AbstractController {
 				rs.updateRow();
 			}
 			
+			MainDao.commit();
+			
 		} catch (SQLException e) {
 			Utils.showError(e);
 		} catch (Exception e) {
@@ -441,11 +440,6 @@ public class OptionsController extends AbstractController {
 				total--;
 				if (total == 0) {
 					current = 0;
-					if (view instanceof ResultCatDialog || view instanceof ResultCatEpanetDialog){
-						view.dispose();
-						Utils.showMessage(view, "result_cat_empty");
-						return;
-					}
 				}
 				setComponents();
 	        }   
@@ -481,19 +475,6 @@ public class OptionsController extends AbstractController {
 		}		
 		
 	}		
-	
-	
-	// ResultSelectionDialog
-	public void changeResultSelection() {
-		
-		if (view instanceof ResultSelectionDialog) {
-			ResultSelectionDialog dialog = (ResultSelectionDialog) view;
-			String result = dialog.getResultSelection();
-	        // Update table: result_selection
-	   		MainDao.setResultSelect(MainDao.getSchema(), "result_selection", result);			
-		}	
-		
-	}
 	
 	
 	// Raingage
