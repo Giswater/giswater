@@ -35,6 +35,7 @@ public class MainClass {
 
 	public static MainFrame mdi;
 	private final static String CURRENT_VERSION = "2.0.100";
+	private final static String CURRENT_VERSION = "2.1.100";
 	private static String gswFilePath = null;
 	public static String function = null;   //  ["ed_giswater_jar" | "mg_go2epa_express"]
 	
