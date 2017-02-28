@@ -89,36 +89,59 @@ public class Utils {
 	public static Logger getLogger() {
 
     	if (logger == null) {
-            try {
-            	String folderRoot = getAppPath();         	
-            	logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
-                gisFolder = folderRoot + GIS_FOLDER;
-                File folderFile = new File(logFolder);
-                folderFile.mkdirs();
-                if (!folderFile.exists()) {
-                    JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
-                }
-                String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
-                FileHandler fh = new FileHandler(logFile, true);
-                LogFormatter lf = new LogFormatter();
-                fh.setFormatter(lf);
-                logger = Logger.getLogger(logFile);
-                logger.addHandler(fh);
-                // SQL logger file
-                logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
-                fh = new FileHandler(logFile, true);
-                lf = new LogFormatter();
-                fh.setFormatter(lf);
-                loggerSql = Logger.getLogger(logFile);
-                loggerSql.addHandler(fh);
-                isQgis = checkFileExtensionQgis();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
-            } catch (SecurityException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: SecurityException", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return logger;
+    		
+			try {
+				
+				// Check Operating System
+				boolean isWindows = UtilsOS.isWindows();
+				
+				// Look&Feel
+				String className = UIManager.getSystemLookAndFeelClassName();
+				if (!isWindows) {
+					//className = UIManager.getCrossPlatformLookAndFeelClassName();	
+					className = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";		    		
+				}
+				try {
+					UIManager.setLookAndFeel(className);
+				} catch (Exception e) {
+					Utils.logError(e.getMessage());
+				}  		    	
+				
+				String folderRoot = getAppPath();         	
+				logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
+				gisFolder = folderRoot + GIS_FOLDER;
+				File folderFile = new File(logFolder);
+				folderFile.mkdirs();
+				if (!folderFile.exists()) {
+				    JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
+				}
+				String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
+				FileHandler fh = new FileHandler(logFile, true);
+				LogFormatter lf = new LogFormatter();
+				fh.setFormatter(lf);
+				logger = Logger.getLogger(logFile);
+				logger.addHandler(fh);
+				// SQL logger file
+				logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
+				fh = new FileHandler(logFile, true);
+				lf = new LogFormatter();
+				fh.setFormatter(lf);
+				loggerSql = Logger.getLogger(logFile);
+				loggerSql.addHandler(fh);
+				isQgis = true;
+				if (isWindows) {
+					isQgis = checkFileExtensionQgis();
+				}
+			    
+			} catch (IOException e) {
+			    JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
+			} catch (SecurityException e) {
+			    JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: SecurityException", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+		
+		return logger;
 
     }
 	   
@@ -152,7 +175,7 @@ public class Utils {
 	}	
 	
 	
-	// Returns true if .qgs file extension is associated
+	// Returns true if .qgs file extension is associated (works for Windows only)
 	public static boolean checkFileExtensionQgis() {
 			
 		final String regKey = "SOFTWARE\\Classes";
