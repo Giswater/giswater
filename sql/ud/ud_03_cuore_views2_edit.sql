@@ -52,12 +52,24 @@ node.workcat_id_end,
 node.undelete,
 node.label_x,
 node.label_y,
-node.label_rotation
-   FROM (node
-   LEFT JOIN cat_node ON (((node.nodecat_id)::text = (cat_node.id)::text)));
+node.label_rotation,
+node.expl_id,
+node.code,
+node.publish,
+node.inventory,
+node.end_date,
+node.uncertain,
+node.xyz_date,
+node.unconnected,
+node.macrodma_id
+   FROM expl_selector,node
+   LEFT JOIN cat_node ON ((node.nodecat_id)::text = (cat_node.id)::text)
+   WHERE ((node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text);
 
 
-   
+
+  
 DROP VIEW IF EXISTS v_edit_arc CASCADE;
 CREATE VIEW v_edit_arc AS
 SELECT arc.arc_id, 
@@ -111,10 +123,19 @@ arc.workcat_id_end,
 arc.undelete,
 arc.label_x,
 arc.label_y,
-arc.label_rotation
-FROM (arc
+arc.label_rotation,
+arc.expl_id,
+arc.code,
+arc.publish,
+arc.inventory,
+arc.end_date,
+arc.uncertain,
+arc.macrodma_id
+FROM expl_selector, arc
 LEFT JOIN cat_arc ON (((arc.arccat_id)::text = (cat_arc.id)::text))
-LEFT JOIN v_arc_x_node ON (((v_arc_x_node.arc_id)::text = (arc.arc_id)::text)));
+LEFT JOIN v_arc_x_node ON (((v_arc_x_node.arc_id)::text = (arc.arc_id)::text))
+WHERE (arc.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 DROP VIEW IF EXISTS v_edit_connec CASCADE;
@@ -166,12 +187,20 @@ connec.label_x,
 connec.label_y,
 connec.label_rotation,
 connec.accessibility,
-connec.diagonal
-FROM (connec 
+connec.diagonal,
+connec.expl_id,
+connec.publish,
+connec.inventory,
+connec.end_date,
+connec.uncertain,
+connec.macrodma_id
+FROM expl_selector, connec 
 JOIN cat_connec ON (((connec.connecat_id)::text = (cat_connec.id)::text))
 LEFT JOIN ext_streetaxis ON (((connec.streetaxis_id)::text = (ext_streetaxis.id)::text))
 LEFT JOIN link ON connec.connec_id::text = link.connec_id::text
-LEFT JOIN vnode ON vnode.vnode_id::text = link.vnode_id);
+LEFT JOIN vnode ON vnode.vnode_id::text = link.vnode_id
+WHERE (connec.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 DROP VIEW IF EXISTS v_edit_link CASCADE;
@@ -232,9 +261,20 @@ gully.featurecat_id,
 gully.feature_id,
 gully.label_x,
 gully.label_y,
-gully.label_rotation
-FROM (gully LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text)))
-WHERE gully.the_geom is not null;
+gully.label_rotation,
+gully.expl_id,
+gully.code,
+gully.publish,
+gully.inventory,
+gully.end_date,
+gully.macrodma_id,
+gully.streetaxis_id,
+gully.postnumber
+FROM expl_selector, gully
+LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+WHERE gully.the_geom is not null 
+AND (gully.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 DROP VIEW IF EXISTS v_edit_pgully CASCADE;
@@ -281,9 +321,20 @@ gully.featurecat_id,
 gully.feature_id,
 gully.label_x,
 gully.label_y,
-gully.label_rotation
-FROM (gully LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text)))
-WHERE gully.the_geom_pol is not null;
+gully.label_rotation,
+gully.expl_id,
+gully.code,
+gully.publish,
+gully.inventory,
+gully.end_date,
+gully.macrodma_id,
+gully.streetaxis_id,
+gully.postnumber
+FROM expl_selector, gully
+LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+WHERE gully.the_geom_pol is not null 
+AND (gully.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 
@@ -326,9 +377,20 @@ CREATE OR REPLACE VIEW v_edit_man_junction AS
     node.label_x AS junction_label_x,
     node.label_y AS junction_label_y,
     node.label_rotation AS junction_label_rotation,
-    man_junction.add_info AS junction_add_info
-   FROM node
-     JOIN man_junction ON man_junction.node_id::text = node.node_id::text;
+    man_junction.add_info AS junction_add_info,
+	node.expl_id,
+	node.code AS junction_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS junction_end_date,
+	node.uncertain,
+	node.xyz_date AS junction_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_junction ON man_junction.node_id::text = node.node_id::text
+	WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 	 
@@ -372,9 +434,20 @@ CREATE OR REPLACE VIEW v_edit_man_outfall AS
     node.label_y AS outfall_label_y,
     node.label_rotation AS outfall_label_rotation,
     man_outfall.add_info AS outfall_add_info,
-    man_outfall.outfall_name
-   FROM node
-     JOIN man_outfall ON man_outfall.node_id::text = node.node_id::text;
+    man_outfall.outfall_name,
+	node.expl_id,
+	node.code AS outfall_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS outfall_end_date,
+	node.uncertain,
+	node.xyz_date AS outfall_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_outfall ON man_outfall.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 	 
@@ -425,9 +498,21 @@ CREATE OR REPLACE VIEW v_edit_man_storage AS
     man_storage.total_length AS storage_total_length,
     man_storage.total_width AS storage_total_width,
     man_storage.pol_id,
-    man_storage.storage_name
-   FROM node
-     JOIN man_storage ON man_storage.node_id::text = node.node_id::text;
+    man_storage.storage_name,
+	node.expl_id,
+	node.code AS storage_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS storage_end_date,
+	node.uncertain,
+	node.xyz_date AS storage_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_storage ON man_storage.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
+
 
 	 
 
@@ -479,10 +564,21 @@ CREATE OR REPLACE VIEW v_edit_man_storage_pol AS
     man_storage.total_height AS storage_total_height,
     man_storage.total_length AS storage_total_length,
     man_storage.total_width AS storage_total_width,
-    man_storage.storage_name
-   FROM node
+    man_storage.storage_name,
+	node.expl_id,
+	node.code AS storage_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS storage_end_date,
+	node.uncertain,
+	node.xyz_date AS storage_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
      JOIN man_storage ON man_storage.node_id::text = node.node_id::text
-     JOIN polygon ON polygon.pol_id::text = man_storage.pol_id::text;
+     JOIN polygon ON polygon.pol_id::text = man_storage.pol_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 	 
 	 
@@ -527,9 +623,20 @@ CREATE OR REPLACE VIEW v_edit_man_valve AS
     node.label_y AS valve_label_y,
     node.label_rotation AS valve_label_rotation,
     man_valve.add_info AS valve_add_info,
-    man_valve.valve_name
-   FROM node
-     JOIN man_valve ON man_valve.node_id::text = node.node_id::text;
+    man_valve.valve_name,
+	node.expl_id,
+	node.code AS valve_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS valve_end_date,
+	node.uncertain,
+	node.xyz_date AS valve_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_valve ON man_valve.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 	 
 	 
@@ -576,9 +683,23 @@ CREATE OR REPLACE VIEW v_edit_man_netinit AS
     man_netinit.mheight AS netinit_mheight,
     man_netinit.mlength AS netinit_mlength,
     man_netinit.mwidth AS netinit_mwidth,
-    man_netinit.netinit_name
-   FROM node
-     JOIN man_netinit ON man_netinit.node_id::text = node.node_id::text;
+    man_netinit.netinit_name,
+	node.expl_id,
+	node.code AS netinit_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS netinit_end_date,
+	node.uncertain,
+	node.xyz_date AS netinit_xyz_date,
+	node.unconnected,
+	node.macrodma_id,
+	man_netinit.inlet AS netinit_inlet,
+	man_netinit.bottom_channel AS netinit_bottom_channel,
+	man_netinit.accessibility AS netinit_accessibility
+   FROM expl_selector, node
+     JOIN man_netinit ON man_netinit.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 	 
@@ -623,9 +744,23 @@ CREATE OR REPLACE VIEW v_edit_man_manhole AS
     node.label_rotation AS manhole_label_rotation,
     man_manhole.add_info AS manhole_add_info,
     man_manhole.sander_depth AS manhole_sander_depth,
-    man_manhole.prot_surface AS manhole_prot_surface
-   FROM node
-     JOIN man_manhole ON man_manhole.node_id::text = node.node_id::text;
+    man_manhole.prot_surface AS manhole_prot_surface,
+	node.expl_id,
+	node.code AS manhole_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS manhole_end_date,
+	node.uncertain,
+	node.xyz_date AS manhole_xyz_date,
+	node.unconnected,
+	node.macrodma_id,
+	man_manhole.inlet AS manhole_inlet,
+	man_manhole.bottom_channel AS manhole_bottom_channel,
+	man_manhole.accessibility AS manhole_accessibility
+   FROM expl_selector, node
+     JOIN man_manhole ON man_manhole.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 	 
 DROP VIEW IF EXISTS v_edit_man_wjump CASCADE;
@@ -676,9 +811,20 @@ CREATE OR REPLACE VIEW v_edit_man_wjump AS
     man_wjump.security_bar AS wjump_security_bar,
     man_wjump.steps AS wjump_steps,
     man_wjump.prot_surface AS wjump_prot_surface,
-    man_wjump.wjump_name
-   FROM node
-     JOIN man_wjump ON man_wjump.node_id::text = node.node_id::text;
+    man_wjump.wjump_name,
+	node.expl_id,
+	node.code AS wjump_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS wjump_end_date,
+	node.uncertain,
+	node.xyz_date AS wjump_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_wjump ON man_wjump.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 	 
@@ -722,9 +868,20 @@ CREATE OR REPLACE VIEW v_edit_man_netgully AS
     node.label_y AS netgully_label_y,
     node.label_rotation AS netgully_label_rotation,
     man_netgully.add_info AS netgully_add_info,
-    man_netgully.pol_id
-   FROM node
-     JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text;
+    man_netgully.pol_id,
+	node.expl_id,
+	node.code AS netgully_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS netgully_end_date,
+	node.uncertain,
+	node.xyz_date AS netgully_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 	 
 
 DROP VIEW IF EXISTS v_edit_man_netgully_pol CASCADE;
@@ -768,10 +925,21 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
     node.label_x AS netgully_label_x,
     node.label_y AS netgully_label_y,
     node.label_rotation AS netgully_label_rotation,
-    man_netgully.add_info AS netgully_add_info
-   FROM node
+    man_netgully.add_info AS netgully_add_info,
+	node.expl_id,
+	node.code AS netgully_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS netgully_end_date,
+	node.uncertain,
+	node.xyz_date AS netgully_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
      JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
-     JOIN polygon ON polygon.pol_id::text = man_netgully.pol_id::text;	 
+     JOIN polygon ON polygon.pol_id::text = man_netgully.pol_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;	 
 
 
 
@@ -820,9 +988,23 @@ CREATE OR REPLACE VIEW v_edit_man_chamber AS
     man_chamber.total_height AS chamber_total_height,
     man_chamber.total_length AS chamber_total_length,
     man_chamber.total_width AS chamber_total_width,
-    man_chamber.chamber_name
-   FROM node
-     JOIN man_chamber ON man_chamber.node_id::text = node.node_id::text;
+    man_chamber.chamber_name,
+	node.expl_id,
+	node.code  AS chamber_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS chamber_end_date,
+	node.uncertain,
+	node.xyz_date AS chamber_xyz_date,
+	node.unconnected,
+	node.macrodma_id,
+	man_chamber.inlet AS chamber_inlet,
+	man_chamber.bottom_channel AS chamber_bottom_channel,
+	man_chamber.accessibility AS chamber_accessibility
+   FROM expl_selector, node
+    JOIN man_chamber ON man_chamber.node_id::text = node.node_id::text
+	WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 	 
 	 
 	 
@@ -871,10 +1053,25 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
     man_chamber.total_height AS chamber_total_height,
     man_chamber.total_length AS chamber_total_length,
     man_chamber.total_width AS chamber_total_width,
-    man_chamber.chamber_name
-   FROM node
+    man_chamber.chamber_name,
+	node.expl_id,
+	node.code AS chamber_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS chamber_end_date,
+	node.uncertain,
+	node.xyz_date AS chamber_xyz_date,
+	node.unconnected,
+	node.macrodma_id,
+	man_chamber.inlet AS chamber_inlet,
+	man_chamber.bottom_channel AS chamber_bottom_channel,
+	man_chamber.accessibility AS chamber_accessibility,
+	man_chamber.sandbox AS chamber_sandbox
+   FROM expl_selector, node
      JOIN man_chamber ON man_chamber.node_id::text = node.node_id::text
-      JOIN polygon ON polygon.pol_id::text = man_chamber.pol_id::text;
+     JOIN polygon ON polygon.pol_id::text = man_chamber.pol_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text; 
 
 
 
@@ -919,9 +1116,20 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp AS
     node.label_rotation AS wwtp_label_rotation,
     man_wwtp.add_info AS wwtp_add_info,
     man_wwtp.pol_id,
-    man_wwtp.wwtp_name
-   FROM node
-     JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text;
+    man_wwtp.wwtp_name,
+	node.expl_id,
+	node.code AS wwtp_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS wwtp_end_date,
+	node.uncertain,
+	node.xyz_date AS wwtp_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
+     JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text; ;
 
 
 
@@ -967,10 +1175,21 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS
     node.label_y AS wwtp_label_y,
     node.label_rotation AS wwtp_label_rotation,
     man_wwtp.add_info AS wwtp_add_info,
-    man_wwtp.wwtp_name
-   FROM node
+    man_wwtp.wwtp_name,
+	node.expl_id,
+	node.code AS wwtp_code,
+	node.publish,
+	node.inventory,
+	node.end_date AS wwtp_end_date,
+	node.uncertain,
+	node.xyz_date AS wwtp_xyz_date,
+	node.unconnected,
+	node.macrodma_id
+   FROM expl_selector, node
      JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
-     JOIN polygon ON polygon.pol_id::text = man_wwtp.pol_id::text;
+     JOIN polygon ON polygon.pol_id::text = man_wwtp.pol_id::text
+	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text; 
 
 
 	 
@@ -1029,11 +1248,20 @@ CREATE OR REPLACE VIEW v_edit_man_conduit AS
     arc.label_x AS conduit_label_x,
     arc.label_y AS conduit_label_y,
     arc.label_rotation AS conduit_label_rotation,
-    man_conduit.add_info AS conduit_add_info
-   FROM arc
+    man_conduit.add_info AS conduit_add_info,
+	arc.expl_id,
+	arc.code AS conduit_code,
+	arc.publish,
+	arc.inventory,
+	arc.end_date AS conduit_end_date,
+	arc.uncertain,
+	arc.macrodma_id
+   FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
      LEFT JOIN v_arc_x_node ON v_arc_x_node.arc_id::text = arc.arc_id::text
-     JOIN man_conduit ON man_conduit.arc_id::text = arc.arc_id::text;
+     JOIN man_conduit ON man_conduit.arc_id::text = arc.arc_id::text
+	 WHERE (arc.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 
@@ -1097,11 +1325,20 @@ CREATE OR REPLACE VIEW v_edit_man_siphon AS
     man_siphon.add_info AS siphon_add_info,
     man_siphon.security_bar AS siphon_security_bar,
     man_siphon.steps AS siphon_steps,
-    man_siphon.siphon_name
-   FROM arc
+    man_siphon.siphon_name,
+	arc.expl_id,
+	arc.code AS siphon_code,
+	arc.publish,
+	arc.inventory,
+	arc.end_date AS siphon_end_date,
+	arc.uncertain,
+	arc.macrodma_id
+   FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
      LEFT JOIN v_arc_x_node ON v_arc_x_node.arc_id::text = arc.arc_id::text
-     JOIN man_siphon ON man_siphon.arc_id::text = arc.arc_id::text;
+     JOIN man_siphon ON man_siphon.arc_id::text = arc.arc_id::text
+	 WHERE (arc.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 
@@ -1167,11 +1404,20 @@ CREATE OR REPLACE VIEW v_edit_man_waccel AS
     man_waccel.security_bar AS waccel_security_bar,
     man_waccel.steps AS waccel_steps,
     man_waccel.prot_surface AS waccel_prot_surface,
-    man_waccel.waccel_name
-   FROM arc
+    man_waccel.waccel_name,
+	arc.expl_id,
+	arc.code AS waccel_code,
+	arc.publish,
+	arc.inventory,
+	arc.end_date AS waccel_end_date,
+	arc.uncertain,
+	arc.macrodma_id
+   FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
      LEFT JOIN v_arc_x_node ON v_arc_x_node.arc_id::text = arc.arc_id::text
-     JOIN man_waccel ON man_waccel.arc_id::text = arc.arc_id::text;
+     JOIN man_waccel ON man_waccel.arc_id::text = arc.arc_id::text
+	 WHERE (arc.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;;
 
 
 
@@ -1229,11 +1475,20 @@ CREATE OR REPLACE VIEW v_edit_man_varc AS
     arc.label_x AS varc_label_x,
     arc.label_y AS varc_label_y,
     arc.label_rotation AS varc_label_rotation,
-    man_varc.add_info AS varc_add_info
-   FROM arc
+    man_varc.add_info AS varc_add_info,
+	arc.expl_id,
+	arc.code AS varc_code,
+	arc.publish,
+	arc.inventory,
+	arc.end_date AS varc_end_date,
+	arc.uncertain,
+	arc.macrodma_id
+   FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
      LEFT JOIN v_arc_x_node ON v_arc_x_node.arc_id::text = arc.arc_id::text
-     JOIN man_varc ON man_varc.arc_id::text = arc.arc_id::text;
+     JOIN man_varc ON man_varc.arc_id::text = arc.arc_id::text
+	 WHERE (arc.expl_id)::text=(expl_selector.expl_id)::text
+	AND expl_selector.cur_user="current_user"()::text;
 
 
 
@@ -1286,12 +1541,20 @@ connec.label_x,
 connec.label_y,
 connec.label_rotation,
 connec.accessibility,
-connec.diagonal
-FROM (connec 
+connec.diagonal,
+connec.expl_id,
+connec.publish,
+connec.inventory,
+connec.end_date,
+connec.uncertain,
+connec.macrodma_id
+FROM expl_selector, connec 
 JOIN cat_connec ON (((connec.connecat_id)::text = (cat_connec.id)::text))
 LEFT JOIN ext_streetaxis ON (((connec.streetaxis_id)::text = (ext_streetaxis.id)::text))
 LEFT JOIN link ON connec.connec_id::text = link.connec_id::text
-LEFT JOIN vnode ON vnode.vnode_id::text = link.vnode_id);
+LEFT JOIN vnode ON vnode.vnode_id::text = link.vnode_id
+WHERE (connec.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 
@@ -1339,9 +1602,20 @@ gully.featurecat_id,
 gully.feature_id,
 gully.label_x,
 gully.label_y,
-gully.label_rotation
-FROM (gully LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text)))
-WHERE gully.the_geom is not null;
+gully.label_rotation,
+gully.expl_id,
+gully.code,
+gully.publish,
+gully.inventory,
+gully.end_date,
+gully.macrodma_id,
+gully.streetaxis_id,
+gully.postnumber
+FROM expl_selector, gully 
+LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+WHERE gully.the_geom is not null 
+AND (gully.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
 
 
 DROP VIEW IF EXISTS v_edit_man_pgully CASCADE;
@@ -1388,6 +1662,17 @@ gully.featurecat_id,
 gully.feature_id,
 gully.label_x,
 gully.label_y,
-gully.label_rotation
-FROM (gully LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text)))
-WHERE gully.the_geom_pol is not null;
+gully.label_rotation,
+gully.expl_id,
+gully.code,
+gully.publish,
+gully.inventory,
+gully.end_date,
+gully.macrodma_id,
+gully.streetaxis_id,
+gully.postnumber
+FROM expl_selector, gully 
+LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+WHERE gully.the_geom_pol is not null
+AND (gully.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text;
