@@ -550,7 +550,7 @@ BEGIN
 		SET node_id=NEW.node_id, type=NEW.valve_type, opened=NEW.valve_opened, acessibility=NEW.valve_acessibility, broken=NEW.valve_broken, mincut_anl=NEW.valve_mincut_anl, hydraulic_anl=NEW.valve_hydraulic_anl,
 		burried=NEW.valve_burried, irrigation_indicator=NEW.valve_irrigation_indicator, pression_entry=NEW.valve_pression_entry, pression_exit=NEW.valve_pression_exit, depth_valveshaft=NEW.valve_depth_valveshaft, 
 		regulator_situation=NEW.valve_regulator_situation, regulator_location=NEW.valve_regulator_location, regulator_observ=NEW.valve_regulator_observ, lin_meters=NEW.valve_lin_meters, valve=NEW.valve_valve, 
-		valve_diam=NEW.valve_valve_diam, exit_type=NEW.valve_exit_type, exit_code=NEW.valve_exit_code, drive_type=NEW.valve_drive_type, location=NEW.valve_location
+		valve_diam=NEW.valve_valve_diam, exit_type=NEW.valve_exit_type, exit_code=NEW.valve_exit_code, drive_type=NEW.valve_drive_type, location=NEW.valve_location, cat_valve2=NEW.valve_cat_valve2
 		WHERE node_id=OLD.node_id;	
 	END IF;
 
