@@ -70,8 +70,8 @@ ALTER TABLE "connec" ADD CONSTRAINT "connec_featurecat_id_fkey" FOREIGN KEY ("fe
 ALTER TABLE "connec" DROP CONSTRAINT IF EXISTS "connec_type_id_fkey";
 ALTER TABLE "connec" ADD CONSTRAINT "connec_type_id_fkey" FOREIGN KEY ("connec_type") REFERENCES "connec_type" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
-ALTER TABLE "dma" DROP CONSTRAINT IF EXISTS "dma_sector_id_fkey";
-ALTER TABLE "dma" ADD CONSTRAINT "dma_sector_id_fkey" FOREIGN KEY ("sector_id") REFERENCES "sector" ("sector_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+--ALTER TABLE "dma" DROP CONSTRAINT IF EXISTS "dma_sector_id_fkey";
+--ALTER TABLE "dma" ADD CONSTRAINT "dma_sector_id_fkey" FOREIGN KEY ("sector_id") REFERENCES "sector" ("sector_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE "link" DROP CONSTRAINT IF EXISTS "link_connec_id_fkey";
 ALTER TABLE "link" ADD CONSTRAINT "link_connec_id_fkey" FOREIGN KEY ("connec_id") REFERENCES "connec" ("connec_id") ON DELETE CASCADE ON UPDATE CASCADE;

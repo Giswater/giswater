@@ -61,8 +61,8 @@ ALTER TABLE "connec" ADD CONSTRAINT "connec_connecat_id_fkey" FOREIGN KEY ("conn
 ALTER TABLE "connec" DROP CONSTRAINT IF EXISTS "connec_sector_id_fkey";
 ALTER TABLE "connec" ADD CONSTRAINT "connec_sector_id_fkey" FOREIGN KEY ("sector_id") REFERENCES "sector" ("sector_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
-ALTER TABLE "dma" DROP CONSTRAINT IF EXISTS "dma_sector_id_fkey";
-ALTER TABLE "dma" ADD CONSTRAINT "dma_sector_id_fkey" FOREIGN KEY ("sector_id") REFERENCES "sector" ("sector_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+--ALTER TABLE "dma" DROP CONSTRAINT IF EXISTS "dma_sector_id_fkey";
+--ALTER TABLE "dma" ADD CONSTRAINT "dma_sector_id_fkey" FOREIGN KEY ("sector_id") REFERENCES "sector" ("sector_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE "dma" DROP CONSTRAINT IF EXISTS "dma_presszonecat_id_fkey";
 ALTER TABLE "dma" ADD CONSTRAINT "dma_presszonecat_id_fkey" FOREIGN KEY ("presszonecat_id") REFERENCES "cat_press_zone" ("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
