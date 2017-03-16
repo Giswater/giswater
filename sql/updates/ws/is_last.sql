@@ -106,10 +106,10 @@ ALTER TABLE cat_arc ADD COLUMN active boolean;
 ALTER TABLE cat_connec ADD COLUMN active boolean;
 ALTER TABLE cat_element ADD COLUMN active boolean;
 
-ALTER TABLE cat_node ADD COLUMN made_by character varying(100);
+ALTER TABLE cat_node ADD COLUMN madeby character varying(100);
 ALTER TABLE cat_node ADD COLUMN model character varying(100);
 
-ALTER TABLE cat_element ADD COLUMN made_by character varying(100);
+ALTER TABLE cat_element ADD COLUMN madeby character varying(100);
 ALTER TABLE cat_element ADD COLUMN model character varying(100);
 
 ALTER TABLE man_tank ADD COLUMN pol_id character varying(16);
