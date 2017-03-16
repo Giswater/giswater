@@ -106,6 +106,12 @@ ALTER TABLE cat_arc ADD COLUMN active boolean;
 ALTER TABLE cat_connec ADD COLUMN active boolean;
 ALTER TABLE cat_element ADD COLUMN active boolean;
 
+ALTER TABLE cat_node ADD COLUMN made_by character varying(100);
+ALTER TABLE cat_node ADD COLUMN model character varying(100);
+
+ALTER TABLE cat_element ADD COLUMN made_by character varying(100);
+ALTER TABLE cat_element ADD COLUMN model character varying(100);
+
 ALTER TABLE man_tank ADD COLUMN pol_id character varying(16);
 
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES cat_tag (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;

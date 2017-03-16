@@ -90,7 +90,7 @@ ALTER TABLE gully ADD COLUMN macrodma_id character varying(50);
 
 ALTER TABLE om_visit ADD COLUMN  webclient_id character varying(50);
 
-ALTER TABLE cat_grate ADD COLUMN made_by character varying(150);
+ALTER TABLE cat_grate ADD COLUMN made_by character varying(100);
 
 ALTER TABLE man_manhole ADD COLUMN inlet boolean;
 ALTER TABLE man_manhole ADD COLUMN bottom_channel boolean;
@@ -109,6 +109,9 @@ ALTER TABLE cat_arc ADD COLUMN active boolean;
 ALTER TABLE cat_connec ADD COLUMN active boolean;
 ALTER TABLE cat_element ADD COLUMN active boolean;
 ALTER TABLE cat_grate ADD COLUMN active boolean;
+
+ALTER TABLE cat_element ADD COLUMN made_by character varying(100);
+ALTER TABLE cat_element ADD COLUMN model character varying(100);
 
 
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES cat_tag (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
