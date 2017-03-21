@@ -1658,3 +1658,15 @@ LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
 WHERE gully.the_geom_pol is not null
 AND (gully.expl_id)::text=(expl_selector.expl_id)::text
 AND expl_selector.cur_user="current_user"()::text;
+
+
+
+CREATE VIEW v_edit_review_node AS 
+SELECT node.node_id, 
+node.top_elev,
+node.ymax,
+review_audit_node.top_elev as cota_tapa,
+review_audit_node.ymax as profunditat,
+review_audit_node.checked 
+FROM node JOIN review_audit_node ON node.node_id=review_audit_node.node_id
+WHERE checked IS NULL OR checked = FALSE;

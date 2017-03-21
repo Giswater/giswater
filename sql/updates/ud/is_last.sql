@@ -129,3 +129,63 @@ ALTER TABLE arc  ADD CONSTRAINT arc_macrodma_id_fkey FOREIGN KEY (macrodma_id) R
 ALTER TABLE node  ADD CONSTRAINT node_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE connec  ADD CONSTRAINT connec_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+
+
+CREATE TABLE review_arc
+(  id serial NOT NULL,
+  geom geometry(MultiLineString,25831),
+  arc_id character varying(16),
+  y1 numeric(12,3),
+  y2 numeric(12,3),
+  arc_type character varying(16),
+  arccat_id character varying(30),
+  annotation character varying(254),
+  verified character varying(16),
+  CONSTRAINT review_arc_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE review_node
+(  id serial NOT NULL,
+  geom geometry(MultiPoint,25831),
+  node_id character varying(16),
+  top_elev numeric(12,3),
+  ymax numeric(12,3),
+  node_type character varying(16),
+  cat_matcat character varying(16),
+  dimensions character varying(16),
+  annotation character varying(254),
+  observ character varying(254),
+  verified character varying(16),
+  CONSTRAINT review_node_pkey PRIMARY KEY (id));
+  
+CREATE TABLE review_audit_arc
+(  id serial NOT NULL,
+  geom geometry(MultiLineString,25831),
+  arc_id character varying(16),
+  y1 numeric(12,3),
+  y2 numeric(12,3),
+  arc_type character varying(16),
+  arccat_id character varying(30),
+  annotation character varying(254),
+  verified character varying(16),
+  checked boolean,
+  CONSTRAINT review_audit_arc_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE review_audit_node
+(  id serial NOT NULL,
+  geom geometry(MultiPoint,25831),
+  node_id character varying(16),
+  top_elev numeric(12,3),
+  ymax numeric(12,3),
+  node_type character varying(16),
+  cat_matcat character varying(16),
+  dimensions character varying(16),
+  annotation character varying(254),
+  observ character varying(254),
+  verified character varying(16),
+  checked boolean,
+  CONSTRAINT review_audit_node_pkey PRIMARY KEY (id));
+  
