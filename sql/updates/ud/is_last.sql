@@ -105,6 +105,8 @@ ALTER TABLE man_netinit ADD COLUMN inlet boolean;
 ALTER TABLE man_netinit ADD COLUMN bottom_channel  boolean;
 ALTER TABLE man_netinit ADD COLUMN accessibility varchar(16);
 
+ALTER TABLE cat_node ADD COLUMN shape character varying(16);
+
 ALTER TABLE cat_node ADD COLUMN active boolean;
 ALTER TABLE cat_arc ADD COLUMN active boolean;
 ALTER TABLE cat_connec ADD COLUMN active boolean;
@@ -134,22 +136,20 @@ ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id
 
 
 CREATE TABLE review_arc
-(  id serial NOT NULL,
+(  arc_id character varying(16),
   geom geometry(MultiLineString,25831),
-  arc_id character varying(16),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
   arccat_id character varying(30),
   annotation character varying(254),
   verified character varying(16),
-  CONSTRAINT review_arc_pkey PRIMARY KEY (id)
+  CONSTRAINT review_arc_pkey PRIMARY KEY (arc_id)
 );
 
 CREATE TABLE review_node
-(  id serial NOT NULL,
+( node_id character varying(16),
   geom geometry(MultiPoint,25831),
-  node_id character varying(16),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),
@@ -158,12 +158,11 @@ CREATE TABLE review_node
   annotation character varying(254),
   observ character varying(254),
   verified character varying(16),
-  CONSTRAINT review_node_pkey PRIMARY KEY (id));
+  CONSTRAINT review_node_pkey PRIMARY KEY (node_id));
   
 CREATE TABLE review_audit_arc
-(  id serial NOT NULL,
+(  arc_id character varying(16) NOT NULL,
   geom geometry(MultiLineString,25831),
-  arc_id character varying(16),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
@@ -171,13 +170,12 @@ CREATE TABLE review_audit_arc
   annotation character varying(254),
   verified character varying(16),
   checked boolean,
-  CONSTRAINT review_audit_arc_pkey PRIMARY KEY (id)
+  CONSTRAINT review_audit_arc_pkey PRIMARY KEY (arc_id)
 );
 
 CREATE TABLE review_audit_node
-(  id serial NOT NULL,
+(  node_id character varying(16),
   geom geometry(MultiPoint,25831),
-  node_id character varying(16),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),
@@ -187,5 +185,5 @@ CREATE TABLE review_audit_node
   observ character varying(254),
   verified character varying(16),
   checked boolean,
-  CONSTRAINT review_audit_node_pkey PRIMARY KEY (id));
+  CONSTRAINT review_audit_node_pkey PRIMARY KEY (node_id));
   
