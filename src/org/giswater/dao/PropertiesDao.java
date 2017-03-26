@@ -129,7 +129,7 @@ public class PropertiesDao {
     	}
     	
     	// Set Locale
-    	String language = prop.get("LANGUAGE", "en");
+    	String language = prop.get("LANGUAGE", "en").toLowerCase();
 		Locale locale = new Locale(language, language.toUpperCase());
 		Locale.setDefault(locale);    	
     	

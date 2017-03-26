@@ -101,7 +101,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	protected void setProperties() {
 		this.prop = PropertiesDao.getPropertiesFile();
-		this.locale = this.prop.get("LANGUAGE", "");
+		this.locale = this.prop.get("LANGUAGE", "").toLowerCase();
 		String folderPath = folderRootPath+waterSoftware+"_export_fct";
 		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
 		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
@@ -260,7 +260,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	protected boolean insertVersion(boolean commit) {
 		
-		String language = prop.get("LANGUAGE", "en");		
+		String language = prop.get("LANGUAGE", "en").toLowerCase();		
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
 			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";

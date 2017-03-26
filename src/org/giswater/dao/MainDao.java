@@ -220,7 +220,7 @@ public class MainDao {
 	private static void setLocale() {
 		
 		Locale locale = new Locale("en", "EN");
-        String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
+        String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
 		if (language.equals("es")) {
 			locale = new Locale("es", "ES");
 		}
