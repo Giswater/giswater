@@ -155,10 +155,11 @@ public class PropertiesDao {
     	String gswPath = prop.get("FILE_GSW", "").trim();
     	File gswFile = new File(gswPath);       
     	if (!gswFile.exists()) {
-        	gswFile = new File(gswDefaultPath);  
-    		Utils.getLogger().info("Loading default .gsw file: " + gswDefaultPath);	        	
+    		gswPath = gswDefaultPath;
+        	gswFile = new File(gswPath);  
+    		Utils.getLogger().info("Loading default .gsw file: " + gswPath);	        	
         	if (!gswFile.exists()) {
-                Utils.showError("gsw_default_notfound", gswDefaultPath);    
+                Utils.showError("gsw_default_notfound", gswPath);    
                 return false;
         	}
     	}

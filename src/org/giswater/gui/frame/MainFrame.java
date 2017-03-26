@@ -507,9 +507,7 @@ public class MainFrame extends JFrame implements ActionListener {
     	String versionId = ppPanel.getVersionSoftware();
     	String exeName = ConfigDao.getExeName(versionId, UtilsOS.isWindows());
     	PropertiesDao.getGswProperties().put("VERSION", versionId);  
-    	PropertiesDao.getGswProperties().put("EXE_NAME", exeName);  
-    	PropertiesDao.getGswProperties().put("STORAGE", "DATABASE");
-    	PropertiesDao.getGswProperties().put("FOLDER_SHP", "");    	
+    	PropertiesDao.getGswProperties().put("EXE_NAME", exeName);    	
     	PropertiesDao.getGswProperties().put("SCHEMA", ppPanel.getSelectedSchema());
     	PropertiesDao.getGswProperties().put("POSTGIS_HOST", ppPanel.getHost());
     	PropertiesDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
