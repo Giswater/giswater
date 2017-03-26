@@ -53,7 +53,6 @@ public class MainDao {
 	protected static Boolean useSsl;
 	protected static String binFolder;
 	protected static String giswaterUsersFolder;   // UsersFolder + ROOT_FOLDER
-	protected static boolean isWindows;
 	
     private static Connection connectionPostgis;
 	private static String waterSoftware;   // [EPASWMM | EPANET]
@@ -158,9 +157,6 @@ public class MainDao {
     // Sets initial configuration files
     public static boolean configIni(String versionCode) {
     	
-    	// Check Operating System
-    	isWindows = UtilsOS.isWindows();
-    	
     	// Giswater version
     	giswaterVersion = versionCode;
     	
@@ -224,7 +220,7 @@ public class MainDao {
 	private static void setLocale() {
 		
 		Locale locale = new Locale("en", "EN");
-        String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en");
+        String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
 		if (language.equals("es")) {
 			locale = new Locale("es", "ES");
 		}

@@ -29,6 +29,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsOS;
 
 
 public class ConfigDao {
@@ -36,6 +37,8 @@ public class ConfigDao {
 	private static Connection connectionConfig;   // config.sqlite
     private static Connection connectionDrivers;  // waterSoftware drivers
     private static String inpFolder;   // appPath + "inp"
+    private static boolean isWindows;
+    private static String configTable;
     
 	private static final String CONFIG_DB = "config.sqlite";
 	
@@ -52,10 +55,12 @@ public class ConfigDao {
 		return connectionDrivers;
 	}
 	
+	
     // Connect to Config sqlite Database
     public static boolean setConnectionConfig() {
 
-        try {
+    	manageOperatingSystem();
+    	try {
             Class.forName("org.sqlite.JDBC");
             String filePath = inpFolder + CONFIG_DB;
             File file = new File(filePath);
@@ -72,6 +77,7 @@ public class ConfigDao {
             Utils.showError("inp_error_connection", "ClassNotFoundException");
             return false;
         }
+        
 
     }
     
@@ -100,9 +106,9 @@ public class ConfigDao {
     }  
     
     
-	public static String getSoftwareVersion(String type, String id) {
+	public static String getSoftwareVersion(String id) {
 		
-        String sql = "SELECT software_version FROM "+type+"_software WHERE id = '"+id+"'";
+        String sql = "SELECT software_version FROM "+configTable+" WHERE id = '"+id+"'";
         String result = "";
         try {
             Statement stat = connectionConfig.createStatement();
@@ -120,9 +126,9 @@ public class ConfigDao {
 	}
 	
 	
-	public static String getExeName(String id) {
+	public static String getExeName(String id, boolean isWindows) {
 		
-		String sql = "SELECT exe_name FROM postgis_software WHERE id = '"+id+"'";
+		String sql = "SELECT exe_name FROM "+configTable+" WHERE id = '"+id+"'";
 		String result = "";
 		try {
 			Statement stat = connectionConfig.createStatement();
@@ -140,11 +146,11 @@ public class ConfigDao {
 	}
 	
 	
-    public static Vector<String> getAvailableVersions(String type, String software) {
+    public static Vector<String> getAvailableVersions(String software) {
 
         Vector<String> vector = new Vector<String>();
         String sql = "SELECT id" +
-        	" FROM "+type+"_software" +  
+        	" FROM "+configTable + 
         	" WHERE available = 1 AND software_name = '"+software+"'" +
         	" ORDER BY id ASC";            
 		try {
@@ -195,5 +201,19 @@ public class ConfigDao {
 		
 	}	
 		
+
+	private static void manageOperatingSystem() {
+		
+		// Check Operating System
+		isWindows = UtilsOS.isWindows();  
+		if (isWindows) {
+			configTable = "windows_software";			
+		}
+		else {
+			configTable = "linux_software";
+		}		
+		
+	}
+	
 	
 }

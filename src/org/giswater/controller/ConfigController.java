@@ -59,7 +59,7 @@ public class ConfigController extends AbstractController {
 		view.setOverwriteResult(prop.get("OVERWRITE_RESULT"));
 		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
-		view.setLanguage(prop.get("LANGUAGE", "en"));
+		view.setLanguage(prop.get("LANGUAGE", "en").toLowerCase());
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
         Integer size = 10;
         try{
