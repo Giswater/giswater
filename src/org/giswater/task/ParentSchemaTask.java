@@ -84,12 +84,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		}
 		this.schemaName = schemaName;
 		this.sridValue = sridValue;
-
-		try {
-			this.folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
-		} catch (IOException e) {
-			Utils.showError(e);
-		}    	
+		this.folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
     	setProperties();
     	
 	}
@@ -101,7 +96,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	protected void setProperties() {
 		this.prop = PropertiesDao.getPropertiesFile();
-		this.locale = this.prop.get("LANGUAGE", "");
+		this.locale = this.prop.get("LANGUAGE", "").toLowerCase();
 		String folderPath = folderRootPath+waterSoftware+"_export_fct";
 		this.folderFct = this.prop.get("FOLDER_FCT", folderPath);
 		this.folderFctUtils = this.prop.get("FOLDER_FCT_UTILS", folderPath);
@@ -132,7 +127,6 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
 		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
-		Utils.logSql(content);
 		return MainDao.executeSql(content, false, filePath);		
 		
 	}
@@ -260,7 +254,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	protected boolean insertVersion(boolean commit) {
 		
-		String language = prop.get("LANGUAGE", "en");		
+		String language = prop.get("LANGUAGE", "en").toLowerCase();		
 		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
 			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";

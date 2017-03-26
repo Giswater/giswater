@@ -51,7 +51,6 @@ public class FileLauncherTask extends SwingWorker<Void, Void> {
 		status = true;
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
-		Utils.logSql(content);
 		Exception e = MainDao.executeSql(content, false, 0);
 		if (e != null) {
 			status = false;

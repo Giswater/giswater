@@ -21,7 +21,6 @@
 package org.giswater.gui;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import org.giswater.controller.MenuController;
 import org.giswater.dao.MainDao;
@@ -51,15 +50,6 @@ public class MainClass {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {		
-
-				// Look&Feel
-				String className = UIManager.getSystemLookAndFeelClassName();
-				try {
-					UIManager.setLookAndFeel(className);
-				} catch (Exception e) {
-					Utils.logError(e.getMessage());
-					return;
-				}  
 
 				// Initial configuration
 				String versionCode = MainClass.class.getPackage().getImplementationVersion();

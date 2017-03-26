@@ -295,7 +295,6 @@ public class MenuController extends AbstractController {
 			PropertiesDao.loadGswPropertiesFile();
 			PropertiesDao.getGswProperties().put("SOFTWARE", "");
 			PropertiesDao.getGswProperties().put("VERSION", "");
-			PropertiesDao.getGswProperties().put("STORAGE", "");
 			PropertiesDao.getGswProperties().put("SCHEMA", "");
 		}
 		

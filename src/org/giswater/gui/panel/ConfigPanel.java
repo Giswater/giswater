@@ -55,7 +55,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	private JButton btnAccept;
 	private JButton btnClose;
 	private JButton btnFileDbAdmin;
-	private JCheckBox chkAutostart;
 	private JRadioButton optInpAlways;
 	private JRadioButton optInpAsk;
 	private JRadioButton optInpNever;
@@ -113,15 +112,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 
 	public Boolean getAutoConnect() {
 		return chkAutoconnect.isSelected();
-	}	
-	
-	public void setAutoStart(String isChecked) {
-		Boolean connect = Boolean.parseBoolean(isChecked);
-		chkAutostart.setSelected(connect);
-	}	
-	
-	public Boolean getAutoStart() {
-		return chkAutostart.isSelected();
 	}		
 	
 	public void setDbAdminFile(String path) {
@@ -359,7 +349,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][40px:n:40px][::90px][75px:n:75px]", "[5px:n][][][][][][][][][][][2px:n][::17px][::17px][2px:n][40px:n][12px:n][]"));
+		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][40px:n:40px][::90px][75px:n:75px]", "[5px:n][][][][][][][][][][][2px:n][::10px][][2px:n][40px:n][12px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();
@@ -509,10 +499,6 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		btnOpenLogFolder = new JButton(BUNDLE.getString("ConfigPanel.btnOpenLogFolder.text"));
 		add(btnOpenLogFolder, "cell 5 10,growx");
 		btnOpenLogFolder.setActionCommand("openLogFolder");
-		
-		chkAutostart = new JCheckBox(BUNDLE.getString("ConfigPanel.chkAutostart.text")); 
-		add(chkAutostart, "cell 2 12 3 1");
-		chkAutostart.setSelected(true);
 		
 		chkAutoconnect = new JCheckBox(BUNDLE.getString("Config.chkConnect")); 
 		add(chkAutoconnect, "cell 2 13 3 1");

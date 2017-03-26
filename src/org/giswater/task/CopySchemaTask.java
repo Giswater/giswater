@@ -43,7 +43,6 @@ public class CopySchemaTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
 
 		String sql = "SELECT "+currentSchemaName+".clone_schema('"+currentSchemaName+"', '"+schemaName+"')";
-		Utils.logSql(sql);
 		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
 		status = MainDao.executeSql(sql, true);
 		if (status){

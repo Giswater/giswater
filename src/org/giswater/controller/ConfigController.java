@@ -50,7 +50,6 @@ public class ConfigController extends AbstractController {
     	
 		view.setDbAdminFile(prop.get("FILE_DBADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
-		view.setAutoStart(prop.get("AUTOSTART_POSTGIS"));
 		view.setOpenInp(prop.get("OPEN_INP"));
 		view.setOpenRpt(prop.get("OPEN_RPT"));
 		view.setProjectUpdate(prop.get("PROJECT_UPDATE", "ask"));
@@ -59,7 +58,7 @@ public class ConfigController extends AbstractController {
 		view.setOverwriteResult(prop.get("OVERWRITE_RESULT"));
 		view.setAutoImportRpt(prop.get("AUTO_IMPORT_RPT"));
 		view.setCheckUpdates(prop.get("AUTO_CHECK_UPDATES", "false"));
-		view.setLanguage(prop.get("LANGUAGE", "en"));
+		view.setLanguage(prop.get("LANGUAGE", "en").toLowerCase());
         String aux = prop.get("LOG_FOLDER_SIZE", "10");
         Integer size = 10;
         try{
@@ -79,7 +78,6 @@ public class ConfigController extends AbstractController {
 		// Update properties file getting parameteres from view	 
 		prop.put("FILE_DBADMIN", view.getDgAdminFile());
 		prop.put("AUTOCONNECT_POSTGIS", view.getAutoConnect().toString());
-		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
 		prop.put("PROJECT_UPDATE", view.getProjectUpdate());					

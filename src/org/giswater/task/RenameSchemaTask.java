@@ -40,13 +40,11 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	setProgress(1);
     	
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
-		Utils.logSql(sql);
 		if (MainDao.executeUpdateSql(sql, true, true)) {
 			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
 				sql = "ALTER SCHEMA "+currentSchemaName+"_audit RENAME TO "+schemaName+"_audit";
-				Utils.logSql(sql);
 				MainDao.executeUpdateSql(sql, true);	
 			}
 			

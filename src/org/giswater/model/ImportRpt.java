@@ -168,14 +168,12 @@ public class ImportRpt extends Model {
     			continueTarget = true;
     			if (overwrite) {
     				sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
-    				Utils.logSql(sql);
     				MainDao.executeUpdateSql(sql);
     			}
     			else {
     				if (exists) {
     					sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable() + 
     						" WHERE result_id = '"+projectName+"'";
-    					Utils.logSql(sql);
     					MainDao.executeUpdateSql(sql);
     				}
 	    		}            			
@@ -193,7 +191,6 @@ public class ImportRpt extends Model {
 			            		insertSql+= sql;       	
     		    			}
     		    		}
-		            	Utils.logSql(insertSql);
 			    		if (!MainDao.executeUpdateSql(insertSql)) {
 							return false;
 						}    		    		
@@ -227,19 +224,16 @@ public class ImportRpt extends Model {
     	if (ok && processTarget) {
 			if (overwrite) {
 				sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable();
-				Utils.logSql(sql);
 				MainDao.executeUpdateSql(sql);
 			}
 			else {
 				if (exists) {
 					sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable() + 
 						" WHERE result_id = '"+projectName+"'";
-					Utils.logSql(sql);
 					MainDao.executeUpdateSql(sql);
 				}
     		} 
-    		if (!insertSql.equals("")) {
-    			Utils.logSql(insertSql);	            	
+    		if (!insertSql.equals("")) {            	
 	    		boolean status = MainDao.executeUpdateSql(insertSql, true);
 	    		if (!status) {
 	    			String msg = Utils.getBundleString("ImportRpt.import_aborted"); //$NON-NLS-1$
