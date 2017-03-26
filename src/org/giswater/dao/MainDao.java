@@ -40,7 +40,6 @@ import org.giswater.gui.MainClass;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
-import org.giswater.util.UtilsOS;
 
 
 public class MainDao {
@@ -170,27 +169,18 @@ public class MainDao {
          	
         // Set Locale
         setLocale();     
-        
-    	// Log SQL?
-    	Utils.setSqlLog(PropertiesDao.getPropertiesFile().get("SQL_LOG", "false"));
     	
         // Get inp and updates folder
         String inpFolder = Utils.getAppPath()+"inp"+File.separator;
         ConfigDao.setInpFolder(inpFolder);
         updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
-        Utils.logInfo("SQL updates folder:" +updatesFolder);
+        Utils.logInfo("SQL updates folder: " +updatesFolder);
         getLastUpdates();
 
     	// Set Config DB connection
         if (!ConfigDao.setConnectionConfig()) {
         	return false;
         }
-        
-        // Start Postgis portable?
-        Boolean autostart = Boolean.parseBoolean(PropertiesDao.getPropertiesFile().get("AUTOSTART_POSTGIS", "true"));
-        if (autostart) {
-        	ExecuteDao.executePostgisService("start");
-        }	    
         
         // Check log folder size
         String aux = PropertiesDao.getPropertiesFile().get("LOG_FOLDER_SIZE", "10");
@@ -411,7 +401,6 @@ public class MainDao {
     	String content;
 		try {
 			content = Utils.readFile(filePath);
-			Utils.logSql(content);
 			executeUpdateSql(content, true, false);
 		} catch (IOException e) {
 			Utils.logError(e);
@@ -880,11 +869,9 @@ public class MainDao {
 	public static void setResultSelect(String schema, String table, String result) {
 		String sql = "DELETE FROM "+schema+"."+table;
 		sql+= " WHERE cur_user = current_user";
-		Utils.logSql(sql);
 		executeUpdateSql(sql);
 		sql = "INSERT INTO "+schema+"."+table+" (result_id, cur_user) VALUES ('"+result+"', current_user)";
 		executeUpdateSql(sql, true);
-		Utils.logSql(sql);
 	}
 	
 
@@ -1072,7 +1059,6 @@ public class MainDao {
 						content = Utils.readFile(file.getAbsolutePath());
 						content = content.replace("SCHEMA_NAME", schema);
 						content = content.replace("SRID_VALUE", getSrid(schema));					
-						Utils.logSql(content);
 						status = executeSql(content, false);
 						// Abort process if one script fails
 						if (!status) return false;

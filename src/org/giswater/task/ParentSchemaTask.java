@@ -132,7 +132,6 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		content = content.replace("SCHEMA_NAME", schemaName);
 		content = content.replace("SRID_VALUE", sridValue);
 		content = content.replace("__USER__", PropertiesDao.getGswProperties().get("POSTGIS_USER"));					
-		Utils.logSql(content);
 		return MainDao.executeSql(content, false, filePath);		
 		
 	}

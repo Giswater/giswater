@@ -92,25 +92,6 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		this.controller = controller;
 	}
 	
-	public void setAutoConnect(String isChecked) {
-		Boolean connect = Boolean.parseBoolean(isChecked);
-		chkTriggers.setSelected(connect);
-	}	
-
-	public Boolean getAutoConnect() {
-		return chkTriggers.isSelected();
-	}	
-	
-	public void setAutoStart(String isChecked) {
-		Boolean connect = Boolean.parseBoolean(isChecked);
-		chkFunctions.setSelected(connect);
-	}	
-	
-	public Boolean getAutoStart() {
-		return chkFunctions.isSelected();
-	}		
-	
-	
 	
 	private void initConfig() throws MissingResourceException {
 

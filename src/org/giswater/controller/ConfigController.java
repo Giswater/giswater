@@ -50,7 +50,6 @@ public class ConfigController extends AbstractController {
     	
 		view.setDbAdminFile(prop.get("FILE_DBADMIN"));
 		view.setAutoConnect(prop.get("AUTOCONNECT_POSTGIS"));
-		view.setAutoStart(prop.get("AUTOSTART_POSTGIS"));
 		view.setOpenInp(prop.get("OPEN_INP"));
 		view.setOpenRpt(prop.get("OPEN_RPT"));
 		view.setProjectUpdate(prop.get("PROJECT_UPDATE", "ask"));
@@ -79,7 +78,6 @@ public class ConfigController extends AbstractController {
 		// Update properties file getting parameteres from view	 
 		prop.put("FILE_DBADMIN", view.getDgAdminFile());
 		prop.put("AUTOCONNECT_POSTGIS", view.getAutoConnect().toString());
-		prop.put("AUTOSTART_POSTGIS", view.getAutoStart().toString());		
 		prop.put("OPEN_INP", view.getOpenInp());	
 		prop.put("OPEN_RPT", view.getOpenRpt());		
 		prop.put("PROJECT_UPDATE", view.getProjectUpdate());					

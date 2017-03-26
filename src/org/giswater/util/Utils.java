@@ -83,7 +83,6 @@ public class Utils {
 	private static String logFolder;
 	private static String gisFolder;
 	private static String appPath;
-	private static boolean isSqlLogged;	
 	private static boolean isQgis;			
 	private static ResourceBundle bundleText;
     
@@ -207,18 +206,6 @@ public class Utils {
 		}
 		return false;
 			
-	}
-	
-	
-	public static void setSqlLog(String string) {
-		isSqlLogged = Boolean.parseBoolean(string);
-	}	
-	
-	
-	public static void logSql(String msg) {
-		if (isSqlLogged) {
-			loggerSql.info(msg);
-		}
 	}
 	
     
