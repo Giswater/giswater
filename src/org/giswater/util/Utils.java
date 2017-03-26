@@ -73,11 +73,13 @@ public class Utils {
 
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
+    private static final String CONFIG_FOLDER = "config" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
     private static final int NUM_LEVELS = 10;
 
 	private static Logger logger;
     private static Logger loggerSql;
+    private static String configFolder;
 	private static String logFolder;
 	private static String gisFolder;
 	private static String appPath;
@@ -107,9 +109,13 @@ public class Utils {
 					Utils.logError(e.getMessage());
 				}  		    	
 				
+				// Get gis and config folders
 				String folderRoot = getAppPath();         	
-				logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
 				gisFolder = folderRoot + GIS_FOLDER;
+				configFolder = folderRoot + CONFIG_FOLDER;
+				
+				// Log folder and files
+				logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
 				File folderFile = new File(logFolder);
 				folderFile.mkdirs();
 				if (!folderFile.exists()) {
@@ -121,6 +127,7 @@ public class Utils {
 				fh.setFormatter(lf);
 				logger = Logger.getLogger(logFile);
 				logger.addHandler(fh);
+				
 				// SQL logger file
 				logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
 				fh = new FileHandler(logFile, true);
@@ -128,6 +135,8 @@ public class Utils {
 				fh.setFormatter(lf);
 				loggerSql = Logger.getLogger(logFile);
 				loggerSql.addHandler(fh);
+				
+				// Check QGIS file association
 				isQgis = true;
 				if (isWindows) {
 					isQgis = checkFileExtensionQgis();
@@ -241,6 +250,10 @@ public class Utils {
     public static String getGisFolder() {
     	return gisFolder;
     }       
+
+    public static String getConfigFolder() {
+    	return configFolder;
+    }   
     
     public static boolean isQgisAssociated() {
     	return isQgis;
