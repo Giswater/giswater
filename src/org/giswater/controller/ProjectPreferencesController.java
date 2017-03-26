@@ -74,7 +74,7 @@ public class ProjectPreferencesController extends AbstractController {
 		// Update software version 
 		setWaterSoftware(view.getWaterSoftware());
 		MainDao.setWaterSoftware(waterSoftware);
-		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions(waterSoftware));
 		view.setInfo("");
 		
 		// Get schemas from selected water software
@@ -313,7 +313,7 @@ public class ProjectPreferencesController extends AbstractController {
 			mainFrame.enableMenuDatabase(true);
 			view.enableProjectManagement(true);
 			if (loadVersionSoftwareModel) {
-				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
+				view.setVersionSoftwareModel(ConfigDao.getAvailableVersions(waterSoftware));
 			}
 			enableWaterSoftwareControls();
 		} 
@@ -414,7 +414,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	public void setVersionSoftware() {
-		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions("postgis", waterSoftware));
+		view.setVersionSoftwareModel(ConfigDao.getAvailableVersions(waterSoftware));
 	}
 	
 	

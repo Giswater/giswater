@@ -51,8 +51,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-import net.miginfocom.swing.MigLayout;
-
 import org.giswater.controller.ConfigController;
 import org.giswater.controller.DevToolboxController;
 import org.giswater.controller.EpaSoftController;
@@ -67,6 +65,9 @@ import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsOS;
+
+import net.miginfocom.swing.MigLayout;
 
 
 public class MainFrame extends JFrame implements ActionListener {
@@ -504,7 +505,7 @@ public class MainFrame extends JFrame implements ActionListener {
     	
     	PropertiesDao.getGswProperties().put("SOFTWARE", ppPanel.getWaterSoftware());    	
     	String versionId = ppPanel.getVersionSoftware();
-    	String exeName = ConfigDao.getExeName(versionId);
+    	String exeName = ConfigDao.getExeName(versionId, UtilsOS.isWindows());
     	PropertiesDao.getGswProperties().put("VERSION", versionId);  
     	PropertiesDao.getGswProperties().put("EXE_NAME", exeName);  
     	PropertiesDao.getGswProperties().put("STORAGE", "DATABASE");

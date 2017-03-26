@@ -98,8 +98,8 @@ public class Utils {
 				// Look&Feel
 				String className = UIManager.getSystemLookAndFeelClassName();
 				if (!isWindows) {
-					//className = UIManager.getCrossPlatformLookAndFeelClassName();	
-					className = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";		    		
+					className = UIManager.getCrossPlatformLookAndFeelClassName();	
+					//className = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";		    		
 				}
 				try {
 					UIManager.setLookAndFeel(className);

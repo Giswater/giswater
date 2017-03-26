@@ -83,7 +83,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
         	MainClass.mdi.showError("any_software_selected");
             return null;
         }
-        String version = ConfigDao.getSoftwareVersion("postgis", softwareId);
+        String version = ConfigDao.getSoftwareVersion(softwareId);
         Model.setSoftwareVersion(version);
         
 		// Get Sqlite Database			
