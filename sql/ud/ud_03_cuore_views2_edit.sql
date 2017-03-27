@@ -1662,11 +1662,28 @@ AND expl_selector.cur_user="current_user"()::text;
 
 
 CREATE VIEW v_edit_review_node AS 
-SELECT node.node_id, 
-node.top_elev,
-node.ymax,
-review_audit_node.top_elev as cota_tapa,
-review_audit_node.ymax as profunditat,
-review_audit_node.checked 
-FROM node JOIN review_audit_node ON node.node_id=review_audit_node.node_id
-WHERE checked IS NULL OR checked = FALSE;
+ SELECT node.node_id,
+    node.top_elev,
+    node.ymax,
+    review_audit_node.top_elev AS cota_tapa,
+    review_audit_node.ymax AS profunditat,
+    review_audit_node.office_checked,
+	node.the_geom,
+   FROM node
+     JOIN review_audit_node ON node.node_id::text = review_audit_node.node_id::text
+  WHERE review_audit_node.field_checked IS TRUE;
+  
+
+  CREATE VIEW v_edit_review_arc AS 
+ SELECT arc.arc_id,
+	arc.arccat_id,
+    arc.y1,
+    arc.y2,
+    review_audit_arc.arccat_id AS seccio,
+    review_audit_arc.y1 AS sonda_ini,
+	review_audit_arc.y2 AS sonda_fi,
+    review_audit_arc.office_checked,
+	arc.the_geom
+   FROM arc
+     JOIN review_audit_arc ON arc.arc_id::text = review_audit_arc.arc_id::text
+  WHERE review_audit_arc.field_checked IS TRUE;

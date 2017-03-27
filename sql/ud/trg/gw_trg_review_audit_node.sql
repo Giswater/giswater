@@ -1,34 +1,38 @@
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_review_audit_node()
-  RETURNS trigger AS
-$BODY$
-BEGIN
-EXECUTE 'SET search_path TO '||quote_literal(TG_TABLE_SCHEMA)||', public';
-
-	IF TG_OP = 'INSERT' THEN
-	
-			
-		INSERT INTO review_audit_node (id, geom, node_id, top_elev, ymax, node_type, cat_matcat, dimensions, annotation, observ, verified)
-		SELECT id, geom, node_id, top_elev, ymax, node_type, cat_matcat, dimensions, annotation, observ, verified 
-		FROM review_node
-		ON CONFLICT (id) DO NOTHING;
+		CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_review_audit_node() RETURNS trigger AS
+		$BODY$
 		
-	ELSIF TG_OP = 'UPDATE' THEN
+		DECLARE
+
+		r "SCHEMA_NAME".review_node%rowtype;
 		
-		UPDATE review_audit_node
-		SET id=review_node.id, geom=review_node.geom, node_id=review_node.node_id, top_elev=review_node.top_elev, ymax=review_node.ymax, node_type=review_node.node_type, cat_matcat=review_node.cat_matcat, 
-		dimensions=review_node.dimensions, annotation=review_node.annotation, observ=review_node.annotation, verified=review_node.verified
-		FROM review_node
-		WHERE review_node.id=review_audit_node.id;
+		BEGIN
+			EXECUTE 'SET search_path TO '||quote_literal(TG_TABLE_SCHEMA)||', public';
+				SELECT * into r FROM review_node;
+				
+				FOR  r IN SELECT field_checked FROM review_node WHERE NEW.field_checked is TRUE LOOP
+				
+					IF EXISTS (SELECT node_id FROM review_audit_node WHERE node_id=NEW.node_id) THEN
+						
+							UPDATE review_audit_node SET node_id=NEW.node_id, geom=NEW.geom, top_elev=NEW.top_elev, ymax=NEW.ymax, node_type=NEW.node_type,
+							cat_matcat=NEW.cat_matcat, dimensions=NEW.dimensions, annotation=NEW.annotation, observ=NEW.observ, verified=NEW.verified, field_checked=NEW.field_checked, office_checked=NEW.office_checked
+							WHERE node_id=OLD.node_id;
+							RETURN NEW;
+						
+					ELSE
+					
+						INSERT INTO review_audit_node VALUES (NEW.node_id, NEW.geom, NEW.top_elev, NEW.ymax, NEW.node_type, NEW.cat_matcat, NEW.dimensions, NEW.annotation, NEW.observ, NEW.verified, NEW.field_checked, NEW.office_checked);
+						RETURN NEW;	
+						
+					END IF;
+					
+				END LOOP;
+				
+			RETURN NEW;
+		END;
+		$BODY$
+		  LANGUAGE plpgsql VOLATILE
+		  COST 100;
+		  
+		DROP TRIGGER IF EXISTS gw_trg_review_audit_node ON "SCHEMA_NAME".review_node;
+		CREATE TRIGGER gw_trg_review_audit_node AFTER UPDATE ON "SCHEMA_NAME".review_node FOR EACH ROW EXECUTE PROCEDURE "SCHEMA_NAME".gw_trg_review_audit_node();
 		
-	END IF;
-	RETURN NULL;
-
-END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
-
-
-
-DROP TRIGGER IF EXISTS gw_trg_review_audit_node ON "SCHEMA_NAME".review_node;
-CREATE TRIGGER gw_trg_review_audit_node AFTER INSERT OR UPDATE ON "SCHEMA_NAME".review_node FOR EACH ROW EXECUTE PROCEDURE "SCHEMA_NAME".gw_trg_review_audit_node();
