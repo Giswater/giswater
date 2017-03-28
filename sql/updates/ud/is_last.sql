@@ -169,9 +169,10 @@ CREATE TABLE review_audit_arc
   arccat_id character varying(30),
   annotation character varying(254),
   verified character varying(16),
-  checked boolean,
+  field_checked boolean,
+  office_checked boolean,
   CONSTRAINT review_audit_arc_pkey PRIMARY KEY (arc_id)
-);
+  );
 
 CREATE TABLE review_audit_node
 (  node_id character varying(16),
@@ -184,6 +185,8 @@ CREATE TABLE review_audit_node
   annotation character varying(254),
   observ character varying(254),
   verified character varying(16),
-  checked boolean,
-  CONSTRAINT review_audit_node_pkey PRIMARY KEY (node_id));
+  field_checked boolean,
+  office_checked boolean,
+  CONSTRAINT review_audit_node_pkey PRIMARY KEY (node_id)
+  );
   

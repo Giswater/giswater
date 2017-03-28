@@ -1,8 +1,7 @@
 CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_edit_review_arc()
   RETURNS trigger AS
 $BODY$
-DECLARE
-r RECORD;
+
 BEGIN
 EXECUTE 'SET search_path TO '||quote_literal(TG_TABLE_SCHEMA)||', public';
 
@@ -16,7 +15,14 @@ EXECUTE 'SET search_path TO '||quote_literal(TG_TABLE_SCHEMA)||', public';
 		SET office_checked=NEW.office_checked
 		WHERE arc_id = OLD.arc_id;
 		
+		
 		DELETE FROM review_arc WHERE office_checked IS TRUE AND arc_id = OLD.arc_id;
+		
+			
+		UPDATE arc SET y1=review_audit_arc.y1, y2=review_audit_arc.y2,arccat_id=review_audit_arc.arccat_id FROM review_audit_arc 
+		WHERE arc.arc_id=review_audit_arc.arc_id AND office_checked is TRUE;
+
+
 		
 	END IF;	
 	RETURN NULL;
