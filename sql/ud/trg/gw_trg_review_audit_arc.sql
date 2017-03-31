@@ -14,13 +14,13 @@
 					IF EXISTS (SELECT arc_id FROM review_audit_arc WHERE arc_id=NEW.arc_id) THEN
 						
 							UPDATE review_audit_arc SET arc_id=NEW.arc_id, geom=NEW.geom, y1=NEW.y1, y2=NEW.y2, arc_type=NEW.arc_type,
-							arccat_id=NEW.arccat_id, annotation=NEW.annotation, verified=NEW.verified, field_checked=NEW.field_checked, office_checked=NEW.office_checked
+							arccat_id=NEW.arccat_id, annotation=NEW.annotation, verified=NEW.verified, field_checked=NEW.field_checked,"operation"='UPDATE',"user"=user,date_field=CURRENT_TIMESTAMP, office_checked=NEW.office_checked
 							WHERE arc_id=OLD.arc_id;
 							RETURN NEW;
 						
 					ELSE
 					
-						INSERT INTO review_audit_arc VALUES (NEW.arc_id, NEW.geom, NEW.y1, NEW.y2, NEW.arc_type, NEW.arccat_id, NEW.annotation, NEW.verified, NEW.field_checked, NEW.office_checked);
+						INSERT INTO review_audit_arc VALUES (NEW.arc_id, NEW.geom, NEW.y1, NEW.y2, NEW.arc_type, NEW.arccat_id, NEW.annotation, NEW.verified, NEW.field_checked,'INSERT', user, CURRENT_TIMESTAMP, NEW.office_checked);
 						RETURN NEW;	
 						
 					END IF;

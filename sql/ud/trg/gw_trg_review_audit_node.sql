@@ -14,13 +14,13 @@
 					IF EXISTS (SELECT node_id FROM review_audit_node WHERE node_id=NEW.node_id) THEN
 						
 							UPDATE review_audit_node SET node_id=NEW.node_id, geom=NEW.geom, top_elev=NEW.top_elev, ymax=NEW.ymax, node_type=NEW.node_type,
-							cat_matcat=NEW.cat_matcat, dimensions=NEW.dimensions, annotation=NEW.annotation, observ=NEW.observ, verified=NEW.verified, field_checked=NEW.field_checked, office_checked=NEW.office_checked
+							cat_matcat=NEW.cat_matcat, dimensions=NEW.dimensions, annotation=NEW.annotation, observ=NEW.observ, verified=NEW.verified, field_checked=NEW.field_checked, "operation"='UPDATE',"user"=user, date_field=CURRENT_TIMESTAMP, office_checked=NEW.office_checked
 							WHERE node_id=OLD.node_id;
 							RETURN NEW;
 						
 					ELSE
 					
-						INSERT INTO review_audit_node VALUES (NEW.node_id, NEW.geom, NEW.top_elev, NEW.ymax, NEW.node_type, NEW.cat_matcat, NEW.dimensions, NEW.annotation, NEW.observ, NEW.verified, NEW.field_checked, NEW.office_checked);
+						INSERT INTO review_audit_node VALUES (NEW.node_id, NEW.geom, NEW.top_elev, NEW.ymax, NEW.node_type, NEW.cat_matcat, NEW.dimensions, NEW.annotation, NEW.observ, NEW.verified, NEW.field_checked, 'INSERT', user, CURRENT_TIMESTAMP, NEW.office_checked);
 						RETURN NEW;	
 						
 					END IF;

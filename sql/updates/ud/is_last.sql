@@ -170,6 +170,9 @@ CREATE TABLE review_audit_arc
   annotation character varying(254),
   verified character varying(16),
   field_checked boolean,
+  "operation" character varying(25),
+  "user" varchar (50),  
+  date_field timestamp (6) without time zone,
   office_checked boolean,
   CONSTRAINT review_audit_arc_pkey PRIMARY KEY (arc_id)
   );
@@ -186,6 +189,9 @@ CREATE TABLE review_audit_node
   observ character varying(254),
   verified character varying(16),
   field_checked boolean,
+  "operation" character varying(25),
+  "user" varchar (50),  
+  date_field timestamp (6) without time zone,
   office_checked boolean,
   CONSTRAINT review_audit_node_pkey PRIMARY KEY (node_id)
   );
