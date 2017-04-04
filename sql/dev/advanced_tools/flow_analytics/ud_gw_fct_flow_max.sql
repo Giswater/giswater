@@ -6,7 +6,7 @@ This version of Giswater is provided by Giswater Association
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
-CREATE OR REPLACE FUNCTION gw_fct_maxflow(    intensity double precision,    runoff_coeff double precision)  RETURNS void AS
+CREATE OR REPLACE FUNCTION gw_fct_flow_max(    intensity double precision,    runoff_coeff double precision)  RETURNS void AS
   
 $BODY$
 
@@ -28,21 +28,6 @@ BEGIN
 
 SET search_path='SCHEMA_NAME',public;
 
---	Create table for arc results
-	DROP TABLE IF EXISTS arc_maxflow CASCADE;
-	CREATE TABLE arc_maxflow
-	(
-		arc_id character varying(16) NOT NULL,
-		maxflow numeric(12,4) DEFAULT 0.00,
-		CONSTRAINT arc_maxflow_pkey PRIMARY KEY (arc_id),
-		CONSTRAINT arc_maxflow_arc_id_fkey FOREIGN KEY (arc_id)
-			REFERENCES arc (arc_id) MATCH SIMPLE
-			ON UPDATE CASCADE ON DELETE CASCADE
-	)
-	WITH (
-		OIDS=FALSE
-	);
-	
 --	Create the temporal table for computing
 	DROP TABLE IF EXISTS temp_maxflow CASCADE;
 	CREATE TEMP TABLE temp_maxflow
@@ -55,7 +40,8 @@ SET search_path='SCHEMA_NAME',public;
 		num_wet_outlet integer DEFAULT 0,
 		CONSTRAINT temp_maxflow_pkey PRIMARY KEY (node_id)
 	);
-
+	
+	DELETE FROM arc_maxflow;
 
 --	Copy nodes into new area table
 	FOR node_id_var IN SELECT node_id FROM node
@@ -92,7 +78,7 @@ SET search_path='SCHEMA_NAME',public;
 		num_row = num_row + 1;
 
 --		Call function
-		flow_node := gw_fct_maxflow_recursive(node_id_var, num_row, intensity, runoff_coeff);
+		flow_node := gw_fct_flow_max_recursive(node_id_var, num_row, intensity, runoff_coeff);
 
 	END LOOP;
 		

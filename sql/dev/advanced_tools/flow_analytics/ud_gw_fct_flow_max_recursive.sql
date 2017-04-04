@@ -8,7 +8,7 @@ This version of Giswater is provided by Giswater Association
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
-CREATE OR REPLACE FUNCTION gw_fct_maxflow_recursive(    node_id_arg character varying,    num_row integer,    intensity double precision,    runoff_coeff double precision)  RETURNS double precision AS
+CREATE OR REPLACE FUNCTION gw_fct_flow_max_recursive(    node_id_arg character varying,    num_row integer,    intensity double precision,    runoff_coeff double precision)  RETURNS double precision AS
 $BODY$
 
 DECLARE
@@ -31,7 +31,7 @@ SET search_path='SCHEMA_NAME',public;
 	SELECT first_track_id INTO first_track_id_var FROM temp_maxflow WHERE node_id = node_id_arg;
 
 --	First its own area (in Ha!)
-	SELECT SUM(area) INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
+	SELECT SUM(c_area) INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
 
 --	Check existing subcatchment
 	IF (area_node ISNULL) THEN
@@ -65,18 +65,18 @@ SET search_path='SCHEMA_NAME',public;
 				IF ((num_arcs > 1) AND (total_capacity_var <> rec_table.flow)) THEN 
 					arc_maxflow_var := (CAST (num_wet_arcs AS numeric) / CAST (num_arcs AS numeric)) * rec_table.flow * gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
 				ELSIF (num_arcs = 1) THEN
-					arc_maxflow_var := rec_table.flow * gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
+					arc_maxflow_var := rec_table.flow * gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
 				ELSE
 					num_arcs := GREATEST(num_arcs, 1);
-					arc_maxflow_var = gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / num_arcs;
+					arc_maxflow_var = gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / num_arcs;
 				END IF;
 			ELSE
 
 --				If there is no data divide the flow
 				IF (num_arcs > 0) THEN
-					arc_maxflow_var = gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / num_arcs;
+					arc_maxflow_var = gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / num_arcs;
 				ELSE
-					arc_maxflow_var = gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff);
+					arc_maxflow_var = gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff);
 				END IF;
 				
 			END IF;

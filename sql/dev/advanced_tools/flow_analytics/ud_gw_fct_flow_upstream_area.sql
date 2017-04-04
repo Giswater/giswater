@@ -7,9 +7,14 @@ This version of Giswater is provided by Giswater Association
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
-CREATE OR REPLACE FUNCTION gw_fct_upstream_area()
-  RETURNS void AS
-$BODY$DECLARE
+CREATE OR REPLACE FUNCTION gw_fct_flow_upstream_area() RETURNS void AS
+
+$BODY$
+
+
+	
+
+DECLARE
 	node_id_var varchar(16);
 	arc_id_var varchar(16);
 	index_point integer;
@@ -29,41 +34,7 @@ BEGIN
 
 SET search_path='SCHEMA_NAME',public;
 
---	Create table for node results
-	DROP TABLE IF EXISTS node_drain_area CASCADE;
-	CREATE TABLE node_drain_area
-	(
-		node_id character varying(16) NOT NULL,
-		area numeric(12,4) DEFAULT -1.00,
-		capacity numeric(12,4) DEFAULT 0.00,
-		num_outlet integer DEFAULT 0,
-		num_wet_outlet integer DEFAULT 0,
-		node_balance numeric(12,8) DEFAULT 0.0,		
-		CONSTRAINT node_area_pkey PRIMARY KEY (node_id),
-		CONSTRAINT node_area_node_id_fkey FOREIGN KEY (node_id)
-			REFERENCES node (node_id) MATCH SIMPLE
-			ON UPDATE CASCADE ON DELETE CASCADE
-	)
-	WITH (
-		OIDS=FALSE
-	);
 
---	Create table for arc results
-	DROP TABLE IF EXISTS arc_drain_area CASCADE;
-	CREATE TABLE arc_drain_area
-	(
-		arc_id character varying(16) NOT NULL,
-		area numeric(12,4) DEFAULT 0.00,
-		capacity numeric(12,4) DEFAULT 0.00,
-		CONSTRAINT arc_area_pkey PRIMARY KEY (arc_id),
-		CONSTRAINT arc_area_arc_id_fkey FOREIGN KEY (arc_id)
-			REFERENCES arc (arc_id) MATCH SIMPLE
-			ON UPDATE CASCADE ON DELETE CASCADE
-	)
-	WITH (
-		OIDS=FALSE
-	);
-	
 --	Create the temporal table for computing
 	DROP TABLE IF EXISTS temp_contributing_area CASCADE;
 	CREATE TEMP TABLE temp_contributing_area
@@ -74,17 +45,10 @@ SET search_path='SCHEMA_NAME',public;
 		CONSTRAINT temp_area_pkey PRIMARY KEY (node_id)
 	);
 
-
---	Create the table to store cycles
-	DROP TABLE IF EXISTS node_cycles CASCADE;
-	CREATE TABLE node_cycles
-	(		
-		node_id character varying(16) NOT NULL,
-		cycle_id integer DEFAULT 0,
-		CONSTRAINT cycles_pkey PRIMARY KEY (node_id)
-	);
-
-
+	DELETE FROM node_drain_area;
+	DELETE FROM arc_drain_area;
+	DELETE FROM node_cycles;
+	
 --	Copy nodes into new area table
 	FOR node_id_var IN SELECT node_id FROM node
 	LOOP
@@ -126,7 +90,7 @@ SET search_path='SCHEMA_NAME',public;
 		num_row = num_row + 1;
 
 --		Call function
-		area_node := gw_fct_upstream_recursive(node_id_var, num_row);
+		area_node := gw_fct_flow_upstream_area_recursive(node_id_var, num_row);
 
 --		Fill node tables
 		UPDATE node_drain_area SET area = area_node WHERE node_id = node_id_var;
@@ -138,7 +102,7 @@ SET search_path='SCHEMA_NAME',public;
 	LOOP
 
 --		Compute node area
-		SELECT area INTO area_node FROM subcatchment WHERE node_id = node_id_var;
+		SELECT parea INTO area_node FROM subcatchment WHERE node_id = node_id_var;
 
 --		Check existing subcatchment
 		IF (area_node ISNULL) THEN

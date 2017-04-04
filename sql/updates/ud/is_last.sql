@@ -7,6 +7,8 @@ This version of Giswater is provided by Giswater Association
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
+
+
 CREATE TABLE macrodma (
 macrodma_id character varying(50) NOT NULL PRIMARY KEY,
 descript character varying(100),

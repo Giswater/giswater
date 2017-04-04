@@ -6,11 +6,11 @@ This version of Giswater is provided by Giswater Association
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
-CREATE OR REPLACE FUNCTION gw_fct_upstream_recursive(
-    node_id_arg character varying,
-    num_row integer)
-  RETURNS double precision AS
-$BODY$DECLARE
+CREATE OR REPLACE FUNCTION gw_fct_flow_upstream_area_recursive(     node_id_arg character varying,    num_row integer)  RETURNS double precision AS
+
+$BODY$
+
+DECLARE
 	first_track_id_var integer = 0;
 	area_node double precision = 0.0;
 	total_capacity_var double precision;
@@ -29,7 +29,7 @@ SET search_path='SCHEMA_NAME',public;
 	SELECT first_track_id INTO first_track_id_var FROM temp_contributing_area WHERE node_id = node_id_arg;
 
 --	First its own area (in Ha!)
-	SELECT area INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
+	SELECT parea INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
 
 --	Check existing subcatchment
 	IF (area_node ISNULL) THEN
@@ -54,14 +54,14 @@ SET search_path='SCHEMA_NAME',public;
 			
 --			Call recursive function weighting with the pipe capacity
 			IF ((total_capacity_var > 0.0) AND (rec_table.flow > 0.0)) THEN
-				arc_area = (CAST (num_wet_arcs AS numeric) / CAST (num_arcs AS numeric)) * rec_table.flow * gw_fct_upstream_recursive(rec_table.node_1, num_row) / total_capacity_var;
+				arc_area = (CAST (num_wet_arcs AS numeric) / CAST (num_arcs AS numeric)) * rec_table.flow * gw_fct_upstream_area_recursive(rec_table.node_1, num_row) / total_capacity_var;
 			ELSE
 
 --				If there is no data divide the flow
 				IF (num_arcs > 0) THEN
-					arc_area = gw_fct_upstream_recursive(rec_table.node_1, num_row) / num_arcs;
+					arc_area = gw_fct_flow_upstream_area_recursive(rec_table.node_1, num_row) / num_arcs;
 				ELSE
-					arc_area = gw_fct_upstream_recursive(rec_table.node_1, num_row);
+					arc_area = gw_fct_flow_upstream_area_recursive(rec_table.node_1, num_row);
 				END IF;
 				
 			END IF;
@@ -103,5 +103,3 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION gw_fct_upstream_recursive(character varying, integer)
-  OWNER TO postgres;
