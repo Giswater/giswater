@@ -12,8 +12,6 @@ CREATE OR REPLACE FUNCTION gw_fct_flow_upstream_area() RETURNS void AS
 $BODY$
 
 
-	
-
 DECLARE
 	node_id_var varchar(16);
 	arc_id_var varchar(16);
@@ -50,21 +48,21 @@ SET search_path='SCHEMA_NAME',public;
 	DELETE FROM node_cycles;
 	
 --	Copy nodes into new area table
-	FOR node_id_var IN SELECT node_id FROM node
+	FOR node_id_var IN SELECT node_id FROM v_anl_node 
 	LOOP
 
 --		Count number of pipes draining the node
-		SELECT count(*) INTO num_pipes FROM arc WHERE node_1 = node_id_var;
+		SELECT count(*) INTO num_pipes FROM v_anl_arc WHERE node_1 = node_id_var;
 
 --		Count number of pipes draining the node
-		SELECT count(*) INTO num_wet_pipes FROM arc WHERE node_1 = node_id_var AND flow > 0.0;
+		SELECT count(*) INTO num_wet_pipes FROM v_anl_arc WHERE node_1 = node_id_var AND flow > 0.0;
 
 --		Insert into nodes area table
 		INSERT INTO node_drain_area VALUES(node_id_var, 0.0, 0.0, num_pipes, num_wet_pipes, 0.0);
 		INSERT INTO node_cycles VALUES(node_id_var, 0);
 
 --		Compute total capacity of the pipes exiting from the node
-		SELECT sum(flow) INTO total_capacity FROM arc WHERE node_1 = node_id_var;
+		SELECT sum(flow) INTO total_capacity FROM v_anl_arc WHERE node_1 = node_id_var;
 		INSERT INTO temp_contributing_area VALUES(node_id_var, 0, total_capacity);
 
 --		Add the total capacity as a nodal variable		
@@ -73,7 +71,7 @@ SET search_path='SCHEMA_NAME',public;
 	END LOOP;
 
 --	Copy arcs into new area table
-	FOR arc_id_var IN SELECT arc_id FROM arc
+	FOR arc_id_var IN SELECT arc_id FROM v_anl_arc
 	LOOP
 
 --		Insert into nodes area table
@@ -110,7 +108,7 @@ SET search_path='SCHEMA_NAME',public;
 		END IF;
 
 --		Compute total outflow
-		SELECT sum(area) INTO arcs_total_inflow FROM arc_drain_area WHERE arc_id IN (SELECT arc_id FROM arc WHERE node_2 = node_id_var);
+		SELECT sum(area) INTO arcs_total_inflow FROM arc_drain_area WHERE arc_id IN (SELECT arc_id FROM v_anl_arc WHERE node_2 = node_id_var);
 
 --		Check existing subcatchment
 		IF (arcs_total_inflow ISNULL) THEN
@@ -118,7 +116,7 @@ SET search_path='SCHEMA_NAME',public;
 		END IF;
 
 --		Compute total outflow
-		SELECT sum(area) INTO arcs_total_outflow FROM arc_drain_area WHERE arc_id IN (SELECT arc_id FROM arc WHERE node_1 = node_id_var);
+		SELECT sum(area) INTO arcs_total_outflow FROM arc_drain_area WHERE arc_id IN (SELECT arc_id FROM v_anl_arc WHERE node_1 = node_id_var);
 
 --		Check existing subcatchment
 		IF (arcs_total_outflow ISNULL) THEN
@@ -132,6 +130,9 @@ SET search_path='SCHEMA_NAME',public;
 		UPDATE node_drain_area SET node_balance = node_balance_var WHERE node_id = node_id_var;
 
 	END LOOP;
+	
+	UPDATE arc set drain_parea=arc_drain_area.area
+	FROM arc_drain_area where arc.arc_id=arc_drain_area.arc_id;
 
 		
 END;

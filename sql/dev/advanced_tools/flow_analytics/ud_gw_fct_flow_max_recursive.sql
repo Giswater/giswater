@@ -49,7 +49,7 @@ SET search_path='SCHEMA_NAME',public;
 		UPDATE temp_maxflow SET first_track_id = num_row WHERE node_id = node_id_arg;
 		
 --		Loop for all the upstream nodes
-		FOR rec_table IN SELECT arc_id, flow, node_1 FROM arc WHERE node_2 = node_id_arg
+		FOR rec_table IN SELECT arc_id, flow, node_1 FROM v_anl_arc WHERE node_2 = node_id_arg
 		LOOP
 
 --			Total capacity of the upstream node

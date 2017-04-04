@@ -44,26 +44,26 @@ SET search_path='SCHEMA_NAME',public;
 	DELETE FROM arc_maxflow;
 
 --	Copy nodes into new area table
-	FOR node_id_var IN SELECT node_id FROM node
+	FOR node_id_var IN SELECT node_id FROM v_anl_node
 	LOOP
 
 --		Count number of pipes draining the node
-		SELECT count(*) INTO num_pipes FROM arc WHERE node_1 = node_id_var;
+		SELECT count(*) INTO num_pipes FROM v_anl_arc WHERE node_1 = node_id_var;
 
 --		Count number of pipes draining the node
-		SELECT count(*) INTO num_wet_pipes FROM arc WHERE node_1 = node_id_var AND flow > 0.0;
+		SELECT count(*) INTO num_wet_pipes FROM v_anl_arc WHERE node_1 = node_id_var AND flow > 0.0;
 
 --		Compute total capacity of the pipes exiting from the node
-		SELECT sum(flow) INTO total_capacity FROM arc WHERE node_1 = node_id_var;
+		SELECT sum(flow) INTO total_capacity FROM v_anl_arc WHERE node_1 = node_id_var;
 
 --		Compute total capacity of the pipes exiting from the node
-		SELECT sum(flow) INTO total_capacity FROM arc WHERE node_1 = node_id_var;
+		SELECT sum(flow) INTO total_capacity FROM v_anl_arc WHERE node_1 = node_id_var;
 		INSERT INTO temp_maxflow VALUES(node_id_var, 0.0, 0, total_capacity, num_pipes, num_wet_pipes);
 
 	END LOOP;
 
 --	Copy arcs into new area table
-	FOR arc_id_var IN SELECT arc_id FROM arc
+	FOR arc_id_var IN SELECT arc_id FROM v_anl_arc
 	LOOP
 
 --		Insert into nodes area table
@@ -81,6 +81,8 @@ SET search_path='SCHEMA_NAME',public;
 		flow_node := gw_fct_flow_max_recursive(node_id_var, num_row, intensity, runoff_coeff);
 
 	END LOOP;
+	
+	UPDATE arc SET cflow=maxflow FROM arc_maxflow WHERE arc.arc_id=arc_maxflow.arc_id;
 		
 END;$BODY$
   LANGUAGE plpgsql VOLATILE
