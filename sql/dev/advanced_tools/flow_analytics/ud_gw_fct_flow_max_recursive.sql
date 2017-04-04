@@ -31,7 +31,7 @@ SET search_path='SCHEMA_NAME',public;
 	SELECT first_track_id INTO first_track_id_var FROM temp_maxflow WHERE node_id = node_id_arg;
 
 --	First its own area (in Ha!)
-	SELECT SUM(c_area) INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
+	SELECT SUM(parea) INTO area_node FROM subcatchment WHERE node_id = node_id_arg;
 
 --	Check existing subcatchment
 	IF (area_node ISNULL) THEN
@@ -63,7 +63,7 @@ SET search_path='SCHEMA_NAME',public;
 
 --				Check flow availability for the other pipes
 				IF ((num_arcs > 1) AND (total_capacity_var <> rec_table.flow)) THEN 
-					arc_maxflow_var := (CAST (num_wet_arcs AS numeric) / CAST (num_arcs AS numeric)) * rec_table.flow * gw_fct_maxflow_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
+					arc_maxflow_var := (CAST (num_wet_arcs AS numeric) / CAST (num_arcs AS numeric)) * rec_table.flow * gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
 				ELSIF (num_arcs = 1) THEN
 					arc_maxflow_var := rec_table.flow * gw_fct_flow_max_recursive(rec_table.node_1, num_row, intensity, runoff_coeff) / total_capacity_var;
 				ELSE
