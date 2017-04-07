@@ -1668,6 +1668,7 @@ CREATE VIEW v_edit_review_node AS
     review_audit_node.top_elev AS cota_tapa,
     review_audit_node.ymax AS profunditat,
     review_audit_node.annotation,
+	review_audit_node.moved_geom,
     review_audit_node.office_checked,
 	node.the_geom	
    FROM node
@@ -1684,6 +1685,7 @@ DROP VIEW IF EXISTS v_edit_review_arc CASCADE;
     review_audit_arc.y1 AS sonda_ini,
 	review_audit_arc.y2 AS sonda_fi,
 	review_audit_arc.annotation,
+	review_audit_arc.moved_geom,
     review_audit_arc.office_checked,
 	arc.the_geom
    FROM arc

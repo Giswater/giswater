@@ -134,10 +134,10 @@ ALTER TABLE node  ADD CONSTRAINT node_macrodma_id_fkey FOREIGN KEY (macrodma_id)
 ALTER TABLE connec  ADD CONSTRAINT connec_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 
-
+DROP TABLE IF EXISTS review_arc;
 CREATE TABLE review_arc
 (  arc_id character varying(16),
-  geom geometry(MultiLineString,25831),
+  the_geom geometry(MultiLineString,25831),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
@@ -145,13 +145,14 @@ CREATE TABLE review_arc
   annotation character varying(254),
   verified character varying(16),
   field_checked boolean,
-  office_checked boolean
+  office_checked boolean,
   CONSTRAINT review_arc_pkey PRIMARY KEY (arc_id)
 );
 
+DROP TABLE IF EXISTS review_node;
 CREATE TABLE review_node
 ( node_id character varying(16),
-  geom geometry(MultiPoint,25831),
+  the_geom geometry(MultiPoint,25831),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),
@@ -161,18 +162,20 @@ CREATE TABLE review_node
   observ character varying(254),
   verified character varying(16),
   field_checked boolean,
-  office_checked boolean
+  office_checked boolean,
   CONSTRAINT review_node_pkey PRIMARY KEY (node_id));
   
+DROP TABLE IF EXISTS review_audit_arc;
 CREATE TABLE review_audit_arc
 (  arc_id character varying(16) NOT NULL,
-  geom geometry(MultiLineString,25831),
+  the_geom geometry(MultiLineString,25831),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
   arccat_id character varying(30),
   annotation character varying(254),
   verified character varying(16),
+   moved_geom boolean,
   field_checked boolean,
   "operation" character varying(25),
   "user" varchar (50),  
@@ -180,10 +183,11 @@ CREATE TABLE review_audit_arc
   office_checked boolean,
   CONSTRAINT review_audit_arc_pkey PRIMARY KEY (arc_id)
   );
-
+  
+DROP TABLE IF EXISTS review_audit_node;
 CREATE TABLE review_audit_node
 (  node_id character varying(16),
-  geom geometry(MultiPoint,25831),
+  the_geom geometry(MultiPoint,25831),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),
@@ -192,6 +196,7 @@ CREATE TABLE review_audit_node
   annotation character varying(254),
   observ character varying(254),
   verified character varying(16),
+  moved_geom boolean,
   field_checked boolean,
   "operation" character varying(25),
   "user" varchar (50),  
