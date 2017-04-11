@@ -44,17 +44,48 @@ CREATE TABLE doc_x_tag(
 
 
 
-CREATE TABLE expl_selector (
+CREATE TABLE exploitation(
 expl_id character varying(50) NOT NULL PRIMARY KEY,
 descript character varying(100),
-the_geom geometry(MultiPolygon,25831),
-undelete boolean,
+the_geom geometry(POLYGON,SRID_VALUE),
+undelete boolean
+);
+
+
+CREATE TABLE expl_selector (
+expl_id character varying(50) NOT NULL PRIMARY KEY,
 cur_user text
 );
+
+
 
 ALTER TABLE arc ADD COLUMN expl_id character varying(50);
 ALTER TABLE node ADD COLUMN expl_id character varying(50);
 ALTER TABLE connec ADD COLUMN expl_id character varying(50);
+
+
+
+--edit_view join by v_edit_node on sector_id/dma_id (with trigger)
+sector
+dma
+macrodma
+presszone 
+catchment
+
+
+-- with edit view (expl_id as usual)
+polygon
+vnode
+link
+point
+pond
+pool
+samplepoint
+om_visit
+plan_psector
+
+
+
 
 
 ALTER TABLE node ADD COLUMN code varchar(30);
@@ -100,6 +131,8 @@ ALTER TABLE arc ADD COLUMN macrodma_id character varying(50);
 ALTER TABLE connec ADD COLUMN macrodma_id character varying(50);
 
 ALTER TABLE om_visit ADD COLUMN  webclient_id character varying(50);
+
+ALTER TABLE om_event ADD COLUMN  picture_id character varying(50);
 
 ALTER TABLE cat_node ADD COLUMN active boolean;
 ALTER TABLE cat_arc ADD COLUMN active boolean;

@@ -12,16 +12,16 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 CREATE TABLE macrodma (
 macrodma_id character varying(50) NOT NULL PRIMARY KEY,
 descript character varying(100),
-the_geom geometry(MultiPolygon,25831),
+the_geom geometry(POLYGON,SRID_VALUE),
 undelete boolean
 );
 
 CREATE SEQUENCE doc_x_tag_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 CREATE TABLE doc_x_tag(
@@ -31,12 +31,16 @@ CREATE TABLE doc_x_tag(
 );
 
 
+CREATE TABLE exploitation(
+expl_id character varying(50) NOT NULL PRIMARY KEY,
+descript character varying(100),
+the_geom geometry(POLYGON,SRID_VALUE),
+undelete boolean
+);
+
 
 CREATE TABLE expl_selector (
 expl_id character varying(50) NOT NULL PRIMARY KEY,
-descript character varying(100),
-the_geom geometry(MultiPolygon,25831),
-undelete boolean,
 cur_user text
 );
 
@@ -44,6 +48,30 @@ ALTER TABLE arc ADD COLUMN expl_id character varying(50);
 ALTER TABLE node ADD COLUMN expl_id character varying(50);
 ALTER TABLE connec ADD COLUMN expl_id character varying(50);
 ALTER TABLE gully ADD COLUMN expl_id character varying(50);
+
+
+
+--edit_view join by v_edit_node on sector_id/dma_id (with trigger)
+sector
+dma
+catchment
+
+
+-- with edit view (expl_id as usual)
+raingage
+subcatchment
+polygon
+vnode
+link
+point
+pond
+pool
+samplepoint
+om_visit
+plan_psector
+
+
+
 
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
@@ -91,6 +119,8 @@ ALTER TABLE connec ADD COLUMN macrodma_id character varying(50);
 ALTER TABLE gully ADD COLUMN macrodma_id character varying(50);
 
 ALTER TABLE om_visit ADD COLUMN  webclient_id character varying(50);
+
+ALTER TABLE om_event ADD COLUMN  picture_id character varying(50);
 
 ALTER TABLE cat_grate ADD COLUMN madeby character varying(100);
 ALTER TABLE cat_grate ADD COLUMN model character varying(100);
