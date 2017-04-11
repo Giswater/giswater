@@ -56,9 +56,8 @@ sector
 dma
 catchment
 
-
 -- with edit view (expl_id as usual)
-raingage
+raingage 
 subcatchment
 polygon
 vnode
@@ -66,10 +65,9 @@ link
 point
 pond
 pool
-samplepoint
+samplepoint  
 om_visit
 plan_psector
-
 
 
 
