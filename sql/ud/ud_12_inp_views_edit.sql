@@ -101,5 +101,58 @@ JOIN inp_weir ON (((arc.arc_id)::text = (inp_weir.arc_id)::text)));
   
 
 
-  
+  DROP VIEW IF EXISTS v_edit_raingage CASCADE;
+CREATE VIEW v_edit_raingage AS SELECT
+	rg_id,
+	form_type,
+	intvl,
+	scf,
+	rgage_type,
+	timser_id,
+	fname,
+	sta,
+	units,
+	raingage.the_geom,
+	raingage.expl_id
+FROM expl_selector,raingage
+WHERE ((raingage.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
+DROP VIEW IF EXISTS v_edit_subcatchment CASCADE;
+CREATE VIEW v_edit_subcatchment AS SELECT
+	subc_id,
+	node_id,
+	rg_id,
+	area,
+	imperv,
+	width,
+	slope,
+	clength,
+	snow_id,
+	nimp,
+	nperv,
+	simp,
+	sperv,
+	zero,
+	routeto,
+	rted,
+	maxrate,
+	minrate,
+	decay,
+	drytime,
+	maxinfil,
+	suction,
+	conduct,
+	initdef,
+	curveno,
+	conduct_2,
+	drytime_2,
+	sector_id,
+	hydrology_id,
+	subcatchment.the_geom,
+	subcatchment.expl_id
+FROM expl_selector,subcatchment
+WHERE ((subcatchment.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
    

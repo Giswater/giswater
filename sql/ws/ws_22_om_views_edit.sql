@@ -8,13 +8,16 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
 
- 
-CREATE OR REPLACE VIEW v_om_visit_leak AS 
- SELECT om_visit_event.id,
-    om_visit.the_geom,
-    om_visit_event.parameter_id
-   FROM om_visit
-     JOIN om_visit_event ON om_visit.id = om_visit_event.visit_id
-     JOIN om_visit_parameter ON om_visit_event.parameter_id::text = om_visit_parameter.id::text
-  WHERE om_visit_parameter.parameter_type::text = 'LEAK'::text;
   
+  DROP VIEW IF EXISTS v_edit_om_visit CASCADE;
+CREATE VIEW v_edit_om_visit AS SELECT
+	id,
+	startdate,
+	enddate,
+	user_name,
+	om_visit.the_geom,
+	webclient_id,
+	om_visit.expl_id
+FROM expl_selector,om_visit
+WHERE ((om_visit.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);

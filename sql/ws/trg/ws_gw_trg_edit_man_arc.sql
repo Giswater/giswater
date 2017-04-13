@@ -62,19 +62,20 @@ BEGIN
             END IF;
         END IF;
 		
-		--Municipality
+		--Exploitation ID
         IF (NEW.expl_id IS NULL) THEN
-            IF ((SELECT COUNT(*) FROM expl_selector) = 0) THEN
+            IF ((SELECT COUNT(*) FROM exploitation) = 0) THEN
                 --PERFORM audit_function(125,340);
 				RETURN NULL;				
             END IF;
-            NEW.expl_id := (SELECT expl_id FROM expl_selector WHERE ST_DWithin(NEW.the_geom, expl_selector.the_geom,0.001) LIMIT 1);
+            NEW.expl_id := (SELECT expl_id FROM exploitation WHERE ST_DWithin(NEW.the_geom, exploitation.the_geom,0.001) LIMIT 1);
             IF (NEW.expl_id IS NULL) THEN
                 --PERFORM audit_function(130,340);
 				RETURN NULL; 
             END IF;
-        END IF;		
-        
+        END IF;	
+
+       
         
         -- Set EPA type
         NEW.epa_type = 'PIPE';        

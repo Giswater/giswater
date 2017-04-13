@@ -75,13 +75,13 @@
 				END IF;
 			END IF;
 		
-			--Municipality
+			--Exploitation ID
 			IF (NEW.expl_id IS NULL) THEN
-				IF ((SELECT COUNT(*) FROM expl_selector) = 0) THEN
+				IF ((SELECT COUNT(*) FROM exploitation) = 0) THEN
 					--PERFORM audit_function(125,340);
 					RETURN NULL;				
 				END IF;
-				NEW.expl_id := (SELECT expl_id FROM expl_selector WHERE ST_DWithin(NEW.the_geom, expl_selector.the_geom,0.001) LIMIT 1);
+				NEW.expl_id := (SELECT expl_id FROM exploitation WHERE ST_DWithin(NEW.the_geom, exploitation.the_geom,0.001) LIMIT 1);
 				IF (NEW.expl_id IS NULL) THEN
 					--PERFORM audit_function(130,340);
 					RETURN NULL; 
@@ -101,7 +101,7 @@
 				NEW.conduit_rotation, NEW.conduit_link, NEW.verified, NEW.the_geom,NEW.conduit_workcat_id_end,NEW.undelete,NEW.conduit_label_x,NEW.conduit_label_y, NEW.conduit_label_rotation, 
 				NEW.conduit_code, NEW.expl_id, NEW.publish, NEW.inventory, NEW.conduit_end_date, NEW.uncertain, NEW.macrodma_id);
 				
-				INSERT INTO man_conduit (arc_id,add_info) VALUES (NEW.arc_id, NEW.conduit_add_info);
+				INSERT INTO man_conduit (arc_id) VALUES (NEW.arc_id);
 			
 			ELSIF man_table='man_siphon' THEN
 				INSERT INTO arc (arc_id, node_1, node_2, y1, y2, arc_type, arccat_id, epa_type, sector_id, "state", annotation, observ, "comment", inverted_slope, custom_length, dma_id, soilcat_id, category_type, 
@@ -113,7 +113,7 @@
 				NEW.siphon_rotation, NEW.siphon_link, NEW.verified, NEW.the_geom,NEW.siphon_workcat_id_end,NEW.undelete,NEW.siphon_label_x,NEW.siphon_label_y, NEW.siphon_label_rotation,
 				NEW.siphon_code, NEW.expl_id, NEW.publish, NEW.inventory, NEW.siphon_end_date, NEW.uncertain, NEW.macrodma_id);
 				
-				INSERT INTO man_siphon (arc_id,add_info, security_bar,steps,siphon_name) VALUES (NEW.arc_id, NEW.siphon_add_info, NEW.siphon_security_bar, NEW.siphon_steps,NEW.siphon_name);
+				INSERT INTO man_siphon (arc_id,security_bar,steps,siphon_name) VALUES (NEW.arc_id, NEW.siphon_security_bar, NEW.siphon_steps,NEW.siphon_name);
 				
 			ELSIF man_table='man_waccel' THEN
 				INSERT INTO arc (arc_id, node_1, node_2, y1, y2, arc_type, arccat_id, epa_type, sector_id, "state", annotation, observ, "comment", inverted_slope, custom_length, dma_id, soilcat_id, category_type, 
@@ -125,8 +125,8 @@
 				NEW.waccel_rotation, NEW.waccel_link, NEW.verified, NEW.the_geom,NEW.waccel_workcat_id_end,NEW.undelete,NEW.waccel_label_x,NEW.waccel_label_y, NEW.waccel_label_rotation,
 				NEW.waccel_code, NEW.expl_id, NEW.publish, NEW.inventory, NEW.waccel_end_date, NEW.uncertain, NEW.macrodma_id);
 				
-				INSERT INTO man_waccel (arc_id, add_info, sander_length,sander_depth,security_bar,steps,prot_surface,waccel_name) 
-				VALUES (NEW.arc_id, NEW.waccel_add_info, NEW.waccel_sander_length, NEW.waccel_sander_depth,NEW.waccel_security_bar, NEW.waccel_steps,NEW.waccel_prot_surface,NEW.waccel_name);
+				INSERT INTO man_waccel (arc_id, sander_length,sander_depth,security_bar,steps,prot_surface,waccel_name) 
+				VALUES (NEW.arc_id, NEW.waccel_sander_length, NEW.waccel_sander_depth,NEW.waccel_security_bar, NEW.waccel_steps,NEW.waccel_prot_surface,NEW.waccel_name);
 				
 			ELSIF man_table='man_varc' THEN
 				INSERT INTO arc (arc_id, node_1, node_2, y1, y2, arc_type, arccat_id, epa_type, sector_id, "state", annotation, observ, "comment", inverted_slope, custom_length, dma_id, soilcat_id, category_type, 
@@ -138,7 +138,7 @@
 				NEW.verified, NEW.the_geom,NEW.varc_workcat_id_end,NEW.undelete,NEW.varc_label_x,NEW.varc_label_y, NEW.varc_label_rotation,
 				NEW.varc_code, NEW.expl_id, NEW.publish, NEW.inventory, NEW.varc_end_date, NEW.uncertain, NEW.macrodma_id);
 				
-				INSERT INTO man_varc (arc_id, add_info) VALUES (NEW.arc_id, NEW.varc_add_info);
+				INSERT INTO man_varc (arc_id) VALUES (NEW.arc_id);
 				
 			END IF;
 							
@@ -219,7 +219,7 @@
 				WHERE arc_id=OLD.arc_id;		
 			
 			
-				UPDATE man_conduit SET arc_id=NEW.arc_id, add_info=NEW.conduit_add_info
+				UPDATE man_conduit SET arc_id=NEW.arc_id
 				WHERE arc_id=OLD.arc_id;
 			
 			ELSIF man_table='man_siphon' THEN			
@@ -233,7 +233,7 @@
 				code=NEW.siphon_code, expl_id=NEW.expl_id, publish=NEW.publish, inventory=NEW.inventory, end_date=NEW.siphon_end_date, uncertain=NEW.uncertain, macrodma_id=NEW.macrodma_id
 				WHERE arc_id=OLD.arc_id;		
 				
-				UPDATE man_siphon SET arc_id=NEW.arc_id,add_info=NEW.siphon_add_info,security_bar=NEW.siphon_security_bar, steps=NEW.siphon_steps,siphon_name=NEW.siphon_name
+				UPDATE man_siphon SET arc_id=NEW.arc_id,security_bar=NEW.siphon_security_bar, steps=NEW.siphon_steps,siphon_name=NEW.siphon_name
 				WHERE arc_id=OLD.arc_id;
 			
 			ELSIF man_table='man_waccel' THEN
@@ -247,7 +247,7 @@
 				code=NEW.waccel_code, expl_id=NEW.expl_id, publish=NEW.publish, inventory=NEW.inventory, end_date=NEW.waccel_end_date, uncertain=NEW.uncertain, macrodma_id=NEW.macrodma_id
 				WHERE arc_id=OLD.arc_id;	
 				
-				UPDATE man_waccel SET arc_id=NEW.arc_id,add_info=NEW.waccel_add_info, sander_length=NEW.waccel_sander_length, sander_depth=NEW.waccel_sander_depth,security_bar=NEW.waccel_security_bar,
+				UPDATE man_waccel SET arc_id=NEW.arc_id, sander_length=NEW.waccel_sander_length, sander_depth=NEW.waccel_sander_depth,security_bar=NEW.waccel_security_bar,
 				steps=NEW.waccel_steps,prot_surface=NEW.waccel_prot_surface,waccel_name=NEW.waccel_name
 				WHERE arc_id=OLD.arc_id;
 			
@@ -262,12 +262,12 @@
 				code=NEW.varc_code, expl_id=NEW.expl_id, publish=NEW.publish, inventory=NEW.inventory, end_date=NEW.varc_end_date, uncertain=NEW.uncertain, macrodma_id=NEW.macrodma_id
 				WHERE arc_id=OLD.arc_id;		
 				
-				UPDATE man_varc SET arc_id=NEW.arc_id, add_info=NEW.varc_add_info
+				UPDATE man_varc SET arc_id=NEW.arc_id
 				WHERE arc_id=OLD.arc_id;
 			
 			END IF;
 			
-			PERFORM audit_function (2,840);
+		--	PERFORM audit_function (2,840);
 			RETURN NEW;
 
 		 ELSIF TG_OP = 'DELETE' THEN

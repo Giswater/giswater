@@ -44,32 +44,29 @@ expl_id character varying(50) NOT NULL PRIMARY KEY,
 cur_user text
 );
 
+CREATE SEQUENCE subc_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
 ALTER TABLE arc ADD COLUMN expl_id character varying(50);
 ALTER TABLE node ADD COLUMN expl_id character varying(50);
 ALTER TABLE connec ADD COLUMN expl_id character varying(50);
 ALTER TABLE gully ADD COLUMN expl_id character varying(50);
-
-
-
---edit_view join by v_edit_node on sector_id/dma_id (with trigger)
-sector
-dma
-catchment
-
--- with edit view (expl_id as usual)
-raingage 
-subcatchment
-polygon
-vnode
-link
-point
-pond
-pool
-samplepoint  
-om_visit
-plan_psector
-
-
+ALTER TABLE raingage ADD COLUMN expl_id character varying(50);
+ALTER TABLE subcatchment ADD COLUMN expl_id character varying(50);
+ALTER TABLE polygon ADD COLUMN expl_id character varying(50);
+ALTER TABLE vnode ADD COLUMN expl_id character varying(50);
+ALTER TABLE link ADD COLUMN expl_id character varying(50);
+ALTER TABLE point ADD COLUMN expl_id character varying(50);
+ALTER TABLE samplepoint ADD COLUMN expl_id character varying(50);
+ALTER TABLE om_visit ADD COLUMN expl_id character varying(50);
+ALTER TABLE plan_psector ADD COLUMN expl_id character varying(50);
+ALTER TABLE element ADD COLUMN expl_id character varying(50);
+ALTER TABLE catchment ADD COLUMN expl_id character varying(50);
 
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
@@ -150,10 +147,21 @@ ALTER TABLE cat_element ADD COLUMN model character varying(100);
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES cat_tag (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_doc_id_fkey FOREIGN KEY (doc_id) REFERENCES doc (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 
-ALTER TABLE arc  ADD CONSTRAINT arc_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES expl_selector (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE node  ADD CONSTRAINT node_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES expl_selector (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE connec  ADD CONSTRAINT connec_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES expl_selector (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
-ALTER TABLE gully ADD CONSTRAINT gully_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES expl_selector (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE arc  ADD CONSTRAINT arc_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE node  ADD CONSTRAINT node_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE connec  ADD CONSTRAINT connec_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE gully ADD CONSTRAINT gully_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE polygon  ADD CONSTRAINT polygon_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE vnode  ADD CONSTRAINT vnode_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE link  ADD CONSTRAINT link_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE point  ADD CONSTRAINT point_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE samplepoint  ADD CONSTRAINT samplepoint_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE om_visit  ADD CONSTRAINT om_visit_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE plan_psector  ADD CONSTRAINT plan_psector_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE raingage  ADD CONSTRAINT raingage_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE catchment  ADD CONSTRAINT catchment_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE subcatchment  ADD CONSTRAINT subcatchment_expl_id_fkey FOREIGN KEY (expl_id) REFERENCES exploitation (expl_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 
 ALTER TABLE gully ADD CONSTRAINT gully_streetaxis_id_fkey FOREIGN KEY (streetaxis_id) REFERENCES ext_streetaxis (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 
@@ -165,7 +173,7 @@ ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id
 DROP TABLE IF EXISTS review_arc;
 CREATE TABLE review_arc
 (  arc_id character varying(16),
-  the_geom geometry(MultiLineString,25831),
+  the_geom geometry(MULTILINESTRING,SRID_VALUE),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
@@ -180,7 +188,7 @@ CREATE TABLE review_arc
 DROP TABLE IF EXISTS review_node;
 CREATE TABLE review_node
 ( node_id character varying(16),
-  the_geom geometry(MultiPoint,25831),
+  the_geom geometry(MULTIPOINT,SRID_VALUE),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),
@@ -191,12 +199,13 @@ CREATE TABLE review_node
   verified character varying(16),
   field_checked boolean,
   office_checked boolean,
-  CONSTRAINT review_node_pkey PRIMARY KEY (node_id));
+  CONSTRAINT review_node_pkey PRIMARY KEY (node_id)
+  );
   
 DROP TABLE IF EXISTS review_audit_arc;
 CREATE TABLE review_audit_arc
 (  arc_id character varying(16) NOT NULL,
-  the_geom geometry(MultiLineString,25831),
+  the_geom geometry(MULTILINESTRING,SRID_VALUE),
   y1 numeric(12,3),
   y2 numeric(12,3),
   arc_type character varying(16),
@@ -215,7 +224,7 @@ CREATE TABLE review_audit_arc
 DROP TABLE IF EXISTS review_audit_node;
 CREATE TABLE review_audit_node
 (  node_id character varying(16),
-  the_geom geometry(MultiPoint,25831),
+  the_geom geometry(MULTIPOINT,SRID_VALUE),
   top_elev numeric(12,3),
   ymax numeric(12,3),
   node_type character varying(16),

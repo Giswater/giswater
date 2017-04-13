@@ -1660,6 +1660,137 @@ AND (gully.expl_id)::text=(expl_selector.expl_id)::text
 AND expl_selector.cur_user="current_user"()::text;
 
 
+
+DROP VIEW IF EXISTS v_edit_sector CASCADE;
+CREATE VIEW v_edit_sector AS SELECT
+	sector.sector_id,
+	sector.descript,
+	sector.the_geom,
+	sector.undelete,
+	sector.expl_id
+FROM expl_selector,sector 
+WHERE ((sector.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+DROP VIEW IF EXISTS v_edit_dma CASCADE;
+CREATE VIEW v_edit_dma AS SELECT
+	dma.dma_id,
+	dma.sector_id,
+	dma.presszonecat_id,
+	dma.descript,
+	dma.observ,
+	dma.the_geom,
+	dma.undelete,
+	dma.macrodma_id,
+	dma.expl_id
+	FROM expl_selector, dma 
+WHERE ((dma.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+  
+  
+
+DROP VIEW IF EXISTS v_edit_polygon CASCADE;
+CREATE VIEW v_edit_polygon AS SELECT
+	pol_id,
+	text,
+	polygon.the_geom,
+	polygon.undelete,
+	polygon.expl_id
+FROM expl_selector, polygon
+WHERE ((polygon.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
+DROP VIEW IF EXISTS v_edit_vnode CASCADE;
+CREATE VIEW v_edit_vnode AS SELECT
+	vnode_id,
+	userdefined_pos,
+	vnode_type,
+	sector_id,
+	state,
+	annotation,
+	vnode.the_geom,
+	vnode.expl_id
+FROM expl_selector,vnode
+WHERE ((vnode.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
+DROP VIEW IF EXISTS v_edit_point CASCADE;
+CREATE VIEW v_edit_point AS SELECT
+	point_id,
+	point_type,
+	observ,
+	text,
+	link,
+	point.the_geom,
+	point.expl_id
+FROM expl_selector,point
+WHERE ((point.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
+DROP VIEW IF EXISTS v_edit_samplepoint CASCADE;
+CREATE VIEW v_edit_samplepoint AS SELECT
+	sample_id,
+	state,
+	rotation,
+	code_lab,
+	element_type,
+	workcat_id,
+	workcat_id_end,
+	street1,
+	street2,
+	place,
+	element_code,
+	cabinet,
+	dma_id2,
+	observations,
+	samplepoint.the_geom,
+	samplepoint.expl_id
+FROM expl_selector,samplepoint
+WHERE ((samplepoint.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+DROP VIEW IF EXISTS v_edit_element CASCADE;
+CREATE VIEW v_edit_element AS SELECT
+	element_id,
+	elementcat_id,
+	state,
+	annotation,
+	observ,
+	comment,
+	location_type,
+	workcat_id,
+	buildercat_id,
+	builtdate,
+	ownercat_id,
+	enddate,
+	rotation,
+	link,
+	verified,
+	workcat_id_end,
+	code,
+	element.the_geom,
+	element.expl_id
+FROM expl_selector,element
+WHERE ((element.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
+DROP VIEW IF EXISTS v_edit_catchment CASCADE;
+CREATE VIEW v_edit_catchment AS SELECT
+	catchment_id,
+	catchment.descript,
+	text,
+	catchment.the_geom,
+	catchment.undelete,
+	catchment.expl_id
+FROM expl_selector,catchment
+WHERE ((catchment.expl_id)::text=(expl_selector.expl_id)::text
+AND expl_selector.cur_user="current_user"()::text);
+
+
 DROP VIEW IF EXISTS v_edit_review_node CASCADE;
 CREATE VIEW v_edit_review_node AS 
  SELECT node.node_id,
@@ -1691,3 +1822,6 @@ DROP VIEW IF EXISTS v_edit_review_arc CASCADE;
    FROM arc
      JOIN review_audit_arc ON arc.arc_id::text = review_audit_arc.arc_id::text
   WHERE review_audit_arc.field_checked IS TRUE AND review_audit_arc.office_checked IS NOT TRUE;
+
+  
+  
