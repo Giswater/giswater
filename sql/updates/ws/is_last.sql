@@ -114,6 +114,30 @@ ALTER TABLE dma ADD COLUMN expl_id character varying(50);
 ALTER TABLE macrodma ADD COLUMN expl_id character varying(50);
 ALTER TABLE presszone ADD COLUMN expl_id character varying(50);
 
+
+
+--edit_view join by v_edit_node on sector_id/dma_id (with trigger)
+sector
+dma
+macrodma
+presszone 
+
+
+-- with edit view (expl_id as usual)
+polygon
+vnode
+link
+point
+pond
+pool
+samplepoint
+om_visit
+plan_psector
+
+
+
+
+
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
 ALTER TABLE element ADD COLUMN code varchar(30);
