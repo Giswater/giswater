@@ -317,22 +317,11 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 		String templatePath = "";
 		try {
 
-			String gisFolder = Utils.getGisFolder();
-			PropertiesMap prop = PropertiesDao.getPropertiesFile();
-			String locale = prop.get("LANGUAGE", "").toLowerCase();
-			String gisLocalePath = gisFolder+locale+File.separator;
-			File gisLocaleFolder = new File(gisLocalePath);
-
-			// If locale folder not found, or any template there, load english one
-			if (!gisLocaleFolder.exists() || gisLocaleFolder.list().length == 0) {	
-				gisLocalePath = gisFolder+"en"+File.separator;
-				gisLocaleFolder = new File(gisLocalePath);			
-			}
-				
-			templatePath = gisLocalePath+software+"_template."+gisExtension;
+	    	String gisFolder = Utils.getGisFolder();
+	    	templatePath = gisFolder+software+"_template."+gisExtension;
 			File templateFile = new File(templatePath);
 			if (!templateFile.exists()) {
-				MainClass.mdi.showError("inp_error_notfound", templatePath);
+	    	    MainClass.mdi.showError("inp_error_notfound", templatePath);
 				return;
 			}
 			File folder = new File(folderPath);
@@ -346,14 +335,14 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 					Utils.getBundleString("GisPanel.warning_qgis2") + //$NON-NLS-1$
 					Utils.getBundleString("GisPanel.warning_qgis3"); //$NON-NLS-1$
 				int answer = Utils.showYesNoDialog(this, msg);
-				if (answer == JOptionPane.NO_OPTION) return;
+		        if (answer == JOptionPane.NO_OPTION) return;	        	
 			}
 			
 			String destPath = folderPath+name+"."+gisExtension;
 			File destFile = new File(destPath);
 			if (destFile.exists()) {
-				int answer = Utils.showYesNoDialog(this, "overwrite_file");
-				if (answer == JOptionPane.NO_OPTION) return;
+	            int answer = Utils.showYesNoDialog(this, "overwrite_file");
+	            if (answer == JOptionPane.NO_OPTION) return;
 			}
 			
 			this.requestFocusInWindow();
