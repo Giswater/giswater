@@ -342,10 +342,14 @@ DROP VIEW IF EXISTS v_edit_man_junction CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_junction AS 
  SELECT node.node_id,
     node.top_elev AS junction_top_elev,
+	node.est_top_elev AS junction_est_top_elev,
     node.ymax AS junction_ymax,
+	node.est_ymax AS junction_est_ymax,
+	node.elev AS junction_elev,
+	node.est_elev AS junction_est_elev,
+	v_node.elev AS junction_sys_elev,
     node.sander AS junction_sander,
-	node.top_elev-node.ymax as junction_elev,
-    node.node_type,
+	node.node_type,
     node.nodecat_id,
     node.epa_type,
     node.sector_id,
@@ -366,8 +370,6 @@ CREATE OR REPLACE VIEW v_edit_man_junction AS
     node.adress_02 AS junction_adress_02,
     node.adress_03 AS junction_adress_03,
     node.descript AS junction_descript,
-    node.est_top_elev AS junction_est_top_elev,
-    node.est_ymax AS junction_est_ymax,
     node.rotation AS junction_rotation,
     node.link AS junction_link,
     node.verified,
@@ -388,6 +390,7 @@ CREATE OR REPLACE VIEW v_edit_man_junction AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_junction ON man_junction.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -397,9 +400,13 @@ DROP VIEW IF EXISTS v_edit_man_outfall CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_outfall AS 
  SELECT node.node_id,
     node.top_elev AS outfall_top_elev,
+	node.est_top_elev AS outfall_est_top_elev,
     node.ymax AS outfall_ymax,
+	node.est_ymax AS outfall_est_ymax,
+	node.elev AS outfall_elev,
+	node.est_elev AS outfall_est_elev,
+	v_node.elev AS outfall_sys_elev,
     node.sander AS outfall_sander,
-	node.top_elev-node.ymax as outfall_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -421,8 +428,6 @@ CREATE OR REPLACE VIEW v_edit_man_outfall AS
     node.adress_02 AS outfall_adress_02,
     node.adress_03 AS outfall_adress_03,
     node.descript AS outfall_descript,
-    node.est_top_elev AS outfall_est_top_elev,
-    node.est_ymax AS outfall_est_ymax,
     node.rotation AS outfall_rotation,
     node.link AS outfall_link,
     node.verified,
@@ -444,6 +449,7 @@ CREATE OR REPLACE VIEW v_edit_man_outfall AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_outfall ON man_outfall.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -453,9 +459,13 @@ DROP VIEW IF EXISTS v_edit_man_storage CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_storage AS 
  SELECT node.node_id,
     node.top_elev AS storage_top_elev,
+	node.est_top_elev AS storage_est_top_elev,
     node.ymax AS storage_ymax,
+	node.est_ymax AS storage_est_ymax,
+	node.elev AS storage_elev,
+	node.est_elev AS storage_est_elev,
+	v_node.elev AS storage_sys_elev,
     node.sander AS storage_sander,
-	node.top_elev-node.ymax as storage_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -477,8 +487,6 @@ CREATE OR REPLACE VIEW v_edit_man_storage AS
     node.adress_02 AS storage_adress_02,
     node.adress_03 AS storage_adress_03,
     node.descript AS storage_descript,
-    node.est_top_elev AS storage_est_top_elev,
-    node.est_ymax AS storage_est_ymax,
     node.rotation AS storage_rotation,
     node.link AS storage_link,
     node.verified,
@@ -507,6 +515,7 @@ CREATE OR REPLACE VIEW v_edit_man_storage AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_storage ON man_storage.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -543,8 +552,6 @@ CREATE OR REPLACE VIEW v_edit_man_storage_pol AS
     node.adress_02 AS storage_adress_02,
     node.adress_03 AS storage_adress_03,
     node.descript AS storage_descript,
-    node.est_top_elev AS storage_est_top_elev,
-    node.est_ymax AS storage_est_ymax,
     node.rotation AS storage_rotation,
     node.link AS storage_link,
     node.verified,
@@ -572,6 +579,7 @@ CREATE OR REPLACE VIEW v_edit_man_storage_pol AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_storage ON man_storage.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
      JOIN polygon ON polygon.pol_id::text = man_storage.pol_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
@@ -583,9 +591,13 @@ DROP VIEW IF EXISTS v_edit_man_valve CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_valve AS 
  SELECT node.node_id,
     node.top_elev AS valve_top_elev,
+	node.est_top_elev AS valve_est_top_elev,
     node.ymax AS valve_ymax,
+	node.est_ymax AS valve_est_ymax,
+	node.elev AS valve_elev,
+	node.est_elev AS valve_est_elev,
+	v_node.elev AS valve_sys_elev,
     node.sander AS valve_sander,
-	node.top_elev-node.ymax as valve_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -607,8 +619,6 @@ CREATE OR REPLACE VIEW v_edit_man_valve AS
     node.adress_02 AS valve_adress_02,
     node.adress_03 AS valve_adress_03,
     node.descript AS valve_descript,
-    node.est_top_elev AS valve_est_top_elev,
-    node.est_ymax AS valve_est_ymax,
     node.rotation AS valve_rotation,
     node.link AS valve_link,
     node.verified,
@@ -630,6 +640,7 @@ CREATE OR REPLACE VIEW v_edit_man_valve AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_valve ON man_valve.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -639,9 +650,13 @@ DROP VIEW IF EXISTS v_edit_man_netinit CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_netinit AS 
  SELECT node.node_id,
     node.top_elev AS netinit_top_elev,
+	node.est_top_elev AS netinit_est_top_elev,
     node.ymax AS netinit_ymax,
+	node.est_ymax AS netinit_est_ymax,
+	node.elev AS netinit_elev,
+	node.est_elev AS netinit_est_elev,
+	v_node.elev AS netinit_sys_elev,
     node.sander AS netinit_sander,
-	node.top_elev-node.ymax as netinit_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -663,8 +678,6 @@ CREATE OR REPLACE VIEW v_edit_man_netinit AS
     node.adress_02 AS netinit_adress_02,
     node.adress_03 AS netinit_adress_03,
     node.descript AS netinit_descript,
-    node.est_top_elev AS netinit_est_top_elev,
-    node.est_ymax AS netinit_est_ymax,
     node.rotation AS netinit_rotation,
     node.link AS netinit_link,
     node.verified,
@@ -692,6 +705,7 @@ CREATE OR REPLACE VIEW v_edit_man_netinit AS
 	man_netinit.accessibility AS netinit_accessibility
    FROM expl_selector, node
      JOIN man_netinit ON man_netinit.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -701,9 +715,13 @@ DROP VIEW IF EXISTS v_edit_man_manhole CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_manhole AS 
  SELECT node.node_id,
     node.top_elev AS manhole_top_elev,
+	node.est_top_elev AS manhole_est_top_elev,
     node.ymax AS manhole_ymax,
+	node.est_ymax AS manhole_est_ymax,
+	node.elev AS manhole_elev,
+	node.est_elev AS manhole_est_elev,
+	v_node.elev AS manhole_sys_elev,
     node.sander AS manhole_sander,
-    node.top_elev-node.ymax as manhole_elev,
 	node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -725,8 +743,6 @@ CREATE OR REPLACE VIEW v_edit_man_manhole AS
     node.adress_02 AS manhole_adress_02,
     node.adress_03 AS manhole_adress_03,
     node.descript AS manhole_descript,
-    node.est_top_elev AS manhole_est_top_elev,
-    node.est_ymax AS manhole_est_ymax,
     node.rotation AS manhole_rotation,
     node.link AS manhole_link,
     node.verified,
@@ -752,6 +768,7 @@ CREATE OR REPLACE VIEW v_edit_man_manhole AS
 	man_manhole.accessibility AS manhole_accessibility
    FROM expl_selector, node
      JOIN man_manhole ON man_manhole.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -760,9 +777,13 @@ DROP VIEW IF EXISTS v_edit_man_wjump CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_wjump AS 
  SELECT node.node_id,
     node.top_elev AS wjump_top_elev,
+	node.est_top_elev AS wjump_est_top_elev,
     node.ymax AS wjump_ymax,
+	node.est_ymax AS wjump_est_ymax,
+	node.elev AS wjump_elev,
+	node.est_elev AS wjump_est_elev,
+	v_node.elev AS wjump_sys_elev,
     node.sander AS wjump_sander,
-	node.top_elev-node.ymax as wjump_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -784,8 +805,6 @@ CREATE OR REPLACE VIEW v_edit_man_wjump AS
     node.adress_02 AS wjump_adress_02,
     node.adress_03 AS wjump_adress_03,
     node.descript AS wjump_descript,
-    node.est_top_elev AS wjump_est_top_elev,
-    node.est_ymax AS wjump_est_ymax,
     node.rotation AS wjump_rotation,
     node.link AS wjump_link,
     node.verified,
@@ -815,6 +834,7 @@ CREATE OR REPLACE VIEW v_edit_man_wjump AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_wjump ON man_wjump.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 
@@ -824,9 +844,13 @@ DROP VIEW IF EXISTS v_edit_man_netgully CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_netgully AS 
  SELECT node.node_id,
     node.top_elev AS netgully_top_elev,
+	node.est_top_elev AS netgully_est_top_elev,
     node.ymax AS netgully_ymax,
+	node.est_ymax AS netgully_est_ymax,
+	node.elev AS netgully_elev,
+	node.est_elev AS netgully_est_elev,
+	v_node.elev AS netgully_sys_elev,
     node.sander AS netgully_sander,
-	node.top_elev-node.ymax as netgully_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -848,8 +872,6 @@ CREATE OR REPLACE VIEW v_edit_man_netgully AS
     node.adress_02 AS netgully_adress_02,
     node.adress_03 AS netgully_adress_03,
     node.descript AS netgully_descript,
-    node.est_top_elev AS netgully_est_top_elev,
-    node.est_ymax AS netgully_est_ymax,
     node.rotation AS netgully_rotation,
     node.link AS netgully_link,
     node.verified,
@@ -871,6 +893,7 @@ CREATE OR REPLACE VIEW v_edit_man_netgully AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 	 
@@ -881,9 +904,13 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
  polygon.pol_id,
  node.node_id,
     node.top_elev AS netgully_top_elev,
+	node.est_top_elev AS netgully_est_top_elev,
     node.ymax AS netgully_ymax,
+	node.est_ymax AS netgully_est_ymax,
+	node.elev AS netgully_elev,
+	node.est_elev AS netgully_est_elev,
+	v_node.elev AS netgully_sys_elev,
     node.sander AS netgully_sander,
-	node.top_elev-node.ymax as netgully_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -905,8 +932,6 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
     node.adress_02 AS netgully_adress_02,
     node.adress_03 AS netgully_adress_03,
     node.descript AS netgully_descript,
-    node.est_top_elev AS netgully_est_top_elev,
-    node.est_ymax AS netgully_est_ymax,
     node.rotation AS netgully_rotation,
     node.link AS netgully_link,
     node.verified,
@@ -927,6 +952,7 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
      JOIN polygon ON polygon.pol_id::text = man_netgully.pol_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;	 
@@ -937,9 +963,13 @@ DROP VIEW IF EXISTS v_edit_man_chamber CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_chamber AS 
  SELECT node.node_id,
     node.top_elev AS chamber_top_elev,
+	node.est_top_elev AS chamber_est_top_elev,
     node.ymax AS chamber_ymax,
+	node.est_ymax AS chamber_est_ymax,
+	node.elev AS chamber_elev,
+	node.est_elev AS chamber_est_elev,
+	v_node.elev AS chamber_sys_elev,
     node.sander AS chamber_sander,
-	node.top_elev-node.ymax as chamber_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -961,8 +991,6 @@ CREATE OR REPLACE VIEW v_edit_man_chamber AS
     node.adress_02 AS chamber_adress_02,
     node.adress_03 AS chamber_adress_03,
     node.descript AS chamber_descript,
-    node.est_top_elev AS chamber_est_top_elev,
-    node.est_ymax AS chamber_est_ymax,
     node.rotation AS chamber_rotation,
     node.link AS chamber_link,
     node.verified,
@@ -992,6 +1020,7 @@ CREATE OR REPLACE VIEW v_edit_man_chamber AS
 	man_chamber.accessibility AS chamber_accessibility
    FROM expl_selector, node
     JOIN man_chamber ON man_chamber.node_id::text = node.node_id::text
+	JOIN v_node ON v_node.node_id::text = node.node_id::text
 	WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text;
 	 
@@ -1002,9 +1031,13 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
  SELECT 
  polygon.pol_id,node.node_id,
     node.top_elev AS chamber_top_elev,
+	node.est_top_elev AS chamber_est_top_elev,
     node.ymax AS chamber_ymax,
+	node.est_ymax AS chamber_est_ymax,
+	node.elev AS chamber_elev,
+	node.est_elev AS chamber_est_elev,
+	v_node.elev AS chamber_sys_elev,
     node.sander AS chamber_sander,
-	node.top_elev-node.ymax as chamber_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -1057,6 +1090,7 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
 	man_chamber.sandbox AS chamber_sandbox
    FROM expl_selector, node
      JOIN man_chamber ON man_chamber.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
      JOIN polygon ON polygon.pol_id::text = man_chamber.pol_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text; 
@@ -1067,9 +1101,13 @@ DROP VIEW IF EXISTS v_edit_man_wwtp CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_wwtp AS 
  SELECT node.node_id,
     node.top_elev AS wwtp_top_elev,
+	node.est_top_elev AS wwtp_est_top_elev,
     node.ymax AS wwtp_ymax,
+	node.est_ymax AS wwtp_est_ymax,
+	node.elev AS wwtp_elev,
+	node.est_elev AS wwtp_est_elev,
+	v_node.elev AS wwtp_sys_elev,
     node.sander AS wwtp_sander,
-	node.top_elev-node.ymax as wwtp_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -1115,6 +1153,7 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text; ;
 
@@ -1124,11 +1163,14 @@ DROP VIEW IF EXISTS v_edit_man_wwtp_pol CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS 
  SELECT 
     polygon.pol_id,
-    node.node_id,
     node.top_elev AS wwtp_top_elev,
+	node.est_top_elev AS wwtp_est_top_elev,
     node.ymax AS wwtp_ymax,
+	node.est_ymax AS wwtp_est_ymax,
+	node.elev AS wwtp_elev,
+	node.est_elev AS wwtp_est_elev,
+	v_node.elev AS wwtp_sys_elev,
     node.sander AS wwtp_sander,
-	node.top_elev-node.ymax as wwtp_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -1173,6 +1215,7 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS
 	node.macrodma_id
    FROM expl_selector, node
      JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
+	 JOIN v_node ON v_node.node_id::text = node.node_id::text
      JOIN polygon ON polygon.pol_id::text = man_wwtp.pol_id::text
 	 WHERE (node.expl_id)::text=(expl_selector.expl_id)::text
 	AND expl_selector.cur_user="current_user"()::text; 
@@ -1186,7 +1229,15 @@ CREATE OR REPLACE VIEW v_edit_man_conduit AS
     arc.node_1 AS conduit_node_1,
     arc.node_2 AS conduit_node_2,
     arc.y1 AS conduit_y1,
-    arc.y2 AS conduit_y2,
+	arc.est_y1 AS conduit_est_y1,
+	arc.elev1 AS conduit_elev1,
+	arc.est_est_elev1 AS conduit_est_elev1,
+	v_arc_x_node.elevmax1 AS conduit_sys_elev1,
+	arc.y2 AS conduit_y2,
+	arc.elev2 AS conduit_elev2,
+    arc.est_y2 AS conduit_est_y2,
+	arc.est_est_elev2 AS conduit_est_elev2,	
+	v_arc_x_node.elevmax2 AS conduit_sys_elev2,
     v_arc_x_node.z1 AS conduit_z1,
     v_arc_x_node.z2 AS conduit_z2,
     v_arc_x_node.r1 AS conduit_r1,
@@ -1221,14 +1272,10 @@ CREATE OR REPLACE VIEW v_edit_man_conduit AS
     arc.adress_03 AS conduit_adress_03,
     arc.descript AS conduit_descript,
     cat_arc.svg AS conduit_cat_svg,
-    arc.est_y1 AS conduit_est_y1,
-    arc.est_y2 AS conduit_est_y2,
     arc.rotation AS conduit_rotation,
     arc.link AS conduit_link,
     arc.verified,
     arc.the_geom,
-    v_arc_x_node.elev1 AS conduit_elev1,
-    v_arc_x_node.elev2 AS conduit_elev2,
     arc.workcat_id_end AS conduit_workcat_id_end,
     arc.undelete,
     arc.label_x AS conduit_label_x,
@@ -1256,10 +1303,16 @@ DROP VIEW IF EXISTS v_edit_man_siphon CASCADE;
 
 CREATE OR REPLACE VIEW v_edit_man_siphon AS 
  SELECT arc.arc_id,
-    arc.node_1 AS siphon_node_1,
-    arc.node_2 AS siphon_node_2,
     arc.y1 AS siphon_y1,
-    arc.y2 AS siphon_y2,
+	arc.est_y1 AS siphon_est_y1,
+	arc.elev1 AS siphon_elev1,
+	arc.est_est_elev1 AS siphon_est_elev1,
+	v_arc_x_node.elevmax1 AS siphon_sys_elev1,
+	arc.y2 AS siphon_y2,
+	arc.elev2 AS siphon_elev2,
+    arc.est_y2 AS siphon_est_y2,
+	arc.est_est_elev2 AS siphon_est_elev2,	
+	v_arc_x_node.elevmax2 AS siphon_sys_elev2,
     v_arc_x_node.z1 AS siphon_z1,
     v_arc_x_node.z2 AS siphon_z2,
     v_arc_x_node.r1 AS siphon_r1,
@@ -1294,14 +1347,10 @@ CREATE OR REPLACE VIEW v_edit_man_siphon AS
     arc.adress_03 AS siphon_adress_03,
     arc.descript AS siphon_descript,
     cat_arc.svg AS siphon_cat_svg,
-    arc.est_y1 AS siphon_est_y1,
-    arc.est_y2 AS siphon_est_y2,
     arc.rotation AS siphon_rotation,
     arc.link AS siphon_link,
     arc.verified,
     arc.the_geom,
-    v_arc_x_node.elev1 AS siphon_elev1,
-    v_arc_x_node.elev2 AS siphon_elev2,
     arc.workcat_id_end AS siphon_workcat_id_end,
     arc.undelete,
     arc.label_x AS siphon_label_x,
@@ -1331,10 +1380,16 @@ CREATE OR REPLACE VIEW v_edit_man_siphon AS
 DROP VIEW IF EXISTS v_edit_man_waccel CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_waccel AS 
  SELECT arc.arc_id,
-    arc.node_1 AS waccel_node_1,
-    arc.node_2 AS waccel_node_2,
     arc.y1 AS waccel_y1,
-    arc.y2 AS waccel_y2,
+	arc.est_y1 AS waccel_est_y1,
+	arc.elev1 AS waccel_elev1,
+	arc.est_est_elev1 AS waccel_est_elev1,
+	v_arc_x_node.elevmax1 AS waccel_sys_elev1,
+	arc.y2 AS waccel_y2,
+	arc.elev2 AS waccel_elev2,
+    arc.est_y2 AS waccel_est_y2,
+	arc.est_est_elev2 AS waccel_est_elev2,	
+	v_arc_x_node.elevmax2 AS waccel_sys_elev2,
     v_arc_x_node.z1 AS waccel_z1,
     v_arc_x_node.z2 AS waccel_z2,
     v_arc_x_node.r1 AS waccel_r1,
@@ -1369,14 +1424,10 @@ CREATE OR REPLACE VIEW v_edit_man_waccel AS
     arc.adress_03 AS waccel_adress_03,
     arc.descript AS waccel_descript,
     cat_arc.svg AS waccel_cat_svg,
-    arc.est_y1 AS waccel_est_y1,
-    arc.est_y2 AS waccel_est_y2,
     arc.rotation AS waccel_rotation,
     arc.link AS waccel_link,
     arc.verified,
     arc.the_geom,
-    v_arc_x_node.elev1 AS waccel_elev1,
-    v_arc_x_node.elev2 AS waccel_elev2,
     arc.workcat_id_end AS waccel_workcat_id_end,
     arc.undelete,
     arc.label_x AS waccel_label_x,
@@ -1408,10 +1459,16 @@ CREATE OR REPLACE VIEW v_edit_man_waccel AS
 DROP VIEW IF EXISTS v_edit_man_varc CASCADE;
 CREATE OR REPLACE VIEW v_edit_man_varc AS 
  SELECT arc.arc_id,
-    arc.node_1 AS varc_node_1,
-    arc.node_2 AS varc_node_2,
     arc.y1 AS varc_y1,
-    arc.y2 AS varc_y2,
+	arc.est_y1 AS varc_est_y1,
+	arc.elev1 AS varc_elev1,
+	arc.est_est_elev1 AS varc_est_elev1,
+	v_arc_x_node.elevmax1 AS varc_sys_elev1,
+	arc.y2 AS varc_y2,
+	arc.elev2 AS varc_elev2,
+    arc.est_y2 AS varc_est_y2,
+	arc.est_est_elev2 AS varc_est_elev2,	
+	v_arc_x_node.elevmax2 AS varc_sys_elev2,
     v_arc_x_node.z1 AS varc_z1,
     v_arc_x_node.z2 AS varc_z2,
     v_arc_x_node.r1 AS varc_r1,
@@ -1445,14 +1502,10 @@ CREATE OR REPLACE VIEW v_edit_man_varc AS
     arc.adress_03 AS varc_adress_03,
     arc.descript AS varc_descript,
     cat_arc.svg AS varc_cat_svg,
-    arc.est_y1 AS varc_est_y1,
-    arc.est_y2 AS varc_est_y2,
     arc.rotation AS varc_rotation,
     arc.link AS varc_link,
     arc.verified,
     arc.the_geom,
-    v_arc_x_node.elev1 AS varc_elev1,
-    v_arc_x_node.elev2 AS varc_elev2,
     arc.workcat_id_end AS varc_workcat_id_end,
     arc.undelete,
     arc.label_x AS varc_label_x,
