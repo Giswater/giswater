@@ -9,6 +9,15 @@ SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
 -- ----------------------------
+-- ADDING GEOMETRY TO CATALOG OF WORKS
+-- ----------------------------
+
+ALTER TABLE cat_works ADD COLUMN the_geom public.geometry(MULTIPOLYGON, SRID_VALUE);
+
+
+
+
+-- ----------------------------
 -- TRACEABILITY
 -- ----------------------------
 
