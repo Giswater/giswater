@@ -7,6 +7,19 @@ This version of Giswater is provided by Giswater Association
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
+--manca per aclarar amb la Silvia Burdons aquestes taules:
+-- tipus operatiu
+-- estat_subsistema
+-- estat valvula xaf
+
+-- Cal fer la vista v_ui_node_node_parent
+-- node_id
+-- node_type
+-- catnode_id
+-- parent_node_id
+-- parent_node_type
+-- catnode_id
+
 
 CREATE TABLE limnometer(
 "limno_id" serial NOT NULL,
@@ -47,7 +60,9 @@ CREATE TABLE piezometer(
 "piezo_id" serial NOT NULL,
 "short_descript" character varying(30),
 "elevation" numeric(12,4),
-"depth" numeric(12,4),
+"zmin" numeric(12,4),
+"zmax" numeric(12,4),
+"elev" numeric(12,4),
 "sector_id" varchar(30)  ,
 "state" character varying(16),
 "annotation" character varying(254),
