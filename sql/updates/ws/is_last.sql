@@ -7,12 +7,61 @@ This version of Giswater is provided by Giswater Association
 
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
+
+CREATE SEQUENCE doc_x_tag_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+	
 CREATE SEQUENCE pol_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+  
+  
+CREATE SEQUENCE pond_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+	
+CREATE SEQUENCE pool_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE SEQUENCE sample_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE SEQUENCE point_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE SEQUENCE polygon_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+  
+  
+  
+  
   
 CREATE TABLE polygon(
   pol_id character varying(16) NOT NULL PRIMARY KEY,
@@ -28,13 +77,6 @@ the_geom geometry(POLYGON,SRID_VALUE),
 undelete boolean
 );
 
-CREATE SEQUENCE doc_x_tag_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
 
 CREATE TABLE doc_x_tag(
   id bigint NOT NULL DEFAULT nextval('doc_x_tag_seq'::regclass) PRIMARY KEY,
@@ -45,7 +87,7 @@ CREATE TABLE doc_x_tag(
 
 
 CREATE TABLE exploitation(
-expl_id character varying(50) NOT NULL PRIMARY KEY,
+expl_id integer NOT NULL PRIMARY KEY,
 descript character varying(100),
 the_geom geometry(POLYGON,SRID_VALUE),
 undelete boolean
@@ -53,66 +95,39 @@ undelete boolean
 
 
 CREATE TABLE expl_selector (
-expl_id character varying(50) NOT NULL PRIMARY KEY,
+expl_id integer NOT NULL PRIMARY KEY,
 cur_user text
 );
 
 
-	CREATE SEQUENCE pond_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-	
-	CREATE SEQUENCE pool_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
-	CREATE SEQUENCE sample_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN anl_cause character varying (30);
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN anl_the_geom public.geometry(POINT, SRID_VALUE);
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_the_geom public.geometry(POINT, SRID_VALUE);
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_depth float;
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_limit_distance float;
+ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_appropiate boolean;	
 
-	CREATE SEQUENCE point_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
-	CREATE SEQUENCE polygon_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-	
+ALTER TABLE arc ADD COLUMN expl_id integer;
+ALTER TABLE node ADD COLUMN expl_id integer;
+ALTER TABLE connec ADD COLUMN expl_id integer;
 
-ALTER TABLE arc ADD COLUMN expl_id character varying(50);
-ALTER TABLE node ADD COLUMN expl_id character varying(50);
-ALTER TABLE connec ADD COLUMN expl_id character varying(50);
+ALTER TABLE polygon ADD COLUMN expl_id integer;
+ALTER TABLE vnode ADD COLUMN expl_id integer;
+ALTER TABLE link ADD COLUMN expl_id integer;
+ALTER TABLE point ADD COLUMN expl_id integer;
+ALTER TABLE pond ADD COLUMN expl_id integer;
+ALTER TABLE pool ADD COLUMN expl_id integer;
+ALTER TABLE samplepoint ADD COLUMN expl_id integer;
+ALTER TABLE om_visit ADD COLUMN expl_id integer;
+ALTER TABLE plan_psector ADD COLUMN expl_id integer;
+ALTER TABLE element ADD COLUMN expl_id integer;
 
-ALTER TABLE polygon ADD COLUMN expl_id character varying(50);
-ALTER TABLE vnode ADD COLUMN expl_id character varying(50);
-ALTER TABLE link ADD COLUMN expl_id character varying(50);
-ALTER TABLE point ADD COLUMN expl_id character varying(50);
-ALTER TABLE pond ADD COLUMN expl_id character varying(50);
-ALTER TABLE pool ADD COLUMN expl_id character varying(50);
-ALTER TABLE samplepoint ADD COLUMN expl_id character varying(50);
-ALTER TABLE om_visit ADD COLUMN expl_id character varying(50);
-ALTER TABLE plan_psector ADD COLUMN expl_id character varying(50);
-ALTER TABLE element ADD COLUMN expl_id character varying(50);
-
-ALTER TABLE sector ADD COLUMN expl_id character varying(50);
-ALTER TABLE dma ADD COLUMN expl_id character varying(50);
-ALTER TABLE macrodma ADD COLUMN expl_id character varying(50);
-ALTER TABLE presszone ADD COLUMN expl_id character varying(50);
+ALTER TABLE sector ADD COLUMN expl_id integer;
+ALTER TABLE dma ADD COLUMN expl_id integer;
+ALTER TABLE macrodma ADD COLUMN expl_id integer;
+ALTER TABLE presszone ADD COLUMN expl_id integer;
 
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);

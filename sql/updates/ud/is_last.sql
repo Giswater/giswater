@@ -8,41 +8,10 @@ This version of Giswater is provided by Giswater Association
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
+-------------
+-- NEW SEQUENCES
+-------------
 
-CREATE TABLE macrodma (
-macrodma_id character varying(50) NOT NULL PRIMARY KEY,
-descript character varying(100),
-the_geom geometry(POLYGON,SRID_VALUE),
-undelete boolean
-);
-
-CREATE SEQUENCE doc_x_tag_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-CREATE TABLE doc_x_tag(
-  id bigint NOT NULL DEFAULT nextval('doc_x_tag_seq'::regclass) PRIMARY KEY,
-  doc_id character varying(30),
-  tag_id character varying(16)
-);
-
-
-CREATE TABLE exploitation(
-expl_id character varying(50) NOT NULL PRIMARY KEY,
-descript character varying(100),
-the_geom geometry(POLYGON,SRID_VALUE),
-undelete boolean
-);
-
-
-CREATE TABLE expl_selector (
-expl_id character varying(50) NOT NULL PRIMARY KEY,
-cur_user text
-);
 
 CREATE SEQUENCE subc_seq
     START WITH 1
@@ -52,21 +21,223 @@ CREATE SEQUENCE subc_seq
     CACHE 1;
 
 
-ALTER TABLE arc ADD COLUMN expl_id character varying(50);
-ALTER TABLE node ADD COLUMN expl_id character varying(50);
-ALTER TABLE connec ADD COLUMN expl_id character varying(50);
-ALTER TABLE gully ADD COLUMN expl_id character varying(50);
-ALTER TABLE raingage ADD COLUMN expl_id character varying(50);
-ALTER TABLE subcatchment ADD COLUMN expl_id character varying(50);
-ALTER TABLE polygon ADD COLUMN expl_id character varying(50);
-ALTER TABLE vnode ADD COLUMN expl_id character varying(50);
-ALTER TABLE link ADD COLUMN expl_id character varying(50);
-ALTER TABLE point ADD COLUMN expl_id character varying(50);
-ALTER TABLE samplepoint ADD COLUMN expl_id character varying(50);
-ALTER TABLE om_visit ADD COLUMN expl_id character varying(50);
-ALTER TABLE plan_psector ADD COLUMN expl_id character varying(50);
-ALTER TABLE element ADD COLUMN expl_id character varying(50);
-ALTER TABLE catchment ADD COLUMN expl_id character varying(50);
+CREATE SEQUENCE doc_x_tag_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+-------------
+-- NEW TABLES
+-------------
+
+-- ADDING MACRO DMA
+
+CREATE TABLE macrodma (
+macrodma_id character varying(50) NOT NULL PRIMARY KEY,
+descript character varying(100),
+the_geom geometry(POLYGON,SRID_VALUE),
+undelete boolean
+);
+
+
+-- ADDING RELATION 1-N BETEEWN DOCS AND TAGS
+
+CREATE TABLE doc_x_tag(
+  id bigint NOT NULL DEFAULT nextval('doc_x_tag_seq'::regclass) PRIMARY KEY,
+  doc_id character varying(30),
+  tag_id character varying(16)
+);
+
+
+
+
+-- EXPLOTITATION STRATEGY
+
+
+CREATE TABLE exploitation(
+expl_id integer  NOT NULL PRIMARY KEY,
+short_descript character varying(50) NOT NULL,
+descript character varying(100),
+the_geom geometry(POLYGON,SRID_VALUE),
+undelete boolean
+);
+
+
+CREATE TABLE expl_selector (
+expl_id integer NOT NULL PRIMARY KEY,
+cur_user text
+);
+
+
+
+ -- PROFILE TOOLS
+
+
+CREATE TABLE anl_arc_profile_value
+(
+  id serial NOT NULL,
+  profile_id bigint NOT NULL,
+  arc_id bigint NOT NULL,
+  CONSTRAINT anl_arc_profile_value_pkey PRIMARY KEY (id)
+  );
+
+  
+    
+ -- MORE TOPOLOGY FUNCTIONS
+ 
+ CREATE TABLE "anl_arc_intersection"(
+arc_id character varying(16),
+the_geom geometry(LINESTRING,25829),
+CONSTRAINT anl_arc_intersection_pkey PRIMARY KEY (arc_id)
+);
+
+CREATE TABLE anl_node_flowregulator
+(
+  node_id character varying(16) NOT NULL,
+  the_geom geometry(Point,25829),
+  CONSTRAINT anl_node_floregulator_pkey PRIMARY KEY (node_id)
+);
+
+
+
+  
+  -- DWF ANALISYS
+  
+CREATE TABLE anl_dwf_cat_scenario(
+  scenario_id character varying(30) NOT NULL,
+  descript text,
+  text text,
+  tstamp timestamp with time zone DEFAULT now(),
+  CONSTRAINT anl_dwf_cat_scenario_pkey PRIMARY KEY (scenario_id));
+
+  
+CREATE TABLE anl_dwf_connec_x_uses(
+  id integer NOT NULL DEFAULT nextval('connec_x_uses_id_seq'::regclass),
+  connec_id character varying(30),
+  type_use character varying(30),
+  m2 double precision,
+  CONSTRAINT connec_x_uses_pkey PRIMARY KEY (id),
+  CONSTRAINT anl_dwf_connec_x_uses_connec_id_pkey FOREIGN KEY (connec_id)
+      REFERENCES connec (connec_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT anl_dwf_connec_x_uses_type_use_fkey FOREIGN KEY (type_use)
+      REFERENCES anl_dwf_type_catastro_uses (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE);
+
+
+CREATE TABLE anl_dwf_connec_x_uses_value(
+  id serial NOT NULL,
+  scenario_id character varying(30),
+  connec_id character varying(30),
+  m3dia double precision,
+  CONSTRAINT anl_dwf_connec_x_uses_value_pkey PRIMARY KEY (id),
+  CONSTRAINT anl_dwf_connec_x_uses_value_connec_id_fkey FOREIGN KEY (connec_id)
+      REFERENCES connec (connec_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT anl_dwf_connec_x_uses_value_scenario_id_pkey FOREIGN KEY (scenario_id)
+      REFERENCES anl_dwf_cat_scenario (scenario_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE);
+
+
+CREATE TABLE anl_dwf_selector_scenario(
+  scenario_id character varying(16) NOT NULL,
+  CONSTRAINT anl_dwf_selector_scenario_pkey PRIMARY KEY (scenario_id));
+
+
+CREATE TABLE anl_dwf_type_catastro_uses(
+  id character varying(16) NOT NULL,
+  descript text,
+  water_generator boolean,
+  value double precision,
+  type_value character varying,
+  CONSTRAINT ext_catastro_type_use2_pkey PRIMARY KEY (id));
+
+  
+CREATE TABLE anl_dwf_config_float(
+  id serial NOT NULL,
+  parameter text,
+  value double precision,
+  context text,
+  descript text,
+  CONSTRAINT anl_dwf_config_float_pkey PRIMARY KEY (id));
+  
+  
+  CREATE TABLE anl_dwf_cat_result(
+  result_id character varying(30) NOT NULL,
+  scenario_id character varying(30),
+  result_type character varying(30),
+  descript text,
+  text text,
+  tstamp timestamp with time zone DEFAULT now(),
+  CONSTRAINT anl_dwf_cat_result_pkey PRIMARY KEY (result_id))
+  
+  
+  CREATE TABLE anl_dwf_rpt_arc(
+  id bigserial NOT NULL,
+  result_id character varying(16),
+  arc_id character varying(50),
+  r1 double precision,
+  r2 double precision,
+  r3 double precision,
+  r4 double precision,
+  r5 double precision,
+  r6 double precision,
+  CONSTRAINT anl_dwf_rpt_arc_pkey PRIMARY KEY (id),
+  CONSTRAINT anl_dwf_rpt_arc_result_id_fkey FOREIGN KEY (result_id)
+      REFERENCES anl_dwf_cat_result (result_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE);
+
+
+
+CREATE TABLE anl_dwf_rpt_node(
+  id bigserial NOT NULL,
+  result_id character varying(16),
+  node_id character varying(50),
+  r1 double precision,
+  r2 double precision,
+  r3 double precision,
+  r4 double precision,
+  r5 double precision,
+  r6 double precision,
+  CONSTRAINT anl_dwf_rpt_node_pkey PRIMARY KEY (id),
+  CONSTRAINT anl_dwf_rpt_node_result_id_fkey FOREIGN KEY (result_id)
+      REFERENCES anl_dwf_cat_result (result_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE);
+  
+  
+  
+ 
+-------------
+-- ALTER TABLES
+-------------
+	
+ALTER TABLE arc ADD COLUMN elev1 numeric(12,3);
+ALTER TABLE arc ADD COLUMN elev2 numeric(12,3);
+ALTER TABLE arc ADD COLUMN est_elev1 numeric(12,3);
+ALTER TABLE arc ADD COLUMN est_elev2 numeric(12,3);
+
+ALTER TABLE node ADD COLUMN elev numeric(12,3);
+ALTER TABLE node ADD COLUMN est_elev numeric(12,3);
+
+
+ALTER TABLE arc ADD COLUMN expl_id integer;
+ALTER TABLE node ADD COLUMN expl_id integer;
+ALTER TABLE connec ADD COLUMN expl_id integer;
+ALTER TABLE gully ADD COLUMN expl_id integer;
+ALTER TABLE raingage ADD COLUMN expl_id integer;
+ALTER TABLE subcatchment ADD COLUMN expl_id integer;
+ALTER TABLE polygon ADD COLUMN expl_id integer;
+ALTER TABLE vnode ADD COLUMN expl_id integer;
+ALTER TABLE link ADD COLUMN expl_id integer;
+ALTER TABLE point ADD COLUMN expl_id integer;
+ALTER TABLE samplepoint ADD COLUMN expl_id integer;
+ALTER TABLE om_visit ADD COLUMN expl_id integer;
+ALTER TABLE plan_psector ADD COLUMN expl_id integer;
+ALTER TABLE element ADD COLUMN expl_id integer;
+ALTER TABLE catchment ADD COLUMN expl_id integer;
 
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
@@ -144,6 +315,8 @@ ALTER TABLE cat_element ADD COLUMN madeby character varying(100);
 ALTER TABLE cat_element ADD COLUMN model character varying(100);
 
 
+
+
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES cat_tag (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE doc_x_tag ADD CONSTRAINT doc_x_tag_doc_id_fkey FOREIGN KEY (doc_id) REFERENCES doc (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 
@@ -169,5 +342,37 @@ ALTER TABLE arc  ADD CONSTRAINT arc_macrodma_id_fkey FOREIGN KEY (macrodma_id) R
 ALTER TABLE node  ADD CONSTRAINT node_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE connec  ADD CONSTRAINT connec_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+ALTER TABLE man_wall ADD CONSTRAINT man_wall_fkey FOREIGN KEY (node_id) REFERENCES node (node_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+ALTER TABLE "anl_dwf_connec_x_uses" DROP CONSTRAINT IF EXISTS "anl_dwf_connec_x_uses_connec_id_pkey";
+ALTER TABLE "anl_dwf_connec_x_uses" ADD CONSTRAINT "anl_dwf_connec_x_uses_connec_id_pkey" FOREIGN KEY ("connec_id") REFERENCES "connec" ("connec_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "anl_dwf_connec_x_uses" DROP CONSTRAINT IF EXISTS "anl_dwf_connec_x_uses_type_use_fkey";
+ALTER TABLE "anl_dwf_connec_x_uses" ADD CONSTRAINT "anl_dwf_connec_x_uses_type_use_fkey" FOREIGN KEY ("type_use") REFERENCES "anl_dwf_type_catastro_uses" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+ALTER TABLE "anl_dwf_connec_x_uses_value" DROP CONSTRAINT IF EXISTS "anl_dwf_connec_x_uses_value_scenario_id_pkey";
+ALTER TABLE "anl_dwf_connec_x_uses_value" ADD CONSTRAINT "anl_dwf_connec_x_uses_value_scenario_id_pkey" FOREIGN KEY ("scenario_id") REFERENCES "anl_dwf_cat_scenario" ("scenario_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "anl_dwf_connec_x_uses_value" DROP CONSTRAINT IF EXISTS "anl_dwf_connec_x_uses_value_connec_id_fkey";
+ALTER TABLE "anl_dwf_connec_x_uses_value" ADD CONSTRAINT "anl_dwf_connec_x_uses_value_connec_id_fkey" FOREIGN KEY ("connec_id") REFERENCES "connec" ("connec_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
+-------------
+-- INDEX
+-------------
+
+CREATE INDEX anl_arc_intersection_index   ON anl_arc_intersection   USING gist   (the_geom);
+CREATE INDEX anl_node_flowregulator_index   ON anl_node_flowregulator  USING gist  (the_geom);
+
+
+-------------
+-- UPDATE DATA
+-------------
+
+UPDATE inp_options SET link_offsets='ELEVATION';
 
   

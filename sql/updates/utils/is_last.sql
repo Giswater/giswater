@@ -8,6 +8,11 @@ This version of Giswater is provided by Giswater Association
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 
+-- ----------------------------
+-- TRACEABILITY
+-- ----------------------------
+
+
 CREATE TABLE om_traceability (
 id serial,
 type character varying(50),
@@ -19,6 +24,11 @@ tstamp timestamp(6) without time zone,
 "user" character varying(50)
 );
 
+
+
+-- ----------------------------
+-- REVIEW AND UPDATE DATA ON WEB/MOBILE CLIENT
+-- ----------------------------
 
 DROP TABLE IF EXISTS review_arc;
 CREATE TABLE review_arc
@@ -91,3 +101,78 @@ CREATE TABLE review_audit_node
   office_checked boolean,
   CONSTRAINT review_audit_node_pkey PRIMARY KEY (node_id)
   );
+  
+  
+  
+  -- ----------------------------
+-- VALUE DOMAIN ON WEB/MOBILE CLIENT
+-- ----------------------------
+  
+  CREATE TABLE config_client_dvalue
+(
+  id serial NOT NULL,
+  table_id text,
+  column_id text,
+  dv_table text,
+  dv_key_column text,
+  dv_value_column text,
+  orderby_value boolean,
+  allow_null boolean,
+  CONSTRAINT config_client_dvalue_pkey PRIMARY KEY (id),
+  CONSTRAINT config_client_value_colum_id_fkey FOREIGN KEY (dv_table, dv_key_column)
+      REFERENCES db_cat_table_x_column (db_cat_table_id, column_name) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT config_client_value_origin_id_fkey FOREIGN KEY (table_id, column_id)
+      REFERENCES db_cat_table_x_column (db_cat_table_id, column_name) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+
+
+-- ----------------------------
+-- IMPROVE VISIT STRATEGY
+-- ----------------------------
+
+CREATE TABLE om_visit_cat
+(
+  id serial NOT NULL,
+  type character varying (18),
+  short_des character varying (30),
+  descript text,
+  startdate date DEFAULT now(),
+  enddate date,
+  CONSTRAINT om_visit_cat_pkey PRIMARY KEY (id)
+);
+
+
+
+ALTER TABLE om_visit ADD COLUMN visitcat_id integer;
+
+
+ALTER TABLE om_visit
+  ADD CONSTRAINT om_visit_om_visit_cat_id_fkey FOREIGN KEY (visitcat_id)
+      REFERENCES om_visit_cat (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ 
+ 
+CREATE TABLE om_visit_event_photo
+(
+  id serial NOT NULL,
+  visit_id bigint NOT NULL,
+  event_id bigint NOT NULL,
+  tstamp timestamp(6) without time zone DEFAULT now(),
+  value text,
+  text text,
+  compass double precision,
+  CONSTRAINT om_visit_event_foto_pkey PRIMARY KEY (id),
+  CONSTRAINT om_visit_event_foto_event_id_fkey FOREIGN KEY (event_id)
+      REFERENCES om_visit_event (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT om_visit_event_foto_visit_id_fkey FOREIGN KEY (visit_id)
+      REFERENCES om_visit (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+  
