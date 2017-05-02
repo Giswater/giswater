@@ -28,6 +28,117 @@ ALTER TABLE gully ADD COLUMN connec_length numeric(12,3);
 ALTER TABLE gully ADD COLUMN connec_depth numeric(12,3);
 
 
+-- INP FLOW REGULATOR
+
+CREATE TABLE "inp_flow_regulator_type"(
+id character varying(16),
+table_id character varying(50),
+CONSTRAINT inp_flow_regulator_type_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO inp_flow_regulator_type VALUES ('WEIR', 'inp_n2a_weir');
+INSERT INTO inp_flow_regulator_type VALUES ('ORIFICE', 'inp_n2a_orifice');
+INSERT INTO inp_flow_regulator_type VALUES ('OUTLET', 'inp_n2a_outlet');
+INSERT INTO inp_flow_regulator_type VALUES ('PUMP', 'inp_n2a_pump');
+INSERT INTO inp_flow_regulator_type VALUES ('ORI-WEIR', 'inp_n2a_ori_weir');
+
+
+
+CREATE TABLE "inp_n2a_orifice" (
+"node_id" varchar(16)   NOT NULL,
+"arc_id" varchar(16)  ,
+"ori_type" varchar(18)  ,
+"offset" numeric(12,4),
+"cd" numeric(12,4),
+"orate" numeric(12,4),
+"flap" varchar(3)  ,
+"shape" varchar(18)  ,
+"to_arc" varchar(16)  ,
+"geom1" numeric(12,4),
+"geom2" numeric(12,4) DEFAULT 0.00,
+"geom3" numeric(12,4) DEFAULT 0.00,
+"geom4" numeric(12,4) DEFAULT 0.00,
+  CONSTRAINT inp_n2a_orifice_pkey PRIMARY KEY (node_id)
+);
+
+
+
+CREATE TABLE "inp_n2a_outlet" (
+"node_id" varchar(16)   NOT NULL,
+"arc_id" varchar(16)  ,
+"outlet_type" varchar(16)  ,
+"offset" numeric(12,4),
+"curve_id" varchar(16)  ,
+"cd1" numeric(12,4),
+"cd2" numeric(12,4),
+"flap" varchar(3)  ,
+  CONSTRAINT inp_n2a_outlet_pkey PRIMARY KEY (node_id)
+);
+
+
+CREATE TABLE "inp_n2a_pump" (
+"node_id" varchar(16)   NOT NULL,
+"arc_id" varchar(16)  ,
+"curve_id" varchar(16)  ,
+"to_arc" varchar(16)  ,
+"status" varchar(3)  ,
+"startup" numeric(12,4),
+"shutoff" numeric(12,4),
+  CONSTRAINT inp_n2a_pump_pkey PRIMARY KEY (node_id)
+);
+
+
+CREATE TABLE "inp_n2a_weir" (
+"node_id" varchar(16)   NOT NULL,
+"arc_id" varchar(16)  ,
+"weir_type" varchar(18)  ,
+"offset" numeric(12,4),
+"cd" numeric(12,4),
+"ec" numeric(12,4),
+"cd2" numeric(12,4),
+"flap" varchar(3)  ,
+"to_arc" varchar(16)  ,
+"geom1" numeric(12,4),
+"geom2" numeric(12,4) DEFAULT 0.00,
+"geom3" numeric(12,4) DEFAULT 0.00,
+"geom4" numeric(12,4) DEFAULT 0.00,
+"surcharge" varchar (3),
+  CONSTRAINT inp_n2a_weir_pkey PRIMARY KEY (node_id)
+);
+
+
+
+CREATE TABLE "inp_n2a_ori_weir" (
+"node_id" varchar(16)   NOT NULL,
+"arc_id" varchar(16)  ,
+"ori_type" varchar(18)  ,
+"o_offset" numeric(12,4),
+"o_cd" numeric(12,4),
+"o_p_orate" numeric(12,4),
+"o_flap" varchar(3)  ,
+"o_shape" varchar(18)  ,
+"o_to_arc" varchar(16)  ,
+"o_geom1" numeric(12,4),
+"o_geom2" numeric(12,4) DEFAULT 0.00,
+"o_geom3" numeric(12,4) DEFAULT 0.00,
+"o_geom4" numeric(12,4) DEFAULT 0.00,
+"weir_type" varchar(18)  ,
+"w_offset" numeric(12,4),
+"w_cd" numeric(12,4),
+"w_ec" numeric(12,4),
+"w_cd2" numeric(12,4),
+"w_flap" varchar(3)  ,
+"w_to_arc" varchar(16)  ,
+"w_geom1" numeric(12,4),
+"w_geom2" numeric(12,4) DEFAULT 0.00,
+"w_geom3" numeric(12,4) DEFAULT 0.00,
+"w_geom4" numeric(12,4) DEFAULT 0.00,
+"surcharge" varchar (3),
+  CONSTRAINT inp_n2a_ori_weir_pkey PRIMARY KEY (node_id)
+);
+
+
+
 
 
 -- MORE TOPOLOGY FUNCTIONS
@@ -151,7 +262,41 @@ CREATE TABLE anl_dwf_rpt_node(
       ON UPDATE CASCADE ON DELETE CASCADE);
 	  
 	  
-	 
+----
+-- FK
+-----
+	  
+
+ALTER TABLE "inp_n2a_orifice" DROP CONSTRAINT IF EXISTS "inp_n2a_orifice_fkey";
+ALTER TABLE "inp_n2a_orifice" ADD CONSTRAINT "inp_n2a_orifice_fkey" FOREIGN KEY ("arc_id") REFERENCES "arc" ("arc_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "inp_n2a_outlet" DROP CONSTRAINT IF EXISTS "inp_n2a_outlet_fkey";
+ALTER TABLE "inp_n2a_outlet" ADD CONSTRAINT "inp_n2a_outlet_fkey" FOREIGN KEY ("arc_id") REFERENCES "arc" ("arc_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "inp_n2a_pump" DROP CONSTRAINT IF EXISTS "inp_n2a_pump_fkey";
+ALTER TABLE "inp_n2a_pump" ADD CONSTRAINT "inp_n2a_pump_fkey" FOREIGN KEY ("arc_id") REFERENCES "arc" ("arc_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "inp_n2a_weir" DROP CONSTRAINT IF EXISTS "inp_n2a_weir_fkey";
+ALTER TABLE "inp_n2a_weir" ADD CONSTRAINT "inp_n2a_weir_fkey" FOREIGN KEY ("arc_id") REFERENCES "arc" ("arc_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "inp_n2a_ori_weir" DROP CONSTRAINT IF EXISTS "inp_n2a_ori_weir_fkey";
+ALTER TABLE "inp_n2a_ori_weir" ADD CONSTRAINT "inp_n2a_ori_weir_fkey" FOREIGN KEY ("arc_id") REFERENCES "arc" ("arc_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
 
 ALTER TABLE "anl_dwf_connec_x_uses" DROP CONSTRAINT IF EXISTS "anl_dwf_connec_x_uses_connec_id_pkey";
 ALTER TABLE "anl_dwf_connec_x_uses" ADD CONSTRAINT "anl_dwf_connec_x_uses_connec_id_pkey" FOREIGN KEY ("connec_id") REFERENCES "connec" ("connec_id") ON DELETE CASCADE ON UPDATE CASCADE;
