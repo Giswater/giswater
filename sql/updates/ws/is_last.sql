@@ -100,6 +100,24 @@ cur_user text
 );
 
 
+ -- fotos
+ 
+ 
+ CREATE TABLE om_visit_event_photo
+(
+  id bigserial NOT NULL,
+  visit_id bigint NOT NULL,
+  event_id bigint NOT NULL,
+  tstamp timestamp(6) without time zone DEFAULT now(),
+  value text,
+  text text,
+  compass double precision,
+  CONSTRAINT om_visit_event_foto_pkey PRIMARY KEY (id),
+
+);
+
+    
+
 
 ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN anl_cause character varying (30);
 ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN anl_the_geom public.geometry(POINT, SRID_VALUE);
@@ -212,3 +230,12 @@ ALTER TABLE man_wjoin  ADD CONSTRAINT cat_node_cat_valve2_fkey FOREIGN KEY (cat_
 ALTER TABLE man_fountain  ADD CONSTRAINT connec_linked_connec_fkey FOREIGN KEY (linked_connec) REFERENCES connec (connec_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE man_tap  ADD CONSTRAINT connec_linked_connec_fkey FOREIGN KEY (linked_connec) REFERENCES connec (connec_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE man_greentap  ADD CONSTRAINT connec_linked_connec_fkey FOREIGN KEY (linked_connec) REFERENCES connec (connec_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+ CONSTRAINT om_visit_event_foto_event_id_fkey FOREIGN KEY (event_id)
+      REFERENCES om_visit_event (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT om_visit_event_foto_visit_id_fkey FOREIGN KEY (visit_id)
+      REFERENCES om_visit (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
+  

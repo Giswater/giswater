@@ -101,6 +101,8 @@ CONSTRAINT man_type_operation_pkey PRIMARY KEY (id)
 );
 
 
+-- node topologic features
+
 CREATE TABLE "man_register" (
 "node_id" varchar(16) NOT NULL,
 "pol_id" varchar(16) NOT NULL,
@@ -131,6 +133,28 @@ CREATE TABLE "man_dilator" (
 "add_info" varchar(255),
 CONSTRAINT man_dilator_pkey PRIMARY KEY (node_id)
 );
+
+-- arc topologic features
+
+
+CREATE TABLE "man_varc" (
+"arc_id" varchar(16) NOT NULL,
+"add_info" varchar(255),
+CONSTRAINT man_varc_pkey PRIMARY KEY (arc_d)
+);
+
+
+
+-- value state
+
+CREATE TABLE "man_value_state" (
+"id" serial,
+"short_descript" varchar(30)
+"observ" text,
+CONSTRAINT man_value_state PRIMARY KEY (id)
+);
+
+
 
 --THE PARENT NODE STRATEGY IT NOT MUST BE APPLIED TO TANKS AND TO REGISTERS...
 ALTER TABLE man_junction ADD COLUMN parent_node_id character varying(16);
@@ -163,5 +187,5 @@ ALTER TABLE man_netwjoin ADD CONSTRAINT man_netwjoin_fkey FOREIGN KEY (node_id) 
 ALTER TABLE man_pressdevice ADD CONSTRAINT man_pressdevice_fkey FOREIGN KEY (node_id) REFERENCES node (node_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE man_dilator ADD CONSTRAINT man_dilator_fkey FOREIGN KEY (node_id) REFERENCES node (node_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
 
-
+ALTER TABLE man_varc ADD CONSTRAINT man_varc_fkey FOREIGN KEY (arc_id) REFERENCES arc (arc_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE;
   

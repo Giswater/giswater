@@ -84,7 +84,24 @@ CREATE TABLE anl_arc_profile_value
   CONSTRAINT anl_arc_profile_value_pkey PRIMARY KEY (id)
   );
 
-  
+ 
+ 
+ -- fotos
+ 
+ 
+ CREATE TABLE om_visit_event_photo
+(
+  id bigserial NOT NULL,
+  visit_id bigint NOT NULL,
+  event_id bigint NOT NULL,
+  tstamp timestamp(6) without time zone DEFAULT now(),
+  value text,
+  text text,
+  compass double precision,
+  CONSTRAINT om_visit_event_foto_pkey PRIMARY KEY (id),
+
+);
+
     
    
   
@@ -211,4 +228,12 @@ ALTER TABLE node  ADD CONSTRAINT node_macrodma_id_fkey FOREIGN KEY (macrodma_id)
 ALTER TABLE connec  ADD CONSTRAINT connec_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 
+
+
+ CONSTRAINT om_visit_event_foto_event_id_fkey FOREIGN KEY (event_id)
+      REFERENCES om_visit_event (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT,
+  CONSTRAINT om_visit_event_foto_visit_id_fkey FOREIGN KEY (visit_id)
+      REFERENCES om_visit (id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT
   
