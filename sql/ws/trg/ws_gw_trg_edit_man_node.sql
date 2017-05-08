@@ -178,6 +178,8 @@ BEGIN
 
 								
 -- EPA INSERT
+
+/*
         IF (NEW.epa_type = 'JUNCTION') THEN 
 		inp_table:= 'inp_junction';
 
@@ -201,6 +203,28 @@ BEGIN
             v_sql:= 'INSERT INTO '||inp_table||' (node_id) VALUES ('||quote_literal(NEW.node_id)||')';
             EXECUTE v_sql;
         END IF;
+		
+*/
+
+        IF (NEW.epa_type = 'JUNCTION') THEN 
+			INSERT INTO inp_junction (node_id) VALUES (quote_literal(NEW.node_id));
+
+        ELSIF (NEW.epa_type = 'TANK') THEN 
+
+
+        ELSIF (NEW.epa_type = 'RESERVOIR') 
+
+
+        ELSIF (NEW.epa_type = 'PUMP') 
+
+
+        ELSIF (NEW.epa_type = 'VALVE') 
+
+
+        ELSIF (NEW.epa_type = 'SHORTPIPE') 
+
+        END IF;
+
 
  -- MANAGEMENT INSERT		
 	IF man_table ='man_junction' THEN

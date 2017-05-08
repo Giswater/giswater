@@ -319,6 +319,7 @@ BEGIN
 		END IF;
 		
 		-- EPA INSERT
+/*
         IF (NEW.epa_type = 'JUNCTION') THEN inp_table:= 'inp_junction';
         ELSIF (NEW.epa_type = 'DIVIDER') THEN inp_table:= 'inp_divider';
         ELSIF (NEW.epa_type = 'OUTFALL') THEN inp_table:= 'inp_outfall';
@@ -326,6 +327,22 @@ BEGIN
         END IF;
         v_sql:= 'INSERT INTO '||inp_table||' (node_id) VALUES ('||quote_literal(NEW.node_id)||')';
         EXECUTE v_sql;
+*/
+        IF (NEW.epa_type = 'JUNCTION') THEN
+			INSERT INTO inp_junction (node_id, y0, ysur, apond) VALUES (quote_literal(NEW.node_id), 0, 0, 0);
+			
+        ELSIF (NEW.epa_type = 'DIVIDER') THEN
+			INSERT INTO inp_divider (node_id, divider_type) VALUES (quote_literal(NEW.node_id), 'CUTOFF');
+		
+        ELSIF (NEW.epa_type = 'OUTFALL') THEN
+			INSERT INTO inp_outfall (node_id, outfall_type) VALUES (quote_literal(NEW.node_id), 'NORMAL');
+		
+        ELSIF (NEW.epa_type = 'STORAGE') THEN
+			INSERT INTO inp_storage (node_id, storage_type) VALUES (quote_literal(NEW.node_id), 'TABULAR');
+		
+		
+        END IF;
+
 
           
         --PERFORM audit_function (1,830);
