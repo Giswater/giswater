@@ -579,7 +579,7 @@ BEGIN
 			est_top_elev=NEW.netinit_est_top_elev, est_ymax=NEW.netinit_est_ymax, rotation=NEW.netinit_rotation, link=NEW.netinit_link, verified=NEW.verified, the_geom=NEW.the_geom
 			WHERE node_id = OLD.node_id;
 		
-			UPDATE man_netinit SET node_id=NEW.node_id,add_info=NEW.netinit_add_info, mheight=NEW.netinit_mheight,mlength=NEW.netinit_mlength,mwidth=NEW.netinit_mwidth,netinit_name=NEW.netinit_netinit_name
+			UPDATE man_netinit SET node_id=NEW.node_id,add_info=NEW.netinit_add_info, mheight=NEW.netinit_mheight,mlength=NEW.netinit_mlength,mwidth=NEW.netinit_mwidth,netinit_name=NEW.netinit_name
 			WHERE node_id=OLD.node_id;
 
 			
