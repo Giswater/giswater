@@ -787,6 +787,23 @@ ORDER BY id;
 
 
 
+DROP VIEW IF EXISTS  "v_inp_subcatch2node" CASCADE;
+CREATE OR REPLACE VIEW v_inp_subcatch2node AS 
+ SELECT subcatchment.subc_id,
+    st_makeline(st_centroid(subcatchment.the_geom), node.the_geom) AS the_geom
+   FROM subcatchment
+   JOIN node ON node.node_id::text = subcatchment.node_id::text;
+
+
+   
+DROP VIEW IF EXISTS  "v_inp_subcatchcentroid" CASCADE;
+CREATE OR REPLACE VIEW v_inp_subcatchcentroid AS 
+ SELECT subcatchment.subc_id,
+    st_centroid(subcatchment.the_geom) AS the_geom
+   FROM subcatchment;
+
+
+
 
 -- ----------------------------
 -- View structure for v_rpt_result
