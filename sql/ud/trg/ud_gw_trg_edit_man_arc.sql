@@ -144,20 +144,22 @@
 							
 							
 			-- EPA INSERT
-			IF (NEW.epa_type = 'CONDUIT') THEN 
-				inp_table:= 'inp_conduit';
-			ELSIF (NEW.epa_type = 'PUMP') THEN 
-				inp_table:= 'inp_pump';
-			ELSIF (NEW.epa_type = 'ORIFICE') THEN 
-				inp_table:= 'inp_orifice';
-			ELSIF (NEW.epa_type = 'WEIR') THEN 
-				inp_table:= 'inp_weir';
-			ELSIF (NEW.epa_type = 'OUTLET') THEN 
-				inp_table:= 'inp_outlet';
-			END IF;
-			v_sql:= 'INSERT INTO '||inp_table||' (arc_id) VALUES ('||quote_literal(NEW.arc_id)||')';
-			EXECUTE v_sql;
+        IF (NEW.epa_type = 'CONDUIT') THEN 
+            INSERT INTO inp_conduit (arc_id, q0, qmax) VALUES (NEW.arc_id,0,0); 
 			
+        ELSIF (NEW.epa_type = 'PUMP') THEN 
+            INSERT INTO inp_pump (arc_id) VALUES (NEW.arc_id); 
+			
+		ELSIF (NEW.epa_type = 'ORIFICE') THEN 
+            INSERT INTO inp_orifice (arc_id, ori_type) VALUES (NEW.arc_id,'BOTTOM');
+			
+		ELSIF (NEW.epa_type = 'WEIR') THEN 
+            INSERT INTO inp_weir (arc_id, weir_type) VALUES (NEW.arc_id,'SIDEFLOW');
+			
+		ELSIF (NEW.epa_type = 'OUTLET') THEN 
+            INSERT INTO inp_outlet (arc_id, outlet_type) VALUES (NEW.arc_id,'TABULAR/HEAD');
+			
+		END IF
 			RETURN NEW;
 			   
 		ELSIF TG_OP = 'UPDATE' THEN
