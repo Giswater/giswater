@@ -179,50 +179,24 @@ BEGIN
 								
 -- EPA INSERT
 
-/*
         IF (NEW.epa_type = 'JUNCTION') THEN 
-		inp_table:= 'inp_junction';
+			INSERT INTO inp_junction (node_id) VALUES (NEW.node_id);
 
         ELSIF (NEW.epa_type = 'TANK') THEN 
-		inp_table:= 'inp_tank';
+			INSERT INTO inp_tank (node_id) VALUES (NEW.node_id);
 
-        ELSIF (NEW.epa_type = 'RESERVOIR') 
-		THEN inp_table:= 'inp_reservoir';
+        ELSIF (NEW.epa_type = 'RESERVOIR') THEN
+			INSERT INTO inp_tank (node_id) VALUES (NEW.node_id);
+			
+        ELSIF (NEW.epa_type = 'PUMP') THEN
+			INSERT INTO inp_pump (node_id, status) VALUES (NEW.node_id, 'OPEN');
 
-        ELSIF (NEW.epa_type = 'PUMP') 
-		THEN inp_table:= 'inp_pump';
+        ELSIF (NEW.epa_type = 'VALVE') THEN
+			INSERT INTO inp_valve (node_id, valv_type, status) VALUES (NEW.node_id, 'PRV', 'ACTIVE');
 
-        ELSIF (NEW.epa_type = 'VALVE') 
-		THEN inp_table:= 'inp_valve';
-
-        ELSIF (NEW.epa_type = 'SHORTPIPE') 
-		THEN inp_table:= 'inp_shortpipe';
-        END IF;
-
-        IF inp_table IS NOT NULL THEN        
-            v_sql:= 'INSERT INTO '||inp_table||' (node_id) VALUES ('||quote_literal(NEW.node_id)||')';
-            EXECUTE v_sql;
-        END IF;
-		
-*/
-
-        IF (NEW.epa_type = 'JUNCTION') THEN 
-			INSERT INTO inp_junction (node_id) VALUES (quote_literal(NEW.node_id));
-
-        ELSIF (NEW.epa_type = 'TANK') THEN 
-
-
-        ELSIF (NEW.epa_type = 'RESERVOIR') 
-
-
-        ELSIF (NEW.epa_type = 'PUMP') 
-
-
-        ELSIF (NEW.epa_type = 'VALVE') 
-
-
-        ELSIF (NEW.epa_type = 'SHORTPIPE') 
-
+        ELSIF (NEW.epa_type = 'SHORTPIPE') THEN
+			INSERT INTO inp_shortpipe (node_id) VALUES (NEW.node_id);
+			
         END IF;
 
 
