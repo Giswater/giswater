@@ -60,7 +60,7 @@ node.end_date,
 node.uncertain,
 node.xyz_date,
 node.unconnected,
-node.macrodma_id,
+node.macrosector_id,
 exploitation.descript AS expl_name
    FROM expl_selector,node
    LEFT JOIN cat_node ON ((node.nodecat_id)::text = (cat_node.id)::text)
@@ -130,7 +130,7 @@ arc.publish,
 arc.inventory,
 arc.end_date,
 arc.uncertain,
-arc.macrodma_id,
+arc.macrosector_id,
 exploitation.descript AS expl_name
 FROM expl_selector, arc
 LEFT JOIN cat_arc ON (((arc.arccat_id)::text = (cat_arc.id)::text))
@@ -194,7 +194,7 @@ connec.publish,
 connec.inventory,
 connec.end_date,
 connec.uncertain,
-connec.macrodma_id,
+connec.macrosector_id,
 exploitation.descript AS expl_name
 FROM expl_selector, connec 
 JOIN cat_connec ON (((connec.connecat_id)::text = (cat_connec.id)::text))
@@ -269,12 +269,14 @@ gully.code,
 gully.publish,
 gully.inventory,
 gully.end_date,
-gully.macrodma_id,
+gully.macrosector_id,
 gully.streetaxis_id,
+ext_streetaxis.name AS streetname,
 gully.postnumber,
 exploitation.descript AS expl_name
 FROM expl_selector, gully
 LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+LEFT JOIN ud_sample_dev.ext_streetaxis ON gully.streetaxis_id::text = ext_streetaxis.id::text
 JOIN exploitation ON gully.expl_id=exploitation.expl_id
 WHERE gully.the_geom is not null 
 AND (gully.expl_id)::text=(expl_selector.expl_id)::text
@@ -330,12 +332,14 @@ gully.code,
 gully.publish,
 gully.inventory,
 gully.end_date,
-gully.macrodma_id,
+gully.macrosector_id,
 gully.streetaxis_id,
+ext_streetaxis.name AS streetname,
 gully.postnumber,
 exploitation.descript AS expl_name
 FROM expl_selector, gully
 LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+LEFT JOIN ud_sample_dev.ext_streetaxis ON gully.streetaxis_id::text = ext_streetaxis.id::text
 JOIN exploitation ON gully.expl_id=exploitation.expl_id
 WHERE gully.the_geom_pol is not null 
 AND (gully.expl_id)::text=(expl_selector.expl_id)::text
@@ -351,7 +355,7 @@ CREATE OR REPLACE VIEW v_edit_man_junction AS
     node.ymax AS junction_ymax,
 	node.est_ymax AS junction_est_ymax,
 	node.top_elev-node.ymax AS junction_elev,
-	node.est_top_elev-node.est_ymax AS junction_est_elev,
+	node.est_elev AS junction_est_elev,
 	v_node.elev AS junction_sys_elev,
     node.sander AS junction_sander,
 	node.node_type,
@@ -391,7 +395,7 @@ CREATE OR REPLACE VIEW v_edit_man_junction AS
 	node.uncertain,
 	node.xyz_date AS junction_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_junction ON man_junction.node_id::text = node.node_id::text
@@ -410,7 +414,7 @@ CREATE OR REPLACE VIEW v_edit_man_outfall AS
     node.ymax AS outfall_ymax,
 	node.est_ymax AS outfall_est_ymax,
 	node.top_elev-node.ymax AS outfall_elev,
-	node.est_top_elev-node.est_ymax AS outfall_est_elev,
+	node.est_elev AS outfall_est_elev,
 	v_node.elev AS outfall_sys_elev,
     node.sander AS outfall_sander,
     node.node_type,
@@ -451,7 +455,7 @@ CREATE OR REPLACE VIEW v_edit_man_outfall AS
 	node.uncertain,
 	node.xyz_date AS outfall_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_outfall ON man_outfall.node_id::text = node.node_id::text
@@ -469,8 +473,8 @@ CREATE OR REPLACE VIEW v_edit_man_storage AS
 	node.est_top_elev AS storage_est_top_elev,
     node.ymax AS storage_ymax,
 	node.est_ymax AS storage_est_ymax,
-	node.top_elev-node.ymax AS storage_elev,
-	node.est_top_elev-node.est_ymax AS storage_est_elev,
+	node.elev AS storage_elev,
+	node.est_elev AS storage_est_elev,
 	v_node.elev AS storage_sys_elev,
     node.sander AS storage_sander,
     node.node_type,
@@ -518,7 +522,7 @@ CREATE OR REPLACE VIEW v_edit_man_storage AS
 	node.uncertain,
 	node.xyz_date AS storage_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_storage ON man_storage.node_id::text = node.node_id::text
@@ -538,7 +542,7 @@ CREATE OR REPLACE VIEW v_edit_man_storage_pol AS
     node.top_elev AS storage_top_elev,
     node.ymax AS storage_ymax,
     node.sander AS storage_sander,
-	node.top_elev-node.ymax as storage_elev,
+	node.elev as storage_elev,
     node.node_type,
     node.nodecat_id,
     node.epa_type,
@@ -583,7 +587,7 @@ CREATE OR REPLACE VIEW v_edit_man_storage_pol AS
 	node.uncertain,
 	node.xyz_date AS storage_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_storage ON man_storage.node_id::text = node.node_id::text
@@ -603,8 +607,8 @@ CREATE OR REPLACE VIEW v_edit_man_valve AS
 	node.est_top_elev AS valve_est_top_elev,
     node.ymax AS valve_ymax,
 	node.est_ymax AS valve_est_ymax,
-	node.top_elev-node.ymax AS valve_elev,
-	node.est_top_elev-node.est_ymax AS valve_est_elev,
+	node.elev AS valve_elev,
+	node.est_elev AS valve_est_elev,
 	v_node.elev AS valve_sys_elev,
     node.sander AS valve_sander,
     node.node_type,
@@ -645,7 +649,7 @@ CREATE OR REPLACE VIEW v_edit_man_valve AS
 	node.uncertain,
 	node.xyz_date AS valve_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_valve ON man_valve.node_id::text = node.node_id::text
@@ -663,8 +667,8 @@ CREATE OR REPLACE VIEW v_edit_man_netinit AS
 	node.est_top_elev AS netinit_est_top_elev,
     node.ymax AS netinit_ymax,
 	node.est_ymax AS netinit_est_ymax,
-	node.top_elev-node.ymax AS netinit_elev,
-	node.est_top_elev-node.est_ymax AS netinit_est_elev,
+	node.elev AS netinit_elev,
+	node.est_elev AS netinit_est_elev,
 	v_node.elev AS netinit_sys_elev,
     node.sander AS netinit_sander,
     node.node_type,
@@ -708,7 +712,7 @@ CREATE OR REPLACE VIEW v_edit_man_netinit AS
 	node.uncertain,
 	node.xyz_date AS netinit_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	man_netinit.inlet AS netinit_inlet,
 	man_netinit.bottom_channel AS netinit_bottom_channel,
 	man_netinit.accessibility AS netinit_accessibility,
@@ -729,8 +733,8 @@ CREATE OR REPLACE VIEW v_edit_man_manhole AS
 	node.est_top_elev AS manhole_est_top_elev,
     node.ymax AS manhole_ymax,
 	node.est_ymax AS manhole_est_ymax,
-	node.top_elev-node.ymax AS manhole_elev,
-	node.est_top_elev-node.est_ymax AS manhole_est_elev,
+	node.elev AS manhole_elev,
+	node.est_elev AS manhole_est_elev,
 	v_node.elev AS manhole_sys_elev,
     node.sander AS manhole_sander,
 	node.node_type,
@@ -772,7 +776,7 @@ CREATE OR REPLACE VIEW v_edit_man_manhole AS
 	node.uncertain,
 	node.xyz_date AS manhole_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	man_manhole.inlet AS manhole_inlet,
 	man_manhole.bottom_channel AS manhole_bottom_channel,
 	man_manhole.accessibility AS manhole_accessibility,
@@ -791,8 +795,8 @@ CREATE OR REPLACE VIEW v_edit_man_wjump AS
     node.top_elev AS wjump_top_elev,
 	node.est_top_elev AS wjump_est_top_elev,
     node.ymax AS wjump_ymax,
-	node.est_top_elev-node.est_ymax AS wjump_est_ymax,
-	node.top_elev-node.ymax AS wjump_elev,
+	node.est_ymax AS wjump_est_ymax,
+	node.elev AS wjump_elev,
 	node.est_elev AS wjump_est_elev,
 	v_node.elev AS wjump_sys_elev,
     node.sander AS wjump_sander,
@@ -842,7 +846,7 @@ CREATE OR REPLACE VIEW v_edit_man_wjump AS
 	node.uncertain,
 	node.xyz_date AS wjump_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_wjump ON man_wjump.node_id::text = node.node_id::text
@@ -859,8 +863,8 @@ CREATE OR REPLACE VIEW v_edit_man_netgully AS
     node.top_elev AS netgully_top_elev,
 	node.est_top_elev AS netgully_est_top_elev,
     node.ymax AS netgully_ymax,
-	node.est_top_elev-node.est_ymax AS netgully_est_ymax,
-	node.top_elev-node.ymax AS netgully_elev,
+	node.est_ymax AS netgully_est_ymax,
+	node.elev AS netgully_elev,
 	node.est_elev AS netgully_est_elev,
 	v_node.elev AS netgully_sys_elev,
     node.sander AS netgully_sander,
@@ -902,7 +906,7 @@ CREATE OR REPLACE VIEW v_edit_man_netgully AS
 	node.uncertain,
 	node.xyz_date AS netgully_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
@@ -921,8 +925,8 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
 	node.est_top_elev AS netgully_est_top_elev,
     node.ymax AS netgully_ymax,
 	node.est_ymax AS netgully_est_ymax,
-	node.top_elev-node.ymax AS netgully_elev,
-	node.est_top_elev-node.est_ymax AS netgully_est_elev,
+	node.elev AS netgully_elev,
+	node.est_elev AS netgully_est_elev,
 	v_node.elev AS netgully_sys_elev,
     node.sander AS netgully_sander,
     node.node_type,
@@ -962,7 +966,7 @@ CREATE OR REPLACE VIEW v_edit_man_netgully_pol AS
 	node.uncertain,
 	node.xyz_date AS netgully_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_netgully ON man_netgully.node_id::text = node.node_id::text
@@ -981,8 +985,8 @@ CREATE OR REPLACE VIEW v_edit_man_chamber AS
 	node.est_top_elev AS chamber_est_top_elev,
     node.ymax AS chamber_ymax,
 	node.est_ymax AS chamber_est_ymax,
-	node.top_elev-node.ymax AS chamber_elev,
-	node.est_top_elev-node.est_ymax AS chamber_est_elev,
+	node.elev AS chamber_elev,
+	node.est_elev AS chamber_est_elev,
 	v_node.elev AS chamber_sys_elev,
     node.sander AS chamber_sander,
     node.node_type,
@@ -1028,7 +1032,7 @@ CREATE OR REPLACE VIEW v_edit_man_chamber AS
 	node.uncertain,
 	node.xyz_date AS chamber_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	man_chamber.inlet AS chamber_inlet,
 	man_chamber.bottom_channel AS chamber_bottom_channel,
 	man_chamber.accessibility AS chamber_accessibility,
@@ -1050,8 +1054,8 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
 	node.est_top_elev AS chamber_est_top_elev,
     node.ymax AS chamber_ymax,
 	node.est_ymax AS chamber_est_ymax,
-	node.top_elev-node.ymax AS chamber_elev,
-	node.est_top_elev-node.est_ymax AS chamber_est_elev,
+	node.elev AS chamber_elev,
+	node.est_elev AS chamber_est_elev,
 	v_node.elev AS chamber_sys_elev,
     node.sander AS chamber_sander,
     node.node_type,
@@ -1075,8 +1079,6 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
     node.adress_02 AS chamber_adress_02,
     node.adress_03 AS chamber_adress_03,
     node.descript AS chamber_descript,
-    node.est_top_elev AS chamber_est_top_elev,
-    node.est_ymax AS chamber_est_ymax,
     node.rotation AS chamber_rotation,
     node.link AS chamber_link,
     node.verified,
@@ -1098,7 +1100,7 @@ CREATE OR REPLACE VIEW v_edit_man_chamber_pol AS
 	node.uncertain,
 	node.xyz_date AS chamber_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	man_chamber.inlet AS chamber_inlet,
 	man_chamber.bottom_channel AS chamber_bottom_channel,
 	man_chamber.accessibility AS chamber_accessibility,
@@ -1121,8 +1123,8 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp AS
 	node.est_top_elev AS wwtp_est_top_elev,
     node.ymax AS wwtp_ymax,
 	node.est_ymax AS wwtp_est_ymax,
-	node.top_elev-node.ymax AS wwtp_elev,
-	node.est_top_elev-node.est_ymax AS wwtp_est_elev,
+	node.elev AS wwtp_elev,
+	node.est_elev AS wwtp_est_elev,
 	v_node.elev AS wwtp_sys_elev,
     node.sander AS wwtp_sander,
     node.node_type,
@@ -1146,8 +1148,6 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp AS
     node.adress_02 AS wwtp_adress_02,
     node.adress_03 AS wwtp_adress_03,
     node.descript AS wwtp_descript,
-    node.est_top_elev AS wwtp_est_top_elev,
-    node.est_ymax AS wwtp_est_ymax,
     node.rotation AS wwtp_rotation,
     node.link AS wwtp_link,
     node.verified,
@@ -1166,7 +1166,7 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp AS
 	node.uncertain,
 	node.xyz_date AS wwtp_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
@@ -1185,8 +1185,8 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS
 	node.est_top_elev AS wwtp_est_top_elev,
     node.ymax AS wwtp_ymax,
 	node.est_ymax AS wwtp_est_ymax,
-	node.top_elev-node.ymax AS wwtp_elev,
-	node.est_top_elev-node.est_ymax AS wwtp_est_elev,
+	node.elev AS wwtp_elev,
+	node.est_elev AS wwtp_est_elev,
 	v_node.elev AS wwtp_sys_elev,
     node.sander AS wwtp_sander,
     node.node_type,
@@ -1210,8 +1210,6 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS
     node.adress_02 AS wwtp_adress_02,
     node.adress_03 AS wwtp_adress_03,
     node.descript AS wwtp_descript,
-    node.est_top_elev AS wwtp_est_top_elev,
-    node.est_ymax AS wwtp_est_ymax,
     node.rotation AS wwtp_rotation,
     node.link AS wwtp_link,
     node.verified,
@@ -1229,7 +1227,7 @@ CREATE OR REPLACE VIEW v_edit_man_wwtp_pol AS
 	node.uncertain,
 	node.xyz_date AS wwtp_xyz_date,
 	node.unconnected,
-	node.macrodma_id,
+	node.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, node
      JOIN man_wwtp ON man_wwtp.node_id::text = node.node_id::text
@@ -1250,12 +1248,12 @@ CREATE OR REPLACE VIEW v_edit_man_conduit AS
     arc.y1 AS conduit_y1,
 	arc.est_y1 AS conduit_est_y1,
 	arc.elev1 AS conduit_elev1,
-	arc.est_est_elev1 AS conduit_est_elev1,
+	arc.est_elev1 AS conduit_est_elev1,
 	v_arc_x_node.elevmax1 AS conduit_sys_elev1,
 	arc.y2 AS conduit_y2,
 	arc.elev2 AS conduit_elev2,
     arc.est_y2 AS conduit_est_y2,
-	arc.est_est_elev2 AS conduit_est_elev2,	
+	arc.est_elev2 AS conduit_est_elev2,	
 	v_arc_x_node.elevmax2 AS conduit_sys_elev2,
     v_arc_x_node.z1 AS conduit_z1,
     v_arc_x_node.z2 AS conduit_z2,
@@ -1305,7 +1303,7 @@ CREATE OR REPLACE VIEW v_edit_man_conduit AS
 	arc.inventory,
 	arc.end_date AS conduit_end_date,
 	arc.uncertain,
-	arc.macrodma_id,
+	arc.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
@@ -1326,12 +1324,12 @@ CREATE OR REPLACE VIEW v_edit_man_siphon AS
     arc.y1 AS siphon_y1,
 	arc.est_y1 AS siphon_est_y1,
 	arc.elev1 AS siphon_elev1,
-	arc.est_est_elev1 AS siphon_est_elev1,
+	arc.est_elev1 AS siphon_est_elev1,
 	v_arc_x_node.elevmax1 AS siphon_sys_elev1,
 	arc.y2 AS siphon_y2,
 	arc.elev2 AS siphon_elev2,
     arc.est_y2 AS siphon_est_y2,
-	arc.est_est_elev2 AS siphon_est_elev2,	
+	arc.est_elev2 AS siphon_est_elev2,	
 	v_arc_x_node.elevmax2 AS siphon_sys_elev2,
     v_arc_x_node.z1 AS siphon_z1,
     v_arc_x_node.z2 AS siphon_z2,
@@ -1384,7 +1382,7 @@ CREATE OR REPLACE VIEW v_edit_man_siphon AS
 	arc.inventory,
 	arc.end_date AS siphon_end_date,
 	arc.uncertain,
-	arc.macrodma_id,
+	arc.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
@@ -1404,12 +1402,12 @@ CREATE OR REPLACE VIEW v_edit_man_waccel AS
     arc.y1 AS waccel_y1,
 	arc.est_y1 AS waccel_est_y1,
 	arc.elev1 AS waccel_elev1,
-	arc.est_est_elev1 AS waccel_est_elev1,
+	arc.est_elev1 AS waccel_est_elev1,
 	v_arc_x_node.elevmax1 AS waccel_sys_elev1,
 	arc.y2 AS waccel_y2,
 	arc.elev2 AS waccel_elev2,
     arc.est_y2 AS waccel_est_y2,
-	arc.est_est_elev2 AS waccel_est_elev2,	
+	arc.est_elev2 AS waccel_est_elev2,	
 	v_arc_x_node.elevmax2 AS waccel_sys_elev2,
     v_arc_x_node.z1 AS waccel_z1,
     v_arc_x_node.z2 AS waccel_z2,
@@ -1465,7 +1463,7 @@ CREATE OR REPLACE VIEW v_edit_man_waccel AS
 	arc.inventory,
 	arc.end_date AS waccel_end_date,
 	arc.uncertain,
-	arc.macrodma_id,
+	arc.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
@@ -1484,12 +1482,12 @@ CREATE OR REPLACE VIEW v_edit_man_varc AS
     arc.y1 AS varc_y1,
 	arc.est_y1 AS varc_est_y1,
 	arc.elev1 AS varc_elev1,
-	arc.est_est_elev1 AS varc_est_elev1,
+	arc.est_elev1 AS varc_est_elev1,
 	v_arc_x_node.elevmax1 AS varc_sys_elev1,
 	arc.y2 AS varc_y2,
 	arc.elev2 AS varc_elev2,
     arc.est_y2 AS varc_est_y2,
-	arc.est_est_elev2 AS varc_est_elev2,	
+	arc.est_elev2 AS varc_est_elev2,	
 	v_arc_x_node.elevmax2 AS varc_sys_elev2,
     v_arc_x_node.z1 AS varc_z1,
     v_arc_x_node.z2 AS varc_z2,
@@ -1538,7 +1536,7 @@ CREATE OR REPLACE VIEW v_edit_man_varc AS
 	arc.inventory,
 	arc.end_date AS varc_end_date,
 	arc.uncertain,
-	arc.macrodma_id,
+	arc.macrosector_id,
 	exploitation.descript AS expl_name
    FROM expl_selector, arc
      LEFT JOIN cat_arc ON arc.arccat_id::text = cat_arc.id::text
@@ -1604,7 +1602,7 @@ connec.publish,
 connec.inventory,
 connec.end_date,
 connec.uncertain,
-connec.macrodma_id,
+connec.macrosector_id,
 exploitation.descript AS expl_name
 FROM expl_selector, connec 
 JOIN cat_connec ON (((connec.connecat_id)::text = (cat_connec.id)::text))
@@ -1666,12 +1664,14 @@ gully.code,
 gully.publish,
 gully.inventory,
 gully.end_date,
-gully.macrodma_id,
+gully.macrosector_id,
 gully.streetaxis_id,
+ext_streetaxis.name AS streetname,
 gully.postnumber,
 exploitation.descript AS expl_name
 FROM expl_selector, gully 
 LEFT JOIN cat_grate ON (((gully.gratecat_id)::text = (cat_grate.id)::text))
+LEFT JOIN ud_sample_dev.ext_streetaxis ON gully.streetaxis_id::text = ext_streetaxis.id::text
 JOIN exploitation ON gully.expl_id=exploitation.expl_id
 WHERE gully.the_geom is not null 
 AND (gully.expl_id)::text=(expl_selector.expl_id)::text
@@ -1727,7 +1727,7 @@ gully.code,
 gully.publish,
 gully.inventory,
 gully.end_date,
-gully.macrodma_id,
+gully.macrosector_id,
 gully.streetaxis_id,
 gully.postnumber,
 exploitation.descript AS expl_name
@@ -1756,12 +1756,11 @@ DROP VIEW IF EXISTS v_edit_dma CASCADE;
 CREATE VIEW v_edit_dma AS SELECT
 	dma.dma_id,
 	dma.sector_id,
-	dma.presszonecat_id,
 	dma.descript,
 	dma.observ,
 	dma.the_geom,
 	dma.undelete,
-	dma.macrodma_id,
+	dma.macrosector_id,
 	exploitation.descript AS expl_name
 	FROM expl_selector, dma 
 	JOIN exploitation ON dma.expl_id=exploitation.expl_id

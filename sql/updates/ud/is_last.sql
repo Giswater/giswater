@@ -33,13 +33,14 @@ CREATE SEQUENCE doc_x_tag_seq
 -- NEW TABLES
 -------------
 
--- ADDING MACRO DMA
+-- ADDING MACROSECTOR
 
-CREATE TABLE macrodma (
-macrodma_id character varying(50) NOT NULL PRIMARY KEY,
+CREATE TABLE macrosector (
+macrosector_id character varying(50) NOT NULL PRIMARY KEY,
 descript character varying(100),
 the_geom geometry(POLYGON,SRID_VALUE),
-undelete boolean
+undelete boolean,
+expl_id integer
 );
 
 
@@ -126,6 +127,10 @@ ALTER TABLE plan_psector ADD COLUMN expl_id integer;
 ALTER TABLE element ADD COLUMN expl_id integer;
 ALTER TABLE catchment ADD COLUMN expl_id integer;
 
+ALTER TABLE sector ADD COLUMN expl_id integer;
+ALTER TABLE dma ADD COLUMN expl_id integer;
+
+
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
 ALTER TABLE gully ADD COLUMN code varchar(30);
@@ -164,12 +169,13 @@ ALTER TABLE cat_work ADD COLUMN workid_key1 character varying(30);
 ALTER TABLE cat_work ADD COLUMN workid_key2 character varying(30);
 ALTER TABLE cat_work ADD COLUMN builtdate date;
 
-ALTER TABLE sector ADD COLUMN macrodma_id character varying(50);
+ALTER TABLE sector ADD COLUMN macrosector_id character varying(50);
+ALTER TABLE dma ADD COLUMN macrosector_id character varying(50);
 
-ALTER TABLE arc ADD COLUMN macrodma_id character varying(50);
-ALTER TABLE node ADD COLUMN macrodma_id character varying(50);
-ALTER TABLE connec ADD COLUMN macrodma_id character varying(50);
-ALTER TABLE gully ADD COLUMN macrodma_id character varying(50);
+ALTER TABLE arc ADD COLUMN macrosector_id character varying(50);
+ALTER TABLE node ADD COLUMN macroserctor_id character varying(50);
+ALTER TABLE connec ADD COLUMN macrosector_id character varying(50);
+ALTER TABLE gully ADD COLUMN macrosector_id character varying(50);
 
 ALTER TABLE om_visit ADD COLUMN  webclient_id character varying(50);
 
