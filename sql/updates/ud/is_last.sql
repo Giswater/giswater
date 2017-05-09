@@ -111,6 +111,15 @@ CREATE TABLE anl_arc_profile_value
 -- ALTER TABLES
 -------------
 
+ALTER TABLE point ADD COLUMN link text;
+
+ALTER TABLE samplepoint ADD COLUMN dma_id character varying(30);
+ALTER TABLE samplepoint ADD COLUMN sector_id character varying(30);
+ALTER TABLE samplepoint ADD COLUMN expl_id integer;
+ALTER TABLE samplepoint ADD COLUMN workcat_id character varying(255);
+ALTER TABLE samplepoint ADD COLUMN workcat_id_end character varying(255);
+
+
 ALTER TABLE arc ADD COLUMN expl_id integer;
 ALTER TABLE node ADD COLUMN expl_id integer;
 ALTER TABLE connec ADD COLUMN expl_id integer;

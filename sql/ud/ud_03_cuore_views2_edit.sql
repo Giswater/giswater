@@ -1825,10 +1825,9 @@ CREATE VIEW v_edit_samplepoint AS SELECT
 	street1,
 	street2,
 	place,
-	element_code,
-	cabinet,
-	dma_id2,
-	observations,
+	dma_id,
+	sector_id,
+	representative,
 	samplepoint.the_geom,
 	exploitation.descript AS expl_name
 FROM expl_selector,samplepoint
