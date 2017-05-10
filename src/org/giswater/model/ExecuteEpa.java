@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 
 import org.giswater.dao.PropertiesDao;
 import org.giswater.util.Utils;
+import org.giswater.util.UtilsOS;
 
 
 public class ExecuteEpa extends Model {
@@ -38,10 +39,10 @@ public class ExecuteEpa extends Model {
     public static boolean process(File fileInp, File fileRpt) {
 
         Utils.getLogger().info("execEPASOFT");
-        
+          
 		String exeName = PropertiesDao.getGswProperties().get("EXE_NAME");
         File exeFile = new File(exeName);
-        exeName = Utils.getAppPath() + "epa" + File.separator + exeName;	
+        exeName = Utils.getAppPath()+"epa"+File.separator+exeName;	
 	    exeFile = new File(exeName);			
         
         // Check if file exists
@@ -69,8 +70,15 @@ public class ExecuteEpa extends Model {
         File fileOut = new File(sFile);
 
         // Create command
-        String exeCmd = "\"" + exeName + "\"";
-        exeCmd += " \"" + fileInp.getAbsolutePath() + "\" \"" + fileRpt.getAbsolutePath() + "\" \"" + fileOut.getAbsolutePath() + "\"";
+        String exeCmd = "";
+        if (UtilsOS.isWindows()) {
+        	exeCmd = "\""+exeName+"\"";
+        	exeCmd += " \""+fileInp.getAbsolutePath()+"\" \""+fileRpt.getAbsolutePath()+"\" \""+fileOut.getAbsolutePath()+"\"";
+        }
+        else {
+	        exeCmd = exeName;
+	        exeCmd+= " "+fileInp.getAbsolutePath()+" "+fileRpt.getAbsolutePath()+" "+fileOut.getAbsolutePath();        
+        }
 
         // Ending message
         Utils.getLogger().info(exeCmd);            

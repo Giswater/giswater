@@ -31,8 +31,6 @@ import org.giswater.util.Utils;
 
 public class ExecuteDao extends MainDao {
 	
-	private static final String PORTABLE_FOLDER = "portable" + File.separator;
-	private static final String PORTABLE_FILE = "bin" + File.separator + "pg_ctl.exe";
 	private static File batFile = null;
 	
 
@@ -132,31 +130,6 @@ public class ExecuteDao extends MainDao {
 		return true;
 			
 	}	
-	
-	
-	public static void executePostgisService(String service) {
-		
-		String folder = giswaterUsersFolder + PORTABLE_FOLDER;
-		String path = folder + PORTABLE_FILE;		
-		File file = new File(path);
-		if (!file.exists()) {
-			Utils.logError("Postgis service not found: "+path);
-			return;
-		}
-		String data = folder + "data";
-		
-		// Set content of .vbs file
-		String aux = "Set wshShell = CreateObject(\"WScript.Shell\")";
-		aux+= "\nwshShell.Run \""+path+" start -D "+data+"\", 0, False";
-		Utils.getLogger().info(aux);
-		aux+= "\nSet wshShell = Nothing";
-
-        // Fill and execute .vbs File	
-		File vbsFile = new File(Utils.getLogFolder() + "hide.vbs");        
-		Utils.fillFile(vbsFile, aux);    		
-		Utils.openFile(vbsFile.getAbsolutePath());
-		
-	}
 	
 	
 	public static boolean executeScript(String scriptPath, String batPath) {

@@ -58,10 +58,7 @@ CREATE SEQUENCE polygon_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
-  
-  
-  
-  
+
   
 CREATE TABLE polygon(
   pol_id character varying(16) NOT NULL PRIMARY KEY,
@@ -69,6 +66,7 @@ CREATE TABLE polygon(
   the_geom geometry(POLYGON,SRID_VALUE),
   undelete boolean
 );
+
 
 CREATE TABLE macrodma(
 macrodma_id character varying(50) NOT NULL PRIMARY KEY,
@@ -83,7 +81,6 @@ CREATE TABLE doc_x_tag(
   doc_id character varying(30),
   tag_id character varying(16)
 );
-
 
 
 CREATE TABLE exploitation(
@@ -125,7 +122,6 @@ ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_the_geom public.geom
 ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_depth float;
 ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_limit_distance float;
 ALTER TABLE ws_sample.anl_mincut_result_cat ADD COLUMN exec_appropiate boolean;	
-
 
 ALTER TABLE arc ADD COLUMN expl_id integer;
 ALTER TABLE node ADD COLUMN expl_id integer;

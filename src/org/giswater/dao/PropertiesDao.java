@@ -37,7 +37,7 @@ public class PropertiesDao {
 	private static String gswPath;   // Current gsw Project preferences File
 	private static String gswDefaultPath;   // Default gsw Project preferences File
 	private static String gswTemplatePath;   // Template gsw Project preferences File. Used to create new gsw files
-	private static String giswaterUsersFolder;   // C:\Users\<username>\Giswater
+	private static String giswaterUsersFolder;   // C:\Users\<username>\Giswater or /home/<username>/giswater
 	private static String lastSqlPath;   // Last SQL path (opened in Data - SQL file launcher)
 
 	private static PropertiesMap prop = new PropertiesMap();
@@ -129,20 +129,33 @@ public class PropertiesDao {
     	}
     	
     	// Set Locale
-    	String language = prop.get("LANGUAGE", "en");
+    	String language = prop.get("LANGUAGE", "en").toLowerCase();
 		Locale locale = new Locale(language, language.toUpperCase());
 		Locale.setDefault(locale);    	
     	
-    	// Get default and template gsw files
+    	// Get default and template gsw files (in users folder)
     	gswDefaultPath = giswaterUsersFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
     	gswTemplatePath = giswaterUsersFolder + CONFIG_FOLDER + GSW_TEMPLATE_FILE;
     	
-    	// Load last gsw file
+    	// Check if template file exists. If not copy from config folder
+    	File gswTemplateFile = new File(gswTemplatePath);
+    	if (!gswTemplateFile.exists()) {
+         	String templatePath = Utils.getConfigFolder()+"template.gsw";
+        	Utils.copyFile(templatePath, gswTemplatePath);		
+    	}
+    	
+    	// Check if default file exists. If not copy from config folder
+    	File gswDefaultFile = new File(gswDefaultPath);
+    	if (!gswDefaultFile.exists()) {
+         	String defaultPath = Utils.getConfigFolder()+"default.gsw";
+        	Utils.copyFile(defaultPath, gswDefaultPath);		
+    	}    	
+    	
+    	// Load last gsw file. If not, get default gsw path
     	String gswPath = prop.get("FILE_GSW", "").trim();
-    	File gswFile = new File(gswPath);
+    	File gswFile = new File(gswPath);       
     	if (!gswFile.exists()) {
-        	// Get default gsw path
-            gswPath = gswDefaultPath;
+    		gswPath = gswDefaultPath;
         	gswFile = new File(gswPath);  
     		Utils.getLogger().info("Loading default .gsw file: " + gswPath);	        	
         	if (!gswFile.exists()) {
@@ -198,12 +211,14 @@ public class PropertiesDao {
     	configPath = giswaterUsersFolder + CONFIG_FOLDER + configFile;
     	Utils.getLogger().info("Versioned properties file: "+configPath);  
 
-        // If versioned properties file not exists, try to load default one instead	
+        // If versioned properties file not exists, copy from config folder	to users folder
         File file = new File(configPath);
         if (!file.exists()) {
-        	configFile = CONFIG_FILE + ".properties";
-        	configPath = giswaterUsersFolder + CONFIG_FOLDER + configFile;
-        	Utils.getLogger().info("Default properties file: "+configPath);   
+        	String defaultFile = CONFIG_FILE + ".properties";
+        	String defaultPath = Utils.getConfigFolder() + defaultFile;
+        	Utils.getLogger().info("Default properties file: "+defaultPath);         	
+        	Utils.getLogger().info("Versioned properties file not found, copying default one from config folder"); 
+        	Utils.copyFile(defaultPath, configPath);
             file = new File(configPath);
         }
         
@@ -224,7 +239,7 @@ public class PropertiesDao {
     public static boolean loadGswPropertiesFile() {
 
     	if (gswPath.equals("")) {
-    		gswPath = giswaterUsersFolder + CONFIG_FOLDER + GSW_DEFAULT_FILE;
+    		gswPath = gswDefaultPath;
     	}
     	Utils.getLogger().info("Loading gsw file: "+gswPath);        
 

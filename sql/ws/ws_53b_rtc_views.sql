@@ -111,7 +111,6 @@ CREATE OR REPLACE VIEW v_rtc_hydrometer_x_arc AS
      JOIN temp_arc ON temp_arc.arc_id::text = v_edit_connec.arc_id::text;
 
 
-
 DROP VIEW IF EXISTS v_rtc_hydrometer_x_arc CASCADE;
 CREATE OR REPLACE VIEW v_rtc_hydrometer_x_arc AS 
  SELECT rtc_hydrometer_x_connec.hydrometer_id,
@@ -196,6 +195,7 @@ FROM ext_rtc_scada
 JOIN rtc_scada_node ON rtc_scada_node.scada_id::text = ext_rtc_scada.scada_id::text;
 
 
+
 DROP VIEW IF EXISTS "v_rtc_scada_data" CASCADE;
 CREATE OR REPLACE VIEW v_rtc_scada_data AS SELECT
 ext_rtc_scada_x_data.scada_id,
@@ -206,6 +206,7 @@ ext_rtc_scada_x_data.avg,
 ext_rtc_scada_x_data.sum,
 ext_rtc_scada_x_data.cat_period_id
 FROM ext_rtc_scada_x_data JOIN rtc_scada_node ON rtc_scada_node.scada_id::text=ext_rtc_scada_x_data.scada_id::text;
+
 
 
 DROP VIEW IF EXISTS "v_rtc_scada_value" CASCADE;

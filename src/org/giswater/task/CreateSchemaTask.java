@@ -21,8 +21,6 @@
 package org.giswater.task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -60,50 +58,41 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	public boolean createSchema(String softwareAcronym) {
 		
 		boolean status = true;
+			
+		String folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
+		String folderPath = "";
 		
-		try {
-			
-			String folderRootPath = new File(".").getCanonicalPath()+File.separator+"sql"+File.separator;
-			String folderPath = "";
-			
-			// Process selected software folder
-			folderPath = folderRootPath+softwareAcronym+File.separator;
-			if (!processFolder(folderPath)) return false;
+		// Process selected software folder
+		folderPath = folderRootPath+softwareAcronym+File.separator;
+		if (!processFolder(folderPath)) return false;
 
-			// Process 'fct' folder
-			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_FCT+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-			// Process 'trg' folder
-			folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_TRG+File.separator;
-			if (!processFolder(folderPath)) return false;			
-			
-			// Process 'utils' folder
-			folderPath = folderRootPath+"utils"+File.separator;
-			if (!processFolder(folderPath)) return false;
+		// Process 'fct' folder
+		folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process 'trg' folder
+		folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		// Process 'utils' folder
+		folderPath = folderRootPath+"utils"+File.separator;
+		if (!processFolder(folderPath)) return false;
 
-			// Process 'utils/fct' folder
-			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-			// Process 'utils/trg' folder
-			folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-			// Process language folders: parameter 'softwareAcronym' and 'utils'
-			String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
-			folderPath = folderLocale+softwareAcronym+File.separator;
-			if (!processFolder(folderPath)) return false;
-			folderPath = folderLocale+"utils"+File.separator;
-			if (!processFolder(folderPath)) return false;
-			
-		} catch (FileNotFoundException e) {
-			Utils.showError(e);
-			status = false;
-		} catch (IOException e) {
-			Utils.showError(e);
-			status = false;			
-		}
+		// Process 'utils/fct' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process 'utils/trg' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process language folders: parameter 'softwareAcronym' and 'utils'
+		String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
+		folderPath = folderLocale+softwareAcronym+File.separator;
+		if (!processFolder(folderPath)) return false;
+		folderPath = folderLocale+"utils"+File.separator;
+		if (!processFolder(folderPath)) return false;
+
 		
 		return status;
 		

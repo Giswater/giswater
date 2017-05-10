@@ -73,15 +73,16 @@ public class Utils {
 
     private static final String LOG_FOLDER = "giswater" + File.separator + "log" + File.separator;
     private static final String GIS_FOLDER = "gis" + File.separator;
+    private static final String CONFIG_FOLDER = "config" + File.separator;
     private static final String ICON_PATH = "images" + File.separator + "imago.png";
     private static final int NUM_LEVELS = 10;
 
 	private static Logger logger;
     private static Logger loggerSql;
+    private static String configFolder;
 	private static String logFolder;
 	private static String gisFolder;
 	private static String appPath;
-	private static boolean isSqlLogged;	
 	private static boolean isQgis;			
 	private static ResourceBundle bundleText;
     
@@ -89,36 +90,66 @@ public class Utils {
 	public static Logger getLogger() {
 
     	if (logger == null) {
-            try {
-            	String folderRoot = getAppPath();         	
-            	logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
-                gisFolder = folderRoot + GIS_FOLDER;
-                File folderFile = new File(logFolder);
-                folderFile.mkdirs();
-                if (!folderFile.exists()) {
-                    JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
-                }
-                String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
-                FileHandler fh = new FileHandler(logFile, true);
-                LogFormatter lf = new LogFormatter();
-                fh.setFormatter(lf);
-                logger = Logger.getLogger(logFile);
-                logger.addHandler(fh);
-                // SQL logger file
-                logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
-                fh = new FileHandler(logFile, true);
-                lf = new LogFormatter();
-                fh.setFormatter(lf);
-                loggerSql = Logger.getLogger(logFile);
-                loggerSql.addHandler(fh);
-                isQgis = checkFileExtensionQgis();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
-            } catch (SecurityException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: SecurityException", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        return logger;
+    		
+			try {
+				
+				// Check Operating System
+				boolean isWindows = UtilsOS.isWindows();
+				
+				// Look&Feel
+				String className = UIManager.getSystemLookAndFeelClassName();
+				if (!isWindows) {
+					className = UIManager.getCrossPlatformLookAndFeelClassName();	
+					//className = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";		    		
+				}
+				try {
+					UIManager.setLookAndFeel(className);
+				} catch (Exception e) {
+					Utils.logError(e.getMessage());
+				}  		    	
+				
+				// Get gis and config folders
+				String folderRoot = getAppPath();         	
+				gisFolder = folderRoot + GIS_FOLDER;
+				configFolder = folderRoot + CONFIG_FOLDER;
+				
+				// Log folder and files
+				logFolder = System.getProperty("user.home") + File.separator + LOG_FOLDER;
+				File folderFile = new File(logFolder);
+				folderFile.mkdirs();
+				if (!folderFile.exists()) {
+				    JOptionPane.showMessageDialog(null, "Could not create log folder", "Log creation", JOptionPane.ERROR_MESSAGE);                	
+				}
+				String logFile = logFolder + "log_"+getCurrentTimeStamp()+".log";
+				FileHandler fh = new FileHandler(logFile, true);
+				LogFormatter lf = new LogFormatter();
+				fh.setFormatter(lf);
+				logger = Logger.getLogger(logFile);
+				logger.addHandler(fh);
+				
+				// SQL logger file
+				logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
+				fh = new FileHandler(logFile, true);
+				lf = new LogFormatter();
+				fh.setFormatter(lf);
+				loggerSql = Logger.getLogger(logFile);
+				loggerSql.addHandler(fh);
+				
+				// Check QGIS file association
+				isQgis = true;
+				if (isWindows) {
+					isQgis = checkFileExtensionQgis();
+				}
+			    
+			} catch (IOException e) {
+			    JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: IOException", JOptionPane.ERROR_MESSAGE);
+			} catch (SecurityException e) {
+			    JOptionPane.showMessageDialog(null, e.getMessage(), "Log creation: SecurityException", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+		
+		return logger;
 
     }
 	   
@@ -152,7 +183,7 @@ public class Utils {
 	}	
 	
 	
-	// Returns true if .qgs file extension is associated
+	// Returns true if .qgs file extension is associated (works for Windows only)
 	public static boolean checkFileExtensionQgis() {
 			
 		final String regKey = "SOFTWARE\\Classes";
@@ -175,18 +206,6 @@ public class Utils {
 		}
 		return false;
 			
-	}
-	
-	
-	public static void setSqlLog(String string) {
-		isSqlLogged = Boolean.parseBoolean(string);
-	}	
-	
-	
-	public static void logSql(String msg) {
-		if (isSqlLogged) {
-			loggerSql.info(msg);
-		}
 	}
 	
     
@@ -218,6 +237,10 @@ public class Utils {
     public static String getGisFolder() {
     	return gisFolder;
     }       
+
+    public static String getConfigFolder() {
+    	return configFolder;
+    }   
     
     public static boolean isQgisAssociated() {
     	return isQgis;

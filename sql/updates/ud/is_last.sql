@@ -103,8 +103,6 @@ CREATE TABLE anl_arc_profile_value
 
 );
 
-    
-   
   
  
 -------------
@@ -118,7 +116,6 @@ ALTER TABLE samplepoint ADD COLUMN sector_id character varying(30);
 ALTER TABLE samplepoint ADD COLUMN expl_id integer;
 ALTER TABLE samplepoint ADD COLUMN workcat_id character varying(255);
 ALTER TABLE samplepoint ADD COLUMN workcat_id_end character varying(255);
-
 
 ALTER TABLE arc ADD COLUMN expl_id integer;
 ALTER TABLE node ADD COLUMN expl_id integer;
@@ -138,7 +135,6 @@ ALTER TABLE catchment ADD COLUMN expl_id integer;
 
 ALTER TABLE sector ADD COLUMN expl_id integer;
 ALTER TABLE dma ADD COLUMN expl_id integer;
-
 
 ALTER TABLE node ADD COLUMN code varchar(30);
 ALTER TABLE arc ADD COLUMN code varchar(30);
@@ -242,7 +238,6 @@ ALTER TABLE arc  ADD CONSTRAINT arc_macrodma_id_fkey FOREIGN KEY (macrodma_id) R
 ALTER TABLE node  ADD CONSTRAINT node_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE connec  ADD CONSTRAINT connec_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE gully ADD CONSTRAINT gully_macrodma_id_fkey FOREIGN KEY (macrodma_id) REFERENCES macrodma_selector (macrodma_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT;
-
 
 
  CONSTRAINT om_visit_event_foto_event_id_fkey FOREIGN KEY (event_id)
