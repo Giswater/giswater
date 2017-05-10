@@ -273,28 +273,31 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	
 	// Iterate over all files inside selected folder
-	public boolean processUpdateFolder(String folder) {
+	public boolean processUpdateFolder(String folderPath) {
 		
 		boolean status = true;
 		
-		File[] files = new File(folder).listFiles();
-		if (files != null) {
-			Arrays.sort(files);
-			for (File file : files) {
-		    	String content;
-				try {
-					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
-					content = Utils.readFile(file.getAbsolutePath());
-					content = content.replace("SCHEMA_NAME", schemaName);
-					content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
-					status = MainDao.executeSql(content, false);
-					// Abort process if one script fails
-					if (!status) return false;
-				} catch (IOException e) {
-					Utils.logError(e);
-				}
-			}
+		File folderRoot = new File(folderPath);
+		File[] files = folderRoot.listFiles();
+		if (files == null || files.length == 0) {
+			Utils.logError("Folder not found or without files: "+folderPath);				
+			return true;
 		}		
+		Arrays.sort(files);
+		for (File file : files) {
+	    	String content;
+			try {
+				Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+				content = Utils.readFile(file.getAbsolutePath());
+				content = content.replace("SCHEMA_NAME", schemaName);
+				content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
+				status = MainDao.executeSql(content, false);
+				// Abort process if one script fails
+				if (!status) return false;
+			} catch (IOException e) {
+				Utils.logError(e);
+			}
+		}	
 		
 		return status;
 		

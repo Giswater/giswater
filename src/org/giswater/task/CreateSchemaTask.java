@@ -82,16 +82,16 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderUpdates+"utils"+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;
 		
-		// Process folder 'i18n/<waterSoftware>' (5)
+		// Process folder 'i18n/<locale>/<waterSoftware>' (5)
 		folderPath = folderLocale+softwareAcronym+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'i18n/utils' (6)	
+		// Process folder 'i18n/<locale>/utils' (6)	
 		folderPath = folderLocale+"utils"+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'update/i18n' (7)	
-		folderPath = folderUpdates+"i18n"+File.separator;
+		// Process folder 'update/i18n/<locale>' (7)	
+		folderPath = folderUpdates+"i18n"+File.separator+locale+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;			
 		
 		// Process folder '<waterSoftware>/fct' folder (8)
