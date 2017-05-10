@@ -21,8 +21,6 @@
 package org.giswater.task;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -61,44 +59,69 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		
 		boolean status = true;
 			
-		String folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
+		//this.folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
+		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
+		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
+		this.folderUtils = folderRootPath+"utils"+File.separator;
+		this.folderUpdates = folderRootPath+"updates"+File.separator;
 		String folderPath = "";
 		
-		// Process selected software folder
-		folderPath = folderRootPath+softwareAcronym+File.separator;
+		// Process folder '<waterSoftware>/ddl' (1)
+		folderPath = folderSoftware+FILE_PATTERN_DDL+File.separator;
 		if (!processFolder(folderPath)) return false;
 
-		// Process 'fct' folder
-		folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_FCT+File.separator;
+		// Process folder 'utils/ddl' (2)
+		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process 'trg' folder
-		folderPath = folderRootPath+softwareAcronym+File.separator+FILE_PATTERN_TRG+File.separator;
-		if (!processFolder(folderPath)) return false;			
+		// Process 'updates/<softwareName>' folder (3)
+		folderPath = folderUpdates+waterSoftware+File.separator;
+		if (!processUpdateFolder(folderPath)) return false;
 		
-		// Process 'utils' folder
-		folderPath = folderRootPath+"utils"+File.separator;
-		if (!processFolder(folderPath)) return false;
-
-		// Process 'utils/fct' folder
-		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
-		if (!processFolder(folderPath)) return false;
+		// Process 'updates/utils' folder (4)
+		folderPath = folderUpdates+"utils"+File.separator;
+		if (!processUpdateFolder(folderPath)) return false;
 		
-		// Process 'utils/trg' folder
-		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process language folders: parameter 'softwareAcronym' and 'utils'
-		String folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;		
+		// Process folder 'i18n/<waterSoftware>' (5)
 		folderPath = folderLocale+softwareAcronym+File.separator;
 		if (!processFolder(folderPath)) return false;
+		
+		// Process folder 'i18n/utils' (6)	
 		folderPath = folderLocale+"utils"+File.separator;
 		if (!processFolder(folderPath)) return false;
-
+		
+		// Process folder 'update/i18n' (7)	
+		folderPath = folderUpdates+"i18n"+File.separator;
+		if (!processUpdateFolder(folderPath)) return false;			
+		
+		// Process folder '<waterSoftware>/fct' folder (8)
+		folderPath = folderSoftware+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder '<waterSoftware>/view' folder (9)
+		folderPath = folderSoftware+FILE_PATTERN_VIEW+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder '<waterSoftware>/trg' folder (10)
+		folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		// Process folder 'utils/fct' folder (11)
+		folderPath = folderUtils+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		// Process folder 'utils/view' folder (12)
+		folderPath = folderUtils+FILE_PATTERN_VIEW+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder 'utils/trg' folder (13)
+		folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;		
 		
 		return status;
 		
 	}
+	
 	
 	
     @Override
@@ -119,24 +142,17 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(parentPanel, false);
     	
     	// Create schema of selected software
+    	MainDao.setSchema(schemaName);
 		status = createSchema(waterSoftware);	
 		if (status) {
-			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()) {	
-				// Insert information into table inp_project_id and version				
-				String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-				Utils.logInfo(sql);
-				MainDao.executeSql(sql, false);		
-				insertVersion(true);
-			}
-			else {
-				MainDao.deleteSchema(schemaName);
-				status = false;
-			}
+			// Insert information into table inp_project_id and version				
+			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
+			Utils.logInfo(sql);
+			MainDao.executeSql(sql, false);		
+			MainDao.insertVersion(true);
 		}
 		else {
 			MainDao.deleteSchema(schemaName);
-			status = false;
 		}
 		
 		// Refresh view

@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 
 import javax.swing.JOptionPane;
 
-import org.giswater.dao.ConfigDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsOS;
