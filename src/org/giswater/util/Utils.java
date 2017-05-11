@@ -60,13 +60,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
-import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.Jr;
+import javax.swing.JTextArea;
 
 
 public class Utils {
