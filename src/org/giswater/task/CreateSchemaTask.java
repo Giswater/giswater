@@ -59,7 +59,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		
 		boolean status = true;
 			
-		//this.folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
 		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
 		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
 		this.folderUtils = folderRootPath+"utils"+File.separator;
@@ -121,7 +120,6 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		return status;
 		
 	}
-	
 	
 	
     @Override

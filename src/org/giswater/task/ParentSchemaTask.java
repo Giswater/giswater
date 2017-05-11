@@ -256,7 +256,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		
 	}	
 	
-	
+
 	protected void emptyFolder(String folderPath) {
 		
 		File folder = new File(folderPath);
