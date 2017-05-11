@@ -89,7 +89,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		}
 		this.schemaName = schemaName;
 		this.sridValue = sridValue;
-		this.folderRootPath = Utils.getAppPath()+File.separator+"sql"+File.separator;
+		this.folderRootPath = Utils.getAppPath()+"sql"+File.separator;
     	setProperties();
     	
 	}

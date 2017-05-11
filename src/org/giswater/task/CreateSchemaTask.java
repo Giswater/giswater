@@ -74,11 +74,11 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process 'updates/<softwareName>' folder (3)
+		// Process folder 'updates/<softwareName>' folder (3)
 		folderPath = folderUpdates+waterSoftware+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;
 		
-		// Process 'updates/utils' folder (4)
+		// Process folder 'updates/utils' folder (4)
 		folderPath = folderUpdates+"utils"+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;
 		
@@ -90,7 +90,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderLocale+"utils"+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'update/i18n/<locale>' (7)	
+		// Process folder 'updates/i18n/<locale>' (7)	
 		folderPath = folderUpdates+"i18n"+File.separator+locale+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;			
 		

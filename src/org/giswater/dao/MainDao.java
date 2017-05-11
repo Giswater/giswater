@@ -62,8 +62,9 @@ public class MainDao {
 	private static String giswaterVersion;
 	private static String postgreVersion;
 	private static String postgisVersion;
+	private static String exeMode = "";   // If we are executing in a IDE we can set to "versionToIsLast" or "isLastToVersion"
 	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
-	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
+	private static HashMap<String, Integer> updateMap;   // <folderPath, lastUpdateScript>
     
     private static final String FOLDER_NAME = "giswater" + File.separator;
 	private static final String INIT_DB = "giswater_ddb";
@@ -152,6 +153,10 @@ public class MainDao {
 		return postgisVersion;
 	}	
 	
+	public static void setExeMode(String value) {
+		exeMode = value;
+	}	
+	
 	
     // Sets initial configuration files
     public static boolean configIni(String versionCode) {
@@ -175,7 +180,12 @@ public class MainDao {
         ConfigDao.setInpFolder(inpFolder);
         updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
         Utils.logInfo("SQL updates folder: " +updatesFolder);
-        getLastUpdates();
+        if (exeMode.equals("versionToIsLast")) {
+        	replaceVersionToIsLast();
+        }
+        else if (exeMode.equals("isLastToVersion")) {
+        	replaceIsLastToVersion();
+        }        
 
     	// Set Config DB connection
         if (!ConfigDao.setConnectionConfig()) {
@@ -1009,23 +1019,71 @@ public class MainDao {
 		return false;
 		
 	}
-		
-	private static void getLastUpdates() {
+	
+	
+	private static void replaceVersionToIsLast() {
 		
 		// Get last update script version from every software
-    	updateMap = new HashMap<String, Integer>();
-		getLastUpdateSoftware("ws");
-		getLastUpdateSoftware("ud");
+		versionToIsLast("ws");
+		versionToIsLast("ud");
+		versionToIsLast("utils");
+		versionToIsLast("i18n"+File.separator+"ca");
+		versionToIsLast("i18n"+File.separator+"en");
+		versionToIsLast("i18n"+File.separator+"es");
+		versionToIsLast("i18n"+File.separator+"pt_br");		
 		
 	}
 	
 	
-	private static void getLastUpdateSoftware(String softwareAcronym) {
+	private static void versionToIsLast(String folderPath) {
 		
-		String folder = updatesFolder+softwareAcronym+File.separator;
+		String folder = updatesFolder+folderPath+File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null && files.length > 0) {
 			Arrays.sort(files);
+			// Get only last file of selected folder
+			String fileName = files[files.length-1].getName();
+			String newFileName = fileName;
+			boolean renameFile = false;
+			// Replace @giswaterVersion.sql to is_last.sql
+			Integer fileVersion = Utils.parseInt(giswaterVersion.replace(".", ""));
+			if (fileName.equals(fileVersion+".sql")) {
+				renameFile = true;
+				newFileName = fileName.replace(fileVersion.toString(), "is_last");		
+			}
+			if (renameFile) {
+				if (!Utils.renameFile(folder+fileName, folder+newFileName)) {
+					Utils.logError("Rename could not be executed");
+				}
+			}
+		}
+		
+	}	
+
+		
+	private static void replaceIsLastToVersion() {
+		
+		Utils.logInfo("Searching and replacing 'is_last.sql' files");
+		// Get last update script version from every software
+    	updateMap = new HashMap<String, Integer>();
+    	isLastToVersion("ws");
+    	isLastToVersion("ud");
+    	isLastToVersion("utils");
+    	isLastToVersion("i18n"+File.separator+"ca");
+    	isLastToVersion("i18n"+File.separator+"en");
+    	isLastToVersion("i18n"+File.separator+"es");
+    	isLastToVersion("i18n"+File.separator+"pt_br");
+		
+	}
+	
+	
+	private static void isLastToVersion(String folderPath) {
+		
+		String folder = updatesFolder+folderPath+File.separator;
+		File[] files = new File(folder).listFiles();
+		if (files != null && files.length > 0) {
+			Arrays.sort(files);
+			// Get only last file of selected folder: is_last.sql
 			String fileName = files[files.length-1].getName();
 			String newFileName = fileName;
 			boolean renameFile = false;
@@ -1034,9 +1092,9 @@ public class MainDao {
 				renameFile = true;
 				newFileName = fileName.replace("is_last", giswaterVersion);		
 			}
-			newFileName = newFileName.replace(softwareAcronym+"_", "").replace("sql", "").replace(".", "");
+			newFileName = newFileName.replace(".", "").replace("sql", "");
 			Integer fileVersion = Utils.parseInt(newFileName);
-			updateMap.put(softwareAcronym, fileVersion);
+			updateMap.put(folderPath, fileVersion);
 			if (renameFile) {
 				if (!Utils.renameFile(folder+fileName, folder+newFileName+".sql")) {
 					Utils.logError("Rename could not be executed");
@@ -1044,7 +1102,7 @@ public class MainDao {
 			}
 		}
 		else {
-			updateMap.put(softwareAcronym, -1);	
+			updateMap.put(folderPath, -1);	
 		}
 		
 	}
@@ -1052,11 +1110,30 @@ public class MainDao {
 	
 	public static boolean updateSchema(Integer schemaVersion) {
 		
-		boolean status = true;
+		String folderPath = "";
 		
-		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder+softwareAcronym+File.separator;
-		File[] files = new File(folder).listFiles();
+		// Process folder updates/<watersoftware>
+		folderPath = updatesFolder+softwareAcronym+File.separator;
+		if (!processFolder(folderPath, schemaVersion)) return false;
+		
+		// Process folder updates/utils		
+		folderPath = updatesFolder+"utils"+File.separator;
+		if (!processFolder(folderPath, schemaVersion)) return false;
+		
+		// Process folder updates/i18n/<locale>	
+		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
+		folderPath = updatesFolder+"i18n"+File.separator+language+File.separator;
+		if (!processFolder(folderPath, schemaVersion)) return false;		
+		
+		return true;
+		
+	}
+	
+	
+	public static boolean processFolder(String folderPath, Integer schemaVersion) {
+		
+		// Iterate over all files inside selected folder
+		File[] files = new File(folderPath).listFiles();
 		if (files != null) {
 			Arrays.sort(files);
 			for (File file : files) {
@@ -1069,9 +1146,8 @@ public class MainDao {
 						content = Utils.readFile(file.getAbsolutePath());
 						content = content.replace("SCHEMA_NAME", schema);
 						content = content.replace("SRID_VALUE", getSrid(schema));					
-						status = executeSql(content, false);
 						// Abort process if one script fails
-						if (!status) return false;
+						if (!executeSql(content, false)) return false;
 					} catch (IOException e) {
 						Utils.logError(e);
 					}
@@ -1079,7 +1155,7 @@ public class MainDao {
 			}
 		}
 		
-		return status;
+		return true;
 		
 	}
 	

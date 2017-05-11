@@ -33,7 +33,7 @@ import org.giswater.util.UtilsFTP;
 public class MainClass {
 
 	public static MainFrame mdi;
-	private final static String CURRENT_VERSION = "2.1.100";
+	private final static String CURRENT_VERSION = "2.1.108";
 	private static String gswFilePath = null;
 	public static String function = null;   //  ["ed_giswater_jar" | "mg_go2epa_express"]
 	
@@ -55,6 +55,8 @@ public class MainClass {
 				String msg = "Application started";
 				if (versionCode == null) {
 					versionCode = CURRENT_VERSION;
+					//MainDao.setExeMode("versionToIsLast");
+					MainDao.setExeMode("isLastToVersion");
 				}
 				msg+= "\nVersion "+versionCode;
 				Utils.getLogger().info(msg);				
