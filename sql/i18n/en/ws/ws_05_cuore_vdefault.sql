@@ -5,26 +5,14 @@ This version of Giswater is provided by Giswater Association
 
 */
 
-
 SET search_path = "SCHEMA_NAME", public, pg_catalog;
 
 -- ----------------------------
 -- Default values of column views
 -- ----------------------------
 
-ALTER VIEW v_edit_node ALTER elevation SET DEFAULT 0.00;
-ALTER VIEW v_edit_node ALTER depth SET DEFAULT 0.00;
-ALTER VIEW v_edit_node ALTER state SET DEFAULT 'ON_SERVICE';
-ALTER VIEW v_edit_node ALTER verified SET DEFAULT 'TO REVIEW';
-
-ALTER VIEW v_edit_arc ALTER state SET DEFAULT 'ON_SERVICE';
-ALTER VIEW v_edit_arc ALTER verified SET DEFAULT 'TO REVIEW';
-
-ALTER VIEW v_edit_connec ALTER elevation SET DEFAULT 0.00;
-ALTER VIEW v_edit_connec ALTER depth SET DEFAULT 0.00;
-ALTER VIEW v_edit_connec ALTER state SET DEFAULT 'ON_SERVICE';
-ALTER VIEW v_edit_connec ALTER verified SET DEFAULT 'TO REVIEW';
-
 ALTER TABLE element ALTER COLUMN state SET DEFAULT 'ON_SERVICE';
 ALTER TABLE element ALTER COLUMN verified SET DEFAULT 'TO REVIEW';
 
+
+-- Custom values (User can customize other fields....)

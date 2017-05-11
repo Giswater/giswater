@@ -953,6 +953,19 @@ public class MainDao {
 	}
 	
 	
+	public static boolean insertVersion(boolean commit) {
+		
+		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
+		String sridValue = MainDao.getSrid(schema);
+		String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareAcronym.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
+			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
+        Utils.logInfo(sql);
+		return MainDao.executeSql(sql, commit);	
+
+	}	
+	
+	
 	// Called when we apply or accept changes in Project Preferences form
 	public static boolean checkSchemaVersion() {
 		
@@ -985,6 +998,7 @@ public class MainDao {
 			}
 			if (updateSchema(schemaVersion)) {
 				schemaMap.remove(schema);
+				insertVersion(true);
 				return true;
 			}
 			else {
@@ -1015,10 +1029,10 @@ public class MainDao {
 			String fileName = files[files.length-1].getName();
 			String newFileName = fileName;
 			boolean renameFile = false;
-			// Replace islast.sql to @giswaterVersion.sql
-			if (fileName.equals("islast.sql")) {
+			// Replace is_last.sql to @giswaterVersion.sql
+			if (fileName.equals("is_last.sql")) {
 				renameFile = true;
-				newFileName = fileName.replace("islast", giswaterVersion);		
+				newFileName = fileName.replace("is_last", giswaterVersion);		
 			}
 			newFileName = newFileName.replace(softwareAcronym+"_", "").replace("sql", "").replace(".", "");
 			Integer fileVersion = Utils.parseInt(newFileName);
@@ -1034,18 +1048,14 @@ public class MainDao {
 		}
 		
 	}
-
 	
-	public static boolean updateSchema() {
-		return updateSchema(0);
-	}
 	
 	public static boolean updateSchema(Integer schemaVersion) {
 		
 		boolean status = true;
 		
 		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder + softwareAcronym + File.separator;
+		String folder = updatesFolder+softwareAcronym+File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null) {
 			Arrays.sort(files);

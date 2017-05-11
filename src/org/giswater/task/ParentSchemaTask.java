@@ -48,13 +48,18 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected boolean status;
 	protected PropertiesMap prop;		
 	
-	protected String folderRootPath;	
+	protected String folderRootPath;
+	protected String folderSoftware;
+	protected String folderLocale;
+	protected String folderUtils;
+	protected String folderUpdates;
 	protected String folderFct;
 	protected String folderTrg;
 	protected String folderFctUtils;
 	protected String folderViews;	
 	
 	protected final String FILE_PATTERN_FK = "_fk";	
+	protected final String FILE_PATTERN_DDL = "ddl";	
 	protected final String FILE_PATTERN_FCT = "fct";
 	protected final String FILE_PATTERN_TRG = "trg";	
 	protected final String FILE_PATTERN_VIEW = "view";	
@@ -252,18 +257,6 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	}	
 	
 	
-	protected boolean insertVersion(boolean commit) {
-		
-		String language = prop.get("LANGUAGE", "en").toLowerCase();		
-		String sql = "INSERT INTO "+schemaName+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
-			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
-			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
-		Utils.logInfo(sql);
-		return MainDao.executeSql(sql, commit);	
-
-	}
-	
-	
 	protected void emptyFolder(String folderPath) {
 		
 		File folder = new File(folderPath);
@@ -275,6 +268,38 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		} catch (Exception e) {
 			Utils.logError(e);
 		}     		
+		
+	}
+	
+	
+	// Iterate over all files inside selected folder
+	public boolean processUpdateFolder(String folderPath) {
+		
+		boolean status = true;
+		
+		File folderRoot = new File(folderPath);
+		File[] files = folderRoot.listFiles();
+		if (files == null || files.length == 0) {
+			Utils.logError("Folder not found or without files: "+folderPath);				
+			return true;
+		}		
+		Arrays.sort(files);
+		for (File file : files) {
+	    	String content;
+			try {
+				Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+				content = Utils.readFile(file.getAbsolutePath());
+				content = content.replace("SCHEMA_NAME", schemaName);
+				content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
+				status = MainDao.executeSql(content, false);
+				// Abort process if one script fails
+				if (!status) return false;
+			} catch (IOException e) {
+				Utils.logError(e);
+			}
+		}	
+		
+		return status;
 		
 	}
 	
