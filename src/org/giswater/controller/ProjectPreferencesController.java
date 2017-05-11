@@ -165,11 +165,7 @@ public class ProjectPreferencesController extends AbstractController {
 		customizePanel();
 		
 		// Check schema version
-		boolean updated = MainDao.checkSchemaVersion();
-		// If project has been updated, execute copy functions
-		if (updated) {
-			filesToDb();
-		}
+		MainDao.checkSchemaVersion();
 		schemaChanged();
 		
 		return true;
@@ -177,7 +173,6 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	// TODO: Older acceptPreferences. Now has to open EpaSoftPanel
 	public void openEpaSoft() {
 		if (applyPreferences()) {
 			closePreferences();	
