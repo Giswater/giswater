@@ -180,9 +180,9 @@ public class MainDao {
         ConfigDao.setInpFolder(inpFolder);
         updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
         Utils.logInfo("SQL updates folder: " +updatesFolder);
-        
+
         // Manage SQL updates
-    	updateMap = new HashMap<String, Integer>();
+    	  updateMap = new HashMap<String, Integer>();
         if (exeMode.equals("versionToIsLast")) {
         	replaceVersionToIsLast();
         }
@@ -193,7 +193,7 @@ public class MainDao {
         	manageLastVersion();
         }
         
-    	// Set Config DB connection
+      	// Set Config DB connection
         if (!ConfigDao.setConnectionConfig()) {
         	return false;
         }
@@ -1067,11 +1067,11 @@ public class MainDao {
 		
 	}	
 
-
+		
 	// Replace SQL files of selected folders. From is_last.sql to @giswaterVersion.sql
 	private static void replaceIsLastToVersion() {
 		
-		Utils.logInfo("Replacing 'is_last.sql' to '@giswaterVersion.sql'");
+		  Utils.logInfo("Replacing 'is_last.sql' to '@giswaterVersion.sql'");
     	isLastToVersion("ws");
     	isLastToVersion("ud");
     	isLastToVersion("utils");
