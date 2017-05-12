@@ -35,5 +35,5 @@ INSERT INTO "om_visit_parameter" VALUES ('png','FOTOGRAFIA','TOTS', '', '');
 -- ----------------------------
 -- Records of event om_visit_value_position table
 -- ----------------------------
-INSERT INTO "om_visit_parameter" VALUES ('inferior', 'NODE', 'descripcio');
-INSERT INTO "om_visit_parameter" VALUES ('superior', 'NODE', 'descripcio');
+INSERT INTO "om_visit_value_position" VALUES ('inferior', 'NODE', 'descripcio');
+INSERT INTO "om_visit_value_position" VALUES ('superior', 'NODE', 'descripcio');
