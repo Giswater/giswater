@@ -180,13 +180,19 @@ public class MainDao {
         ConfigDao.setInpFolder(inpFolder);
         updatesFolder = Utils.getAppPath()+"sql"+File.separator+"updates"+File.separator;
         Utils.logInfo("SQL updates folder: " +updatesFolder);
+        
+        // Manage SQL updates
+    	updateMap = new HashMap<String, Integer>();
         if (exeMode.equals("versionToIsLast")) {
         	replaceVersionToIsLast();
         }
         else if (exeMode.equals("isLastToVersion")) {
         	replaceIsLastToVersion();
         }        
-
+        else {
+        	manageLastVersion();
+        }
+        
     	// Set Config DB connection
         if (!ConfigDao.setConnectionConfig()) {
         	return false;
@@ -1021,9 +1027,10 @@ public class MainDao {
 	}
 	
 	
+	// Replace SQL files of selected folders. From @giswaterVersion.sql to is_last.sql
 	private static void replaceVersionToIsLast() {
 		
-		// Get last update script version from every software
+		Utils.logInfo("Replacing '@giswaterVersion.sql' to 'is_last.sql'");		
 		versionToIsLast("ws");
 		versionToIsLast("ud");
 		versionToIsLast("utils");
@@ -1060,12 +1067,11 @@ public class MainDao {
 		
 	}	
 
-		
+
+	// Replace SQL files of selected folders. From is_last.sql to @giswaterVersion.sql
 	private static void replaceIsLastToVersion() {
 		
-		Utils.logInfo("Searching and replacing 'is_last.sql' files");
-		// Get last update script version from every software
-    	updateMap = new HashMap<String, Integer>();
+		Utils.logInfo("Replacing 'is_last.sql' to '@giswaterVersion.sql'");
     	isLastToVersion("ws");
     	isLastToVersion("ud");
     	isLastToVersion("utils");
@@ -1108,6 +1114,22 @@ public class MainDao {
 	}
 	
 	
+	// Set last SQL version to current version
+	private static void manageLastVersion() {
+		
+		Utils.logInfo("Setting last version...");		
+		Integer fileVersion = Utils.parseInt(giswaterVersion.replace(".", ""));		
+		updateMap.put("ws", fileVersion);
+		updateMap.put("ud", fileVersion);
+		updateMap.put("utils", fileVersion);
+		updateMap.put("i18n"+File.separator+"ca", fileVersion);
+		updateMap.put("i18n"+File.separator+"en", fileVersion);
+		updateMap.put("i18n"+File.separator+"es", fileVersion);
+		updateMap.put("i18n"+File.separator+"pt_br", fileVersion);
+		
+	}	
+	
+	
 	public static boolean updateSchema(Integer schemaVersion) {
 		
 		String folderPath = "";
@@ -1120,9 +1142,9 @@ public class MainDao {
 		folderPath = updatesFolder+"utils"+File.separator;
 		if (!processFolder(folderPath, schemaVersion)) return false;
 		
-		// Process folder updates/i18n/<locale>	
+		// Process folder updates/i18n/<locale>/<watersoftware>	
 		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
-		folderPath = updatesFolder+"i18n"+File.separator+language+File.separator;
+		folderPath = updatesFolder+"i18n"+File.separator+language+File.separator+softwareAcronym+File.separator;
 		if (!processFolder(folderPath, schemaVersion)) return false;		
 		
 		return true;
@@ -1137,9 +1159,12 @@ public class MainDao {
 		if (files != null) {
 			Arrays.sort(files);
 			for (File file : files) {
-				String fileName = file.getName().replace(waterSoftware.toLowerCase()+"_", "").replace(".sql", "");
-				Integer fileVersion = Utils.parseInt(fileName);			
-				if (fileVersion > schemaVersion) {
+				Integer fileVersion = -1;
+				String fileName = file.getName().replace(".sql", "");
+				if (!fileName.equals("is_last")){
+					fileVersion = Utils.parseInt(fileName);			
+				} 
+				if (fileVersion > schemaVersion || fileName.equals("is_last")) {
 			    	String content;
 					try {
 						Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
