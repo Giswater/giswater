@@ -21,9 +21,9 @@ INSERT INTO "node_type" VALUES ('CANVI DE SECCIO','JUNCTION', 'JUNCTION', 'man_j
 INSERT INTO "node_type" VALUES ('PUNT ALT','JUNCTION', 'JUNCTION', 'man_junction', 'inp_junction','event_x_junction');
 INSERT INTO "node_type" VALUES ('SALT','JUNCTION', 'JUNCTION', 'man_junction', 'inp_junction','event_x_junction');
 INSERT INTO "node_type" VALUES ('ARQUETA SORRERA','JUNCTION', 'JUNCTION', 'man_junction', 'inp_junction','event_x_junction');
-INSERT INTO "node_type" VALUES ('PRESA','JUNCTION', 'JUNCTION', 'man_junction', 'inp_junction','event_x_junction');
+INSERT INTO "node_type" VALUES ('UNIO','JUNCTION', 'JUNCTION', 'man_junction', 'inp_junction','event_x_junction');
 INSERT INTO "node_type" VALUES ('DIPOSIT','STORAGE', 'STORAGE', 'man_storage', 'inp_storage','event_x_storage');
-INSERT INTO "node_type" VALUES ('DIPOSIT DE DESBORDAMENT','STORAGE', 'STORAGE', 'man_storage', 'inp_storage','event_x_storage');
+INSERT INTO "node_type" VALUES ('DIPOSIT DE PLUJA','STORAGE', 'STORAGE', 'man_storage', 'inp_storage','event_x_storage');
 INSERT INTO "node_type" VALUES ('DESGUAS','OUTFALL','OUTFALL', 'man_outfall', 'inp_outfall', 'event_x_outfall');
 
 
