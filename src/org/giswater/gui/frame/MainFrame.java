@@ -258,6 +258,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm"); 
 		
 		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); //$NON-NLS-1$
+		mntmExampleEpaswmm2D.setEnabled(false);
 		mntmExampleEpaswmm2D.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
 		mntmExampleEpaswmm2D.setActionCommand("exampleEpaswmm2D");
 		mnProjectExample.add(mntmExampleEpaswmm2D);
@@ -616,7 +617,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmSaveProject.setEnabled(enable);
 		mntmExampleEpanet.setEnabled(enable);
 		mntmExampleEpaswmm.setEnabled(enable);
-		mntmExampleEpaswmm2D.setEnabled(enable);
 	}
 	
 	
