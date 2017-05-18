@@ -332,16 +332,31 @@ public class MainDao {
 	}
 	
 	
+	public static boolean createExtension(String extension) {
+		
+		// Check if we can add this extension
+		String sql = "SELECT * FROM pg_available_extensions() WHERE name = '"+extension+"'";
+		String value = queryToString(sql);
+		if (value != "") {
+			sql = "CREATE EXTENSION IF NOT EXISTS "+extension;
+			executeUpdateSql(sql, true, false);
+		}
+		return true;
+		
+	}
+	
+	
 	private static boolean checkPostgis() {
 		
 		// Check Postgre and Postgis versions
 		postgreVersion = MainDao.checkPostgreVersion();	        
 		postgisVersion = MainDao.checkPostgisVersion();	        
 		Utils.getLogger().info("Postgre version: " + postgreVersion);
-		if (postgisVersion.equals("")){
+		if (postgisVersion.equals("")) {
 			// Enable Postgis to current Database
-			String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
-			executeUpdateSql(sql, true, false);			  	
+			createExtension("postgis");
+			createExtension("postgis_topology");
+			createExtension("pgrouting");
 		}
 		else {
 			Utils.getLogger().info("Postgis version: " + postgisVersion);
@@ -682,8 +697,12 @@ public class MainDao {
     
     // Get Postgis version
     public static String checkPostgisVersion() {
-        String sql = "SELECT PostGIS_full_version()";
-        return queryToString(sql, false);
+    	String result = "";
+    	if (checkFunction(schema, "PostGIS_full_version")) {
+    		String sql = "SELECT PostGIS_full_version()";
+    		result = queryToString(sql, false);
+    	}
+    	return result;
     }
     
     

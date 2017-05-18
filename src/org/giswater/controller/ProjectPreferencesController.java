@@ -281,8 +281,9 @@ public class ProjectPreferencesController extends AbstractController {
         	String postgisVersion = MainDao.checkPostgisVersion();	        
         	if (postgisVersion.equals("")) {
         		// Enable Postgis to current Database
-        		String sql = "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;";
-        		MainDao.executeUpdateSql(sql, true, false);			  	
+    			MainDao.createExtension("postgis");
+    			MainDao.createExtension("postgis_topology");
+    			MainDao.createExtension("pgrouting");    			
         	}
         	else {
         		Utils.getLogger().info("Postgis version: " + postgisVersion);
