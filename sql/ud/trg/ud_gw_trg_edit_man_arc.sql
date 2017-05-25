@@ -144,7 +144,7 @@ BEGIN
 		ELSIF (NEW.epa_type = 'OUTLET') THEN 
             INSERT INTO inp_outlet (arc_id, outlet_type) VALUES (NEW.arc_id,'TABULAR/HEAD');
 			
-		END IF
+		END IF;
   
 		RETURN NEW;
            
