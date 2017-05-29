@@ -40,29 +40,25 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	setProgress(1);
     	
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
-		if (MainDao.executeUpdateSql(sql, true, true)) {
+		if (MainDao.executeUpdateSql(sql, false, true)) {
 			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
 				sql = "ALTER SCHEMA "+currentSchemaName+"_audit RENAME TO "+schemaName+"_audit";
-				MainDao.executeUpdateSql(sql, true);	
+				MainDao.executeUpdateSql(sql, false);	
 			}
 			
 			// Execute SQL's that its name contains '_view' (corresponding to views)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
+			if (!status) return null;
 			
 			// Execute SQL's that its name contains '_fct' (corresponding to functions)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
+			if (!status) return null;
 			
 			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);			
-			
-			if (status) {
-				MainDao.commit();
-			}
-			else{
-				MainDao.rollback();
-			}
+			if (!status) return null;
 			
 			// Refresh view
 			controller.selectSourceType(false);
@@ -80,9 +76,11 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
+    		MainDao.commit();
     		MainClass.mdi.showMessage(Utils.getBundleString("project_renamed_ok"));    		
     	}
     	else {
+    		MainDao.rollback();
     		MainClass.mdi.showError(Utils.getBundleString("project_not_copied"));
     	}
 		
