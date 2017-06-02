@@ -67,9 +67,7 @@ public class MainDao {
 	private static HashMap<String, Integer> updateMap;   // <folderPath, lastUpdateScript>
     
     private static final String FOLDER_NAME = "giswater" + File.separator;
-	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
-	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
 	private static final String TABLE_EPANET = "inp_demand";		
 	private static final String TABLE_EPASWMM = "inp_divider";		
 	private static final Integer NUMBER_OF_ATTEMPTS = 2;		
@@ -389,43 +387,14 @@ public class MainDao {
 		
 		commonSteps();
 		if (isConnected) {
-			if (db.equals(DEFAULT_DB)) {
-				if (!MainDao.checkDatabase(INIT_DB)) {
-					Utils.getLogger().info("Creating database... " + INIT_DB);
-					if (!initDatabase()) {
-						return false;
-					}
-					PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", INIT_DB);
-					// Close current connection in order to connect later to Database just created: giswater_ddb
-					closeConnectionPostgis();	
-					return true;
-				} 
-			} 
 			return true;
 		}
-		
-		Utils.getLogger().info("initializeDatabase: Autoconnection error");			
-		return false;
-		
-	}	 	
-    
-	
-	private static boolean initDatabase() {
-		
-		// Execute script that creates working Database
-		String filePath = Utils.getAppPath() + "sql" + File.separator + INIT_GISWATER_DDB;
-    	String content;
-		try {
-			content = Utils.readFile(filePath);
-			executeUpdateSql(content, true, false);
-		} catch (IOException e) {
-			Utils.logError(e);
+		else {
+			Utils.getLogger().info("initializeDatabase: Autoconnection error");			
 			return false;
 		}
-		return true;
-
-	}
-	
+		
+	}	 	
 	
 	
 	public static void commit() {
