@@ -21,7 +21,7 @@ BEGIN
     epa_type:= TG_ARGV[1];
     
     IF TG_OP = 'INSERT' THEN
-        RETURN audit_function(155,790); 
+        PERFORM audit_function(155,790); 
  
 
     ELSIF TG_OP = 'UPDATE' THEN
@@ -50,7 +50,7 @@ BEGIN
 
 
     ELSIF TG_OP = 'DELETE' THEN
-        RETURN audit_function(157,790); 
+        PERFORM audit_function(157,790); 
     
     END IF;
     

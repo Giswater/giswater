@@ -90,7 +90,7 @@ BEGIN
     --Insert into result catalog tables
     PERFORM gw_fct_mincut_result_catalog();
 
-    RETURN audit_function(0,320);
+    PERFORM audit_function(0,320);
 
 END;
 $BODY$

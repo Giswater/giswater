@@ -51,7 +51,7 @@ BEGIN
         -- Node type
         IF (NEW.node_type IS NULL) THEN
             IF ((SELECT COUNT(*) FROM node_type WHERE node_type.man_table=man_table_2) = 0) THEN
-                RETURN audit_function(105,830);  
+                PERFORM audit_function(105,830);  
             END IF;
             NEW.node_type:= (SELECT id FROM node_type WHERE node_type.man_table=man_table_2 LIMIT 1);
         END IF;
@@ -64,29 +64,29 @@ BEGIN
         -- Node Catalog ID
         IF (NEW.nodecat_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM cat_node) = 0) THEN
-                RETURN audit_function(110,830);  
+                PERFORM audit_function(110,830);  
             END IF;      
         END IF;
 
         -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,830);  
+                PERFORM audit_function(115,830);  
             END IF;
             NEW.sector_id:= (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,830);          
+                PERFORM audit_function(120,830);          
             END IF;            
         END IF;
         
         -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,830);  
+                PERFORM audit_function(125,830);  
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,830);  
+                PERFORM audit_function(130,830);  
             END IF;            
         END IF;
 		
@@ -345,7 +345,7 @@ BEGIN
 
 /*
 	IF (NEW.elev <> OLD.elev) THEN
-                RETURN audit_function(200,830);  
+                PERFORM audit_function(200,830);  
 	END IF;
 
         NEW.elev=NEW.top_elev-NEW.ymax;

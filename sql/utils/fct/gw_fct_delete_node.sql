@@ -96,20 +96,20 @@ BEGIN
 
             -- Pipes has different types
             ELSE
-                RETURN audit_function(510,80);
+                PERFORM audit_function(510,80);
             END IF;
          
         -- Node has not 2 arcs
         ELSE
-            RETURN audit_function(515,80);
+            PERFORM audit_function(515,80);
         END IF;
 
     -- Node not found
     ELSE 
-        RETURN audit_function(505,80);
+        PERFORM audit_function(505,80);
     END IF;
 
-    RETURN audit_function(0,80);
+    PERFORM audit_function(0,80);
 
 END;
 $BODY$
