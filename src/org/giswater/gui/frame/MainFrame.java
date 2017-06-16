@@ -494,7 +494,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		EpaSoftPanel epaSoftPanel = epaSoftFrame.getPanel();
 		PropertiesDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
 		PropertiesDao.getGswProperties().put("FILE_RPT", epaSoftPanel.getFileRpt());
-		PropertiesDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getProjectName());   
+		PropertiesDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getResultName());   
     	
 	}    
     

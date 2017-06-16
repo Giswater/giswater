@@ -120,7 +120,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 2,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][34px:n][45px:n][34px:n][45px:n][][]"));
+		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][24px:n][34px:n][40px:n][34px:n][40px:n][][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
@@ -128,18 +128,30 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		chkExport.setText(BUNDLE.getString("EpaSoftPanel.chkExport.text")); 
 		panelFileManager.add(chkExport, "cell 0 0 2 1,aligny bottom");
 		
+		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);	
+		
 		chkSubcatchments = new JCheckBox();
 		chkSubcatchments.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkSubcatchments.toolTipText")); //$NON-NLS-1$
 		chkSubcatchments.setVisible(false);
 		chkSubcatchments.setText(BUNDLE.getString("EpaSoftPanel.chkSubcatchments.text")); //$NON-NLS-1$
 		panelFileManager.add(chkSubcatchments, "cell 3 0");
+				
+		lblResultName = new JLabel();
+		lblResultName.setText(BUNDLE.getString("Form.label_2.text")); 
+		lblResultName.setName("lbl_project");
+		panelFileManager.add(lblResultName, "cell 1 1,alignx right");
+		
+		txtResultName = new JTextField();
+		txtResultName.setName("txt_project");
+		txtResultName.setDocument(maxLength);				
+		panelFileManager.add(txtResultName, "cell 3 1,growx,aligny top");
 
 		JLabel label = new JLabel();
 		label.setText(BUNDLE.getString("Form.label.text")); 
-		panelFileManager.add(label, "cell 1 1,alignx right");
+		panelFileManager.add(label, "cell 1 2,alignx right");
 		
 		scrollPane_2 = new JScrollPane();
-		panelFileManager.add(scrollPane_2, "cell 3 1,grow");
+		panelFileManager.add(scrollPane_2, "cell 3 2,grow");
 
 		txtFileInp = new JTextArea();
 		scrollPane_2.setViewportView(txtFileInp);
@@ -151,20 +163,20 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileInp.setActionCommand("chooseFileInp");
 		btnFileInp.setText("...");
 		btnFileInp.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileInp, "cell 5 1,growx");
+		panelFileManager.add(btnFileInp, "cell 5 2,growx");
 
 		chkExec = new JCheckBox();
 		chkExec.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExec.toolTipText")); //$NON-NLS-1$
 		chkExec.setText(BUNDLE.getString("EpaSoftPanel.chkExec.text"));  //$NON-NLS-1$
 		chkExec.setName("chk_exec");
-		panelFileManager.add(chkExec, "cell 0 2 3 1,alignx left,aligny bottom");
+		panelFileManager.add(chkExec, "cell 0 3 3 1,alignx left,aligny bottom");
 
 		lblFileRpt = new JLabel();
 		lblFileRpt.setText(BUNDLE.getString("Form.label_1.text")); 
-		panelFileManager.add(lblFileRpt, "cell 1 3,alignx right");
+		panelFileManager.add(lblFileRpt, "cell 1 4,alignx right");
 		
 		scrollPane_3 = new JScrollPane();
-		panelFileManager.add(scrollPane_3, "cell 3 3,grow");
+		panelFileManager.add(scrollPane_3, "cell 3 4,grow");
 
 		txtFileRpt = new JTextArea();
 		scrollPane_3.setViewportView(txtFileRpt);
@@ -176,24 +188,14 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileRpt.setActionCommand("chooseFileRpt");
 		btnFileRpt.setText("...");
 		btnFileRpt.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panelFileManager.add(btnFileRpt, "cell 5 3,growx");
+		panelFileManager.add(btnFileRpt, "cell 5 4,growx");
 
 		chkImport = new JCheckBox();
+		chkImport.setActionCommand("importSelected");
 		chkImport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkImport.toolTipText")); //$NON-NLS-1$
 		chkImport.setText(BUNDLE.getString("EpaSoftPanel.chkImport.text")); 
 		chkImport.setName("chk_import");
-		panelFileManager.add(chkImport, "cell 0 4 2 1,aligny bottom");
-
-		lblResultName = new JLabel();
-		lblResultName.setText(BUNDLE.getString("Form.label_2.text")); 
-		lblResultName.setName("lbl_project");
-		panelFileManager.add(lblResultName, "cell 1 5,alignx right");
-
-		txtResultName = new JTextField();
-		txtResultName.setName("txt_project");
-		MaxLengthTextDocument maxLength = new MaxLengthTextDocument(16);		
-		txtResultName.setDocument(maxLength);				
-		panelFileManager.add(txtResultName, "cell 3 5,growx,aligny top");
+		panelFileManager.add(chkImport, "cell 0 5 2 1,aligny bottom");	
 		
 		btnAccept = new JButton();
 		btnAccept.setPreferredSize(new Dimension(115, 9));
@@ -202,7 +204,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept.setText(BUNDLE.getString("Generic.btnAccept.text")); 
 		btnAccept.setName("btn_accept_postgis");
 		btnAccept.setActionCommand("execute");
-		panelFileManager.add(btnAccept, "flowx,cell 5 6 2 1,growx");
+		panelFileManager.add(btnAccept, "flowx,cell 5 7 2 1,growx");
 		
 		btnProjectPreferences = new JButton("Project Preferences");
 		btnProjectPreferences.setMinimumSize(new Dimension(130, 23));
@@ -231,6 +233,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnFileInp.addActionListener(this);
 		btnFileRpt.addActionListener(this);
 		chkExport.addActionListener(this);
+		chkImport.addActionListener(this);		
 		btnAccept.addActionListener(this);
 		
 		btnProjectPreferences.addActionListener(this);
@@ -282,7 +285,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		txtResultName.setText(projectName);
 	}
 
-	public String getProjectName() {
+	public String getResultName() {
 		return txtResultName.getText().trim();
 	}
 	
@@ -301,6 +304,13 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	public boolean isImportSelected() {
 		return chkImport.isSelected();
 	}	
+	
+	public void setSelected(boolean selected) {
+		chkExport.setSelected(selected);
+		chkExec.setSelected(selected);
+		chkExport.setEnabled(!selected);
+		chkExec.setEnabled(!selected);
+	}
 	
 	public void enableRunAndImport(boolean enable) {
 		chkExec.setEnabled(enable);

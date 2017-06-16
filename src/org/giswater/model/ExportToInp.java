@@ -44,6 +44,7 @@ import org.giswater.util.Utils;
 
 public class ExportToInp extends Model {
 
+	private static final String PROJECT_TABLE = "v_inp_project_id";
 	private static final String OPTIONS_TABLE = "v_inp_options";
 	private static final String REPORTS_TABLE = "v_inp_report";
 	private static final String REPORTS_TABLE2 = "inp_report";
@@ -86,10 +87,10 @@ public class ExportToInp extends Model {
 	
 	
     // Export to INP 
-    public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51) {
+    public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51, String resultName) {
 
         Utils.getLogger().info("exportINP");
-        String sql= "";
+        String sql = "";
         ExportToInp.isVersion51 = isVersion51;
         
         try {
@@ -105,7 +106,7 @@ public class ExportToInp extends Model {
             }
             
             // Get INP template File
-            String templatePath = ConfigDao.getInpFolder() + softwareVersion + ".inp";
+            String templatePath = ConfigDao.getInpFolder()+softwareVersion+".inp";
             File fileTemplate = new File(templatePath);
             if (!fileTemplate.exists()) {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
@@ -129,12 +130,15 @@ public class ExportToInp extends Model {
             Statement stat = connectionDrivers.createStatement();            
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()) {
-            	Utils.getLogger().info("INP target: " + rs.getInt("target_id") + " - " + rs.getString("table_name") + " - " + rs.getInt("lines"));
+            	Utils.getLogger().info("INP target: "+rs.getInt("target_id")+" - "+rs.getString("table_name")+" - "+rs.getInt("lines"));
             	if (rs.getString("table_name").equals(OPTIONS_TABLE) || 
             		rs.getString("table_name").equals(REPORTS_TABLE) || rs.getString("table_name").equals(REPORTS_TABLE2) ||
             		rs.getString("table_name").equals(TIMES_TABLE)) {
             		processTarget2(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
             	}
+            	else if (rs.getString("table_name").equals(PROJECT_TABLE)) {
+                		processTargetTitle(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"), resultName);
+                	}            	
             	else {
             		processTarget(rs.getInt("target_id"), rs.getString("table_name"), rs.getInt("lines"));
             	}
@@ -350,6 +354,30 @@ public class ExportToInp extends Model {
 
     }    
 
+    
+	// Process target title
+    private static void processTargetTitle(int id, String tableName, int lines, String resultName) throws IOException, SQLException {
+
+        // Go to the first line of the target
+        for (int i = 1; i <= lines; i++) {
+            String line = rat.readLine().trim();
+            raf.writeBytes(line + "\r\n");
+        }
+
+        // If table is null or doesn't exit then exit function
+        if (!MainDao.checkTable(MainDao.getSchema(), tableName) && !MainDao.checkView(MainDao.getSchema(), tableName)) {
+        	Utils.getLogger().info("Table or view doesn't exist: " + tableName);
+            return;
+        }
+
+        // Get project title from database
+        String sql = "SELECT title FROM "+MainDao.getSchema()+"."+tableName;
+        String projectId = MainDao.queryToString(sql);
+        raf.writeBytes(";Project name: "+projectId+"\r\n");
+        raf.writeBytes(";Result name: "+resultName+"\r\n");
+
+    }   
+    
     
     // Read content of the table saved it in an Array
     private static ArrayList<LinkedHashMap<String, String>> getTableData(String tableName) {

@@ -130,9 +130,14 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 	controller.showSectorSelection();
                 }
                 return null;
-            }               
+            }   
+            String resultName = view.getResultName();
+            if (resultName.equals("")) {
+                Utils.showError("project_name");
+                return null;
+            }       
             boolean selected = view.isSubcatchmentsSelected();
-            continueExec = ExportToInp.process(fileInp, selected, isVersion51);
+            continueExec = ExportToInp.process(fileInp, selected, isVersion51, resultName);
         }
 
         // Run SWMM
@@ -154,12 +159,12 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 Utils.showError("file_rpt_not_selected");
                 return null;
             }            
-            String projectName = view.getProjectName();
-            if (projectName.equals("")) {
+            String resultName = view.getResultName();
+            if (resultName.equals("")) {
                 Utils.showError("project_name");
             } 
             else {
-           		continueExec = ImportRpt.process(fileRpt, projectName);
+           		continueExec = ImportRpt.process(fileRpt, resultName);
             	Model.closeFile();
             	if (!continueExec) {
 					MainDao.rollback();
