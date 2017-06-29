@@ -36,7 +36,7 @@ BEGIN
          -- Arc type
         IF (NEW.arc_type IS NULL) THEN
             IF ((SELECT COUNT(*) FROM arc_type) = 0) THEN
-                RETURN audit_function(140,840);  
+                PERFORM audit_function(140,840);  
             END IF;
             NEW.arc_type:= (SELECT id FROM arc_type WHERE arc_type.man_table=man_table_2 LIMIT 1);   
         END IF;
@@ -49,29 +49,29 @@ BEGIN
         -- Arc catalog ID
         IF (NEW.arccat_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM cat_arc) = 0) THEN
-                RETURN audit_function(145,840); 
+                PERFORM audit_function(145,840); 
             END IF; 
         END IF;
         
         -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,840); 
+                PERFORM audit_function(115,840); 
             END IF;
             NEW.sector_id := (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,840); 
+                PERFORM audit_function(120,840); 
             END IF;
         END IF;
         
         -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,840); 
+                PERFORM audit_function(125,840); 
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,840); 
+                PERFORM audit_function(130,840); 
             END IF;
         END IF;
     
@@ -144,7 +144,7 @@ BEGIN
 		ELSIF (NEW.epa_type = 'OUTLET') THEN 
             INSERT INTO inp_outlet (arc_id, outlet_type) VALUES (NEW.arc_id,'TABULAR/HEAD');
 			
-		END IF
+		END IF;
   
 		RETURN NEW;
            

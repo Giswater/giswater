@@ -38,7 +38,7 @@ BEGIN
 
         -- Control de lineas de longitud 0
         IF (nodeRecord1.node_id = nodeRecord2.node_id) AND (rec.samenode_init_end_control IS TRUE) THEN
-            RETURN audit_function (180,750);
+            PERFORM audit_function (180,750);
             
         ELSE
             -- Update coordinates
@@ -115,11 +115,11 @@ BEGIN
 
     -- Error, no existing nodes
     ELSIF ((nodeRecord1.node_id IS NULL) OR (nodeRecord2.node_id IS NULL)) AND (rec.arc_searchnodes_control IS TRUE) THEN
-        RETURN audit_function (182,750);
+        PERFORM audit_function (182,750);
     ELSIF ((nodeRecord1.node_id IS NULL) OR (nodeRecord2.node_id IS NULL)) AND (rec.arc_searchnodes_control IS FALSE) THEN
         RETURN NEW;
     ELSE
-        RETURN audit_function (182,750);
+        PERFORM audit_function (182,750);
     END IF;
     
 END;  

@@ -44,16 +44,24 @@ public class CopySchemaTask extends ParentSchemaTask {
 
 		String sql = "SELECT "+currentSchemaName+".clone_schema('"+currentSchemaName+"', '"+schemaName+"')";
 		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
-		status = MainDao.executeSql(sql, true);
-		if (status){
+		status = MainDao.executeSql(sql, false);
+		
+		if (status) {
 			// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FK);
+			if (!status) return null;
+			
 			// Execute SQL's that its name contains 'view' (corresponding to views)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
+			if (!status) return null;
+			
 			// Execute SQL's that its name contains 'fct' (corresponding to functions)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
+			if (!status) return null;
+			
 			// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
-			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);			
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);
+			if (!status) return null;
 		}
 		
 		// Refresh view
@@ -70,9 +78,11 @@ public class CopySchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
+    		MainDao.commit();
     		MainClass.mdi.showMessage(Utils.getBundleString("project_copied_successfuly"));    		
     	}
     	else {
+    		MainDao.rollback();
     		MainClass.mdi.showError(Utils.getBundleString("project_not_copied"));
     	}
 		

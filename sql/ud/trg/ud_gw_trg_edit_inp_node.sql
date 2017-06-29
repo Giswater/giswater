@@ -22,7 +22,7 @@ BEGIN
     
     -- Control insertions ID
     IF TG_OP = 'INSERT' THEN
-        RETURN audit_function(160,800); 
+        PERFORM audit_function(160,800); 
 
 
     ELSIF TG_OP = 'UPDATE' THEN
@@ -48,7 +48,7 @@ BEGIN
 
 
     ELSIF TG_OP = 'DELETE' THEN
-        RETURN audit_function(163,800);
+        PERFORM audit_function(163,800);
     
     END IF;
        
