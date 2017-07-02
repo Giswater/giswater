@@ -86,7 +86,7 @@ BEGIN
             EXECUTE v_sql;
         END IF;
      
-		PERFORM audit_function(1,340); 
+	--	PERFORM audit_function(1,340); 
         RETURN NEW;
     
     ELSIF TG_OP = 'UPDATE' THEN
@@ -121,7 +121,7 @@ BEGIN
 
      ELSIF TG_OP = 'DELETE' THEN   
         DELETE FROM arc WHERE arc_id = OLD.arc_id;
-        PERFORM audit_function(3,340); 
+     --   PERFORM audit_function(3,340); 
         RETURN NULL;
      
      END IF;

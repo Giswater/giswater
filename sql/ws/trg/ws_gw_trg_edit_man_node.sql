@@ -463,7 +463,7 @@ BEGIN
 	END IF;
 
             
-        PERFORM audit_function(2,430); 
+       -- PERFORM audit_function(2,430); 
         RETURN NEW;
     
 
@@ -471,7 +471,7 @@ BEGIN
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM node WHERE node_id = OLD.node_id;
-        PERFORM audit_function(3,430); 
+     --   PERFORM audit_function(3,430); 
         RETURN NULL;
    
     END IF;

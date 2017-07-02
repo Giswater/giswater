@@ -43,7 +43,7 @@ BEGIN
             UPDATE inp_outfall SET node_id=NEW.node_id,outfall_type=NEW.outfall_type,stage=NEW.stage,curve_id=NEW.curve_id,timser_id=NEW.timser_id,gate=NEW.gate WHERE node_id=OLD.node_id;
         END IF;
 
-        PERFORM audit_function(2,800); 
+     --   PERFORM audit_function(2,800); 
         RETURN NEW;
 
 

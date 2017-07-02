@@ -100,7 +100,7 @@ BEGIN
         v_sql:= 'INSERT INTO '||man_table||' (node_id) VALUES ('||quote_literal(NEW.node_id)||')';
         EXECUTE v_sql;
             
-        PERFORM audit_function (1,810);
+       -- PERFORM audit_function (1,810);
         RETURN NEW;
 
 
@@ -162,14 +162,14 @@ BEGIN
             est_top_elev=NEW.est_top_elev, est_ymax=NEW.est_ymax, rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom, workcat_id_end=NEW.workcat_id_end, undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y, label_rotation=NEW.label_rotation 
         WHERE node_id = OLD.node_id;
                 
-		PERFORM audit_function (2,810);
+	--	PERFORM audit_function (2,810);
         RETURN NEW;
     
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM node WHERE node_id = OLD.node_id;
 
-		PERFORM audit_function (3,810);
+	--	PERFORM audit_function (3,810);
         RETURN NULL;
    
     END IF;
