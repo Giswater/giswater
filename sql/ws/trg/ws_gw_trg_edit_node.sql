@@ -98,7 +98,7 @@ BEGIN
             EXECUTE v_sql;
         END IF;
 
-        PERFORM audit_function(1,380); 
+      --  PERFORM audit_function(1,380); 
         RETURN NEW;
 
 
@@ -178,13 +178,13 @@ BEGIN
 			label_rotation=NEW.label_rotation 
         WHERE node_id = OLD.node_id;
             
-        PERFORM audit_function(2,380); 
+      --  PERFORM audit_function(2,380); 
         RETURN NEW;
     
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM node WHERE node_id = OLD.node_id;
-        PERFORM audit_function(3,380); 
+    --    PERFORM audit_function(3,380); 
         RETURN NULL;
    
     END IF;

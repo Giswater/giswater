@@ -61,7 +61,7 @@ BEGIN
                             NEW.ownercat_id, NEW.adress_01, NEW.adress_02, NEW.adress_03, NEW.streetaxis_id, NEW.postnumber, NEW.descript, NEW.link, NEW.verified, NEW.the_geom, 
                             NEW.workcat_id_end,NEW.y1,NEW.y2,NEW.undelete,NEW.featurecat_id,NEW.feature_id,NEW.private_connecat_id, NEW.label_x, NEW.label_y, NEW.label_rotation, NEW.accessibility, NEW.diagonal,NEW.connec_type );
               
-        PERFORM audit_function (1,860);
+      --  PERFORM audit_function (1,860);
         RETURN NEW;
 
 
@@ -82,14 +82,14 @@ BEGIN
 	    featurecat_id=NEW.featurecat_id,feature_id=NEW.feature_id, private_connecat_id=NEW.private_connecat_id, label_x=NEW.label_x, label_y=NEW.label_y, label_rotation=NEW.label_rotation, accessibility=NEW.accessibility, diagonal=NEW.diagonal
         WHERE connec_id = OLD.connec_id;
                 
-        PERFORM audit_function (2,860);
+      --  PERFORM audit_function (2,860);
         RETURN NEW;
 
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM connec WHERE connec_id = OLD.connec_id;
 
-        PERFORM audit_function (3,860);
+      --  PERFORM audit_function (3,860);
         RETURN NULL;
    
     END IF;

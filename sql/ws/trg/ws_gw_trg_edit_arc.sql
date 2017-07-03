@@ -83,7 +83,7 @@ BEGIN
             EXECUTE v_sql;
         END IF;
      
-		PERFORM audit_function(1,340); 
+		--PERFORM audit_function(1,340); 
         RETURN NEW;
     
     ELSIF TG_OP = 'UPDATE' THEN
@@ -113,12 +113,12 @@ BEGIN
             rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom, workcat_id_end=NEW.workcat_id_end,undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y,label_rotation=NEW.label_rotation
         WHERE arc_id=OLD.arc_id;
 
-        PERFORM audit_function(2,340); 
+     --   PERFORM audit_function(2,340); 
         RETURN NEW;
 
      ELSIF TG_OP = 'DELETE' THEN   
         DELETE FROM arc WHERE arc_id = OLD.arc_id;
-        PERFORM audit_function(3,340); 
+      --  PERFORM audit_function(3,340); 
         RETURN NULL;
      
      END IF;

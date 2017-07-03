@@ -98,7 +98,7 @@ BEGIN
         v_sql:= 'INSERT INTO '||man_table||' (arc_id) VALUES ('||quote_literal(NEW.arc_id)||')';    
         EXECUTE v_sql;
         
-		PERFORM audit_function (1,760);
+		--PERFORM audit_function (1,760);
         RETURN NEW;
     
     ELSIF TG_OP = 'UPDATE' THEN
@@ -156,13 +156,13 @@ BEGIN
             workcat_id_end=NEW.workcat_id_end
         WHERE arc_id=OLD.arc_id;
 
-		PERFORM audit_function (2,760);
+	--	PERFORM audit_function (2,760);
         RETURN NEW;
 
      ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM arc WHERE arc_id = OLD.arc_id;
 
-		PERFORM audit_function (3,760);
+	--	PERFORM audit_function (3,760);
         RETURN NULL;
      
      END IF;

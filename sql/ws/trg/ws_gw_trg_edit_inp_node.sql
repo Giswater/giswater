@@ -61,7 +61,7 @@ BEGIN
             annotation=NEW.annotation, "observ"=NEW."observ", "comment"=NEW."comment", dma_id=NEW.dma_id, rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom 
         WHERE node_id=OLD.node_id;
 
-        PERFORM audit_function(2,370); 
+     --   PERFORM audit_function(2,370); 
         RETURN NEW;
         
     ELSIF TG_OP = 'DELETE' THEN

@@ -61,7 +61,7 @@ BEGIN
                                 NEW.ownercat_id, NEW.adress_01, NEW.adress_02, NEW.adress_03, NEW.streetaxis_id, NEW.postnumber, NEW.descript, NEW.link, NEW.verified, NEW.the_geom,NEW.undelete, NEW.connec_type,
 								NEW.workcat_id_end,NEW.label_x,NEW.label_y,NEW.label_rotation);
               
-        PERFORM audit_function(1,350);     
+      --  PERFORM audit_function(1,350);     
         RETURN NEW;
 
 
@@ -81,7 +81,7 @@ BEGIN
             rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom,workcat_id_end=NEW.workcat_id_end, connec_type=NEW.connec_type,undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y, label_rotation=NEW.label_rotation 
         WHERE connec_id = OLD.connec_id;
       
-        PERFORM audit_function(2,350);     
+      --  PERFORM audit_function(2,350);     
         RETURN NEW;
     
 
@@ -89,7 +89,7 @@ BEGIN
 
         DELETE FROM connec WHERE connec_id = OLD.connec_id;
 
-        PERFORM audit_function(3,350);     
+      --  PERFORM audit_function(3,350);     
         RETURN NULL;
    
     END IF;

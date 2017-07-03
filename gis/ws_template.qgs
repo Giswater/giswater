@@ -18585,7 +18585,7 @@ def my_form_open(dialog, layer, feature):
       </attributeactions>
       <editform></editform>
       <editforminit>formOpen</editforminit>
-      <editforminitcodesource>1</editforminitcodesource>
+      <editforminitcodesource>0</editforminitcodesource>
       <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[# -*- coding: utf-8 -*-
 """
