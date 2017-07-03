@@ -14878,12 +14878,12 @@ def my_form_open(dialog, layer, feature):
                 <edittype widgetv2type="TextEdit" name="link">
                   <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
                 </edittype>
-                <edittype widgetv2type="CheckBox" name="est_y1">
-                  <widgetv2config fieldEditable="1" UncheckedState="" CheckedState="" labelOnTop="0"/>
-                </edittype>
-                <edittype widgetv2type="CheckBox" name="est_y2">
-                  <widgetv2config fieldEditable="1" UncheckedState="" CheckedState="" labelOnTop="0"/>
-                </edittype>
+				<edittype widgetv2type="TextEdit" name="est_y1">
+				<widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+				</edittype>
+				<edittype widgetv2type="TextEdit" name="est_y2">
+				<widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+				</edittype>
                 <edittype widgetv2type="ValueRelation" name="verified">
                   <widgetv2config OrderByValue="0" AllowNull="0" FilterExpression="" UseCompleter="0" fieldEditable="1" Key="id" Layer="value_verified20160405165720381" Value="id" labelOnTop="0" AllowMulti="0"/>
                 </edittype>
@@ -33000,11 +33000,11 @@ def my_form_open(dialog, layer, feature):
         <edittype widgetv2type="TextEdit" name="link">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="CheckBox" name="est_y1">
-          <widgetv2config fieldEditable="1" UncheckedState="" CheckedState="" labelOnTop="0"/>
+        <edittype widgetv2type="TextEdit" name="est_y1">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="CheckBox" name="est_y2">
-          <widgetv2config fieldEditable="1" UncheckedState="" CheckedState="" labelOnTop="0"/>
+        <edittype widgetv2type="TextEdit" name="est_y2">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="ValueRelation" name="verified">
           <widgetv2config OrderByValue="0" AllowNull="0" FilterExpression="" UseCompleter="0" fieldEditable="1" Key="id" Layer="value_verified20160405165720381" Value="id" labelOnTop="0" AllowMulti="0"/>
