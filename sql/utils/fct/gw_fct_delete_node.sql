@@ -109,7 +109,8 @@ BEGIN
         PERFORM audit_function(505,80);
     END IF;
 
-    PERFORM audit_function(0,80);
+   -- PERFORM audit_function(0,80);
+	RETURN 1;
 
 END;
 $BODY$

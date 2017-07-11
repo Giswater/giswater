@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_error_id int4)
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
     PERFORM audit_function($1, null, null);
+	RETURN 1;
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE COST 100;
@@ -18,6 +19,7 @@ CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_error_id int4,
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
     PERFORM audit_function($1, null, $2);
+		RETURN 1;
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE COST 100;
@@ -27,6 +29,7 @@ CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_function_id in
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
     PERFORM audit_function($1, $2, null); 
+		RETURN 1;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100;

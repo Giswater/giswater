@@ -33,6 +33,7 @@ BEGIN
 
             -- Call recursive function weighting with the pipe capacity
             PERFORM gw_fct_flow_trace_recursive(rec_table.node_1);
+			RETURN 1;
 
         END LOOP;
     

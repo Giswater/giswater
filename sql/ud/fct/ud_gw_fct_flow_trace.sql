@@ -19,8 +19,9 @@ BEGIN
     -- Compute the tributary area using DFS
     PERFORM gw_fct_flow_trace_recursive(node_id_arg);
 
-    PERFORM audit_function(0,730);
-        
+   -- PERFORM audit_function(0,730);
+	RETURN 1;
+	 
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
