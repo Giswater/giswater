@@ -150,7 +150,7 @@ BEGIN
            
     ELSIF TG_OP = 'UPDATE' THEN
 
-        IF (NEW.epa_type <> OLD.epa_type) THEN    
+        IF (NEW.epa_type != OLD.epa_type) THEN    
          
             IF (OLD.epa_type = 'CONDUIT') THEN 
             inp_table:= 'inp_conduit';
@@ -165,7 +165,8 @@ BEGIN
 			END IF;
             v_sql:= 'DELETE FROM '||inp_table||' WHERE arc_id = '||quote_literal(OLD.arc_id);
             EXECUTE v_sql;
-
+			inp_table:= NULL;
+			
 			IF (NEW.epa_type = 'CONDUIT') THEN 
             inp_table:= 'inp_conduit';
 			ELSIF (NEW.epa_type = 'PUMP') THEN 
