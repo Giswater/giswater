@@ -5,7 +5,9 @@ This version of Giswater is provided by Giswater Association
 */
 
 
-CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_arc_searchnodes() RETURNS trigger LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION ud_sample.gw_trg_arc_searchnodes()
+  RETURNS trigger AS
+$BODY$
 DECLARE 
     nodeRecord1 Record; 
     nodeRecord2 Record;
@@ -17,10 +19,16 @@ DECLARE
     vnoderec Record;
     newPoint public.geometry;    
     connecPoint public.geometry;
+    value1 boolean;
+    value2 boolean;
 
 BEGIN 
 
     EXECUTE 'SET search_path TO '||quote_literal(TG_TABLE_SCHEMA)||', public';
+
+    -- Init variables
+    value1:= true;
+    value2:= true;
     
     -- Get data from config table
     SELECT * INTO rec FROM config;    
@@ -32,6 +40,15 @@ BEGIN
     ORDER BY ST_Distance(node.the_geom, ST_endpoint(NEW.the_geom)) LIMIT 1;
 
     SELECT * INTO optionsRecord FROM inp_options LIMIT 1;
+
+    IF NEW.y1 IS NULL then 
+	NEW.y1=0;
+	value1:=false;
+    END IF;
+    IF NEW.y2 IS NULL then 
+	NEW.y2=0;
+	value2:=false;
+    END IF;
 
     -- Control of start/end node
     IF (nodeRecord1.node_id IS NOT NULL) AND (nodeRecord2.node_id IS NOT NULL) THEN	
@@ -53,9 +70,18 @@ BEGIN
                     z2 := NEW.y2;
             END IF;
 
+            IF value1 is false then NEW.y1:= null; 
+            END IF;
+                
+            IF value2 is false then NEW.y2:= null; 
+            END IF;
+
+
             IF ((z1 > z2) AND NEW.inverted_slope is not true) OR ((z1 < z2) AND NEW.inverted_slope is true) THEN
                 NEW.node_1 := nodeRecord1.node_id; 
                 NEW.node_2 := nodeRecord2.node_id;
+               
+                                
             ELSE 
 
                 -- Update conduit direction
@@ -64,8 +90,11 @@ BEGIN
                 NEW.y1 := NEW.y2;
                 NEW.y2 := z_aux;
                 NEW.node_1 := nodeRecord2.node_id;
-                NEW.node_2 := nodeRecord1.node_id;
+                NEW.node_2 := nodeRecord1.node_id;                             
                 RETURN NEW;
+
+
+                
             END IF;
 
             -- Update vnode/link
@@ -123,7 +152,9 @@ BEGIN
     END IF;
     
 END;  
-$$;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
 
 
 DROP TRIGGER IF EXISTS gw_trg_arc_searchnodes ON "SCHEMA_NAME"."arc";
