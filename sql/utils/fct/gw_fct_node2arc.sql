@@ -105,8 +105,8 @@ BEGIN
     END IF;
 
 
-    PERFORM audit_function(0,90);
-        
+    --PERFORM audit_function(0,90);
+      RETURN 1;  
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE

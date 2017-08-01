@@ -92,14 +92,15 @@ BEGIN
     ELSIF TG_OP = 'UPDATE' THEN
 
     
-        IF (NEW.epa_type <> OLD.epa_type) THEN    
+        IF (NEW.epa_type != OLD.epa_type) THEN    
          
             IF (OLD.epa_type = 'PIPE') THEN
                 inp_table:= 'inp_pipe';            
                 v_sql:= 'DELETE FROM '||inp_table||' WHERE arc_id = '||quote_literal(OLD.arc_id);
                 EXECUTE v_sql;
             END IF;
-
+			inp_table:= NULL;
+				
             IF (NEW.epa_type = 'PIPE') THEN
                 inp_table:= 'inp_pipe';   
                 v_sql:= 'INSERT INTO '||inp_table||' (arc_id) VALUES ('||quote_literal(NEW.arc_id)||')';
@@ -116,12 +117,12 @@ BEGIN
             rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom, workcat_id_end=NEW.workcat_id_end,undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y,label_rotation=NEW.label_rotation
         WHERE arc_id=OLD.arc_id;
 
-        PERFORM audit_function(2,340); 
+        -- PERFORM audit_function(2,340); 
         RETURN NEW;
 
      ELSIF TG_OP = 'DELETE' THEN   
         DELETE FROM arc WHERE arc_id = OLD.arc_id;
-     --   PERFORM audit_function(3,340); 
+         -- PERFORM audit_function(3,340); 
         RETURN NULL;
      
      END IF;
