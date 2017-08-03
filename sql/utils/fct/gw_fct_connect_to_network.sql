@@ -78,7 +78,7 @@ BEGIN
 
     END LOOP;
 
-    PERFORM audit_function(0,70);
+  --  PERFORM audit_function(0,70);
     RETURN;
 
 END;

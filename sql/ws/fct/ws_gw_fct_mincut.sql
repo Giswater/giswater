@@ -138,8 +138,9 @@ BEGIN
     -- Insert into result catalog tables
     -- PERFORM gw_fct_mincut_result_catalog();
 
-    RETURN audit_function(0,310);
+   -- PERFORM audit_function(0,310);
 
+   RETURN 1;
 
 END;
 $BODY$

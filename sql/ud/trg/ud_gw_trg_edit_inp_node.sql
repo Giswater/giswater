@@ -22,7 +22,7 @@ BEGIN
     
     -- Control insertions ID
     IF TG_OP = 'INSERT' THEN
-        RETURN audit_function(160,800); 
+        PERFORM audit_function(160,800); 
 
 
     ELSIF TG_OP = 'UPDATE' THEN
@@ -43,12 +43,12 @@ BEGIN
             UPDATE inp_outfall SET node_id=NEW.node_id,outfall_type=NEW.outfall_type,stage=NEW.stage,curve_id=NEW.curve_id,timser_id=NEW.timser_id,gate=NEW.gate WHERE node_id=OLD.node_id;
         END IF;
 
-        PERFORM audit_function(2,800); 
+     --   PERFORM audit_function(2,800); 
         RETURN NEW;
 
 
     ELSIF TG_OP = 'DELETE' THEN
-        RETURN audit_function(163,800);
+        PERFORM audit_function(163,800);
     
     END IF;
        

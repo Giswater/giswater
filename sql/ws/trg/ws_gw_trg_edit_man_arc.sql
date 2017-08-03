@@ -35,7 +35,7 @@ BEGIN
         -- Arc catalog ID
         IF (NEW.arccat_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM cat_arc) = 0) THEN
-                RETURN audit_function(145,340); 
+                PERFORM audit_function(145,340); 
             END IF;
             NEW.arccat_id := (SELECT id FROM cat_arc WHERE arctype_id = NEW.cat_arctype_id LIMIT 1);
         END IF;
@@ -43,22 +43,22 @@ BEGIN
         -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,340); 
+                PERFORM audit_function(115,340); 
             END IF;
             NEW.sector_id := (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,340); 
+                PERFORM audit_function(120,340); 
             END IF;
         END IF;
         
         -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,340); 
+                PERFORM audit_function(125,340); 
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,340); 
+                PERFORM audit_function(130,340); 
             END IF;
         END IF;
         
@@ -86,20 +86,21 @@ BEGIN
             EXECUTE v_sql;
         END IF;
      
-		PERFORM audit_function(1,340); 
+	--	PERFORM audit_function(1,340); 
         RETURN NEW;
     
     ELSIF TG_OP = 'UPDATE' THEN
 
     
-        IF (NEW.epa_type <> OLD.epa_type) THEN    
+        IF (NEW.epa_type != OLD.epa_type) THEN    
          
             IF (OLD.epa_type = 'PIPE') THEN
                 inp_table:= 'inp_pipe';            
                 v_sql:= 'DELETE FROM '||inp_table||' WHERE arc_id = '||quote_literal(OLD.arc_id);
                 EXECUTE v_sql;
             END IF;
-
+			inp_table:= NULL;
+				
             IF (NEW.epa_type = 'PIPE') THEN
                 inp_table:= 'inp_pipe';   
                 v_sql:= 'INSERT INTO '||inp_table||' (arc_id) VALUES ('||quote_literal(NEW.arc_id)||')';
@@ -116,12 +117,12 @@ BEGIN
             rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom, workcat_id_end=NEW.workcat_id_end,undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y,label_rotation=NEW.label_rotation
         WHERE arc_id=OLD.arc_id;
 
-        PERFORM audit_function(2,340); 
+        -- PERFORM audit_function(2,340); 
         RETURN NEW;
 
      ELSIF TG_OP = 'DELETE' THEN   
         DELETE FROM arc WHERE arc_id = OLD.arc_id;
-        PERFORM audit_function(3,340); 
+         -- PERFORM audit_function(3,340); 
         RETURN NULL;
      
      END IF;

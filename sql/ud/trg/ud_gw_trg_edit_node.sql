@@ -32,13 +32,13 @@ BEGIN
 
 		-- elev
         IF (NEW.elev IS NOT NULL) THEN   	
-                RETURN audit_function(200,810);  
+                PERFORM audit_function(200,810);  
 		END IF;
 
         -- Node type
         IF (NEW.node_type IS NULL) THEN
             IF ((SELECT COUNT(*) FROM node_type) = 0) THEN
-                RETURN audit_function(105,810);  
+                PERFORM audit_function(105,810);  
             END IF;
             NEW.node_type:= (SELECT id FROM node_type LIMIT 1);
         END IF;
@@ -51,29 +51,29 @@ BEGIN
         -- Node Catalog ID
         IF (NEW.nodecat_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM cat_node) = 0) THEN
-                RETURN audit_function(110,810);  
+                PERFORM audit_function(110,810);  
             END IF;      
         END IF;
 
         -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,810);  
+                PERFORM audit_function(115,810);  
             END IF;
             NEW.sector_id:= (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,810);          
+                PERFORM audit_function(120,810);          
             END IF;            
         END IF;
         
         -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,810);  
+                PERFORM audit_function(125,810);  
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,810);  
+                PERFORM audit_function(130,810);  
             END IF;            
         END IF;
 
@@ -100,7 +100,7 @@ BEGIN
         v_sql:= 'INSERT INTO '||man_table||' (node_id) VALUES ('||quote_literal(NEW.node_id)||')';
         EXECUTE v_sql;
             
-        PERFORM audit_function (1,810);
+       -- PERFORM audit_function (1,810);
         RETURN NEW;
 
 
@@ -108,13 +108,13 @@ BEGIN
 
 
 	IF (NEW.elev <> OLD.elev) THEN
-                RETURN audit_function(200,810);  
+                PERFORM audit_function(200,810);  
 	END IF;
 
         NEW.elev=NEW.top_elev-NEW.ymax;
  
 
-        IF (NEW.epa_type <> OLD.epa_type) THEN    
+        IF (NEW.epa_type != OLD.epa_type) THEN    
          
             IF (OLD.epa_type = 'JUNCTION') THEN
                 inp_table:= 'inp_junction';            
@@ -127,7 +127,8 @@ BEGIN
 			END IF;
             v_sql:= 'DELETE FROM '||inp_table||' WHERE node_id = '||quote_literal(OLD.node_id);
             EXECUTE v_sql;
-
+			inp_table:= NULL;
+			
             IF (NEW.epa_type = 'JUNCTION') THEN
                 inp_table:= 'inp_junction';   
             ELSIF (NEW.epa_type = 'DIVIDER') THEN
@@ -162,14 +163,14 @@ BEGIN
             est_top_elev=NEW.est_top_elev, est_ymax=NEW.est_ymax, rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, the_geom=NEW.the_geom, workcat_id_end=NEW.workcat_id_end, undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y, label_rotation=NEW.label_rotation 
         WHERE node_id = OLD.node_id;
                 
-		PERFORM audit_function (2,810);
+	--	PERFORM audit_function (2,810);
         RETURN NEW;
     
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM node WHERE node_id = OLD.node_id;
 
-		PERFORM audit_function (3,810);
+	--	PERFORM audit_function (3,810);
         RETURN NULL;
    
     END IF;

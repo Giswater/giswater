@@ -29,7 +29,7 @@ BEGIN
 	/*
 	SELECT count(*) INTO numArcs FROM arc WHERE node_1 = node_id OR node_2 = node_id;
         IF numArcs > 0 THEN
-            RETURN audit_function(518,90); 
+            PERFORM audit_function(518,90); 
         END IF;
 	*/
 	
@@ -105,8 +105,8 @@ BEGIN
     END IF;
 
 
-    RETURN audit_function(0,90);
-        
+    --PERFORM audit_function(0,90);
+      RETURN 1;  
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE

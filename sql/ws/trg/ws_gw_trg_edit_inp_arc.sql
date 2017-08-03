@@ -33,7 +33,7 @@ BEGIN
             UPDATE inp_pipe SET arc_id=NEW.arc_id, minorloss=NEW.minorloss, status=NEW.status, custom_roughness=NEW.custom_roughness, custom_dint=NEW.custom_dint WHERE arc_id=OLD.arc_id;
         END IF;
 
-        PERFORM audit_function(2,360); 
+      --  PERFORM audit_function(2,360); 
         RETURN NEW;
 
     ELSIF TG_OP = 'DELETE' THEN

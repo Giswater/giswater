@@ -60,7 +60,7 @@ BEGIN
         EXECUTE 'CREATE VIEW ' || dest_schema || '.' || rec_view.table_name || ' AS ' || rec_view.definition;
     END LOOP;
 
-    PERFORM audit_function(0,60);
+   -- PERFORM audit_function(0,60);
     RETURN;
     
 END;

@@ -24,28 +24,28 @@ BEGIN
 
         -- connec Catalog ID
         IF (NEW.connecat_id IS NULL) THEN
-              --  RETURN audit_function(150,770); 
+              --  PERFORM audit_function(150,770); 
         END IF;
 
         -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,770); 
+                PERFORM audit_function(115,770); 
             END IF;
             NEW.sector_id := (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,770); 
+                PERFORM audit_function(120,770); 
             END IF;
         END IF;
         
         -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,770); 
+                PERFORM audit_function(125,770); 
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,770); 
+                PERFORM audit_function(130,770); 
             END IF;
         END IF;
         
@@ -58,7 +58,7 @@ BEGIN
 					NEW.streetaxis_id, NEW.postnumber, NEW.descript, NEW.link, NEW.verified, NEW.the_geom,NEW.undelete,NEW.workcat_id_end,NEW.y1,NEW.y2, NEW.featurecat_id, NEW.feature_id,NEW.private_connecat_id,
 					NEW.label_x,NEW.label_y, NEW.label_rotation, NEW.accessibility, NEW.diagonal);
               
-        PERFORM audit_function (1,770);
+      --  PERFORM audit_function (1,770);
         RETURN NEW;
 
 
@@ -79,14 +79,14 @@ BEGIN
 			label_x=NEW.label_x, label_y=NEW.label_y, label_rotation=NEW.label_rotation, accessibility=NEW.accessibility, diagonal=NEW.diagonal
         WHERE connec_id = OLD.connec_id;
                 
-        PERFORM audit_function (2,770);
+      --  PERFORM audit_function (2,770);
         RETURN NEW;
 
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM connec WHERE connec_id = OLD.connec_id;
 
-        PERFORM audit_function (3,770);
+      --  PERFORM audit_function (3,770);
         RETURN NULL;
    
     END IF;

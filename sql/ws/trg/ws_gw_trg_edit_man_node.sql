@@ -45,7 +45,7 @@ BEGIN
 	-- Node type
 		IF (NEW.node_type IS NULL) THEN
             IF ((SELECT COUNT(*) FROM node_type WHERE node_type.man_table=man_table_2) = 0) THEN
-                RETURN audit_function(105,430);  
+                PERFORM audit_function(105,430);  
             END IF;
             NEW.node_type:= (SELECT id FROM node_type WHERE node_type.man_table=man_table_2 LIMIT 1);
         END IF;
@@ -60,7 +60,7 @@ BEGIN
 	-- Node Catalog ID
 		IF (NEW.nodecat_id IS NULL) THEN
 			IF ((SELECT COUNT(*) FROM cat_node) = 0) THEN
-                RETURN audit_function(110,430);  
+                PERFORM audit_function(110,430);  
 			END IF;
 			NEW.nodecat_id:= (SELECT cat_node.id FROM cat_node JOIN node_type ON cat_node.nodetype_id=node_type.id WHERE node_type.man_table=man_table_2 LIMIT 1);
 		END IF;
@@ -68,22 +68,22 @@ BEGIN
      -- Sector ID
         IF (NEW.sector_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM sector) = 0) THEN
-                RETURN audit_function(115,430);  
+                PERFORM audit_function(115,430);  
             END IF;
             NEW.sector_id:= (SELECT sector_id FROM sector WHERE ST_DWithin(NEW.the_geom, sector.the_geom,0.001) LIMIT 1);
             IF (NEW.sector_id IS NULL) THEN
-                RETURN audit_function(120,430);          
+                PERFORM audit_function(120,430);          
             END IF;            
         END IF;
         
      -- Dma ID
         IF (NEW.dma_id IS NULL) THEN
             IF ((SELECT COUNT(*) FROM dma) = 0) THEN
-                RETURN audit_function(125,430);  
+                PERFORM audit_function(125,430);  
             END IF;
             NEW.dma_id := (SELECT dma_id FROM dma WHERE ST_DWithin(NEW.the_geom, dma.the_geom,0.001) LIMIT 1);
             IF (NEW.dma_id IS NULL) THEN
-                RETURN audit_function(130,430);  
+                PERFORM audit_function(130,430);  
             END IF;            
         END IF;
 
@@ -256,7 +256,7 @@ BEGIN
 
 
 -- EPA UPDATE
-        IF (NEW.epa_type <> OLD.epa_type) THEN    
+        IF (NEW.epa_type != OLD.epa_type) THEN    
          
             IF (OLD.epa_type = 'JUNCTION') THEN
                 inp_table:= 'inp_junction';            
@@ -275,6 +275,7 @@ BEGIN
                 v_sql:= 'DELETE FROM '||inp_table||' WHERE node_id = '||quote_literal(OLD.node_id);
                 EXECUTE v_sql;
             END IF;
+			inp_table:= NULL;
 
             IF (NEW.epa_type = 'JUNCTION') THEN
                 inp_table:= 'inp_junction';   
@@ -300,7 +301,7 @@ BEGIN
             old_nodetype:= (SELECT node_type.type FROM node_type JOIN cat_node ON (((node_type.id) = (cat_node.nodetype_id))) WHERE cat_node.id=OLD.nodecat_id);
             new_nodetype:= (SELECT node_type.type FROM node_type JOIN cat_node ON (((node_type.id) = (cat_node.nodetype_id))) WHERE cat_node.id=NEW.nodecat_id);
             IF (quote_literal(old_nodetype) <> quote_literal(new_nodetype)) THEN
-                RETURN audit_function(135,430);  
+                PERFORM audit_function(135,430);  
             END IF;
         END IF;
 
@@ -463,7 +464,7 @@ BEGIN
 	END IF;
 
             
-        PERFORM audit_function(2,430); 
+       -- PERFORM audit_function(2,430); 
         RETURN NEW;
     
 
@@ -471,7 +472,7 @@ BEGIN
 
     ELSIF TG_OP = 'DELETE' THEN
         DELETE FROM node WHERE node_id = OLD.node_id;
-        PERFORM audit_function(3,430); 
+     --   PERFORM audit_function(3,430); 
         RETURN NULL;
    
     END IF;

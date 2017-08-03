@@ -8,7 +8,8 @@ This version of Giswater is provided by Giswater Association
 CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_error_id int4) RETURNS "pg_catalog"."int2" AS $BODY$
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
-    RETURN audit_function($1, null, null);
+    PERFORM audit_function($1, null, null);
+	RETURN 1;
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE COST 100;
@@ -17,7 +18,8 @@ LANGUAGE 'plpgsql' VOLATILE COST 100;
 CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_error_id int4, p_debug_info text) RETURNS "pg_catalog"."int2" AS $BODY$
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
-    RETURN audit_function($1, null, $2);
+    PERFORM audit_function($1, null, $2);
+		RETURN 1;
 END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE COST 100;
@@ -26,7 +28,8 @@ LANGUAGE 'plpgsql' VOLATILE COST 100;
 CREATE OR REPLACE FUNCTION SCHEMA_NAME.audit_function(p_audit_cat_function_id integer, p_audit_cat_error_id integer) RETURNS "pg_catalog"."int2" AS $BODY$
 BEGIN
     SET search_path = "SCHEMA_NAME", public;
-    RETURN audit_function($1, $2, null); 
+    PERFORM audit_function($1, $2, null); 
+		RETURN 1;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100;

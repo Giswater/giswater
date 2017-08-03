@@ -34,7 +34,7 @@ BEGIN
         SET opened=NEW.opened, acessibility=NEW.acessibility, "broken"=NEW."broken", "mincut_anl"=NEW."mincut_anl", "hydraulic_anl"=NEW."hydraulic_anl"
         WHERE node_id = OLD.node_id;
 
-        PERFORM audit_function(2,390);  
+      --  PERFORM audit_function(2,390);  
         RETURN NEW;
 
     ELSIF TG_OP = 'DELETE' THEN
