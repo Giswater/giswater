@@ -52,6 +52,31 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 	}
 	
 	
+	private boolean insertExampleData() {
+		
+		try {
+			String folderPath = folderRootPath+"example"+File.separator+waterSoftware+File.separator;
+			status = processFolder(folderPath);
+			if (status) {
+				MainDao.commit();
+				String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
+				MainClass.mdi.showMessage(msg);
+			}
+			else {
+				MainDao.rollback();
+				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$						
+			}
+		} catch (Exception e) {
+			status = false;
+			MainDao.rollback();
+            Utils.showError(e);
+		}
+		
+		return status;
+		
+	}
+	
+	
     @Override
     public Void doInBackground() { 
 		
@@ -72,41 +97,16 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	// Create schema of selected software
     	CreateSchemaTask cst = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
     	// Locale must be set to 'EN'
-    	cst.setLocale("EN");
+    	cst.setLocale("en");
+    	MainDao.setSchema(schemaName);
 		status = cst.createSchema(waterSoftware);	
 		if (status) {
-			MainDao.setSchema(schemaName);
-			if (MainDao.updateSchema()) {
-				// Insert information into table version
-				insertVersion(false);
-				// Once schema has been created, load example data 
-				try {
-					String folderRoot = Utils.getAppPath();
-					String folderPath = folderRoot+"sql"+File.separator+"example"+File.separator+waterSoftware+File.separator;
-					status = processFolder(folderPath);
-					if (status) {
-						MainDao.commit();
-						String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
-						MainClass.mdi.showMessage(msg);
-					}
-					else {
-						MainDao.rollback();
-						MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$						
-					}
-				} catch (Exception e) {
-					status = false;
-					MainDao.rollback();
-		            Utils.showError(e);
-				}
-			}
-			else {
-				status = false;
-				MainDao.rollback();
-				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_update_project")); //$NON-NLS-1$
-			}		
+			// Insert information into table version
+			MainDao.insertVersion(false);
+			// Once schema has been created, load example data 
+			insertExampleData();
 		}
 		else {
-			status = false;
 			MainDao.rollback();
 			MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$
 		}
