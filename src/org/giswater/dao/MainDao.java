@@ -972,6 +972,19 @@ public class MainDao {
 	}
 	
 	
+	public static boolean insertVersion(boolean commit) {
+		
+		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
+		String sridValue = MainDao.getSrid(schema);
+		String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareAcronym.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
+			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
+        Utils.logInfo(sql);
+		return MainDao.executeSql(sql, commit);	
+
+	}	
+		
+	
 	// Called when we apply or accept changes in Project Preferences form
 	public static boolean checkSchemaVersion() {
 		

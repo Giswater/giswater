@@ -61,7 +61,7 @@ public class FilesToDbTask extends ParentSchemaTask {
     		status = mainOptions();
     		if (status) {
     			// Insert information into table version
-    			insertVersion(true);
+    			MainDao.insertVersion(true);
     			MainDao.resetSchemaVersion();			
     		}
     	}
@@ -70,7 +70,7 @@ public class FilesToDbTask extends ParentSchemaTask {
 	    		status = customOptions();
 	    		if (status) {
 	    			// Insert information into table version
-	    			insertVersion(true);
+	    			MainDao.insertVersion(true);
 	    			MainDao.resetSchemaVersion();			
 	    		}
     		}
