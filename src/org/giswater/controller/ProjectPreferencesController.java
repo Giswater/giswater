@@ -92,8 +92,6 @@ public class ProjectPreferencesController extends AbstractController {
 	private void customizePanel() {
 		
 		if (waterSoftware.equals("EPASWMM")) {
-			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptions"); //$NON-NLS-1$
-			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.raingage"), "showRaingage"); //$NON-NLS-1$
 			epaSoftPanel.setSubcatchmentVisible(true);
 			if (view.getVersionSoftware().equals("EPASWMM_51006_2D")) {
 				epaSoftPanel.setSubcatchmentSelected(true);
@@ -111,8 +109,6 @@ public class ProjectPreferencesController extends AbstractController {
 			epaSoftPanel.exportSelected();
 		}
 		else if (waterSoftware.equals("EPANET")) {
-			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
-			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 			epaSoftPanel.setSubcatchmentVisible(false);
 			epaSoftPanel.setSubcatchmentSelected(false);
 		}
@@ -322,7 +318,6 @@ public class ProjectPreferencesController extends AbstractController {
 			mainFrame.enableMenuDatabase(false);
 			view.enableProjectManagement(false);
 			view.setSchemaModel(null);	
-			epaSoftPanel.enableDatabaseButtons(false);
 			epaSoftPanel.enableAccept(false);
 		}
 		view.enableDbControls(!MainDao.isConnected());			
@@ -341,7 +336,6 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		boolean enabled = view.setSchemaModel(schemaList);
 		view.setSelectedSchema(PropertiesDao.getGswProperties().get("SCHEMA"));						
-		epaSoftPanel.enablePreprocess(enabled);
 		epaSoftPanel.enableAccept(enabled);
 		
 	}
@@ -406,9 +400,6 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setSelectedSchema(schemaName);
 	}
 	
-	public void enablePreprocess(boolean enabled) {
-		epaSoftPanel.enablePreprocess(enabled);
-	}
 	
 	public void setWaterSoftware(String waterSoftware) {
 		this.waterSoftware = waterSoftware;	
