@@ -84,6 +84,22 @@ public class ExportToInp extends Model {
 		Utils.getLogger().info("Result function 'gw_fct_node2arc()': "+result);
 
 	}
+    
+    
+    // Execute SQL function gw_fct_pg2inp()
+    private static void executePg2Inp(String resultName) {
+    	
+    	if (MainDao.checkFunction(MainDao.getSchema(), "gw_fct_pg2inp")) {    	
+	    	Utils.getLogger().info("Execution function 'gw_fct_pg2inp()'");
+	    	String sql = "SELECT "+MainDao.getSchema()+".gw_fct_pg2inp('"+resultName+"');";
+	    	String result = MainDao.queryToString(sql);		
+	    	Utils.getLogger().info("Result function 'gw_fct_pg2inp()': "+result);
+    	}
+    	else {
+	    	Utils.getLogger().info("Doesn't exist function 'gw_fct_pg2inp()'");    		
+    	}
+    	
+    }
 	
 	
     // Export to INP 
@@ -112,6 +128,9 @@ public class ExportToInp extends Model {
             	Utils.showMessage("inp_error_notfound", fileTemplate.getAbsolutePath());
             	return false;
             }
+            
+            // Execute SQL function gw_fct_pg2inp('result_id') 
+            executePg2Inp(resultName);
             
             // Execute SQL function gw_fct_node2arc() 
             if (MainDao.getWaterSoftware().equals("EPANET")) {
