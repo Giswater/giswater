@@ -207,6 +207,12 @@ public class PropertiesDao {
     // Load Properties files
     public static boolean loadPropertiesFile() {
 
+    	// Check if users folder exists
+    	File folderUsers = new File(giswaterUsersFolder + CONFIG_FOLDER);
+    	if (!folderUsers.exists()) {
+    		folderUsers.mkdir();
+    	}
+    	
     	String configFile = CONFIG_FILE + "_" + MINOR_VERSION + ".properties";
     	configPath = giswaterUsersFolder + CONFIG_FOLDER + configFile;
     	Utils.getLogger().info("Versioned properties file: "+configPath);  

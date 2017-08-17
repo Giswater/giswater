@@ -491,7 +491,7 @@ public class Utils {
 	}    
 	
 	
-    public static void copyDirectory(File sourceLocation, File targetLocation) throws IOException {
+    public static void copyDirectory(File sourceLocation, File targetLocation) {
     	
         if (sourceLocation.isDirectory()) {
             if (!targetLocation.exists()) {
@@ -504,17 +504,9 @@ public class Utils {
                         new File(targetLocation, children[i]));
             }
         } 
+        
         else {
-            InputStream in = new FileInputStream(sourceLocation);
-            OutputStream out = new FileOutputStream(targetLocation);
-            // Copy the bits from instream to outstream
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
+        	copyFile(sourceLocation.getAbsolutePath(), targetLocation.getAbsolutePath());
         }
         
     }
