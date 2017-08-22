@@ -40,35 +40,26 @@ public class RenameSchemaTask extends ParentSchemaTask {
     	setProgress(1);
     	
 		String sql = "ALTER SCHEMA "+currentSchemaName+" RENAME TO "+schemaName;
-		if (MainDao.executeUpdateSql(sql, true, true)) {
+		if (MainDao.executeUpdateSql(sql, false, true)) {
 			
 			// Rename schema 'audit' (if exists)
 			if (MainDao.checkSchema(currentSchemaName+"_audit")) {
 				sql = "ALTER SCHEMA "+currentSchemaName+"_audit RENAME TO "+schemaName+"_audit";
-				MainDao.executeUpdateSql(sql, true);	
+				MainDao.executeUpdateSql(sql, false);	
 			}
 			
-			// Execute SQL's that its name contains '_view' (corresponding to views)
+			// Execute SQL's that its name contains 'view' (corresponding to views)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
+			if (!status) return null;
 			
-			// Execute SQL's that its name contains '_fct' (corresponding to functions)
+			// Execute SQL's that its name contains 'fct' (corresponding to functions)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
+			if (!status) return null;			
 			
-			// Execute SQL's that its name contains '_trg' (corresponding to trigger functions)
-			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);			
-			
-			if (status) {
-				MainDao.commit();
-			}
-			else{
-				MainDao.rollback();
-			}
-			
-			// Refresh view
-			controller.selectSourceType(false);
-			Utils.setPanelEnabled(parentPanel, true);	
-			parentPanel.setSelectedSchema(schemaName);
-			
+			// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);
+			if (!status) return null;
+						
 		}
 		
 		return null;
@@ -78,6 +69,18 @@ public class RenameSchemaTask extends ParentSchemaTask {
     
     public void done() {
     	
+		if (status) {
+			MainDao.commit();
+		}
+		else {
+			MainDao.rollback();
+		}
+		
+		// Refresh view
+		controller.selectSourceType(false);
+		Utils.setPanelEnabled(parentPanel, true);	
+		parentPanel.setSelectedSchema(schemaName);
+		
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage(Utils.getBundleString("project_renamed_ok"));    		

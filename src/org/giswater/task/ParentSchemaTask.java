@@ -200,13 +200,21 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_FCT+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
 		
+		// Process 'view' folder
+		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_VIEW+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;				
+		
 		// Process 'trg' folder
 		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_TRG+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;	
 		
-		// Process 'view' folder
-		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_VIEW+File.separator;
-		if (!processFolder(folderPath, filePattern)) return false;				
+		// Process 'fk' folder
+		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_FK+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;	
+		
+		// Process 'rules' folder
+		folderPath = folderRootPath+waterSoftware+File.separator+FILE_PATTERN_RULES+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;	
 		
 		// Process 'utils' folder
 		folderPath = folderRootPath+"utils"+File.separator;
@@ -216,9 +224,21 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FCT+File.separator;
 		if (!processFolder(folderPath, filePattern)) return false;
 		
+		// Process 'utils/view' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_VIEW+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;		
+		
 		// Process 'utils/trg' folder
 		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_TRG+File.separator;
-		if (!processFolder(folderPath, filePattern)) return false;		
+		if (!processFolder(folderPath, filePattern)) return false;	
+		
+		// Process 'utils/fk' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_FK+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;	
+		
+		// Process 'utils/rules' folder
+		folderPath = folderRootPath+"utils"+File.separator+FILE_PATTERN_RULES+File.separator;
+		if (!processFolder(folderPath, filePattern)) return false;	
 		
 		return true;
 		
