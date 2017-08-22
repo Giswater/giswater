@@ -1034,27 +1034,28 @@ public class MainDao {
     	updateMap = new HashMap<String, Integer>();
 		getLastUpdateSoftware("ws");
 		getLastUpdateSoftware("ud");
+		getLastUpdateSoftware("utils");
 		
 	}
 	
 	
-	private static void getLastUpdateSoftware(String softwareAcronym) {
+	private static void getLastUpdateSoftware(String folderPath) {
 		
-		String folder = updatesFolder+softwareAcronym+File.separator;
+		String folder = updatesFolder+folderPath+File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null && files.length > 0) {
 			Arrays.sort(files);
 			String fileName = files[files.length-1].getName();
 			String newFileName = fileName;
 			boolean renameFile = false;
-			// Replace islast.sql to @giswaterVersion.sql
-			if (fileName.equals("islast.sql")) {
+			// Replace is_last.sql to @giswaterVersion.sql
+			if (fileName.contains("is_last.sql")) {
 				renameFile = true;
-				newFileName = fileName.replace("islast", giswaterVersion);		
+				newFileName = fileName.replace("is_last", giswaterVersion);		
 			}
-			newFileName = newFileName.replace(softwareAcronym+"_", "").replace("sql", "").replace(".", "");
+			newFileName = newFileName.replace(folderPath+"_", "").replace("sql", "").replace(".", "");
 			Integer fileVersion = Utils.parseInt(newFileName);
-			updateMap.put(softwareAcronym, fileVersion);
+			updateMap.put(folderPath, fileVersion);
 			if (renameFile) {
 				if (!Utils.renameFile(folder+fileName, folder+newFileName+".sql")) {
 					Utils.logError("Rename could not be executed");
@@ -1062,7 +1063,7 @@ public class MainDao {
 			}
 		}
 		else {
-			updateMap.put(softwareAcronym, -1);	
+			updateMap.put(folderPath, -1);	
 		}
 		
 	}
@@ -1082,7 +1083,7 @@ public class MainDao {
 		if (files != null) {
 			Arrays.sort(files);
 			for (File file : files) {
-				String fileName = file.getName().replace(waterSoftware.toLowerCase()+"_", "").replace(".sql", "");
+				String fileName = file.getName().replace(softwareAcronym.toLowerCase()+"_", "").replace(".sql", "");
 				Integer fileVersion = Utils.parseInt(fileName);			
 				if (fileVersion > schemaVersion) {
 			    	String content;

@@ -38,16 +38,30 @@ public class DevToolboxController extends AbstractController {
 
 	
 	public void filesToDb() {
-		
+		filesToDb(false);
+	}
+	
+	
+	public void filesToDb(boolean updating) {
+				
 		// Get current schema names
-		String currentSchemaName = MainDao.getSchema();
-		if (currentSchemaName.equals("")) return;		
+		String schemaName = MainDao.getSchema();
+		if (schemaName.equals("")) return;		
 		
 		// Execute task: FilesToDbTask
-		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), currentSchemaName, currentSchemaName, "mainOptions");
+		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), schemaName, "mainOptions");
         task.setPanel(view);		
         task.addPropertyChangeListener(this);
-        task.execute();
+		if (!updating) {
+			task.execute();
+		}
+		// TODO: If we are updating, just manage table 'version' 
+		else {
+			//selectChecks(false);
+			//view.chkViews.setSelected(true);
+			//view.chkTriggers.setSelected(true);			
+			task.manageVersion();
+		}
 		
 	}
 	
@@ -71,11 +85,11 @@ public class DevToolboxController extends AbstractController {
 	public void customFilesToDb() {
 		
 		// Get current schema names
-		String currentSchemaName = MainDao.getSchema();
-		if (currentSchemaName.equals("")) return;		
+		String schemaName = MainDao.getSchema();
+		if (schemaName.equals("")) return;		
 		
 		// Execute task: FilesToDbTask
-		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), currentSchemaName, currentSchemaName, "customOptions");
+		FilesToDbTask task = new FilesToDbTask(MainDao.getWaterSoftware(), schemaName, "customOptions");
         task.setPanel(view);		
         task.addPropertyChangeListener(this);
         task.execute();

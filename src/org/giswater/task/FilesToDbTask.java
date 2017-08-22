@@ -30,15 +30,13 @@ import org.giswater.util.Utils;
 
 public class FilesToDbTask extends ParentSchemaTask {
 	
-	
 	private DevToolboxPanel panel;
 	private String panelName;
 	private String customFolder;
 
 
-	public FilesToDbTask(String waterSoftware, String currentSchemaName, String schemaName, String panelName) {
+	public FilesToDbTask(String waterSoftware, String schemaName, String panelName) {
 		super(waterSoftware, schemaName);
-		this.currentSchemaName = currentSchemaName;
 		this.panelName = panelName;
 	}
 	
@@ -59,20 +57,10 @@ public class FilesToDbTask extends ParentSchemaTask {
     	
     	if (panelName.equals("mainOptions")) {
     		status = mainOptions();
-    		if (status) {
-    			// Insert information into table version
-    			MainDao.insertVersion(true);
-    			MainDao.resetSchemaVersion();			
-    		}
     	}
     	else if (panelName.equals("customOptions")) {
     		if (getCustomFolder()) {
 	    		status = customOptions();
-	    		if (status) {
-	    			// Insert information into table version
-	    			MainDao.insertVersion(true);
-	    			MainDao.resetSchemaVersion();			
-	    		}
     		}
     	}
     	
@@ -80,6 +68,13 @@ public class FilesToDbTask extends ParentSchemaTask {
     	
     }
 
+    
+    public void manageVersion() {
+		// Insert information into table version
+		MainDao.insertVersion(true);
+		MainDao.resetSchemaVersion();	    	
+    }
+    
     
     private boolean mainOptions() {
 		
@@ -127,7 +122,7 @@ public class FilesToDbTask extends ParentSchemaTask {
     private boolean getCustomFolder() {
     	
     	String sql = "SELECT value"+
-    			" FROM "+currentSchemaName+".config_param_text"+
+    			" FROM "+schemaName+".config_param_text"+
     			" WHERE id = 'custom_giswater_folder'";
     	customFolder = MainDao.queryToString(sql);
     	if (customFolder.equals("")) {
@@ -211,6 +206,7 @@ public class FilesToDbTask extends ParentSchemaTask {
     	Utils.setPanelEnabled(panel, true);    	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
+    		manageVersion();
     		MainClass.mdi.showMessage(Utils.getBundleString("FilesToDb.success")); 
     		MainClass.mdi.updateConnectionInfo();    		
     	}

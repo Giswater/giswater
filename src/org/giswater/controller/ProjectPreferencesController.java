@@ -36,7 +36,6 @@ import org.giswater.gui.panel.ProjectPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
-import org.giswater.task.FilesToDbTask;
 import org.giswater.task.RenameSchemaTask;
 import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
@@ -165,10 +164,10 @@ public class ProjectPreferencesController extends AbstractController {
 		customizePanel();
 		
 		// Check schema version
-		boolean updated = MainDao.checkSchemaVersion();
+		boolean schemaUpdated = MainDao.checkSchemaVersion();
 		// If project has been updated, execute copy functions
-		if (updated) {
-			filesToDb();
+		if (schemaUpdated) {
+			filesToDb(true);
 		}
 		schemaChanged();
 		
@@ -177,7 +176,7 @@ public class ProjectPreferencesController extends AbstractController {
 	}
 	
 	
-	// TODO: Older acceptPreferences. Now has to open EpaSoftPanel
+	// Older acceptPreferences. Now has to open EpaSoftPanel
 	public void openEpaSoft() {
 		if (applyPreferences()) {
 			closePreferences();	
@@ -530,17 +529,18 @@ public class ProjectPreferencesController extends AbstractController {
 	
 	
 	public void filesToDb() {
+		filesToDb(false);
+	}
+	
+	
+	public void filesToDb(boolean updating) {
 		
 		// Get current schema names
-		String currentSchemaName = view.getSelectedSchema();
-		if (currentSchemaName.equals("")) return;		
+		String schemaName = view.getSelectedSchema();
+		if (schemaName.equals("")) return;		
 		
-		// Execute task FilesToDbTask
-		FilesToDbTask task = new FilesToDbTask(waterSoftware, currentSchemaName, currentSchemaName, "mainOptions");
-        task.setController(this);
-        task.setParentPanel(view);
-        task.addPropertyChangeListener(this);
-        task.execute();
+		DevToolboxController controller = new DevToolboxController(mainFrame.devToolboxFrame.getPanel());
+		controller.filesToDb(updating);
 		
 	}
 		
