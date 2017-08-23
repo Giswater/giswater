@@ -55,12 +55,13 @@ public class DevToolboxController extends AbstractController {
 		if (!updating) {
 			task.execute();
 		}
-		// TODO: If we are updating, just manage table 'version' 
+		// If we are updating automatically select checks for functions, triggers and views
 		else {
-			//selectChecks(false);
-			//view.chkViews.setSelected(true);
-			//view.chkTriggers.setSelected(true);			
-			task.manageVersion();
+			selectChecks(false);
+			view.chkViews.setSelected(true);
+			view.chkTriggers.setSelected(true);			
+			view.chkFunctions.setSelected(true);			
+			task.execute();
 		}
 		
 	}
