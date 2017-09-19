@@ -20,8 +20,6 @@
  */
 package org.giswater.task;
 
-import java.util.Vector;
-
 import org.giswater.dao.MainDao;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
@@ -45,9 +43,6 @@ public class DeleteSchemaTask extends ParentSchemaTask {
 
     	parentPanel.requestFocusInWindow();     	
     	MainDao.deleteSchema(schemaName);
-		Vector<String> schemaList = MainDao.getSchemas(waterSoftware);
-		boolean enabled = parentPanel.setSchemaModel(schemaList);
-		controller.enablePreprocess(enabled);
 		controller.setSchema(parentPanel.getSelectedSchema());
 		
 		// Enable view

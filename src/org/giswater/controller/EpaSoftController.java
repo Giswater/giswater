@@ -23,25 +23,17 @@ package org.giswater.controller;
 import java.awt.Cursor;
 import java.beans.PropertyVetoException;
 import java.io.File;
-import java.sql.ResultSet;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
-import org.giswater.gui.dialog.options.AbstractOptionsDialog;
-import org.giswater.gui.dialog.options.OptionsDialog;
-import org.giswater.gui.dialog.options.OptionsEpanetDialog;
-import org.giswater.gui.dialog.options.RaingageDialog;
-import org.giswater.gui.dialog.options.SectorSelectionPanel;
-import org.giswater.gui.dialog.options.StateSelectionPanel;
-import org.giswater.gui.dialog.options.TimesDialog;
 import org.giswater.gui.frame.MainFrame;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
+import org.giswater.gui.panel.SectorSelectionPanel;
 import org.giswater.task.ExecuteTask;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
@@ -70,79 +62,12 @@ public class EpaSoftController extends AbstractController {
     	view.checkFileManager(selected);
     }
 	
-    
 	public void showSectorSelection() {
 		SectorSelectionPanel panel = new SectorSelectionPanel();
         JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.sector_selection"), 190, 260);
         panel.setParent(dialog);
         dialog.setVisible(true);
 	}	
-	
-	
-	public void showStateSelection() {
-		StateSelectionPanel panel = new StateSelectionPanel();
-		JDialog dialog = Utils.openDialogForm(panel, view, Utils.getBundleString("EpaSoftController.state_selection"), 250, 260);
-		panel.setParent(dialog);
-		dialog.setVisible(true);
-	}	
-	
-	
-	public void showInpOptions() {
-		ResultSet rs = MainDao.getTableResultset("inp_options");
-		if (rs == null) return;
-		OptionsDialog dialog = new OptionsDialog();
-		// Disable fields if VERSION < 5.1
-		String version = ppPanel.getVersionSoftware();
-		if (version.equals("EPASWMM_50022")) {
-			dialog.setFieldsEnabled(false);
-		}
-		showOptions(dialog, rs);
-	}
-	
-	
-	public void showInpOptionsEpanet() {
-		ResultSet rs = MainDao.getTableResultset("inp_options");
-		if (rs == null) return;		
-		OptionsEpanetDialog dialog = new OptionsEpanetDialog();
-		showOptions(dialog, rs);
-	}
-
-	
-	public void showRaingage() {
-		ResultSet rs = MainDao.getTableResultset("raingage");
-		if (rs == null) return;		
-		RaingageDialog dialog = new RaingageDialog();
-		showOptions(dialog, rs);	
-	}	
-	
-	
-	public void showTimesValues() {
-		ResultSet rs = MainDao.getTableResultset("inp_times");
-		if (rs == null) return;		
-		TimesDialog dialog = new TimesDialog();
-		showOptions(dialog, rs);
-	}	
-	
-	
-	private void showOptions(AbstractOptionsDialog dialog, ResultSet rs) {
-		
-		OptionsController controller = new OptionsController(dialog, rs);
-        if (MainDao.getNumberOfRows(rs) == 0) {
-            controller.create();
-        }
-        else {
-            controller.moveFirst();
-        }
-        dialog.setModal(true);
-        dialog.setLocationRelativeTo(null);   
-        dialog.setVisible(true);	
-        
-		if (dialog instanceof RaingageDialog){
-			controller.changeRaingageType();
-		}
-        
-	}
-		
 
     public void chooseFileInp() {
 

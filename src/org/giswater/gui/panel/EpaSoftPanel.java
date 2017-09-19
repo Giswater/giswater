@@ -49,12 +49,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	private EpaSoftController controller;
 	private EpaSoftFrame epaSoftFrame;	
 	
-	private JPanel panelPreprocess;
-	private JButton btnDesign;
-	private JButton btnOptions;
-	private JButton btnStateSelection;
-	private JButton btnSectorSelection;
-	
 	private JPanel panelFileManager;
 	private JLabel lblFileRpt;
 	private JLabel lblResultName;
@@ -90,36 +84,11 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[::508px,grow]", "[67px:n][10px:n][][10px:n][]"));
-		
-		panelPreprocess = new JPanel();
-		panelPreprocess.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelPreprocess.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelPreprocess, "cell 0 0,grow");
-		panelPreprocess.setLayout(new MigLayout("", "[115px:n][115px:n][115px:n][128px:n,grow]", "[]"));
-		
-		btnSectorSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnSectorSelection.text")); //$NON-NLS-1$
-		btnSectorSelection.setEnabled(false);
-		btnSectorSelection.setActionCommand("showSectorSelection");
-		panelPreprocess.add(btnSectorSelection, "cell 0 0,growx");
-		
-		btnStateSelection = new JButton(BUNDLE.getString("EpaSoftPanel.btnStateSelection.text"));
-		btnStateSelection.setEnabled(false);
-		btnStateSelection.setActionCommand("showStateSelection");
-		panelPreprocess.add(btnStateSelection, "cell 1 0,growx");
-		
-		btnOptions = new JButton(BUNDLE.getString("EpaSoftPanel.btnDesign.text")); //$NON-NLS-1$
-		btnOptions.setEnabled(false);
-		btnOptions.setActionCommand("showOptions");
-		panelPreprocess.add(btnOptions, "flowx,cell 2 0,growx");
-		
-		btnDesign = new JButton(BUNDLE.getString("EpaSoftPanel.btnRaingage.text")); //$NON-NLS-1$
-		btnDesign.setEnabled(false);
-		btnDesign.setActionCommand("showRaingage");
-		panelPreprocess.add(btnDesign, "cell 3 0,growx");
+		setLayout(new MigLayout("", "[::508px,grow]", "[10px:n][][10px:n][]"));
 		
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
-		add(panelFileManager, "cell 0 2,grow");
+		add(panelFileManager, "cell 0 1,grow");
 		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][24px:n][34px:n][40px:n][34px:n][40px:n][][]"));
 		
 		chkExport = new JCheckBox();
@@ -210,10 +179,10 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnProjectPreferences.setMinimumSize(new Dimension(130, 23));
 		btnProjectPreferences.setPreferredSize(new Dimension(115, 23));
 		btnProjectPreferences.setActionCommand("openProjectPreferences");
-		add(btnProjectPreferences, "flowx,cell 0 4,alignx right");
+		add(btnProjectPreferences, "flowx,cell 0 3,alignx right");
 		
 		lblDummy = new JLabel("  ");
-		add(lblDummy, "cell 0 4");
+		add(lblDummy, "cell 0 3");
 
 		setupListeners();
 
@@ -222,12 +191,6 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 	
 	// Setup component's listener
 	private void setupListeners() {
-		
-		// Preprocess options		
-		btnSectorSelection.addActionListener(this);		
-		btnStateSelection.addActionListener(this);		
-		btnOptions.addActionListener(this);
-		btnDesign.addActionListener(this);
 		
 		// File manager
 		btnFileInp.addActionListener(this);
@@ -326,28 +289,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		btnAccept.setEnabled(enable);
 	}	
 	
-	
-	public void setOptionsButton(String text, String actionCommand) {
-		btnOptions.setText(text);
-		btnOptions.setActionCommand(actionCommand);
-	}	
-	
-	public void setDesignButton(String text, String actionCommand) {
-		btnDesign.setText(text);
-		btnDesign.setActionCommand(actionCommand);
-	}
-    
-	public void enableDatabaseButtons(boolean enable) {
-    	enablePreprocess(enable);
-	}
-	
-	public void enablePreprocess(boolean enabled){
-		btnSectorSelection.setEnabled(enabled);
-		btnStateSelection.setEnabled(enabled);
-		btnOptions.setEnabled(enabled);
-		btnDesign.setEnabled(enabled);
-	}
-    
+	   
 	public void setTitle(String title) {
 		getFrame().setTitle(title);		
 	}
