@@ -29,7 +29,7 @@
 		IF TG_OP = 'INSERT' THEN   
 			-- Arc ID
 			IF (NEW.arc_id IS NULL) THEN
-				PERFORM setval('urn_id_seq', gw_fct_urn(),true);
+				--PERFORM setval('urn_id_seq', gw_fct_urn(),true);
 				NEW.arc_id:= (SELECT nextval('urn_id_seq'));
 			END IF;
 
@@ -51,7 +51,7 @@
 				IF ((SELECT COUNT(*) FROM cat_arc) = 0) THEN
 					RETURN audit_function(145,840); 
 				END IF; 
-					NEW.arccat_id:= (SELECT "value" FROM config_vdefault WHERE "parameter"='arccat_vdefault' AND "user"="current_user"());
+					NEW.arccat_id:= (SELECT "value" FROM config_param_user WHERE "parameter"='arccat_vdefault' AND "cur_user"="current_user"());
 				IF (NEW.arccat_id IS NULL) THEN
 					NEW.arccat_id := (SELECT arccat_id from arc WHERE ST_DWithin(NEW.the_geom, arc.the_geom,0.001) LIMIT 1);
 				END IF;
@@ -84,7 +84,7 @@
 				
 		-- Verified
 			IF (NEW.verified IS NULL) THEN
-				NEW.verified := (SELECT "value" FROM config_vdefault WHERE "parameter"='verified_vdefault' AND "user"="current_user"());
+				NEW.verified := (SELECT "value" FROM config_param_user WHERE "parameter"='verified_vdefault' AND "cur_user"="current_user"());
 				IF (NEW.verified IS NULL) THEN
 					NEW.verified := (SELECT id FROM value_verified limit 1);
 				END IF;
@@ -92,7 +92,7 @@
 
 			-- State
 			IF (NEW.state IS NULL) THEN
-				NEW.state := (SELECT "value" FROM config_vdefault WHERE "parameter"='state_vdefault' AND "user"="current_user"());
+				NEW.state := (SELECT "value" FROM config_param_user WHERE "parameter"='state_vdefault' AND "cur_user"="current_user"());
 				IF (NEW.state IS NULL) THEN
 					NEW.state := (SELECT id FROM value_state limit 1);
 				END IF;
@@ -108,7 +108,12 @@
                 --PERFORM audit_function(130,340);
 				RETURN NULL; 
             END IF;
-		
+
+		--Inventory
+		IF (NEW.inventory IS NULL) THEN
+			NEW.inventory :='TRUE';
+		END IF; 
+			
 			-- FEATURE INSERT
 			
 			
@@ -116,7 +121,7 @@
 						
 				-- Workcat_id
 				IF (NEW.conduit_workcat_id IS NULL) THEN
-					NEW.conduit_workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+					NEW.conduit_workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
 					IF (NEW.conduit_workcat_id IS NULL) THEN
 						NEW.conduit_workcat_id := (SELECT id FROM cat_work limit 1);
 					END IF;
@@ -124,7 +129,7 @@
 
 				--Builtdate
 				IF (NEW.conduit_builtdate IS NULL) THEN
-					NEW.conduit_builtdate:=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+					NEW.conduit_builtdate:=(SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 				END IF;
 		
 				INSERT INTO arc (arc_id, code, node_1, node_2, y1, y2, custom_y1, custom_y2, elev1, elev2, custom_elev1, custom_elev2, arc_type, arccat_id, epa_type, sector_id, "state", 
@@ -144,15 +149,15 @@
 
 				-- Workcat_id
 				IF (NEW.siphon_workcat_id IS NULL) THEN
-					NEW.siphon_workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+					NEW.siphon_workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
 					IF (NEW.siphon_workcat_id IS NULL) THEN
-						NEW.siphon_workcat_id :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+						NEW.siphon_workcat_id :=(SELECT id FROM cat_work limit 1);
 					END IF;
 				END IF;
 
 				--Builtdate
 				IF (NEW.siphon_builtdate IS NULL) THEN
-					NEW.siphon_builtdate := (SELECT builtdate_vdefault FROM config);
+					NEW.siphon_builtdate := (SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 				END IF;
 				
 				INSERT INTO arc (arc_id, code, node_1, node_2, y1, y2, custom_y1, custom_y2, elev1, elev2, custom_elev1, custom_elev2, arc_type, arccat_id, epa_type, sector_id, "state", 
@@ -172,15 +177,15 @@
 						
 				-- Workcat_id
 				IF (NEW.waccel_workcat_id IS NULL) THEN
-					NEW.waccel_workcat_id:= (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+					NEW.waccel_workcat_id:= (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
 					IF (NEW.waccel_workcat_id IS NULL) THEN
-						NEW.waccel_workcat_id :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+						NEW.waccel_workcat_id :=(SELECT id FROM cat_work limit 1);
 					END IF;
 				END IF;
 
 				--Builtdate
 				IF (NEW.waccel_builtdate IS NULL) THEN
-					NEW.waccel_builtdate := (SELECT builtdate_vdefault FROM config);
+					NEW.waccel_builtdate := (SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 				END IF;
 				
 				INSERT INTO arc (arc_id, code, node_1, node_2, y1, y2, custom_y1, custom_y2, elev1, elev2, custom_elev1, custom_elev2, arc_type, arccat_id, epa_type, sector_id, "state", 
@@ -188,7 +193,7 @@
 				builtdate, enddate, ownercat_id, address_01, address_02, address_03, descript, link, verified, the_geom,undelete, label_x,label_y, label_rotation, expl_id, publish, inventory, 
 				uncertain,num_value)
 				VALUES (NEW.arc_id, NEW.waccel_code, null, null, NEW.waccel_y1, NEW.waccel_y2, NEW.waccel_custom_y1, NEW.waccel_custom_y2, NEW.waccel_elev1, NEW.waccel_elev2, 
-				NEW.waccel_custom_elev1, custom_elev2,NEW.arc_type, NEW.arccat_id, NEW.epa_type, NEW.sector_id, NEW.state, NEW.waccel_annotation, NEW.waccel_observ, NEW.waccel_comment,
+				NEW.waccel_custom_elev1, NEW.waccel_custom_elev2,NEW.arc_type, NEW.arccat_id, NEW.epa_type, NEW.sector_id, NEW.state, NEW.waccel_annotation, NEW.waccel_observ, NEW.waccel_comment,
 				NEW.waccel_inverted_slope, NEW.waccel_custom_length, NEW.dma_id, NEW.waccel_soilcat_id, NEW.waccel_function_type,NEW.waccel_category_type, NEW.waccel_fluid_type, 
 				NEW.waccel_location_type, NEW.waccel_workcat_id, NEW.waccel_workcat_id_end, NEW.waccel_buildercat_id, NEW.waccel_builtdate, NEW.waccel_enddate, NEW.waccel_ownercat_id, 
 				NEW.waccel_address_01, NEW.waccel_address_02, NEW.waccel_address_03, NEW.waccel_descript,NEW.waccel_link, NEW.verified, NEW.the_geom, NEW.undelete,NEW.waccel_label_x, 
@@ -201,15 +206,15 @@
 						
 				-- Workcat_id
 				IF (NEW.varc_workcat_id IS NULL) THEN
-					NEW.varc_workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+					NEW.varc_workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
 					IF (NEW.varc_workcat_id IS NULL) THEN
-						NEW.varc_workcat_id :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+						NEW.varc_workcat_id :=(SELECT id FROM cat_work limit 1);
 					END IF;
 				END IF;		
 		
 				--Builtdate
 				IF (NEW.varc_builtdate IS NULL) THEN
-					NEW.varc_builtdate := (SELECT builtdate_vdefault FROM config);
+					NEW.varc_builtdate := (SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 				END IF;
 				
 				INSERT INTO arc (arc_id, code, node_1, node_2, y1, y2, custom_y1, custom_y2, elev1, elev2, custom_elev1, custom_elev2, arc_type, arccat_id, epa_type, sector_id, "state", 
@@ -323,7 +328,7 @@
 				code=NEW.siphon_code, publish=NEW.publish, inventory=NEW.inventory, enddate=NEW.siphon_enddate, uncertain=NEW.uncertain, expl_id=NEW.expl_id
 				WHERE arc_id=OLD.arc_id;		
 				
-				UPDATE man_siphon SET arc_id=NEW.arc_id,security_bar=NEW.siphon_security_bar, steps=NEW.siphon_steps,siphon_name=NEW.siphon_name
+				UPDATE man_siphon SET arc_id=NEW.arc_id, name=NEW.siphon_name
 				WHERE arc_id=OLD.arc_id;
 			
 			ELSIF man_table='man_waccel' THEN
@@ -337,8 +342,7 @@
 				code=NEW.waccel_code, publish=NEW.publish, inventory=NEW.inventory, enddate=NEW.waccel_enddate, uncertain=NEW.uncertain, expl_id=NEW.expl_id
 				WHERE arc_id=OLD.arc_id;	
 				
-				UPDATE man_waccel SET arc_id=NEW.arc_id, sander_length=NEW.waccel_sander_length, sander_depth=NEW.waccel_sander_depth,security_bar=NEW.waccel_security_bar,
-				steps=NEW.waccel_steps,prot_surface=NEW.waccel_prot_surface,waccel_name=NEW.waccel_name
+				UPDATE man_waccel SET arc_id=NEW.arc_id, sander_length=NEW.waccel_sander_length, sander_depth=NEW.waccel_sander_depth, prot_surface=NEW.waccel_prot_surface,name=NEW.waccel_name
 				WHERE arc_id=OLD.arc_id;
 			
 			ELSIF man_table='man_varc' THEN

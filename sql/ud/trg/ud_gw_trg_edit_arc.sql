@@ -1,4 +1,4 @@
-/*
+﻿/*
 This file is part of Giswater 3
 The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 This version of Giswater is provided by Giswater Association
@@ -28,8 +28,13 @@ BEGIN
       
 			-- Arc ID
 			IF (NEW.arc_id IS NULL) THEN
-				PERFORM setval('urn_id_seq', gw_fct_urn(),true);
+				--PERFORM setval('urn_id_seq', gw_fct_urn(),true);
 				NEW.arc_id:= (SELECT nextval('urn_id_seq'));
+			END IF;
+
+			-- code
+			IF (NEW.code IS NULL) THEN
+				NEW.code = NEW.arc_id;
 			END IF;
 
          -- Arc type
@@ -50,7 +55,7 @@ BEGIN
 				IF ((SELECT COUNT(*) FROM cat_arc) = 0) THEN
 					RETURN audit_function(145,840); 
 				END IF; 
-				NEW.arccat_id:= (SELECT "value" FROM config_vdefault WHERE "parameter"='arccat_vdefault' AND "user"="current_user"());
+				NEW.arccat_id:= (SELECT "value" FROM config_param_user WHERE "parameter"='arccat_vdefault' AND "cur_user"="current_user"());
 				IF (NEW.arccat_id IS NULL) THEN
 					NEW.arccat_id := (SELECT arccat_id from arc WHERE ST_DWithin(NEW.the_geom, arc.the_geom,0.001) LIMIT 1);
 				END IF;
@@ -83,7 +88,7 @@ BEGIN
 		
 	-- Verified
         IF (NEW.verified IS NULL) THEN
-            NEW.verified := (SELECT "value" FROM config_vdefault WHERE "parameter"='verified_vdefault' AND "user"="current_user"());
+            NEW.verified := (SELECT "value" FROM config_param_user WHERE "parameter"='verified_vdefault' AND "cur_user"="current_user"());
             IF (NEW.verified IS NULL) THEN
                 NEW.verified := (SELECT id FROM value_verified limit 1);
             END IF;
@@ -91,7 +96,7 @@ BEGIN
 
 		-- State
         IF (NEW.state IS NULL) THEN
-            NEW.state := (SELECT "value" FROM config_vdefault WHERE "parameter"='state_vdefault' AND "user"="current_user"());
+            NEW.state := (SELECT "value" FROM config_param_user WHERE "parameter"='state_vdefault' AND "cur_user"="current_user"());
             IF (NEW.state IS NULL) THEN
                 NEW.state := (SELECT id FROM value_state limit 1);
             END IF;
@@ -99,7 +104,7 @@ BEGIN
 		
 		-- Workcat_id
         IF (NEW.workcat_id IS NULL) THEN
-            NEW.workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+            NEW.workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
             IF (NEW.workcat_id IS NULL) THEN
                 NEW.workcat_id := (SELECT id FROM cat_work limit 1);
             END IF;
@@ -108,8 +113,13 @@ BEGIN
 
 		--Builtdate
 		IF (NEW.builtdate IS NULL) THEN
-			NEW.builtdate :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+			NEW.builtdate :=(SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 		END IF;    
+
+		--Inventory
+		IF (NEW.inventory IS NULL) THEN
+			NEW.inventory :='TRUE';
+		END IF; 
 		
 	--Exploitation ID
             IF ((SELECT COUNT(*) FROM exploitation) = 0) THEN
@@ -123,12 +133,16 @@ BEGIN
             END IF;
 		
         -- FEATURE INSERT
-				INSERT INTO arc (arc_id, code, node_1, node_2, y1, custom_y1, elev1, custom_elev1, y2, custom_y2, elev2, custom_elev2, arc_type, arccat_id, epa_type, sector_id, "state", annotation, observ, 
-				"comment", inverted_slope, custom_length, dma_id, soilcat_id, category_type, fluid_type, location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, address_01, address_02, address_03, 
-				descript, link, verified, the_geom, undelete,label_x,label_y, label_rotation, code, expl_id, publish, inventory, uncertain,num_value) 
-				VALUES (NEW.arc_id, NEW.code, null, null, NEW.y1, NEW.custom_y1,NEW.elev1, NEW.custom_elev1, NEW.y2, NEW.custom_y2, NEW.elev2, NEW.custom_elev2, NEW.arc_type, NEW.arccat_id, NEW.epa_type, 
-				NEW.sector_id, NEW.state, NEW.annotation, NEW.observ, NEW.comment, NEW.inverted_slope, NEW.custom_length, NEW.dma_id, NEW.soilcat_id, NEW.function_type, NEW.category_type, NEW.fluid_type, NEW.location_type, NEW.workcat_id,
-				NEW.workcat_id_end, NEW.buildercat_id, NEW.builtdate, NEW.enddate, NEW.ownercat_id, NEW.address_01, NEW.address_02, NEW.address_03, NEW.descript, NEW.link, NEW.verified, NEW.the_geom,NEW.undelete,NEW.label_x,NEW.label_y, NEW.label_rotation, NEW.code, expl_id_int, NEW.publish, NEW.inventory, NEW.uncertain, NEW.num_value);
+				INSERT INTO arc (arc_id, code, node_1, node_2, y1, custom_y1, elev1, custom_elev1, y2, custom_y2, elev2, custom_elev2, arc_type, arccat_id, epa_type,
+				sector_id, "state", annotation, observ, "comment", inverted_slope, custom_length, dma_id, soilcat_id, function_type,
+				category_type, fluid_type, location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, 
+				address_01, address_02, address_03, descript, link, verified, the_geom, undelete,label_x,label_y, 
+				label_rotation, expl_id, publish, inventory, uncertain, num_value) 
+				VALUES (NEW.arc_id, NEW.code, null, null, NEW.y1, NEW.custom_y1, NEW.elev1, NEW.custom_elev1, NEW.y2, NEW.custom_y2, NEW.elev2, NEW.custom_elev2, NEW.arc_type, NEW.arccat_id, NEW.epa_type, 
+				NEW.sector_id, NEW.state, NEW.annotation, NEW.observ, NEW.comment, NEW.inverted_slope, NEW.custom_length, NEW.dma_id, NEW.soilcat_id, NEW.function_type, 
+				NEW.category_type, NEW.fluid_type, NEW.location_type, NEW.workcat_id, NEW.workcat_id_end, NEW.buildercat_id, NEW.builtdate, NEW.enddate, NEW.ownercat_id, 
+				NEW.address_01, NEW.address_02, NEW.address_03, NEW.descript, NEW.link, NEW.verified, NEW.the_geom,NEW.undelete,NEW.label_x,NEW.label_y, 
+				NEW.label_rotation, expl_id_int, NEW.publish, NEW.inventory, NEW.uncertain, NEW.num_value);
 				
 						
         -- EPA INSERT

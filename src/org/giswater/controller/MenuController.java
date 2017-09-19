@@ -464,7 +464,7 @@ public class MenuController extends AbstractController {
     	ProjectPreferencesPanel ppPanel = mainFrame.ppFrame.getPanel();
     	
     	// Panel Water Software
-    	String waterSoftware = PropertiesDao.getGswProperties().get("SOFTWARE").toUpperCase();
+    	String waterSoftware = PropertiesDao.getGswProperties().get("SOFTWARE").toLowerCase();
     	ppPanel.setWaterSoftware(waterSoftware);
     	MainDao.setWaterSoftware(waterSoftware);
 		
@@ -496,17 +496,17 @@ public class MenuController extends AbstractController {
     
 	// Menu Project example
 	public void exampleEpanet() {
-		MainDao.setWaterSoftware("EPANET");
+		MainDao.setWaterSoftware("ws");
 		createExampleSchema("ws");
 	}
 
 	public void exampleEpaswmm() {
-		MainDao.setWaterSoftware("EPASWMM");
+		MainDao.setWaterSoftware("ud");
 		createExampleSchema("ud");
 	}
 	
 	public void exampleEpaswmm2D() {
-		MainDao.setWaterSoftware("EPASWMM");
+		MainDao.setWaterSoftware("ud");
 		createExampleSchema("ud", "_2d");
 	}
 	

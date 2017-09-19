@@ -44,22 +44,30 @@ public class CopySchemaTask extends ParentSchemaTask {
 
 		String sql = "SELECT "+currentSchemaName+".clone_schema('"+currentSchemaName+"', '"+schemaName+"')";
 		MainClass.mdi.showMessage(Utils.getBundleString("copy_schema_process"), true);		
-		status = MainDao.executeSql(sql, true);
+		status = MainDao.executeSql(sql, false);
 		if (status){
-			// Execute SQL's that its name contains '_fk' (corresponding to Foreign Keys)
-			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FK);
+			
 			// Execute SQL's that its name contains 'view' (corresponding to views)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_VIEW);
+			if (!status) return null;
+			
 			// Execute SQL's that its name contains 'fct' (corresponding to functions)
 			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FCT);
+			if (!status) return null;
+			
 			// Execute SQL's that its name contains 'trg' (corresponding to trigger functions)
-			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);			
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_TRG);	
+			if (!status) return null;
+			
+			// Execute SQL's that its name contains 'fk' (corresponding to Foreign Keys)
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_FK);
+			if (!status) return null;
+			
+			// Execute SQL's that its name contains 'rules' (corresponding to Rules)
+			status = copyFunctions(this.waterSoftware, FILE_PATTERN_RULES);
+			if (!status) return null;
+			
 		}
-		
-		// Refresh view
-		controller.selectSourceType(false);			
-    	Utils.setPanelEnabled(parentPanel, true);
-    	parentPanel.setSelectedSchema(schemaName);
 		
 		return null;
     	
@@ -68,6 +76,18 @@ public class CopySchemaTask extends ParentSchemaTask {
     
     public void done() {
     	
+		if (status) {
+			MainDao.commit();
+		}
+		else {
+			MainDao.rollback();
+		}
+		
+		// Refresh view
+		controller.selectSourceType(false);
+		Utils.setPanelEnabled(parentPanel, true);	
+		parentPanel.setSelectedSchema(schemaName);
+		
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage(Utils.getBundleString("project_copied_successfuly"));    		

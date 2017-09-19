@@ -136,8 +136,9 @@ CREATE TABLE "cat_dscenario" (
 
 CREATE TABLE inp_selector_dscenario (
 id serial NOT NULL PRIMARY KEY,
-dscenario_id integer),
+dscenario_id integer,
 cur_user text
+);
 
 
 	
@@ -256,7 +257,8 @@ CREATE TABLE "inp_mixing" (
 
 
 CREATE TABLE "inp_options" (
-"units" varchar(20)   NOT NULL,
+"id" integer NOT NULL,
+"units" varchar(20),
 "headloss" varchar(20)  ,
 "hydraulics" varchar(12)  ,
 "specific_gravity" numeric(12,6),
@@ -448,7 +450,8 @@ CREATE TABLE "inp_tank" (
 
 
 CREATE TABLE "inp_times" (
-"duration" varchar(10)   NOT NULL,
+"id" integer NOT NULL,
+"duration" integer,
 "hydraulic_timestep" varchar(10)  ,
 "quality_timestep" varchar(10)  ,
 "rule_timestep" varchar(10)  ,
@@ -551,7 +554,7 @@ CREATE TABLE "inp_value_opti_units" (
 
 
 CREATE TABLE "inp_value_opti_valvemode" (
-"id" varchar(18)  NOT PRIMARY KEY
+"id" varchar(18)  PRIMARY KEY
 );
 
 
@@ -643,7 +646,7 @@ CREATE TABLE "inp_pump_additional" (
 
 CREATE TABLE "rpt_inp_node" (
 "id" serial PRIMARY KEY NOT NULL,
-"result_id" varchar(16) NOT NULL,
+"result_id" varchar(30) NOT NULL,
 "node_id" varchar(16) NOT NULL,
 "elevation" numeric(12,3),
 "elev" numeric(12,3),
@@ -659,7 +662,7 @@ CREATE TABLE "rpt_inp_node" (
 
 CREATE TABLE "rpt_inp_arc" (
 "id" serial PRIMARY KEY NOT NULL,
-"result_id" varchar(16) NOT NULL,
+"result_id" varchar(30) NOT NULL,
 "arc_id" varchar(16) ,
 "node_1" varchar(16) ,
 "node_2" varchar(16) ,
@@ -679,7 +682,7 @@ CREATE TABLE "rpt_inp_arc" (
 
 CREATE TABLE "rpt_arc" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_arc_id_seq'::regclass) NOT NULL,
-"result_id" varchar(16)   NOT NULL,
+"result_id" varchar(30)   NOT NULL,
 "arc_id" varchar(16)  ,
 "length" numeric,
 "diameter" numeric,
@@ -698,7 +701,7 @@ CREATE TABLE "rpt_arc" (
 
 CREATE TABLE "rpt_energy_usage" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_energy_usage_id_seq'::regclass) NOT NULL,
-"result_id" varchar(16)   NOT NULL,
+"result_id" varchar(30)   NOT NULL,
 "nodarc_id" varchar(16),
 "usage_fact" numeric,
 "avg_effic" numeric,
@@ -711,7 +714,7 @@ CREATE TABLE "rpt_energy_usage" (
 
 CREATE TABLE "rpt_hydraulic_status" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_hydraulic_status_id_seq'::regclass) NOT NULL,
-"result_id" varchar(16)   NOT NULL,
+"result_id" varchar(30)   NOT NULL,
 "time" varchar(10)  ,
 "text" varchar(100)  
 );
@@ -719,7 +722,7 @@ CREATE TABLE "rpt_hydraulic_status" (
 
 CREATE TABLE "rpt_node" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_node_id_seq'::regclass) NOT NULL,
-"result_id" varchar(16)   NOT NULL,
+"result_id" varchar(30)   NOT NULL,
 "node_id" varchar(16)   NOT NULL,
 "elevation" numeric,
 "demand" numeric,
@@ -733,7 +736,7 @@ CREATE TABLE "rpt_node" (
 
 CREATE TABLE "rpt_cat_result" (
 "id" int4 DEFAULT nextval('"SCHEMA_NAME".rpt_cat_result_id_seq'::regclass) NOT NULL,
-"result_id" varchar(16)   NOT NULL,
+"result_id" varchar(30)   NOT NULL,
 "n_junction" numeric,
 "n_reservoir" numeric,
 "n_tank" numeric,
@@ -771,7 +774,7 @@ ALTER TABLE "inp_emitter" ADD PRIMARY KEY ("node_id");
 ALTER TABLE "inp_junction" ADD PRIMARY KEY ("node_id");
 ALTER TABLE "inp_label" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_mixing" ADD PRIMARY KEY ("node_id");
-ALTER TABLE "inp_options" ADD PRIMARY KEY ("units");
+ALTER TABLE "inp_options" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_pattern" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_pipe" ADD PRIMARY KEY ("arc_id");
 ALTER TABLE "inp_project_id" ADD PRIMARY KEY ("title");
@@ -781,7 +784,7 @@ ALTER TABLE "inp_reservoir" ADD PRIMARY KEY ("node_id");
 ALTER TABLE "inp_source" ADD PRIMARY KEY ("node_id");
 ALTER TABLE "inp_tags" ADD PRIMARY KEY ("node_id");
 ALTER TABLE "inp_tank" ADD PRIMARY KEY ("node_id");
-ALTER TABLE "inp_times" ADD PRIMARY KEY ("duration");
+ALTER TABLE "inp_times" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_typevalue_energy" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_typevalue_pump" ADD PRIMARY KEY ("id");
 ALTER TABLE "inp_typevalue_reactions_gl" ADD PRIMARY KEY ("id");

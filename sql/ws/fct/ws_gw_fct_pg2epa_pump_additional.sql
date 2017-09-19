@@ -1,4 +1,4 @@
-/*
+﻿/*
 This file is part of Giswater 3
 The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 This version of Giswater is provided by Giswater Association
@@ -6,8 +6,8 @@ This version of Giswater is provided by Giswater Association
 
 
 
-DROP FUNCTION IF EXISTS fread.gw_fct_pg2epa_pump_additional();
-CREATE OR REPLACE FUNCTION fread.gw_fct_pg2epa_pump_additional()  RETURNS integer AS
+DROP FUNCTION IF EXISTS SCHEMA_NAME.gw_fct_pg2epa_pump_additional();
+CREATE OR REPLACE FUNCTION SCHEMA_NAME.gw_fct_pg2epa_pump_additional()  RETURNS integer AS
 
 $BODY$
 DECLARE
@@ -16,7 +16,7 @@ arc_rec record;
 pump_rec record;
 node_id_aux text;
 rec record;
-record_new_arc fread.arc%ROWTYPE;
+record_new_arc SCHEMA_NAME.arc%ROWTYPE;
 n1_geom public.geometry;
 n2_geom public.geometry;
 p1_geom public.geometry;
@@ -109,14 +109,10 @@ BEGIN
     END LOOP;
      	
     RETURN 1;
-	
-
 		
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION fread.gw_fct_node2arc2()
-  OWNER TO postgres;
 
   

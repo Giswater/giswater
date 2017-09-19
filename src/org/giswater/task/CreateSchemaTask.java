@@ -65,15 +65,15 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		this.folderUpdates = folderRootPath+"updates"+File.separator;
 		String folderPath = "";
 		
+		// Process folder 'utils/ddl'
+		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
 		// Process folder '<waterSoftware>/ddl'
 		folderPath = folderSoftware+FILE_PATTERN_DDL+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'utils/ddl'
-		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
-		if (!processFolder(folderPath)) return false;		
-		
-		// Process folder 'updates/<softwareName>' folder
+		// Process folder 'updates/<waterSoftware>' folder
 		folderPath = folderUpdates+waterSoftware+File.separator;
 		if (!processUpdateFolder(folderPath)) return false;
 		
@@ -105,8 +105,16 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
 		if (!processFolder(folderPath)) return false;	
 
+		// Process folder '<waterSoftware>/dml' folder
+		folderPath = folderSoftware+FILE_PATTERN_DML+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
 		// Process folder '<waterSoftware>/fk' folder
 		folderPath = folderSoftware+FILE_PATTERN_FK+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
+		// Process folder '<waterSoftware>/rules' folder
+		folderPath = folderSoftware+FILE_PATTERN_RULES+File.separator;
 		if (!processFolder(folderPath)) return false;		
 		
 		// Process folder 'utils/fct' folder
@@ -121,8 +129,16 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
 		if (!processFolder(folderPath)) return false;	
 		
+		// Process folder 'utils/dml' folder
+		folderPath = folderUtils+FILE_PATTERN_DML+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
 		// Process folder 'utils/fk' folder
 		folderPath = folderUtils+FILE_PATTERN_FK+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
+		// Process folder 'utils/rules' folder
+		folderPath = folderUtils+FILE_PATTERN_RULES+File.separator;
 		if (!processFolder(folderPath)) return false;		
 		
 		return status;

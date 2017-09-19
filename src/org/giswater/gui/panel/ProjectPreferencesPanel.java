@@ -348,10 +348,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	public void setWaterSoftware(String waterSoftware) {
 		
 		groupSoftware.clearSelection();
-		if (waterSoftware.equals("EPANET")) {
+		if (waterSoftware.toUpperCase().equals("EPANET") || waterSoftware.toLowerCase().equals("ws")) {
 			optEpanet.setSelected(true);
 		}
-		else if (waterSoftware.equals("EPASWMM")) {
+		else if (waterSoftware.toUpperCase().equals("EPASWMM") || waterSoftware.toLowerCase().equals("ud")) {
 			optEpaSwmm.setSelected(true);
 		}	
 		controller.setWaterSoftware(waterSoftware);
@@ -362,10 +362,10 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 		
 		String waterSoftware = "";
 		if (optEpanet.isSelected()) {
-			waterSoftware = "EPANET";
+			waterSoftware = "ws";
 		} 
 		else if (optEpaSwmm.isSelected()) {
-			waterSoftware = "EPASWMM";
+			waterSoftware = "ud";
 		}		
 		return waterSoftware;
 		

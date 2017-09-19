@@ -146,8 +146,15 @@ public class ConfigDao {
 	}
 	
 	
-    public static Vector<String> getAvailableVersions(String software) {
+    public static Vector<String> getAvailableVersions(String waterSoftware) {
 
+    	String software = "";
+    	if (waterSoftware.toLowerCase().equals("ws")) {
+    		software = "EPANET";	
+    	}
+    	else if (waterSoftware.toLowerCase().equals("ud")) {
+    		software = "EPASWMM";	
+    	}
         Vector<String> vector = new Vector<String>();
         String sql = "SELECT id" +
         	" FROM "+configTable + 

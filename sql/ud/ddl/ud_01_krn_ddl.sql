@@ -51,9 +51,6 @@ CREATE TABLE "cat_arc" (
 "id" varchar (30) DEFAULT nextval ('"SCHEMA_NAME".cat_arc_seq'::regclass) NOT NULL,
 "matcat_id" varchar (16)  ,
 "shape" varchar(16),
-"custom_shape" varchar(30),
-"tsect_id" varchar(16)  ,
-"curve_id" varchar(16)  ,
 "geom1" numeric(12,4),
 "geom2" numeric(12,4) DEFAULT 0.00,
 "geom3" numeric(12,4) DEFAULT 0.00,
@@ -79,8 +76,23 @@ CREATE TABLE "cat_arc" (
 "m2bottom_cost" varchar (16),
 "m3protec_cost" varchar (16),
 "active" boolean,
+"inventory" boolean
 CONSTRAINT cat_arc_pkey PRIMARY KEY (id)
 );
+
+
+
+CREATE TABLE "cat_arc_shape" (
+"id" varchar (30) NOT NULL PRIMARY KEY,
+"epa" varchar(30),
+"tsect_id" varchar(16),
+"curve_id" varchar(16),
+"image" varchar(50),
+"descript" text,
+"active" boolean
+);
+
+
 
 
 CREATE TABLE "cat_node" (
@@ -156,11 +168,22 @@ CONSTRAINT cat_grate_pkey PRIMARY KEY (id)
 
 CREATE TABLE "dma" (
 "dma_id" serial NOT NULL PRIMARY KEY,
-"name" character varying(30)NOT NULL,
-"expl_id" integer NOT NULL,
+"name" character varying(30),
+"expl_id" integer,
+"macrodma_id" integer,
 "descript" text,
 "undelete" boolean,
 "the_geom" public.geometry (POLYGON, SRID_VALUE)
+);
+
+
+CREATE TABLE "macrodma"(
+macrodma_id serial NOT NULL PRIMARY KEY,
+name character varying(50),
+expl_id integer,
+descript character varying(100),
+undelete boolean,
+the_geom geometry(POLYGON,SRID_VALUE)
 );
 
 
@@ -193,7 +216,7 @@ CREATE TABLE "node" (
 "custom_top_elev" numeric(12,3),
 "custom_ymax" numeric(12,3),
 "custom_elev" numeric(12,3),
-"node_type" varchar(18)  ,
+"node_type" varchar(30)  ,
 "nodecat_id" varchar(30)  ,
 "epa_type" varchar(16)  ,
 "sector_id" integer NOT NULL,
@@ -306,7 +329,6 @@ CREATE TABLE "connec" (
 "private_connecat_id" varchar(30),
 "demand" numeric(12,8),
 "state" int2  NOT NULL,
-"connec_arccat_id" varchar(18),
 "connec_depth" numeric(12,3),
 "connec_length" numeric(12,3),
 "arc_id" varchar(16)  ,
@@ -448,7 +470,8 @@ CREATE TABLE "man_netinit" (
 "inlet" boolean,
 "bottom_channel" boolean,
 "accessibility" varchar(16),
-"name" varchar(50)
+"name" varchar(50),
+"sander_depth" numeric(12,3)
 );
 
 

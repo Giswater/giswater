@@ -1,4 +1,4 @@
-/*
+﻿/*
 This file is part of Giswater 3
 The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 This version of Giswater is provided by Giswater Association
@@ -19,7 +19,7 @@ BEGIN
 
         -- connec ID
         IF (NEW.connec_id IS NULL) THEN
-            PERFORM setval('urn_id_seq', gw_fct_urn(),true);
+           -- PERFORM setval('urn_id_seq', gw_fct_urn(),true);
             NEW.connec_id:= (SELECT nextval('urn_id_seq'));
         END IF;
 
@@ -57,7 +57,7 @@ BEGIN
 		
 		-- Workcat_id
         IF (NEW.workcat_id IS NULL) THEN
-            NEW.workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+            NEW.workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
             IF (NEW.workcat_id IS NULL) THEN
                 NEW.workcat_id := (SELECT id FROM cat_work limit 1);
             END IF;
@@ -65,7 +65,7 @@ BEGIN
 		
 -- Verified
         IF (NEW.verified IS NULL) THEN
-            NEW.verified := (SELECT "value" FROM config_vdefault WHERE "parameter"='verified_vdefault' AND "user"="current_user"());
+            NEW.verified := (SELECT "value" FROM config_param_user WHERE "parameter"='verified_vdefault' AND "cur_user"="current_user"());
             IF (NEW.verified IS NULL) THEN
                 NEW.verified := (SELECT id FROM value_verified limit 1);
             END IF;
@@ -73,11 +73,16 @@ BEGIN
 
 		-- State
         IF (NEW.state IS NULL) THEN
-            NEW.state := (SELECT "value" FROM config_vdefault WHERE "parameter"='state_vdefault' AND "user"="current_user"());
+            NEW.state := (SELECT "value" FROM config_param_user WHERE "parameter"='state_vdefault' AND "cur_user"="current_user"());
             IF (NEW.state IS NULL) THEN
                 NEW.state := (SELECT id FROM value_state limit 1);
             END IF;
         END IF;
+
+		--Inventory
+		IF (NEW.inventory IS NULL) THEN
+			NEW.inventory :='TRUE';
+		END IF; 
 		
 	--Exploitation ID
             IF ((SELECT COUNT(*) FROM exploitation) = 0) THEN
@@ -92,17 +97,17 @@ BEGIN
   
 		-- Builtdate
 			IF (NEW.builtdate IS NULL) THEN
-				NEW.builtdate :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+				NEW.builtdate :=(SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 			END IF;  
         
         -- FEATURE INSERT
-INSERT INTO connec (connec_id, code, elevation, "depth",connecat_id, sector_id, customer_code, connec_arccat_id, connec_length, demand, "state", annotation, observ, "comment",dma_id, presszonecat_id, soilcat_id, function_type, category_type, fluid_type, 
-			location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, address_01, address_02, address_03, streetaxis_id, postnumber, descript, rotation, link,verified, the_geom, undelete, label_x,label_y,label_rotation,
+INSERT INTO connec (connec_id, code, elevation, "depth",connecat_id, sector_id, customer_code,  connec_length, demand, "state", annotation, observ, "comment",dma_id, presszonecat_id, soilcat_id, function_type, category_type, fluid_type, 
+			location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, address_01, address_02, address_03, streetaxis_id, postnumber, descript, rotation, verified, the_geom, undelete, label_x,label_y,label_rotation,
 		  expl_id, publish, inventory, num_value) 
-		  VALUES (NEW.connec_id, NEW.code, NEW.elevation, NEW.depth, NEW.connecat_id, NEW.sector_id, NEW.customer_code, NEW.connec_arccat_id, NEW.connec_length, NEW.demand, NEW.state, NEW.annotation, 
+		  VALUES (NEW.connec_id, NEW.code, NEW.elevation, NEW.depth, NEW.connecat_id, NEW.sector_id, NEW.customer_code, NEW.connec_length, NEW.demand, NEW.state, NEW.annotation, 
 		  NEW.observ, NEW.comment,NEW.dma_id, NEW.presszonecat_id, NEW.soilcat_id, NEW.function_type, NEW.category_type, NEW.fluid_type, NEW.location_type, NEW.workcat_id, NEW.workcat_id_end,
 		  NEW.buildercat_id, NEW.builtdate, NEW.enddate, NEW.ownercat_id, NEW.address_01, NEW.address_02, NEW.address_03, NEW.streetname, NEW.postnumber, 
-		  NEW.descript, NEW.rotation, NEW.link, NEW.verified, NEW.the_geom,NEW.undelete,NEW.label_x,NEW.label_y,NEW.label_rotation, 
+		  NEW.descript, NEW.rotation, NEW.verified, NEW.the_geom,NEW.undelete,NEW.label_x,NEW.label_y,NEW.label_rotation, 
 		  expl_id_int, NEW.publish, NEW.inventory, NEW.num_value );
         --PERFORM audit_function(1,350);     
         RETURN NEW;
@@ -120,10 +125,10 @@ INSERT INTO connec (connec_id, code, elevation, "depth",connecat_id, sector_id, 
 		
 UPDATE connec 
 			SET connec_id=NEW.connec_id, code=NEW.code, elevation=NEW.elevation, "depth"=NEW.depth, connecat_id=NEW.connecat_id, sector_id=NEW.sector_id, customer_code=NEW.customer_code,
-			connec_arccat_id=NEW.connec_arccat_id, connec_length=NEW.connec_length, demand=NEW.demand, "state"=NEW.state, annotation=NEW.annotation, observ=NEW.observ, "comment"=NEW.comment, dma_id=NEW.dma_id, 
+			connec_length=NEW.connec_length, demand=NEW.demand, "state"=NEW.state, annotation=NEW.annotation, observ=NEW.observ, "comment"=NEW.comment, dma_id=NEW.dma_id, 
 			presszonecat_id=NEW.presszonecat_id, soilcat_id=NEW.soilcat_id, function_type=NEW.function_type, category_type=NEW.category_type, fluid_type=NEW.fluid_type, location_type=NEW.location_type, workcat_id=NEW.workcat_id, 
-			workcat_id_end=NEW.workcat_id_end, buildercat_id=NEW.buildercat_id, builtdate=NEW.builtdate enddate=NEW.enddate, ownercat_id=NEW.ownercat_id, address_01=NEW.address_01, address_02=NEW.address_02, 
-			address_03=NEW.address_03, streetaxis_id=NEW.streetaxis_id, postnumber=NEW.postnumber, descript=NEW.descript,  rotation=NEW.rotation, link=NEW.link, verified=NEW.verified, 
+			workcat_id_end=NEW.workcat_id_end, buildercat_id=NEW.buildercat_id, builtdate=NEW.builtdate, enddate=NEW.enddate, ownercat_id=NEW.ownercat_id, address_01=NEW.address_01, address_02=NEW.address_02, 
+			address_03=NEW.address_03, streetaxis_id=NEW.streetaxis_id, postnumber=NEW.postnumber, descript=NEW.descript,  rotation=NEW.rotation, verified=NEW.verified, 
 			the_geom=NEW.the_geom, undelete=NEW.undelete, label_x=NEW.label_x,label_y=NEW.label_y, label_rotation=NEW.label_rotation,
 			 publish=NEW.publish, inventory=NEW.inventory, expl_id=NEW.expl_id, num_value=NEW.num_value
 			WHERE connec_id=OLD.connec_id;

@@ -1,4 +1,4 @@
-/*
+﻿/*
 This file is part of Giswater 3
 The program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 This version of Giswater is provided by Giswater Association
@@ -32,9 +32,14 @@ BEGIN
 
         -- Node ID
         IF (NEW.node_id IS NULL) THEN
-            PERFORM setval('urn_id_seq', gw_fct_urn(),true);
+            --PERFORM setval('urn_id_seq', gw_fct_urn(),true);
             NEW.node_id:= (SELECT nextval('urn_id_seq'));
         END IF;
+
+	-- code
+	IF (NEW.code IS NULL) THEN
+		NEW.code = NEW.node_id;
+	END IF;
 
         -- Node type
         IF (NEW.node_type IS NULL) THEN
@@ -54,7 +59,7 @@ BEGIN
             IF ((SELECT COUNT(*) FROM cat_node) = 0) THEN
                 RETURN audit_function(110,810);  
             END IF;      
-			NEW.nodecat_id:= (SELECT "value" FROM config_vdefault WHERE "parameter"='nodecat_vdefault' AND "user"="current_user"());
+			NEW.nodecat_id:= (SELECT "value" FROM config_param_user WHERE "parameter"='nodecat_vdefault' AND "cur_user"="current_user"());
         END IF;
 
         -- Sector ID
@@ -92,7 +97,7 @@ BEGIN
 			
 	-- Verified
         IF (NEW.verified IS NULL) THEN
-            NEW.verified := (SELECT "value" FROM config_vdefault WHERE "parameter"='verified_vdefault' AND "user"="current_user"());
+            NEW.verified := (SELECT "value" FROM config_param_user WHERE "parameter"='verified_vdefault' AND "cur_user"="current_user"());
             IF (NEW.verified IS NULL) THEN
                 NEW.verified := (SELECT id FROM value_verified limit 1);
             END IF;
@@ -100,7 +105,7 @@ BEGIN
 
 		-- State
         IF (NEW.state IS NULL) THEN
-            NEW.state := (SELECT "value" FROM config_vdefault WHERE "parameter"='state_vdefault' AND "user"="current_user"());
+            NEW.state := (SELECT "value" FROM config_param_user WHERE "parameter"='state_vdefault' AND "cur_user"="current_user"());
             IF (NEW.state IS NULL) THEN
                 NEW.state := (SELECT id FROM value_state limit 1);
             END IF;
@@ -108,16 +113,21 @@ BEGIN
 		
 		-- Workcat_id
         IF (NEW.workcat_id IS NULL) THEN
-            NEW.workcat_id := (SELECT "value" FROM config_vdefault WHERE "parameter"='workcat_vdefault' AND "user"="current_user"());
+            NEW.workcat_id := (SELECT "value" FROM config_param_user WHERE "parameter"='workcat_vdefault' AND "cur_user"="current_user"());
             IF (NEW.workcat_id IS NULL) THEN
                 NEW.workcat_id := (SELECT id FROM cat_work limit 1);
             END IF;
         END IF;
-	
+
+		--Inventory
+		IF (NEW.inventory IS NULL) THEN
+			NEW.inventory :='TRUE';
+		END IF; 
+		
 
 		--Builtdate
 		IF (NEW.builtdate IS NULL) THEN
-			NEW.builtdate :=(SELECT "value" FROM config_vdefault WHERE "parameter"='builtdate_vdefault' AND "user"="current_user"());
+			NEW.builtdate :=(SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"());
 		END IF;  
 		
         -- FEATURE INSERT

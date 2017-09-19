@@ -54,8 +54,7 @@ public class MainDao {
 	protected static String giswaterUsersFolder;   // UsersFolder + ROOT_FOLDER
 	
     private static Connection connectionPostgis;
-	private static String waterSoftware;   // [EPASWMM | EPANET]
-	private static String softwareAcronym;   // [ud | ws]
+	private static String waterSoftware;   // [ud | ws]
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "sql/updates"
@@ -112,11 +111,11 @@ public class MainDao {
 	
 	public static void setWaterSoftware(String param) {
 		waterSoftware = param;
-    	if (waterSoftware.toUpperCase().equals("EPANET")) {
-    		softwareAcronym = "ws";
+    	if (waterSoftware.toUpperCase().equals("EPANET") || waterSoftware.toLowerCase().equals("ws")) {
+    		waterSoftware = "ws";
     	}
-    	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
-    		softwareAcronym = "ud";
+    	else if (waterSoftware.toUpperCase().equals("EPASWMM") || waterSoftware.toLowerCase().equals("ud")) {
+    		waterSoftware = "ud";
     	}	
 	}
 	
@@ -710,10 +709,10 @@ public class MainDao {
     	
     	String tableName = "";
     	software = software.toUpperCase().trim();
-        if (software.equals("EPANET") || software.equals("WS")) {
+        if (software.equals("EPANET") || software.toLowerCase().equals("ws")) {
         	tableName = TABLE_EPANET;
         }
-        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.equals("UD")) {
+        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.toLowerCase().equals("ud")) {
         	tableName = TABLE_EPASWMM;
         }
         return checkTable(schemaName, tableName);
@@ -977,7 +976,7 @@ public class MainDao {
 		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
 		String sridValue = MainDao.getSrid(schema);
 		String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
-			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareAcronym.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
         Utils.logInfo(sql);
 		return MainDao.executeSql(sql, commit);	
@@ -991,7 +990,7 @@ public class MainDao {
 		if (schema == null || schema.equals("")) return false;
 		
 		Integer schemaVersion = getSchemaVersion();
-		Integer updateVersion = updateMap.get(softwareAcronym);
+		Integer updateVersion = updateMap.get(waterSoftware);
 		Utils.getLogger().info("Project '"+schema+"' ("+schemaVersion+")");
 		Utils.getLogger().info("Update version: ("+updateVersion+")");
 		if (updateVersion == null || updateVersion == -1) return false;
@@ -1034,27 +1033,28 @@ public class MainDao {
     	updateMap = new HashMap<String, Integer>();
 		getLastUpdateSoftware("ws");
 		getLastUpdateSoftware("ud");
+		getLastUpdateSoftware("utils");
 		
 	}
 	
 	
-	private static void getLastUpdateSoftware(String softwareAcronym) {
+	private static void getLastUpdateSoftware(String folderPath) {
 		
-		String folder = updatesFolder+softwareAcronym+File.separator;
+		String folder = updatesFolder+folderPath+File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null && files.length > 0) {
 			Arrays.sort(files);
 			String fileName = files[files.length-1].getName();
 			String newFileName = fileName;
 			boolean renameFile = false;
-			// Replace islast.sql to @giswaterVersion.sql
-			if (fileName.equals("islast.sql")) {
+			// Replace is_last.sql to @giswaterVersion.sql
+			if (fileName.contains("is_last.sql")) {
 				renameFile = true;
-				newFileName = fileName.replace("islast", giswaterVersion);		
+				newFileName = fileName.replace("is_last", giswaterVersion);		
 			}
-			newFileName = newFileName.replace(softwareAcronym+"_", "").replace("sql", "").replace(".", "");
+			newFileName = newFileName.replace(folderPath+"_", "").replace("sql", "").replace(".", "");
 			Integer fileVersion = Utils.parseInt(newFileName);
-			updateMap.put(softwareAcronym, fileVersion);
+			updateMap.put(folderPath, fileVersion);
 			if (renameFile) {
 				if (!Utils.renameFile(folder+fileName, folder+newFileName+".sql")) {
 					Utils.logError("Rename could not be executed");
@@ -1062,7 +1062,7 @@ public class MainDao {
 			}
 		}
 		else {
-			updateMap.put(softwareAcronym, -1);	
+			updateMap.put(folderPath, -1);	
 		}
 		
 	}
@@ -1077,7 +1077,7 @@ public class MainDao {
 		boolean status = true;
 		
 		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder + softwareAcronym + File.separator;
+		String folder = updatesFolder + waterSoftware + File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null) {
 			Arrays.sort(files);

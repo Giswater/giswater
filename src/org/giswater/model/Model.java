@@ -56,9 +56,9 @@ public class Model {
     public static void setSoftwareVersion(String softwareVersion) {
     	Model.softwareVersion = softwareVersion;
     	if (softwareVersion.substring(0, 4).toLowerCase().equals("swmm")){
-    		softwareName = "SWMM";
+    		softwareName = "ud";
     	} else{
-    		softwareName = "EPANET";
+    		softwareName = "ws";
     	}
     }
     

@@ -111,7 +111,7 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 	}		
 	
 	public void setProjectSoftware(String software) {
-		if (software.equals("EPASWMM")){
+		if (software.equals("EPASWMM") || software.toLowerCase().equals("ud")) {
 			software = "UD PROJECT";
 		}
 		cboSoftware.setSelectedItem(software);
