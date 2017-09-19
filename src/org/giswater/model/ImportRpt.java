@@ -262,9 +262,9 @@ public class ImportRpt extends Model {
     	} 
     	else {
     		Utils.getLogger().info("Target not found: " + rptTarget.getId() + " - " + rptTarget.getDescription());
-    		if (softwareName.equals("EPANET") && rptTarget.getId() == 10) {
+    		if ((softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) && rptTarget.getId() == 10) {
     			sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable()+ " WHERE result_id = '"+resultName+"'";
-    			MainDao.executeUpdateSql(sql, true);    			
+    			MainDao.executeUpdateSql(sql, true);
     			sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+ " (result_id) VALUES ('"+resultName+"')";
     			MainDao.executeUpdateSql(sql, true);
     		}
@@ -542,14 +542,14 @@ public class ImportRpt extends Model {
 	private static boolean parseLines() {
 		
 		boolean result = true;
-		rptTokens = new ArrayList<RptToken>();			
-		boolean blankLine = false;		
+		rptTokens = new ArrayList<RptToken>();
+		boolean blankLine = false;
 		boolean valid = true;
 		while (!blankLine && valid) {
 			lineNumber++;
 			String line = readLine();
 			blankLine = (line.length() == 0);
-			if (softwareName.equals("EPANET") && rptTarget.getId() == 30) {
+			if ((softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) && rptTarget.getId() == 30) {
 				valid = !line.contains("---");
 			}
 			if (!blankLine && valid) {
@@ -667,7 +667,7 @@ public class ImportRpt extends Model {
 		String values = "'"+resultName+"', ";
 		boolean ignoreToken = false;
 		
-		if (softwareName.equals("EPANET")) {
+		if (softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) {
 			if (rptTokens.size() < 2) {
 				Utils.logError("Line not valid");
 				return true;
@@ -731,7 +731,7 @@ public class ImportRpt extends Model {
 		String fields = "result_id, ";
 		String values = "'"+resultName+"', ";
 		
-		if (softwareName.equals("EPANET")) {
+		if (softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) {
 			if (rptTokens.size() < 2) {
 				Utils.logError("Line not valid");
 				return true;

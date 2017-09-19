@@ -54,8 +54,7 @@ public class MainDao {
 	protected static String giswaterUsersFolder;   // UsersFolder + ROOT_FOLDER
 	
     private static Connection connectionPostgis;
-	private static String waterSoftware;   // [EPASWMM | EPANET]
-	private static String softwareAcronym;   // [ud | ws]
+	private static String waterSoftware;   // [ud | ws]
     private static String schema;   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "sql/updates"
@@ -112,11 +111,11 @@ public class MainDao {
 	
 	public static void setWaterSoftware(String param) {
 		waterSoftware = param;
-    	if (waterSoftware.toUpperCase().equals("EPANET")) {
-    		softwareAcronym = "ws";
+    	if (waterSoftware.toUpperCase().equals("EPANET") || waterSoftware.toLowerCase().equals("ws")) {
+    		waterSoftware = "ws";
     	}
-    	else if (waterSoftware.toUpperCase().equals("EPASWMM")) {
-    		softwareAcronym = "ud";
+    	else if (waterSoftware.toUpperCase().equals("EPASWMM") || waterSoftware.toLowerCase().equals("ud")) {
+    		waterSoftware = "ud";
     	}	
 	}
 	
@@ -710,10 +709,10 @@ public class MainDao {
     	
     	String tableName = "";
     	software = software.toUpperCase().trim();
-        if (software.equals("EPANET") || software.equals("WS")) {
+        if (software.equals("EPANET") || software.toLowerCase().equals("ws")) {
         	tableName = TABLE_EPANET;
         }
-        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.equals("UD")) {
+        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.toLowerCase().equals("ud")) {
         	tableName = TABLE_EPASWMM;
         }
         return checkTable(schemaName, tableName);
@@ -977,7 +976,7 @@ public class MainDao {
 		String language = PropertiesDao.getPropertiesFile().get("LANGUAGE", "en").toLowerCase();
 		String sridValue = MainDao.getSrid(schema);
 		String sql = "INSERT INTO "+schema+".version (giswater, wsoftware, postgres, postgis, date, language, epsg)" +
-			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+softwareAcronym.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
+			" VALUES ('"+MainDao.getGiswaterVersion()+"', '"+waterSoftware.toUpperCase()+"', '"+MainDao.getPostgreVersion()+"', '" +
 			MainDao.getPostgisVersion()+"', now(), '"+language+"', "+sridValue+")";
         Utils.logInfo(sql);
 		return MainDao.executeSql(sql, commit);	
@@ -991,7 +990,7 @@ public class MainDao {
 		if (schema == null || schema.equals("")) return false;
 		
 		Integer schemaVersion = getSchemaVersion();
-		Integer updateVersion = updateMap.get(softwareAcronym);
+		Integer updateVersion = updateMap.get(waterSoftware);
 		Utils.getLogger().info("Project '"+schema+"' ("+schemaVersion+")");
 		Utils.getLogger().info("Update version: ("+updateVersion+")");
 		if (updateVersion == null || updateVersion == -1) return false;
@@ -1078,12 +1077,12 @@ public class MainDao {
 		boolean status = true;
 		
 		// Iterate over all files inside updates/<softwareName> folder
-		String folder = updatesFolder + softwareAcronym + File.separator;
+		String folder = updatesFolder + waterSoftware + File.separator;
 		File[] files = new File(folder).listFiles();
 		if (files != null) {
 			Arrays.sort(files);
 			for (File file : files) {
-				String fileName = file.getName().replace(softwareAcronym.toLowerCase()+"_", "").replace(".sql", "");
+				String fileName = file.getName().replace(waterSoftware.toLowerCase()+"_", "").replace(".sql", "");
 				Integer fileVersion = Utils.parseInt(fileName);			
 				if (fileVersion > schemaVersion) {
 			    	String content;

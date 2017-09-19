@@ -109,7 +109,7 @@ public class ProjectPreferencesController extends AbstractController {
 			}
 			epaSoftPanel.exportSelected();
 		}
-		else if (waterSoftware.equals("EPANET")) {
+		else if (waterSoftware.equals("EPANET") || waterSoftware.toLowerCase().equals("ws")) {
 			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
 			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 			epaSoftPanel.setSubcatchmentVisible(false);
@@ -134,7 +134,7 @@ public class ProjectPreferencesController extends AbstractController {
 		view.setInfo("");
 		// Check if we have selected a water software
 		if (waterSoftware.equals("")) {
-			view.setWaterSoftware("EPASWMM");
+			view.setWaterSoftware("ud");
 			changeSoftware();		
 			return false;
 		}
@@ -432,7 +432,7 @@ public class ProjectPreferencesController extends AbstractController {
 	public void createSchemaAssistant() {
 		
 		String defaultSrid = PropertiesDao.getPropertiesFile().get("SRID_DEFAULT", "25831");		
-		ProjectPanel projectPanel = new ProjectPanel(defaultSrid);
+		ProjectPanel projectPanel = new ProjectPanel(defaultSrid, waterSoftware);
 		NewProjectController npController = new NewProjectController(projectPanel);
 		projectPanel.setController(npController);
 		npController.setParentPanel(view);

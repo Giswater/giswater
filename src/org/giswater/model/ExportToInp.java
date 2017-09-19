@@ -133,7 +133,8 @@ public class ExportToInp extends Model {
             executePg2Inp(resultName);
             
             // Execute SQL function gw_fct_node2arc() 
-            if (MainDao.getWaterSoftware().equals("EPANET")) {
+            if (MainDao.getWaterSoftware().equals("EPANET") || 
+            	MainDao.getWaterSoftware().toLowerCase().equals("ws")) {
             	executeNode2Arc();
             }
                 

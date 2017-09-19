@@ -49,14 +49,16 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	private JPanel panelSrid;
 	private String defaultSrid;
 	private JCheckBox chkImportData;
+	private JLabel lblTypeInfo;
+	private String defaultName;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
-	private JLabel lblTypeInfo;
 	
 	
-	public ProjectPanel(String defaultSrid) {
+	public ProjectPanel(String defaultSrid, String waterSoftware) {
 		this.defaultSrid = defaultSrid;
+		this.defaultName = "test_"+waterSoftware;		
 		initConfig();
 	}
 		
@@ -170,7 +172,7 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		
 		setupListeners();
 		
-		txtName.setText("test_ws");
+		txtName.setText(this.defaultName);
 		txtTitle.setText("title");
 		
 	}	
