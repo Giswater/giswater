@@ -35,3 +35,6 @@ local.properties
 .buildpath
 /bin/
 sh.exe.stackdump
+*.lnk
+*.jar
+*.gitignore
