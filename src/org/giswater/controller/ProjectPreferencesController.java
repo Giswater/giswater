@@ -108,8 +108,8 @@ public class ProjectPreferencesController extends AbstractController {
 			epaSoftPanel.exportSelected();
 		}
 		else if (waterSoftware.equals("EPANET") || waterSoftware.toLowerCase().equals("ws")) {
-			epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
-			epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
+			//epaSoftPanel.setOptionsButton(Utils.getBundleString("ProjectPreferencesController.options"), "showInpOptionsEpanet"); //$NON-NLS-1$
+			//epaSoftPanel.setDesignButton(Utils.getBundleString("ProjectPreferencesController.times_values"), "showTimesValues"); //$NON-NLS-1$
 			epaSoftPanel.setSubcatchmentVisible(false);
 			epaSoftPanel.setSubcatchmentSelected(false);
 		}
@@ -382,6 +382,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		view.updateProjectData("", "", "");
 		if (MainDao.getSchema().equals("")) return;
+		if (!MainDao.checkSchema(MainDao.getSchema())) return;
 		String sql = "SELECT title, author, date FROM "+MainDao.getSchema()+".inp_project_id";
 		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
 		if (vector_container.size() > 0) {
@@ -453,6 +454,7 @@ public class ProjectPreferencesController extends AbstractController {
             task.setParentPanel(view);
             task.addPropertyChangeListener(this);
             task.execute();
+            changeSoftware();
         }
         
 	}		

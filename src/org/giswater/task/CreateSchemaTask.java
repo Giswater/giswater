@@ -36,6 +36,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	private String title;
 	private String author;
 	private String date;
+	private Boolean enableConstraints;
 	
 	
 	public CreateSchemaTask(String waterSoftware, String schemaName, String sridValue) {
@@ -48,10 +49,11 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	public void setParams(String title, String author, String date) {
+	public void setParams(String title, String author, String date, Boolean enableConstraints) {
 		this.title = title;
 		this.author = author;
 		this.date = date;	
+		this.enableConstraints = enableConstraints;	
 	}
 	
 	
@@ -101,21 +103,25 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderSoftware+FILE_PATTERN_VIEW+File.separator;
 		if (!processFolder(folderPath)) return false;	
 		
-		// Process folder '<waterSoftware>/trg' folder
-		folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
-		if (!processFolder(folderPath)) return false;	
+		if (enableConstraints) {	
+			// Process folder '<waterSoftware>/trg' folder
+			folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
+			if (!processFolder(folderPath)) return false;
+		}
 
 		// Process folder '<waterSoftware>/dml' folder
 		folderPath = folderSoftware+FILE_PATTERN_DML+File.separator;
 		if (!processFolder(folderPath)) return false;	
 		
-		// Process folder '<waterSoftware>/fk' folder
-		folderPath = folderSoftware+FILE_PATTERN_FK+File.separator;
-		if (!processFolder(folderPath)) return false;		
-		
-		// Process folder '<waterSoftware>/rules' folder
-		folderPath = folderSoftware+FILE_PATTERN_RULES+File.separator;
-		if (!processFolder(folderPath)) return false;		
+		if (enableConstraints) {
+			// Process folder '<waterSoftware>/fk' folder
+			folderPath = folderSoftware+FILE_PATTERN_FK+File.separator;
+			if (!processFolder(folderPath)) return false;		
+			
+			// Process folder '<waterSoftware>/rules' folder
+			folderPath = folderSoftware+FILE_PATTERN_RULES+File.separator;
+			if (!processFolder(folderPath)) return false;	
+		}
 		
 		// Process folder 'utils/fct' folder
 		folderPath = folderUtils+FILE_PATTERN_FCT+File.separator;
@@ -125,22 +131,26 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderUtils+FILE_PATTERN_VIEW+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'utils/trg' folder
-		folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
-		if (!processFolder(folderPath)) return false;	
+		if (enableConstraints) {			
+			// Process folder 'utils/trg' folder
+			folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
+			if (!processFolder(folderPath)) return false;	
+		}
 		
 		// Process folder 'utils/dml' folder
 		folderPath = folderUtils+FILE_PATTERN_DML+File.separator;
 		if (!processFolder(folderPath)) return false;		
 		
-		// Process folder 'utils/fk' folder
-		folderPath = folderUtils+FILE_PATTERN_FK+File.separator;
-		if (!processFolder(folderPath)) return false;		
-		
-		// Process folder 'utils/rules' folder
-		folderPath = folderUtils+FILE_PATTERN_RULES+File.separator;
-		if (!processFolder(folderPath)) return false;		
-		
+		if (enableConstraints) {		
+			// Process folder 'utils/fk' folder
+			folderPath = folderUtils+FILE_PATTERN_FK+File.separator;
+			if (!processFolder(folderPath)) return false;		
+			
+			// Process folder 'utils/rules' folder
+			folderPath = folderUtils+FILE_PATTERN_RULES+File.separator;
+			if (!processFolder(folderPath)) return false;		
+		}
+			
 		return status;
 		
 	}

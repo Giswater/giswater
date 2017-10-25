@@ -86,17 +86,17 @@ public class ExportToInp extends Model {
 	}
     
     
-    // Execute SQL function gw_fct_pg2inp()
-    private static void executePg2Inp(String resultName) {
+    // Execute SQL function gw_fct_pg2epa()
+    private static void executePg2Epa(String resultName) {
     	
-    	if (MainDao.checkFunction(MainDao.getSchema(), "gw_fct_pg2inp")) {    	
-	    	Utils.getLogger().info("Execution function 'gw_fct_pg2inp()'");
-	    	String sql = "SELECT "+MainDao.getSchema()+".gw_fct_pg2inp('"+resultName+"');";
+    	if (MainDao.checkFunction(MainDao.getSchema(), "gw_fct_pg2epa")) {    	
+	    	Utils.getLogger().info("Execution function 'gw_fct_pg2epa()'");
+	    	String sql = "SELECT "+MainDao.getSchema()+".gw_fct_pg2epa('"+resultName+"');";
 	    	String result = MainDao.queryToString(sql);		
-	    	Utils.getLogger().info("Result function 'gw_fct_pg2inp()': "+result);
+	    	Utils.getLogger().info("Result function 'gw_fct_pg2epa()': "+result);
     	}
     	else {
-	    	Utils.getLogger().info("Doesn't exist function 'gw_fct_pg2inp()'");    		
+	    	Utils.getLogger().info("Doesn't exist function 'gw_fct_pg2epa()'");    		
     	}
     	
     }
@@ -129,14 +129,8 @@ public class ExportToInp extends Model {
             	return false;
             }
             
-            // Execute SQL function gw_fct_pg2inp('result_id') 
-            executePg2Inp(resultName);
-            
-            // Execute SQL function gw_fct_node2arc() 
-            if (MainDao.getWaterSoftware().equals("EPANET") || 
-            	MainDao.getWaterSoftware().toLowerCase().equals("ws")) {
-            	executeNode2Arc();
-            }
+            // Execute SQL function gw_fct_pg2epa('result_id') 
+            executePg2Epa(resultName);
                 
             // Open template and output file
             rat = new RandomAccessFile(fileTemplate, "r");
@@ -171,10 +165,14 @@ public class ExportToInp extends Model {
             	MainDao.executeSql(sql);
             	Utils.getLogger().info("Process subcatchments");    	
                 // Get content of target table
-            	sql = "SELECT "+MainDao.getSchema()+".gw_fct_dump_subcatchments();";            
+            	String functionName = "gw_fct_pg2epa_dump_subcatch";
+            	if (!MainDao.checkFunction(MainDao.getSchema(), functionName)) {
+            		functionName = "gw_fct_dump_subcatchments";
+            	}
+            	sql = "SELECT "+MainDao.getSchema()+"."+functionName+"();";            
             	rs = MainDao.getResultset(sql);
                 while (rs.next()) {                	
-                	raf.writeBytes(rs.getString("gw_fct_dump_subcatchments"));
+                	raf.writeBytes(rs.getString(functionName));
                 	raf.writeBytes("\r\n");
                 }            	
             }
