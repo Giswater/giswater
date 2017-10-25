@@ -145,9 +145,11 @@ public class NewProjectController extends AbstractController {
 		String author = view.getAuthor();
 		String date = view.getDate();
 		
+		Boolean enableConstraints = view.isConstraintsEnabled();
+		
 		// Execute task: CreateSchema
 		CreateSchemaTask task = new CreateSchemaTask(waterSoftware, schemaName, sridValue);
-        task.setParams(title, author, date);
+        task.setParams(title, author, date, enableConstraints);
         task.setController(this);
         task.setParentPanel(parentPanel);
         task.addPropertyChangeListener(this);

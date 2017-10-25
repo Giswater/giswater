@@ -51,6 +51,7 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	private JCheckBox chkImportData;
 	private JLabel lblTypeInfo;
 	private String defaultName;
+	private JCheckBox chkConstraints;
 	
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); //$NON-NLS-1$
 	private static final Font FONT_12 = new Font("Tahoma", Font.BOLD, 12);
@@ -65,7 +66,7 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() {
 		
-		setLayout(new MigLayout("", "[][217.00px:n][::65px]", "[][][][][5px:n][240.00,grow][][34px:n][5px:n][]"));
+		setLayout(new MigLayout("", "[][217.00px:n][::65px]", "[][][][][25.00px:n][240.00,grow][][34px:n][5px:n][]"));
 		
 		JLabel lblProjectName = new JLabel(BUNDLE.getString("ProjectPanel.lblProjectName.text")); //$NON-NLS-1$
 		add(lblProjectName, "cell 0 0,alignx trailing,aligny center");
@@ -111,6 +112,9 @@ public class ProjectPanel extends JPanel implements ActionListener {
 		
 		JLabel label = new JLabel(BUNDLE.getString("ProjectPanel.label.text")); //$NON-NLS-1$
 		add(label, "cell 2 3");
+		
+		chkConstraints = new JCheckBox(BUNDLE.getString("ProjectPanel.chckbxDisableConstraints.text")); //$NON-NLS-1$
+		add(chkConstraints, "cell 1 4");
 		
 		panelSrid = new JPanel();
 		panelSrid.setBorder(new TitledBorder(null, BUNDLE.getString("ProjectPanel.panelSrid.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_12, null)); //$NON-NLS-1$
@@ -241,6 +245,10 @@ public class ProjectPanel extends JPanel implements ActionListener {
 	
 	public String getDate() {
 		return txtDate.getText().trim();
+	}	
+	
+	public Boolean isConstraintsEnabled() {
+		return !chkConstraints.isSelected();
 	}	
 	
 	public String getSrid() {
