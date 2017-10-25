@@ -50,10 +50,12 @@ public class StateSelectionPanel extends JPanel {
 	private JButton btnDeleteAll;
 	private JButton btnClose;
 	private JDialog dialog;
+	private String tableStateSelection;
 
 	private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("form"); 
 	private final String TABLE_STATE = "value_state";
-	private final String TABLE_STATE_SELECTION = "inp_selector_state";
+	private final String TABLE_STATE_SELECTION_OLD = "inp_selector_state";
+	private final String TABLE_STATE_SELECTION = "selector_state";
 	
 	
 	public StateSelectionPanel() {
@@ -65,7 +67,11 @@ public class StateSelectionPanel extends JPanel {
 	private void setData() {
 		
 		if (MainDao.isConnected()) {
-			ResultSet rs = MainDao.getTableResultset(TABLE_STATE_SELECTION);		
+			tableStateSelection = TABLE_STATE_SELECTION;
+			if (!MainDao.checkTable(tableStateSelection)) {
+				tableStateSelection = TABLE_STATE_SELECTION_OLD; 
+			}
+			ResultSet rs = MainDao.getTableResultset(tableStateSelection);		
 			if (rs == null) return;		
 			tableModelStateSelection = new TableModelSectorSelection(rs, TABLE_STATE);
 			tableModelStateSelection.setTable(table);
@@ -178,7 +184,7 @@ public class StateSelectionPanel extends JPanel {
 		
         int res = Utils.showYesNoDialog("question_delete");
         if (res == JOptionPane.YES_OPTION) {
-        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+TABLE_STATE_SELECTION;
+        	String sql = "DELETE FROM "+MainDao.getSchema()+"."+tableStateSelection;
         	MainDao.executeUpdateSql(sql);
     		setData();
         }
