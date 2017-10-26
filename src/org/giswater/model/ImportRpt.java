@@ -537,6 +537,7 @@ public class ImportRpt extends Model {
 				valid = !line.contains("---");
 			}
 			if (!blankLine && valid) {
+				line = line.replace("-", " -");
 				Scanner scanner = new Scanner(line);
 				if (rptTarget.getType() == 1) {
 					parseLine1(scanner);
