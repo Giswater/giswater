@@ -37,7 +37,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 import org.giswater.gui.MainClass;
-import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
 
@@ -267,7 +266,6 @@ public class MainDao {
 		db = PropertiesDao.getGswProperties().get("POSTGIS_DATABASE", "postgres");
 		user = PropertiesDao.getGswProperties().get("POSTGIS_USER", "postgres");
 		password = PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD");		
-		password = Encryption.decrypt(password);
 		password = (password == null) ? "" : password;
 		useSsl = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_USESSL"));		
 		

@@ -49,7 +49,6 @@ import org.giswater.task.BackupProjectTask;
 import org.giswater.task.CreateExampleSchemaTask;
 import org.giswater.task.FileLauncherTask;
 import org.giswater.task.RestoreProjectTask;
-import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
@@ -419,8 +418,8 @@ public class MenuController extends AbstractController {
 		ppPanel.selectUseSsl(useSsl);
 		Boolean remember = Boolean.parseBoolean(PropertiesDao.getGswProperties().get("POSTGIS_REMEMBER"));
 		ppPanel.selectRemember(remember);
-		if (remember) {
-			ppPanel.setPassword(Encryption.decrypt(PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD")));        	
+		if (remember) {     	
+			ppPanel.setPassword(PropertiesDao.getGswProperties().get("POSTGIS_PASSWORD"));        	
 		} else {
 			ppPanel.setPassword("");
 		}

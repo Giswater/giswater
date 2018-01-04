@@ -55,7 +55,6 @@ import org.giswater.dao.ConfigDao;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.MainClass;
-import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 
@@ -366,7 +365,6 @@ public class GisPanel extends JPanel implements ActionListener, FocusListener  {
 			db = gswProp.get("POSTGIS_DATABASE", "postgres");
 			user = gswProp.get("POSTGIS_USER", "postgres");
 			password = gswProp.get("POSTGIS_PASSWORD");		
-			password = Encryption.decrypt(password);
 			password = (password == null) ? "" : password;		
 			
 			// Get File content

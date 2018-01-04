@@ -37,7 +37,6 @@ import org.giswater.gui.panel.ProjectPreferencesPanel;
 import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.task.RenameSchemaTask;
-import org.giswater.util.Encryption;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsFTP;
 
@@ -263,7 +262,7 @@ public class ProjectPreferencesController extends AbstractController {
 			PropertiesDao.getGswProperties().put("POSTGIS_USER", user);
 			// Save encrypted password
 			if (view.isRememberSelected()) {
-				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(password));
+				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", password);
 			} else {
 				PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", "");
 			}

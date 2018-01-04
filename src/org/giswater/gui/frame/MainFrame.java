@@ -62,7 +62,6 @@ import org.giswater.dao.PropertiesDao;
 import org.giswater.gui.panel.EpaSoftPanel;
 import org.giswater.gui.panel.GisPanel;
 import org.giswater.gui.panel.ProjectPreferencesPanel;
-import org.giswater.util.Encryption;
 import org.giswater.util.PropertiesMap;
 import org.giswater.util.Utils;
 import org.giswater.util.UtilsOS;
@@ -517,7 +516,7 @@ public class MainFrame extends JFrame implements ActionListener {
     	PropertiesDao.getGswProperties().put("POSTGIS_PORT", ppPanel.getPort());
     	PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", ppPanel.getDatabase());
     	PropertiesDao.getGswProperties().put("POSTGIS_USER", ppPanel.getUser());
-    	PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", Encryption.encrypt(ppPanel.getPassword()));
+        PropertiesDao.getGswProperties().put("POSTGIS_PASSWORD", ppPanel.getPassword());
     	PropertiesDao.getGswProperties().put("POSTGIS_REMEMBER", ppPanel.isRememberSelected().toString());
     	PropertiesDao.getGswProperties().put("POSTGIS_USESSL", ppPanel.isUseSslSelected().toString());
     	
