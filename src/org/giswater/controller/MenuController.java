@@ -487,8 +487,30 @@ public class MenuController extends AbstractController {
     private void updateEpaSoftPanel() {
     	
     	EpaSoftPanel epaSoftPanel = mainFrame.epaSoftFrame.getPanel();
-    	epaSoftPanel.setFileInp(PropertiesDao.getGswProperties().get("FILE_INP"));
-    	epaSoftPanel.setFileRpt(PropertiesDao.getGswProperties().get("FILE_RPT"));
+    	
+    	// Hack when executing from QGIS: Control if ':' is present in file path
+    	String path = PropertiesDao.getGswProperties().get("FILE_INP");
+    	String pathHack = path;
+    	if (!path.contains(":")) {
+    		int pos = path.indexOf("/");
+    		if (pos > 0) {
+    			pathHack = path.substring(0, pos) + ":" + path.substring(pos);
+    		}
+    	}
+    	Utils.getLogger().info("INP File: " + pathHack);    	
+    	epaSoftPanel.setFileInp(pathHack);
+    	
+    	path = PropertiesDao.getGswProperties().get("FILE_RPT");
+    	pathHack = path;
+    	if (!path.contains(":")) {
+    		int pos = path.indexOf("/");
+    		if (pos > 0) {
+    			pathHack = path.substring(0, pos) + ":" + path.substring(pos);
+    		}
+    	}
+    	Utils.getLogger().info("RPT File: " + pathHack);    	
+    	epaSoftPanel.setFileRpt(pathHack);    	
+    	
     	epaSoftPanel.setProjectName(PropertiesDao.getGswProperties().get("PROJECT_NAME"));
 		
 	}   

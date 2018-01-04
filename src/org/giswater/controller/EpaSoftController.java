@@ -130,8 +130,9 @@ public class EpaSoftController extends AbstractController {
         if (path.lastIndexOf(".") == -1) {
             path += ".inp";
         }
-        File fileInp = new File(path);        
-        gswProp.put("FILE_INP", fileInp.getAbsolutePath());
+        File fileInp = new File(path); 
+        path = path.replace("\\", "/");
+        gswProp.put("FILE_INP", path);
         PropertiesDao.savePropertiesFile();
         return fileInp;    
         
@@ -147,8 +148,9 @@ public class EpaSoftController extends AbstractController {
         if (path.lastIndexOf(".") == -1) {
             path += ".rpt";
         }
-        File fileRpt = new File(path);        
-        gswProp.put("FILE_RPT", fileRpt.getAbsolutePath());
+        File fileRpt = new File(path);
+        path = path.replace("\\", "/");
+        gswProp.put("FILE_RPT", path);
         PropertiesDao.savePropertiesFile();
         return fileRpt;    
         

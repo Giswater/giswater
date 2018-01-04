@@ -492,8 +492,12 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void putEpaSoftParams() {
 		
 		EpaSoftPanel epaSoftPanel = epaSoftFrame.getPanel();
-		PropertiesDao.getGswProperties().put("FILE_INP", epaSoftPanel.getFileInp());
-		PropertiesDao.getGswProperties().put("FILE_RPT", epaSoftPanel.getFileRpt());
+		String pathInp = epaSoftPanel.getFileInp();
+		pathInp = pathInp.replace("\\", "/");
+		String pathRpt = epaSoftPanel.getFileRpt();
+		pathRpt = pathRpt.replace("\\", "/");
+		PropertiesDao.getGswProperties().put("FILE_INP", pathInp);
+		PropertiesDao.getGswProperties().put("FILE_RPT", pathRpt);
 		PropertiesDao.getGswProperties().put("PROJECT_NAME", epaSoftPanel.getResultName());   
     	
 	}    
@@ -529,7 +533,9 @@ public class MainFrame extends JFrame implements ActionListener {
 	public void saveGswFile() {
 
 		// Update FILE_GSW parameter 
-		prop.put("FILE_GSW", PropertiesDao.getGswPath());
+        String file = PropertiesDao.getGswPath();
+        Utils.getLogger().info(file);
+		prop.put("FILE_GSW", file);
 		
 		// Get EPASOFT (EPANET or SWMM) parameters
 		putEpaSoftParams();
