@@ -74,17 +74,6 @@ public class ExportToInp extends Model {
 		
 	}    
     
-
-    // Execute SQL function gw_fct_node2arc()
-    private static void executeNode2Arc() {
-
-    	Utils.getLogger().info("Execution function 'gw_fct_node2arc()'");
-		String sql = "SELECT "+MainDao.getSchema()+".gw_fct_node2arc();";
-		String result = MainDao.queryToString(sql);		
-		Utils.getLogger().info("Result function 'gw_fct_node2arc()': "+result);
-
-	}
-    
     
     // Execute SQL function gw_fct_pg2epa()
     private static void executePg2Epa(String resultName) {
