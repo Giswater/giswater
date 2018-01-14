@@ -526,12 +526,7 @@ public class MenuController extends AbstractController {
 		createExampleSchema("ud");
 	}
 	
-	public void exampleEpaswmm2D() {
-		MainDao.setWaterSoftware("ud");
-		createExampleSchema("ud", "_2d");
-	}
-	
-	
+
 	private void createExampleSchema(String waterSoftware) {
 		createExampleSchema(waterSoftware, "");
 	}

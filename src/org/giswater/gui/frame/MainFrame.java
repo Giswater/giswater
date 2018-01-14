@@ -93,7 +93,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JMenu mnProjectExample;	
 	private JMenuItem mntmExampleEpanet;
 	private JMenuItem mntmExampleEpaswmm;
-	private JMenuItem mntmExampleEpaswmm2D;
 	
 	private JMenu mnConfiguration;
 	private JMenuItem mntmSoftware;
@@ -254,12 +253,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmExampleEpaswmm.setMnemonic(KeyEvent.VK_U);
 		mntmExampleEpaswmm.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.CTRL_MASK));
 		mnProjectExample.add(mntmExampleEpaswmm);
-		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm"); 
-		
-		mntmExampleEpaswmm2D = new JMenuItem(BUNDLE.getString("MainFrame.mntmUrbanDrainaged.text")); //$NON-NLS-1$
-		mntmExampleEpaswmm2D.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_MASK));
-		mntmExampleEpaswmm2D.setActionCommand("exampleEpaswmm2D");
-		mnProjectExample.add(mntmExampleEpaswmm2D);
+		mntmExampleEpaswmm.setActionCommand("exampleEpaswmm");
 		
 		JMenu mnData = new JMenu(BUNDLE.getString("MainFrame.mnData.text")); 
 		mnData.setMnemonic(KeyEvent.VK_D);
@@ -577,7 +571,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		mntmExampleEpanet.addActionListener(this);
 		mntmExampleEpaswmm.addActionListener(this);
-		mntmExampleEpaswmm2D.addActionListener(this);
 		
 		mntmDatabaseAdministrator.addActionListener(this);		
 		mntmSqlFileLauncher.addActionListener(this);	
@@ -621,7 +614,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		mntmSaveProject.setEnabled(enable);
 		mntmExampleEpanet.setEnabled(enable);
 		mntmExampleEpaswmm.setEnabled(enable);
-		mntmExampleEpaswmm2D.setEnabled(enable);
 	}
 	
 	
