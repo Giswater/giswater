@@ -349,7 +349,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][40px:n:40px][::90px][75px:n:75px]", "[5px:n][][][][][][][][][][][2px:n][::10px][][2px:n][40px:n][12px:n][]"));
+		setLayout(new MigLayout("", "[115px:n][4px:n][75px:n:75px][75px:n:75px][40px:n:40px][::90px][75px:n:75px]", "[5px:n][][][][][][][][][][][2px:n][::10px][][2px:n][40px:n][26px:n][]"));
 		
 		// Define button groups
 	    ButtonGroup group = new ButtonGroup();

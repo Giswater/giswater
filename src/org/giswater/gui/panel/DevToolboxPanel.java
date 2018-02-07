@@ -95,11 +95,11 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 	
 	private void initConfig() throws MissingResourceException {
 
-		setLayout(new MigLayout("", "[300px:n][40px:n][77px:n]", "[10px:n][20px:n][10px:n][203.00][20px:n][]"));
+		setLayout(new MigLayout("", "[300px:n][196.00px:n]", "[10px:n][20px:n][10px:n][203.00][10px:n][]"));
 		
 		panelOptions = new JPanel();
 		panelOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelTitle.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panelOptions, "cell 0 1 3 1,grow");
+		add(panelOptions, "cell 0 1 2 1,grow");
 		panelOptions.setLayout(new MigLayout("", "[75px:n,grow][80px:n][]", "[grow]"));
 		
 		panelOptions_2 = new JPanel();
@@ -147,7 +147,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		
 		panelCustomOptions = new JPanel();
 		panelCustomOptions.setBorder(new TitledBorder(null, BUNDLE.getString("DevToolboxPanel.panelCustomDev.text"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panelCustomOptions, "cell 0 3 3 1,grow");
+		add(panelCustomOptions, "cell 0 3 2 1,grow");
 		panelCustomOptions.setLayout(new MigLayout("", "[grow]", "[grow][]"));
 		
 		panelCustomOptions_2 = new JPanel();
@@ -205,7 +205,7 @@ public class DevToolboxPanel extends JPanel implements ActionListener {
 		btnClose = new JButton(BUNDLE.getString("Generic.btnClose.text"));
 		btnClose.setMinimumSize(new Dimension(75, 23));
 		btnClose.setActionCommand("closePanel");
-		add(btnClose, "cell 2 5,alignx right");
+		add(btnClose, "cell 1 5,alignx right");
 
 		setupListeners();
 

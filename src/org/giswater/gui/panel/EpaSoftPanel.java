@@ -89,7 +89,7 @@ public class EpaSoftPanel extends JPanel implements ActionListener {
 		panelFileManager = new JPanel();
 		panelFileManager.setBorder(new TitledBorder(null, BUNDLE.getString("EpaSoftPanel.panelFileManager.borderTitle"), TitledBorder.LEADING, TitledBorder.TOP, FONT_PANEL_TITLE, null));
 		add(panelFileManager, "cell 0 1,grow");
-		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][24px:n][34px:n][40px:n][34px:n][40px:n][][]"));
+		panelFileManager.setLayout(new MigLayout("", "[][104.00][::3px][228px:n,grow][::3px][65px:n][61px:n]", "[30px:n][24px:n][34px:n][40px:n][34px:n][40px:n][73px:n][]"));
 		
 		chkExport = new JCheckBox();
 		chkExport.setToolTipText(BUNDLE.getString("EpaSoftPanel.chkExport.toolTipText")); //$NON-NLS-1$
