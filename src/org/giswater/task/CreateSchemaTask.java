@@ -36,7 +36,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	private String title;
 	private String author;
 	private String date;
-	private Boolean enableConstraints;
+	private Boolean enableConstraints = true;
 	
 	
 	public CreateSchemaTask(String waterSoftware, String schemaName, String sridValue) {
