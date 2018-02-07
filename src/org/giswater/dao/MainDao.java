@@ -54,7 +54,7 @@ public class MainDao {
 	
     private static Connection connectionPostgis;
 	private static String waterSoftware;   // [ud | ws]
-    private static String schema;   // Current selected schema
+    private static String schema = "";   // Current selected schema
     private static boolean isConnected = false;
     private static String updatesFolder;   // appPath + "sql/updates"
 	private static String giswaterVersion;
@@ -953,6 +953,7 @@ public class MainDao {
 	public static Integer getSchemaVersion() {
 		
 		Integer schemaVersion = -1;
+		if (schema == "") return schemaVersion;
 		if (schemaMap.containsKey(schema)) {
 			schemaVersion = schemaMap.get(schema);
 		} 

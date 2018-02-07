@@ -34,6 +34,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
+import org.giswater.dao.ConfigDao;
 import org.giswater.dao.ExecuteDao;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
@@ -476,7 +477,8 @@ public class MenuController extends AbstractController {
 		// If error open configuration file
 		else {
 			ppPanel.selectSourceType(true);
-			openFrame(mainFrame.configFrame);
+			ppPanel.setVersionSoftwareModel(ConfigDao.getAvailableVersions(waterSoftware));	
+			ppPanel.setVersionSoftware(PropertiesDao.getGswProperties().get("VERSION"));			
 			return false;
 		}
 		
