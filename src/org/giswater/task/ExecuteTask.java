@@ -172,6 +172,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
             }
         }
         
+        MainDao.commit();
         status = true;
         return null;
     	

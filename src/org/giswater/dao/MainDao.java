@@ -887,7 +887,7 @@ public class MainDao {
 		sql+= " WHERE cur_user = current_user";
 		executeUpdateSql(sql);
 		sql = "INSERT INTO "+schema+"."+table+" (result_id, cur_user) VALUES ('"+result+"', current_user)";
-		executeUpdateSql(sql, true);
+		executeUpdateSql(sql);
 	}
 	
 
