@@ -127,14 +127,6 @@ public class Utils {
 				logger = Logger.getLogger(logFile);
 				logger.addHandler(fh);
 				
-				// SQL logger file
-				logFile = logFolder + "sql_"+getCurrentTimeStamp()+".log";
-				fh = new FileHandler(logFile, true);
-				lf = new LogFormatter();
-				fh.setFormatter(lf);
-				loggerSql = Logger.getLogger(logFile);
-				loggerSql.addHandler(fh);
-				
 				// Check QGIS file association
 				isQgis = true;
 				if (isWindows) {
