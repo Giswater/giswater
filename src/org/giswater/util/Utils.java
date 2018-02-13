@@ -78,7 +78,6 @@ public class Utils {
     private static final int NUM_LEVELS = 10;
 
 	private static Logger logger;
-    private static Logger loggerSql;
     private static String configFolder;
 	private static String logFolder;
 	private static String gisFolder;

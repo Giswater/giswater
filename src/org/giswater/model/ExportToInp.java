@@ -52,6 +52,7 @@ public class ExportToInp extends Model {
 	private static final String PATTERNS_TABLE = "inp_pattern";
 	private static final String SELECTOR_SECTOR_TABLE = "inp_selector_sector";
 	private static final Integer DEFAULT_SPACE = 23;
+	private static final String TABLE_CAT_RESULT = "rpt_cat_result";	
 
 	private static boolean isVersion51;
 	
@@ -90,6 +91,22 @@ public class ExportToInp extends Model {
     	
     }
 	
+    
+	private static boolean existsProjectName(String resultName) {
+		
+		String sql = "SELECT * FROM "+MainDao.getSchema()+"."+TABLE_CAT_RESULT+
+			" WHERE result_id = '"+resultName+"'";
+		try {
+			PreparedStatement ps = MainDao.getConnectionPostgis().prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        return rs.next();
+		} catch (SQLException e) {
+            Utils.showError(e, sql);
+			return false;
+		}
+		
+	}
+	
 	
     // Export to INP 
     public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51, 
@@ -99,6 +116,18 @@ public class ExportToInp extends Model {
         String sql = "";
         ExportToInp.isVersion51 = isVersion51;
         
+       	// Check if we want to overwrite previous results
+        Boolean overwriteResult = Boolean.parseBoolean(PropertiesDao.getPropertiesFile().get("OVERWRITE_RESULT", "false"));
+        Utils.getLogger().info("OVERWRITE_RESULT: "+overwriteResult);
+        
+    	// Check if Project Name exists in rpt_result_id
+    	if (existsProjectName(resultName)) {
+            if (!overwriteResult) {
+            	int res = Utils.showYesNoDialog("project_exists");    		
+            	if (res == JOptionPane.NO_OPTION) return false;
+            }
+    	}
+    	
         try {
             
             // Overwrite INP file if already exists?

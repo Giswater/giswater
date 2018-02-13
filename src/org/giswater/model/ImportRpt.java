@@ -87,16 +87,11 @@ public class ImportRpt extends Model {
 
        	// Check if we want to overwrite previous results
         Boolean overwriteResult = Boolean.parseBoolean(PropertiesDao.getPropertiesFile().get("OVERWRITE_RESULT", "false"));
-        Utils.getLogger().info("OVERWRITE_RESULT: "+overwriteResult);
         
     	// Check if Project Name exists in rpt_result_id
     	boolean exists = false;
     	if (existsProjectName()) {
     		exists = true;
-            if (!overwriteResult) {
-            	int res = Utils.showYesNoDialog("project_exists");    		
-            	if (res == JOptionPane.NO_OPTION) return false;
-            }
     	}
     	
 		// Open RPT file
