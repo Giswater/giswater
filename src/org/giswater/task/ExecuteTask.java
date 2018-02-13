@@ -44,6 +44,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 	private ProjectPreferencesPanel ppPanel;
 	private EpaSoftPanel view;
 	private EpaSoftController controller;
+	private boolean onlyCheck;
 	
 	
     @Override
@@ -137,7 +138,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }       
             boolean selected = view.isSubcatchmentsSelected();
-            continueExec = ExportToInp.process(fileInp, selected, isVersion51, resultName);
+            continueExec = ExportToInp.process(fileInp, selected, isVersion51, resultName, onlyCheck);
         }
 
         // Run SWMM
@@ -202,6 +203,10 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
 	
 	public void setProjectPreferencesPanel(ProjectPreferencesPanel ppPanel) {
 		this.ppPanel = ppPanel;		
+	}
+
+	public void setOnlyCheck(boolean onlyCheck) {
+		this.onlyCheck = onlyCheck;
 	}
    
     

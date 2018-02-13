@@ -157,8 +157,8 @@ public class EpaSoftController extends AbstractController {
     }
     
     
-    public void execute() {
-       	
+    public void execute(Boolean onlyCheck) {
+    
     	view.setCursor(new Cursor(Cursor.WAIT_CURSOR));
     	
 		// Execute task
@@ -167,10 +167,16 @@ public class EpaSoftController extends AbstractController {
         task.setParentPanel(view);
         task.setProjectPreferencesPanel(ppPanel);
         task.addPropertyChangeListener(this);
+        task.setOnlyCheck(onlyCheck);
         task.execute();
         
     	view.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));    	
+    	
+    }
     
+    
+    public void execute() {
+       	execute(false);    
     }
 	
 		

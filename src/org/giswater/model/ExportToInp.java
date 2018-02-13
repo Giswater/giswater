@@ -76,11 +76,11 @@ public class ExportToInp extends Model {
     
     
     // Execute SQL function gw_fct_pg2epa()
-    private static void executePg2Epa(String resultName) {
+    private static void executePg2Epa(String resultName, boolean onlyCheck) {
     	
     	if (MainDao.checkFunction(MainDao.getSchema(), "gw_fct_pg2epa")) {    	
 	    	Utils.getLogger().info("Execution function 'gw_fct_pg2epa()'");
-	    	String sql = "SELECT "+MainDao.getSchema()+".gw_fct_pg2epa('"+resultName+"');";
+	    	String sql = "SELECT "+MainDao.getSchema()+".gw_fct_pg2epa('"+resultName+"', "+onlyCheck+");";
 	    	String result = MainDao.queryToString(sql);		
 	    	Utils.getLogger().info("Result function 'gw_fct_pg2epa()': "+result);
     	}
@@ -92,7 +92,8 @@ public class ExportToInp extends Model {
 	
 	
     // Export to INP 
-    public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51, String resultName) {
+    public static boolean process(File fileInp, boolean isSubcatchmentSelected, boolean isVersion51, 
+    	String resultName, boolean onlyCheck) {
 
         Utils.getLogger().info("exportINP");
         String sql = "";
@@ -104,7 +105,8 @@ public class ExportToInp extends Model {
             if (fileInp.exists()) {
                 String owInp = PropertiesDao.getPropertiesFile().get("OVERWRITE_INP", "true").toLowerCase();
 	            if (owInp.equals("false")) {
-	                String msg = Utils.getBundleString("ExportToInp.file_already_exists")+fileInp.getAbsolutePath()+Utils.getBundleString("ExportToInp.overwrite"); //$NON-NLS-1$ //$NON-NLS-2$
+	                String msg = Utils.getBundleString("ExportToInp.file_already_exists") +
+	                	fileInp.getAbsolutePath()+Utils.getBundleString("ExportToInp.overwrite");
 	            	int res = Utils.showYesNoDialog(msg);             
 	            	if (res == JOptionPane.NO_OPTION) return false;
 	            }  
@@ -119,7 +121,7 @@ public class ExportToInp extends Model {
             }
             
             // Execute SQL function gw_fct_pg2epa('result_id') 
-            executePg2Epa(resultName);
+            executePg2Epa(resultName, onlyCheck);
                 
             // Open template and output file
             rat = new RandomAccessFile(fileTemplate, "r");
@@ -127,13 +129,15 @@ public class ExportToInp extends Model {
             raf.setLength(0);
 
             // Get content of target table
-            sql = "SELECT target.id as target_id, target.name as target_name, lines, main.id as main_id, main.dbase_table as table_name "
+            sql = "SELECT target.id as target_id, target.name as target_name, lines, "
+            	+ "main.id as main_id, main.dbase_table as table_name "
         		+ "FROM inp_target as target " 
         		+ "INNER JOIN inp_table as main ON target.table_id = main.id";             
             Statement stat = connectionDrivers.createStatement();            
             ResultSet rs = stat.executeQuery(sql);
             while (rs.next()) {
-            	Utils.getLogger().info("INP target: "+rs.getInt("target_id")+" - "+rs.getString("table_name")+" - "+rs.getInt("lines"));
+            	String msg = "INP target: "+rs.getInt("target_id")+" - "+rs.getString("table_name")+" - "+rs.getInt("lines");
+            	Utils.getLogger().info(msg);
             	if (rs.getString("table_name").equals(OPTIONS_TABLE) || 
             		rs.getString("table_name").equals(REPORTS_TABLE) || rs.getString("table_name").equals(REPORTS_TABLE2) ||
             		rs.getString("table_name").equals(TIMES_TABLE)) {
@@ -175,7 +179,8 @@ public class ExportToInp extends Model {
             	Utils.openFile(fileInp.getAbsolutePath());
             }
             else if (openInp.equals("ask")) {
-                String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() + "\n" + Utils.getBundleString("view_file");
+                String msg = Utils.getBundleString("inp_end") + "\n" + fileInp.getAbsolutePath() 
+                	+ "\n" + Utils.getBundleString("view_file");
             	int res = Utils.showYesNoDialog(msg);             
             	if (res == JOptionPane.YES_OPTION) {
                    	Utils.openFile(fileInp.getAbsolutePath());
@@ -343,7 +348,8 @@ public class ExportToInp extends Model {
             	String sKey = (String) itKey.next();
             	// If we are working with EPASWMM version < 5.1, not process these fields
             	if ((!ExportToInp.isVersion51) && 
-            		(sKey.equals("max_trials") || sKey.equals("head_tolerance") || sKey.equals("sys_flow_tol") || sKey.equals("lat_flow_tol"))) {
+            		(sKey.equals("max_trials") || sKey.equals("head_tolerance") 
+            		|| sKey.equals("sys_flow_tol") || sKey.equals("lat_flow_tol"))) {
             		// Ignore them	
             	}
             	else {
@@ -363,7 +369,8 @@ public class ExportToInp extends Model {
 
     
 	// Process target title
-    private static void processTargetTitle(int id, String tableName, int lines, String resultName) throws IOException, SQLException {
+    private static void processTargetTitle(int id, String tableName, int lines, String resultName) 
+    	throws IOException, SQLException {
 
         // Go to the first line of the target
         for (int i = 1; i <= lines; i++) {
