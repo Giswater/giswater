@@ -107,13 +107,13 @@ public class ImportRpt extends Model {
     	// Initialize targets 
    		initRptTargets();
     	
-        // EPASWMM
-        if (softwareName.equals("SWMM")) {
-        	processEPASWMM(overwriteResult, exists);
+        // UD
+        if (softwareName.equals("ud")) {
+        	processUD(overwriteResult, exists);
         } 
-        // EPANET
+        // WS
         else {
-        	processEPANET(overwriteResult, exists);
+        	processWS(overwriteResult, exists);
         }
     	       
         // Execute SQL function gw_fct_rpt2pg('result_id') 
@@ -143,7 +143,7 @@ public class ImportRpt extends Model {
     }
     
 
-	private static boolean processEPASWMM(Boolean overwrite, Boolean exists) {
+	private static boolean processUD(Boolean overwrite, Boolean exists) {
 
         // Iterate over targets
         Iterator<Entry<Integer, RptTarget>> it = mapRptTargets.entrySet().iterator();
@@ -162,7 +162,7 @@ public class ImportRpt extends Model {
 	}
 
     
-    private static boolean processEPANET(Boolean overwrite, boolean exists) {
+    private static boolean processWS(Boolean overwrite, boolean exists) {
 
         // Iterate over targets
     	String sql = "";
@@ -193,7 +193,7 @@ public class ImportRpt extends Model {
 	    		}            			
     			while (continueTarget) {
         			insertSql = "";       
-    				ok = processRptTargetEpanet();
+    				ok = processRptTargetWS();
     				if (abortRptProcess) return false;
     	        	if (ok) {
     		    		if (!insertSql.equals("")) {
@@ -215,7 +215,7 @@ public class ImportRpt extends Model {
     		
     		// Target different than node or arc
     		else {
-				ok = processRptTargetEpanet();
+				ok = processRptTargetWS();
 				if (abortRptProcess) return false;				
     		}
             
@@ -257,7 +257,7 @@ public class ImportRpt extends Model {
     	} 
     	else {
     		Utils.getLogger().info("Target not found: " + rptTarget.getId() + " - " + rptTarget.getDescription());
-    		if ((softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) && rptTarget.getId() == 10) {
+    		if (softwareName.equals("ws") && rptTarget.getId() == 10) {
     			sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable()+ " WHERE result_id = '"+resultName+"'";
     			MainDao.executeUpdateSql(sql, true);
     			sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+ " (result_id) VALUES ('"+resultName+"')";
@@ -376,7 +376,7 @@ public class ImportRpt extends Model {
 	}
 
 		
-	// Process current RptTarget (EPASWMM)
+	// Process current RptTarget (UD)
 	private static boolean processRptTarget() {
 
 		// Read lines until rpt.getDescription() is found		
@@ -472,7 +472,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	// EPASWMM
+	// UD
 	private static boolean parseLinesAnalysis() {
 
 		boolean result = true;
@@ -496,7 +496,7 @@ public class ImportRpt extends Model {
 	}
 
 
-	// EPASWMM
+	// UD
 	private static void getPollutants() {
 		
 		String line = "";
@@ -544,7 +544,7 @@ public class ImportRpt extends Model {
 			lineNumber++;
 			String line = readLine();
 			blankLine = (line.length() == 0);
-			if ((softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) && rptTarget.getId() == 30) {
+			if (softwareName.equals("ws") && rptTarget.getId() == 30) {
 				valid = !line.contains("---");
 			}
 			if (!blankLine && valid) {
@@ -662,7 +662,7 @@ public class ImportRpt extends Model {
 		String values = "'"+resultName+"', ";
 		boolean ignoreToken = false;
 		
-		if (softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) {
+		if (softwareName.equals("ws")) {
 			if (rptTokens.size() < 2) {
 				Utils.logError("Line not valid");
 				return true;
@@ -726,7 +726,7 @@ public class ImportRpt extends Model {
 		String fields = "result_id, ";
 		String values = "'"+resultName+"', ";
 		
-		if (softwareName.equals("EPANET") || softwareName.toLowerCase().equals("ws")) {
+		if (softwareName.equals("ws")) {
 			if (rptTokens.size() < 2) {
 				Utils.logError("Line not valid");
 				return true;
@@ -946,8 +946,8 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	// EPANET
-	private static boolean processRptTargetEpanet() {
+	// WS
+	private static boolean processRptTargetWS() {
 
 		boolean found = false;
 		String line = "";
@@ -1087,7 +1087,7 @@ public class ImportRpt extends Model {
 	}	
 
 	
-	// EPANET: Parse all lines of Hydraulic Status Target
+	// WS: Parse all lines of Hydraulic Status Target
 	private static void parseLinesHydraulic() {
 			
 		rptTokens = new ArrayList<RptToken>();		
@@ -1115,7 +1115,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	// EPANET: Parse values of current line
+	// WS: Parse values of current line
 	private static ArrayList<RptToken> parseLineHydraulic(Scanner scanner) {
 		
 		ArrayList<RptToken> tokens = new ArrayList<RptToken>();	
@@ -1141,7 +1141,7 @@ public class ImportRpt extends Model {
 	}	
 	
 	
-	// EPANET
+	// WS
 	private static void processTokensHydraulic() {
 
 		String fields = "result_id, time, text";
@@ -1164,7 +1164,7 @@ public class ImportRpt extends Model {
 	}
 	
 	
-	// EPANET
+	// WS
 	private static boolean processTokensInputData() {
 
 		// Number of fields without water quality parameters
