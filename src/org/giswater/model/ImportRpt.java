@@ -238,14 +238,14 @@ public class ImportRpt extends Model {
 				MainDao.executeUpdateSql(sql);
 			}
 			else {
-				if (exists) {
+				if (exists && rptTarget.getId() != 10) {
 					sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable() + 
 						" WHERE result_id = '"+resultName+"'";
 					MainDao.executeUpdateSql(sql);
 				}
     		} 
     		if (!insertSql.equals("")) {            	
-	    		boolean status = MainDao.executeUpdateSql(insertSql, true);
+	    		boolean status = MainDao.executeUpdateSql(insertSql);
 	    		if (!status) {
 	    			String msg = Utils.getBundleString("ImportRpt.import_aborted"); //$NON-NLS-1$
 	    			msg+= "\n" + rptTarget.getDescription();
@@ -255,15 +255,6 @@ public class ImportRpt extends Model {
 	    		}
     		}
     	} 
-    	else {
-    		Utils.getLogger().info("Target not found: " + rptTarget.getId() + " - " + rptTarget.getDescription());
-    		if (softwareName.equals("ws") && rptTarget.getId() == 10) {
-    			sql = "DELETE FROM "+MainDao.getSchema()+"."+rptTarget.getTable()+ " WHERE result_id = '"+resultName+"'";
-    			MainDao.executeUpdateSql(sql, true);
-    			sql = "INSERT INTO "+MainDao.getSchema()+"."+rptTarget.getTable()+ " (result_id) VALUES ('"+resultName+"')";
-    			MainDao.executeUpdateSql(sql, true);
-    		}
-    	}
 		
 		return true;
 		
@@ -946,6 +937,16 @@ public class ImportRpt extends Model {
 	}
 	
 	
+	private static String buildSqlUpdate(RptTarget rptTarget, String fields, String values) {
+		fields = fields.substring(0, fields.length() - 2);
+		values = values.substring(0, values.length() - 2);
+		String sql = "UPDATE "+MainDao.getSchema()+"."+rptTarget.getTable();
+		sql += " SET ("+fields+") = ("+values+")";
+		sql += " WHERE result_id = '"+resultName+"';";
+		return sql;
+	}
+	
+	
 	// WS
 	private static boolean processRptTargetWS() {
 
@@ -1234,7 +1235,7 @@ public class ImportRpt extends Model {
 		}
 	
         // Build SQL Insert sentence
-    	insertSql+= buildSql(rptTarget, fields, values);
+    	insertSql+= buildSqlUpdate(rptTarget, fields, values);
 		
 		return true;
 		
