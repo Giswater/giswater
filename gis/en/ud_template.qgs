@@ -1083,7 +1083,6 @@
       <layer_coordinate_transform destAuthId="EPSG:_SRID_" srcAuthId="EPSG:_SRID_" srcDatumTransform="-1" destDatumTransform="-1" layerid="v_rpt_comp_condsurcharge_sum20160710010651021"/>
       <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:25831" srcDatumTransform="-1" destDatumTransform="-1" layerid="v_plan_arc20180108164747717"/>
       <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:25831" srcDatumTransform="-1" destDatumTransform="-1" layerid="v_plan_node_x_psector20180108164506249"/>
-      <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:4326" srcDatumTransform="-1" destDatumTransform="-1" layerid="Mapa_topogr�fic_de_Catalunya_1_5_00020180212142523807"/>
       <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:25831" srcDatumTransform="-1" destDatumTransform="-1" layerid="macrosector20171219113346231"/>
       <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:25831" srcDatumTransform="-1" destDatumTransform="-1" layerid="ext_plot20170822103509578"/>
       <layer_coordinate_transform destAuthId="EPSG:25831" srcAuthId="EPSG:25831" srcDatumTransform="-1" destDatumTransform="-1" layerid="v_edit_man_gully_pol20171230144802748"/>
