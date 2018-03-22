@@ -122,11 +122,11 @@ public class FilesToDbTask extends ParentSchemaTask {
     private boolean getCustomFolder() {
     	
     	String sql = "SELECT value"+
-    			" FROM "+schemaName+".config_param_text"+
-    			" WHERE id = 'custom_giswater_folder'";
+    			" FROM "+schemaName+".config_param_system"+
+    			" WHERE parameter = 'custom_giswater_folder'";
     	customFolder = MainDao.queryToString(sql);
     	if (customFolder.equals("")) {
-    		String msg = "Parameter 'custom_giswater_folder' not defined in table 'config_param_text'";
+    		String msg = "Parameter 'custom_giswater_folder' not defined in table 'config_param_system'";
     		Utils.showMessage(msg);
     		return false;
     	}
