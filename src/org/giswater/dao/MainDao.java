@@ -67,8 +67,6 @@ public class MainDao {
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
-	private static final String TABLE_EPANET = "inp_demand";		
-	private static final String TABLE_EPASWMM = "inp_divider";		
 	private static final Integer NUMBER_OF_ATTEMPTS = 2;		
 	
 	
@@ -705,15 +703,16 @@ public class MainDao {
     
     private static boolean checkSoftwareSchema(String software, String schemaName) {
     	
-    	String tableName = "";
+    	String sql = "SELECT upper(wsoftware) FROM "+schemaName+".version ORDER BY id DESC LIMIT 1";
+    	String schemaSoftware = queryToString(sql, true);
     	software = software.toUpperCase().trim();
-        if (software.equals("EPANET") || software.toLowerCase().equals("ws")) {
-        	tableName = TABLE_EPANET;
+        if (software.equals("EPANET")) {
+        	software = "WS";
         }
-        else if (software.equals("EPASWMM") || software.equals("EPA SWMM") || software.toLowerCase().equals("ud")) {
-        	tableName = TABLE_EPASWMM;
+        else if (software.equals("EPASWMM") || software.equals("EPA SWMM")) {
+        	software = "UD";
         }
-        return checkTable(schemaName, tableName);
+        return (schemaSoftware.equals(software));
 
     }
     
