@@ -633,28 +633,12 @@ public class MainDao {
 	}	
 	
 	
-    // Check if the table exists
-	public static boolean checkTable(String tableName) {
-        String sql = "SELECT * FROM pg_tables" +
-        	" WHERE lower(tablename) = '" + tableName + "'";
-        return checkQuery(sql);
-    }	
-	
-	
     // Check if the table exists in the selected schema
 	public static boolean checkTable(String schemaName, String tableName) {
         String sql = "SELECT * FROM pg_tables" +
         	" WHERE lower(schemaname) = '"+schemaName+"' AND lower(tablename) = '"+tableName+"'";
         return checkQuery(sql);
     }	
-    
-    
-    // Check if the view exists
-    public static boolean checkView(String viewName) {
-        String sql = "SELECT * FROM pg_views" +
-        	" WHERE lower(viewname) = '"+viewName+"'";
-        return checkQuery(sql);
-    }    
     
     
     // Check if the view exists in the selected schema

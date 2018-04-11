@@ -350,7 +350,7 @@ public class ExportToInp extends Model {
         }
 
         // If table is null or doesn't exit then exit function
-        if (!MainDao.checkTable(tableName) && !MainDao.checkView(tableName)) {
+        if (!MainDao.checkTable(MainDao.getSchema(), tableName) && !MainDao.checkView(MainDao.getSchema(), tableName)) {
             return;
         }
 

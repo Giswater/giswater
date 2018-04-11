@@ -381,7 +381,7 @@ public class ProjectPreferencesController extends AbstractController {
 		
 		view.updateProjectData("", "", "");
 		if (MainDao.getSchema().equals("")) return;
-		if (!MainDao.checkSchema(MainDao.getSchema())) return;
+		if (!MainDao.checkTable(MainDao.getSchema(), "inp_project_id")) return;
 		String sql = "SELECT title, author, date FROM "+MainDao.getSchema()+".inp_project_id";
 		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
 		if (vector_container.size() > 0) {
