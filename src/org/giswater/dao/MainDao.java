@@ -687,6 +687,8 @@ public class MainDao {
     
     private static boolean checkSoftwareSchema(String software, String schemaName) {
     	
+    	if (!checkTable(schemaName, "version")) return false; 
+    	
     	String sql = "SELECT upper(wsoftware) FROM "+schemaName+".version ORDER BY id DESC LIMIT 1";
     	String schemaSoftware = queryToString(sql, true);
     	software = software.toUpperCase().trim();
