@@ -67,7 +67,7 @@ public class MainDao {
 	private static final String INIT_DB = "giswater_ddb";
 	private static final String DEFAULT_DB = "postgres";
 	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
-	private static final Integer NUMBER_OF_ATTEMPTS = 2;		
+	private static final Integer NUMBER_OF_ATTEMPTS = 1;		
 	
 	
 	public static String getDb() {
@@ -294,24 +294,14 @@ public class MainDao {
 			}		
 		}
 		
+		String aux = PropertiesDao.getPropertiesFile().get("CONN_TIMEOUT", "2");
+		Integer connTimeout = Integer.parseInt(aux);			
 		int count = 0;
 		do {
 			count++;
 			Utils.getLogger().info("Trying to connect: " + count);
-			isConnected = setConnectionPostgis(host, port, db, user, password, useSsl, false);
+			isConnected = setConnectionPostgis(host, port, db, user, password, useSsl, false, connTimeout);
 		} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
-		
-		// Try to connect to the default database if we couldn't connect previously
-		if (!isConnected) {
-			Utils.getLogger().info("Connection not possible. Trying to connect to 'postgres' database instead");
-			db = DEFAULT_DB;
-			count = 0;
-			do {
-				count++;
-				Utils.getLogger().info("Trying to connect to default Database: " + count);
-				isConnected = setConnectionPostgis(host, port, db, user, password, useSsl, false);
-			} while (!isConnected && count < NUMBER_OF_ATTEMPTS);
-		}
 
 		if (isConnected) {
 			// Get Postgis data
@@ -440,7 +430,8 @@ public class MainDao {
 	}	
 
 	
-    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, boolean useSsl, boolean showError) {
+    public static boolean setConnectionPostgis(String host, String port, String db, String user, String password, 
+    	boolean useSsl, boolean showError, Integer connTimeout) {
     	
     	schemaMap = new HashMap<String, Integer>();
         String connectionString = "jdbc:postgresql://"+host+":"+port+"/"+db+"?user="+user+"&password="+password;
@@ -448,6 +439,7 @@ public class MainDao {
         	connectionString+= "&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
         }
         try {
+        	DriverManager.setLoginTimeout(connTimeout);        	
             connectionPostgis = DriverManager.getConnection(connectionString);
 			connectionPostgis.setAutoCommit(false);            
         } catch (SQLException e) {
@@ -943,8 +935,8 @@ public class MainDao {
 			schemaVersion = schemaMap.get(schema);
 		} 
 		else {
-			String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
 			if (checkTable(schema, "version")) {
+				String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
 				String aux = queryToString(sql);
 				schemaVersion = Utils.parseInt(aux.replace(".", ""));				
 			}

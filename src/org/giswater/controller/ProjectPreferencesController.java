@@ -252,7 +252,9 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		
 		// Try to connect to Database
-		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password, useSsl, true);
+		String aux = PropertiesDao.getPropertiesFile().get("CONN_TIMEOUT", "2");
+		Integer connTimeout = Integer.parseInt(aux);		
+		boolean isConnected = MainDao.setConnectionPostgis(host, port, db, user, password, useSsl, true, connTimeout);
 		MainDao.setConnected(isConnected);
 		
 		if (isConnected) {
