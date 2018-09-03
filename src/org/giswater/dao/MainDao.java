@@ -63,10 +63,7 @@ public class MainDao {
 	private static HashMap<String, Integer> schemaMap;   // <schemaName, schemaVersion>
 	private static HashMap<String, Integer> updateMap;   // <softwareName, lastUpdateScript>
     
-    private static final String FOLDER_NAME = "giswater" + File.separator;
-	private static final String INIT_DB = "giswater_ddb";
-	private static final String DEFAULT_DB = "postgres";
-	private static final String INIT_GISWATER_DDB = "init_giswater_ddb.sql";	
+    private static final String FOLDER_NAME = "giswater" + File.separator;	
 	private static final Integer NUMBER_OF_ATTEMPTS = 1;		
 	
 	
@@ -373,18 +370,6 @@ public class MainDao {
 		
 		commonSteps();
 		if (isConnected) {
-			if (db.equals(DEFAULT_DB)) {
-				if (!MainDao.checkDatabase(INIT_DB)) {
-					Utils.getLogger().info("Creating database... " + INIT_DB);
-					if (!initDatabase()) {
-						return false;
-					}
-					PropertiesDao.getGswProperties().put("POSTGIS_DATABASE", INIT_DB);
-					// Close current connection in order to connect later to Database just created: giswater_ddb
-					closeConnectionPostgis();	
-					return true;
-				} 
-			} 
 			return true;
 		}
 		
@@ -392,25 +377,7 @@ public class MainDao {
 		return false;
 		
 	}	 	
-    
-	
-	private static boolean initDatabase() {
-		
-		// Execute script that creates working Database
-		String filePath = Utils.getAppPath() + "sql" + File.separator + INIT_GISWATER_DDB;
-    	String content;
-		try {
-			content = Utils.readFile(filePath);
-			executeUpdateSql(content, true, false);
-		} catch (IOException e) {
-			Utils.logError(e);
-			return false;
-		}
-		return true;
-
-	}
-	
-	
+    	
 	
 	public static void commit() {
 		try {
