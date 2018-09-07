@@ -899,8 +899,8 @@ public class ImportRpt extends Model {
 			}
         }
 	
-        // Build SQL Insert sentence
-    	insertSql+= buildSql(rptTarget, fields, values);
+        // Build SQL Update sentence
+    	insertSql+= buildSqlUpdate(rptTarget, fields, values);
 		
 		return true;
 		
@@ -1234,7 +1234,7 @@ public class ImportRpt extends Model {
 			Utils.showError(e, sql);
 		}
 	
-        // Build SQL Insert sentence
+        // Build SQL Update sentence
     	insertSql+= buildSqlUpdate(rptTarget, fields, values);
 		
 		return true;
