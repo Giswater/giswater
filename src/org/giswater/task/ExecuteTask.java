@@ -126,10 +126,7 @@ public class ExecuteTask extends SwingWorker<Void, Void> {
                 return null;
             }      
             if (!ExportToInp.checkSectorSelection()) {
-        		int res = Utils.showYesNoDialog(view, "sector_selection_empty");        
-                if (res == JOptionPane.YES_NO_OPTION) {            	
-                	controller.showSectorSelection();
-                }
+        		Utils.showMessage(view, "sector_selection_empty");
                 return null;
             }   
             String resultName = view.getResultName();
