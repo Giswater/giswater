@@ -33,7 +33,7 @@ import org.giswater.util.UtilsFTP;
 public class MainClass {
 
 	public static MainFrame mdi;
-	private final static String CURRENT_VERSION = "3.0.100";
+	private final static String CURRENT_VERSION = "3.1.100";
 	private static String gswFilePath = null;
 	public static String function = null;   //  ["ed_giswater_jar" | "mg_go2epa_express"]
 	
