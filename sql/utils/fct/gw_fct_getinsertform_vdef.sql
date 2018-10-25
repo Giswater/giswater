@@ -4,7 +4,7 @@ The program is free software: you can redistribute it and/or modify it under the
 This version of Giswater is provided by Giswater Association
 */
 
---FUNCTION CODE: XXXX
+--FUNCTION CODE: 2508
 
 
 CREATE OR REPLACE FUNCTION SCHEMA_NAME.gw_fct_getinsertform_vdef(
@@ -116,11 +116,9 @@ BEGIN
     EXCEPTION WHEN OTHERS THEN 
         RETURN ('{"status":"Failed","SQLERR":' || to_json(SQLERRM) || ', "apiVersion":'|| api_version ||',"SQLSTATE":' || to_json(SQLSTATE) || '}')::json;
 
-
-
-
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
+
 

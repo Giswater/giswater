@@ -6,7 +6,7 @@ This version of Giswater is provided by Giswater Association
 
 --FUNCTION NODE: 1320
 
-CREATE OR REPLACE FUNCTION SCHEMA_NAME.gw_trg_edit_node() RETURNS trigger AS 
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_edit_node() RETURNS trigger AS 
 $BODY$
 DECLARE 
     inp_table varchar;
@@ -190,15 +190,26 @@ BEGIN
 			EXECUTE query_text INTO node_id_aux;
 			NEW.parent_id=node_id_aux;
 		END IF;
-
+		
+		
+		--Arc id (in case of dissable arc divide on node insert)
+		IF (SELECT "value" FROM config_param_user WHERE "parameter"='edit_arc_division_dsbl' AND "cur_user"="current_user"() LIMIT 1)::boolean=TRUE THEN
+			NEW.arc_id=(SELECT arc_id FROM v_edit_arc WHERE ST_DWithin(NEW.the_geom, v_edit_arc.the_geom,0.001) LIMIT 1);
+		END IF;
+		
+	    -- LINK
+	    IF (SELECT "value" FROM config_param_system WHERE "parameter"='edit_automatic_insert_link')::boolean=TRUE THEN
+	       NEW.link=NEW.node_id;
+	    END IF;
         
+		
         -- FEATURE INSERT      
 		INSERT INTO node (node_id, code, elevation, depth, nodecat_id, epa_type, sector_id, arc_id, parent_id, state, state_type, annotation, observ,comment, dma_id, presszonecat_id, soilcat_id, function_type, category_type, fluid_type, 
-			location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, muni_id, streetaxis_id, postcode, streetaxis2_id, postnumber, postnumber2, descript, rotation, verified, the_geom, undelete, 
+			location_type, workcat_id, workcat_id_end, buildercat_id, builtdate, enddate, ownercat_id, muni_id, streetaxis_id, postcode, streetaxis2_id, postnumber, postnumber2, descript, link, rotation, verified, the_geom, undelete, 
 			postcomplement, postcomplement2, label_x, label_y, label_rotation, expl_id, publish, inventory, hemisphere, num_value) 
 			VALUES (NEW.node_id, NEW.code, NEW.elevation, NEW.depth, NEW.nodecat_id, NEW.epa_type, NEW.sector_id, NEW.arc_id, NEW.parent_id, NEW.state, NEW.state_type, NEW.annotation, NEW.observ, NEW.comment, 
 			NEW.dma_id, NEW.presszonecat_id, NEW.soilcat_id, NEW.function_type,NEW.category_type, NEW.fluid_type, NEW.location_type, NEW.workcat_id, NEW.workcat_id_end, NEW.buildercat_id, NEW.builtdate, NEW.enddate, NEW.ownercat_id,
-			NEW.muni_id, NEW.streetaxis_id, NEW.postcode, NEW.streetaxis2_id, NEW.postnumber, NEW.postnumber2, NEW.descript, NEW.rotation, NEW.verified, NEW.the_geom,NEW.undelete,
+			NEW.muni_id, NEW.streetaxis_id, NEW.postcode, NEW.streetaxis2_id, NEW.postnumber, NEW.postnumber2, NEW.descript, NEW.link, NEW.rotation, NEW.verified, NEW.the_geom,NEW.undelete,
 			NEW.postcomplement, NEW.postcomplement2, NEW.label_x, NEW.label_y,NEW.label_rotation, NEW.expl_id, NEW.publish, NEW.inventory, NEW.hemisphere, NEW.num_value);
 
         -- EPA INSERT
@@ -339,6 +350,12 @@ BEGIN
 			   UPDATE node SET hemisphere=NEW.hemisphere WHERE node_id = OLD.node_id;
 		END IF;
 		
+		--Arc id
+		IF (SELECT node_1 FROM arc WHERE node_1=NEW.node_id UNION SELECT node_2 FROM arc WHERE node_2=NEW.node_id) IS NULL THEN
+			NEW.arc_id=(SELECT arc_id FROM v_edit_arc WHERE ST_DWithin(NEW.the_geom, v_edit_arc.the_geom,0.001) LIMIT 1);
+		END IF;
+
+
 		UPDATE node 
 		SET code=NEW.code, elevation=NEW.elevation, "depth"=NEW."depth", nodecat_id=NEW.nodecat_id, epa_type=NEW.epa_type, sector_id=NEW.sector_id, arc_id=NEW.arc_id, parent_id=NEW.parent_id, 		
 		state_type=NEW.state_type, annotation=NEW.annotation, "observ"=NEW."observ", "comment"=NEW."comment", dma_id=NEW.dma_id, presszonecat_id=NEW.presszonecat_id, soilcat_id=NEW.soilcat_id, function_type=NEW.function_type,

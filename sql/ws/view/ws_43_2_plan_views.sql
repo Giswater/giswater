@@ -132,6 +132,24 @@ JOIN v_price_compost ON v_price_compost.id::text = cat_node.cost::text;
 
 
 
+
+DROP VIEW IF EXISTS "v_plan_aux_arc_pavement" CASCADE;
+CREATE VIEW "v_plan_aux_arc_pavement" AS 
+SELECT
+arc_id, 
+CASE
+   WHEN sum(v_price_x_catpavement.thickness * plan_arc_x_pavement.percent) IS NULL THEN 0::numeric(12,2)
+   ELSE sum(v_price_x_catpavement.thickness * plan_arc_x_pavement.percent)::numeric(12,2)
+END AS thickness,
+   CASE
+   WHEN sum(v_price_x_catpavement.m2pav_cost) IS NULL THEN 0::numeric(12,2)
+   ELSE sum(v_price_x_catpavement.m2pav_cost::numeric(12,2) * plan_arc_x_pavement.percent)
+END AS m2pav_cost
+FROM plan_arc_x_pavement
+	LEFT JOIN v_price_x_catpavement ON ((((v_price_x_catpavement.pavcat_id) = (plan_arc_x_pavement.pavcat_id))))
+        GROUP by arc_id;
+
+
 DROP VIEW IF EXISTS "v_plan_aux_arc_ml" CASCADE;
 CREATE VIEW "v_plan_aux_arc_ml" AS 
 SELECT 
@@ -158,10 +176,8 @@ v_price_x_catsoil.trenchlining,
 (v_price_x_catsoil.m3fill_cost)::numeric(12,2) AS m3fill_cost,
 (v_price_x_catsoil.m3excess_cost)::numeric(12,2) AS m3excess_cost,
 (v_price_x_catsoil.m2trenchl_cost)::numeric(12,2) AS m2trenchl_cost,
-(CASE WHEN sum (v_price_x_catpavement.thickness*plan_arc_x_pavement.percent) IS NULL THEN 0::numeric(12,2) ELSE
-sum (v_price_x_catpavement.thickness*plan_arc_x_pavement.percent)::numeric(12,2) END) AS thickness,
-(CASE WHEN sum (v_price_x_catpavement.m2pav_cost) IS NULL THEN 0::numeric(12,2) ELSE
-sum (v_price_x_catpavement.m2pav_cost::numeric(12,2)*plan_arc_x_pavement.percent) END) AS m2pav_cost,
+ thickness,
+ m2pav_cost,
 v_arc.state,
 v_arc.the_geom,
 v_arc.expl_id
@@ -169,10 +185,7 @@ FROM v_arc
 	LEFT JOIN v_price_x_catarc ON ((((v_arc.arccat_id) = (v_price_x_catarc.id))))
 	LEFT JOIN v_price_x_catsoil ON ((((v_arc.soilcat_id) = (v_price_x_catsoil.id))))
 	LEFT JOIN plan_arc_x_pavement ON ((((plan_arc_x_pavement.arc_id) = (v_arc.arc_id))))
-	LEFT JOIN v_price_x_catpavement ON ((((v_price_x_catpavement.pavcat_id) = (plan_arc_x_pavement.pavcat_id))))
-	GROUP BY v_arc.arc_id, v_arc.depth1, v_arc.depth2, mean_depth,v_arc.arccat_id, dint,z1,z2,area,width,bulk, cost_unit, arc_cost, 
-	m2bottom_cost,m3protec_cost,v_price_x_catsoil.id, y_param, b, trenchlining, m3exc_cost, m3fill_cost,
-	m3excess_cost, m2trenchl_cost,v_arc.state, v_arc.the_geom, v_arc.expl_id;
+	LEFT JOIN v_plan_aux_arc_pavement ON v_plan_aux_arc_pavement.arc_id=v_arc.arc_id;
 	
 	
 
@@ -184,18 +197,7 @@ DROP VIEW IF EXISTS "v_plan_aux_arc_cost" CASCADE;
 CREATE OR REPLACE VIEW "v_plan_aux_arc_cost" AS 
 
 SELECT
-v_plan_aux_arc_ml.arc_id,
-v_plan_aux_arc_ml.arccat_id,
-v_plan_aux_arc_ml.cost_unit,
-v_plan_aux_arc_ml.arc_cost,
-v_plan_aux_arc_ml.m2bottom_cost,
-v_plan_aux_arc_ml.soilcat_id,
-v_plan_aux_arc_ml.m3exc_cost,
-v_plan_aux_arc_ml.m3fill_cost,
-v_plan_aux_arc_ml.m3excess_cost,
-v_plan_aux_arc_ml.m3protec_cost,
-v_plan_aux_arc_ml.m2trenchl_cost,
-v_plan_aux_arc_ml.m2pav_cost,
+v_plan_aux_arc_ml.*,
 
 (2*((v_plan_aux_arc_ml.mean_depth+v_plan_aux_arc_ml.z1+v_plan_aux_arc_ml.bulk)/v_plan_aux_arc_ml.y_param)+(v_plan_aux_arc_ml.width)+v_plan_aux_arc_ml.b*2)::numeric(12,3) AS m2mlpavement,
 
@@ -252,31 +254,31 @@ group by arc_id;
 DROP VIEW IF EXISTS "v_plan_arc" CASCADE;
 CREATE VIEW "v_plan_arc" AS 
 SELECT
-v_plan_aux_arc_ml.arc_id,
+v_plan_aux_arc_cost.arc_id,
 node_1,
 node_2,
-cat_arctype_id as arc_type,
-v_plan_aux_arc_ml.arccat_id,
+v_plan_aux_arc_cost.arccat_id as arc_type,
+v_plan_aux_arc_cost.arccat_id,
 epa_type,
 sector_id,
-v_plan_aux_arc_ml."state",
+v_plan_aux_arc_cost."state",
 annotation,
-v_plan_aux_arc_ml.soilcat_id,
-v_plan_aux_arc_ml.depth1 as y1,
-v_plan_aux_arc_ml.depth2 as y2,
-v_plan_aux_arc_ml.mean_depth as mean_y,
-v_plan_aux_arc_ml.z1,
-v_plan_aux_arc_ml.z2,
-v_plan_aux_arc_ml.thickness,
-v_plan_aux_arc_ml.width,
-v_plan_aux_arc_ml.b,
-v_plan_aux_arc_ml.bulk,
-v_plan_aux_arc_ml.dint as geom1,
-v_plan_aux_arc_ml.area,
-v_plan_aux_arc_ml.y_param,
-(v_plan_aux_arc_cost.calculed_depth+v_plan_aux_arc_ml.thickness)::numeric(12,2) as total_y,
-(v_plan_aux_arc_cost.calculed_depth-2*v_plan_aux_arc_ml.bulk-v_plan_aux_arc_ml.z1-v_plan_aux_arc_ml.z2-v_plan_aux_arc_ml.dint)::numeric(12,2) as rec_y,
-(v_plan_aux_arc_ml.dint+2*v_plan_aux_arc_ml.bulk)::numeric(12,2) as geom1_ext,
+v_plan_aux_arc_cost.soilcat_id,
+v_plan_aux_arc_cost.depth1 as y1,
+v_plan_aux_arc_cost.depth2 as y2,
+v_plan_aux_arc_cost.mean_depth as mean_y,
+v_plan_aux_arc_cost.z1,
+v_plan_aux_arc_cost.z2,
+v_plan_aux_arc_cost.thickness,
+v_plan_aux_arc_cost.width,
+v_plan_aux_arc_cost.b,
+v_plan_aux_arc_cost.bulk,
+v_plan_aux_arc_cost.dint as geom1,
+v_plan_aux_arc_cost.area,
+v_plan_aux_arc_cost.y_param,
+(v_plan_aux_arc_cost.calculed_depth+v_plan_aux_arc_cost.thickness)::numeric(12,2) as total_y,
+(v_plan_aux_arc_cost.calculed_depth-2*v_plan_aux_arc_cost.bulk-v_plan_aux_arc_cost.z1-v_plan_aux_arc_cost.z2-v_plan_aux_arc_cost.dint)::numeric(12,2) as rec_y,
+(v_plan_aux_arc_cost.dint+2*v_plan_aux_arc_cost.bulk)::numeric(12,2) as geom1_ext,
 
 v_plan_aux_arc_cost.calculed_depth as calculed_y,
 v_plan_aux_arc_cost.m3mlexc,
@@ -294,24 +296,24 @@ v_plan_aux_arc_cost.m2pav_cost::numeric(12,2),
 v_plan_aux_arc_cost.m3protec_cost::numeric(12,2),
 v_plan_aux_arc_cost.m3fill_cost::numeric(12,2),
 v_plan_aux_arc_cost.m3excess_cost::numeric(12,2),
-v_plan_aux_arc_ml.cost_unit,
+v_plan_aux_arc_cost.cost_unit,
 
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m2mlpavement*v_plan_aux_arc_cost.m2pav_cost) END)::numeric(12,3) 	AS pav_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m3mlexc*v_plan_aux_arc_cost.m3exc_cost) END)::numeric(12,3) 		AS exc_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m2mltrenchl*v_plan_aux_arc_cost.m2trenchl_cost) END)::numeric(12,3)	AS trenchl_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m2mlbase*v_plan_aux_arc_cost.m2bottom_cost)END)::numeric(12,3) 		AS base_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m3mlprotec*v_plan_aux_arc_cost.m3protec_cost) END)::numeric(12,3) 	AS protec_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m3mlfill*v_plan_aux_arc_cost.m3fill_cost) END)::numeric(12,3) 		AS fill_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE
 (v_plan_aux_arc_cost.m3mlexcess*v_plan_aux_arc_cost.m3excess_cost) END)::numeric(12,3) 	AS excess_cost,
 (v_plan_aux_arc_cost.arc_cost)::numeric(12,3)									AS arc_cost,
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN v_plan_aux_arc_ml.arc_cost ELSE
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN v_plan_aux_arc_cost.arc_cost ELSE
 (v_plan_aux_arc_cost.m3mlexc*v_plan_aux_arc_cost.m3exc_cost
 + v_plan_aux_arc_cost.m2mlbase*v_plan_aux_arc_cost.m2bottom_cost
 + v_plan_aux_arc_cost.m2mltrenchl*v_plan_aux_arc_cost.m2trenchl_cost
@@ -321,9 +323,9 @@ v_plan_aux_arc_ml.cost_unit,
 + v_plan_aux_arc_cost.m2mlpavement*v_plan_aux_arc_cost.m2pav_cost
 + v_plan_aux_arc_cost.arc_cost) END)::numeric(12,2)							AS cost,
 
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN NULL ELSE (st_length2d(v_plan_aux_arc_ml.the_geom)) END)::numeric(12,2)		AS length,
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN NULL ELSE (st_length2d(v_plan_aux_arc_cost.the_geom)) END)::numeric(12,2)		AS length,
 
-(CASE WHEN (v_plan_aux_arc_ml.cost_unit='u') THEN v_plan_aux_arc_ml.arc_cost ELSE((st_length2d(v_plan_aux_arc_ml.the_geom))::numeric(12,2)*
+(CASE WHEN (v_plan_aux_arc_cost.cost_unit='u') THEN v_plan_aux_arc_cost.arc_cost ELSE((st_length2d(v_plan_aux_arc_cost.the_geom))::numeric(12,2)*
 (v_plan_aux_arc_cost.m3mlexc*v_plan_aux_arc_cost.m3exc_cost
 + v_plan_aux_arc_cost.m2mlbase*v_plan_aux_arc_cost.m2bottom_cost
 + v_plan_aux_arc_cost.m2mltrenchl*v_plan_aux_arc_cost.m2trenchl_cost
@@ -336,24 +338,20 @@ v_plan_aux_arc_ml.cost_unit,
 connec_total_cost as other_budget,
 
 CASE
-    WHEN v_plan_aux_arc_ml.cost_unit::text = 'u'::text 
-    THEN v_plan_aux_arc_ml.arc_cost+(CASE WHEN connec_total_cost IS NULL THEN 0 ELSE connec_total_cost END)
-    ELSE st_length2d(v_plan_aux_arc_ml.the_geom)::numeric(12,2) * (v_plan_aux_arc_cost.m3mlexc * v_plan_aux_arc_cost.m3exc_cost + v_plan_aux_arc_cost.m2mlbase * 
+    WHEN v_plan_aux_arc_cost.cost_unit::text = 'u'::text 
+    THEN v_plan_aux_arc_cost.arc_cost+(CASE WHEN connec_total_cost IS NULL THEN 0 ELSE connec_total_cost END)
+    ELSE st_length2d(v_plan_aux_arc_cost.the_geom)::numeric(12,2) * (v_plan_aux_arc_cost.m3mlexc * v_plan_aux_arc_cost.m3exc_cost + v_plan_aux_arc_cost.m2mlbase * 
     v_plan_aux_arc_cost.m2bottom_cost + v_plan_aux_arc_cost.m2mltrenchl * v_plan_aux_arc_cost.m2trenchl_cost + v_plan_aux_arc_cost.m3mlprotec * 
     v_plan_aux_arc_cost.m3protec_cost + v_plan_aux_arc_cost.m3mlfill * v_plan_aux_arc_cost.m3fill_cost + v_plan_aux_arc_cost.m3mlexcess * 
     v_plan_aux_arc_cost.m3excess_cost + v_plan_aux_arc_cost.m2mlpavement * v_plan_aux_arc_cost.m2pav_cost + v_plan_aux_arc_cost.arc_cost)::numeric(14,2) + 
     (CASE WHEN connec_total_cost IS NULL THEN 0 ELSE connec_total_cost END)
     END::numeric(14,2) AS total_budget, 
 
-v_plan_aux_arc_ml.the_geom,
-v_plan_aux_arc_ml.expl_id
-FROM selector_expl, v_plan_aux_arc_ml
-	JOIN v_plan_aux_arc_cost ON v_plan_aux_arc_ml.arc_id = v_plan_aux_arc_cost.arc_id
-	JOIN v_edit_arc ON v_edit_arc.arc_id=v_plan_aux_arc_ml.arc_id
-    LEFT JOIN v_plan_aux_arc_connec ON v_plan_aux_arc_connec.arc_id = v_plan_aux_arc_cost.arc_id
-	WHERE v_plan_aux_arc_ml.expl_id=selector_expl.expl_id
-	AND selector_expl.cur_user="current_user"() ;
-
+v_plan_aux_arc_cost.the_geom,
+v_plan_aux_arc_cost.expl_id
+FROM v_plan_aux_arc_cost
+	JOIN arc ON arc.arc_id=v_plan_aux_arc_cost.arc_id
+    LEFT JOIN v_plan_aux_arc_connec ON v_plan_aux_arc_connec.arc_id = v_plan_aux_arc_cost.arc_id;
 
 	
 

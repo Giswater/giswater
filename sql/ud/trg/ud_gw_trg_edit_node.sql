@@ -7,7 +7,7 @@ This version of Giswater is provided by Giswater Association
 --FUNCTION CODE: 1220
 
 
-CREATE OR REPLACE FUNCTION SCHEMA_NAME.gw_trg_edit_node()
+CREATE OR REPLACE FUNCTION "SCHEMA_NAME".gw_trg_edit_node()
   RETURNS trigger AS
 $BODY$
 DECLARE 
@@ -175,6 +175,10 @@ BEGIN
 			NEW.builtdate :=(SELECT "value" FROM config_param_user WHERE "parameter"='builtdate_vdefault' AND "cur_user"="current_user"() LIMIT 1);
 		END IF;  
 		
+	    -- LINK
+	    IF (SELECT "value" FROM config_param_system WHERE "parameter"='edit_automatic_insert_link')::boolean=TRUE THEN
+	       NEW.link=NEW.node_id;
+	    END IF;
 
 		
         -- FEATURE INSERT
