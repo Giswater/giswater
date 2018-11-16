@@ -283,14 +283,6 @@ public class MainDao {
 		}
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user+" - useSsl:"+useSsl);
 		
-		// Check if Internet is available
-		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
-			if (!UtilsFTP.isInternetReachable()) {
-				Utils.showError(Utils.getBundleString("MainDao.internet_unavailable"));	 //$NON-NLS-1$
-				return false;
-			}		
-		}
-		
 		String aux = PropertiesDao.getPropertiesFile().get("CONN_TIMEOUT", "2");
 		Integer connTimeout = Integer.parseInt(aux);			
 		int count = 0;

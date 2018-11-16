@@ -243,14 +243,6 @@ public class ProjectPreferencesController extends AbstractController {
 		}
 		Utils.getLogger().info("host:"+host+" - port:"+port+" - db:"+db+" - user:"+user);
 		
-		// Check if Internet is available
-		if (!host.equals("localhost") && !host.equals("127.0.0.1")) {
-			if (!UtilsFTP.isInternetReachable()) {
-				Utils.showError(Utils.getBundleString("ProjectPreferencesController.internet_unavailable"));	 //$NON-NLS-1$
-				return false;
-			}
-		}
-		
 		// Try to connect to Database
 		String aux = PropertiesDao.getPropertiesFile().get("CONN_TIMEOUT", "2");
 		Integer connTimeout = Integer.parseInt(aux);		
