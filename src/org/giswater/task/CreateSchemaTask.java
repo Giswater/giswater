@@ -21,6 +21,7 @@
 package org.giswater.task;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -58,14 +59,21 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	
 	
 	public boolean createSchema(String softwareAcronym) {
+		return processFolders(folderRootPath, softwareAcronym, true);
+	}
+	
+	
+	public boolean processFolders(String rootFolder, String softwareAcronym, boolean isUpdateFolder) {
 		
 		boolean status = true;
 			
-		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
-		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
-		this.folderUtils = folderRootPath+"utils"+File.separator;
-		this.folderUpdates = folderRootPath+"updates"+File.separator;
+		this.folderSoftware = rootFolder+softwareAcronym+File.separator;
+		this.folderLocale = rootFolder+"i18n"+File.separator+locale+File.separator;
+		this.folderLocaleEn = rootFolder+"i18n"+File.separator+"en"+File.separator;
+		this.folderUtils = rootFolder+"utils"+File.separator;
+
 		String folderPath = "";
+		String filePath = "";
 		
 		// Process folder 'utils/ddl'
 		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
@@ -75,25 +83,35 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderSoftware+FILE_PATTERN_DDL+File.separator;
 		if (!processFolder(folderPath)) return false;
 		
-		// Process folder 'updates/<waterSoftware>' folder
-		folderPath = folderUpdates+waterSoftware+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;
+		// Process folder 'i18n/<locale>/<waterSoftware>.sql'
+		filePath = folderLocale+softwareAcronym+".sql";
+		try {
+			File file = new File(filePath);
+			if (!file.isFile()){
+				filePath = folderLocaleEn+softwareAcronym+".sql";				
+			}
+			if (!processFile(filePath)) return false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;	
+		}
 		
-		// Process folder 'updates/utils' folder
-		folderPath = folderUpdates+"utils"+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;
+		// Process folder 'i18n/<locale>/utils.sql'
+		filePath = folderLocale+"utils.sql";
+		try {
+			File file = new File(filePath);
+			if (!file.isFile()){
+				filePath = folderLocaleEn+"utils.sql";				
+			}
+			if (!processFile(filePath)) return false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;	
+		}
 		
-		// Process folder 'i18n/<locale>/<waterSoftware>'
-		folderPath = folderLocale+softwareAcronym+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder 'i18n/<locale>/utils'
-		folderPath = folderLocale+"utils"+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder 'updates/i18n/<locale>/<watersoftware>'
-		folderPath = folderUpdates+"i18n"+File.separator+locale+File.separator+softwareAcronym+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;			
+		if (isUpdateFolder){
+			processUpdates(softwareAcronym);
+		}		
 		
 		// Process folder '<waterSoftware>/fct' folder
 		folderPath = folderSoftware+FILE_PATTERN_FCT+File.separator;
@@ -149,6 +167,50 @@ public class CreateSchemaTask extends ParentSchemaTask {
 			// Process folder 'utils/rules' folder
 			folderPath = folderUtils+FILE_PATTERN_RULES+File.separator;
 			if (!processFolder(folderPath)) return false;		
+		}
+			
+		return status;
+		
+	}
+	
+	
+	private boolean processUpdates(String softwareAcronym){
+		
+		boolean status = true;
+
+		String folderUpdatePath = "";
+		String folderPath = "";
+		String giswaterVersion;
+		giswaterVersion = MainDao.getGiswaterVersion().replace(".", "");
+		Integer giswaterVersionInt = Integer.valueOf(giswaterVersion);
+		
+		for (int i = UPDATE_FIRST_VERSION; i <= giswaterVersionInt; i++) {
+			
+			folderUpdatePath = folderRootPath+"updates"+File.separator+"31"+File.separator+i+File.separator;
+			File folder = new File(folderUpdatePath);
+			if (folder.exists()){			
+				Utils.getLogger().info("Processing updates folder: "+folderUpdatePath);
+				
+				// Process folder '<waterSoftware>' folder
+				folderPath = folderUpdatePath+softwareAcronym+File.separator;
+				if (!processUpdateFolder(folderPath)) return false;	
+	
+				// Process folder 'utils' folder
+				folderPath = folderUpdatePath+"utils"+File.separator;
+				if (!processUpdateFolder(folderPath)) return false;		
+				
+				// Process folder 'i18n/<locale>/<waterSoftware>.sql'
+				folderPath = folderUpdatePath+"i18n"+File.separator+locale+File.separator;
+				folder = new File(folderPath);
+				if (!folder.exists()){
+					folderPath = folderUpdatePath+"i18n"+File.separator+"en"+File.separator;				
+				}
+				if (!processUpdateFolder(folderPath)) return false;				
+			}
+			else {
+				Utils.getLogger().info("Folder not found: "+folderUpdatePath);				
+			}
+			
 		}
 			
 		return status;

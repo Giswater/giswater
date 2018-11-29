@@ -28,6 +28,7 @@ import java.util.Arrays;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.giswater.controller.ProjectPreferencesController;
 import org.giswater.dao.MainDao;
 import org.giswater.dao.PropertiesDao;
@@ -51,6 +52,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String folderRootPath;
 	protected String folderSoftware;
 	protected String folderLocale;
+	protected String folderLocaleEn;
 	protected String folderUtils;
 	protected String folderUpdates;
 	protected String folderFct;
@@ -75,6 +77,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected final String FILE_PATTERN_FCT_UTIL = "fct_util";
 	
 	protected final String BYTE_ORDER_MARK = "\uFEFF";
+	protected final Integer UPDATE_FIRST_VERSION = 31100;	
 	
 	
 	public ParentSchemaTask() {	}
@@ -126,7 +129,14 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	
 	public boolean processFile(String filePath) throws IOException {
 		
+		String fileExtension = FilenameUtils.getExtension(filePath);	
+		if (!fileExtension.equals("sql")) {
+			Utils.getLogger().info("Not a SQL file: "+filePath);				
+			return true;
+		}
+		
 		// Replace SCHEMA_NAME for schemaName parameter. SRID_VALUE for srid parameter. __USER__ for PostGIS user
+		Utils.getLogger().info("Processing file: "+filePath);		
 		String content = Utils.readFile(filePath);
 		if (content.equals("")) return false;
 		content = content.replace(BYTE_ORDER_MARK, "");
@@ -163,13 +173,11 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 				if (file.isFile()) {
 					if (!filePattern.equals("")) {
 						if (filePath.contains(filePattern)) {
-							Utils.getLogger().info("Processing file: "+filePath);
 							status = processFile(filePath);
 							if (!status) return false;
 						}
 					} 
 					else {
-						Utils.getLogger().info("Processing file: "+filePath);
 						status = processFile(filePath);
 						if (!status) return false;
 					}
@@ -312,13 +320,19 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		for (File file : files) {
 	    	String content;
 			try {
-				Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
-				content = Utils.readFile(file.getAbsolutePath());
-				content = content.replace("SCHEMA_NAME", schemaName);
-				content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
-				status = MainDao.executeSql(content, false);
-				// Abort process if one script fails
-				if (!status) return false;
+				String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());	
+				if (fileExtension.equals("sql")) {
+					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+					content = Utils.readFile(file.getAbsolutePath());
+					content = content.replace("SCHEMA_NAME", schemaName);
+					content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
+					status = MainDao.executeSql(content, false);
+					// Abort process if one script fails
+					if (!status) return false;
+				}
+				else {
+					Utils.getLogger().info("Not a SQL file: "+file.getAbsolutePath());				
+				}
 			} catch (IOException e) {
 				Utils.logError(e);
 			}
