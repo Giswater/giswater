@@ -213,7 +213,7 @@ public class MainDao {
 		else if (language.equals("pt")) {
 			locale = new Locale("pt", "PT");
 		}
-		else if (language.equals("pt_BR")) {
+		else if (language.equals("pt_br")) {
 			locale = new Locale("pt", "BR");
 		}	
 		Utils.setLocale(locale);

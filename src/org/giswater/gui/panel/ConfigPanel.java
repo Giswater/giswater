@@ -300,7 +300,7 @@ public class ConfigPanel extends JPanel implements ActionListener {
 		else if (language.equals("pt")) {
 			cboLocale.setSelectedItem("Portuguese");
 		}
-		else if (language.equals("pt_BR")) {
+		else if (language.equals("pt_br")) {
 			cboLocale.setSelectedItem("Brazilian Portuguese");
 		}	
 		

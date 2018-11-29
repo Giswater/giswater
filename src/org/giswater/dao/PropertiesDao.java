@@ -130,7 +130,12 @@ public class PropertiesDao {
     	
     	// Set Locale
     	String language = prop.get("LANGUAGE", "en").toLowerCase();
-		Locale locale = new Locale(language, language.toUpperCase());
+    	String country = language;
+    	if (language.equals("pt_br")){
+    		language = "pt";
+    		country = "br";
+    	}
+		Locale locale = new Locale(language, country.toUpperCase());
 		Locale.setDefault(locale);    	
     	
     	// Get default and template gsw files (in users folder)
