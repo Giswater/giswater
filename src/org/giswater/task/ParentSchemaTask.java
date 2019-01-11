@@ -58,6 +58,7 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 	protected String folderTrg;
 	protected String folderFctUtils;
 	protected String folderViews;	
+	protected String folderApi;	
 	
 	protected final String FILE_PATTERN_FK = "fk";	
 	protected final String FILE_PATTERN_DDL = "ddl";

@@ -316,6 +316,23 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}	
 	
 	
+	private boolean loadApi(String softwareAcronym) {
+		
+		String folderPath = "";
+		
+		// Process folder 'api/ftrg'
+		folderPath = folderApi+FILE_PATTERN_FTRG+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder 'api/fct'
+		folderPath = folderApi+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		return true;
+		
+	}
+	
+	
 	public boolean createSchemaNew(String softwareAcronym) {
 		
 		boolean status = true;
@@ -325,6 +342,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		this.folderLocaleEn = folderRootPath+"i18n"+File.separator+"en"+File.separator;		
 		this.folderUtils = folderRootPath+"utils"+File.separator;
 		this.folderUpdates = folderRootPath+"updates"+File.separator;
+		this.folderApi = folderRootPath+"api"+File.separator;		
 		
 		String giswaterVersion = MainDao.getGiswaterVersion().replace(".", "");
 		Integer giswaterVersionInt = Integer.valueOf(giswaterVersion);		
@@ -333,7 +351,8 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		processUpdates(softwareAcronym, 31100, 31100);			
 		loadViews(softwareAcronym);
 		loadTrg(softwareAcronym);
-		processUpdates(softwareAcronym, 31101, giswaterVersionInt);		
+		processUpdates(softwareAcronym, 31101, giswaterVersionInt);	
+		loadApi(softwareAcronym);
 			
 		return status;
 		
