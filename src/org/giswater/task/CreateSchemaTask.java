@@ -21,6 +21,7 @@
 package org.giswater.task;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -156,6 +157,107 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
+	private boolean loadBase(String softwareAcronym) {
+		
+		String folderPath = "";
+		String filePath = "";
+		
+		// Process folder 'utils/ddl'
+		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder 'utils/dml'
+		folderPath = folderUtils+FILE_PATTERN_DML+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
+		// Process folder 'utils/fct' folder
+		folderPath = folderUtils+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		// Process folder 'utils/ftrg' folder
+		folderPath = folderUtils+FILE_PATTERN_FTRG+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder '<waterSoftware>/ddl'
+		folderPath = folderSoftware+FILE_PATTERN_DDL+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder '<waterSoftware>/ddlrule'
+		folderPath = folderSoftware+FILE_PATTERN_DDLRULE+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder '<waterSoftware>/dml' folder
+		folderPath = folderSoftware+FILE_PATTERN_DML+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder '<waterSoftware>/tablect' folder
+		folderPath = folderSoftware+FILE_PATTERN_TABLECT+File.separator;
+		if (!processFolder(folderPath)) return false;		
+
+		// Process folder '<waterSoftware>/fct' folder
+		folderPath = folderSoftware+FILE_PATTERN_FCT+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder '<waterSoftware>/ftrg folder
+		folderPath = folderSoftware+FILE_PATTERN_FTRG+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
+		// Process folder 'utils/tablect' folder
+		folderPath = folderUtils+FILE_PATTERN_TABLECT+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		// Process folder 'utils/ddlrule' folder
+		folderPath = folderUtils+FILE_PATTERN_DDLRULE+File.separator;
+		if (!processFolder(folderPath)) return false;		
+		
+		// Process file 'i18n/<locale>/softwareAcronym.sql'
+		filePath = folderLocale+softwareAcronym+".sql";
+		try {
+			File file = new File(filePath);
+			if (!file.isFile()){
+				filePath = folderLocaleEn+softwareAcronym+".sql";				
+			}
+			if (!processFile(filePath)) return false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;	
+		}		
+		
+		// Process file 'i18n/<locale>/utils.sql'
+		filePath = folderLocale+"utils.sql";
+		try {
+			File file = new File(filePath);
+			if (!file.isFile()){
+				filePath = folderLocaleEn+"utils.sql";				
+			}
+			if (!processFile(filePath)) return false;
+		} catch (IOException e) {
+			Utils.showError(e, filePath);
+			status = false;	
+		}			
+		
+		return true;
+		
+	}
+	
+	
+	public boolean createSchemaNew(String softwareAcronym) {
+		
+		boolean status = true;
+			
+		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
+		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
+		this.folderLocaleEn = folderRootPath+"i18n"+File.separator+"en"+File.separator;		
+		this.folderUtils = folderRootPath+"utils"+File.separator;
+		this.folderUpdates = folderRootPath+"updates"+File.separator;
+		
+		loadBase(softwareAcronym);
+			
+		return status;
+		
+	}
+	
+	
     @Override
     public Void doInBackground() { 
 		
@@ -175,7 +277,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	
     	// Create schema of selected software
     	MainDao.setSchema(schemaName);
-		status = createSchema(waterSoftware);	
+		status = createSchemaNew(waterSoftware);	
 		if (status) {
 			// Insert information into table inp_project_id and version				
 			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
