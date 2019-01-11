@@ -210,7 +210,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		folderPath = folderUtils+FILE_PATTERN_DDLRULE+File.separator;
 		if (!processFolder(folderPath)) return false;		
 		
-		// Process file 'i18n/<locale>/softwareAcronym.sql'
+		// Process file 'i18n/<locale>/<waterSoftware>.sql'
 		filePath = folderLocale+softwareAcronym+".sql";
 		try {
 			File file = new File(filePath);
@@ -241,6 +241,40 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
+	private boolean loadViews(String softwareAcronym) {
+		
+		String folderPath = "";
+		
+		// Process folder '<waterSoftware>/ddlview'
+		folderPath = folderSoftware+FILE_PATTERN_DDLVIEW+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder 'utils/ddlview'
+		folderPath = folderUtils+FILE_PATTERN_DDLVIEW+File.separator;
+		if (!processFolder(folderPath)) return false;			
+		
+		return true;
+		
+	}
+	
+	
+	private boolean loadTrg(String softwareAcronym) {
+		
+		String folderPath = "";
+		
+		// Process folder 'utils/trg'
+		folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		// Process folder '<waterSoftware>/trg'
+		folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
+		if (!processFolder(folderPath)) return false;	
+		
+		return true;
+		
+	}
+	
+	
 	public boolean createSchemaNew(String softwareAcronym) {
 		
 		boolean status = true;
@@ -252,6 +286,8 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		this.folderUpdates = folderRootPath+"updates"+File.separator;
 		
 		loadBase(softwareAcronym);
+		loadViews(softwareAcronym);
+		loadTrg(softwareAcronym);
 			
 		return status;
 		
