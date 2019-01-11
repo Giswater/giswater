@@ -317,13 +317,15 @@ public class ParentSchemaTask extends SwingWorker<Void, Void> {
 		for (File file : files) {
 	    	String content;
 			try {
-				Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
-				content = Utils.readFile(file.getAbsolutePath());
-				content = content.replace("SCHEMA_NAME", schemaName);
-				content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
-				status = MainDao.executeSql(content, false);
-				// Abort process if one script fails
-				if (!status) return false;
+				if (file.getAbsolutePath().contains(".sql")) {
+					Utils.getLogger().info("Executing file: "+file.getAbsolutePath());
+					content = Utils.readFile(file.getAbsolutePath());
+					content = content.replace("SCHEMA_NAME", schemaName);
+					content = content.replace("SRID_VALUE", MainDao.getSrid(schemaName));					
+					status = MainDao.executeSql(content, false);
+					// Abort process if one script fails
+					if (!status) return false;
+				}
 			} catch (IOException e) {
 				Utils.logError(e);
 			}

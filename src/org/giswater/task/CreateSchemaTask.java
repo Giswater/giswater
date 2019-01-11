@@ -275,6 +275,47 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
+	private boolean processUpdates(String softwareAcronymn, Integer versionFrom, Integer versionTo){
+		
+		boolean status = true;
+
+		String folderUpdatePath = "";
+		String folderPath = "";
+		
+		for (int i = versionFrom; i <= versionTo; i++) {
+			
+			folderUpdatePath = folderRootPath+"updates"+File.separator+"31"+File.separator+i+File.separator;
+			File folder = new File(folderUpdatePath);
+			if (folder.exists()){			
+				Utils.getLogger().info("Processing updates folder: "+folderUpdatePath);
+				
+				// Process folder 'utils' folder
+				folderPath = folderUpdatePath+"utils"+File.separator;
+				if (!processUpdateFolder(folderPath)) return false;		
+				
+				// Process folder '<waterSoftware>' folder
+				folderPath = folderUpdatePath+softwareAcronymn+File.separator;
+				if (!processUpdateFolder(folderPath)) return false;	
+				
+				// Process folder 'i18n/<locale>/<waterSoftware>.sql'
+				folderPath = folderUpdatePath+"i18n"+File.separator+locale+File.separator;
+				folder = new File(folderPath);
+				if (!folder.exists()){
+					folderPath = folderUpdatePath+"i18n"+File.separator+"en"+File.separator;				
+				}
+				if (!processUpdateFolder(folderPath)) return false;				
+			}
+			else {
+				Utils.getLogger().info("Folder not found: "+folderUpdatePath);				
+			}
+			
+		}
+			
+		return status;
+		
+	}	
+	
+	
 	public boolean createSchemaNew(String softwareAcronym) {
 		
 		boolean status = true;
@@ -285,9 +326,14 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		this.folderUtils = folderRootPath+"utils"+File.separator;
 		this.folderUpdates = folderRootPath+"updates"+File.separator;
 		
+		String giswaterVersion = MainDao.getGiswaterVersion().replace(".", "");
+		Integer giswaterVersionInt = Integer.valueOf(giswaterVersion);		
+		
 		loadBase(softwareAcronym);
+		processUpdates(softwareAcronym, 31100, 31100);			
 		loadViews(softwareAcronym);
 		loadTrg(softwareAcronym);
+		processUpdates(softwareAcronym, 31101, giswaterVersionInt);		
 			
 		return status;
 		
