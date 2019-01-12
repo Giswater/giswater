@@ -370,6 +370,34 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}		
 	
 	
+	private boolean executeLastProcess(String softwareAcronym) {
+		
+		boolean status = true;
+		String extras = "";
+		String client = "";
+		String data = "";
+		String body = "";
+		String sql = "";
+
+		extras = "\"isNewProject\":\"TRUE\", ";			
+        extras+= "\"gwVersion\":\"" + MainDao.getGiswaterVersion() + "\", ";
+        extras+= "\"projectType\":\"" + softwareAcronym + "\", ";
+        extras+= "\"epsg\":\"" + sridValue + "\", ";
+        extras+= "\"title\":\"" + title + "\", ";
+        extras+= "\"author\":\"" + author + "\", ";
+        extras+= "\"date\":\"" + date + "\"";		
+		
+        client = "\"client\":{\"device\":9, \"lang\":\"" + locale + "\"}, ";
+        data = "\"data\":{" + extras + "}";
+        body = "" + client + data;
+        sql = "SELECT " + schemaName + ".gw_fct_admin_schema_lastprocess($${" + body + "}$$)::text";
+        Utils.getLogger().info(sql);				        
+        status = MainDao.executeSql(sql, true);			
+			
+		return status;
+		
+	}		
+	
 	
 	public boolean createSchemaNew(String softwareAcronym) {
 		
@@ -392,6 +420,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		processUpdates(softwareAcronym, 31101, giswaterVersionInt);	
 		loadApi(softwareAcronym);
 		processUpdatesApi(softwareAcronym, 31100, giswaterVersionInt);			
+		if (!executeLastProcess(softwareAcronym)) return false;
 			
 		return status;
 		
@@ -418,14 +447,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	// Create schema of selected software
     	MainDao.setSchema(schemaName);
 		status = createSchemaNew(waterSoftware);	
-		if (status) {
-			// Insert information into table inp_project_id and version				
-			String sql = "INSERT INTO "+schemaName+".inp_project_id VALUES ('"+title+"', '"+author+"', '"+date+"')";
-			Utils.logInfo(sql);
-			MainDao.executeSql(sql, false);		
-			MainDao.insertVersion(true);
-		}
-		else {
+		if (!status) {
 			MainDao.deleteSchema(schemaName);
 		}
 		
@@ -441,12 +463,14 @@ public class CreateSchemaTask extends ParentSchemaTask {
     
     public void done() {
     	
-    	MainClass.mdi.setProgressBarEnd();
+    	MainClass.mdi.setProgressBarEnd(); 	
     	if (status) {
     		MainClass.mdi.showMessage("schema_creation_completed");
+            Utils.getLogger().info("schema_creation_completed");	       		
     	}
     	else {
     		MainClass.mdi.showError(Utils.getBundleString("CreateSchemaTask.project_not_created")); //$NON-NLS-1$
+            Utils.getLogger().warning(Utils.getBundleString("CreateSchemaTask.project_not_created"));	    		
     	}
 		
     }
