@@ -58,106 +58,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	public boolean createSchema(String softwareAcronym) {
-		
-		boolean status = true;
-			
-		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
-		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
-		this.folderUtils = folderRootPath+"utils"+File.separator;
-		this.folderUpdates = folderRootPath+"updates"+File.separator;
-		String folderPath = "";
-		
-		// Process folder 'utils/ddl'
-		folderPath = folderUtils+FILE_PATTERN_DDL+File.separator;
-		if (!processFolder(folderPath)) return false;	
-		
-		// Process folder '<waterSoftware>/ddl'
-		folderPath = folderSoftware+FILE_PATTERN_DDL+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder 'updates/<waterSoftware>' folder
-		folderPath = folderUpdates+waterSoftware+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;
-		
-		// Process folder 'updates/utils' folder
-		folderPath = folderUpdates+"utils"+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;
-		
-		// Process folder 'i18n/<locale>/<waterSoftware>'
-		folderPath = folderLocale+softwareAcronym+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder 'i18n/<locale>/utils'
-		folderPath = folderLocale+"utils"+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder 'updates/i18n/<locale>/<watersoftware>'
-		folderPath = folderUpdates+"i18n"+File.separator+locale+File.separator+softwareAcronym+File.separator;
-		if (!processUpdateFolder(folderPath)) return false;			
-		
-		// Process folder '<waterSoftware>/fct' folder
-		folderPath = folderSoftware+FILE_PATTERN_FCT+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		// Process folder '<waterSoftware>/view' folder
-		folderPath = folderSoftware+FILE_PATTERN_VIEW+File.separator;
-		if (!processFolder(folderPath)) return false;	
-		
-		if (enableConstraints) {	
-			// Process folder '<waterSoftware>/trg' folder
-			folderPath = folderSoftware+FILE_PATTERN_TRG+File.separator;
-			if (!processFolder(folderPath)) return false;
-		}
-
-		// Process folder '<waterSoftware>/dml' folder
-		folderPath = folderSoftware+FILE_PATTERN_DML+File.separator;
-		if (!processFolder(folderPath)) return false;	
-		
-		if (enableConstraints) {
-			// Process folder '<waterSoftware>/fk' folder
-			folderPath = folderSoftware+FILE_PATTERN_FK+File.separator;
-			if (!processFolder(folderPath)) return false;		
-			
-			// Process folder '<waterSoftware>/rules' folder
-			folderPath = folderSoftware+FILE_PATTERN_RULES+File.separator;
-			if (!processFolder(folderPath)) return false;	
-		}
-		
-		// Process folder 'utils/fct' folder
-		folderPath = folderUtils+FILE_PATTERN_FCT+File.separator;
-		if (!processFolder(folderPath)) return false;			
-		
-		// Process folder 'utils/view' folder
-		folderPath = folderUtils+FILE_PATTERN_VIEW+File.separator;
-		if (!processFolder(folderPath)) return false;
-		
-		if (enableConstraints) {			
-			// Process folder 'utils/trg' folder
-			folderPath = folderUtils+FILE_PATTERN_TRG+File.separator;
-			if (!processFolder(folderPath)) return false;	
-		}
-		
-		// Process folder 'utils/dml' folder
-		folderPath = folderUtils+FILE_PATTERN_DML+File.separator;
-		if (!processFolder(folderPath)) return false;		
-		
-		if (enableConstraints) {		
-			// Process folder 'utils/fk' folder
-			folderPath = folderUtils+FILE_PATTERN_FK+File.separator;
-			if (!processFolder(folderPath)) return false;		
-			
-			// Process folder 'utils/rules' folder
-			folderPath = folderUtils+FILE_PATTERN_RULES+File.separator;
-			if (!processFolder(folderPath)) return false;		
-		}
-			
-		return status;
-		
-	}
-	
-	
-	private boolean loadBase(String softwareAcronym) {
+	private boolean loadBase() {
 		
 		String folderPath = "";
 		String filePath = "";
@@ -211,11 +112,11 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		if (!processFolder(folderPath)) return false;		
 		
 		// Process file 'i18n/<locale>/<waterSoftware>.sql'
-		filePath = folderLocale+softwareAcronym+".sql";
+		filePath = folderLocale+waterSoftware+".sql";
 		try {
 			File file = new File(filePath);
 			if (!file.isFile()){
-				filePath = folderLocaleEn+softwareAcronym+".sql";				
+				filePath = folderLocaleEn+waterSoftware+".sql";				
 			}
 			if (!processFile(filePath)) return false;
 		} catch (IOException e) {
@@ -241,7 +142,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	private boolean loadViews(String softwareAcronym) {
+	private boolean loadViews() {
 		
 		String folderPath = "";
 		
@@ -258,7 +159,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	private boolean loadTrg(String softwareAcronym) {
+	private boolean loadTrg() {
 		
 		String folderPath = "";
 		
@@ -275,7 +176,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	private boolean processUpdates(String softwareAcronymn, Integer versionFrom, Integer versionTo){
+	private boolean processUpdates(Integer versionFrom, Integer versionTo){
 		
 		boolean status = true;
 
@@ -294,7 +195,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 				if (!processUpdateFolder(folderPath)) return false;		
 				
 				// Process folder '<waterSoftware>' folder
-				folderPath = folderUpdatePath+softwareAcronymn+File.separator;
+				folderPath = folderUpdatePath+waterSoftware+File.separator;
 				if (!processUpdateFolder(folderPath)) return false;	
 				
 				// Process folder 'i18n/<locale>/<waterSoftware>.sql'
@@ -316,7 +217,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}	
 	
 	
-	private boolean loadApi(String softwareAcronym) {
+	private boolean loadApi() {
 		
 		String folderPath = "";
 		
@@ -333,7 +234,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	private boolean processUpdatesApi(String softwareAcronymn, Integer versionFrom, Integer versionTo){
+	private boolean processUpdatesApi(Integer versionFrom, Integer versionTo){
 		
 		boolean status = true;
 
@@ -370,7 +271,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}		
 	
 	
-	private boolean executeLastProcess(String softwareAcronym) {
+	private boolean executeLastProcess() {
 		
 		boolean status = true;
 		String extras = "";
@@ -381,7 +282,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 
 		extras = "\"isNewProject\":\"TRUE\", ";			
         extras+= "\"gwVersion\":\"" + MainDao.getGiswaterVersion() + "\", ";
-        extras+= "\"projectType\":\"" + softwareAcronym + "\", ";
+        extras+= "\"projectType\":\"" + waterSoftware + "\", ";
         extras+= "\"epsg\":\"" + sridValue + "\", ";
         extras+= "\"title\":\"" + title + "\", ";
         extras+= "\"author\":\"" + author + "\", ";
@@ -399,11 +300,11 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}		
 	
 	
-	public boolean createSchemaNew(String softwareAcronym) {
+	public boolean createSchema() {
 		
 		boolean status = true;
 			
-		this.folderSoftware = folderRootPath+softwareAcronym+File.separator;
+		this.folderSoftware = folderRootPath+waterSoftware+File.separator;
 		this.folderLocale = folderRootPath+"i18n"+File.separator+locale+File.separator;
 		this.folderLocaleEn = folderRootPath+"i18n"+File.separator+"en"+File.separator;		
 		this.folderUtils = folderRootPath+"utils"+File.separator;
@@ -413,14 +314,14 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		String giswaterVersion = MainDao.getGiswaterVersion().replace(".", "");
 		Integer giswaterVersionInt = Integer.valueOf(giswaterVersion);		
 		
-		loadBase(softwareAcronym);
-		processUpdates(softwareAcronym, 31100, 31100);			
-		loadViews(softwareAcronym);
-		loadTrg(softwareAcronym);
-		processUpdates(softwareAcronym, 31101, giswaterVersionInt);	
-		loadApi(softwareAcronym);
-		processUpdatesApi(softwareAcronym, 31100, giswaterVersionInt);			
-		if (!executeLastProcess(softwareAcronym)) return false;
+		if (!loadBase()) return false;
+		if (!processUpdates(31100, 31100)) return false;			
+		if (!loadViews()) return false;
+		if (!loadTrg()) return false;
+		if (!processUpdates(31101, giswaterVersionInt)) return false;	
+		if (!loadApi()) return false;
+		if (!processUpdatesApi(31100, giswaterVersionInt)) return false;		
+		if (!executeLastProcess()) return false;
 			
 		return status;
 		
@@ -446,7 +347,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	
     	// Create schema of selected software
     	MainDao.setSchema(schemaName);
-		status = createSchemaNew(waterSoftware);	
+		status = createSchema();	
 		if (!status) {
 			MainDao.deleteSchema(schemaName);
 		}

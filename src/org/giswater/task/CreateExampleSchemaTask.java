@@ -99,7 +99,7 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	// Locale must be set to 'EN'
     	cst.setLocale("en");
     	MainDao.setSchema(schemaName);
-		status = cst.createSchema(waterSoftware);	
+		status = cst.createSchema();	
 		if (status) {
 			// Insert information into table version
 			MainDao.insertVersion(false);
