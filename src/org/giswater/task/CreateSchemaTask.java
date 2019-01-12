@@ -333,6 +333,44 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}
 	
 	
+	private boolean processUpdatesApi(String softwareAcronymn, Integer versionFrom, Integer versionTo){
+		
+		boolean status = true;
+
+		String folderUpdatePath = "";
+		String folderPath = "";
+		
+		for (int i = versionFrom; i <= versionTo; i++) {
+			
+			folderUpdatePath = folderRootPath+"api"+File.separator+"updates"+File.separator+"31"+File.separator+i+File.separator;
+			File folder = new File(folderUpdatePath);
+			if (folder.exists()){			
+				Utils.getLogger().info("Processing updates folder: "+folderUpdatePath);
+				
+				// Process folder 'utils' folder
+				folderPath = folderUpdatePath+"utils"+File.separator;
+				if (!processUpdateFolder(folderPath)) return false;		
+				
+				// Process folder 'i18n/<locale>'
+				folderPath = folderUpdatePath+"i18n"+File.separator+locale+File.separator;
+				folder = new File(folderPath);
+				if (!folder.exists()){
+					folderPath = folderUpdatePath+"i18n"+File.separator+"en"+File.separator;				
+				}
+				if (!processUpdateFolder(folderPath)) return false;				
+			}
+			else {
+				Utils.getLogger().info("Folder not found: "+folderUpdatePath);				
+			}
+			
+		}
+			
+		return status;
+		
+	}		
+	
+	
+	
 	public boolean createSchemaNew(String softwareAcronym) {
 		
 		boolean status = true;
@@ -353,6 +391,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		loadTrg(softwareAcronym);
 		processUpdates(softwareAcronym, 31101, giswaterVersionInt);	
 		loadApi(softwareAcronym);
+		processUpdatesApi(softwareAcronym, 31100, giswaterVersionInt);			
 			
 		return status;
 		
