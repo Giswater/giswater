@@ -21,8 +21,6 @@
 package org.giswater.task;
 
 import java.awt.Cursor;
-import java.io.File;
-
 import javax.swing.JOptionPane;
 
 import org.giswater.controller.MenuController;
@@ -52,31 +50,6 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
 	}
 	
 	
-	private boolean insertExampleData() {
-		
-		try {
-			String folderPath = folderRootPath+"example"+File.separator+waterSoftware+File.separator;
-			status = processFolder(folderPath);
-			if (status) {
-				MainDao.commit();
-				String msg = Utils.getBundleString("schema_creation_completed") + ": " + schemaName;
-				MainClass.mdi.showMessage(msg);
-			}
-			else {
-				MainDao.rollback();
-				MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$						
-			}
-		} catch (Exception e) {
-			status = false;
-			MainDao.rollback();
-            Utils.showError(e);
-		}
-		
-		return status;
-		
-	}
-	
-	
     @Override
     public Void doInBackground() { 
 		
@@ -99,16 +72,9 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	// Locale must be set to 'EN'
     	cst.setLocale("en");
     	MainDao.setSchema(schemaName);
-		status = cst.createSchema();	
-		if (status) {
-			// Insert information into table version
-			MainDao.insertVersion(false);
-			// Once schema has been created, load example data 
-			insertExampleData();
-		}
-		else {
+		status = cst.createSchema(true);	
+		if (!status) {
 			MainDao.rollback();
-			MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project")); //$NON-NLS-1$
 		}
 
 		// Refresh view
@@ -128,9 +94,11 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
     		MainClass.mdi.showMessage("schema_creation_completed");
+            Utils.getLogger().info("schema_creation_completed");	     		
     	}
     	else {
     		MainClass.mdi.showError(Utils.getBundleString("CreateExampleSchemaTask.error_create_project2")); //$NON-NLS-1$
+            Utils.getLogger().warning(Utils.getBundleString("CreateExampleSchemaTask.error_create_project2"));    		
     	}
 		
     }

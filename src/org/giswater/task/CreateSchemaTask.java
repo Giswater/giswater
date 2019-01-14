@@ -300,7 +300,23 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	}		
 	
 	
+	private boolean loadSampleData() {
+		
+		// Process folder 'example/user/<waterSoftware>'
+		String folderPath = folderRootPath+"example"+File.separator+"user"+File.separator+waterSoftware+File.separator;
+		if (!processFolder(folderPath)) return false;
+		
+		return true;
+		
+	}
+	
+	
 	public boolean createSchema() {
+		return createSchema(false);
+	}
+	
+	
+	public boolean createSchema(boolean createExample) {
 		
 		boolean status = true;
 			
@@ -321,6 +337,9 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		if (!processUpdates(31101, giswaterVersionInt)) return false;	
 		if (!loadApi()) return false;
 		if (!processUpdatesApi(31100, giswaterVersionInt)) return false;		
+		if (createExample) {
+			if (!loadSampleData()) return false;
+		}
 		if (!executeLastProcess()) return false;
 			
 		return status;
