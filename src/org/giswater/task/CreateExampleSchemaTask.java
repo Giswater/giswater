@@ -93,6 +93,7 @@ public class CreateExampleSchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd();
     	if (status) {
+    		MainDao.commit();    		
     		MainClass.mdi.showMessage("schema_creation_completed");
             Utils.getLogger().info("schema_creation_completed");	     		
     	}

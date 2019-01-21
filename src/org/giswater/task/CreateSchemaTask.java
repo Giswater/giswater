@@ -294,7 +294,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
         body = "" + client + data;
         sql = "SELECT " + schemaName + ".gw_fct_admin_schema_lastprocess($${" + body + "}$$)::text";
         Utils.getLogger().info(sql);				        
-        status = MainDao.executeSql(sql, true);			
+        status = MainDao.executeSql(sql);			
 			
 		return status;
 		
@@ -338,10 +338,10 @@ public class CreateSchemaTask extends ParentSchemaTask {
 		if (!processUpdates(31101, giswaterVersionInt)) return false;	
 		if (!loadApi()) return false;
 		if (!processUpdatesApi(31100, giswaterVersionInt)) return false;		
+		if (!executeLastProcess()) return false;		
 		if (createExample) {
 			if (!loadSampleData()) return false;
 		}
-		if (!executeLastProcess()) return false;
 			
 		return status;
 		
@@ -386,6 +386,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
     	
     	MainClass.mdi.setProgressBarEnd(); 	
     	if (status) {
+    		MainDao.commit();
     		MainClass.mdi.showMessage("schema_creation_completed");
             Utils.getLogger().info("schema_creation_completed");	       		
     	}
