@@ -38,7 +38,6 @@ import org.giswater.task.CopySchemaTask;
 import org.giswater.task.DeleteSchemaTask;
 import org.giswater.task.RenameSchemaTask;
 import org.giswater.util.Utils;
-import org.giswater.util.UtilsFTP;
 
 
 public class ProjectPreferencesController extends AbstractController {
@@ -376,11 +375,13 @@ public class ProjectPreferencesController extends AbstractController {
 		view.updateProjectData("", "", "");
 		if (MainDao.getSchema().equals("")) return;
 		if (!MainDao.checkTable(MainDao.getSchema(), "inp_project_id")) return;
-		String sql = "SELECT title, author, date FROM "+MainDao.getSchema()+".inp_project_id";
+		String sql = "SELECT title, author FROM "+MainDao.getSchema()+".inp_project_id";
 		Vector<Vector<String>> vector_container = MainDao.queryToVector(sql);
 		if (vector_container.size() > 0) {
 			Vector<String> vector = vector_container.get(0);
-			view.updateProjectData(vector.get(0), vector.get(1), vector.get(2));
+			sql = "SELECT date::date FROM "+MainDao.getSchema()+".version ORDER BY id DESC LIMIT 1";
+			String date = MainDao.queryToString(sql);
+			view.updateProjectData(vector.get(0), vector.get(1), date);
 		}
 		
 	}

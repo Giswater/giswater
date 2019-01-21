@@ -38,7 +38,6 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 import org.giswater.gui.MainClass;
 import org.giswater.util.Utils;
-import org.giswater.util.UtilsFTP;
 
 
 public class MainDao {
@@ -895,7 +894,7 @@ public class MainDao {
 		} 
 		else {
 			if (checkTable(schema, "version")) {
-				String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC";
+				String sql = "SELECT giswater FROM "+schema+".version ORDER BY giswater DESC LIMIT 1";
 				String aux = queryToString(sql);
 				schemaVersion = Utils.parseInt(aux.replace(".", ""));				
 			}

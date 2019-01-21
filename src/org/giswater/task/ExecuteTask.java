@@ -22,7 +22,6 @@ package org.giswater.task;
 
 import java.io.File;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.giswater.controller.EpaSoftController;

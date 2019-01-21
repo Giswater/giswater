@@ -37,6 +37,7 @@ public class CreateSchemaTask extends ParentSchemaTask {
 	private String title;
 	private String author;
 	private String date;
+	@SuppressWarnings("unused")
 	private Boolean enableConstraints = true;
 	
 	
