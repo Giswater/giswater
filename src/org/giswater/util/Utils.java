@@ -702,7 +702,16 @@ public class Utils {
 	    	        	comp.setEnabled(enabled);
 	    		    }	    	    	
 	    	    }
-	        }		        
+	        }	
+	        if (comp instanceof JButton) {
+	        	JButton button = (JButton) comp;
+		        String name = button.getActionCommand();
+		        if (name != null) {
+			        if (name.equals("renameSchema")){
+			        	comp.setEnabled(false);
+			        }
+		        }
+	        }
 	    }		
 		
 	}

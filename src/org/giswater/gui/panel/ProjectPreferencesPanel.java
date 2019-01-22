@@ -393,7 +393,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	// Postgis
 	public void enableSchemaOptions(boolean enabled){
 		btnDelete.setEnabled(enabled);
-		btnRename.setEnabled(enabled);
+		btnRename.setEnabled(false);
 		btnCopy.setEnabled(enabled);	
 	}
 	
@@ -497,7 +497,6 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	}
 	
 	public void enableControlsText(boolean enabled) {
-//		txtInput.setEnabled(enabled);
 		this.requestFocusInWindow();		
 	}
 
@@ -506,7 +505,7 @@ public class ProjectPreferencesPanel extends JPanel implements ActionListener {
 	}
 
 	public void enableRename(boolean enabled) {
-		btnRename.setEnabled(enabled);
+		btnRename.setEnabled(false);
 	}
 	
 	public void enableCopy(boolean enabled) {
