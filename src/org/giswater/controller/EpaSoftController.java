@@ -199,14 +199,7 @@ public class EpaSoftController extends AbstractController {
     }
     
     
-    // If 'import' check is selected, automatically select 'export' and 'execute' ones
     public void importSelected() {
-    	if (view.isImportSelected()) {
-    		view.setSelected(true);
-    	}
-    	else {
-    		view.setSelected(false);
-    	}
     }
     
     
