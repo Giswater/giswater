@@ -1,4 +1,4 @@
-## WELCOME TO GISWATER PROJECT (WATER MODELS REPO)
+## WELCOME TO GISWATER PROJECT (GISWATER REPO)
 
 **This is an ARCHIVED repository. For more information about to getting started with Giswater you can visit one the three main repositories:**
 
