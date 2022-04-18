@@ -1,4 +1,4 @@
-## WELCOME TO GISWATER CONTRIBUTORS GUIDE (GISWATER REPO)
+## WELCOME TO GISWATER CONTRIBUTORS GUIDE (giswater)
 
 **This is an ARCHIVED repository. For more information about to getting started with Giswater you can visit one the three main repositories:**
 
